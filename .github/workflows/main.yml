@@ -27,7 +27,7 @@ jobs:
       - name: Install pdoc3
         run: pip install pdoc3
       - name: Install ourselves
-        run: pip install git+https://github.com/Textualize/textual.git#css
+        run: pip install https://github.com/Textualize/textual/archive/refs/heads/css.zip
 
       # Runs a set of commands using the runners shell
       - name: Make the docs
