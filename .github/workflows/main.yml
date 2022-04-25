@@ -31,7 +31,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Make the docs
-        run: pdoc3 --skip-errors -o undocs --html -c "lunr_search={'fuzziness':1,'index_docstrings':True}" textual
+        run: pdoc3 --skip-errors -o undocs/docs --html -c "lunr_search={'fuzziness':1,'index_docstrings':True}" textual
         
         
       - name: Deploy 🚀
