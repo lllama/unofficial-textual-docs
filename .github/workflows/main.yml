@@ -32,7 +32,9 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Make the docs
         run: pdoc3 --skip-errors -o undocs/docs --html -c "lunr_search={'fuzziness':1,'index_docstrings':True}" textual
-        
+      
+      - name: Add index redirect
+        run: cp index.html undocs/docs
         
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.3.0
