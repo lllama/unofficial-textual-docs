@@ -1,0 +1,1390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>textual.keys API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}#lunr-search{width:100%;font-size:1em;padding:6px 9px 5px 9px;border:1px solid silver}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>textual.keys</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from dataclasses import dataclass
+from enum import Enum
+
+# Adapted from prompt toolkit https://github.com/prompt-toolkit/python-prompt-toolkit/blob/master/prompt_toolkit/keys.py
+
+
+class Keys(str, Enum):
+    &#34;&#34;&#34;
+    List of keys for use in key bindings.
+
+    Note that this is an &#34;StrEnum&#34;, all values can be compared against
+    strings.
+    &#34;&#34;&#34;
+
+    value: str
+
+    Escape = &#34;escape&#34;  # Also Control-[
+    ShiftEscape = &#34;shift+escape&#34;
+    Return = &#34;return&#34;
+
+    ControlAt = &#34;ctrl+@&#34;  # Also Control-Space.
+
+    ControlA = &#34;ctrl+a&#34;
+    ControlB = &#34;ctrl+b&#34;
+    ControlC = &#34;ctrl+c&#34;
+    ControlD = &#34;ctrl+d&#34;
+    ControlE = &#34;ctrl+e&#34;
+    ControlF = &#34;ctrl+f&#34;
+    ControlG = &#34;ctrl+g&#34;
+    ControlH = &#34;ctrl+h&#34;
+    ControlI = &#34;ctrl+i&#34;  # Tab
+    ControlJ = &#34;ctrl+j&#34;  # Newline
+    ControlK = &#34;ctrl+k&#34;
+    ControlL = &#34;ctrl+l&#34;
+    ControlM = &#34;ctrl+m&#34;  # Carriage return
+    ControlN = &#34;ctrl+n&#34;
+    ControlO = &#34;ctrl+o&#34;
+    ControlP = &#34;ctrl+p&#34;
+    ControlQ = &#34;ctrl+q&#34;
+    ControlR = &#34;ctrl+r&#34;
+    ControlS = &#34;ctrl+s&#34;
+    ControlT = &#34;ctrl+t&#34;
+    ControlU = &#34;ctrl+u&#34;
+    ControlV = &#34;ctrl+v&#34;
+    ControlW = &#34;ctrl+w&#34;
+    ControlX = &#34;ctrl+x&#34;
+    ControlY = &#34;ctrl+y&#34;
+    ControlZ = &#34;ctrl+z&#34;
+
+    Control1 = &#34;ctrl+1&#34;
+    Control2 = &#34;ctrl+2&#34;
+    Control3 = &#34;ctrl+3&#34;
+    Control4 = &#34;ctrl+4&#34;
+    Control5 = &#34;ctrl+5&#34;
+    Control6 = &#34;ctrl+6&#34;
+    Control7 = &#34;ctrl+7&#34;
+    Control8 = &#34;ctrl+8&#34;
+    Control9 = &#34;ctrl+9&#34;
+    Control0 = &#34;ctrl+0&#34;
+
+    ControlShift1 = &#34;ctrl+shift+1&#34;
+    ControlShift2 = &#34;ctrl+shift+2&#34;
+    ControlShift3 = &#34;ctrl+shift+3&#34;
+    ControlShift4 = &#34;ctrl+shift+4&#34;
+    ControlShift5 = &#34;ctrl+shift+5&#34;
+    ControlShift6 = &#34;ctrl+shift+6&#34;
+    ControlShift7 = &#34;ctrl+shift+7&#34;
+    ControlShift8 = &#34;ctrl+shift+8&#34;
+    ControlShift9 = &#34;ctrl+shift+9&#34;
+    ControlShift0 = &#34;ctrl+shift+0&#34;
+
+    ControlBackslash = &#34;ctrl+\\&#34;
+    ControlSquareClose = &#34;ctrl+]&#34;
+    ControlCircumflex = &#34;ctrl+^&#34;
+    ControlUnderscore = &#34;ctrl+_&#34;
+
+    Left = &#34;left&#34;
+    Right = &#34;right&#34;
+    Up = &#34;up&#34;
+    Down = &#34;down&#34;
+    Home = &#34;home&#34;
+    End = &#34;end&#34;
+    Insert = &#34;insert&#34;
+    Delete = &#34;delete&#34;
+    PageUp = &#34;pageup&#34;
+    PageDown = &#34;pagedown&#34;
+
+    ControlLeft = &#34;ctrl+left&#34;
+    ControlRight = &#34;ctrl+right&#34;
+    ControlUp = &#34;ctrl+up&#34;
+    ControlDown = &#34;ctrl+down&#34;
+    ControlHome = &#34;ctrl+home&#34;
+    ControlEnd = &#34;ctrl+end&#34;
+    ControlInsert = &#34;ctrl+insert&#34;
+    ControlDelete = &#34;ctrl+delete&#34;
+    ControlPageUp = &#34;ctrl+pageup&#34;
+    ControlPageDown = &#34;ctrl+pagedown&#34;
+
+    ShiftLeft = &#34;shift+left&#34;
+    ShiftRight = &#34;shift+right&#34;
+    ShiftUp = &#34;shift+up&#34;
+    ShiftDown = &#34;shift+down&#34;
+    ShiftHome = &#34;shift+home&#34;
+    ShiftEnd = &#34;shift+end&#34;
+    ShiftInsert = &#34;shift+insert&#34;
+    ShiftDelete = &#34;shift+delete&#34;
+    ShiftPageUp = &#34;shift+pageup&#34;
+    ShiftPageDown = &#34;shift+pagedown&#34;
+
+    ControlShiftLeft = &#34;ctrl+shift+left&#34;
+    ControlShiftRight = &#34;ctrl+shift+right&#34;
+    ControlShiftUp = &#34;ctrl+shift+up&#34;
+    ControlShiftDown = &#34;ctrl+shift+down&#34;
+    ControlShiftHome = &#34;ctrl+shift+home&#34;
+    ControlShiftEnd = &#34;ctrl+shift+end&#34;
+    ControlShiftInsert = &#34;ctrl+shift+insert&#34;
+    ControlShiftDelete = &#34;ctrl+shift+delete&#34;
+    ControlShiftPageUp = &#34;ctrl+shift+pageup&#34;
+    ControlShiftPageDown = &#34;ctrl+shift+pagedown&#34;
+
+    BackTab = &#34;shift+tab&#34;  # shift + tab
+
+    F1 = &#34;f1&#34;
+    F2 = &#34;f2&#34;
+    F3 = &#34;f3&#34;
+    F4 = &#34;f4&#34;
+    F5 = &#34;f5&#34;
+    F6 = &#34;f6&#34;
+    F7 = &#34;f7&#34;
+    F8 = &#34;f8&#34;
+    F9 = &#34;f9&#34;
+    F10 = &#34;f10&#34;
+    F11 = &#34;f11&#34;
+    F12 = &#34;f12&#34;
+    F13 = &#34;f13&#34;
+    F14 = &#34;f14&#34;
+    F15 = &#34;f15&#34;
+    F16 = &#34;f16&#34;
+    F17 = &#34;f17&#34;
+    F18 = &#34;f18&#34;
+    F19 = &#34;f19&#34;
+    F20 = &#34;f20&#34;
+    F21 = &#34;f21&#34;
+    F22 = &#34;f22&#34;
+    F23 = &#34;f23&#34;
+    F24 = &#34;f24&#34;
+
+    ControlF1 = &#34;ctrl+f1&#34;
+    ControlF2 = &#34;ctrl+f2&#34;
+    ControlF3 = &#34;ctrl+f3&#34;
+    ControlF4 = &#34;ctrl+f4&#34;
+    ControlF5 = &#34;ctrl+f5&#34;
+    ControlF6 = &#34;ctrl+f6&#34;
+    ControlF7 = &#34;ctrl+f7&#34;
+    ControlF8 = &#34;ctrl+f8&#34;
+    ControlF9 = &#34;ctrl+f9&#34;
+    ControlF10 = &#34;ctrl+f10&#34;
+    ControlF11 = &#34;ctrl+f11&#34;
+    ControlF12 = &#34;ctrl+f12&#34;
+    ControlF13 = &#34;ctrl+f13&#34;
+    ControlF14 = &#34;ctrl+f14&#34;
+    ControlF15 = &#34;ctrl+f15&#34;
+    ControlF16 = &#34;ctrl+f16&#34;
+    ControlF17 = &#34;ctrl+f17&#34;
+    ControlF18 = &#34;ctrl+f18&#34;
+    ControlF19 = &#34;ctrl+f19&#34;
+    ControlF20 = &#34;ctrl+f20&#34;
+    ControlF21 = &#34;ctrl+f21&#34;
+    ControlF22 = &#34;ctrl+f22&#34;
+    ControlF23 = &#34;ctrl+f23&#34;
+    ControlF24 = &#34;ctrl+f24&#34;
+
+    # Matches any key.
+    Any = &#34;&lt;any&gt;&#34;
+
+    # Special.
+    ScrollUp = &#34;&lt;scroll-up&gt;&#34;
+    ScrollDown = &#34;&lt;scroll-down&gt;&#34;
+
+    CPRResponse = &#34;&lt;cursor-position-response&gt;&#34;
+    Vt100MouseEvent = &#34;&lt;vt100-mouse-event&gt;&#34;
+    WindowsMouseEvent = &#34;&lt;windowshift+mouse-event&gt;&#34;
+    BracketedPaste = &#34;&lt;bracketed-paste&gt;&#34;
+
+    # For internal use: key which is ignored.
+    # (The key binding for this key should not do anything.)
+    Ignore = &#34;&lt;ignore&gt;&#34;
+
+    # Some &#39;Key&#39; aliases (for backwardshift+compatibility).
+    ControlSpace = &#34;ctrl-at&#34;
+    Tab = &#34;tab&#34;
+    Enter = &#34;enter&#34;
+    Backspace = &#34;backspace&#34;
+
+    # ShiftControl was renamed to ControlShift in
+    # 888fcb6fa4efea0de8333177e1bbc792f3ff3c24 (20 Feb 2020).
+    ShiftControlLeft = ControlShiftLeft
+    ShiftControlRight = ControlShiftRight
+    ShiftControlHome = ControlShiftHome
+    ShiftControlEnd = ControlShiftEnd
+
+
+@dataclass
+class Binding:
+    action: str
+    description: str
+    show: bool = False</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="textual.keys.Binding"><code class="flex name class">
+<span>class <span class="ident">Binding</span></span>
+<span>(</span><span>action: str, description: str, show: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Binding(action: str, description: str, show: bool = False)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Binding:
+    action: str
+    description: str
+    show: bool = False</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.keys.Binding.action"><code class="name">var <span class="ident">action</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Binding.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Binding.show"><code class="name">var <span class="ident">show</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="textual.keys.Keys"><code class="flex name class">
+<span>class <span class="ident">Keys</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>List of keys for use in key bindings.</p>
+<p>Note that this is an "StrEnum", all values can be compared against
+strings.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Keys(str, Enum):
+    &#34;&#34;&#34;
+    List of keys for use in key bindings.
+
+    Note that this is an &#34;StrEnum&#34;, all values can be compared against
+    strings.
+    &#34;&#34;&#34;
+
+    value: str
+
+    Escape = &#34;escape&#34;  # Also Control-[
+    ShiftEscape = &#34;shift+escape&#34;
+    Return = &#34;return&#34;
+
+    ControlAt = &#34;ctrl+@&#34;  # Also Control-Space.
+
+    ControlA = &#34;ctrl+a&#34;
+    ControlB = &#34;ctrl+b&#34;
+    ControlC = &#34;ctrl+c&#34;
+    ControlD = &#34;ctrl+d&#34;
+    ControlE = &#34;ctrl+e&#34;
+    ControlF = &#34;ctrl+f&#34;
+    ControlG = &#34;ctrl+g&#34;
+    ControlH = &#34;ctrl+h&#34;
+    ControlI = &#34;ctrl+i&#34;  # Tab
+    ControlJ = &#34;ctrl+j&#34;  # Newline
+    ControlK = &#34;ctrl+k&#34;
+    ControlL = &#34;ctrl+l&#34;
+    ControlM = &#34;ctrl+m&#34;  # Carriage return
+    ControlN = &#34;ctrl+n&#34;
+    ControlO = &#34;ctrl+o&#34;
+    ControlP = &#34;ctrl+p&#34;
+    ControlQ = &#34;ctrl+q&#34;
+    ControlR = &#34;ctrl+r&#34;
+    ControlS = &#34;ctrl+s&#34;
+    ControlT = &#34;ctrl+t&#34;
+    ControlU = &#34;ctrl+u&#34;
+    ControlV = &#34;ctrl+v&#34;
+    ControlW = &#34;ctrl+w&#34;
+    ControlX = &#34;ctrl+x&#34;
+    ControlY = &#34;ctrl+y&#34;
+    ControlZ = &#34;ctrl+z&#34;
+
+    Control1 = &#34;ctrl+1&#34;
+    Control2 = &#34;ctrl+2&#34;
+    Control3 = &#34;ctrl+3&#34;
+    Control4 = &#34;ctrl+4&#34;
+    Control5 = &#34;ctrl+5&#34;
+    Control6 = &#34;ctrl+6&#34;
+    Control7 = &#34;ctrl+7&#34;
+    Control8 = &#34;ctrl+8&#34;
+    Control9 = &#34;ctrl+9&#34;
+    Control0 = &#34;ctrl+0&#34;
+
+    ControlShift1 = &#34;ctrl+shift+1&#34;
+    ControlShift2 = &#34;ctrl+shift+2&#34;
+    ControlShift3 = &#34;ctrl+shift+3&#34;
+    ControlShift4 = &#34;ctrl+shift+4&#34;
+    ControlShift5 = &#34;ctrl+shift+5&#34;
+    ControlShift6 = &#34;ctrl+shift+6&#34;
+    ControlShift7 = &#34;ctrl+shift+7&#34;
+    ControlShift8 = &#34;ctrl+shift+8&#34;
+    ControlShift9 = &#34;ctrl+shift+9&#34;
+    ControlShift0 = &#34;ctrl+shift+0&#34;
+
+    ControlBackslash = &#34;ctrl+\\&#34;
+    ControlSquareClose = &#34;ctrl+]&#34;
+    ControlCircumflex = &#34;ctrl+^&#34;
+    ControlUnderscore = &#34;ctrl+_&#34;
+
+    Left = &#34;left&#34;
+    Right = &#34;right&#34;
+    Up = &#34;up&#34;
+    Down = &#34;down&#34;
+    Home = &#34;home&#34;
+    End = &#34;end&#34;
+    Insert = &#34;insert&#34;
+    Delete = &#34;delete&#34;
+    PageUp = &#34;pageup&#34;
+    PageDown = &#34;pagedown&#34;
+
+    ControlLeft = &#34;ctrl+left&#34;
+    ControlRight = &#34;ctrl+right&#34;
+    ControlUp = &#34;ctrl+up&#34;
+    ControlDown = &#34;ctrl+down&#34;
+    ControlHome = &#34;ctrl+home&#34;
+    ControlEnd = &#34;ctrl+end&#34;
+    ControlInsert = &#34;ctrl+insert&#34;
+    ControlDelete = &#34;ctrl+delete&#34;
+    ControlPageUp = &#34;ctrl+pageup&#34;
+    ControlPageDown = &#34;ctrl+pagedown&#34;
+
+    ShiftLeft = &#34;shift+left&#34;
+    ShiftRight = &#34;shift+right&#34;
+    ShiftUp = &#34;shift+up&#34;
+    ShiftDown = &#34;shift+down&#34;
+    ShiftHome = &#34;shift+home&#34;
+    ShiftEnd = &#34;shift+end&#34;
+    ShiftInsert = &#34;shift+insert&#34;
+    ShiftDelete = &#34;shift+delete&#34;
+    ShiftPageUp = &#34;shift+pageup&#34;
+    ShiftPageDown = &#34;shift+pagedown&#34;
+
+    ControlShiftLeft = &#34;ctrl+shift+left&#34;
+    ControlShiftRight = &#34;ctrl+shift+right&#34;
+    ControlShiftUp = &#34;ctrl+shift+up&#34;
+    ControlShiftDown = &#34;ctrl+shift+down&#34;
+    ControlShiftHome = &#34;ctrl+shift+home&#34;
+    ControlShiftEnd = &#34;ctrl+shift+end&#34;
+    ControlShiftInsert = &#34;ctrl+shift+insert&#34;
+    ControlShiftDelete = &#34;ctrl+shift+delete&#34;
+    ControlShiftPageUp = &#34;ctrl+shift+pageup&#34;
+    ControlShiftPageDown = &#34;ctrl+shift+pagedown&#34;
+
+    BackTab = &#34;shift+tab&#34;  # shift + tab
+
+    F1 = &#34;f1&#34;
+    F2 = &#34;f2&#34;
+    F3 = &#34;f3&#34;
+    F4 = &#34;f4&#34;
+    F5 = &#34;f5&#34;
+    F6 = &#34;f6&#34;
+    F7 = &#34;f7&#34;
+    F8 = &#34;f8&#34;
+    F9 = &#34;f9&#34;
+    F10 = &#34;f10&#34;
+    F11 = &#34;f11&#34;
+    F12 = &#34;f12&#34;
+    F13 = &#34;f13&#34;
+    F14 = &#34;f14&#34;
+    F15 = &#34;f15&#34;
+    F16 = &#34;f16&#34;
+    F17 = &#34;f17&#34;
+    F18 = &#34;f18&#34;
+    F19 = &#34;f19&#34;
+    F20 = &#34;f20&#34;
+    F21 = &#34;f21&#34;
+    F22 = &#34;f22&#34;
+    F23 = &#34;f23&#34;
+    F24 = &#34;f24&#34;
+
+    ControlF1 = &#34;ctrl+f1&#34;
+    ControlF2 = &#34;ctrl+f2&#34;
+    ControlF3 = &#34;ctrl+f3&#34;
+    ControlF4 = &#34;ctrl+f4&#34;
+    ControlF5 = &#34;ctrl+f5&#34;
+    ControlF6 = &#34;ctrl+f6&#34;
+    ControlF7 = &#34;ctrl+f7&#34;
+    ControlF8 = &#34;ctrl+f8&#34;
+    ControlF9 = &#34;ctrl+f9&#34;
+    ControlF10 = &#34;ctrl+f10&#34;
+    ControlF11 = &#34;ctrl+f11&#34;
+    ControlF12 = &#34;ctrl+f12&#34;
+    ControlF13 = &#34;ctrl+f13&#34;
+    ControlF14 = &#34;ctrl+f14&#34;
+    ControlF15 = &#34;ctrl+f15&#34;
+    ControlF16 = &#34;ctrl+f16&#34;
+    ControlF17 = &#34;ctrl+f17&#34;
+    ControlF18 = &#34;ctrl+f18&#34;
+    ControlF19 = &#34;ctrl+f19&#34;
+    ControlF20 = &#34;ctrl+f20&#34;
+    ControlF21 = &#34;ctrl+f21&#34;
+    ControlF22 = &#34;ctrl+f22&#34;
+    ControlF23 = &#34;ctrl+f23&#34;
+    ControlF24 = &#34;ctrl+f24&#34;
+
+    # Matches any key.
+    Any = &#34;&lt;any&gt;&#34;
+
+    # Special.
+    ScrollUp = &#34;&lt;scroll-up&gt;&#34;
+    ScrollDown = &#34;&lt;scroll-down&gt;&#34;
+
+    CPRResponse = &#34;&lt;cursor-position-response&gt;&#34;
+    Vt100MouseEvent = &#34;&lt;vt100-mouse-event&gt;&#34;
+    WindowsMouseEvent = &#34;&lt;windowshift+mouse-event&gt;&#34;
+    BracketedPaste = &#34;&lt;bracketed-paste&gt;&#34;
+
+    # For internal use: key which is ignored.
+    # (The key binding for this key should not do anything.)
+    Ignore = &#34;&lt;ignore&gt;&#34;
+
+    # Some &#39;Key&#39; aliases (for backwardshift+compatibility).
+    ControlSpace = &#34;ctrl-at&#34;
+    Tab = &#34;tab&#34;
+    Enter = &#34;enter&#34;
+    Backspace = &#34;backspace&#34;
+
+    # ShiftControl was renamed to ControlShift in
+    # 888fcb6fa4efea0de8333177e1bbc792f3ff3c24 (20 Feb 2020).
+    ShiftControlLeft = ControlShiftLeft
+    ShiftControlRight = ControlShiftRight
+    ShiftControlHome = ControlShiftHome
+    ShiftControlEnd = ControlShiftEnd</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.str</li>
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.keys.Keys.Any"><code class="name">var <span class="ident">Any</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.BackTab"><code class="name">var <span class="ident">BackTab</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Backspace"><code class="name">var <span class="ident">Backspace</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.BracketedPaste"><code class="name">var <span class="ident">BracketedPaste</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.CPRResponse"><code class="name">var <span class="ident">CPRResponse</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Control0"><code class="name">var <span class="ident">Control0</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Control1"><code class="name">var <span class="ident">Control1</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Control2"><code class="name">var <span class="ident">Control2</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Control3"><code class="name">var <span class="ident">Control3</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Control4"><code class="name">var <span class="ident">Control4</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Control5"><code class="name">var <span class="ident">Control5</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Control6"><code class="name">var <span class="ident">Control6</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Control7"><code class="name">var <span class="ident">Control7</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Control8"><code class="name">var <span class="ident">Control8</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Control9"><code class="name">var <span class="ident">Control9</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlA"><code class="name">var <span class="ident">ControlA</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlAt"><code class="name">var <span class="ident">ControlAt</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlB"><code class="name">var <span class="ident">ControlB</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlBackslash"><code class="name">var <span class="ident">ControlBackslash</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlC"><code class="name">var <span class="ident">ControlC</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlCircumflex"><code class="name">var <span class="ident">ControlCircumflex</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlD"><code class="name">var <span class="ident">ControlD</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlDelete"><code class="name">var <span class="ident">ControlDelete</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlDown"><code class="name">var <span class="ident">ControlDown</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlE"><code class="name">var <span class="ident">ControlE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlEnd"><code class="name">var <span class="ident">ControlEnd</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF"><code class="name">var <span class="ident">ControlF</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF1"><code class="name">var <span class="ident">ControlF1</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF10"><code class="name">var <span class="ident">ControlF10</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF11"><code class="name">var <span class="ident">ControlF11</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF12"><code class="name">var <span class="ident">ControlF12</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF13"><code class="name">var <span class="ident">ControlF13</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF14"><code class="name">var <span class="ident">ControlF14</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF15"><code class="name">var <span class="ident">ControlF15</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF16"><code class="name">var <span class="ident">ControlF16</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF17"><code class="name">var <span class="ident">ControlF17</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF18"><code class="name">var <span class="ident">ControlF18</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF19"><code class="name">var <span class="ident">ControlF19</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF2"><code class="name">var <span class="ident">ControlF2</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF20"><code class="name">var <span class="ident">ControlF20</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF21"><code class="name">var <span class="ident">ControlF21</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF22"><code class="name">var <span class="ident">ControlF22</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF23"><code class="name">var <span class="ident">ControlF23</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF24"><code class="name">var <span class="ident">ControlF24</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF3"><code class="name">var <span class="ident">ControlF3</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF4"><code class="name">var <span class="ident">ControlF4</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF5"><code class="name">var <span class="ident">ControlF5</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF6"><code class="name">var <span class="ident">ControlF6</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF7"><code class="name">var <span class="ident">ControlF7</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF8"><code class="name">var <span class="ident">ControlF8</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlF9"><code class="name">var <span class="ident">ControlF9</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlG"><code class="name">var <span class="ident">ControlG</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlH"><code class="name">var <span class="ident">ControlH</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlHome"><code class="name">var <span class="ident">ControlHome</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlI"><code class="name">var <span class="ident">ControlI</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlInsert"><code class="name">var <span class="ident">ControlInsert</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlJ"><code class="name">var <span class="ident">ControlJ</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlK"><code class="name">var <span class="ident">ControlK</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlL"><code class="name">var <span class="ident">ControlL</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlLeft"><code class="name">var <span class="ident">ControlLeft</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlM"><code class="name">var <span class="ident">ControlM</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlN"><code class="name">var <span class="ident">ControlN</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlO"><code class="name">var <span class="ident">ControlO</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlP"><code class="name">var <span class="ident">ControlP</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlPageDown"><code class="name">var <span class="ident">ControlPageDown</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlPageUp"><code class="name">var <span class="ident">ControlPageUp</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlQ"><code class="name">var <span class="ident">ControlQ</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlR"><code class="name">var <span class="ident">ControlR</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlRight"><code class="name">var <span class="ident">ControlRight</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlS"><code class="name">var <span class="ident">ControlS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShift0"><code class="name">var <span class="ident">ControlShift0</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShift1"><code class="name">var <span class="ident">ControlShift1</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShift2"><code class="name">var <span class="ident">ControlShift2</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShift3"><code class="name">var <span class="ident">ControlShift3</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShift4"><code class="name">var <span class="ident">ControlShift4</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShift5"><code class="name">var <span class="ident">ControlShift5</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShift6"><code class="name">var <span class="ident">ControlShift6</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShift7"><code class="name">var <span class="ident">ControlShift7</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShift8"><code class="name">var <span class="ident">ControlShift8</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShift9"><code class="name">var <span class="ident">ControlShift9</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShiftDelete"><code class="name">var <span class="ident">ControlShiftDelete</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShiftDown"><code class="name">var <span class="ident">ControlShiftDown</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShiftEnd"><code class="name">var <span class="ident">ControlShiftEnd</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShiftHome"><code class="name">var <span class="ident">ControlShiftHome</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShiftInsert"><code class="name">var <span class="ident">ControlShiftInsert</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShiftLeft"><code class="name">var <span class="ident">ControlShiftLeft</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShiftPageDown"><code class="name">var <span class="ident">ControlShiftPageDown</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShiftPageUp"><code class="name">var <span class="ident">ControlShiftPageUp</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShiftRight"><code class="name">var <span class="ident">ControlShiftRight</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlShiftUp"><code class="name">var <span class="ident">ControlShiftUp</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlSpace"><code class="name">var <span class="ident">ControlSpace</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlSquareClose"><code class="name">var <span class="ident">ControlSquareClose</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlT"><code class="name">var <span class="ident">ControlT</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlU"><code class="name">var <span class="ident">ControlU</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlUnderscore"><code class="name">var <span class="ident">ControlUnderscore</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlUp"><code class="name">var <span class="ident">ControlUp</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlV"><code class="name">var <span class="ident">ControlV</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlW"><code class="name">var <span class="ident">ControlW</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlX"><code class="name">var <span class="ident">ControlX</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlY"><code class="name">var <span class="ident">ControlY</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ControlZ"><code class="name">var <span class="ident">ControlZ</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Delete"><code class="name">var <span class="ident">Delete</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Down"><code class="name">var <span class="ident">Down</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.End"><code class="name">var <span class="ident">End</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Enter"><code class="name">var <span class="ident">Enter</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Escape"><code class="name">var <span class="ident">Escape</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F1"><code class="name">var <span class="ident">F1</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F10"><code class="name">var <span class="ident">F10</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F11"><code class="name">var <span class="ident">F11</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F12"><code class="name">var <span class="ident">F12</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F13"><code class="name">var <span class="ident">F13</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F14"><code class="name">var <span class="ident">F14</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F15"><code class="name">var <span class="ident">F15</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F16"><code class="name">var <span class="ident">F16</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F17"><code class="name">var <span class="ident">F17</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F18"><code class="name">var <span class="ident">F18</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F19"><code class="name">var <span class="ident">F19</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F2"><code class="name">var <span class="ident">F2</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F20"><code class="name">var <span class="ident">F20</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F21"><code class="name">var <span class="ident">F21</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F22"><code class="name">var <span class="ident">F22</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F23"><code class="name">var <span class="ident">F23</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F24"><code class="name">var <span class="ident">F24</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F3"><code class="name">var <span class="ident">F3</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F4"><code class="name">var <span class="ident">F4</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F5"><code class="name">var <span class="ident">F5</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F6"><code class="name">var <span class="ident">F6</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F7"><code class="name">var <span class="ident">F7</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F8"><code class="name">var <span class="ident">F8</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.F9"><code class="name">var <span class="ident">F9</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Home"><code class="name">var <span class="ident">Home</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Ignore"><code class="name">var <span class="ident">Ignore</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Insert"><code class="name">var <span class="ident">Insert</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Left"><code class="name">var <span class="ident">Left</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.PageDown"><code class="name">var <span class="ident">PageDown</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.PageUp"><code class="name">var <span class="ident">PageUp</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Return"><code class="name">var <span class="ident">Return</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Right"><code class="name">var <span class="ident">Right</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ScrollDown"><code class="name">var <span class="ident">ScrollDown</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ScrollUp"><code class="name">var <span class="ident">ScrollUp</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftControlEnd"><code class="name">var <span class="ident">ShiftControlEnd</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftControlHome"><code class="name">var <span class="ident">ShiftControlHome</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftControlLeft"><code class="name">var <span class="ident">ShiftControlLeft</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftControlRight"><code class="name">var <span class="ident">ShiftControlRight</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftDelete"><code class="name">var <span class="ident">ShiftDelete</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftDown"><code class="name">var <span class="ident">ShiftDown</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftEnd"><code class="name">var <span class="ident">ShiftEnd</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftEscape"><code class="name">var <span class="ident">ShiftEscape</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftHome"><code class="name">var <span class="ident">ShiftHome</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftInsert"><code class="name">var <span class="ident">ShiftInsert</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftLeft"><code class="name">var <span class="ident">ShiftLeft</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftPageDown"><code class="name">var <span class="ident">ShiftPageDown</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftPageUp"><code class="name">var <span class="ident">ShiftPageUp</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftRight"><code class="name">var <span class="ident">ShiftRight</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.ShiftUp"><code class="name">var <span class="ident">ShiftUp</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Tab"><code class="name">var <span class="ident">Tab</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Up"><code class="name">var <span class="ident">Up</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.Vt100MouseEvent"><code class="name">var <span class="ident">Vt100MouseEvent</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.keys.Keys.WindowsMouseEvent"><code class="name">var <span class="ident">WindowsMouseEvent</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.keys.Keys.value"><code class="name">var <span class="ident">value</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The value of the Enum member.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@DynamicClassAttribute
+def value(self):
+    &#34;&#34;&#34;The value of the Enum member.&#34;&#34;&#34;
+    return self._value_</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<form>
+<input id="lunr-search" name="q" placeholder="🔎 Search ..." aria-label="Search"
+disabled minlength="2">
+</form>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin></script>
+<style>
+.modal-dialog iframe {
+width: 100vw;
+height: calc(100vh - 80px);
+}
+@media screen and (min-width: 700px) {
+.modal-dialog iframe {
+width: 70vw;
+height: 80vh;
+}
+}
+.modal-dialog .tingle-modal-box {width: auto;}
+.modal-dialog .tingle-modal-box__content {padding: 0;}
+</style>
+<script>
+const input = document.getElementById('lunr-search');
+input.disabled = false;
+input.form.addEventListener('submit', (ev) => {
+ev.preventDefault();
+const url = new URL(window.location);
+url.searchParams.set('q', input.value);
+history.replaceState({}, null, url.toString());
+search(input.value);
+});
+const query = new URL(window.location).searchParams.get('q');
+if (query)
+search(query);
+function search(query) {
+const url = '../doc-search.html#' + encodeURIComponent(query);
+new tingle.modal({
+cssClass: ['modal-dialog'],
+onClose: () => {
+const url = new URL(window.location);
+url.searchParams.delete('q');
+history.replaceState({}, null, url.toString());
+setTimeout(() => input.focus(), 100);
+}
+}).setContent('<iframe src="' + url + '"></iframe>').open();
+}
+</script>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="textual" href="index.html">textual</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="textual.keys.Binding" href="#textual.keys.Binding">Binding</a></code></h4>
+<ul class="">
+<li><code><a title="textual.keys.Binding.action" href="#textual.keys.Binding.action">action</a></code></li>
+<li><code><a title="textual.keys.Binding.description" href="#textual.keys.Binding.description">description</a></code></li>
+<li><code><a title="textual.keys.Binding.show" href="#textual.keys.Binding.show">show</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.keys.Keys" href="#textual.keys.Keys">Keys</a></code></h4>
+<ul class="">
+<li><code><a title="textual.keys.Keys.Any" href="#textual.keys.Keys.Any">Any</a></code></li>
+<li><code><a title="textual.keys.Keys.BackTab" href="#textual.keys.Keys.BackTab">BackTab</a></code></li>
+<li><code><a title="textual.keys.Keys.Backspace" href="#textual.keys.Keys.Backspace">Backspace</a></code></li>
+<li><code><a title="textual.keys.Keys.BracketedPaste" href="#textual.keys.Keys.BracketedPaste">BracketedPaste</a></code></li>
+<li><code><a title="textual.keys.Keys.CPRResponse" href="#textual.keys.Keys.CPRResponse">CPRResponse</a></code></li>
+<li><code><a title="textual.keys.Keys.Control0" href="#textual.keys.Keys.Control0">Control0</a></code></li>
+<li><code><a title="textual.keys.Keys.Control1" href="#textual.keys.Keys.Control1">Control1</a></code></li>
+<li><code><a title="textual.keys.Keys.Control2" href="#textual.keys.Keys.Control2">Control2</a></code></li>
+<li><code><a title="textual.keys.Keys.Control3" href="#textual.keys.Keys.Control3">Control3</a></code></li>
+<li><code><a title="textual.keys.Keys.Control4" href="#textual.keys.Keys.Control4">Control4</a></code></li>
+<li><code><a title="textual.keys.Keys.Control5" href="#textual.keys.Keys.Control5">Control5</a></code></li>
+<li><code><a title="textual.keys.Keys.Control6" href="#textual.keys.Keys.Control6">Control6</a></code></li>
+<li><code><a title="textual.keys.Keys.Control7" href="#textual.keys.Keys.Control7">Control7</a></code></li>
+<li><code><a title="textual.keys.Keys.Control8" href="#textual.keys.Keys.Control8">Control8</a></code></li>
+<li><code><a title="textual.keys.Keys.Control9" href="#textual.keys.Keys.Control9">Control9</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlA" href="#textual.keys.Keys.ControlA">ControlA</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlAt" href="#textual.keys.Keys.ControlAt">ControlAt</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlB" href="#textual.keys.Keys.ControlB">ControlB</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlBackslash" href="#textual.keys.Keys.ControlBackslash">ControlBackslash</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlC" href="#textual.keys.Keys.ControlC">ControlC</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlCircumflex" href="#textual.keys.Keys.ControlCircumflex">ControlCircumflex</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlD" href="#textual.keys.Keys.ControlD">ControlD</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlDelete" href="#textual.keys.Keys.ControlDelete">ControlDelete</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlDown" href="#textual.keys.Keys.ControlDown">ControlDown</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlE" href="#textual.keys.Keys.ControlE">ControlE</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlEnd" href="#textual.keys.Keys.ControlEnd">ControlEnd</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF" href="#textual.keys.Keys.ControlF">ControlF</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF1" href="#textual.keys.Keys.ControlF1">ControlF1</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF10" href="#textual.keys.Keys.ControlF10">ControlF10</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF11" href="#textual.keys.Keys.ControlF11">ControlF11</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF12" href="#textual.keys.Keys.ControlF12">ControlF12</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF13" href="#textual.keys.Keys.ControlF13">ControlF13</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF14" href="#textual.keys.Keys.ControlF14">ControlF14</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF15" href="#textual.keys.Keys.ControlF15">ControlF15</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF16" href="#textual.keys.Keys.ControlF16">ControlF16</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF17" href="#textual.keys.Keys.ControlF17">ControlF17</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF18" href="#textual.keys.Keys.ControlF18">ControlF18</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF19" href="#textual.keys.Keys.ControlF19">ControlF19</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF2" href="#textual.keys.Keys.ControlF2">ControlF2</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF20" href="#textual.keys.Keys.ControlF20">ControlF20</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF21" href="#textual.keys.Keys.ControlF21">ControlF21</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF22" href="#textual.keys.Keys.ControlF22">ControlF22</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF23" href="#textual.keys.Keys.ControlF23">ControlF23</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF24" href="#textual.keys.Keys.ControlF24">ControlF24</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF3" href="#textual.keys.Keys.ControlF3">ControlF3</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF4" href="#textual.keys.Keys.ControlF4">ControlF4</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF5" href="#textual.keys.Keys.ControlF5">ControlF5</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF6" href="#textual.keys.Keys.ControlF6">ControlF6</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF7" href="#textual.keys.Keys.ControlF7">ControlF7</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF8" href="#textual.keys.Keys.ControlF8">ControlF8</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlF9" href="#textual.keys.Keys.ControlF9">ControlF9</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlG" href="#textual.keys.Keys.ControlG">ControlG</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlH" href="#textual.keys.Keys.ControlH">ControlH</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlHome" href="#textual.keys.Keys.ControlHome">ControlHome</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlI" href="#textual.keys.Keys.ControlI">ControlI</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlInsert" href="#textual.keys.Keys.ControlInsert">ControlInsert</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlJ" href="#textual.keys.Keys.ControlJ">ControlJ</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlK" href="#textual.keys.Keys.ControlK">ControlK</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlL" href="#textual.keys.Keys.ControlL">ControlL</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlLeft" href="#textual.keys.Keys.ControlLeft">ControlLeft</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlM" href="#textual.keys.Keys.ControlM">ControlM</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlN" href="#textual.keys.Keys.ControlN">ControlN</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlO" href="#textual.keys.Keys.ControlO">ControlO</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlP" href="#textual.keys.Keys.ControlP">ControlP</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlPageDown" href="#textual.keys.Keys.ControlPageDown">ControlPageDown</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlPageUp" href="#textual.keys.Keys.ControlPageUp">ControlPageUp</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlQ" href="#textual.keys.Keys.ControlQ">ControlQ</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlR" href="#textual.keys.Keys.ControlR">ControlR</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlRight" href="#textual.keys.Keys.ControlRight">ControlRight</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlS" href="#textual.keys.Keys.ControlS">ControlS</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShift0" href="#textual.keys.Keys.ControlShift0">ControlShift0</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShift1" href="#textual.keys.Keys.ControlShift1">ControlShift1</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShift2" href="#textual.keys.Keys.ControlShift2">ControlShift2</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShift3" href="#textual.keys.Keys.ControlShift3">ControlShift3</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShift4" href="#textual.keys.Keys.ControlShift4">ControlShift4</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShift5" href="#textual.keys.Keys.ControlShift5">ControlShift5</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShift6" href="#textual.keys.Keys.ControlShift6">ControlShift6</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShift7" href="#textual.keys.Keys.ControlShift7">ControlShift7</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShift8" href="#textual.keys.Keys.ControlShift8">ControlShift8</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShift9" href="#textual.keys.Keys.ControlShift9">ControlShift9</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShiftDelete" href="#textual.keys.Keys.ControlShiftDelete">ControlShiftDelete</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShiftDown" href="#textual.keys.Keys.ControlShiftDown">ControlShiftDown</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShiftEnd" href="#textual.keys.Keys.ControlShiftEnd">ControlShiftEnd</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShiftHome" href="#textual.keys.Keys.ControlShiftHome">ControlShiftHome</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShiftInsert" href="#textual.keys.Keys.ControlShiftInsert">ControlShiftInsert</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShiftLeft" href="#textual.keys.Keys.ControlShiftLeft">ControlShiftLeft</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShiftPageDown" href="#textual.keys.Keys.ControlShiftPageDown">ControlShiftPageDown</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShiftPageUp" href="#textual.keys.Keys.ControlShiftPageUp">ControlShiftPageUp</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShiftRight" href="#textual.keys.Keys.ControlShiftRight">ControlShiftRight</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlShiftUp" href="#textual.keys.Keys.ControlShiftUp">ControlShiftUp</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlSpace" href="#textual.keys.Keys.ControlSpace">ControlSpace</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlSquareClose" href="#textual.keys.Keys.ControlSquareClose">ControlSquareClose</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlT" href="#textual.keys.Keys.ControlT">ControlT</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlU" href="#textual.keys.Keys.ControlU">ControlU</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlUnderscore" href="#textual.keys.Keys.ControlUnderscore">ControlUnderscore</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlUp" href="#textual.keys.Keys.ControlUp">ControlUp</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlV" href="#textual.keys.Keys.ControlV">ControlV</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlW" href="#textual.keys.Keys.ControlW">ControlW</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlX" href="#textual.keys.Keys.ControlX">ControlX</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlY" href="#textual.keys.Keys.ControlY">ControlY</a></code></li>
+<li><code><a title="textual.keys.Keys.ControlZ" href="#textual.keys.Keys.ControlZ">ControlZ</a></code></li>
+<li><code><a title="textual.keys.Keys.Delete" href="#textual.keys.Keys.Delete">Delete</a></code></li>
+<li><code><a title="textual.keys.Keys.Down" href="#textual.keys.Keys.Down">Down</a></code></li>
+<li><code><a title="textual.keys.Keys.End" href="#textual.keys.Keys.End">End</a></code></li>
+<li><code><a title="textual.keys.Keys.Enter" href="#textual.keys.Keys.Enter">Enter</a></code></li>
+<li><code><a title="textual.keys.Keys.Escape" href="#textual.keys.Keys.Escape">Escape</a></code></li>
+<li><code><a title="textual.keys.Keys.F1" href="#textual.keys.Keys.F1">F1</a></code></li>
+<li><code><a title="textual.keys.Keys.F10" href="#textual.keys.Keys.F10">F10</a></code></li>
+<li><code><a title="textual.keys.Keys.F11" href="#textual.keys.Keys.F11">F11</a></code></li>
+<li><code><a title="textual.keys.Keys.F12" href="#textual.keys.Keys.F12">F12</a></code></li>
+<li><code><a title="textual.keys.Keys.F13" href="#textual.keys.Keys.F13">F13</a></code></li>
+<li><code><a title="textual.keys.Keys.F14" href="#textual.keys.Keys.F14">F14</a></code></li>
+<li><code><a title="textual.keys.Keys.F15" href="#textual.keys.Keys.F15">F15</a></code></li>
+<li><code><a title="textual.keys.Keys.F16" href="#textual.keys.Keys.F16">F16</a></code></li>
+<li><code><a title="textual.keys.Keys.F17" href="#textual.keys.Keys.F17">F17</a></code></li>
+<li><code><a title="textual.keys.Keys.F18" href="#textual.keys.Keys.F18">F18</a></code></li>
+<li><code><a title="textual.keys.Keys.F19" href="#textual.keys.Keys.F19">F19</a></code></li>
+<li><code><a title="textual.keys.Keys.F2" href="#textual.keys.Keys.F2">F2</a></code></li>
+<li><code><a title="textual.keys.Keys.F20" href="#textual.keys.Keys.F20">F20</a></code></li>
+<li><code><a title="textual.keys.Keys.F21" href="#textual.keys.Keys.F21">F21</a></code></li>
+<li><code><a title="textual.keys.Keys.F22" href="#textual.keys.Keys.F22">F22</a></code></li>
+<li><code><a title="textual.keys.Keys.F23" href="#textual.keys.Keys.F23">F23</a></code></li>
+<li><code><a title="textual.keys.Keys.F24" href="#textual.keys.Keys.F24">F24</a></code></li>
+<li><code><a title="textual.keys.Keys.F3" href="#textual.keys.Keys.F3">F3</a></code></li>
+<li><code><a title="textual.keys.Keys.F4" href="#textual.keys.Keys.F4">F4</a></code></li>
+<li><code><a title="textual.keys.Keys.F5" href="#textual.keys.Keys.F5">F5</a></code></li>
+<li><code><a title="textual.keys.Keys.F6" href="#textual.keys.Keys.F6">F6</a></code></li>
+<li><code><a title="textual.keys.Keys.F7" href="#textual.keys.Keys.F7">F7</a></code></li>
+<li><code><a title="textual.keys.Keys.F8" href="#textual.keys.Keys.F8">F8</a></code></li>
+<li><code><a title="textual.keys.Keys.F9" href="#textual.keys.Keys.F9">F9</a></code></li>
+<li><code><a title="textual.keys.Keys.Home" href="#textual.keys.Keys.Home">Home</a></code></li>
+<li><code><a title="textual.keys.Keys.Ignore" href="#textual.keys.Keys.Ignore">Ignore</a></code></li>
+<li><code><a title="textual.keys.Keys.Insert" href="#textual.keys.Keys.Insert">Insert</a></code></li>
+<li><code><a title="textual.keys.Keys.Left" href="#textual.keys.Keys.Left">Left</a></code></li>
+<li><code><a title="textual.keys.Keys.PageDown" href="#textual.keys.Keys.PageDown">PageDown</a></code></li>
+<li><code><a title="textual.keys.Keys.PageUp" href="#textual.keys.Keys.PageUp">PageUp</a></code></li>
+<li><code><a title="textual.keys.Keys.Return" href="#textual.keys.Keys.Return">Return</a></code></li>
+<li><code><a title="textual.keys.Keys.Right" href="#textual.keys.Keys.Right">Right</a></code></li>
+<li><code><a title="textual.keys.Keys.ScrollDown" href="#textual.keys.Keys.ScrollDown">ScrollDown</a></code></li>
+<li><code><a title="textual.keys.Keys.ScrollUp" href="#textual.keys.Keys.ScrollUp">ScrollUp</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftControlEnd" href="#textual.keys.Keys.ShiftControlEnd">ShiftControlEnd</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftControlHome" href="#textual.keys.Keys.ShiftControlHome">ShiftControlHome</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftControlLeft" href="#textual.keys.Keys.ShiftControlLeft">ShiftControlLeft</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftControlRight" href="#textual.keys.Keys.ShiftControlRight">ShiftControlRight</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftDelete" href="#textual.keys.Keys.ShiftDelete">ShiftDelete</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftDown" href="#textual.keys.Keys.ShiftDown">ShiftDown</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftEnd" href="#textual.keys.Keys.ShiftEnd">ShiftEnd</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftEscape" href="#textual.keys.Keys.ShiftEscape">ShiftEscape</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftHome" href="#textual.keys.Keys.ShiftHome">ShiftHome</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftInsert" href="#textual.keys.Keys.ShiftInsert">ShiftInsert</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftLeft" href="#textual.keys.Keys.ShiftLeft">ShiftLeft</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftPageDown" href="#textual.keys.Keys.ShiftPageDown">ShiftPageDown</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftPageUp" href="#textual.keys.Keys.ShiftPageUp">ShiftPageUp</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftRight" href="#textual.keys.Keys.ShiftRight">ShiftRight</a></code></li>
+<li><code><a title="textual.keys.Keys.ShiftUp" href="#textual.keys.Keys.ShiftUp">ShiftUp</a></code></li>
+<li><code><a title="textual.keys.Keys.Tab" href="#textual.keys.Keys.Tab">Tab</a></code></li>
+<li><code><a title="textual.keys.Keys.Up" href="#textual.keys.Keys.Up">Up</a></code></li>
+<li><code><a title="textual.keys.Keys.Vt100MouseEvent" href="#textual.keys.Keys.Vt100MouseEvent">Vt100MouseEvent</a></code></li>
+<li><code><a title="textual.keys.Keys.WindowsMouseEvent" href="#textual.keys.Keys.WindowsMouseEvent">WindowsMouseEvent</a></code></li>
+<li><code><a title="textual.keys.Keys.value" href="#textual.keys.Keys.value">value</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

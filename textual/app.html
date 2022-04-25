@@ -1,0 +1,2083 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>textual.app API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}#lunr-search{width:100%;font-size:1em;padding:6px 9px 5px 9px;border:1px solid silver}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>textual.app</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+import os
+
+import asyncio
+import platform
+from typing import Any, Callable, ClassVar, Type, TypeVar
+import warnings
+
+from rich.control import Control
+import rich.repr
+from rich.screen import Screen
+from rich.console import Console, RenderableType
+from rich.measure import Measurement
+from rich.traceback import Traceback
+
+from . import events
+from . import actions
+from ._animator import Animator
+from .binding import Bindings, NoBinding
+from .geometry import Offset, Region
+from . import log
+from ._callback import invoke
+from ._context import active_app
+from ._event_broker import extract_handler_actions, NoHandler
+from .driver import Driver
+from .layouts.dock import DockLayout, Dock
+from .message_pump import MessagePump
+from ._profile import timer
+from .view import View
+from .views import DockView
+from .widget import Widget, Reactive
+
+PLATFORM = platform.system()
+WINDOWS = PLATFORM == &#34;Windows&#34;
+
+# asyncio will warn against resources not being cleared
+warnings.simplefilter(&#34;always&#34;, ResourceWarning)
+
+
+LayoutDefinition = &#34;dict[str, Any]&#34;
+
+ViewType = TypeVar(&#34;ViewType&#34;, bound=View)
+
+try:
+    import uvloop
+except ImportError:
+    pass
+else:
+    uvloop.install()
+
+
+class ActionError(Exception):
+    pass
+
+
+@rich.repr.auto
+class App(MessagePump):
+    &#34;&#34;&#34;The base class for Textual Applications&#34;&#34;&#34;
+
+    KEYS: ClassVar[dict[str, str]] = {}
+
+    def __init__(
+        self,
+        screen: bool = True,
+        driver_class: Type[Driver] | None = None,
+        log: str = &#34;&#34;,
+        log_verbosity: int = 1,
+        title: str = &#34;Textual Application&#34;,
+    ):
+        &#34;&#34;&#34;The Textual Application base class
+
+        Args:
+            console (Console, optional): A Rich Console. Defaults to None.
+            screen (bool, optional): Enable full-screen application mode. Defaults to True.
+            driver_class (Type[Driver], optional): Driver class, or None to use default. Defaults to None.
+            title (str, optional): Title of the application. Defaults to &#34;Textual Application&#34;.
+        &#34;&#34;&#34;
+        self.console = Console()
+        self.error_console = Console(stderr=True)
+        self._screen = screen
+        self.driver_class = driver_class or self.get_driver_class()
+        self._title = title
+        self._layout = DockLayout()
+        self._view_stack: list[DockView] = []
+        self.children: set[MessagePump] = set()
+
+        self.focused: Widget | None = None
+        self.mouse_over: Widget | None = None
+        self.mouse_captured: Widget | None = None
+        self._driver: Driver | None = None
+        self._exit_renderables: list[RenderableType] = []
+
+        self._docks: list[Dock] = []
+        self._action_targets = {&#34;app&#34;, &#34;view&#34;}
+        self._animator = Animator(self)
+        self.animate = self._animator.bind(self)
+        self.mouse_position = Offset(0, 0)
+        self.bindings = Bindings()
+        self._title = title
+
+        self.log_file = open(log, &#34;wt&#34;) if log else None
+        self.log_verbosity = log_verbosity
+
+        self.bindings.bind(&#34;ctrl+c&#34;, &#34;quit&#34;, show=False, allow_forward=False)
+        self._refresh_required = False
+
+        super().__init__()
+
+    title: Reactive[str] = Reactive(&#34;Textual&#34;)
+    sub_title: Reactive[str] = Reactive(&#34;&#34;)
+    background: Reactive[str] = Reactive(&#34;black&#34;)
+
+    def get_driver_class(self) -&gt; Type[Driver]:
+        &#34;&#34;&#34;Get a driver class for this platform.
+
+        Called by the constructor.
+
+        Returns:
+            Driver: A Driver class which manages input and display.
+        &#34;&#34;&#34;
+        if WINDOWS:
+            from .drivers.windows_driver import WindowsDriver
+
+            driver_class = WindowsDriver
+        else:
+            from .drivers.linux_driver import LinuxDriver
+
+            driver_class = LinuxDriver
+        return driver_class
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        yield &#34;title&#34;, self.title
+
+    def __rich__(self) -&gt; RenderableType:
+        return self.view
+
+    @property
+    def animator(self) -&gt; Animator:
+        return self._animator
+
+    @property
+    def view(self) -&gt; DockView:
+        return self._view_stack[-1]
+
+    def log(self, *args: Any, verbosity: int = 1, **kwargs) -&gt; None:
+        &#34;&#34;&#34;Write to logs.
+
+        Args:
+            *args (Any): Positional arguments are converted to string and written to logs.
+            verbosity (int, optional): Verbosity level 0-3. Defaults to 1.
+        &#34;&#34;&#34;
+        try:
+            if self.log_file and verbosity &lt;= self.log_verbosity:
+                output = f&#34; &#34;.join(str(arg) for arg in args)
+                if kwargs:
+                    key_values = &#34; &#34;.join(
+                        f&#34;{key}={value}&#34; for key, value in kwargs.items()
+                    )
+                    output = &#34; &#34;.join((output, key_values))
+                self.log_file.write(output + &#34;\n&#34;)
+                self.log_file.flush()
+        except Exception:
+            pass
+
+    async def bind(
+        self,
+        keys: str,
+        action: str,
+        description: str = &#34;&#34;,
+        show: bool = True,
+        key_display: str | None = None,
+    ) -&gt; None:
+        &#34;&#34;&#34;Bind a key to an action.
+
+        Args:
+            keys (str): A comma separated list of keys, i.e.
+            action (str): Action to bind to.
+            description (str, optional): Short description of action. Defaults to &#34;&#34;.
+            show (bool, optional): Show key in UI. Defaults to True.
+            key_display (str, optional): Replacement text for key, or None to use default. Defaults to None.
+        &#34;&#34;&#34;
+        self.bindings.bind(
+            keys, action, description, show=show, key_display=key_display
+        )
+
+    @classmethod
+    def run(
+        cls,
+        console: Console = None,
+        screen: bool = True,
+        driver: Type[Driver] = None,
+        **kwargs,
+    ):
+        &#34;&#34;&#34;Run the app.
+
+        Args:
+            console (Console, optional): Console object. Defaults to None.
+            screen (bool, optional): Enable application mode. Defaults to True.
+            driver (Type[Driver], optional): Driver class or None for default. Defaults to None.
+        &#34;&#34;&#34;
+
+        async def run_app() -&gt; None:
+            app = cls(screen=screen, driver_class=driver, **kwargs)
+            await app.process_messages()
+
+        asyncio.run(run_app())
+
+    async def push_view(self, view: ViewType) -&gt; ViewType:
+        self.register(view, self)
+        self._view_stack.append(view)
+        return view
+
+    async def set_focus(self, widget: Widget | None) -&gt; None:
+        &#34;&#34;&#34;Focus (or unfocus) a widget. A focused widget will receive key events first.
+
+        Args:
+            widget (Widget): [description]
+        &#34;&#34;&#34;
+        log(&#34;set_focus&#34;, widget)
+        if widget == self.focused:
+            # Widget is already focused
+            return
+
+        if widget is None:
+            if self.focused is not None:
+                focused = self.focused
+                self.focused = None
+                await focused.post_message(events.Blur(self))
+        elif widget.can_focus:
+            if self.focused is not None:
+                await self.focused.post_message(events.Blur(self))
+            if widget is not None and self.focused != widget:
+                self.focused = widget
+                await widget.post_message(events.Focus(self))
+
+    async def set_mouse_over(self, widget: Widget | None) -&gt; None:
+        if widget is None:
+            if self.mouse_over is not None:
+                try:
+                    await self.mouse_over.post_message(events.Leave(self))
+                finally:
+                    self.mouse_over = None
+        else:
+            if self.mouse_over != widget:
+                try:
+                    if self.mouse_over is not None:
+                        await self.mouse_over.forward_event(events.Leave(self))
+                    if widget is not None:
+                        await widget.forward_event(events.Enter(self))
+                finally:
+                    self.mouse_over = widget
+
+    async def capture_mouse(self, widget: Widget | None) -&gt; None:
+        &#34;&#34;&#34;Send all mouse events to the given widget, disable mouse capture.
+
+        Args:
+            widget (Widget | None): If a widget, capture mouse event, or None to end mouse capture.
+        &#34;&#34;&#34;
+        if widget == self.mouse_captured:
+            return
+        if self.mouse_captured is not None:
+            await self.mouse_captured.post_message(
+                events.MouseRelease(self, self.mouse_position)
+            )
+        self.mouse_captured = widget
+        if widget is not None:
+            await widget.post_message(events.MouseCapture(self, self.mouse_position))
+
+    def panic(self, *renderables: RenderableType) -&gt; None:
+        &#34;&#34;&#34;Exits the app with a traceback.
+
+        Args:
+            traceback (Traceback, optional): Rich Traceback object or None to generate one
+                for the most recent exception. Defaults to None.
+        &#34;&#34;&#34;
+
+        if not renderables:
+            renderables = (
+                Traceback(show_locals=True, width=None, locals_max_length=5),
+            )
+        self._exit_renderables.extend(renderables)
+        self.close_messages_no_wait()
+
+    async def process_messages(self) -&gt; None:
+        active_app.set(self)
+
+        log(&#34;---&#34;)
+        log(f&#34;driver={self.driver_class}&#34;)
+
+        load_event = events.Load(sender=self)
+        await self.dispatch_message(load_event)
+        await self.post_message(events.Mount(self))
+        await self.push_view(DockView())
+
+        # Wait for the load event to be processed, so we don&#39;t go in to application mode beforehand
+        await load_event.wait()
+
+        driver = self._driver = self.driver_class(self.console, self)
+        try:
+            driver.start_application_mode()
+        except Exception:
+            self.console.print_exception()
+        else:
+            try:
+                self.console = Console()
+                self.title = self._title
+                self.refresh()
+                await self.animator.start()
+                await super().process_messages()
+                log(&#34;PROCESS END&#34;)
+                await self.animator.stop()
+                await self.close_all()
+
+            except Exception:
+                self.panic()
+            finally:
+                driver.stop_application_mode()
+                if self._exit_renderables:
+                    for renderable in self._exit_renderables:
+                        self.error_console.print(renderable)
+                if self.log_file is not None:
+                    self.log_file.close()
+
+    def register(self, child: MessagePump, parent: MessagePump) -&gt; bool:
+        if child not in self.children:
+            self.children.add(child)
+            child.set_parent(parent)
+            child.start_messages()
+            child.post_message_no_wait(events.Mount(sender=parent))
+            return True
+        return False
+
+    async def close_all(self) -&gt; None:
+        while self.children:
+            child = self.children.pop()
+            await child.close_messages()
+
+    async def remove(self, child: MessagePump) -&gt; None:
+        self.children.remove(child)
+
+    async def shutdown(self):
+        driver = self._driver
+        assert driver is not None
+        driver.disable_input()
+        await self.close_messages()
+
+    def refresh(self, repaint: bool = True, layout: bool = False) -&gt; None:
+        sync_available = (
+            os.environ.get(&#34;TERM_PROGRAM&#34;, &#34;&#34;) != &#34;Apple_Terminal&#34; and not WINDOWS
+        )
+        if not self._closed:
+            console = self.console
+            try:
+                if sync_available:
+                    console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
+                console.print(Screen(Control.home(), self.view, Control.home()))
+                if sync_available:
+                    console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
+                console.file.flush()
+            except Exception:
+                self.panic()
+
+    def display(self, renderable: RenderableType) -&gt; None:
+        sync_available = os.environ.get(&#34;TERM_PROGRAM&#34;, &#34;&#34;) != &#34;Apple_Terminal&#34;
+        if not self._closed:
+            console = self.console
+            try:
+                console.print(renderable)
+            except Exception:
+                self.panic()
+
+    def measure(self, renderable: RenderableType, max_width=100_000) -&gt; int:
+        &#34;&#34;&#34;Get the optimal width for a widget or renderable.
+
+        Args:
+            renderable (RenderableType): A renderable (including Widget)
+            max_width ([type], optional): Maximum width. Defaults to 100_000.
+
+        Returns:
+            int: Number of cells required to render.
+        &#34;&#34;&#34;
+        measurement = Measurement.get(
+            self.console, self.console.options.update(max_width=max_width), renderable
+        )
+        return measurement.maximum
+
+    def get_widget_at(self, x: int, y: int) -&gt; tuple[Widget, Region]:
+        &#34;&#34;&#34;Get the widget under the given coordinates.
+
+        Args:
+            x (int): X Coord.
+            y (int): Y Coord.
+
+        Returns:
+            tuple[Widget, Region]: The widget and the widget&#39;s screen region.
+        &#34;&#34;&#34;
+        return self.view.get_widget_at(x, y)
+
+    async def press(self, key: str) -&gt; bool:
+        &#34;&#34;&#34;Handle a key press.
+
+        Args:
+            key (str): A key
+
+        Returns:
+            bool: True if the key was handled by a binding, otherwise False
+        &#34;&#34;&#34;
+        try:
+            binding = self.bindings.get_key(key)
+        except NoBinding:
+            return False
+        else:
+            await self.action(binding.action)
+        return True
+
+    async def on_event(self, event: events.Event) -&gt; None:
+        # Handle input events that haven&#39;t been forwarded
+        # If the event has been forwarded it may have bubbled up back to the App
+        if isinstance(event, events.InputEvent) and not event.is_forwarded:
+            if isinstance(event, events.MouseEvent):
+                # Record current mouse position on App
+                self.mouse_position = Offset(event.x, event.y)
+            if isinstance(event, events.Key) and self.focused is not None:
+                # Key events are sent direct to focused widget
+                if self.bindings.allow_forward(event.key):
+                    await self.focused.forward_event(event)
+                else:
+                    # Key has allow_forward=False which disallows forward to focused widget
+                    await super().on_event(event)
+            else:
+                # Forward the event to the view
+                await self.view.forward_event(event)
+        else:
+            await super().on_event(event)
+
+    async def action(
+        self,
+        action: str,
+        default_namespace: object | None = None,
+        modifiers: set[str] | None = None,
+    ) -&gt; None:
+        &#34;&#34;&#34;Perform an action.
+
+        Args:
+            action (str): Action encoded in a string.
+        &#34;&#34;&#34;
+        target, params = actions.parse(action)
+        if &#34;.&#34; in target:
+            destination, action_name = target.split(&#34;.&#34;, 1)
+            if destination not in self._action_targets:
+                raise ActionError(f&#34;Action namespace {destination} is not known&#34;)
+            action_target = getattr(self, destination)
+        else:
+            action_target = default_namespace or self
+            action_name = target
+
+        log(&#34;ACTION&#34;, action_target, action_name)
+        await self.dispatch_action(action_target, action_name, params)
+
+    async def dispatch_action(
+        self, namespace: object, action_name: str, params: Any
+    ) -&gt; None:
+        _rich_traceback_guard = True
+        method_name = f&#34;action_{action_name}&#34;
+        method = getattr(namespace, method_name, None)
+        if callable(method):
+            await invoke(method, *params)
+
+    async def broker_event(
+        self, event_name: str, event: events.Event, default_namespace: object | None
+    ) -&gt; bool:
+        event.stop()
+        try:
+            style = getattr(event, &#34;style&#34;)
+        except AttributeError:
+            return False
+        try:
+            modifiers, action = extract_handler_actions(event_name, style.meta)
+        except NoHandler:
+            return False
+        if isinstance(action, str):
+            await self.action(
+                action, default_namespace=default_namespace, modifiers=modifiers
+            )
+        elif isinstance(action, Callable):
+            await action()
+        else:
+            return False
+        return True
+
+    async def on_key(self, event: events.Key) -&gt; None:
+        await self.press(event.key)
+
+    async def on_shutdown_request(self, event: events.ShutdownRequest) -&gt; None:
+        log(&#34;shutdown request&#34;)
+        await self.close_messages()
+
+    async def on_resize(self, event: events.Resize) -&gt; None:
+        await self.view.post_message(event)
+
+    async def action_press(self, key: str) -&gt; None:
+        await self.press(key)
+
+    async def action_quit(self) -&gt; None:
+        await self.shutdown()
+
+    async def action_bang(self) -&gt; None:
+        1 / 0
+
+    async def action_bell(self) -&gt; None:
+        self.console.bell()
+
+
+if __name__ == &#34;__main__&#34;:
+    import asyncio
+    from logging import FileHandler
+
+    from rich.panel import Panel
+
+    from .widgets import Header
+    from .widgets import Footer
+
+    from .widgets import Placeholder
+    from .scrollbar import ScrollBar
+
+    from rich.markdown import Markdown
+
+    # from .widgets.scroll_view import ScrollView
+
+    import os
+
+    class MyApp(App):
+        &#34;&#34;&#34;Just a test app.&#34;&#34;&#34;
+
+        async def on_load(self, event: events.Load) -&gt; None:
+            await self.bind(&#34;ctrl+c&#34;, &#34;quit&#34;, show=False)
+            await self.bind(&#34;q&#34;, &#34;quit&#34;, &#34;Quit&#34;)
+            await self.bind(&#34;x&#34;, &#34;bang&#34;, &#34;Test error handling&#34;)
+            await self.bind(&#34;b&#34;, &#34;toggle_sidebar&#34;, &#34;Toggle sidebar&#34;)
+
+        show_bar: Reactive[bool] = Reactive(False)
+
+        async def watch_show_bar(self, show_bar: bool) -&gt; None:
+            self.animator.animate(self.bar, &#34;layout_offset_x&#34;, 0 if show_bar else -40)
+
+        async def action_toggle_sidebar(self) -&gt; None:
+            self.show_bar = not self.show_bar
+
+        async def on_mount(self, event: events.Mount) -&gt; None:
+
+            view = await self.push_view(DockView())
+
+            header = Header()
+            footer = Footer()
+            self.bar = Placeholder(name=&#34;left&#34;)
+
+            await view.dock(header, edge=&#34;top&#34;)
+            await view.dock(footer, edge=&#34;bottom&#34;)
+            await view.dock(self.bar, edge=&#34;left&#34;, size=40, z=1)
+            self.bar.layout_offset_x = -40
+
+            sub_view = DockView()
+            await sub_view.dock(Placeholder(), Placeholder(), edge=&#34;top&#34;)
+            await view.dock(sub_view, edge=&#34;left&#34;)
+
+    MyApp.run(log=&#34;textual.log&#34;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="textual.app.ActionError"><code class="flex name class">
+<span>class <span class="ident">ActionError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ActionError(Exception):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="textual.app.App"><code class="flex name class">
+<span>class <span class="ident">App</span></span>
+<span>(</span><span>screen: bool = True, driver_class: Type[Driver] | None = None, log: str = '', log_verbosity: int = 1, title: str = 'Textual Application')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The base class for Textual Applications</p>
+<p>The Textual Application base class</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>console</code></strong> :&ensp;<code>Console</code>, optional</dt>
+<dd>A Rich Console. Defaults to None.</dd>
+<dt><strong><code>screen</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Enable full-screen application mode. Defaults to True.</dd>
+<dt><strong><code>driver_class</code></strong> :&ensp;<code>Type[Driver]</code>, optional</dt>
+<dd>Driver class, or None to use default. Defaults to None.</dd>
+<dt><strong><code>title</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Title of the application. Defaults to "Textual Application".</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class App(MessagePump):
+    &#34;&#34;&#34;The base class for Textual Applications&#34;&#34;&#34;
+
+    KEYS: ClassVar[dict[str, str]] = {}
+
+    def __init__(
+        self,
+        screen: bool = True,
+        driver_class: Type[Driver] | None = None,
+        log: str = &#34;&#34;,
+        log_verbosity: int = 1,
+        title: str = &#34;Textual Application&#34;,
+    ):
+        &#34;&#34;&#34;The Textual Application base class
+
+        Args:
+            console (Console, optional): A Rich Console. Defaults to None.
+            screen (bool, optional): Enable full-screen application mode. Defaults to True.
+            driver_class (Type[Driver], optional): Driver class, or None to use default. Defaults to None.
+            title (str, optional): Title of the application. Defaults to &#34;Textual Application&#34;.
+        &#34;&#34;&#34;
+        self.console = Console()
+        self.error_console = Console(stderr=True)
+        self._screen = screen
+        self.driver_class = driver_class or self.get_driver_class()
+        self._title = title
+        self._layout = DockLayout()
+        self._view_stack: list[DockView] = []
+        self.children: set[MessagePump] = set()
+
+        self.focused: Widget | None = None
+        self.mouse_over: Widget | None = None
+        self.mouse_captured: Widget | None = None
+        self._driver: Driver | None = None
+        self._exit_renderables: list[RenderableType] = []
+
+        self._docks: list[Dock] = []
+        self._action_targets = {&#34;app&#34;, &#34;view&#34;}
+        self._animator = Animator(self)
+        self.animate = self._animator.bind(self)
+        self.mouse_position = Offset(0, 0)
+        self.bindings = Bindings()
+        self._title = title
+
+        self.log_file = open(log, &#34;wt&#34;) if log else None
+        self.log_verbosity = log_verbosity
+
+        self.bindings.bind(&#34;ctrl+c&#34;, &#34;quit&#34;, show=False, allow_forward=False)
+        self._refresh_required = False
+
+        super().__init__()
+
+    title: Reactive[str] = Reactive(&#34;Textual&#34;)
+    sub_title: Reactive[str] = Reactive(&#34;&#34;)
+    background: Reactive[str] = Reactive(&#34;black&#34;)
+
+    def get_driver_class(self) -&gt; Type[Driver]:
+        &#34;&#34;&#34;Get a driver class for this platform.
+
+        Called by the constructor.
+
+        Returns:
+            Driver: A Driver class which manages input and display.
+        &#34;&#34;&#34;
+        if WINDOWS:
+            from .drivers.windows_driver import WindowsDriver
+
+            driver_class = WindowsDriver
+        else:
+            from .drivers.linux_driver import LinuxDriver
+
+            driver_class = LinuxDriver
+        return driver_class
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        yield &#34;title&#34;, self.title
+
+    def __rich__(self) -&gt; RenderableType:
+        return self.view
+
+    @property
+    def animator(self) -&gt; Animator:
+        return self._animator
+
+    @property
+    def view(self) -&gt; DockView:
+        return self._view_stack[-1]
+
+    def log(self, *args: Any, verbosity: int = 1, **kwargs) -&gt; None:
+        &#34;&#34;&#34;Write to logs.
+
+        Args:
+            *args (Any): Positional arguments are converted to string and written to logs.
+            verbosity (int, optional): Verbosity level 0-3. Defaults to 1.
+        &#34;&#34;&#34;
+        try:
+            if self.log_file and verbosity &lt;= self.log_verbosity:
+                output = f&#34; &#34;.join(str(arg) for arg in args)
+                if kwargs:
+                    key_values = &#34; &#34;.join(
+                        f&#34;{key}={value}&#34; for key, value in kwargs.items()
+                    )
+                    output = &#34; &#34;.join((output, key_values))
+                self.log_file.write(output + &#34;\n&#34;)
+                self.log_file.flush()
+        except Exception:
+            pass
+
+    async def bind(
+        self,
+        keys: str,
+        action: str,
+        description: str = &#34;&#34;,
+        show: bool = True,
+        key_display: str | None = None,
+    ) -&gt; None:
+        &#34;&#34;&#34;Bind a key to an action.
+
+        Args:
+            keys (str): A comma separated list of keys, i.e.
+            action (str): Action to bind to.
+            description (str, optional): Short description of action. Defaults to &#34;&#34;.
+            show (bool, optional): Show key in UI. Defaults to True.
+            key_display (str, optional): Replacement text for key, or None to use default. Defaults to None.
+        &#34;&#34;&#34;
+        self.bindings.bind(
+            keys, action, description, show=show, key_display=key_display
+        )
+
+    @classmethod
+    def run(
+        cls,
+        console: Console = None,
+        screen: bool = True,
+        driver: Type[Driver] = None,
+        **kwargs,
+    ):
+        &#34;&#34;&#34;Run the app.
+
+        Args:
+            console (Console, optional): Console object. Defaults to None.
+            screen (bool, optional): Enable application mode. Defaults to True.
+            driver (Type[Driver], optional): Driver class or None for default. Defaults to None.
+        &#34;&#34;&#34;
+
+        async def run_app() -&gt; None:
+            app = cls(screen=screen, driver_class=driver, **kwargs)
+            await app.process_messages()
+
+        asyncio.run(run_app())
+
+    async def push_view(self, view: ViewType) -&gt; ViewType:
+        self.register(view, self)
+        self._view_stack.append(view)
+        return view
+
+    async def set_focus(self, widget: Widget | None) -&gt; None:
+        &#34;&#34;&#34;Focus (or unfocus) a widget. A focused widget will receive key events first.
+
+        Args:
+            widget (Widget): [description]
+        &#34;&#34;&#34;
+        log(&#34;set_focus&#34;, widget)
+        if widget == self.focused:
+            # Widget is already focused
+            return
+
+        if widget is None:
+            if self.focused is not None:
+                focused = self.focused
+                self.focused = None
+                await focused.post_message(events.Blur(self))
+        elif widget.can_focus:
+            if self.focused is not None:
+                await self.focused.post_message(events.Blur(self))
+            if widget is not None and self.focused != widget:
+                self.focused = widget
+                await widget.post_message(events.Focus(self))
+
+    async def set_mouse_over(self, widget: Widget | None) -&gt; None:
+        if widget is None:
+            if self.mouse_over is not None:
+                try:
+                    await self.mouse_over.post_message(events.Leave(self))
+                finally:
+                    self.mouse_over = None
+        else:
+            if self.mouse_over != widget:
+                try:
+                    if self.mouse_over is not None:
+                        await self.mouse_over.forward_event(events.Leave(self))
+                    if widget is not None:
+                        await widget.forward_event(events.Enter(self))
+                finally:
+                    self.mouse_over = widget
+
+    async def capture_mouse(self, widget: Widget | None) -&gt; None:
+        &#34;&#34;&#34;Send all mouse events to the given widget, disable mouse capture.
+
+        Args:
+            widget (Widget | None): If a widget, capture mouse event, or None to end mouse capture.
+        &#34;&#34;&#34;
+        if widget == self.mouse_captured:
+            return
+        if self.mouse_captured is not None:
+            await self.mouse_captured.post_message(
+                events.MouseRelease(self, self.mouse_position)
+            )
+        self.mouse_captured = widget
+        if widget is not None:
+            await widget.post_message(events.MouseCapture(self, self.mouse_position))
+
+    def panic(self, *renderables: RenderableType) -&gt; None:
+        &#34;&#34;&#34;Exits the app with a traceback.
+
+        Args:
+            traceback (Traceback, optional): Rich Traceback object or None to generate one
+                for the most recent exception. Defaults to None.
+        &#34;&#34;&#34;
+
+        if not renderables:
+            renderables = (
+                Traceback(show_locals=True, width=None, locals_max_length=5),
+            )
+        self._exit_renderables.extend(renderables)
+        self.close_messages_no_wait()
+
+    async def process_messages(self) -&gt; None:
+        active_app.set(self)
+
+        log(&#34;---&#34;)
+        log(f&#34;driver={self.driver_class}&#34;)
+
+        load_event = events.Load(sender=self)
+        await self.dispatch_message(load_event)
+        await self.post_message(events.Mount(self))
+        await self.push_view(DockView())
+
+        # Wait for the load event to be processed, so we don&#39;t go in to application mode beforehand
+        await load_event.wait()
+
+        driver = self._driver = self.driver_class(self.console, self)
+        try:
+            driver.start_application_mode()
+        except Exception:
+            self.console.print_exception()
+        else:
+            try:
+                self.console = Console()
+                self.title = self._title
+                self.refresh()
+                await self.animator.start()
+                await super().process_messages()
+                log(&#34;PROCESS END&#34;)
+                await self.animator.stop()
+                await self.close_all()
+
+            except Exception:
+                self.panic()
+            finally:
+                driver.stop_application_mode()
+                if self._exit_renderables:
+                    for renderable in self._exit_renderables:
+                        self.error_console.print(renderable)
+                if self.log_file is not None:
+                    self.log_file.close()
+
+    def register(self, child: MessagePump, parent: MessagePump) -&gt; bool:
+        if child not in self.children:
+            self.children.add(child)
+            child.set_parent(parent)
+            child.start_messages()
+            child.post_message_no_wait(events.Mount(sender=parent))
+            return True
+        return False
+
+    async def close_all(self) -&gt; None:
+        while self.children:
+            child = self.children.pop()
+            await child.close_messages()
+
+    async def remove(self, child: MessagePump) -&gt; None:
+        self.children.remove(child)
+
+    async def shutdown(self):
+        driver = self._driver
+        assert driver is not None
+        driver.disable_input()
+        await self.close_messages()
+
+    def refresh(self, repaint: bool = True, layout: bool = False) -&gt; None:
+        sync_available = (
+            os.environ.get(&#34;TERM_PROGRAM&#34;, &#34;&#34;) != &#34;Apple_Terminal&#34; and not WINDOWS
+        )
+        if not self._closed:
+            console = self.console
+            try:
+                if sync_available:
+                    console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
+                console.print(Screen(Control.home(), self.view, Control.home()))
+                if sync_available:
+                    console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
+                console.file.flush()
+            except Exception:
+                self.panic()
+
+    def display(self, renderable: RenderableType) -&gt; None:
+        sync_available = os.environ.get(&#34;TERM_PROGRAM&#34;, &#34;&#34;) != &#34;Apple_Terminal&#34;
+        if not self._closed:
+            console = self.console
+            try:
+                console.print(renderable)
+            except Exception:
+                self.panic()
+
+    def measure(self, renderable: RenderableType, max_width=100_000) -&gt; int:
+        &#34;&#34;&#34;Get the optimal width for a widget or renderable.
+
+        Args:
+            renderable (RenderableType): A renderable (including Widget)
+            max_width ([type], optional): Maximum width. Defaults to 100_000.
+
+        Returns:
+            int: Number of cells required to render.
+        &#34;&#34;&#34;
+        measurement = Measurement.get(
+            self.console, self.console.options.update(max_width=max_width), renderable
+        )
+        return measurement.maximum
+
+    def get_widget_at(self, x: int, y: int) -&gt; tuple[Widget, Region]:
+        &#34;&#34;&#34;Get the widget under the given coordinates.
+
+        Args:
+            x (int): X Coord.
+            y (int): Y Coord.
+
+        Returns:
+            tuple[Widget, Region]: The widget and the widget&#39;s screen region.
+        &#34;&#34;&#34;
+        return self.view.get_widget_at(x, y)
+
+    async def press(self, key: str) -&gt; bool:
+        &#34;&#34;&#34;Handle a key press.
+
+        Args:
+            key (str): A key
+
+        Returns:
+            bool: True if the key was handled by a binding, otherwise False
+        &#34;&#34;&#34;
+        try:
+            binding = self.bindings.get_key(key)
+        except NoBinding:
+            return False
+        else:
+            await self.action(binding.action)
+        return True
+
+    async def on_event(self, event: events.Event) -&gt; None:
+        # Handle input events that haven&#39;t been forwarded
+        # If the event has been forwarded it may have bubbled up back to the App
+        if isinstance(event, events.InputEvent) and not event.is_forwarded:
+            if isinstance(event, events.MouseEvent):
+                # Record current mouse position on App
+                self.mouse_position = Offset(event.x, event.y)
+            if isinstance(event, events.Key) and self.focused is not None:
+                # Key events are sent direct to focused widget
+                if self.bindings.allow_forward(event.key):
+                    await self.focused.forward_event(event)
+                else:
+                    # Key has allow_forward=False which disallows forward to focused widget
+                    await super().on_event(event)
+            else:
+                # Forward the event to the view
+                await self.view.forward_event(event)
+        else:
+            await super().on_event(event)
+
+    async def action(
+        self,
+        action: str,
+        default_namespace: object | None = None,
+        modifiers: set[str] | None = None,
+    ) -&gt; None:
+        &#34;&#34;&#34;Perform an action.
+
+        Args:
+            action (str): Action encoded in a string.
+        &#34;&#34;&#34;
+        target, params = actions.parse(action)
+        if &#34;.&#34; in target:
+            destination, action_name = target.split(&#34;.&#34;, 1)
+            if destination not in self._action_targets:
+                raise ActionError(f&#34;Action namespace {destination} is not known&#34;)
+            action_target = getattr(self, destination)
+        else:
+            action_target = default_namespace or self
+            action_name = target
+
+        log(&#34;ACTION&#34;, action_target, action_name)
+        await self.dispatch_action(action_target, action_name, params)
+
+    async def dispatch_action(
+        self, namespace: object, action_name: str, params: Any
+    ) -&gt; None:
+        _rich_traceback_guard = True
+        method_name = f&#34;action_{action_name}&#34;
+        method = getattr(namespace, method_name, None)
+        if callable(method):
+            await invoke(method, *params)
+
+    async def broker_event(
+        self, event_name: str, event: events.Event, default_namespace: object | None
+    ) -&gt; bool:
+        event.stop()
+        try:
+            style = getattr(event, &#34;style&#34;)
+        except AttributeError:
+            return False
+        try:
+            modifiers, action = extract_handler_actions(event_name, style.meta)
+        except NoHandler:
+            return False
+        if isinstance(action, str):
+            await self.action(
+                action, default_namespace=default_namespace, modifiers=modifiers
+            )
+        elif isinstance(action, Callable):
+            await action()
+        else:
+            return False
+        return True
+
+    async def on_key(self, event: events.Key) -&gt; None:
+        await self.press(event.key)
+
+    async def on_shutdown_request(self, event: events.ShutdownRequest) -&gt; None:
+        log(&#34;shutdown request&#34;)
+        await self.close_messages()
+
+    async def on_resize(self, event: events.Resize) -&gt; None:
+        await self.view.post_message(event)
+
+    async def action_press(self, key: str) -&gt; None:
+        await self.press(key)
+
+    async def action_quit(self) -&gt; None:
+        await self.shutdown()
+
+    async def action_bang(self) -&gt; None:
+        1 / 0
+
+    async def action_bell(self) -&gt; None:
+        self.console.bell()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.app.App.KEYS"><code class="name">var <span class="ident">KEYS</span> : ClassVar[dict[str, str]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="textual.app.App.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>console: Console = None, screen: bool = True, driver: Type[Driver] = None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Run the app.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>console</code></strong> :&ensp;<code>Console</code>, optional</dt>
+<dd>Console object. Defaults to None.</dd>
+<dt><strong><code>screen</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Enable application mode. Defaults to True.</dd>
+<dt><strong><code>driver</code></strong> :&ensp;<code>Type[Driver]</code>, optional</dt>
+<dd>Driver class or None for default. Defaults to None.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def run(
+    cls,
+    console: Console = None,
+    screen: bool = True,
+    driver: Type[Driver] = None,
+    **kwargs,
+):
+    &#34;&#34;&#34;Run the app.
+
+    Args:
+        console (Console, optional): Console object. Defaults to None.
+        screen (bool, optional): Enable application mode. Defaults to True.
+        driver (Type[Driver], optional): Driver class or None for default. Defaults to None.
+    &#34;&#34;&#34;
+
+    async def run_app() -&gt; None:
+        app = cls(screen=screen, driver_class=driver, **kwargs)
+        await app.process_messages()
+
+    asyncio.run(run_app())</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.app.App.animator"><code class="name">var <span class="ident">animator</span> : textual._animator.Animator</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def animator(self) -&gt; Animator:
+    return self._animator</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.background"><code class="name">var <span class="ident">background</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.sub_title"><code class="name">var <span class="ident">sub_title</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.title"><code class="name">var <span class="ident">title</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.view"><code class="name">var <span class="ident">view</span> : textual.views._dock_view.DockView</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def view(self) -&gt; DockView:
+    return self._view_stack[-1]</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.app.App.action"><code class="name flex">
+<span>async def <span class="ident">action</span></span>(<span>self, action: str, default_namespace: object | None = None, modifiers: set[str] | None = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Perform an action.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>action</code></strong> :&ensp;<code>str</code></dt>
+<dd>Action encoded in a string.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def action(
+    self,
+    action: str,
+    default_namespace: object | None = None,
+    modifiers: set[str] | None = None,
+) -&gt; None:
+    &#34;&#34;&#34;Perform an action.
+
+    Args:
+        action (str): Action encoded in a string.
+    &#34;&#34;&#34;
+    target, params = actions.parse(action)
+    if &#34;.&#34; in target:
+        destination, action_name = target.split(&#34;.&#34;, 1)
+        if destination not in self._action_targets:
+            raise ActionError(f&#34;Action namespace {destination} is not known&#34;)
+        action_target = getattr(self, destination)
+    else:
+        action_target = default_namespace or self
+        action_name = target
+
+    log(&#34;ACTION&#34;, action_target, action_name)
+    await self.dispatch_action(action_target, action_name, params)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.action_bang"><code class="name flex">
+<span>async def <span class="ident">action_bang</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def action_bang(self) -&gt; None:
+    1 / 0</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.action_bell"><code class="name flex">
+<span>async def <span class="ident">action_bell</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def action_bell(self) -&gt; None:
+    self.console.bell()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.action_press"><code class="name flex">
+<span>async def <span class="ident">action_press</span></span>(<span>self, key: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def action_press(self, key: str) -&gt; None:
+    await self.press(key)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.action_quit"><code class="name flex">
+<span>async def <span class="ident">action_quit</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def action_quit(self) -&gt; None:
+    await self.shutdown()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.bind"><code class="name flex">
+<span>async def <span class="ident">bind</span></span>(<span>self, keys: str, action: str, description: str = '', show: bool = True, key_display: str | None = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Bind a key to an action.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>keys</code></strong> :&ensp;<code>str</code></dt>
+<dd>A comma separated list of keys, i.e.</dd>
+<dt><strong><code>action</code></strong> :&ensp;<code>str</code></dt>
+<dd>Action to bind to.</dd>
+<dt><strong><code>description</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Short description of action. Defaults to "".</dd>
+<dt><strong><code>show</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Show key in UI. Defaults to True.</dd>
+<dt><strong><code>key_display</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Replacement text for key, or None to use default. Defaults to None.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def bind(
+    self,
+    keys: str,
+    action: str,
+    description: str = &#34;&#34;,
+    show: bool = True,
+    key_display: str | None = None,
+) -&gt; None:
+    &#34;&#34;&#34;Bind a key to an action.
+
+    Args:
+        keys (str): A comma separated list of keys, i.e.
+        action (str): Action to bind to.
+        description (str, optional): Short description of action. Defaults to &#34;&#34;.
+        show (bool, optional): Show key in UI. Defaults to True.
+        key_display (str, optional): Replacement text for key, or None to use default. Defaults to None.
+    &#34;&#34;&#34;
+    self.bindings.bind(
+        keys, action, description, show=show, key_display=key_display
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.broker_event"><code class="name flex">
+<span>async def <span class="ident">broker_event</span></span>(<span>self, event_name: str, event: events.Event, default_namespace: object | None) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def broker_event(
+    self, event_name: str, event: events.Event, default_namespace: object | None
+) -&gt; bool:
+    event.stop()
+    try:
+        style = getattr(event, &#34;style&#34;)
+    except AttributeError:
+        return False
+    try:
+        modifiers, action = extract_handler_actions(event_name, style.meta)
+    except NoHandler:
+        return False
+    if isinstance(action, str):
+        await self.action(
+            action, default_namespace=default_namespace, modifiers=modifiers
+        )
+    elif isinstance(action, Callable):
+        await action()
+    else:
+        return False
+    return True</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.capture_mouse"><code class="name flex">
+<span>async def <span class="ident">capture_mouse</span></span>(<span>self, widget: Widget | None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Send all mouse events to the given widget, disable mouse capture.</p>
+<h2 id="args">Args</h2>
+<p>widget (Widget | None): If a widget, capture mouse event, or None to end mouse capture.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def capture_mouse(self, widget: Widget | None) -&gt; None:
+    &#34;&#34;&#34;Send all mouse events to the given widget, disable mouse capture.
+
+    Args:
+        widget (Widget | None): If a widget, capture mouse event, or None to end mouse capture.
+    &#34;&#34;&#34;
+    if widget == self.mouse_captured:
+        return
+    if self.mouse_captured is not None:
+        await self.mouse_captured.post_message(
+            events.MouseRelease(self, self.mouse_position)
+        )
+    self.mouse_captured = widget
+    if widget is not None:
+        await widget.post_message(events.MouseCapture(self, self.mouse_position))</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.close_all"><code class="name flex">
+<span>async def <span class="ident">close_all</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def close_all(self) -&gt; None:
+    while self.children:
+        child = self.children.pop()
+        await child.close_messages()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.dispatch_action"><code class="name flex">
+<span>async def <span class="ident">dispatch_action</span></span>(<span>self, namespace: object, action_name: str, params: Any) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def dispatch_action(
+    self, namespace: object, action_name: str, params: Any
+) -&gt; None:
+    _rich_traceback_guard = True
+    method_name = f&#34;action_{action_name}&#34;
+    method = getattr(namespace, method_name, None)
+    if callable(method):
+        await invoke(method, *params)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.display"><code class="name flex">
+<span>def <span class="ident">display</span></span>(<span>self, renderable: RenderableType) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def display(self, renderable: RenderableType) -&gt; None:
+    sync_available = os.environ.get(&#34;TERM_PROGRAM&#34;, &#34;&#34;) != &#34;Apple_Terminal&#34;
+    if not self._closed:
+        console = self.console
+        try:
+            console.print(renderable)
+        except Exception:
+            self.panic()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.get_driver_class"><code class="name flex">
+<span>def <span class="ident">get_driver_class</span></span>(<span>self) ‑> Type[<a title="textual.driver.Driver" href="driver.html#textual.driver.Driver">Driver</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a driver class for this platform.</p>
+<p>Called by the constructor.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Driver</code></dt>
+<dd>A Driver class which manages input and display.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_driver_class(self) -&gt; Type[Driver]:
+    &#34;&#34;&#34;Get a driver class for this platform.
+
+    Called by the constructor.
+
+    Returns:
+        Driver: A Driver class which manages input and display.
+    &#34;&#34;&#34;
+    if WINDOWS:
+        from .drivers.windows_driver import WindowsDriver
+
+        driver_class = WindowsDriver
+    else:
+        from .drivers.linux_driver import LinuxDriver
+
+        driver_class = LinuxDriver
+    return driver_class</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.get_widget_at"><code class="name flex">
+<span>def <span class="ident">get_widget_at</span></span>(<span>self, x: int, y: int) ‑> tuple[Widget, Region]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the widget under the given coordinates.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>X Coord.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>Y Coord.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[Widget, Region]</code></dt>
+<dd>The widget and the widget's screen region.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_widget_at(self, x: int, y: int) -&gt; tuple[Widget, Region]:
+    &#34;&#34;&#34;Get the widget under the given coordinates.
+
+    Args:
+        x (int): X Coord.
+        y (int): Y Coord.
+
+    Returns:
+        tuple[Widget, Region]: The widget and the widget&#39;s screen region.
+    &#34;&#34;&#34;
+    return self.view.get_widget_at(x, y)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.log"><code class="name flex">
+<span>def <span class="ident">log</span></span>(<span>self, *args: Any, verbosity: int = 1, **kwargs) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Write to logs.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*args</code></strong> :&ensp;<code>Any</code></dt>
+<dd>Positional arguments are converted to string and written to logs.</dd>
+<dt><strong><code>verbosity</code></strong> :&ensp;<code>int</code>, optional</dt>
+<dd>Verbosity level 0-3. Defaults to 1.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def log(self, *args: Any, verbosity: int = 1, **kwargs) -&gt; None:
+    &#34;&#34;&#34;Write to logs.
+
+    Args:
+        *args (Any): Positional arguments are converted to string and written to logs.
+        verbosity (int, optional): Verbosity level 0-3. Defaults to 1.
+    &#34;&#34;&#34;
+    try:
+        if self.log_file and verbosity &lt;= self.log_verbosity:
+            output = f&#34; &#34;.join(str(arg) for arg in args)
+            if kwargs:
+                key_values = &#34; &#34;.join(
+                    f&#34;{key}={value}&#34; for key, value in kwargs.items()
+                )
+                output = &#34; &#34;.join((output, key_values))
+            self.log_file.write(output + &#34;\n&#34;)
+            self.log_file.flush()
+    except Exception:
+        pass</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.measure"><code class="name flex">
+<span>def <span class="ident">measure</span></span>(<span>self, renderable: RenderableType, max_width=100000) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the optimal width for a widget or renderable.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>renderable</code></strong> :&ensp;<code>RenderableType</code></dt>
+<dd>A renderable (including Widget)</dd>
+<dt><strong><code>max_width</code></strong> :&ensp;<code>[type]</code>, optional</dt>
+<dd>Maximum width. Defaults to 100_000.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>Number of cells required to render.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def measure(self, renderable: RenderableType, max_width=100_000) -&gt; int:
+    &#34;&#34;&#34;Get the optimal width for a widget or renderable.
+
+    Args:
+        renderable (RenderableType): A renderable (including Widget)
+        max_width ([type], optional): Maximum width. Defaults to 100_000.
+
+    Returns:
+        int: Number of cells required to render.
+    &#34;&#34;&#34;
+    measurement = Measurement.get(
+        self.console, self.console.options.update(max_width=max_width), renderable
+    )
+    return measurement.maximum</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.on_event"><code class="name flex">
+<span>async def <span class="ident">on_event</span></span>(<span>self, event: events.Event) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_event(self, event: events.Event) -&gt; None:
+    # Handle input events that haven&#39;t been forwarded
+    # If the event has been forwarded it may have bubbled up back to the App
+    if isinstance(event, events.InputEvent) and not event.is_forwarded:
+        if isinstance(event, events.MouseEvent):
+            # Record current mouse position on App
+            self.mouse_position = Offset(event.x, event.y)
+        if isinstance(event, events.Key) and self.focused is not None:
+            # Key events are sent direct to focused widget
+            if self.bindings.allow_forward(event.key):
+                await self.focused.forward_event(event)
+            else:
+                # Key has allow_forward=False which disallows forward to focused widget
+                await super().on_event(event)
+        else:
+            # Forward the event to the view
+            await self.view.forward_event(event)
+    else:
+        await super().on_event(event)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.on_key"><code class="name flex">
+<span>async def <span class="ident">on_key</span></span>(<span>self, event: events.Key) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_key(self, event: events.Key) -&gt; None:
+    await self.press(event.key)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.on_resize"><code class="name flex">
+<span>async def <span class="ident">on_resize</span></span>(<span>self, event: events.Resize) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_resize(self, event: events.Resize) -&gt; None:
+    await self.view.post_message(event)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.on_shutdown_request"><code class="name flex">
+<span>async def <span class="ident">on_shutdown_request</span></span>(<span>self, event: events.ShutdownRequest) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_shutdown_request(self, event: events.ShutdownRequest) -&gt; None:
+    log(&#34;shutdown request&#34;)
+    await self.close_messages()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.panic"><code class="name flex">
+<span>def <span class="ident">panic</span></span>(<span>self, *renderables: RenderableType) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Exits the app with a traceback.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>traceback</code></strong> :&ensp;<code>Traceback</code>, optional</dt>
+<dd>Rich Traceback object or None to generate one
+for the most recent exception. Defaults to None.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def panic(self, *renderables: RenderableType) -&gt; None:
+    &#34;&#34;&#34;Exits the app with a traceback.
+
+    Args:
+        traceback (Traceback, optional): Rich Traceback object or None to generate one
+            for the most recent exception. Defaults to None.
+    &#34;&#34;&#34;
+
+    if not renderables:
+        renderables = (
+            Traceback(show_locals=True, width=None, locals_max_length=5),
+        )
+    self._exit_renderables.extend(renderables)
+    self.close_messages_no_wait()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.press"><code class="name flex">
+<span>async def <span class="ident">press</span></span>(<span>self, key: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handle a key press.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>key</code></strong> :&ensp;<code>str</code></dt>
+<dd>A key</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the key was handled by a binding, otherwise False</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def press(self, key: str) -&gt; bool:
+    &#34;&#34;&#34;Handle a key press.
+
+    Args:
+        key (str): A key
+
+    Returns:
+        bool: True if the key was handled by a binding, otherwise False
+    &#34;&#34;&#34;
+    try:
+        binding = self.bindings.get_key(key)
+    except NoBinding:
+        return False
+    else:
+        await self.action(binding.action)
+    return True</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.process_messages"><code class="name flex">
+<span>async def <span class="ident">process_messages</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def process_messages(self) -&gt; None:
+    active_app.set(self)
+
+    log(&#34;---&#34;)
+    log(f&#34;driver={self.driver_class}&#34;)
+
+    load_event = events.Load(sender=self)
+    await self.dispatch_message(load_event)
+    await self.post_message(events.Mount(self))
+    await self.push_view(DockView())
+
+    # Wait for the load event to be processed, so we don&#39;t go in to application mode beforehand
+    await load_event.wait()
+
+    driver = self._driver = self.driver_class(self.console, self)
+    try:
+        driver.start_application_mode()
+    except Exception:
+        self.console.print_exception()
+    else:
+        try:
+            self.console = Console()
+            self.title = self._title
+            self.refresh()
+            await self.animator.start()
+            await super().process_messages()
+            log(&#34;PROCESS END&#34;)
+            await self.animator.stop()
+            await self.close_all()
+
+        except Exception:
+            self.panic()
+        finally:
+            driver.stop_application_mode()
+            if self._exit_renderables:
+                for renderable in self._exit_renderables:
+                    self.error_console.print(renderable)
+            if self.log_file is not None:
+                self.log_file.close()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.push_view"><code class="name flex">
+<span>async def <span class="ident">push_view</span></span>(<span>self, view: ViewType) ‑> ~ViewType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def push_view(self, view: ViewType) -&gt; ViewType:
+    self.register(view, self)
+    self._view_stack.append(view)
+    return view</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.refresh"><code class="name flex">
+<span>def <span class="ident">refresh</span></span>(<span>self, repaint: bool = True, layout: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def refresh(self, repaint: bool = True, layout: bool = False) -&gt; None:
+    sync_available = (
+        os.environ.get(&#34;TERM_PROGRAM&#34;, &#34;&#34;) != &#34;Apple_Terminal&#34; and not WINDOWS
+    )
+    if not self._closed:
+        console = self.console
+        try:
+            if sync_available:
+                console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
+            console.print(Screen(Control.home(), self.view, Control.home()))
+            if sync_available:
+                console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
+            console.file.flush()
+        except Exception:
+            self.panic()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.register"><code class="name flex">
+<span>def <span class="ident">register</span></span>(<span>self, child: MessagePump, parent: MessagePump) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def register(self, child: MessagePump, parent: MessagePump) -&gt; bool:
+    if child not in self.children:
+        self.children.add(child)
+        child.set_parent(parent)
+        child.start_messages()
+        child.post_message_no_wait(events.Mount(sender=parent))
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.remove"><code class="name flex">
+<span>async def <span class="ident">remove</span></span>(<span>self, child: MessagePump) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def remove(self, child: MessagePump) -&gt; None:
+    self.children.remove(child)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.set_focus"><code class="name flex">
+<span>async def <span class="ident">set_focus</span></span>(<span>self, widget: Widget | None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Focus (or unfocus) a widget. A focused widget will receive key events first.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>widget</code></strong> :&ensp;<code>Widget</code></dt>
+<dd>[description]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def set_focus(self, widget: Widget | None) -&gt; None:
+    &#34;&#34;&#34;Focus (or unfocus) a widget. A focused widget will receive key events first.
+
+    Args:
+        widget (Widget): [description]
+    &#34;&#34;&#34;
+    log(&#34;set_focus&#34;, widget)
+    if widget == self.focused:
+        # Widget is already focused
+        return
+
+    if widget is None:
+        if self.focused is not None:
+            focused = self.focused
+            self.focused = None
+            await focused.post_message(events.Blur(self))
+    elif widget.can_focus:
+        if self.focused is not None:
+            await self.focused.post_message(events.Blur(self))
+        if widget is not None and self.focused != widget:
+            self.focused = widget
+            await widget.post_message(events.Focus(self))</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.set_mouse_over"><code class="name flex">
+<span>async def <span class="ident">set_mouse_over</span></span>(<span>self, widget: Widget | None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def set_mouse_over(self, widget: Widget | None) -&gt; None:
+    if widget is None:
+        if self.mouse_over is not None:
+            try:
+                await self.mouse_over.post_message(events.Leave(self))
+            finally:
+                self.mouse_over = None
+    else:
+        if self.mouse_over != widget:
+            try:
+                if self.mouse_over is not None:
+                    await self.mouse_over.forward_event(events.Leave(self))
+                if widget is not None:
+                    await widget.forward_event(events.Enter(self))
+            finally:
+                self.mouse_over = widget</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.shutdown"><code class="name flex">
+<span>async def <span class="ident">shutdown</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def shutdown(self):
+    driver = self._driver
+    assert driver is not None
+    driver.disable_input()
+    await self.close_messages()</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.message_pump.MessagePump.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<form>
+<input id="lunr-search" name="q" placeholder="🔎 Search ..." aria-label="Search"
+disabled minlength="2">
+</form>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin></script>
+<style>
+.modal-dialog iframe {
+width: 100vw;
+height: calc(100vh - 80px);
+}
+@media screen and (min-width: 700px) {
+.modal-dialog iframe {
+width: 70vw;
+height: 80vh;
+}
+}
+.modal-dialog .tingle-modal-box {width: auto;}
+.modal-dialog .tingle-modal-box__content {padding: 0;}
+</style>
+<script>
+const input = document.getElementById('lunr-search');
+input.disabled = false;
+input.form.addEventListener('submit', (ev) => {
+ev.preventDefault();
+const url = new URL(window.location);
+url.searchParams.set('q', input.value);
+history.replaceState({}, null, url.toString());
+search(input.value);
+});
+const query = new URL(window.location).searchParams.get('q');
+if (query)
+search(query);
+function search(query) {
+const url = '../doc-search.html#' + encodeURIComponent(query);
+new tingle.modal({
+cssClass: ['modal-dialog'],
+onClose: () => {
+const url = new URL(window.location);
+url.searchParams.delete('q');
+history.replaceState({}, null, url.toString());
+setTimeout(() => input.focus(), 100);
+}
+}).setContent('<iframe src="' + url + '"></iframe>').open();
+}
+</script>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="textual" href="index.html">textual</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="textual.app.ActionError" href="#textual.app.ActionError">ActionError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="textual.app.App" href="#textual.app.App">App</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.app.App.KEYS" href="#textual.app.App.KEYS">KEYS</a></code></li>
+<li><code><a title="textual.app.App.action" href="#textual.app.App.action">action</a></code></li>
+<li><code><a title="textual.app.App.action_bang" href="#textual.app.App.action_bang">action_bang</a></code></li>
+<li><code><a title="textual.app.App.action_bell" href="#textual.app.App.action_bell">action_bell</a></code></li>
+<li><code><a title="textual.app.App.action_press" href="#textual.app.App.action_press">action_press</a></code></li>
+<li><code><a title="textual.app.App.action_quit" href="#textual.app.App.action_quit">action_quit</a></code></li>
+<li><code><a title="textual.app.App.animator" href="#textual.app.App.animator">animator</a></code></li>
+<li><code><a title="textual.app.App.background" href="#textual.app.App.background">background</a></code></li>
+<li><code><a title="textual.app.App.bind" href="#textual.app.App.bind">bind</a></code></li>
+<li><code><a title="textual.app.App.broker_event" href="#textual.app.App.broker_event">broker_event</a></code></li>
+<li><code><a title="textual.app.App.capture_mouse" href="#textual.app.App.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.app.App.close_all" href="#textual.app.App.close_all">close_all</a></code></li>
+<li><code><a title="textual.app.App.dispatch_action" href="#textual.app.App.dispatch_action">dispatch_action</a></code></li>
+<li><code><a title="textual.app.App.display" href="#textual.app.App.display">display</a></code></li>
+<li><code><a title="textual.app.App.get_driver_class" href="#textual.app.App.get_driver_class">get_driver_class</a></code></li>
+<li><code><a title="textual.app.App.get_widget_at" href="#textual.app.App.get_widget_at">get_widget_at</a></code></li>
+<li><code><a title="textual.app.App.log" href="#textual.app.App.log">log</a></code></li>
+<li><code><a title="textual.app.App.measure" href="#textual.app.App.measure">measure</a></code></li>
+<li><code><a title="textual.app.App.on_event" href="#textual.app.App.on_event">on_event</a></code></li>
+<li><code><a title="textual.app.App.on_key" href="#textual.app.App.on_key">on_key</a></code></li>
+<li><code><a title="textual.app.App.on_resize" href="#textual.app.App.on_resize">on_resize</a></code></li>
+<li><code><a title="textual.app.App.on_shutdown_request" href="#textual.app.App.on_shutdown_request">on_shutdown_request</a></code></li>
+<li><code><a title="textual.app.App.panic" href="#textual.app.App.panic">panic</a></code></li>
+<li><code><a title="textual.app.App.press" href="#textual.app.App.press">press</a></code></li>
+<li><code><a title="textual.app.App.process_messages" href="#textual.app.App.process_messages">process_messages</a></code></li>
+<li><code><a title="textual.app.App.push_view" href="#textual.app.App.push_view">push_view</a></code></li>
+<li><code><a title="textual.app.App.refresh" href="#textual.app.App.refresh">refresh</a></code></li>
+<li><code><a title="textual.app.App.register" href="#textual.app.App.register">register</a></code></li>
+<li><code><a title="textual.app.App.remove" href="#textual.app.App.remove">remove</a></code></li>
+<li><code><a title="textual.app.App.run" href="#textual.app.App.run">run</a></code></li>
+<li><code><a title="textual.app.App.set_focus" href="#textual.app.App.set_focus">set_focus</a></code></li>
+<li><code><a title="textual.app.App.set_mouse_over" href="#textual.app.App.set_mouse_over">set_mouse_over</a></code></li>
+<li><code><a title="textual.app.App.shutdown" href="#textual.app.App.shutdown">shutdown</a></code></li>
+<li><code><a title="textual.app.App.sub_title" href="#textual.app.App.sub_title">sub_title</a></code></li>
+<li><code><a title="textual.app.App.title" href="#textual.app.App.title">title</a></code></li>
+<li><code><a title="textual.app.App.view" href="#textual.app.App.view">view</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

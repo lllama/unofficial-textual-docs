@@ -1,0 +1,3375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>textual.widgets API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}#lunr-search{width:100%;font-size:1em;padding:6px 9px 5px 9px;border:1px solid silver}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>textual.widgets</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from ._footer import Footer
+from ._header import Header
+from ._button import Button, ButtonPressed
+from ._placeholder import Placeholder
+from ._scroll_view import ScrollView
+from ._static import Static
+from ._tree_control import TreeControl, TreeClick, TreeNode, NodeID
+from ._directory_tree import DirectoryTree, FileClick
+
+__all__ = [
+    &#34;Button&#34;,
+    &#34;ButtonPressed&#34;,
+    &#34;DirectoryTree&#34;,
+    &#34;FileClick&#34;,
+    &#34;Footer&#34;,
+    &#34;Header&#34;,
+    &#34;Placeholder&#34;,
+    &#34;ScrollView&#34;,
+    &#34;Static&#34;,
+    &#34;TreeClick&#34;,
+    &#34;TreeControl&#34;,
+    &#34;TreeNode&#34;,
+    &#34;NodeID&#34;,
+]</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="textual.widgets.NodeID"><code class="name flex">
+<span>def <span class="ident">NodeID</span></span>(<span>x)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def new_type(x):
+    return x</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="textual.widgets.Button"><code class="flex name class">
+<span>class <span class="ident">Button</span></span>
+<span>(</span><span>label: RenderableType, name: str | None = None, style: StyleType = 'white on dark_blue')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Button(Widget):
+    def __init__(
+        self,
+        label: RenderableType,
+        name: str | None = None,
+        style: StyleType = &#34;white on dark_blue&#34;,
+    ):
+        super().__init__(name=name)
+        self.name = name or str(label)
+        self.button_style = style
+
+        self.label = label
+
+    label: Reactive[RenderableType] = Reactive(&#34;&#34;)
+
+    def render(self) -&gt; RenderableType:
+        return ButtonRenderable(self.label, style=self.button_style)
+
+    async def on_click(self, event: events.Click) -&gt; None:
+        event.prevent_default().stop()
+        await self.emit(ButtonPressed(self))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.Button.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.widgets.Button.label"><code class="name">var <span class="ident">label</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.widgets.Button.on_click"><code class="name flex">
+<span>async def <span class="ident">on_click</span></span>(<span>self, event: events.Click) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_click(self, event: events.Click) -&gt; None:
+    event.prevent_default().stop()
+    await self.emit(ButtonPressed(self))</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
+<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
+<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
+<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
+<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
+<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
+<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.ButtonPressed"><code class="flex name class">
+<span>class <span class="ident">ButtonPressed</span></span>
+<span>(</span><span>sender: MessageTarget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for a message.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ButtonPressed(Message, bubble=True):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.message.Message" href="../message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.ButtonPressed.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.widgets.ButtonPressed.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.message.Message" href="../message.html#textual.message.Message">Message</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.message.Message.can_replace" href="../message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.name" href="../message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.message.Message.prevent_default" href="../message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.message.Message.sender" href="../message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.message.Message.set_forwarded" href="../message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.message.Message.stop" href="../message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.message.Message.time" href="../message.html#textual.message.Message.time">time</a></code></li>
+<li><code><a title="textual.message.Message.wait" href="../message.html#textual.message.Message.wait">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.DirectoryTree"><code class="flex name class">
+<span>class <span class="ident">DirectoryTree</span></span>
+<span>(</span><span>path: str, name: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Abstract base class for generic types.</p>
+<p>A generic type is typically declared by inheriting from
+this class parameterized with one or more type variables.
+For example, a generic mapping type might be defined as::</p>
+<p>class Mapping(Generic[KT, VT]):
+def <strong>getitem</strong>(self, key: KT) -&gt; VT:
+&hellip;
+# Etc.</p>
+<p>This class can then be used as follows::</p>
+<p>def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -&gt; VT:
+try:
+return mapping[key]
+except KeyError:
+return default</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DirectoryTree(TreeControl[DirEntry]):
+    def __init__(self, path: str, name: str = None) -&gt; None:
+        self.path = path.rstrip(&#34;/&#34;)
+        label = os.path.basename(self.path)
+        data = DirEntry(path, True)
+        super().__init__(label, name=name, data=data)
+        self.root.tree.guide_style = &#34;black&#34;
+
+    has_focus: Reactive[bool] = Reactive(False)
+
+    def on_focus(self) -&gt; None:
+        self.has_focus = True
+
+    def on_blur(self) -&gt; None:
+        self.has_focus = False
+
+    async def watch_hover_node(self, hover_node: NodeID) -&gt; None:
+        for node in self.nodes.values():
+            node.tree.guide_style = (
+                &#34;bold not dim red&#34; if node.id == hover_node else &#34;black&#34;
+            )
+        self.refresh(layout=True)
+
+    def render_node(self, node: TreeNode[DirEntry]) -&gt; RenderableType:
+        return self.render_tree_label(
+            node,
+            node.data.is_dir,
+            node.expanded,
+            node.is_cursor,
+            node.id == self.hover_node,
+            self.has_focus,
+        )
+
+    @lru_cache(maxsize=1024 * 32)
+    def render_tree_label(
+        self,
+        node: TreeNode[DirEntry],
+        is_dir: bool,
+        expanded: bool,
+        is_cursor: bool,
+        is_hover: bool,
+        has_focus: bool,
+    ) -&gt; RenderableType:
+        meta = {
+            &#34;@click&#34;: f&#34;click_label({node.id})&#34;,
+            &#34;tree_node&#34;: node.id,
+            &#34;cursor&#34;: node.is_cursor,
+        }
+        label = Text(node.label) if isinstance(node.label, str) else node.label
+        if is_hover:
+            label.stylize(&#34;underline&#34;)
+        if is_dir:
+            label.stylize(&#34;bold magenta&#34;)
+            icon = &#34;📂&#34; if expanded else &#34;📁&#34;
+        else:
+            label.stylize(&#34;bright_green&#34;)
+            icon = &#34;📄&#34;
+            label.highlight_regex(r&#34;\..*$&#34;, &#34;green&#34;)
+
+        if label.plain.startswith(&#34;.&#34;):
+            label.stylize(&#34;dim&#34;)
+
+        if is_cursor and has_focus:
+            label.stylize(&#34;reverse&#34;)
+
+        icon_label = Text(f&#34;{icon} &#34;, no_wrap=True, overflow=&#34;ellipsis&#34;) + label
+        icon_label.apply_meta(meta)
+        return icon_label
+
+    async def on_mount(self, event: events.Mount) -&gt; None:
+        await self.load_directory(self.root)
+
+    async def load_directory(self, node: TreeNode[DirEntry]):
+        path = node.data.path
+        directory = sorted(
+            list(scandir(path)), key=lambda entry: (not entry.is_dir(), entry.name)
+        )
+        for entry in directory:
+            await node.add(entry.name, DirEntry(entry.path, entry.is_dir()))
+        node.loaded = True
+        await node.expand()
+        self.refresh(layout=True)
+
+    async def handle_tree_click(self, message: TreeClick[DirEntry]) -&gt; None:
+        dir_entry = message.node.data
+        if not dir_entry.is_dir:
+            await self.emit(FileClick(self, dir_entry.path))
+        else:
+            if not message.node.loaded:
+                await self.load_directory(message.node)
+                await message.node.expand()
+            else:
+                await message.node.toggle()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>textual.widgets._tree_control.TreeControl</li>
+<li>typing.Generic</li>
+<li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.DirectoryTree.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.widgets.DirectoryTree.has_focus"><code class="name">var <span class="ident">has_focus</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.widgets.DirectoryTree.handle_tree_click"><code class="name flex">
+<span>async def <span class="ident">handle_tree_click</span></span>(<span>self, message: <a title="textual.widgets.TreeClick" href="#textual.widgets.TreeClick">TreeClick</a>[DirEntry]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def handle_tree_click(self, message: TreeClick[DirEntry]) -&gt; None:
+    dir_entry = message.node.data
+    if not dir_entry.is_dir:
+        await self.emit(FileClick(self, dir_entry.path))
+    else:
+        if not message.node.loaded:
+            await self.load_directory(message.node)
+            await message.node.expand()
+        else:
+            await message.node.toggle()</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.DirectoryTree.load_directory"><code class="name flex">
+<span>async def <span class="ident">load_directory</span></span>(<span>self, node: <a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a>[DirEntry])</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def load_directory(self, node: TreeNode[DirEntry]):
+    path = node.data.path
+    directory = sorted(
+        list(scandir(path)), key=lambda entry: (not entry.is_dir(), entry.name)
+    )
+    for entry in directory:
+        await node.add(entry.name, DirEntry(entry.path, entry.is_dir()))
+    node.loaded = True
+    await node.expand()
+    self.refresh(layout=True)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.DirectoryTree.on_blur"><code class="name flex">
+<span>def <span class="ident">on_blur</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_blur(self) -&gt; None:
+    self.has_focus = False</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.DirectoryTree.on_focus"><code class="name flex">
+<span>def <span class="ident">on_focus</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_focus(self) -&gt; None:
+    self.has_focus = True</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.DirectoryTree.on_mount"><code class="name flex">
+<span>async def <span class="ident">on_mount</span></span>(<span>self, event: events.Mount) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_mount(self, event: events.Mount) -&gt; None:
+    await self.load_directory(self.root)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.DirectoryTree.render_node"><code class="name flex">
+<span>def <span class="ident">render_node</span></span>(<span>self, node: <a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a>[DirEntry]) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def render_node(self, node: TreeNode[DirEntry]) -&gt; RenderableType:
+    return self.render_tree_label(
+        node,
+        node.data.is_dir,
+        node.expanded,
+        node.is_cursor,
+        node.id == self.hover_node,
+        self.has_focus,
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.DirectoryTree.render_tree_label"><code class="name flex">
+<span>def <span class="ident">render_tree_label</span></span>(<span>self, node: <a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a>[DirEntry], is_dir: bool, expanded: bool, is_cursor: bool, is_hover: bool, has_focus: bool) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@lru_cache(maxsize=1024 * 32)
+def render_tree_label(
+    self,
+    node: TreeNode[DirEntry],
+    is_dir: bool,
+    expanded: bool,
+    is_cursor: bool,
+    is_hover: bool,
+    has_focus: bool,
+) -&gt; RenderableType:
+    meta = {
+        &#34;@click&#34;: f&#34;click_label({node.id})&#34;,
+        &#34;tree_node&#34;: node.id,
+        &#34;cursor&#34;: node.is_cursor,
+    }
+    label = Text(node.label) if isinstance(node.label, str) else node.label
+    if is_hover:
+        label.stylize(&#34;underline&#34;)
+    if is_dir:
+        label.stylize(&#34;bold magenta&#34;)
+        icon = &#34;📂&#34; if expanded else &#34;📁&#34;
+    else:
+        label.stylize(&#34;bright_green&#34;)
+        icon = &#34;📄&#34;
+        label.highlight_regex(r&#34;\..*$&#34;, &#34;green&#34;)
+
+    if label.plain.startswith(&#34;.&#34;):
+        label.stylize(&#34;dim&#34;)
+
+    if is_cursor and has_focus:
+        label.stylize(&#34;reverse&#34;)
+
+    icon_label = Text(f&#34;{icon} &#34;, no_wrap=True, overflow=&#34;ellipsis&#34;) + label
+    icon_label.apply_meta(meta)
+    return icon_label</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.DirectoryTree.watch_hover_node"><code class="name flex">
+<span>async def <span class="ident">watch_hover_node</span></span>(<span>self, hover_node: <a title="textual.widgets.NodeID" href="#textual.widgets.NodeID">NewType.<locals>.new_type()</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def watch_hover_node(self, hover_node: NodeID) -&gt; None:
+    for node in self.nodes.values():
+        node.tree.guide_style = (
+            &#34;bold not dim red&#34; if node.id == hover_node else &#34;black&#34;
+        )
+    self.refresh(layout=True)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
+<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
+<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
+<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
+<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
+<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
+<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.FileClick"><code class="flex name class">
+<span>class <span class="ident">FileClick</span></span>
+<span>(</span><span>sender: MessageTarget, path: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for a message.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FileClick(Message, bubble=True):
+    def __init__(self, sender: MessageTarget, path: str) -&gt; None:
+        self.path = path
+        super().__init__(sender)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.message.Message" href="../message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.FileClick.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.widgets.FileClick.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.message.Message" href="../message.html#textual.message.Message">Message</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.message.Message.can_replace" href="../message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.name" href="../message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.message.Message.prevent_default" href="../message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.message.Message.sender" href="../message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.message.Message.set_forwarded" href="../message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.message.Message.stop" href="../message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.message.Message.time" href="../message.html#textual.message.Message.time">time</a></code></li>
+<li><code><a title="textual.message.Message.wait" href="../message.html#textual.message.Message.wait">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.Footer"><code class="flex name class">
+<span>class <span class="ident">Footer</span></span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Footer(Widget):
+    def __init__(self) -&gt; None:
+        self.keys: list[tuple[str, str]] = []
+        super().__init__()
+        self.layout_size = 1
+        self._key_text: Text | None = None
+
+    highlight_key: Reactive[str | None] = Reactive(None)
+
+    async def watch_highlight_key(self, value) -&gt; None:
+        &#34;&#34;&#34;If highlight key changes we need to regenerate the text.&#34;&#34;&#34;
+        self._key_text = None
+
+    async def on_mouse_move(self, event: events.MouseMove) -&gt; None:
+        &#34;&#34;&#34;Store any key we are moving over.&#34;&#34;&#34;
+        self.highlight_key = event.style.meta.get(&#34;key&#34;)
+
+    async def on_leave(self, event: events.Leave) -&gt; None:
+        &#34;&#34;&#34;Clear any highlight when the mouse leave the widget&#34;&#34;&#34;
+        self.highlight_key = None
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        yield &#34;keys&#34;, self.keys
+
+    def make_key_text(self) -&gt; Text:
+        &#34;&#34;&#34;Create text containing all the keys.&#34;&#34;&#34;
+        text = Text(
+            style=&#34;white on dark_green&#34;,
+            no_wrap=True,
+            overflow=&#34;ellipsis&#34;,
+            justify=&#34;left&#34;,
+            end=&#34;&#34;,
+        )
+        for binding in self.app.bindings.shown_keys:
+            key_display = (
+                binding.key.upper()
+                if binding.key_display is None
+                else binding.key_display
+            )
+            hovered = self.highlight_key == binding.key
+            key_text = Text.assemble(
+                (f&#34; {key_display} &#34;, &#34;reverse&#34; if hovered else &#34;default on default&#34;),
+                f&#34; {binding.description} &#34;,
+                meta={&#34;@click&#34;: f&#34;app.press(&#39;{binding.key}&#39;)&#34;, &#34;key&#34;: binding.key},
+            )
+            text.append_text(key_text)
+        return text
+
+    def render(self) -&gt; RenderableType:
+        if self._key_text is None:
+            self._key_text = self.make_key_text()
+        return self._key_text</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.Footer.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.widgets.Footer.highlight_key"><code class="name">var <span class="ident">highlight_key</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.widgets.Footer.make_key_text"><code class="name flex">
+<span>def <span class="ident">make_key_text</span></span>(<span>self) ‑> rich.text.Text</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create text containing all the keys.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def make_key_text(self) -&gt; Text:
+    &#34;&#34;&#34;Create text containing all the keys.&#34;&#34;&#34;
+    text = Text(
+        style=&#34;white on dark_green&#34;,
+        no_wrap=True,
+        overflow=&#34;ellipsis&#34;,
+        justify=&#34;left&#34;,
+        end=&#34;&#34;,
+    )
+    for binding in self.app.bindings.shown_keys:
+        key_display = (
+            binding.key.upper()
+            if binding.key_display is None
+            else binding.key_display
+        )
+        hovered = self.highlight_key == binding.key
+        key_text = Text.assemble(
+            (f&#34; {key_display} &#34;, &#34;reverse&#34; if hovered else &#34;default on default&#34;),
+            f&#34; {binding.description} &#34;,
+            meta={&#34;@click&#34;: f&#34;app.press(&#39;{binding.key}&#39;)&#34;, &#34;key&#34;: binding.key},
+        )
+        text.append_text(key_text)
+    return text</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Footer.on_leave"><code class="name flex">
+<span>async def <span class="ident">on_leave</span></span>(<span>self, event: events.Leave) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clear any highlight when the mouse leave the widget</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_leave(self, event: events.Leave) -&gt; None:
+    &#34;&#34;&#34;Clear any highlight when the mouse leave the widget&#34;&#34;&#34;
+    self.highlight_key = None</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Footer.on_mouse_move"><code class="name flex">
+<span>async def <span class="ident">on_mouse_move</span></span>(<span>self, event: events.MouseMove) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Store any key we are moving over.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_mouse_move(self, event: events.MouseMove) -&gt; None:
+    &#34;&#34;&#34;Store any key we are moving over.&#34;&#34;&#34;
+    self.highlight_key = event.style.meta.get(&#34;key&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Footer.watch_highlight_key"><code class="name flex">
+<span>async def <span class="ident">watch_highlight_key</span></span>(<span>self, value) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>If highlight key changes we need to regenerate the text.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def watch_highlight_key(self, value) -&gt; None:
+    &#34;&#34;&#34;If highlight key changes we need to regenerate the text.&#34;&#34;&#34;
+    self._key_text = None</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
+<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
+<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
+<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
+<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
+<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
+<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.Header"><code class="flex name class">
+<span>class <span class="ident">Header</span></span>
+<span>(</span><span>*, tall: bool = True, style: Union[str, ForwardRef('Style')] = 'white on dark_green', clock: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Header(Widget):
+    def __init__(
+        self,
+        *,
+        tall: bool = True,
+        style: StyleType = &#34;white on dark_green&#34;,
+        clock: bool = True,
+    ) -&gt; None:
+        super().__init__()
+        self.tall = tall
+        self.style = style
+        self.clock = clock
+
+    tall: Reactive[bool] = Reactive(True, layout=True)
+    style: Reactive[StyleType] = Reactive(&#34;white on blue&#34;)
+    clock: Reactive[bool] = Reactive(True)
+    title: Reactive[str] = Reactive(&#34;&#34;)
+    sub_title: Reactive[str] = Reactive(&#34;&#34;)
+
+    @property
+    def full_title(self) -&gt; str:
+        return f&#34;{self.title} - {self.sub_title}&#34; if self.sub_title else self.title
+
+    def __rich_repr__(self) -&gt; Result:
+        yield self.title
+
+    async def watch_tall(self, tall: bool) -&gt; None:
+        self.layout_size = 3 if tall else 1
+
+    def get_clock(self) -&gt; str:
+        return datetime.now().time().strftime(&#34;%X&#34;)
+
+    def render(self) -&gt; RenderableType:
+        header_table = Table.grid(padding=(0, 1), expand=True)
+        header_table.style = self.style
+        header_table.add_column(justify=&#34;left&#34;, ratio=0, width=8)
+        header_table.add_column(&#34;title&#34;, justify=&#34;center&#34;, ratio=1)
+        header_table.add_column(&#34;clock&#34;, justify=&#34;right&#34;, width=8)
+        header_table.add_row(
+            &#34;🐞&#34;, self.full_title, self.get_clock() if self.clock else &#34;&#34;
+        )
+        header: RenderableType
+        header = Panel(header_table, style=self.style) if self.tall else header_table
+        return header
+
+    async def on_mount(self, event: events.Mount) -&gt; None:
+        self.set_interval(1.0, callback=self.refresh)
+
+        async def set_title(title: str) -&gt; None:
+            self.title = title
+
+        async def set_sub_title(sub_title: str) -&gt; None:
+            self.sub_title = sub_title
+
+        watch(self.app, &#34;title&#34;, set_title)
+        watch(self.app, &#34;sub_title&#34;, set_sub_title)
+
+    async def on_click(self, event: events.Click) -&gt; None:
+        self.tall = not self.tall</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.Header.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.widgets.Header.clock"><code class="name">var <span class="ident">clock</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Header.full_title"><code class="name">var <span class="ident">full_title</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def full_title(self) -&gt; str:
+    return f&#34;{self.title} - {self.sub_title}&#34; if self.sub_title else self.title</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Header.sub_title"><code class="name">var <span class="ident">sub_title</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Header.tall"><code class="name">var <span class="ident">tall</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Header.title"><code class="name">var <span class="ident">title</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.widgets.Header.get_clock"><code class="name flex">
+<span>def <span class="ident">get_clock</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_clock(self) -&gt; str:
+    return datetime.now().time().strftime(&#34;%X&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Header.on_click"><code class="name flex">
+<span>async def <span class="ident">on_click</span></span>(<span>self, event: <a title="textual.events.Click" href="../events.html#textual.events.Click">Click</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_click(self, event: events.Click) -&gt; None:
+    self.tall = not self.tall</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Header.on_mount"><code class="name flex">
+<span>async def <span class="ident">on_mount</span></span>(<span>self, event: <a title="textual.events.Mount" href="../events.html#textual.events.Mount">Mount</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_mount(self, event: events.Mount) -&gt; None:
+    self.set_interval(1.0, callback=self.refresh)
+
+    async def set_title(title: str) -&gt; None:
+        self.title = title
+
+    async def set_sub_title(sub_title: str) -&gt; None:
+        self.sub_title = sub_title
+
+    watch(self.app, &#34;title&#34;, set_title)
+    watch(self.app, &#34;sub_title&#34;, set_sub_title)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Header.watch_tall"><code class="name flex">
+<span>async def <span class="ident">watch_tall</span></span>(<span>self, tall: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def watch_tall(self, tall: bool) -&gt; None:
+    self.layout_size = 3 if tall else 1</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
+<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
+<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
+<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
+<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
+<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
+<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.Placeholder"><code class="flex name class">
+<span>class <span class="ident">Placeholder</span></span>
+<span>(</span><span>*, name: str | None = None, height: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Placeholder(Widget, can_focus=True):
+
+    has_focus: Reactive[bool] = Reactive(False)
+    mouse_over: Reactive[bool] = Reactive(False)
+    style: Reactive[str] = Reactive(&#34;&#34;)
+    height: Reactive[int | None] = Reactive(None)
+
+    def __init__(self, *, name: str | None = None, height: int | None = None) -&gt; None:
+        super().__init__(name=name)
+        self.height = height
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        yield &#34;name&#34;, self.name
+        yield &#34;has_focus&#34;, self.has_focus, False
+        yield &#34;mouse_over&#34;, self.mouse_over, False
+
+    def render(self) -&gt; RenderableType:
+        return Panel(
+            Align.center(
+                Pretty(self, no_wrap=True, overflow=&#34;ellipsis&#34;), vertical=&#34;middle&#34;
+            ),
+            title=self.__class__.__name__,
+            border_style=&#34;green&#34; if self.mouse_over else &#34;blue&#34;,
+            box=box.HEAVY if self.has_focus else box.ROUNDED,
+            style=self.style,
+            height=self.height,
+        )
+
+    async def on_focus(self, event: events.Focus) -&gt; None:
+        self.has_focus = True
+
+    async def on_blur(self, event: events.Blur) -&gt; None:
+        self.has_focus = False
+
+    async def on_enter(self, event: events.Enter) -&gt; None:
+        self.mouse_over = True
+
+    async def on_leave(self, event: events.Leave) -&gt; None:
+        self.mouse_over = False</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.Placeholder.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.widgets.Placeholder.has_focus"><code class="name">var <span class="ident">has_focus</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Placeholder.height"><code class="name">var <span class="ident">height</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Placeholder.mouse_over"><code class="name">var <span class="ident">mouse_over</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.widgets.Placeholder.on_blur"><code class="name flex">
+<span>async def <span class="ident">on_blur</span></span>(<span>self, event: events.Blur) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_blur(self, event: events.Blur) -&gt; None:
+    self.has_focus = False</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Placeholder.on_enter"><code class="name flex">
+<span>async def <span class="ident">on_enter</span></span>(<span>self, event: events.Enter) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_enter(self, event: events.Enter) -&gt; None:
+    self.mouse_over = True</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Placeholder.on_focus"><code class="name flex">
+<span>async def <span class="ident">on_focus</span></span>(<span>self, event: events.Focus) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_focus(self, event: events.Focus) -&gt; None:
+    self.has_focus = True</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Placeholder.on_leave"><code class="name flex">
+<span>async def <span class="ident">on_leave</span></span>(<span>self, event: events.Leave) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_leave(self, event: events.Leave) -&gt; None:
+    self.mouse_over = False</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
+<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
+<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
+<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
+<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
+<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
+<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.ScrollView"><code class="flex name class">
+<span>class <span class="ident">ScrollView</span></span>
+<span>(</span><span>contents: RenderableType | Widget | None = None, *, auto_width: bool = False, name: str | None = None, style: StyleType = '', fluid: bool = True, gutter: SpacingDimensions = (0, 0))</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ScrollView(View):
+    def __init__(
+        self,
+        contents: RenderableType | Widget | None = None,
+        *,
+        auto_width: bool = False,
+        name: str | None = None,
+        style: StyleType = &#34;&#34;,
+        fluid: bool = True,
+        gutter: SpacingDimensions = (0, 0)
+    ) -&gt; None:
+        from ..views import WindowView
+
+        self.fluid = fluid
+        self.vscroll = ScrollBar(vertical=True)
+        self.hscroll = ScrollBar(vertical=False)
+        self.window = WindowView(
+            &#34;&#34; if contents is None else contents, auto_width=auto_width, gutter=gutter
+        )
+        layout = GridLayout()
+        layout.add_column(&#34;main&#34;)
+        layout.add_column(&#34;vscroll&#34;, size=1)
+        layout.add_row(&#34;main&#34;)
+        layout.add_row(&#34;hscroll&#34;, size=1)
+        layout.add_areas(
+            content=&#34;main,main&#34;, vscroll=&#34;vscroll,main&#34;, hscroll=&#34;main,hscroll&#34;
+        )
+        layout.show_row(&#34;hscroll&#34;, False)
+        layout.show_column(&#34;vscroll&#34;, False)
+        super().__init__(name=name, layout=layout)
+
+    x: Reactive[float] = Reactive(0, repaint=False)
+    y: Reactive[float] = Reactive(0, repaint=False)
+
+    target_x: Reactive[float] = Reactive(0, repaint=False)
+    target_y: Reactive[float] = Reactive(0, repaint=False)
+
+    def validate_x(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_x)
+
+    def validate_target_x(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_x)
+
+    def validate_y(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_y)
+
+    def validate_target_y(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_y)
+
+    @property
+    def max_scroll_y(self) -&gt; float:
+        return max(0, self.window.virtual_size.height - self.window.size.height)
+
+    @property
+    def max_scroll_x(self) -&gt; float:
+        return max(0, self.window.virtual_size.width - self.window.size.width)
+
+    async def watch_x(self, new_value: float) -&gt; None:
+        self.window.scroll_x = round(new_value)
+        self.hscroll.position = round(new_value)
+
+    async def watch_y(self, new_value: float) -&gt; None:
+        self.window.scroll_y = round(new_value)
+        self.vscroll.position = round(new_value)
+
+    async def update(self, renderable: RenderableType, home: bool = True) -&gt; None:
+        if home:
+            self.home()
+        await self.window.update(renderable)
+
+    async def on_mount(self, event: events.Mount) -&gt; None:
+        assert isinstance(self.layout, GridLayout)
+        self.layout.place(
+            content=self.window,
+            vscroll=self.vscroll,
+            hscroll=self.hscroll,
+        )
+        await self.layout.mount_all(self)
+
+    def home(self) -&gt; None:
+        self.x = self.y = 0
+
+    def scroll_up(self) -&gt; None:
+        self.target_y += 1.5
+        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;, speed=80)
+
+    def scroll_down(self) -&gt; None:
+        self.target_y -= 1.5
+        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;, speed=80)
+
+    def page_up(self) -&gt; None:
+        self.target_y -= self.size.height
+        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
+
+    def page_down(self) -&gt; None:
+        self.target_y += self.size.height
+        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
+
+    def page_left(self) -&gt; None:
+        self.target_x -= self.size.width
+        self.animate(&#34;x&#34;, self.target_x, speed=120, easing=&#34;out_cubic&#34;)
+
+    def page_right(self) -&gt; None:
+        self.target_x += self.size.width
+        self.animate(&#34;x&#34;, self.target_x, speed=120, easing=&#34;out_cubic&#34;)
+
+    def scroll_in_to_view(self, line: int) -&gt; None:
+        if line &lt; self.y:
+            self.y = line
+        elif line &gt;= self.y + self.size.height:
+            self.y = line - self.size.height + 1
+
+    def scroll_to_center(self, line: int) -&gt; None:
+        self.target_y = line - self.size.height // 2
+        if abs(self.target_y - self.y) &gt; 1:
+            # Animate if its more than 1
+            self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
+        else:
+            # Jump if its just one step
+            self.y = self.target_y
+
+    async def on_mouse_scroll_up(self, event: events.MouseScrollUp) -&gt; None:
+        self.scroll_up()
+
+    async def on_mouse_scroll_down(self, event: events.MouseScrollUp) -&gt; None:
+        self.scroll_down()
+
+    async def on_key(self, event: events.Key) -&gt; None:
+        await self.dispatch_key(event)
+
+    async def key_down(self) -&gt; None:
+        self.target_y += 2
+        self.animate(&#34;y&#34;, self.target_y, easing=&#34;linear&#34;, speed=100)
+
+    async def key_up(self) -&gt; None:
+        self.target_y -= 2
+        self.animate(&#34;y&#34;, self.target_y, easing=&#34;linear&#34;, speed=100)
+
+    async def key_pagedown(self) -&gt; None:
+        self.target_y += self.size.height
+        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
+
+    async def key_pageup(self) -&gt; None:
+        self.target_y -= self.size.height
+        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
+
+    async def key_end(self) -&gt; None:
+        self.target_x = 0
+        self.target_y = self.window.virtual_size.height - self.size.height
+        self.animate(&#34;x&#34;, self.target_x, duration=1, easing=&#34;out_cubic&#34;)
+        self.animate(&#34;y&#34;, self.target_y, duration=1, easing=&#34;out_cubic&#34;)
+
+    async def key_home(self) -&gt; None:
+        self.target_x = 0
+        self.target_y = 0
+        self.animate(&#34;x&#34;, self.target_x, duration=1, easing=&#34;out_cubic&#34;)
+        self.animate(&#34;y&#34;, self.target_y, duration=1, easing=&#34;out_cubic&#34;)
+
+    async def handle_scroll_up(self) -&gt; None:
+        self.page_up()
+
+    async def handle_scroll_down(self) -&gt; None:
+        self.page_down()
+
+    async def handle_scroll_left(self) -&gt; None:
+        self.page_left()
+
+    async def handle_scroll_right(self) -&gt; None:
+        self.page_right()
+
+    async def handle_scroll_to(self, message: ScrollTo) -&gt; None:
+        if message.x is not None:
+            self.target_x = message.x
+        if message.y is not None:
+            self.target_y = message.y
+        self.animate(&#34;x&#34;, self.target_x, speed=150, easing=&#34;out_cubic&#34;)
+        self.animate(&#34;y&#34;, self.target_y, speed=150, easing=&#34;out_cubic&#34;)
+
+    async def handle_window_change(self, message: Message) -&gt; None:
+
+        message.stop()
+
+        virtual_width, virtual_height = self.window.virtual_size
+        width, height = self.size
+
+        self.x = self.validate_x(self.x)
+        self.y = self.validate_y(self.y)
+
+        self.hscroll.virtual_size = virtual_width
+        self.hscroll.window_size = width
+        self.vscroll.virtual_size = virtual_height
+        self.vscroll.window_size = height
+
+        assert isinstance(self.layout, GridLayout)
+
+        vscroll_change = self.layout.show_column(&#34;vscroll&#34;, virtual_height &gt; height)
+        hscroll_change = self.layout.show_row(&#34;hscroll&#34;, virtual_width &gt; width)
+        if hscroll_change or vscroll_change:
+            self.refresh(layout=True)
+
+    def handle_cursor_move(self, message: CursorMove) -&gt; None:
+        self.scroll_to_center(message.line)
+        message.stop()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.view.View" href="../view.html#textual.view.View">View</a></li>
+<li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.ScrollView.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.widgets.ScrollView.max_scroll_x"><code class="name">var <span class="ident">max_scroll_x</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def max_scroll_x(self) -&gt; float:
+    return max(0, self.window.virtual_size.width - self.window.size.width)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.max_scroll_y"><code class="name">var <span class="ident">max_scroll_y</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def max_scroll_y(self) -&gt; float:
+    return max(0, self.window.virtual_size.height - self.window.size.height)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.target_x"><code class="name">var <span class="ident">target_x</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.target_y"><code class="name">var <span class="ident">target_y</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.x"><code class="name">var <span class="ident">x</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.y"><code class="name">var <span class="ident">y</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.widgets.ScrollView.handle_cursor_move"><code class="name flex">
+<span>def <span class="ident">handle_cursor_move</span></span>(<span>self, message: CursorMove) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_cursor_move(self, message: CursorMove) -&gt; None:
+    self.scroll_to_center(message.line)
+    message.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.handle_scroll_down"><code class="name flex">
+<span>async def <span class="ident">handle_scroll_down</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def handle_scroll_down(self) -&gt; None:
+    self.page_down()</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.handle_scroll_left"><code class="name flex">
+<span>async def <span class="ident">handle_scroll_left</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def handle_scroll_left(self) -&gt; None:
+    self.page_left()</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.handle_scroll_right"><code class="name flex">
+<span>async def <span class="ident">handle_scroll_right</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def handle_scroll_right(self) -&gt; None:
+    self.page_right()</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.handle_scroll_to"><code class="name flex">
+<span>async def <span class="ident">handle_scroll_to</span></span>(<span>self, message: ScrollTo) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def handle_scroll_to(self, message: ScrollTo) -&gt; None:
+    if message.x is not None:
+        self.target_x = message.x
+    if message.y is not None:
+        self.target_y = message.y
+    self.animate(&#34;x&#34;, self.target_x, speed=150, easing=&#34;out_cubic&#34;)
+    self.animate(&#34;y&#34;, self.target_y, speed=150, easing=&#34;out_cubic&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.handle_scroll_up"><code class="name flex">
+<span>async def <span class="ident">handle_scroll_up</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def handle_scroll_up(self) -&gt; None:
+    self.page_up()</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.handle_window_change"><code class="name flex">
+<span>async def <span class="ident">handle_window_change</span></span>(<span>self, message: Message) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def handle_window_change(self, message: Message) -&gt; None:
+
+    message.stop()
+
+    virtual_width, virtual_height = self.window.virtual_size
+    width, height = self.size
+
+    self.x = self.validate_x(self.x)
+    self.y = self.validate_y(self.y)
+
+    self.hscroll.virtual_size = virtual_width
+    self.hscroll.window_size = width
+    self.vscroll.virtual_size = virtual_height
+    self.vscroll.window_size = height
+
+    assert isinstance(self.layout, GridLayout)
+
+    vscroll_change = self.layout.show_column(&#34;vscroll&#34;, virtual_height &gt; height)
+    hscroll_change = self.layout.show_row(&#34;hscroll&#34;, virtual_width &gt; width)
+    if hscroll_change or vscroll_change:
+        self.refresh(layout=True)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.home"><code class="name flex">
+<span>def <span class="ident">home</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def home(self) -&gt; None:
+    self.x = self.y = 0</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.key_down"><code class="name flex">
+<span>async def <span class="ident">key_down</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def key_down(self) -&gt; None:
+    self.target_y += 2
+    self.animate(&#34;y&#34;, self.target_y, easing=&#34;linear&#34;, speed=100)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.key_end"><code class="name flex">
+<span>async def <span class="ident">key_end</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def key_end(self) -&gt; None:
+    self.target_x = 0
+    self.target_y = self.window.virtual_size.height - self.size.height
+    self.animate(&#34;x&#34;, self.target_x, duration=1, easing=&#34;out_cubic&#34;)
+    self.animate(&#34;y&#34;, self.target_y, duration=1, easing=&#34;out_cubic&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.key_home"><code class="name flex">
+<span>async def <span class="ident">key_home</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def key_home(self) -&gt; None:
+    self.target_x = 0
+    self.target_y = 0
+    self.animate(&#34;x&#34;, self.target_x, duration=1, easing=&#34;out_cubic&#34;)
+    self.animate(&#34;y&#34;, self.target_y, duration=1, easing=&#34;out_cubic&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.key_pagedown"><code class="name flex">
+<span>async def <span class="ident">key_pagedown</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def key_pagedown(self) -&gt; None:
+    self.target_y += self.size.height
+    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.key_pageup"><code class="name flex">
+<span>async def <span class="ident">key_pageup</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def key_pageup(self) -&gt; None:
+    self.target_y -= self.size.height
+    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.key_up"><code class="name flex">
+<span>async def <span class="ident">key_up</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def key_up(self) -&gt; None:
+    self.target_y -= 2
+    self.animate(&#34;y&#34;, self.target_y, easing=&#34;linear&#34;, speed=100)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.on_key"><code class="name flex">
+<span>async def <span class="ident">on_key</span></span>(<span>self, event: events.Key) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_key(self, event: events.Key) -&gt; None:
+    await self.dispatch_key(event)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.on_mount"><code class="name flex">
+<span>async def <span class="ident">on_mount</span></span>(<span>self, event: events.Mount) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_mount(self, event: events.Mount) -&gt; None:
+    assert isinstance(self.layout, GridLayout)
+    self.layout.place(
+        content=self.window,
+        vscroll=self.vscroll,
+        hscroll=self.hscroll,
+    )
+    await self.layout.mount_all(self)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.on_mouse_scroll_down"><code class="name flex">
+<span>async def <span class="ident">on_mouse_scroll_down</span></span>(<span>self, event: events.MouseScrollUp) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_mouse_scroll_down(self, event: events.MouseScrollUp) -&gt; None:
+    self.scroll_down()</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.on_mouse_scroll_up"><code class="name flex">
+<span>async def <span class="ident">on_mouse_scroll_up</span></span>(<span>self, event: events.MouseScrollUp) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_mouse_scroll_up(self, event: events.MouseScrollUp) -&gt; None:
+    self.scroll_up()</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.page_down"><code class="name flex">
+<span>def <span class="ident">page_down</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def page_down(self) -&gt; None:
+    self.target_y += self.size.height
+    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.page_left"><code class="name flex">
+<span>def <span class="ident">page_left</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def page_left(self) -&gt; None:
+    self.target_x -= self.size.width
+    self.animate(&#34;x&#34;, self.target_x, speed=120, easing=&#34;out_cubic&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.page_right"><code class="name flex">
+<span>def <span class="ident">page_right</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def page_right(self) -&gt; None:
+    self.target_x += self.size.width
+    self.animate(&#34;x&#34;, self.target_x, speed=120, easing=&#34;out_cubic&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.page_up"><code class="name flex">
+<span>def <span class="ident">page_up</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def page_up(self) -&gt; None:
+    self.target_y -= self.size.height
+    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.scroll_down"><code class="name flex">
+<span>def <span class="ident">scroll_down</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_down(self) -&gt; None:
+    self.target_y -= 1.5
+    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;, speed=80)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.scroll_in_to_view"><code class="name flex">
+<span>def <span class="ident">scroll_in_to_view</span></span>(<span>self, line: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_in_to_view(self, line: int) -&gt; None:
+    if line &lt; self.y:
+        self.y = line
+    elif line &gt;= self.y + self.size.height:
+        self.y = line - self.size.height + 1</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.scroll_to_center"><code class="name flex">
+<span>def <span class="ident">scroll_to_center</span></span>(<span>self, line: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_to_center(self, line: int) -&gt; None:
+    self.target_y = line - self.size.height // 2
+    if abs(self.target_y - self.y) &gt; 1:
+        # Animate if its more than 1
+        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
+    else:
+        # Jump if its just one step
+        self.y = self.target_y</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.scroll_up"><code class="name flex">
+<span>def <span class="ident">scroll_up</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_up(self) -&gt; None:
+    self.target_y += 1.5
+    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;, speed=80)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.update"><code class="name flex">
+<span>async def <span class="ident">update</span></span>(<span>self, renderable: RenderableType, home: bool = True) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def update(self, renderable: RenderableType, home: bool = True) -&gt; None:
+    if home:
+        self.home()
+    await self.window.update(renderable)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.validate_target_x"><code class="name flex">
+<span>def <span class="ident">validate_target_x</span></span>(<span>self, value: float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_target_x(self, value: float) -&gt; float:
+    return clamp(value, 0, self.max_scroll_x)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.validate_target_y"><code class="name flex">
+<span>def <span class="ident">validate_target_y</span></span>(<span>self, value: float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_target_y(self, value: float) -&gt; float:
+    return clamp(value, 0, self.max_scroll_y)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.validate_x"><code class="name flex">
+<span>def <span class="ident">validate_x</span></span>(<span>self, value: float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_x(self, value: float) -&gt; float:
+    return clamp(value, 0, self.max_scroll_x)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.validate_y"><code class="name flex">
+<span>def <span class="ident">validate_y</span></span>(<span>self, value: float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_y(self, value: float) -&gt; float:
+    return clamp(value, 0, self.max_scroll_y)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.watch_x"><code class="name flex">
+<span>async def <span class="ident">watch_x</span></span>(<span>self, new_value: float) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def watch_x(self, new_value: float) -&gt; None:
+    self.window.scroll_x = round(new_value)
+    self.hscroll.position = round(new_value)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.ScrollView.watch_y"><code class="name flex">
+<span>async def <span class="ident">watch_y</span></span>(<span>self, new_value: float) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def watch_y(self, new_value: float) -&gt; None:
+    self.window.scroll_y = round(new_value)
+    self.vscroll.position = round(new_value)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.view.View" href="../view.html#textual.view.View">View</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.view.View.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.view.View.background" href="../view.html#textual.view.View.background">background</a></code></li>
+<li><code><a title="textual.view.View.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
+<li><code><a title="textual.view.View.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
+<li><code><a title="textual.view.View.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.view.View.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.view.View.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.view.View.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.view.View.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.view.View.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.view.View.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.view.View.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.view.View.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
+<li><code><a title="textual.view.View.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
+<li><code><a title="textual.view.View.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
+<li><code><a title="textual.view.View.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
+<li><code><a title="textual.view.View.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
+<li><code><a title="textual.view.View.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
+<li><code><a title="textual.view.View.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
+<li><code><a title="textual.view.View.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.view.View.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.view.View.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.view.View.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.view.View.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.view.View.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
+<li><code><a title="textual.view.View.scroll_x" href="../view.html#textual.view.View.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.view.View.scroll_y" href="../view.html#textual.view.View.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.view.View.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
+<li><code><a title="textual.view.View.virtual_size" href="../view.html#textual.view.View.virtual_size">virtual_size</a></code></li>
+<li><code><a title="textual.view.View.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.Static"><code class="flex name class">
+<span>class <span class="ident">Static</span></span>
+<span>(</span><span>renderable: RenderableType, name: str | None = None, style: StyleType = '', padding: PaddingDimensions = 0)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Static(Widget):
+    def __init__(
+        self,
+        renderable: RenderableType,
+        name: str | None = None,
+        style: StyleType = &#34;&#34;,
+        padding: PaddingDimensions = 0,
+    ) -&gt; None:
+        super().__init__(name)
+        self.renderable = renderable
+        self.style = style
+        self.padding = padding
+
+    def render(self) -&gt; RenderableType:
+        renderable = self.renderable
+        if self.padding:
+            renderable = Padding(renderable, self.padding)
+        return Styled(renderable, self.style)
+
+    async def update(self, renderable: RenderableType) -&gt; None:
+        self.renderable = renderable
+        self.refresh()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.Static.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.widgets.Static.update"><code class="name flex">
+<span>async def <span class="ident">update</span></span>(<span>self, renderable: RenderableType) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def update(self, renderable: RenderableType) -&gt; None:
+    self.renderable = renderable
+    self.refresh()</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
+<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
+<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
+<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
+<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
+<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
+<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.TreeClick"><code class="flex name class">
+<span>class <span class="ident">TreeClick</span></span>
+<span>(</span><span>sender: MessageTarget, node: <a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a>[NodeDataType])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Abstract base class for generic types.</p>
+<p>A generic type is typically declared by inheriting from
+this class parameterized with one or more type variables.
+For example, a generic mapping type might be defined as::</p>
+<p>class Mapping(Generic[KT, VT]):
+def <strong>getitem</strong>(self, key: KT) -&gt; VT:
+&hellip;
+# Etc.</p>
+<p>This class can then be used as follows::</p>
+<p>def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -&gt; VT:
+try:
+return mapping[key]
+except KeyError:
+return default</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TreeClick(Generic[NodeDataType], Message, bubble=True):
+    def __init__(self, sender: MessageTarget, node: TreeNode[NodeDataType]) -&gt; None:
+        self.node = node
+        super().__init__(sender)
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        yield &#34;node&#34;, self.node</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>typing.Generic</li>
+<li><a title="textual.message.Message" href="../message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.TreeClick.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.widgets.TreeClick.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.message.Message" href="../message.html#textual.message.Message">Message</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.message.Message.can_replace" href="../message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.name" href="../message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.message.Message.prevent_default" href="../message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.message.Message.sender" href="../message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.message.Message.set_forwarded" href="../message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.message.Message.stop" href="../message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.message.Message.time" href="../message.html#textual.message.Message.time">time</a></code></li>
+<li><code><a title="textual.message.Message.wait" href="../message.html#textual.message.Message.wait">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.TreeControl"><code class="flex name class">
+<span>class <span class="ident">TreeControl</span></span>
+<span>(</span><span>label: TextType, data: NodeDataType, *, name: str | None = None, padding: PaddingDimensions = (1, 1))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Abstract base class for generic types.</p>
+<p>A generic type is typically declared by inheriting from
+this class parameterized with one or more type variables.
+For example, a generic mapping type might be defined as::</p>
+<p>class Mapping(Generic[KT, VT]):
+def <strong>getitem</strong>(self, key: KT) -&gt; VT:
+&hellip;
+# Etc.</p>
+<p>This class can then be used as follows::</p>
+<p>def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -&gt; VT:
+try:
+return mapping[key]
+except KeyError:
+return default</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TreeControl(Generic[NodeDataType], Widget):
+    def __init__(
+        self,
+        label: TextType,
+        data: NodeDataType,
+        *,
+        name: str | None = None,
+        padding: PaddingDimensions = (1, 1),
+    ) -&gt; None:
+        self.data = data
+
+        self.id = NodeID(0)
+        self.nodes: dict[NodeID, TreeNode[NodeDataType]] = {}
+        self._tree = Tree(label)
+        self.root: TreeNode[NodeDataType] = TreeNode(
+            None, self.id, self, self._tree, label, data
+        )
+
+        self._tree.label = self.root
+        self.nodes[NodeID(self.id)] = self.root
+        super().__init__(name=name)
+        self.padding = padding
+
+    hover_node: Reactive[NodeID | None] = Reactive(None)
+    cursor: Reactive[NodeID] = Reactive(NodeID(0), layout=True)
+    cursor_line: Reactive[int] = Reactive(0, repaint=False)
+    show_cursor: Reactive[bool] = Reactive(False, layout=True)
+
+    def watch_show_cursor(self, value: bool) -&gt; None:
+        self.emit_no_wait(CursorMove(self, self.cursor_line))
+
+    def watch_cursor_line(self, value: int) -&gt; None:
+        if self.show_cursor:
+            self.emit_no_wait(CursorMove(self, value + self.gutter.top))
+
+    async def add(
+        self,
+        node_id: NodeID,
+        label: TextType,
+        data: NodeDataType,
+    ) -&gt; None:
+        parent = self.nodes[node_id]
+        self.id = NodeID(self.id + 1)
+        child_tree = parent._tree.add(label)
+        child_node: TreeNode[NodeDataType] = TreeNode(
+            parent, self.id, self, child_tree, label, data
+        )
+        parent.children.append(child_node)
+        child_tree.label = child_node
+        self.nodes[self.id] = child_node
+
+        self.refresh(layout=True)
+
+    def find_cursor(self) -&gt; int | None:
+        &#34;&#34;&#34;Find the line location for the cursor node.&#34;&#34;&#34;
+
+        node_id = self.cursor
+        line = 0
+
+        stack: list[Iterator[TreeNode[NodeDataType]]]
+        stack = [iter([self.root])]
+
+        pop = stack.pop
+        push = stack.append
+        while stack:
+            iter_children = pop()
+            try:
+                node = next(iter_children)
+            except StopIteration:
+                continue
+            else:
+                if node.id == node_id:
+                    return line
+                line += 1
+                push(iter_children)
+                if node.children and node.expanded:
+                    push(iter(node.children))
+        return None
+
+    def render(self) -&gt; RenderableType:
+        return self._tree
+
+    def render_node(self, node: TreeNode[NodeDataType]) -&gt; RenderableType:
+        label = (
+            Text(node.label, no_wrap=True, overflow=&#34;ellipsis&#34;)
+            if isinstance(node.label, str)
+            else node.label
+        )
+        if node.id == self.hover_node:
+            label.stylize(&#34;underline&#34;)
+        label.apply_meta({&#34;@click&#34;: f&#34;click_label({node.id})&#34;, &#34;tree_node&#34;: node.id})
+        return label
+
+    async def action_click_label(self, node_id: NodeID) -&gt; None:
+        node = self.nodes[node_id]
+        self.cursor = node.id
+        self.cursor_line = self.find_cursor() or 0
+        self.show_cursor = False
+        await self.post_message(TreeClick(self, node))
+
+    async def on_mouse_move(self, event: events.MouseMove) -&gt; None:
+        self.hover_node = event.style.meta.get(&#34;tree_node&#34;)
+
+    async def on_key(self, event: events.Key) -&gt; None:
+        await self.dispatch_key(event)
+
+    async def key_down(self, event: events.Key) -&gt; None:
+        event.stop()
+        await self.cursor_down()
+
+    async def key_up(self, event: events.Key) -&gt; None:
+        event.stop()
+        await self.cursor_up()
+
+    async def key_enter(self, event: events.Key) -&gt; None:
+        cursor_node = self.nodes[self.cursor]
+        event.stop()
+        await self.post_message(TreeClick(self, cursor_node))
+
+    async def cursor_down(self) -&gt; None:
+        if not self.show_cursor:
+            self.show_cursor = True
+            return
+        cursor_node = self.nodes[self.cursor]
+        next_node = cursor_node.next_node
+        if next_node is not None:
+            self.cursor_line += 1
+            self.cursor = next_node.id
+
+    async def cursor_up(self) -&gt; None:
+        if not self.show_cursor:
+            self.show_cursor = True
+            return
+        cursor_node = self.nodes[self.cursor]
+        previous_node = cursor_node.previous_node
+        if previous_node is not None:
+            self.cursor_line -= 1
+            self.cursor = previous_node.id</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>typing.Generic</li>
+<li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li>textual.widgets._directory_tree.DirectoryTree</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.widgets.TreeControl.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.widgets.TreeControl.cursor"><code class="name">var <span class="ident">cursor</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.cursor_line"><code class="name">var <span class="ident">cursor_line</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.hover_node"><code class="name">var <span class="ident">hover_node</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.show_cursor"><code class="name">var <span class="ident">show_cursor</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.widgets.TreeControl.action_click_label"><code class="name flex">
+<span>async def <span class="ident">action_click_label</span></span>(<span>self, node_id: <a title="textual.widgets.NodeID" href="#textual.widgets.NodeID">NewType.<locals>.new_type()</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def action_click_label(self, node_id: NodeID) -&gt; None:
+    node = self.nodes[node_id]
+    self.cursor = node.id
+    self.cursor_line = self.find_cursor() or 0
+    self.show_cursor = False
+    await self.post_message(TreeClick(self, node))</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.add"><code class="name flex">
+<span>async def <span class="ident">add</span></span>(<span>self, node_id: <a title="textual.widgets.NodeID" href="#textual.widgets.NodeID">NewType.<locals>.new_type()</a>, label: TextType, data: NodeDataType) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def add(
+    self,
+    node_id: NodeID,
+    label: TextType,
+    data: NodeDataType,
+) -&gt; None:
+    parent = self.nodes[node_id]
+    self.id = NodeID(self.id + 1)
+    child_tree = parent._tree.add(label)
+    child_node: TreeNode[NodeDataType] = TreeNode(
+        parent, self.id, self, child_tree, label, data
+    )
+    parent.children.append(child_node)
+    child_tree.label = child_node
+    self.nodes[self.id] = child_node
+
+    self.refresh(layout=True)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.cursor_down"><code class="name flex">
+<span>async def <span class="ident">cursor_down</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def cursor_down(self) -&gt; None:
+    if not self.show_cursor:
+        self.show_cursor = True
+        return
+    cursor_node = self.nodes[self.cursor]
+    next_node = cursor_node.next_node
+    if next_node is not None:
+        self.cursor_line += 1
+        self.cursor = next_node.id</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.cursor_up"><code class="name flex">
+<span>async def <span class="ident">cursor_up</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def cursor_up(self) -&gt; None:
+    if not self.show_cursor:
+        self.show_cursor = True
+        return
+    cursor_node = self.nodes[self.cursor]
+    previous_node = cursor_node.previous_node
+    if previous_node is not None:
+        self.cursor_line -= 1
+        self.cursor = previous_node.id</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.find_cursor"><code class="name flex">
+<span>def <span class="ident">find_cursor</span></span>(<span>self) ‑> int | None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Find the line location for the cursor node.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def find_cursor(self) -&gt; int | None:
+    &#34;&#34;&#34;Find the line location for the cursor node.&#34;&#34;&#34;
+
+    node_id = self.cursor
+    line = 0
+
+    stack: list[Iterator[TreeNode[NodeDataType]]]
+    stack = [iter([self.root])]
+
+    pop = stack.pop
+    push = stack.append
+    while stack:
+        iter_children = pop()
+        try:
+            node = next(iter_children)
+        except StopIteration:
+            continue
+        else:
+            if node.id == node_id:
+                return line
+            line += 1
+            push(iter_children)
+            if node.children and node.expanded:
+                push(iter(node.children))
+    return None</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.key_down"><code class="name flex">
+<span>async def <span class="ident">key_down</span></span>(<span>self, event: events.Key) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def key_down(self, event: events.Key) -&gt; None:
+    event.stop()
+    await self.cursor_down()</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.key_enter"><code class="name flex">
+<span>async def <span class="ident">key_enter</span></span>(<span>self, event: events.Key) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def key_enter(self, event: events.Key) -&gt; None:
+    cursor_node = self.nodes[self.cursor]
+    event.stop()
+    await self.post_message(TreeClick(self, cursor_node))</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.key_up"><code class="name flex">
+<span>async def <span class="ident">key_up</span></span>(<span>self, event: events.Key) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def key_up(self, event: events.Key) -&gt; None:
+    event.stop()
+    await self.cursor_up()</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.on_key"><code class="name flex">
+<span>async def <span class="ident">on_key</span></span>(<span>self, event: events.Key) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_key(self, event: events.Key) -&gt; None:
+    await self.dispatch_key(event)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.on_mouse_move"><code class="name flex">
+<span>async def <span class="ident">on_mouse_move</span></span>(<span>self, event: events.MouseMove) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_mouse_move(self, event: events.MouseMove) -&gt; None:
+    self.hover_node = event.style.meta.get(&#34;tree_node&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.render_node"><code class="name flex">
+<span>def <span class="ident">render_node</span></span>(<span>self, node: <a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a>[NodeDataType]) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def render_node(self, node: TreeNode[NodeDataType]) -&gt; RenderableType:
+    label = (
+        Text(node.label, no_wrap=True, overflow=&#34;ellipsis&#34;)
+        if isinstance(node.label, str)
+        else node.label
+    )
+    if node.id == self.hover_node:
+        label.stylize(&#34;underline&#34;)
+    label.apply_meta({&#34;@click&#34;: f&#34;click_label({node.id})&#34;, &#34;tree_node&#34;: node.id})
+    return label</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.watch_cursor_line"><code class="name flex">
+<span>def <span class="ident">watch_cursor_line</span></span>(<span>self, value: int) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_cursor_line(self, value: int) -&gt; None:
+    if self.show_cursor:
+        self.emit_no_wait(CursorMove(self, value + self.gutter.top))</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeControl.watch_show_cursor"><code class="name flex">
+<span>def <span class="ident">watch_show_cursor</span></span>(<span>self, value: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_show_cursor(self, value: bool) -&gt; None:
+    self.emit_no_wait(CursorMove(self, self.cursor_line))</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
+<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
+<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
+<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
+<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
+<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
+<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
+<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.widgets.TreeNode"><code class="flex name class">
+<span>class <span class="ident">TreeNode</span></span>
+<span>(</span><span>parent: <a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a>[NodeDataType] | None, node_id: <a title="textual.widgets.NodeID" href="#textual.widgets.NodeID">NewType.<locals>.new_type()</a>, control: <a title="textual.widgets.TreeControl" href="#textual.widgets.TreeControl">TreeControl</a>, tree: Tree, label: TextType, data: NodeDataType)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Abstract base class for generic types.</p>
+<p>A generic type is typically declared by inheriting from
+this class parameterized with one or more type variables.
+For example, a generic mapping type might be defined as::</p>
+<p>class Mapping(Generic[KT, VT]):
+def <strong>getitem</strong>(self, key: KT) -&gt; VT:
+&hellip;
+# Etc.</p>
+<p>This class can then be used as follows::</p>
+<p>def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -&gt; VT:
+try:
+return mapping[key]
+except KeyError:
+return default</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TreeNode(Generic[NodeDataType]):
+    def __init__(
+        self,
+        parent: TreeNode[NodeDataType] | None,
+        node_id: NodeID,
+        control: TreeControl,
+        tree: Tree,
+        label: TextType,
+        data: NodeDataType,
+    ) -&gt; None:
+        self.parent = parent
+        self.id = node_id
+        self._control = control
+        self._tree = tree
+        self.label = label
+        self.data = data
+        self.loaded = False
+        self._expanded = False
+        self._empty = False
+        self._tree.expanded = False
+        self.children: list[TreeNode] = []
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        yield &#34;id&#34;, self.id
+        yield &#34;label&#34;, self.label
+        yield &#34;data&#34;, self.data
+
+    @property
+    def control(self) -&gt; TreeControl:
+        return self._control
+
+    @property
+    def empty(self) -&gt; bool:
+        return self._empty
+
+    @property
+    def expanded(self) -&gt; bool:
+        return self._expanded
+
+    @property
+    def is_cursor(self) -&gt; bool:
+        return self.control.cursor == self.id and self.control.show_cursor
+
+    @property
+    def tree(self) -&gt; Tree:
+        return self._tree
+
+    @property
+    def next_node(self) -&gt; TreeNode[NodeDataType] | None:
+        &#34;&#34;&#34;The next node in the tree, or None if at the end.&#34;&#34;&#34;
+
+        if self.expanded and self.children:
+            return self.children[0]
+        else:
+
+            sibling = self.next_sibling
+            if sibling is not None:
+                return sibling
+
+            node = self
+            while True:
+                if node.parent is None:
+                    return None
+                sibling = node.parent.next_sibling
+                if sibling is not None:
+                    return sibling
+                else:
+                    node = node.parent
+
+    @property
+    def previous_node(self) -&gt; TreeNode[NodeDataType] | None:
+        &#34;&#34;&#34;The previous node in the tree, or None if at the end.&#34;&#34;&#34;
+
+        sibling = self.previous_sibling
+        if sibling is not None:
+
+            def last_sibling(node) -&gt; TreeNode[NodeDataType]:
+                if node.expanded and node.children:
+                    return last_sibling(node.children[-1])
+                else:
+                    return (
+                        node.children[-1] if (node.children and node.expanded) else node
+                    )
+
+            return last_sibling(sibling)
+
+        if self.parent is None:
+            return None
+        return self.parent
+
+    @property
+    def next_sibling(self) -&gt; TreeNode[NodeDataType] | None:
+        &#34;&#34;&#34;The next sibling, or None if last sibling.&#34;&#34;&#34;
+        if self.parent is None:
+            return None
+        iter_siblings = iter(self.parent.children)
+        try:
+            for node in iter_siblings:
+                if node is self:
+                    return next(iter_siblings)
+        except StopIteration:
+            pass
+        return None
+
+    @property
+    def previous_sibling(self) -&gt; TreeNode[NodeDataType] | None:
+        &#34;&#34;&#34;Previous sibling or None if first sibling.&#34;&#34;&#34;
+        if self.parent is None:
+            return None
+        iter_siblings = iter(self.parent.children)
+        sibling: TreeNode[NodeDataType] | None = None
+
+        for node in iter_siblings:
+            if node is self:
+                return sibling
+            sibling = node
+        return None
+
+    async def expand(self, expanded: bool = True) -&gt; None:
+        self._expanded = expanded
+        self._tree.expanded = expanded
+        self._control.refresh(layout=True)
+
+    async def toggle(self) -&gt; None:
+        await self.expand(not self._expanded)
+
+    async def add(self, label: TextType, data: NodeDataType) -&gt; None:
+        await self._control.add(self.id, label, data=data)
+        self._control.refresh(layout=True)
+        self._empty = False
+
+    def __rich__(self) -&gt; RenderableType:
+        return self._control.render_node(self)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>typing.Generic</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.widgets.TreeNode.control"><code class="name">var <span class="ident">control</span> : textual.widgets._tree_control.TreeControl</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def control(self) -&gt; TreeControl:
+    return self._control</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeNode.empty"><code class="name">var <span class="ident">empty</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def empty(self) -&gt; bool:
+    return self._empty</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeNode.expanded"><code class="name">var <span class="ident">expanded</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def expanded(self) -&gt; bool:
+    return self._expanded</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeNode.is_cursor"><code class="name">var <span class="ident">is_cursor</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_cursor(self) -&gt; bool:
+    return self.control.cursor == self.id and self.control.show_cursor</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeNode.next_node"><code class="name">var <span class="ident">next_node</span> : <a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a>[NodeDataType] | None</code></dt>
+<dd>
+<div class="desc"><p>The next node in the tree, or None if at the end.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def next_node(self) -&gt; TreeNode[NodeDataType] | None:
+    &#34;&#34;&#34;The next node in the tree, or None if at the end.&#34;&#34;&#34;
+
+    if self.expanded and self.children:
+        return self.children[0]
+    else:
+
+        sibling = self.next_sibling
+        if sibling is not None:
+            return sibling
+
+        node = self
+        while True:
+            if node.parent is None:
+                return None
+            sibling = node.parent.next_sibling
+            if sibling is not None:
+                return sibling
+            else:
+                node = node.parent</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeNode.next_sibling"><code class="name">var <span class="ident">next_sibling</span> : <a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a>[NodeDataType] | None</code></dt>
+<dd>
+<div class="desc"><p>The next sibling, or None if last sibling.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def next_sibling(self) -&gt; TreeNode[NodeDataType] | None:
+    &#34;&#34;&#34;The next sibling, or None if last sibling.&#34;&#34;&#34;
+    if self.parent is None:
+        return None
+    iter_siblings = iter(self.parent.children)
+    try:
+        for node in iter_siblings:
+            if node is self:
+                return next(iter_siblings)
+    except StopIteration:
+        pass
+    return None</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeNode.previous_node"><code class="name">var <span class="ident">previous_node</span> : <a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a>[NodeDataType] | None</code></dt>
+<dd>
+<div class="desc"><p>The previous node in the tree, or None if at the end.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def previous_node(self) -&gt; TreeNode[NodeDataType] | None:
+    &#34;&#34;&#34;The previous node in the tree, or None if at the end.&#34;&#34;&#34;
+
+    sibling = self.previous_sibling
+    if sibling is not None:
+
+        def last_sibling(node) -&gt; TreeNode[NodeDataType]:
+            if node.expanded and node.children:
+                return last_sibling(node.children[-1])
+            else:
+                return (
+                    node.children[-1] if (node.children and node.expanded) else node
+                )
+
+        return last_sibling(sibling)
+
+    if self.parent is None:
+        return None
+    return self.parent</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeNode.previous_sibling"><code class="name">var <span class="ident">previous_sibling</span> : <a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a>[NodeDataType] | None</code></dt>
+<dd>
+<div class="desc"><p>Previous sibling or None if first sibling.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def previous_sibling(self) -&gt; TreeNode[NodeDataType] | None:
+    &#34;&#34;&#34;Previous sibling or None if first sibling.&#34;&#34;&#34;
+    if self.parent is None:
+        return None
+    iter_siblings = iter(self.parent.children)
+    sibling: TreeNode[NodeDataType] | None = None
+
+    for node in iter_siblings:
+        if node is self:
+            return sibling
+        sibling = node
+    return None</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeNode.tree"><code class="name">var <span class="ident">tree</span> : rich.tree.Tree</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def tree(self) -&gt; Tree:
+    return self._tree</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.widgets.TreeNode.add"><code class="name flex">
+<span>async def <span class="ident">add</span></span>(<span>self, label: TextType, data: NodeDataType) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def add(self, label: TextType, data: NodeDataType) -&gt; None:
+    await self._control.add(self.id, label, data=data)
+    self._control.refresh(layout=True)
+    self._empty = False</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeNode.expand"><code class="name flex">
+<span>async def <span class="ident">expand</span></span>(<span>self, expanded: bool = True) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def expand(self, expanded: bool = True) -&gt; None:
+    self._expanded = expanded
+    self._tree.expanded = expanded
+    self._control.refresh(layout=True)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.TreeNode.toggle"><code class="name flex">
+<span>async def <span class="ident">toggle</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def toggle(self) -&gt; None:
+    await self.expand(not self._expanded)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<form>
+<input id="lunr-search" name="q" placeholder="🔎 Search ..." aria-label="Search"
+disabled minlength="2">
+</form>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin></script>
+<style>
+.modal-dialog iframe {
+width: 100vw;
+height: calc(100vh - 80px);
+}
+@media screen and (min-width: 700px) {
+.modal-dialog iframe {
+width: 70vw;
+height: 80vh;
+}
+}
+.modal-dialog .tingle-modal-box {width: auto;}
+.modal-dialog .tingle-modal-box__content {padding: 0;}
+</style>
+<script>
+const input = document.getElementById('lunr-search');
+input.disabled = false;
+input.form.addEventListener('submit', (ev) => {
+ev.preventDefault();
+const url = new URL(window.location);
+url.searchParams.set('q', input.value);
+history.replaceState({}, null, url.toString());
+search(input.value);
+});
+const query = new URL(window.location).searchParams.get('q');
+if (query)
+search(query);
+function search(query) {
+const url = '../../doc-search.html#' + encodeURIComponent(query);
+new tingle.modal({
+cssClass: ['modal-dialog'],
+onClose: () => {
+const url = new URL(window.location);
+url.searchParams.delete('q');
+history.replaceState({}, null, url.toString());
+setTimeout(() => input.focus(), 100);
+}
+}).setContent('<iframe src="' + url + '"></iframe>').open();
+}
+</script>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="textual" href="../index.html">textual</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="textual.widgets.NodeID" href="#textual.widgets.NodeID">NodeID</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="textual.widgets.Button" href="#textual.widgets.Button">Button</a></code></h4>
+<ul class="">
+<li><code><a title="textual.widgets.Button.can_focus" href="#textual.widgets.Button.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widgets.Button.label" href="#textual.widgets.Button.label">label</a></code></li>
+<li><code><a title="textual.widgets.Button.on_click" href="#textual.widgets.Button.on_click">on_click</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.ButtonPressed" href="#textual.widgets.ButtonPressed">ButtonPressed</a></code></h4>
+<ul class="">
+<li><code><a title="textual.widgets.ButtonPressed.bubble" href="#textual.widgets.ButtonPressed.bubble">bubble</a></code></li>
+<li><code><a title="textual.widgets.ButtonPressed.verbosity" href="#textual.widgets.ButtonPressed.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.DirectoryTree" href="#textual.widgets.DirectoryTree">DirectoryTree</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.widgets.DirectoryTree.can_focus" href="#textual.widgets.DirectoryTree.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widgets.DirectoryTree.handle_tree_click" href="#textual.widgets.DirectoryTree.handle_tree_click">handle_tree_click</a></code></li>
+<li><code><a title="textual.widgets.DirectoryTree.has_focus" href="#textual.widgets.DirectoryTree.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widgets.DirectoryTree.load_directory" href="#textual.widgets.DirectoryTree.load_directory">load_directory</a></code></li>
+<li><code><a title="textual.widgets.DirectoryTree.on_blur" href="#textual.widgets.DirectoryTree.on_blur">on_blur</a></code></li>
+<li><code><a title="textual.widgets.DirectoryTree.on_focus" href="#textual.widgets.DirectoryTree.on_focus">on_focus</a></code></li>
+<li><code><a title="textual.widgets.DirectoryTree.on_mount" href="#textual.widgets.DirectoryTree.on_mount">on_mount</a></code></li>
+<li><code><a title="textual.widgets.DirectoryTree.render_node" href="#textual.widgets.DirectoryTree.render_node">render_node</a></code></li>
+<li><code><a title="textual.widgets.DirectoryTree.render_tree_label" href="#textual.widgets.DirectoryTree.render_tree_label">render_tree_label</a></code></li>
+<li><code><a title="textual.widgets.DirectoryTree.watch_hover_node" href="#textual.widgets.DirectoryTree.watch_hover_node">watch_hover_node</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.FileClick" href="#textual.widgets.FileClick">FileClick</a></code></h4>
+<ul class="">
+<li><code><a title="textual.widgets.FileClick.bubble" href="#textual.widgets.FileClick.bubble">bubble</a></code></li>
+<li><code><a title="textual.widgets.FileClick.verbosity" href="#textual.widgets.FileClick.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.Footer" href="#textual.widgets.Footer">Footer</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.widgets.Footer.can_focus" href="#textual.widgets.Footer.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widgets.Footer.highlight_key" href="#textual.widgets.Footer.highlight_key">highlight_key</a></code></li>
+<li><code><a title="textual.widgets.Footer.make_key_text" href="#textual.widgets.Footer.make_key_text">make_key_text</a></code></li>
+<li><code><a title="textual.widgets.Footer.on_leave" href="#textual.widgets.Footer.on_leave">on_leave</a></code></li>
+<li><code><a title="textual.widgets.Footer.on_mouse_move" href="#textual.widgets.Footer.on_mouse_move">on_mouse_move</a></code></li>
+<li><code><a title="textual.widgets.Footer.watch_highlight_key" href="#textual.widgets.Footer.watch_highlight_key">watch_highlight_key</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.Header" href="#textual.widgets.Header">Header</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.widgets.Header.can_focus" href="#textual.widgets.Header.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widgets.Header.clock" href="#textual.widgets.Header.clock">clock</a></code></li>
+<li><code><a title="textual.widgets.Header.full_title" href="#textual.widgets.Header.full_title">full_title</a></code></li>
+<li><code><a title="textual.widgets.Header.get_clock" href="#textual.widgets.Header.get_clock">get_clock</a></code></li>
+<li><code><a title="textual.widgets.Header.on_click" href="#textual.widgets.Header.on_click">on_click</a></code></li>
+<li><code><a title="textual.widgets.Header.on_mount" href="#textual.widgets.Header.on_mount">on_mount</a></code></li>
+<li><code><a title="textual.widgets.Header.sub_title" href="#textual.widgets.Header.sub_title">sub_title</a></code></li>
+<li><code><a title="textual.widgets.Header.tall" href="#textual.widgets.Header.tall">tall</a></code></li>
+<li><code><a title="textual.widgets.Header.title" href="#textual.widgets.Header.title">title</a></code></li>
+<li><code><a title="textual.widgets.Header.watch_tall" href="#textual.widgets.Header.watch_tall">watch_tall</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.Placeholder" href="#textual.widgets.Placeholder">Placeholder</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.widgets.Placeholder.can_focus" href="#textual.widgets.Placeholder.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widgets.Placeholder.has_focus" href="#textual.widgets.Placeholder.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widgets.Placeholder.height" href="#textual.widgets.Placeholder.height">height</a></code></li>
+<li><code><a title="textual.widgets.Placeholder.mouse_over" href="#textual.widgets.Placeholder.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widgets.Placeholder.on_blur" href="#textual.widgets.Placeholder.on_blur">on_blur</a></code></li>
+<li><code><a title="textual.widgets.Placeholder.on_enter" href="#textual.widgets.Placeholder.on_enter">on_enter</a></code></li>
+<li><code><a title="textual.widgets.Placeholder.on_focus" href="#textual.widgets.Placeholder.on_focus">on_focus</a></code></li>
+<li><code><a title="textual.widgets.Placeholder.on_leave" href="#textual.widgets.Placeholder.on_leave">on_leave</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.ScrollView" href="#textual.widgets.ScrollView">ScrollView</a></code></h4>
+<ul class="">
+<li><code><a title="textual.widgets.ScrollView.can_focus" href="#textual.widgets.ScrollView.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.handle_cursor_move" href="#textual.widgets.ScrollView.handle_cursor_move">handle_cursor_move</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.handle_scroll_down" href="#textual.widgets.ScrollView.handle_scroll_down">handle_scroll_down</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.handle_scroll_left" href="#textual.widgets.ScrollView.handle_scroll_left">handle_scroll_left</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.handle_scroll_right" href="#textual.widgets.ScrollView.handle_scroll_right">handle_scroll_right</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.handle_scroll_to" href="#textual.widgets.ScrollView.handle_scroll_to">handle_scroll_to</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.handle_scroll_up" href="#textual.widgets.ScrollView.handle_scroll_up">handle_scroll_up</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.handle_window_change" href="#textual.widgets.ScrollView.handle_window_change">handle_window_change</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.home" href="#textual.widgets.ScrollView.home">home</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.key_down" href="#textual.widgets.ScrollView.key_down">key_down</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.key_end" href="#textual.widgets.ScrollView.key_end">key_end</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.key_home" href="#textual.widgets.ScrollView.key_home">key_home</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.key_pagedown" href="#textual.widgets.ScrollView.key_pagedown">key_pagedown</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.key_pageup" href="#textual.widgets.ScrollView.key_pageup">key_pageup</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.key_up" href="#textual.widgets.ScrollView.key_up">key_up</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.max_scroll_x" href="#textual.widgets.ScrollView.max_scroll_x">max_scroll_x</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.max_scroll_y" href="#textual.widgets.ScrollView.max_scroll_y">max_scroll_y</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.on_key" href="#textual.widgets.ScrollView.on_key">on_key</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.on_mount" href="#textual.widgets.ScrollView.on_mount">on_mount</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.on_mouse_scroll_down" href="#textual.widgets.ScrollView.on_mouse_scroll_down">on_mouse_scroll_down</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.on_mouse_scroll_up" href="#textual.widgets.ScrollView.on_mouse_scroll_up">on_mouse_scroll_up</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.page_down" href="#textual.widgets.ScrollView.page_down">page_down</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.page_left" href="#textual.widgets.ScrollView.page_left">page_left</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.page_right" href="#textual.widgets.ScrollView.page_right">page_right</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.page_up" href="#textual.widgets.ScrollView.page_up">page_up</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.scroll_down" href="#textual.widgets.ScrollView.scroll_down">scroll_down</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.scroll_in_to_view" href="#textual.widgets.ScrollView.scroll_in_to_view">scroll_in_to_view</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.scroll_to_center" href="#textual.widgets.ScrollView.scroll_to_center">scroll_to_center</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.scroll_up" href="#textual.widgets.ScrollView.scroll_up">scroll_up</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.target_x" href="#textual.widgets.ScrollView.target_x">target_x</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.target_y" href="#textual.widgets.ScrollView.target_y">target_y</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.update" href="#textual.widgets.ScrollView.update">update</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.validate_target_x" href="#textual.widgets.ScrollView.validate_target_x">validate_target_x</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.validate_target_y" href="#textual.widgets.ScrollView.validate_target_y">validate_target_y</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.validate_x" href="#textual.widgets.ScrollView.validate_x">validate_x</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.validate_y" href="#textual.widgets.ScrollView.validate_y">validate_y</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.watch_x" href="#textual.widgets.ScrollView.watch_x">watch_x</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.watch_y" href="#textual.widgets.ScrollView.watch_y">watch_y</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.x" href="#textual.widgets.ScrollView.x">x</a></code></li>
+<li><code><a title="textual.widgets.ScrollView.y" href="#textual.widgets.ScrollView.y">y</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.Static" href="#textual.widgets.Static">Static</a></code></h4>
+<ul class="">
+<li><code><a title="textual.widgets.Static.can_focus" href="#textual.widgets.Static.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widgets.Static.update" href="#textual.widgets.Static.update">update</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.TreeClick" href="#textual.widgets.TreeClick">TreeClick</a></code></h4>
+<ul class="">
+<li><code><a title="textual.widgets.TreeClick.bubble" href="#textual.widgets.TreeClick.bubble">bubble</a></code></li>
+<li><code><a title="textual.widgets.TreeClick.verbosity" href="#textual.widgets.TreeClick.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.TreeControl" href="#textual.widgets.TreeControl">TreeControl</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.widgets.TreeControl.action_click_label" href="#textual.widgets.TreeControl.action_click_label">action_click_label</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.add" href="#textual.widgets.TreeControl.add">add</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.can_focus" href="#textual.widgets.TreeControl.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.cursor" href="#textual.widgets.TreeControl.cursor">cursor</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.cursor_down" href="#textual.widgets.TreeControl.cursor_down">cursor_down</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.cursor_line" href="#textual.widgets.TreeControl.cursor_line">cursor_line</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.cursor_up" href="#textual.widgets.TreeControl.cursor_up">cursor_up</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.find_cursor" href="#textual.widgets.TreeControl.find_cursor">find_cursor</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.hover_node" href="#textual.widgets.TreeControl.hover_node">hover_node</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.key_down" href="#textual.widgets.TreeControl.key_down">key_down</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.key_enter" href="#textual.widgets.TreeControl.key_enter">key_enter</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.key_up" href="#textual.widgets.TreeControl.key_up">key_up</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.on_key" href="#textual.widgets.TreeControl.on_key">on_key</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.on_mouse_move" href="#textual.widgets.TreeControl.on_mouse_move">on_mouse_move</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.render_node" href="#textual.widgets.TreeControl.render_node">render_node</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.show_cursor" href="#textual.widgets.TreeControl.show_cursor">show_cursor</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.watch_cursor_line" href="#textual.widgets.TreeControl.watch_cursor_line">watch_cursor_line</a></code></li>
+<li><code><a title="textual.widgets.TreeControl.watch_show_cursor" href="#textual.widgets.TreeControl.watch_show_cursor">watch_show_cursor</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.widgets.TreeNode" href="#textual.widgets.TreeNode">TreeNode</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.widgets.TreeNode.add" href="#textual.widgets.TreeNode.add">add</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.control" href="#textual.widgets.TreeNode.control">control</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.empty" href="#textual.widgets.TreeNode.empty">empty</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.expand" href="#textual.widgets.TreeNode.expand">expand</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.expanded" href="#textual.widgets.TreeNode.expanded">expanded</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.is_cursor" href="#textual.widgets.TreeNode.is_cursor">is_cursor</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.next_node" href="#textual.widgets.TreeNode.next_node">next_node</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.next_sibling" href="#textual.widgets.TreeNode.next_sibling">next_sibling</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.previous_node" href="#textual.widgets.TreeNode.previous_node">previous_node</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.previous_sibling" href="#textual.widgets.TreeNode.previous_sibling">previous_sibling</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.toggle" href="#textual.widgets.TreeNode.toggle">toggle</a></code></li>
+<li><code><a title="textual.widgets.TreeNode.tree" href="#textual.widgets.TreeNode.tree">tree</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

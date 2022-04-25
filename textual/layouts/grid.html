@@ -1,0 +1,1517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>textual.layouts.grid API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}#lunr-search{width:100%;font-size:1em;padding:6px 9px 5px 9px;border:1px solid silver}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>textual.layouts.grid</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+from collections import defaultdict
+from dataclasses import dataclass
+from operator import itemgetter
+from logging import getLogger
+from itertools import cycle, product
+import sys
+from typing import Iterable, NamedTuple
+
+from rich.console import Console
+
+from .._layout_resolve import layout_resolve
+from ..geometry import Size, Offset, Region
+from ..layout import Layout, WidgetPlacement
+from ..layout_map import LayoutMap
+from ..widget import Widget
+
+if sys.version_info &gt;= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
+
+log = getLogger(&#34;rich&#34;)
+
+GridAlign = Literal[&#34;start&#34;, &#34;end&#34;, &#34;center&#34;, &#34;stretch&#34;]
+
+
+@dataclass
+class GridOptions:
+    name: str
+    size: int | None = None
+    fraction: int = 1
+    min_size: int = 1
+    max_size: int | None = None
+
+
+class GridArea(NamedTuple):
+    col_start: str
+    col_end: str
+    row_start: str
+    row_end: str
+
+
+class GridLayout(Layout):
+    def __init__(
+        self,
+        gap: tuple[int, int] | int | None = None,
+        gutter: tuple[int, int] | int | None = None,
+        align: tuple[GridAlign, GridAlign] | None = None,
+    ) -&gt; None:
+        self.columns: list[GridOptions] = []
+        self.rows: list[GridOptions] = []
+        self.areas: dict[str, GridArea] = {}
+        self.widgets: dict[Widget, str | None] = {}
+        self.column_gap = 0
+        self.row_gap = 0
+        self.column_repeat = False
+        self.row_repeat = False
+        self.column_align: GridAlign = &#34;start&#34;
+        self.row_align: GridAlign = &#34;start&#34;
+        self.column_gutter: int = 0
+        self.row_gutter: int = 0
+        self.hidden_columns: set[str] = set()
+        self.hidden_rows: set[str] = set()
+
+        if gap is not None:
+            if isinstance(gap, tuple):
+                self.set_gap(*gap)
+            else:
+                self.set_gap(gap)
+
+        if gutter is not None:
+            if isinstance(gutter, tuple):
+                self.set_gutter(*gutter)
+            else:
+                self.set_gutter(gutter)
+
+        if align is not None:
+            self.set_align(*align)
+
+        super().__init__()
+
+    def is_row_visible(self, row_name: str) -&gt; bool:
+        return row_name not in self.hidden_rows
+
+    def is_column_visible(self, column_name: str) -&gt; bool:
+        return column_name not in self.hidden_columns
+
+    def show_row(self, row_name: str, visible: bool = True) -&gt; bool:
+        changed = (row_name in self.hidden_rows) == visible
+        if visible:
+            self.hidden_rows.discard(row_name)
+        else:
+            self.hidden_rows.add(row_name)
+        if changed:
+            self.require_update()
+            return True
+        return False
+
+    def show_column(self, column_name: str, visible: bool = True) -&gt; bool:
+        changed = (column_name in self.hidden_columns) == visible
+        if visible:
+            self.hidden_columns.discard(column_name)
+        else:
+            self.hidden_columns.add(column_name)
+        if changed:
+            self.require_update()
+            return True
+        return False
+
+    def add_column(
+        self,
+        name: str,
+        *,
+        size: int | None = None,
+        fraction: int = 1,
+        min_size: int = 1,
+        max_size: int | None = None,
+        repeat: int = 1,
+    ) -&gt; None:
+        names = (
+            [name]
+            if repeat == 1
+            else [f&#34;{name}{count}&#34; for count in range(1, repeat + 1)]
+        )
+        append = self.columns.append
+        for name in names:
+            append(
+                GridOptions(
+                    name,
+                    size=size,
+                    fraction=fraction,
+                    min_size=min_size,
+                    max_size=max_size,
+                )
+            )
+        self.require_update()
+
+    def add_row(
+        self,
+        name: str,
+        *,
+        size: int | None = None,
+        fraction: int = 1,
+        min_size: int = 1,
+        max_size: int | None = None,
+        repeat: int = 1,
+    ) -&gt; None:
+        names = (
+            [name]
+            if repeat == 1
+            else [f&#34;{name}{count}&#34; for count in range(1, repeat + 1)]
+        )
+        append = self.rows.append
+        for name in names:
+            append(
+                GridOptions(
+                    name,
+                    size=size,
+                    fraction=fraction,
+                    min_size=min_size,
+                    max_size=max_size,
+                )
+            )
+        self.require_update()
+
+    def _add_area(
+        self, name: str, columns: str | tuple[str, str], rows: str | tuple[str, str]
+    ) -&gt; None:
+        if isinstance(columns, str):
+            column_start = f&#34;{columns}-start&#34;
+            column_end = f&#34;{columns}-end&#34;
+        else:
+            column_start, column_end = columns
+
+        if isinstance(rows, str):
+            row_start = f&#34;{rows}-start&#34;
+            row_end = f&#34;{rows}-end&#34;
+        else:
+            row_start, row_end = rows
+
+        self.areas[name] = GridArea(column_start, column_end, row_start, row_end)
+
+    def add_areas(self, **areas: str) -&gt; None:
+        for name, area in areas.items():
+            area = area.replace(&#34; &#34;, &#34;&#34;)
+            column, _, row = area.partition(&#34;,&#34;)
+
+            column_start, column_sep, column_end = column.partition(&#34;|&#34;)
+            row_start, row_sep, row_end = row.partition(&#34;|&#34;)
+
+            self._add_area(
+                name,
+                (column_start, column_end) if column_sep else column,
+                (row_start, row_end) if row_sep else row,
+            )
+        self.require_update()
+
+    def set_gap(self, column: int, row: int | None = None) -&gt; None:
+        self.column_gap = column
+        self.row_gap = column if row is None else row
+        self.require_update()
+
+    def set_gutter(self, column: int, row: int | None = None) -&gt; None:
+        self.column_gutter = column
+        self.row_gutter = column if row is None else row
+        self.require_update()
+
+    def add_widget(self, widget: Widget, area: str | None = None) -&gt; Widget:
+        self.widgets[widget] = area
+        self.require_update()
+        return widget
+
+    def place(self, *auto_widgets: Widget, **area_widgets: Widget) -&gt; None:
+        widgets = self.widgets
+        for area, widget in area_widgets.items():
+            widgets[widget] = area
+        for widget in auto_widgets:
+            widgets[widget] = None
+        self.require_update()
+
+    def set_repeat(self, column: bool | None = None, row: bool | None = None) -&gt; None:
+        if column is not None:
+            self.column_repeat = column
+        if row is not None:
+            self.row_repeat = row
+        self.require_update()
+
+    def set_align(self, column: GridAlign | None = None, row: GridAlign | None = None):
+        if column is not None:
+            self.column_align = column
+        if row is not None:
+            self.row_align = row
+        self.require_update()
+
+    @classmethod
+    def _align(
+        cls,
+        region: Region,
+        grid_size: Size,
+        container: Size,
+        col_align: GridAlign,
+        row_align: GridAlign,
+    ) -&gt; Region:
+        offset_x = 0
+        offset_y = 0
+
+        def align(size: int, container: int, align: GridAlign) -&gt; int:
+            offset = 0
+            if align == &#34;end&#34;:
+                offset = container - size
+            elif align == &#34;center&#34;:
+                offset = (container - size) // 2
+            return offset
+
+        offset_x = align(grid_size.width, container.width, col_align)
+        offset_y = align(grid_size.height, container.height, row_align)
+
+        region = region.translate(offset_x, offset_y)
+        return region
+
+    def get_widgets(self) -&gt; Iterable[Widget]:
+        return self.widgets.keys()
+
+    def arrange(self, size: Size, scroll: Offset) -&gt; Iterable[WidgetPlacement]:
+        &#34;&#34;&#34;Generate a map that associates widgets with their location on screen.
+
+        Args:
+            width (int): [description]
+            height (int): [description]
+            offset (Point, optional): [description]. Defaults to Point(0, 0).
+
+        Returns:
+            dict[Widget, OrderedRegion]: [description]
+        &#34;&#34;&#34;
+        width, height = size
+
+        def resolve(
+            size: int, edges: list[GridOptions], gap: int, repeat: bool
+        ) -&gt; Iterable[tuple[int, int]]:
+            total_gap = gap * (len(edges) - 1)
+            tracks: Iterable[int]
+            tracks = [
+                track if edge.max_size is None else min(edge.max_size, track)
+                for track, edge in zip(layout_resolve(size - total_gap, edges), edges)
+            ]
+            if repeat:
+                tracks = cycle(tracks)
+            total = 0
+            edge_count = len(edges)
+            for index, track in enumerate(tracks):
+                if total + track &gt;= size and index &gt;= edge_count:
+                    break
+                yield total, total + track
+                total += track + gap
+
+        def resolve_tracks(
+            grid: list[GridOptions], size: int, gap: int, repeat: bool
+        ) -&gt; tuple[list[str], dict[str, tuple[int, int]], int, int]:
+            spans = [
+                (options.name, span)
+                for options, span in zip(cycle(grid), resolve(size, grid, gap, repeat))
+            ]
+
+            max_size = 0
+            tracks: dict[str, tuple[int, int]] = {}
+            counts: dict[str, int] = defaultdict(int)
+            if repeat:
+                names = []
+                for index, (name, (start, end)) in enumerate(spans):
+                    max_size = max(max_size, end)
+                    counts[name] += 1
+                    count = counts[name]
+                    names.append(f&#34;{name}-{count}&#34;)
+                    tracks[f&#34;{name}-{count}-start&#34;] = (index, start)
+                    tracks[f&#34;{name}-{count}-end&#34;] = (index, end)
+            else:
+                names = [name for name, _span in spans]
+                for index, (name, (start, end)) in enumerate(spans):
+                    max_size = max(max_size, end)
+                    tracks[f&#34;{name}-start&#34;] = (index, start)
+                    tracks[f&#34;{name}-end&#34;] = (index, end)
+
+            return names, tracks, len(spans), max_size
+
+        container = Size(width - self.column_gutter * 2, height - self.row_gutter * 2)
+        column_names, column_tracks, column_count, column_size = resolve_tracks(
+            [
+                options
+                for options in self.columns
+                if options.name not in self.hidden_columns
+            ],
+            container.width,
+            self.column_gap,
+            self.column_repeat,
+        )
+        row_names, row_tracks, row_count, row_size = resolve_tracks(
+            [options for options in self.rows if options.name not in self.hidden_rows],
+            container.height,
+            self.row_gap,
+            self.row_repeat,
+        )
+        grid_size = Size(column_size, row_size)
+
+        widget_areas = (
+            (widget, area)
+            for widget, area in self.widgets.items()
+            if area and widget.visible
+        )
+
+        free_slots = set(product(range(column_count), range(row_count)))
+        order = 1
+        from_corners = Region.from_corners
+        gutter = Offset(self.column_gutter, self.row_gutter)
+        for widget, area in widget_areas:
+            column_start, column_end, row_start, row_end = self.areas[area]
+            try:
+                col1, x1 = column_tracks[column_start]
+                col2, x2 = column_tracks[column_end]
+                row1, y1 = row_tracks[row_start]
+                row2, y2 = row_tracks[row_end]
+            except (KeyError, IndexError):
+                continue
+
+            free_slots.difference_update(
+                product(range(col1, col2 + 1), range(row1, row2 + 1))
+            )
+
+            region = self._align(
+                from_corners(x1, y1, x2, y2),
+                grid_size,
+                container,
+                self.column_align,
+                self.row_align,
+            )
+            yield WidgetPlacement(region + gutter, widget, (0, order))
+            order += 1
+
+        # Widgets with no area assigned.
+        auto_widgets = (widget for widget, area in self.widgets.items() if area is None)
+
+        grid_slots = sorted(
+            (
+                slot
+                for slot in product(range(column_count), range(row_count))
+                if slot in free_slots
+            ),
+            key=itemgetter(1, 0),  # TODO: other orders
+        )
+
+        for widget, (col, row) in zip(auto_widgets, grid_slots):
+
+            col_name = column_names[col]
+            row_name = row_names[row]
+            _col1, x1 = column_tracks[f&#34;{col_name}-start&#34;]
+            _col2, x2 = column_tracks[f&#34;{col_name}-end&#34;]
+
+            _row1, y1 = row_tracks[f&#34;{row_name}-start&#34;]
+            _row2, y2 = row_tracks[f&#34;{row_name}-end&#34;]
+
+            region = self._align(
+                from_corners(x1, y1, x2, y2),
+                grid_size,
+                container,
+                self.column_align,
+                self.row_align,
+            )
+            yield WidgetPlacement(region + gutter, widget, (0, order))
+            order += 1
+
+        return map
+
+
+if __name__ == &#34;__main__&#34;:
+    layout = GridLayout()
+
+    layout.add_column(size=20, name=&#34;a&#34;)
+    layout.add_column(size=10, name=&#34;b&#34;)
+
+    layout.add_row(fraction=1, name=&#34;top&#34;)
+    layout.add_row(fraction=2, name=&#34;bottom&#34;)
+
+    layout.add_areas(center=&#34;a-start|b-end,top&#34;)
+    # layout.set_repeat(True)
+
+    from ..widgets import Placeholder
+
+    layout.place(center=Placeholder())
+
+    from rich import print
+
+    print(layout.widgets)
+
+    map = layout.generate_map(100, 80)
+    print(map)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="textual.layouts.grid.GridArea"><code class="flex name class">
+<span>class <span class="ident">GridArea</span></span>
+<span>(</span><span>col_start: str, col_end: str, row_start: str, row_end: str)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GridArea(col_start, col_end, row_start, row_end)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GridArea(NamedTuple):
+    col_start: str
+    col_end: str
+    row_start: str
+    row_end: str</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.layouts.grid.GridArea.col_end"><code class="name">var <span class="ident">col_end</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="textual.layouts.grid.GridArea.col_start"><code class="name">var <span class="ident">col_start</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="textual.layouts.grid.GridArea.row_end"><code class="name">var <span class="ident">row_end</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 3</p></div>
+</dd>
+<dt id="textual.layouts.grid.GridArea.row_start"><code class="name">var <span class="ident">row_start</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="textual.layouts.grid.GridLayout"><code class="flex name class">
+<span>class <span class="ident">GridLayout</span></span>
+<span>(</span><span>gap: tuple[int, int] | int | None = None, gutter: tuple[int, int] | int | None = None, align: tuple[GridAlign, GridAlign] | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Responsible for arranging Widgets in a view and rendering them.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GridLayout(Layout):
+    def __init__(
+        self,
+        gap: tuple[int, int] | int | None = None,
+        gutter: tuple[int, int] | int | None = None,
+        align: tuple[GridAlign, GridAlign] | None = None,
+    ) -&gt; None:
+        self.columns: list[GridOptions] = []
+        self.rows: list[GridOptions] = []
+        self.areas: dict[str, GridArea] = {}
+        self.widgets: dict[Widget, str | None] = {}
+        self.column_gap = 0
+        self.row_gap = 0
+        self.column_repeat = False
+        self.row_repeat = False
+        self.column_align: GridAlign = &#34;start&#34;
+        self.row_align: GridAlign = &#34;start&#34;
+        self.column_gutter: int = 0
+        self.row_gutter: int = 0
+        self.hidden_columns: set[str] = set()
+        self.hidden_rows: set[str] = set()
+
+        if gap is not None:
+            if isinstance(gap, tuple):
+                self.set_gap(*gap)
+            else:
+                self.set_gap(gap)
+
+        if gutter is not None:
+            if isinstance(gutter, tuple):
+                self.set_gutter(*gutter)
+            else:
+                self.set_gutter(gutter)
+
+        if align is not None:
+            self.set_align(*align)
+
+        super().__init__()
+
+    def is_row_visible(self, row_name: str) -&gt; bool:
+        return row_name not in self.hidden_rows
+
+    def is_column_visible(self, column_name: str) -&gt; bool:
+        return column_name not in self.hidden_columns
+
+    def show_row(self, row_name: str, visible: bool = True) -&gt; bool:
+        changed = (row_name in self.hidden_rows) == visible
+        if visible:
+            self.hidden_rows.discard(row_name)
+        else:
+            self.hidden_rows.add(row_name)
+        if changed:
+            self.require_update()
+            return True
+        return False
+
+    def show_column(self, column_name: str, visible: bool = True) -&gt; bool:
+        changed = (column_name in self.hidden_columns) == visible
+        if visible:
+            self.hidden_columns.discard(column_name)
+        else:
+            self.hidden_columns.add(column_name)
+        if changed:
+            self.require_update()
+            return True
+        return False
+
+    def add_column(
+        self,
+        name: str,
+        *,
+        size: int | None = None,
+        fraction: int = 1,
+        min_size: int = 1,
+        max_size: int | None = None,
+        repeat: int = 1,
+    ) -&gt; None:
+        names = (
+            [name]
+            if repeat == 1
+            else [f&#34;{name}{count}&#34; for count in range(1, repeat + 1)]
+        )
+        append = self.columns.append
+        for name in names:
+            append(
+                GridOptions(
+                    name,
+                    size=size,
+                    fraction=fraction,
+                    min_size=min_size,
+                    max_size=max_size,
+                )
+            )
+        self.require_update()
+
+    def add_row(
+        self,
+        name: str,
+        *,
+        size: int | None = None,
+        fraction: int = 1,
+        min_size: int = 1,
+        max_size: int | None = None,
+        repeat: int = 1,
+    ) -&gt; None:
+        names = (
+            [name]
+            if repeat == 1
+            else [f&#34;{name}{count}&#34; for count in range(1, repeat + 1)]
+        )
+        append = self.rows.append
+        for name in names:
+            append(
+                GridOptions(
+                    name,
+                    size=size,
+                    fraction=fraction,
+                    min_size=min_size,
+                    max_size=max_size,
+                )
+            )
+        self.require_update()
+
+    def _add_area(
+        self, name: str, columns: str | tuple[str, str], rows: str | tuple[str, str]
+    ) -&gt; None:
+        if isinstance(columns, str):
+            column_start = f&#34;{columns}-start&#34;
+            column_end = f&#34;{columns}-end&#34;
+        else:
+            column_start, column_end = columns
+
+        if isinstance(rows, str):
+            row_start = f&#34;{rows}-start&#34;
+            row_end = f&#34;{rows}-end&#34;
+        else:
+            row_start, row_end = rows
+
+        self.areas[name] = GridArea(column_start, column_end, row_start, row_end)
+
+    def add_areas(self, **areas: str) -&gt; None:
+        for name, area in areas.items():
+            area = area.replace(&#34; &#34;, &#34;&#34;)
+            column, _, row = area.partition(&#34;,&#34;)
+
+            column_start, column_sep, column_end = column.partition(&#34;|&#34;)
+            row_start, row_sep, row_end = row.partition(&#34;|&#34;)
+
+            self._add_area(
+                name,
+                (column_start, column_end) if column_sep else column,
+                (row_start, row_end) if row_sep else row,
+            )
+        self.require_update()
+
+    def set_gap(self, column: int, row: int | None = None) -&gt; None:
+        self.column_gap = column
+        self.row_gap = column if row is None else row
+        self.require_update()
+
+    def set_gutter(self, column: int, row: int | None = None) -&gt; None:
+        self.column_gutter = column
+        self.row_gutter = column if row is None else row
+        self.require_update()
+
+    def add_widget(self, widget: Widget, area: str | None = None) -&gt; Widget:
+        self.widgets[widget] = area
+        self.require_update()
+        return widget
+
+    def place(self, *auto_widgets: Widget, **area_widgets: Widget) -&gt; None:
+        widgets = self.widgets
+        for area, widget in area_widgets.items():
+            widgets[widget] = area
+        for widget in auto_widgets:
+            widgets[widget] = None
+        self.require_update()
+
+    def set_repeat(self, column: bool | None = None, row: bool | None = None) -&gt; None:
+        if column is not None:
+            self.column_repeat = column
+        if row is not None:
+            self.row_repeat = row
+        self.require_update()
+
+    def set_align(self, column: GridAlign | None = None, row: GridAlign | None = None):
+        if column is not None:
+            self.column_align = column
+        if row is not None:
+            self.row_align = row
+        self.require_update()
+
+    @classmethod
+    def _align(
+        cls,
+        region: Region,
+        grid_size: Size,
+        container: Size,
+        col_align: GridAlign,
+        row_align: GridAlign,
+    ) -&gt; Region:
+        offset_x = 0
+        offset_y = 0
+
+        def align(size: int, container: int, align: GridAlign) -&gt; int:
+            offset = 0
+            if align == &#34;end&#34;:
+                offset = container - size
+            elif align == &#34;center&#34;:
+                offset = (container - size) // 2
+            return offset
+
+        offset_x = align(grid_size.width, container.width, col_align)
+        offset_y = align(grid_size.height, container.height, row_align)
+
+        region = region.translate(offset_x, offset_y)
+        return region
+
+    def get_widgets(self) -&gt; Iterable[Widget]:
+        return self.widgets.keys()
+
+    def arrange(self, size: Size, scroll: Offset) -&gt; Iterable[WidgetPlacement]:
+        &#34;&#34;&#34;Generate a map that associates widgets with their location on screen.
+
+        Args:
+            width (int): [description]
+            height (int): [description]
+            offset (Point, optional): [description]. Defaults to Point(0, 0).
+
+        Returns:
+            dict[Widget, OrderedRegion]: [description]
+        &#34;&#34;&#34;
+        width, height = size
+
+        def resolve(
+            size: int, edges: list[GridOptions], gap: int, repeat: bool
+        ) -&gt; Iterable[tuple[int, int]]:
+            total_gap = gap * (len(edges) - 1)
+            tracks: Iterable[int]
+            tracks = [
+                track if edge.max_size is None else min(edge.max_size, track)
+                for track, edge in zip(layout_resolve(size - total_gap, edges), edges)
+            ]
+            if repeat:
+                tracks = cycle(tracks)
+            total = 0
+            edge_count = len(edges)
+            for index, track in enumerate(tracks):
+                if total + track &gt;= size and index &gt;= edge_count:
+                    break
+                yield total, total + track
+                total += track + gap
+
+        def resolve_tracks(
+            grid: list[GridOptions], size: int, gap: int, repeat: bool
+        ) -&gt; tuple[list[str], dict[str, tuple[int, int]], int, int]:
+            spans = [
+                (options.name, span)
+                for options, span in zip(cycle(grid), resolve(size, grid, gap, repeat))
+            ]
+
+            max_size = 0
+            tracks: dict[str, tuple[int, int]] = {}
+            counts: dict[str, int] = defaultdict(int)
+            if repeat:
+                names = []
+                for index, (name, (start, end)) in enumerate(spans):
+                    max_size = max(max_size, end)
+                    counts[name] += 1
+                    count = counts[name]
+                    names.append(f&#34;{name}-{count}&#34;)
+                    tracks[f&#34;{name}-{count}-start&#34;] = (index, start)
+                    tracks[f&#34;{name}-{count}-end&#34;] = (index, end)
+            else:
+                names = [name for name, _span in spans]
+                for index, (name, (start, end)) in enumerate(spans):
+                    max_size = max(max_size, end)
+                    tracks[f&#34;{name}-start&#34;] = (index, start)
+                    tracks[f&#34;{name}-end&#34;] = (index, end)
+
+            return names, tracks, len(spans), max_size
+
+        container = Size(width - self.column_gutter * 2, height - self.row_gutter * 2)
+        column_names, column_tracks, column_count, column_size = resolve_tracks(
+            [
+                options
+                for options in self.columns
+                if options.name not in self.hidden_columns
+            ],
+            container.width,
+            self.column_gap,
+            self.column_repeat,
+        )
+        row_names, row_tracks, row_count, row_size = resolve_tracks(
+            [options for options in self.rows if options.name not in self.hidden_rows],
+            container.height,
+            self.row_gap,
+            self.row_repeat,
+        )
+        grid_size = Size(column_size, row_size)
+
+        widget_areas = (
+            (widget, area)
+            for widget, area in self.widgets.items()
+            if area and widget.visible
+        )
+
+        free_slots = set(product(range(column_count), range(row_count)))
+        order = 1
+        from_corners = Region.from_corners
+        gutter = Offset(self.column_gutter, self.row_gutter)
+        for widget, area in widget_areas:
+            column_start, column_end, row_start, row_end = self.areas[area]
+            try:
+                col1, x1 = column_tracks[column_start]
+                col2, x2 = column_tracks[column_end]
+                row1, y1 = row_tracks[row_start]
+                row2, y2 = row_tracks[row_end]
+            except (KeyError, IndexError):
+                continue
+
+            free_slots.difference_update(
+                product(range(col1, col2 + 1), range(row1, row2 + 1))
+            )
+
+            region = self._align(
+                from_corners(x1, y1, x2, y2),
+                grid_size,
+                container,
+                self.column_align,
+                self.row_align,
+            )
+            yield WidgetPlacement(region + gutter, widget, (0, order))
+            order += 1
+
+        # Widgets with no area assigned.
+        auto_widgets = (widget for widget, area in self.widgets.items() if area is None)
+
+        grid_slots = sorted(
+            (
+                slot
+                for slot in product(range(column_count), range(row_count))
+                if slot in free_slots
+            ),
+            key=itemgetter(1, 0),  # TODO: other orders
+        )
+
+        for widget, (col, row) in zip(auto_widgets, grid_slots):
+
+            col_name = column_names[col]
+            row_name = row_names[row]
+            _col1, x1 = column_tracks[f&#34;{col_name}-start&#34;]
+            _col2, x2 = column_tracks[f&#34;{col_name}-end&#34;]
+
+            _row1, y1 = row_tracks[f&#34;{row_name}-start&#34;]
+            _row2, y2 = row_tracks[f&#34;{row_name}-end&#34;]
+
+            region = self._align(
+                from_corners(x1, y1, x2, y2),
+                grid_size,
+                container,
+                self.column_align,
+                self.row_align,
+            )
+            yield WidgetPlacement(region + gutter, widget, (0, order))
+            order += 1
+
+        return map</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.layout.Layout" href="../layout.html#textual.layout.Layout">Layout</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.layouts.grid.GridLayout.add_areas"><code class="name flex">
+<span>def <span class="ident">add_areas</span></span>(<span>self, **areas: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_areas(self, **areas: str) -&gt; None:
+    for name, area in areas.items():
+        area = area.replace(&#34; &#34;, &#34;&#34;)
+        column, _, row = area.partition(&#34;,&#34;)
+
+        column_start, column_sep, column_end = column.partition(&#34;|&#34;)
+        row_start, row_sep, row_end = row.partition(&#34;|&#34;)
+
+        self._add_area(
+            name,
+            (column_start, column_end) if column_sep else column,
+            (row_start, row_end) if row_sep else row,
+        )
+    self.require_update()</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.add_column"><code class="name flex">
+<span>def <span class="ident">add_column</span></span>(<span>self, name: str, *, size: int | None = None, fraction: int = 1, min_size: int = 1, max_size: int | None = None, repeat: int = 1) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_column(
+    self,
+    name: str,
+    *,
+    size: int | None = None,
+    fraction: int = 1,
+    min_size: int = 1,
+    max_size: int | None = None,
+    repeat: int = 1,
+) -&gt; None:
+    names = (
+        [name]
+        if repeat == 1
+        else [f&#34;{name}{count}&#34; for count in range(1, repeat + 1)]
+    )
+    append = self.columns.append
+    for name in names:
+        append(
+            GridOptions(
+                name,
+                size=size,
+                fraction=fraction,
+                min_size=min_size,
+                max_size=max_size,
+            )
+        )
+    self.require_update()</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.add_row"><code class="name flex">
+<span>def <span class="ident">add_row</span></span>(<span>self, name: str, *, size: int | None = None, fraction: int = 1, min_size: int = 1, max_size: int | None = None, repeat: int = 1) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_row(
+    self,
+    name: str,
+    *,
+    size: int | None = None,
+    fraction: int = 1,
+    min_size: int = 1,
+    max_size: int | None = None,
+    repeat: int = 1,
+) -&gt; None:
+    names = (
+        [name]
+        if repeat == 1
+        else [f&#34;{name}{count}&#34; for count in range(1, repeat + 1)]
+    )
+    append = self.rows.append
+    for name in names:
+        append(
+            GridOptions(
+                name,
+                size=size,
+                fraction=fraction,
+                min_size=min_size,
+                max_size=max_size,
+            )
+        )
+    self.require_update()</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.add_widget"><code class="name flex">
+<span>def <span class="ident">add_widget</span></span>(<span>self, widget: Widget, area: str | None = None) ‑> Widget</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def add_widget(self, widget: Widget, area: str | None = None) -&gt; Widget:
+    self.widgets[widget] = area
+    self.require_update()
+    return widget</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.arrange"><code class="name flex">
+<span>def <span class="ident">arrange</span></span>(<span>self, size: Size, scroll: Offset) ‑> Iterable[<a title="textual.layout.WidgetPlacement" href="../layout.html#textual.layout.WidgetPlacement">WidgetPlacement</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generate a map that associates widgets with their location on screen.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>width</code></strong> :&ensp;<code>int</code></dt>
+<dd>[description]</dd>
+<dt><strong><code>height</code></strong> :&ensp;<code>int</code></dt>
+<dd>[description]</dd>
+<dt><strong><code>offset</code></strong> :&ensp;<code>Point</code>, optional</dt>
+<dd>[description]. Defaults to Point(0, 0).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict[Widget, OrderedRegion]</code></dt>
+<dd>[description]</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def arrange(self, size: Size, scroll: Offset) -&gt; Iterable[WidgetPlacement]:
+    &#34;&#34;&#34;Generate a map that associates widgets with their location on screen.
+
+    Args:
+        width (int): [description]
+        height (int): [description]
+        offset (Point, optional): [description]. Defaults to Point(0, 0).
+
+    Returns:
+        dict[Widget, OrderedRegion]: [description]
+    &#34;&#34;&#34;
+    width, height = size
+
+    def resolve(
+        size: int, edges: list[GridOptions], gap: int, repeat: bool
+    ) -&gt; Iterable[tuple[int, int]]:
+        total_gap = gap * (len(edges) - 1)
+        tracks: Iterable[int]
+        tracks = [
+            track if edge.max_size is None else min(edge.max_size, track)
+            for track, edge in zip(layout_resolve(size - total_gap, edges), edges)
+        ]
+        if repeat:
+            tracks = cycle(tracks)
+        total = 0
+        edge_count = len(edges)
+        for index, track in enumerate(tracks):
+            if total + track &gt;= size and index &gt;= edge_count:
+                break
+            yield total, total + track
+            total += track + gap
+
+    def resolve_tracks(
+        grid: list[GridOptions], size: int, gap: int, repeat: bool
+    ) -&gt; tuple[list[str], dict[str, tuple[int, int]], int, int]:
+        spans = [
+            (options.name, span)
+            for options, span in zip(cycle(grid), resolve(size, grid, gap, repeat))
+        ]
+
+        max_size = 0
+        tracks: dict[str, tuple[int, int]] = {}
+        counts: dict[str, int] = defaultdict(int)
+        if repeat:
+            names = []
+            for index, (name, (start, end)) in enumerate(spans):
+                max_size = max(max_size, end)
+                counts[name] += 1
+                count = counts[name]
+                names.append(f&#34;{name}-{count}&#34;)
+                tracks[f&#34;{name}-{count}-start&#34;] = (index, start)
+                tracks[f&#34;{name}-{count}-end&#34;] = (index, end)
+        else:
+            names = [name for name, _span in spans]
+            for index, (name, (start, end)) in enumerate(spans):
+                max_size = max(max_size, end)
+                tracks[f&#34;{name}-start&#34;] = (index, start)
+                tracks[f&#34;{name}-end&#34;] = (index, end)
+
+        return names, tracks, len(spans), max_size
+
+    container = Size(width - self.column_gutter * 2, height - self.row_gutter * 2)
+    column_names, column_tracks, column_count, column_size = resolve_tracks(
+        [
+            options
+            for options in self.columns
+            if options.name not in self.hidden_columns
+        ],
+        container.width,
+        self.column_gap,
+        self.column_repeat,
+    )
+    row_names, row_tracks, row_count, row_size = resolve_tracks(
+        [options for options in self.rows if options.name not in self.hidden_rows],
+        container.height,
+        self.row_gap,
+        self.row_repeat,
+    )
+    grid_size = Size(column_size, row_size)
+
+    widget_areas = (
+        (widget, area)
+        for widget, area in self.widgets.items()
+        if area and widget.visible
+    )
+
+    free_slots = set(product(range(column_count), range(row_count)))
+    order = 1
+    from_corners = Region.from_corners
+    gutter = Offset(self.column_gutter, self.row_gutter)
+    for widget, area in widget_areas:
+        column_start, column_end, row_start, row_end = self.areas[area]
+        try:
+            col1, x1 = column_tracks[column_start]
+            col2, x2 = column_tracks[column_end]
+            row1, y1 = row_tracks[row_start]
+            row2, y2 = row_tracks[row_end]
+        except (KeyError, IndexError):
+            continue
+
+        free_slots.difference_update(
+            product(range(col1, col2 + 1), range(row1, row2 + 1))
+        )
+
+        region = self._align(
+            from_corners(x1, y1, x2, y2),
+            grid_size,
+            container,
+            self.column_align,
+            self.row_align,
+        )
+        yield WidgetPlacement(region + gutter, widget, (0, order))
+        order += 1
+
+    # Widgets with no area assigned.
+    auto_widgets = (widget for widget, area in self.widgets.items() if area is None)
+
+    grid_slots = sorted(
+        (
+            slot
+            for slot in product(range(column_count), range(row_count))
+            if slot in free_slots
+        ),
+        key=itemgetter(1, 0),  # TODO: other orders
+    )
+
+    for widget, (col, row) in zip(auto_widgets, grid_slots):
+
+        col_name = column_names[col]
+        row_name = row_names[row]
+        _col1, x1 = column_tracks[f&#34;{col_name}-start&#34;]
+        _col2, x2 = column_tracks[f&#34;{col_name}-end&#34;]
+
+        _row1, y1 = row_tracks[f&#34;{row_name}-start&#34;]
+        _row2, y2 = row_tracks[f&#34;{row_name}-end&#34;]
+
+        region = self._align(
+            from_corners(x1, y1, x2, y2),
+            grid_size,
+            container,
+            self.column_align,
+            self.row_align,
+        )
+        yield WidgetPlacement(region + gutter, widget, (0, order))
+        order += 1
+
+    return map</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.get_widgets"><code class="name flex">
+<span>def <span class="ident">get_widgets</span></span>(<span>self) ‑> Iterable[<a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_widgets(self) -&gt; Iterable[Widget]:
+    return self.widgets.keys()</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.is_column_visible"><code class="name flex">
+<span>def <span class="ident">is_column_visible</span></span>(<span>self, column_name: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_column_visible(self, column_name: str) -&gt; bool:
+    return column_name not in self.hidden_columns</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.is_row_visible"><code class="name flex">
+<span>def <span class="ident">is_row_visible</span></span>(<span>self, row_name: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def is_row_visible(self, row_name: str) -&gt; bool:
+    return row_name not in self.hidden_rows</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.place"><code class="name flex">
+<span>def <span class="ident">place</span></span>(<span>self, *auto_widgets: Widget, **area_widgets: Widget) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def place(self, *auto_widgets: Widget, **area_widgets: Widget) -&gt; None:
+    widgets = self.widgets
+    for area, widget in area_widgets.items():
+        widgets[widget] = area
+    for widget in auto_widgets:
+        widgets[widget] = None
+    self.require_update()</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.set_align"><code class="name flex">
+<span>def <span class="ident">set_align</span></span>(<span>self, column: GridAlign | None = None, row: GridAlign | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_align(self, column: GridAlign | None = None, row: GridAlign | None = None):
+    if column is not None:
+        self.column_align = column
+    if row is not None:
+        self.row_align = row
+    self.require_update()</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.set_gap"><code class="name flex">
+<span>def <span class="ident">set_gap</span></span>(<span>self, column: int, row: int | None = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_gap(self, column: int, row: int | None = None) -&gt; None:
+    self.column_gap = column
+    self.row_gap = column if row is None else row
+    self.require_update()</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.set_gutter"><code class="name flex">
+<span>def <span class="ident">set_gutter</span></span>(<span>self, column: int, row: int | None = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_gutter(self, column: int, row: int | None = None) -&gt; None:
+    self.column_gutter = column
+    self.row_gutter = column if row is None else row
+    self.require_update()</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.set_repeat"><code class="name flex">
+<span>def <span class="ident">set_repeat</span></span>(<span>self, column: bool | None = None, row: bool | None = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_repeat(self, column: bool | None = None, row: bool | None = None) -&gt; None:
+    if column is not None:
+        self.column_repeat = column
+    if row is not None:
+        self.row_repeat = row
+    self.require_update()</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.show_column"><code class="name flex">
+<span>def <span class="ident">show_column</span></span>(<span>self, column_name: str, visible: bool = True) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_column(self, column_name: str, visible: bool = True) -&gt; bool:
+    changed = (column_name in self.hidden_columns) == visible
+    if visible:
+        self.hidden_columns.discard(column_name)
+    else:
+        self.hidden_columns.add(column_name)
+    if changed:
+        self.require_update()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="textual.layouts.grid.GridLayout.show_row"><code class="name flex">
+<span>def <span class="ident">show_row</span></span>(<span>self, row_name: str, visible: bool = True) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def show_row(self, row_name: str, visible: bool = True) -&gt; bool:
+    changed = (row_name in self.hidden_rows) == visible
+    if visible:
+        self.hidden_rows.discard(row_name)
+    else:
+        self.hidden_rows.add(row_name)
+    if changed:
+        self.require_update()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.layout.Layout" href="../layout.html#textual.layout.Layout">Layout</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.layout.Layout.cuts" href="../layout.html#textual.layout.Layout.cuts">cuts</a></code></li>
+<li><code><a title="textual.layout.Layout.get_offset" href="../layout.html#textual.layout.Layout.get_offset">get_offset</a></code></li>
+<li><code><a title="textual.layout.Layout.get_widget_at" href="../layout.html#textual.layout.Layout.get_widget_at">get_widget_at</a></code></li>
+<li><code><a title="textual.layout.Layout.render" href="../layout.html#textual.layout.Layout.render">render</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.layouts.grid.GridOptions"><code class="flex name class">
+<span>class <span class="ident">GridOptions</span></span>
+<span>(</span><span>name: str, size: int | None = None, fraction: int = 1, min_size: int = 1, max_size: int | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>GridOptions(name: 'str', size: 'int | None' = None, fraction: 'int' = 1, min_size: 'int' = 1, max_size: 'int | None' = None)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class GridOptions:
+    name: str
+    size: int | None = None
+    fraction: int = 1
+    min_size: int = 1
+    max_size: int | None = None</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.layouts.grid.GridOptions.fraction"><code class="name">var <span class="ident">fraction</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layouts.grid.GridOptions.max_size"><code class="name">var <span class="ident">max_size</span> : int | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layouts.grid.GridOptions.min_size"><code class="name">var <span class="ident">min_size</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layouts.grid.GridOptions.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layouts.grid.GridOptions.size"><code class="name">var <span class="ident">size</span> : int | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<form>
+<input id="lunr-search" name="q" placeholder="🔎 Search ..." aria-label="Search"
+disabled minlength="2">
+</form>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin></script>
+<style>
+.modal-dialog iframe {
+width: 100vw;
+height: calc(100vh - 80px);
+}
+@media screen and (min-width: 700px) {
+.modal-dialog iframe {
+width: 70vw;
+height: 80vh;
+}
+}
+.modal-dialog .tingle-modal-box {width: auto;}
+.modal-dialog .tingle-modal-box__content {padding: 0;}
+</style>
+<script>
+const input = document.getElementById('lunr-search');
+input.disabled = false;
+input.form.addEventListener('submit', (ev) => {
+ev.preventDefault();
+const url = new URL(window.location);
+url.searchParams.set('q', input.value);
+history.replaceState({}, null, url.toString());
+search(input.value);
+});
+const query = new URL(window.location).searchParams.get('q');
+if (query)
+search(query);
+function search(query) {
+const url = '../../doc-search.html#' + encodeURIComponent(query);
+new tingle.modal({
+cssClass: ['modal-dialog'],
+onClose: () => {
+const url = new URL(window.location);
+url.searchParams.delete('q');
+history.replaceState({}, null, url.toString());
+setTimeout(() => input.focus(), 100);
+}
+}).setContent('<iframe src="' + url + '"></iframe>').open();
+}
+</script>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="textual.layouts" href="index.html">textual.layouts</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="textual.layouts.grid.GridArea" href="#textual.layouts.grid.GridArea">GridArea</a></code></h4>
+<ul class="">
+<li><code><a title="textual.layouts.grid.GridArea.col_end" href="#textual.layouts.grid.GridArea.col_end">col_end</a></code></li>
+<li><code><a title="textual.layouts.grid.GridArea.col_start" href="#textual.layouts.grid.GridArea.col_start">col_start</a></code></li>
+<li><code><a title="textual.layouts.grid.GridArea.row_end" href="#textual.layouts.grid.GridArea.row_end">row_end</a></code></li>
+<li><code><a title="textual.layouts.grid.GridArea.row_start" href="#textual.layouts.grid.GridArea.row_start">row_start</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.layouts.grid.GridLayout" href="#textual.layouts.grid.GridLayout">GridLayout</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.layouts.grid.GridLayout.add_areas" href="#textual.layouts.grid.GridLayout.add_areas">add_areas</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.add_column" href="#textual.layouts.grid.GridLayout.add_column">add_column</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.add_row" href="#textual.layouts.grid.GridLayout.add_row">add_row</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.add_widget" href="#textual.layouts.grid.GridLayout.add_widget">add_widget</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.arrange" href="#textual.layouts.grid.GridLayout.arrange">arrange</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.get_widgets" href="#textual.layouts.grid.GridLayout.get_widgets">get_widgets</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.is_column_visible" href="#textual.layouts.grid.GridLayout.is_column_visible">is_column_visible</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.is_row_visible" href="#textual.layouts.grid.GridLayout.is_row_visible">is_row_visible</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.place" href="#textual.layouts.grid.GridLayout.place">place</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.set_align" href="#textual.layouts.grid.GridLayout.set_align">set_align</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.set_gap" href="#textual.layouts.grid.GridLayout.set_gap">set_gap</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.set_gutter" href="#textual.layouts.grid.GridLayout.set_gutter">set_gutter</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.set_repeat" href="#textual.layouts.grid.GridLayout.set_repeat">set_repeat</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.show_column" href="#textual.layouts.grid.GridLayout.show_column">show_column</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.show_row" href="#textual.layouts.grid.GridLayout.show_row">show_row</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.layouts.grid.GridOptions" href="#textual.layouts.grid.GridOptions">GridOptions</a></code></h4>
+<ul class="">
+<li><code><a title="textual.layouts.grid.GridOptions.fraction" href="#textual.layouts.grid.GridOptions.fraction">fraction</a></code></li>
+<li><code><a title="textual.layouts.grid.GridOptions.max_size" href="#textual.layouts.grid.GridOptions.max_size">max_size</a></code></li>
+<li><code><a title="textual.layouts.grid.GridOptions.min_size" href="#textual.layouts.grid.GridOptions.min_size">min_size</a></code></li>
+<li><code><a title="textual.layouts.grid.GridOptions.name" href="#textual.layouts.grid.GridOptions.name">name</a></code></li>
+<li><code><a title="textual.layouts.grid.GridOptions.size" href="#textual.layouts.grid.GridOptions.size">size</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
