@@ -33,6 +33,7 @@ from typing import Awaitable, Callable, Type, TYPE_CHECKING, TypeVar
 import rich.repr
 from rich.style import Style
 
+from . import log
 from .geometry import Offset, Size
 from .message import Message
 from ._types import MessageTarget
@@ -117,7 +118,13 @@ class Resize(Event, verbosity=2, bubble=False):
     __slots__ = [&#34;size&#34;]
     size: Size
 
-    def __init__(self, sender: MessageTarget, size: Size) -&gt; None:
+    def __init__(
+        self,
+        sender: MessageTarget,
+        size: Size,
+        virtual_size: Size,
+        container_size: Size | None = None,
+    ) -&gt; None:
         &#34;&#34;&#34;
         Args:
             sender (MessageTarget): Event sender.
@@ -125,22 +132,17 @@ class Resize(Event, verbosity=2, bubble=False):
             height (int): New height in terminal cells.
         &#34;&#34;&#34;
         self.size = size
+        self.virtual_size = virtual_size
+        self.container_size = size if container_size is None else container_size
         super().__init__(sender)
 
     def can_replace(self, message: &#34;Message&#34;) -&gt; bool:
         return isinstance(message, Resize)
 
-    @property
-    def width(self) -&gt; int:
-        return self.size.width
-
-    @property
-    def height(self) -&gt; int:
-        return self.size.height
-
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield self.width
-        yield self.height
+        yield &#34;size&#34;, self.size
+        yield &#34;virtual_size&#34;, self.virtual_size
+        yield &#34;container_size&#34;, self.container_size, self.size
 
 
 class Mount(Event, bubble=False):
@@ -228,7 +230,7 @@ class Key(InputEvent):
 
 
 @rich.repr.auto
-class MouseEvent(InputEvent, bubble=True):
+class MouseEvent(InputEvent, bubble=True, verbosity=2):
     &#34;&#34;&#34;Sent in response to a mouse event&#34;&#34;&#34;
 
     __slots__ = [
@@ -370,7 +372,7 @@ class MouseScrollDown(InputEvent, verbosity=3, bubble=True):
         self.y = y
 
 
-class MouseScrollUp(MouseScrollDown, bubble=True):
+class MouseScrollUp(MouseScrollDown, verbosity=3, bubble=True):
     pass
 
 
@@ -390,11 +392,13 @@ class Timer(Event, verbosity=3, bubble=False):
         self,
         sender: MessageTarget,
         timer: &#34;TimerClass&#34;,
+        time: float,
         count: int = 0,
         callback: TimerCallback | None = None,
     ) -&gt; None:
         super().__init__(sender)
         self.timer = timer
+        self.time = time
         self.count = count
         self.callback = callback
 
@@ -416,12 +420,7 @@ class Focus(Event, bubble=False):
 
 
 class Blur(Event, bubble=False):
-    pass
-
-
-# class Update(Event, bubble=False):
-#     def can_replace(self, event: Message) -&gt; bool:
-#         return isinstance(event, Update) and event.sender == self.sender</code></pre>
+    pass</code></pre>
 </details>
 </section>
 <section>
@@ -469,6 +468,10 @@ class Blur(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Action.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Action.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -492,7 +495,6 @@ class Blur(Event, bubble=False):
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -526,6 +528,10 @@ class Blur(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Blur.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Blur.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -542,7 +548,6 @@ class Blur(Event, bubble=False):
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -583,6 +588,10 @@ class Blur(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Callback.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Callback.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -599,7 +608,6 @@ class Blur(Event, bubble=False):
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -657,6 +665,10 @@ class Blur(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Click.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Click.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -681,7 +693,6 @@ class Blur(Event, bubble=False):
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.MouseEvent.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
 </ul>
@@ -741,6 +752,10 @@ class Blur(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.DoubleClick.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.DoubleClick.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -765,7 +780,6 @@ class Blur(Event, bubble=False):
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.MouseEvent.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
 </ul>
@@ -801,6 +815,10 @@ class Blur(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Enter.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Enter.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -817,7 +835,6 @@ class Blur(Event, bubble=False):
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -878,6 +895,10 @@ class Blur(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Event.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Event.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -894,7 +915,6 @@ class Blur(Event, bubble=False):
 <li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -928,6 +948,10 @@ class Blur(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Focus.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Focus.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -944,7 +968,6 @@ class Blur(Event, bubble=False):
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -985,6 +1008,10 @@ or if it has been offset beyond the edges of the terminal.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Hide.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Hide.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1001,7 +1028,6 @@ or if it has been offset beyond the edges of the terminal.</p>
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1042,6 +1068,10 @@ through the usual message queue.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Idle.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Idle.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1058,7 +1088,6 @@ through the usual message queue.</p>
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1098,6 +1127,10 @@ through the usual message queue.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.InputEvent.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.InputEvent.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1114,7 +1147,6 @@ through the usual message queue.</p>
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1166,6 +1198,10 @@ through the usual message queue.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Key.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Key.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1189,7 +1225,6 @@ through the usual message queue.</p>
 <li><code><a title="textual.events.InputEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.InputEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.InputEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.InputEvent.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1223,6 +1258,10 @@ through the usual message queue.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Leave.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Leave.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1239,7 +1278,6 @@ through the usual message queue.</p>
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1282,6 +1320,10 @@ configuration and binding keys.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Load.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Load.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1298,7 +1340,6 @@ configuration and binding keys.</p>
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1332,6 +1373,10 @@ configuration and binding keys.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Mount.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Mount.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1348,7 +1393,6 @@ configuration and binding keys.</p>
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1402,6 +1446,10 @@ configuration and binding keys.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.MouseCapture.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.MouseCapture.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1418,7 +1466,6 @@ configuration and binding keys.</p>
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1476,6 +1523,10 @@ configuration and binding keys.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.MouseDown.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.MouseDown.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1500,7 +1551,6 @@ configuration and binding keys.</p>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.MouseEvent.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
 </ul>
@@ -1544,7 +1594,7 @@ configuration and binding keys.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MouseEvent(InputEvent, bubble=True):
+<pre><code class="python">class MouseEvent(InputEvent, bubble=True, verbosity=2):
     &#34;&#34;&#34;Sent in response to a mouse event&#34;&#34;&#34;
 
     __slots__ = [
@@ -1681,6 +1731,10 @@ configuration and binding keys.</p>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.MouseEvent.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.MouseEvent.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1812,7 +1866,6 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.InputEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.InputEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.InputEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.InputEvent.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1870,6 +1923,10 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.MouseMove.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.MouseMove.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1894,7 +1951,6 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.MouseEvent.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
 </ul>
@@ -1944,6 +2000,10 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.MouseRelease.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.MouseRelease.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1960,7 +2020,6 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2004,6 +2063,10 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.MouseScrollDown.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.MouseScrollDown.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -2031,7 +2094,6 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.InputEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.InputEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.InputEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.InputEvent.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2051,7 +2113,7 @@ def style(self) -&gt; Style:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MouseScrollUp(MouseScrollDown, bubble=True):
+<pre><code class="python">class MouseScrollUp(MouseScrollDown, verbosity=3, bubble=True):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -2064,6 +2126,10 @@ def style(self) -&gt; Style:
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.events.MouseScrollUp.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.MouseScrollUp.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2083,7 +2149,6 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.MouseScrollDown.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.MouseScrollDown.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.x" href="#textual.events.MouseScrollDown.x">x</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.y" href="#textual.events.MouseScrollDown.y">y</a></code></li>
 </ul>
@@ -2143,6 +2208,10 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.MouseUp.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.MouseUp.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -2167,7 +2236,6 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.MouseEvent.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
 </ul>
@@ -2204,6 +2272,10 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Null.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Null.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -2220,14 +2292,13 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
 <dt id="textual.events.Resize"><code class="flex name class">
 <span>class <span class="ident">Resize</span></span>
-<span>(</span><span>sender: MessageTarget, size: Size)</span>
+<span>(</span><span>sender: MessageTarget, size: Size, virtual_size: Size, container_size: Size | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Sent when the app or widget has been resized.</p>
@@ -2250,7 +2321,13 @@ def style(self) -&gt; Style:
     __slots__ = [&#34;size&#34;]
     size: Size
 
-    def __init__(self, sender: MessageTarget, size: Size) -&gt; None:
+    def __init__(
+        self,
+        sender: MessageTarget,
+        size: Size,
+        virtual_size: Size,
+        container_size: Size | None = None,
+    ) -&gt; None:
         &#34;&#34;&#34;
         Args:
             sender (MessageTarget): Event sender.
@@ -2258,22 +2335,17 @@ def style(self) -&gt; Style:
             height (int): New height in terminal cells.
         &#34;&#34;&#34;
         self.size = size
+        self.virtual_size = virtual_size
+        self.container_size = size if container_size is None else container_size
         super().__init__(sender)
 
     def can_replace(self, message: &#34;Message&#34;) -&gt; bool:
         return isinstance(message, Resize)
 
-    @property
-    def width(self) -&gt; int:
-        return self.size.width
-
-    @property
-    def height(self) -&gt; int:
-        return self.size.height
-
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield self.width
-        yield self.height</code></pre>
+        yield &#34;size&#34;, self.size
+        yield &#34;virtual_size&#34;, self.virtual_size
+        yield &#34;container_size&#34;, self.container_size, self.size</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2286,6 +2358,10 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Resize.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Resize.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -2293,33 +2369,9 @@ def style(self) -&gt; Style:
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.events.Resize.height"><code class="name">var <span class="ident">height</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def height(self) -&gt; int:
-    return self.size.height</code></pre>
-</details>
-</dd>
 <dt id="textual.events.Resize.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
-</dd>
-<dt id="textual.events.Resize.width"><code class="name">var <span class="ident">width</span> : int</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def width(self) -&gt; int:
-    return self.size.width</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2333,7 +2385,6 @@ def width(self) -&gt; int:
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2367,6 +2418,10 @@ def width(self) -&gt; int:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Show.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Show.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -2383,7 +2438,6 @@ def width(self) -&gt; int:
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2417,6 +2471,10 @@ def width(self) -&gt; int:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Shutdown.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Shutdown.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -2433,7 +2491,6 @@ def width(self) -&gt; int:
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2467,6 +2524,10 @@ def width(self) -&gt; int:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.ShutdownRequest.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.ShutdownRequest.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -2483,14 +2544,13 @@ def width(self) -&gt; int:
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
 <dt id="textual.events.Timer"><code class="flex name class">
 <span>class <span class="ident">Timer</span></span>
-<span>(</span><span>sender: MessageTarget, timer: "'TimerClass'", count: int = 0, callback: TimerCallback | None = None)</span>
+<span>(</span><span>sender: MessageTarget, timer: "'TimerClass'", time: float, count: int = 0, callback: TimerCallback | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Base class for a message.</p>
@@ -2510,11 +2570,13 @@ def width(self) -&gt; int:
         self,
         sender: MessageTarget,
         timer: &#34;TimerClass&#34;,
+        time: float,
         count: int = 0,
         callback: TimerCallback | None = None,
     ) -&gt; None:
         super().__init__(sender)
         self.timer = timer
+        self.time = time
         self.count = count
         self.callback = callback
 
@@ -2530,6 +2592,10 @@ def width(self) -&gt; int:
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.events.Timer.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.Timer.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2560,7 +2626,6 @@ def width(self) -&gt; int:
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2594,6 +2659,10 @@ def width(self) -&gt; int:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.events.Unmount.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.events.Unmount.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -2610,7 +2679,6 @@ def width(self) -&gt; int:
 <li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.Event.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2682,6 +2750,7 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.events.Action.action" href="#textual.events.Action.action">action</a></code></li>
 <li><code><a title="textual.events.Action.bubble" href="#textual.events.Action.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Action.system" href="#textual.events.Action.system">system</a></code></li>
 <li><code><a title="textual.events.Action.verbosity" href="#textual.events.Action.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2689,6 +2758,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Blur" href="#textual.events.Blur">Blur</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Blur.bubble" href="#textual.events.Blur.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Blur.system" href="#textual.events.Blur.system">system</a></code></li>
 <li><code><a title="textual.events.Blur.verbosity" href="#textual.events.Blur.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2696,6 +2766,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Callback" href="#textual.events.Callback">Callback</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Callback.bubble" href="#textual.events.Callback.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Callback.system" href="#textual.events.Callback.system">system</a></code></li>
 <li><code><a title="textual.events.Callback.verbosity" href="#textual.events.Callback.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2703,6 +2774,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Click" href="#textual.events.Click">Click</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Click.bubble" href="#textual.events.Click.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Click.system" href="#textual.events.Click.system">system</a></code></li>
 <li><code><a title="textual.events.Click.verbosity" href="#textual.events.Click.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2710,6 +2782,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.DoubleClick" href="#textual.events.DoubleClick">DoubleClick</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.DoubleClick.bubble" href="#textual.events.DoubleClick.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.DoubleClick.system" href="#textual.events.DoubleClick.system">system</a></code></li>
 <li><code><a title="textual.events.DoubleClick.verbosity" href="#textual.events.DoubleClick.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2717,6 +2790,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Enter" href="#textual.events.Enter">Enter</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Enter.bubble" href="#textual.events.Enter.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Enter.system" href="#textual.events.Enter.system">system</a></code></li>
 <li><code><a title="textual.events.Enter.verbosity" href="#textual.events.Enter.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2724,6 +2798,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Event" href="#textual.events.Event">Event</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Event.bubble" href="#textual.events.Event.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Event.system" href="#textual.events.Event.system">system</a></code></li>
 <li><code><a title="textual.events.Event.verbosity" href="#textual.events.Event.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2731,6 +2806,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Focus" href="#textual.events.Focus">Focus</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Focus.bubble" href="#textual.events.Focus.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Focus.system" href="#textual.events.Focus.system">system</a></code></li>
 <li><code><a title="textual.events.Focus.verbosity" href="#textual.events.Focus.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2738,6 +2814,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Hide" href="#textual.events.Hide">Hide</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Hide.bubble" href="#textual.events.Hide.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Hide.system" href="#textual.events.Hide.system">system</a></code></li>
 <li><code><a title="textual.events.Hide.verbosity" href="#textual.events.Hide.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2745,6 +2822,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Idle" href="#textual.events.Idle">Idle</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Idle.bubble" href="#textual.events.Idle.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Idle.system" href="#textual.events.Idle.system">system</a></code></li>
 <li><code><a title="textual.events.Idle.verbosity" href="#textual.events.Idle.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2752,6 +2830,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.InputEvent" href="#textual.events.InputEvent">InputEvent</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.InputEvent.bubble" href="#textual.events.InputEvent.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.InputEvent.system" href="#textual.events.InputEvent.system">system</a></code></li>
 <li><code><a title="textual.events.InputEvent.verbosity" href="#textual.events.InputEvent.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2760,6 +2839,7 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.events.Key.bubble" href="#textual.events.Key.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Key.key" href="#textual.events.Key.key">key</a></code></li>
+<li><code><a title="textual.events.Key.system" href="#textual.events.Key.system">system</a></code></li>
 <li><code><a title="textual.events.Key.verbosity" href="#textual.events.Key.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2767,6 +2847,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Leave" href="#textual.events.Leave">Leave</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Leave.bubble" href="#textual.events.Leave.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Leave.system" href="#textual.events.Leave.system">system</a></code></li>
 <li><code><a title="textual.events.Leave.verbosity" href="#textual.events.Leave.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2774,6 +2855,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Load" href="#textual.events.Load">Load</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Load.bubble" href="#textual.events.Load.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Load.system" href="#textual.events.Load.system">system</a></code></li>
 <li><code><a title="textual.events.Load.verbosity" href="#textual.events.Load.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2781,6 +2863,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Mount" href="#textual.events.Mount">Mount</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Mount.bubble" href="#textual.events.Mount.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Mount.system" href="#textual.events.Mount.system">system</a></code></li>
 <li><code><a title="textual.events.Mount.verbosity" href="#textual.events.Mount.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2788,6 +2871,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.MouseCapture" href="#textual.events.MouseCapture">MouseCapture</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.MouseCapture.bubble" href="#textual.events.MouseCapture.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.MouseCapture.system" href="#textual.events.MouseCapture.system">system</a></code></li>
 <li><code><a title="textual.events.MouseCapture.verbosity" href="#textual.events.MouseCapture.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2795,6 +2879,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.MouseDown" href="#textual.events.MouseDown">MouseDown</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.MouseDown.bubble" href="#textual.events.MouseDown.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.MouseDown.system" href="#textual.events.MouseDown.system">system</a></code></li>
 <li><code><a title="textual.events.MouseDown.verbosity" href="#textual.events.MouseDown.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2813,6 +2898,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.style" href="#textual.events.MouseEvent.style">style</a></code></li>
+<li><code><a title="textual.events.MouseEvent.system" href="#textual.events.MouseEvent.system">system</a></code></li>
 <li><code><a title="textual.events.MouseEvent.verbosity" href="#textual.events.MouseEvent.verbosity">verbosity</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
@@ -2822,6 +2908,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.MouseMove" href="#textual.events.MouseMove">MouseMove</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.MouseMove.bubble" href="#textual.events.MouseMove.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.MouseMove.system" href="#textual.events.MouseMove.system">system</a></code></li>
 <li><code><a title="textual.events.MouseMove.verbosity" href="#textual.events.MouseMove.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2829,6 +2916,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.MouseRelease" href="#textual.events.MouseRelease">MouseRelease</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.MouseRelease.bubble" href="#textual.events.MouseRelease.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.MouseRelease.system" href="#textual.events.MouseRelease.system">system</a></code></li>
 <li><code><a title="textual.events.MouseRelease.verbosity" href="#textual.events.MouseRelease.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2836,6 +2924,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.MouseScrollDown" href="#textual.events.MouseScrollDown">MouseScrollDown</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.MouseScrollDown.bubble" href="#textual.events.MouseScrollDown.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.MouseScrollDown.system" href="#textual.events.MouseScrollDown.system">system</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.verbosity" href="#textual.events.MouseScrollDown.verbosity">verbosity</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.x" href="#textual.events.MouseScrollDown.x">x</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.y" href="#textual.events.MouseScrollDown.y">y</a></code></li>
@@ -2845,6 +2934,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.MouseScrollUp" href="#textual.events.MouseScrollUp">MouseScrollUp</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.MouseScrollUp.bubble" href="#textual.events.MouseScrollUp.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.MouseScrollUp.system" href="#textual.events.MouseScrollUp.system">system</a></code></li>
 <li><code><a title="textual.events.MouseScrollUp.verbosity" href="#textual.events.MouseScrollUp.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2852,6 +2942,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.MouseUp" href="#textual.events.MouseUp">MouseUp</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.MouseUp.bubble" href="#textual.events.MouseUp.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.MouseUp.system" href="#textual.events.MouseUp.system">system</a></code></li>
 <li><code><a title="textual.events.MouseUp.verbosity" href="#textual.events.MouseUp.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2859,6 +2950,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Null" href="#textual.events.Null">Null</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Null.bubble" href="#textual.events.Null.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Null.system" href="#textual.events.Null.system">system</a></code></li>
 <li><code><a title="textual.events.Null.verbosity" href="#textual.events.Null.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2866,16 +2958,16 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Resize" href="#textual.events.Resize">Resize</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Resize.bubble" href="#textual.events.Resize.bubble">bubble</a></code></li>
-<li><code><a title="textual.events.Resize.height" href="#textual.events.Resize.height">height</a></code></li>
 <li><code><a title="textual.events.Resize.size" href="#textual.events.Resize.size">size</a></code></li>
+<li><code><a title="textual.events.Resize.system" href="#textual.events.Resize.system">system</a></code></li>
 <li><code><a title="textual.events.Resize.verbosity" href="#textual.events.Resize.verbosity">verbosity</a></code></li>
-<li><code><a title="textual.events.Resize.width" href="#textual.events.Resize.width">width</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="textual.events.Show" href="#textual.events.Show">Show</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Show.bubble" href="#textual.events.Show.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Show.system" href="#textual.events.Show.system">system</a></code></li>
 <li><code><a title="textual.events.Show.verbosity" href="#textual.events.Show.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2883,6 +2975,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Shutdown" href="#textual.events.Shutdown">Shutdown</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Shutdown.bubble" href="#textual.events.Shutdown.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Shutdown.system" href="#textual.events.Shutdown.system">system</a></code></li>
 <li><code><a title="textual.events.Shutdown.verbosity" href="#textual.events.Shutdown.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2890,6 +2983,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.ShutdownRequest" href="#textual.events.ShutdownRequest">ShutdownRequest</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.ShutdownRequest.bubble" href="#textual.events.ShutdownRequest.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.ShutdownRequest.system" href="#textual.events.ShutdownRequest.system">system</a></code></li>
 <li><code><a title="textual.events.ShutdownRequest.verbosity" href="#textual.events.ShutdownRequest.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2899,6 +2993,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Timer.bubble" href="#textual.events.Timer.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Timer.callback" href="#textual.events.Timer.callback">callback</a></code></li>
 <li><code><a title="textual.events.Timer.count" href="#textual.events.Timer.count">count</a></code></li>
+<li><code><a title="textual.events.Timer.system" href="#textual.events.Timer.system">system</a></code></li>
 <li><code><a title="textual.events.Timer.verbosity" href="#textual.events.Timer.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -2906,6 +3001,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Unmount" href="#textual.events.Unmount">Unmount</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Unmount.bubble" href="#textual.events.Unmount.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Unmount.system" href="#textual.events.Unmount.system">system</a></code></li>
 <li><code><a title="textual.events.Unmount.verbosity" href="#textual.events.Unmount.verbosity">verbosity</a></code></li>
 </ul>
 </li>

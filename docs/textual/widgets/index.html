@@ -30,7 +30,6 @@
 from ._header import Header
 from ._button import Button, ButtonPressed
 from ._placeholder import Placeholder
-from ._scroll_view import ScrollView
 from ._static import Static
 from ._tree_control import TreeControl, TreeClick, TreeNode, NodeID
 from ._directory_tree import DirectoryTree, FileClick
@@ -43,7 +42,6 @@ __all__ = [
     &#34;Footer&#34;,
     &#34;Header&#34;,
     &#34;Placeholder&#34;,
-    &#34;ScrollView&#34;,
     &#34;Static&#34;,
     &#34;TreeClick&#34;,
     &#34;TreeControl&#34;,
@@ -53,6 +51,13 @@ __all__ = [
 </details>
 </section>
 <section>
+<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+<dl>
+<dt><code class="name"><a title="textual.widgets.tabs" href="tabs.html">textual.widgets.tabs</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 </section>
 <section>
 </section>
@@ -82,7 +87,8 @@ __all__ = [
 <span>(</span><span>label: RenderableType, name: str | None = None, style: StyleType = 'white on dark_blue')</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
+<p>Nodes are mountable and may be styled with CSS.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -112,18 +118,19 @@ __all__ = [
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.dom.DOMNode" href="../dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.widgets.Button.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dt id="textual.widgets.Button.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.widgets.Button.label"><code class="name">var <span class="ident">label</span> : ReactiveType</code></dt>
+<dt id="textual.widgets.Button.label"><code class="name">var <span class="ident">label</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[typing.Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]]</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -156,32 +163,69 @@ __all__ = [
 <ul class="hlist">
 <li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
 <ul class="hlist">
+<li><code><a title="textual.widget.Widget.add_child" href="../dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.widget.Widget.add_children" href="../dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.widget.Widget.add_class" href="../dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_height" href="../widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_width" href="../widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.css_path" href="../dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.display" href="../dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.focus" href="../widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.widget.Widget.get_box_model" href="../widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.widget.Widget.get_child" href="../dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
-<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="../widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.get_render_lines" href="../widget.html#textual.widget.Widget.get_render_lines">get_render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.has_class" href="../dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.widget.Widget.has_focus" href="../widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.has_pseudo_class" href="../dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="../widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.id" href="../dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.widget.Widget.is_container" href="../widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.widget.Widget.is_transparent" href="../widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.widget.Widget.mouse_over" href="../widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_idle" href="../widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.parent" href="../dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_priority_message" href="../message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.widget.Widget.pseudo_classes" href="../dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.query" href="../dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.release_mouse" href="../widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
-<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.rich_text_style" href="../dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
+<li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_y" href="../widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to" href="../widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
+<li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="../widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="../widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.toggle_class" href="../dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.widget.Widget.tree" href="../dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="../widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.walk_children" href="../dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_has_focus" href="../widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_mouse_over" href="../widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 </ul>
 </li>
 </ul>
@@ -214,6 +258,10 @@ __all__ = [
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.widgets.ButtonPressed.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.widgets.ButtonPressed.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -230,7 +278,6 @@ __all__ = [
 <li><code><a title="textual.message.Message.set_forwarded" href="../message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="../message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="../message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="../message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -357,6 +404,7 @@ return default</p></div>
 <li>textual.widgets._tree_control.TreeControl</li>
 <li>typing.Generic</li>
 <li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.dom.DOMNode" href="../dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
 <h3>Class variables</h3>
@@ -364,20 +412,6 @@ return default</p></div>
 <dt id="textual.widgets.DirectoryTree.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-</dl>
-<h3>Instance variables</h3>
-<dl>
-<dt id="textual.widgets.DirectoryTree.has_focus"><code class="name">var <span class="ident">has_focus</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -551,32 +585,69 @@ def render_tree_label(
 <ul class="hlist">
 <li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
 <ul class="hlist">
+<li><code><a title="textual.widget.Widget.add_child" href="../dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.widget.Widget.add_children" href="../dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.widget.Widget.add_class" href="../dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_height" href="../widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_width" href="../widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.css_path" href="../dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.display" href="../dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.focus" href="../widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.widget.Widget.get_box_model" href="../widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.widget.Widget.get_child" href="../dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
-<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="../widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.get_render_lines" href="../widget.html#textual.widget.Widget.get_render_lines">get_render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.has_class" href="../dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.widget.Widget.has_focus" href="../widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.has_pseudo_class" href="../dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="../widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.id" href="../dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.widget.Widget.is_container" href="../widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.widget.Widget.is_transparent" href="../widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.widget.Widget.mouse_over" href="../widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_idle" href="../widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.parent" href="../dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_priority_message" href="../message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.widget.Widget.pseudo_classes" href="../dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.query" href="../dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.release_mouse" href="../widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
-<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.rich_text_style" href="../dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
+<li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_y" href="../widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to" href="../widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
+<li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="../widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="../widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.toggle_class" href="../dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.widget.Widget.tree" href="../dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="../widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.walk_children" href="../dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_has_focus" href="../widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_mouse_over" href="../widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 </ul>
 </li>
 </ul>
@@ -611,6 +682,10 @@ def render_tree_label(
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.widgets.FileClick.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.widgets.FileClick.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -627,7 +702,6 @@ def render_tree_label(
 <li><code><a title="textual.message.Message.set_forwarded" href="../message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="../message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="../message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="../message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -636,7 +710,8 @@ def render_tree_label(
 <span>class <span class="ident">Footer</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
+<p>Nodes are mountable and may be styled with CSS.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -663,7 +738,7 @@ def render_tree_label(
         self.highlight_key = None
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield &#34;keys&#34;, self.keys
+        yield from super().__rich_repr__()
 
     def make_key_text(self) -&gt; Text:
         &#34;&#34;&#34;Create text containing all the keys.&#34;&#34;&#34;
@@ -697,6 +772,7 @@ def render_tree_label(
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.dom.DOMNode" href="../dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
 <h3>Class variables</h3>
@@ -803,42 +879,80 @@ def render_tree_label(
 <ul class="hlist">
 <li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
 <ul class="hlist">
+<li><code><a title="textual.widget.Widget.add_child" href="../dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.widget.Widget.add_children" href="../dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.widget.Widget.add_class" href="../dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_height" href="../widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_width" href="../widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.css_path" href="../dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.display" href="../dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.focus" href="../widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.widget.Widget.get_box_model" href="../widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.widget.Widget.get_child" href="../dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
-<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="../widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.get_render_lines" href="../widget.html#textual.widget.Widget.get_render_lines">get_render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.has_class" href="../dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.widget.Widget.has_focus" href="../widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.has_pseudo_class" href="../dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="../widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.id" href="../dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.widget.Widget.is_container" href="../widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.widget.Widget.is_transparent" href="../widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.widget.Widget.mouse_over" href="../widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_idle" href="../widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.parent" href="../dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_priority_message" href="../message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.widget.Widget.pseudo_classes" href="../dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.query" href="../dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.release_mouse" href="../widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
-<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.rich_text_style" href="../dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
+<li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_y" href="../widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to" href="../widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
+<li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="../widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="../widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.toggle_class" href="../dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.widget.Widget.tree" href="../dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="../widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.walk_children" href="../dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_has_focus" href="../widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_mouse_over" href="../widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
 <dt id="textual.widgets.Header"><code class="flex name class">
 <span>class <span class="ident">Header</span></span>
-<span>(</span><span>*, tall: bool = True, style: Union[str, ForwardRef('Style')] = 'white on dark_green', clock: bool = True)</span>
+<span>(</span><span>*, tall: bool = True, style: StyleType = 'white on dark_green', clock: bool = True)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
+<p>Nodes are mountable and may be styled with CSS.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -867,7 +981,8 @@ def render_tree_label(
         return f&#34;{self.title} - {self.sub_title}&#34; if self.sub_title else self.title
 
     def __rich_repr__(self) -&gt; Result:
-        yield self.title
+        yield from super().__rich_repr__()
+        yield &#34;title&#34;, self.title
 
     async def watch_tall(self, tall: bool) -&gt; None:
         self.layout_size = 3 if tall else 1
@@ -906,18 +1021,19 @@ def render_tree_label(
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.dom.DOMNode" href="../dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.widgets.Header.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dt id="textual.widgets.Header.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.widgets.Header.clock"><code class="name">var <span class="ident">clock</span> : ReactiveType</code></dt>
+<dt id="textual.widgets.Header.clock"><code class="name">var <span class="ident">clock</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[bool]</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -940,7 +1056,7 @@ def full_title(self) -&gt; str:
     return f&#34;{self.title} - {self.sub_title}&#34; if self.sub_title else self.title</code></pre>
 </details>
 </dd>
-<dt id="textual.widgets.Header.sub_title"><code class="name">var <span class="ident">sub_title</span> : ReactiveType</code></dt>
+<dt id="textual.widgets.Header.style"><code class="name">var <span class="ident">style</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[typing.Union[str, Style]]</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -951,7 +1067,7 @@ def full_title(self) -&gt; str:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.widgets.Header.tall"><code class="name">var <span class="ident">tall</span> : ReactiveType</code></dt>
+<dt id="textual.widgets.Header.sub_title"><code class="name">var <span class="ident">sub_title</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[str]</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -962,7 +1078,18 @@ def full_title(self) -&gt; str:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.widgets.Header.title"><code class="name">var <span class="ident">title</span> : ReactiveType</code></dt>
+<dt id="textual.widgets.Header.tall"><code class="name">var <span class="ident">tall</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[bool]</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Header.title"><code class="name">var <span class="ident">title</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[str]</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -990,7 +1117,7 @@ def full_title(self) -&gt; str:
 </details>
 </dd>
 <dt id="textual.widgets.Header.on_click"><code class="name flex">
-<span>async def <span class="ident">on_click</span></span>(<span>self, event: <a title="textual.events.Click" href="../events.html#textual.events.Click">Click</a>) ‑> None</span>
+<span>async def <span class="ident">on_click</span></span>(<span>self, event: events.Click) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1003,7 +1130,7 @@ def full_title(self) -&gt; str:
 </details>
 </dd>
 <dt id="textual.widgets.Header.on_mount"><code class="name flex">
-<span>async def <span class="ident">on_mount</span></span>(<span>self, event: <a title="textual.events.Mount" href="../events.html#textual.events.Mount">Mount</a>) ‑> None</span>
+<span>async def <span class="ident">on_mount</span></span>(<span>self, event: events.Mount) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1042,42 +1169,80 @@ def full_title(self) -&gt; str:
 <ul class="hlist">
 <li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
 <ul class="hlist">
+<li><code><a title="textual.widget.Widget.add_child" href="../dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.widget.Widget.add_children" href="../dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.widget.Widget.add_class" href="../dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_height" href="../widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_width" href="../widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.css_path" href="../dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.display" href="../dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.focus" href="../widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.widget.Widget.get_box_model" href="../widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.widget.Widget.get_child" href="../dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
-<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="../widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.get_render_lines" href="../widget.html#textual.widget.Widget.get_render_lines">get_render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.has_class" href="../dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.widget.Widget.has_focus" href="../widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.has_pseudo_class" href="../dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="../widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.id" href="../dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.widget.Widget.is_container" href="../widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.widget.Widget.is_transparent" href="../widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.widget.Widget.mouse_over" href="../widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_idle" href="../widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.parent" href="../dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_priority_message" href="../message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.widget.Widget.pseudo_classes" href="../dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.query" href="../dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.release_mouse" href="../widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
-<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.rich_text_style" href="../dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
+<li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_y" href="../widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to" href="../widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
+<li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="../widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="../widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.toggle_class" href="../dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.widget.Widget.tree" href="../dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="../widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.walk_children" href="../dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_has_focus" href="../widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_mouse_over" href="../widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
 <dt id="textual.widgets.Placeholder"><code class="flex name class">
 <span>class <span class="ident">Placeholder</span></span>
-<span>(</span><span>*, name: str | None = None, height: int | None = None)</span>
+<span>(</span><span>*children: Widget, name: str | None = None, id: str | None = None, classes: set[str] | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
+<p>Nodes are mountable and may be styled with CSS.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1087,14 +1252,9 @@ def full_title(self) -&gt; str:
     has_focus: Reactive[bool] = Reactive(False)
     mouse_over: Reactive[bool] = Reactive(False)
     style: Reactive[str] = Reactive(&#34;&#34;)
-    height: Reactive[int | None] = Reactive(None)
-
-    def __init__(self, *, name: str | None = None, height: int | None = None) -&gt; None:
-        super().__init__(name=name)
-        self.height = height
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield &#34;name&#34;, self.name
+        yield from super().__rich_repr__()
         yield &#34;has_focus&#34;, self.has_focus, False
         yield &#34;mouse_over&#34;, self.mouse_over, False
 
@@ -1107,7 +1267,6 @@ def full_title(self) -&gt; str:
             border_style=&#34;green&#34; if self.mouse_over else &#34;blue&#34;,
             box=box.HEAVY if self.has_focus else box.ROUNDED,
             style=self.style,
-            height=self.height,
         )
 
     async def on_focus(self, event: events.Focus) -&gt; None:
@@ -1125,40 +1284,19 @@ def full_title(self) -&gt; str:
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.dom.DOMNode" href="../dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.widgets.Placeholder.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
+<dt id="textual.widgets.Placeholder.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.widgets.Placeholder.has_focus"><code class="name">var <span class="ident">has_focus</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.Placeholder.height"><code class="name">var <span class="ident">height</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.Placeholder.mouse_over"><code class="name">var <span class="ident">mouse_over</span> : ReactiveType</code></dt>
+<dt id="textual.widgets.Placeholder.style"><code class="name">var <span class="ident">style</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[str]</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -1229,870 +1367,80 @@ def full_title(self) -&gt; str:
 <ul class="hlist">
 <li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
 <ul class="hlist">
+<li><code><a title="textual.widget.Widget.add_child" href="../dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.widget.Widget.add_children" href="../dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.widget.Widget.add_class" href="../dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_height" href="../widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_width" href="../widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.css_path" href="../dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.display" href="../dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.focus" href="../widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.widget.Widget.get_box_model" href="../widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.widget.Widget.get_child" href="../dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
-<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="../widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.get_render_lines" href="../widget.html#textual.widget.Widget.get_render_lines">get_render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.has_class" href="../dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.widget.Widget.has_focus" href="../widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.has_pseudo_class" href="../dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="../widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.id" href="../dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.widget.Widget.is_container" href="../widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.widget.Widget.is_transparent" href="../widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.widget.Widget.mouse_over" href="../widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_idle" href="../widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.parent" href="../dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_priority_message" href="../message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.widget.Widget.pseudo_classes" href="../dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.query" href="../dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.release_mouse" href="../widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
-<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
-<dt id="textual.widgets.ScrollView"><code class="flex name class">
-<span>class <span class="ident">ScrollView</span></span>
-<span>(</span><span>contents: RenderableType | Widget | None = None, *, auto_width: bool = False, name: str | None = None, style: StyleType = '', fluid: bool = True, gutter: SpacingDimensions = (0, 0))</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class ScrollView(View):
-    def __init__(
-        self,
-        contents: RenderableType | Widget | None = None,
-        *,
-        auto_width: bool = False,
-        name: str | None = None,
-        style: StyleType = &#34;&#34;,
-        fluid: bool = True,
-        gutter: SpacingDimensions = (0, 0)
-    ) -&gt; None:
-        from ..views import WindowView
-
-        self.fluid = fluid
-        self.vscroll = ScrollBar(vertical=True)
-        self.hscroll = ScrollBar(vertical=False)
-        self.window = WindowView(
-            &#34;&#34; if contents is None else contents, auto_width=auto_width, gutter=gutter
-        )
-        layout = GridLayout()
-        layout.add_column(&#34;main&#34;)
-        layout.add_column(&#34;vscroll&#34;, size=1)
-        layout.add_row(&#34;main&#34;)
-        layout.add_row(&#34;hscroll&#34;, size=1)
-        layout.add_areas(
-            content=&#34;main,main&#34;, vscroll=&#34;vscroll,main&#34;, hscroll=&#34;main,hscroll&#34;
-        )
-        layout.show_row(&#34;hscroll&#34;, False)
-        layout.show_column(&#34;vscroll&#34;, False)
-        super().__init__(name=name, layout=layout)
-
-    x: Reactive[float] = Reactive(0, repaint=False)
-    y: Reactive[float] = Reactive(0, repaint=False)
-
-    target_x: Reactive[float] = Reactive(0, repaint=False)
-    target_y: Reactive[float] = Reactive(0, repaint=False)
-
-    def validate_x(self, value: float) -&gt; float:
-        return clamp(value, 0, self.max_scroll_x)
-
-    def validate_target_x(self, value: float) -&gt; float:
-        return clamp(value, 0, self.max_scroll_x)
-
-    def validate_y(self, value: float) -&gt; float:
-        return clamp(value, 0, self.max_scroll_y)
-
-    def validate_target_y(self, value: float) -&gt; float:
-        return clamp(value, 0, self.max_scroll_y)
-
-    @property
-    def max_scroll_y(self) -&gt; float:
-        return max(0, self.window.virtual_size.height - self.window.size.height)
-
-    @property
-    def max_scroll_x(self) -&gt; float:
-        return max(0, self.window.virtual_size.width - self.window.size.width)
-
-    async def watch_x(self, new_value: float) -&gt; None:
-        self.window.scroll_x = round(new_value)
-        self.hscroll.position = round(new_value)
-
-    async def watch_y(self, new_value: float) -&gt; None:
-        self.window.scroll_y = round(new_value)
-        self.vscroll.position = round(new_value)
-
-    async def update(self, renderable: RenderableType, home: bool = True) -&gt; None:
-        if home:
-            self.home()
-        await self.window.update(renderable)
-
-    async def on_mount(self, event: events.Mount) -&gt; None:
-        assert isinstance(self.layout, GridLayout)
-        self.layout.place(
-            content=self.window,
-            vscroll=self.vscroll,
-            hscroll=self.hscroll,
-        )
-        await self.layout.mount_all(self)
-
-    def home(self) -&gt; None:
-        self.x = self.y = 0
-
-    def scroll_up(self) -&gt; None:
-        self.target_y += 1.5
-        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;, speed=80)
-
-    def scroll_down(self) -&gt; None:
-        self.target_y -= 1.5
-        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;, speed=80)
-
-    def page_up(self) -&gt; None:
-        self.target_y -= self.size.height
-        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
-
-    def page_down(self) -&gt; None:
-        self.target_y += self.size.height
-        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
-
-    def page_left(self) -&gt; None:
-        self.target_x -= self.size.width
-        self.animate(&#34;x&#34;, self.target_x, speed=120, easing=&#34;out_cubic&#34;)
-
-    def page_right(self) -&gt; None:
-        self.target_x += self.size.width
-        self.animate(&#34;x&#34;, self.target_x, speed=120, easing=&#34;out_cubic&#34;)
-
-    def scroll_in_to_view(self, line: int) -&gt; None:
-        if line &lt; self.y:
-            self.y = line
-        elif line &gt;= self.y + self.size.height:
-            self.y = line - self.size.height + 1
-
-    def scroll_to_center(self, line: int) -&gt; None:
-        self.target_y = line - self.size.height // 2
-        if abs(self.target_y - self.y) &gt; 1:
-            # Animate if its more than 1
-            self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
-        else:
-            # Jump if its just one step
-            self.y = self.target_y
-
-    async def on_mouse_scroll_up(self, event: events.MouseScrollUp) -&gt; None:
-        self.scroll_up()
-
-    async def on_mouse_scroll_down(self, event: events.MouseScrollUp) -&gt; None:
-        self.scroll_down()
-
-    async def on_key(self, event: events.Key) -&gt; None:
-        await self.dispatch_key(event)
-
-    async def key_down(self) -&gt; None:
-        self.target_y += 2
-        self.animate(&#34;y&#34;, self.target_y, easing=&#34;linear&#34;, speed=100)
-
-    async def key_up(self) -&gt; None:
-        self.target_y -= 2
-        self.animate(&#34;y&#34;, self.target_y, easing=&#34;linear&#34;, speed=100)
-
-    async def key_pagedown(self) -&gt; None:
-        self.target_y += self.size.height
-        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
-
-    async def key_pageup(self) -&gt; None:
-        self.target_y -= self.size.height
-        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
-
-    async def key_end(self) -&gt; None:
-        self.target_x = 0
-        self.target_y = self.window.virtual_size.height - self.size.height
-        self.animate(&#34;x&#34;, self.target_x, duration=1, easing=&#34;out_cubic&#34;)
-        self.animate(&#34;y&#34;, self.target_y, duration=1, easing=&#34;out_cubic&#34;)
-
-    async def key_home(self) -&gt; None:
-        self.target_x = 0
-        self.target_y = 0
-        self.animate(&#34;x&#34;, self.target_x, duration=1, easing=&#34;out_cubic&#34;)
-        self.animate(&#34;y&#34;, self.target_y, duration=1, easing=&#34;out_cubic&#34;)
-
-    async def handle_scroll_up(self) -&gt; None:
-        self.page_up()
-
-    async def handle_scroll_down(self) -&gt; None:
-        self.page_down()
-
-    async def handle_scroll_left(self) -&gt; None:
-        self.page_left()
-
-    async def handle_scroll_right(self) -&gt; None:
-        self.page_right()
-
-    async def handle_scroll_to(self, message: ScrollTo) -&gt; None:
-        if message.x is not None:
-            self.target_x = message.x
-        if message.y is not None:
-            self.target_y = message.y
-        self.animate(&#34;x&#34;, self.target_x, speed=150, easing=&#34;out_cubic&#34;)
-        self.animate(&#34;y&#34;, self.target_y, speed=150, easing=&#34;out_cubic&#34;)
-
-    async def handle_window_change(self, message: Message) -&gt; None:
-
-        message.stop()
-
-        virtual_width, virtual_height = self.window.virtual_size
-        width, height = self.size
-
-        self.x = self.validate_x(self.x)
-        self.y = self.validate_y(self.y)
-
-        self.hscroll.virtual_size = virtual_width
-        self.hscroll.window_size = width
-        self.vscroll.virtual_size = virtual_height
-        self.vscroll.window_size = height
-
-        assert isinstance(self.layout, GridLayout)
-
-        vscroll_change = self.layout.show_column(&#34;vscroll&#34;, virtual_height &gt; height)
-        hscroll_change = self.layout.show_row(&#34;hscroll&#34;, virtual_width &gt; width)
-        if hscroll_change or vscroll_change:
-            self.refresh(layout=True)
-
-    def handle_cursor_move(self, message: CursorMove) -&gt; None:
-        self.scroll_to_center(message.line)
-        message.stop()</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="textual.view.View" href="../view.html#textual.view.View">View</a></li>
-<li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
-<li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="textual.widgets.ScrollView.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Instance variables</h3>
-<dl>
-<dt id="textual.widgets.ScrollView.max_scroll_x"><code class="name">var <span class="ident">max_scroll_x</span> : float</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def max_scroll_x(self) -&gt; float:
-    return max(0, self.window.virtual_size.width - self.window.size.width)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.max_scroll_y"><code class="name">var <span class="ident">max_scroll_y</span> : float</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def max_scroll_y(self) -&gt; float:
-    return max(0, self.window.virtual_size.height - self.window.size.height)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.target_x"><code class="name">var <span class="ident">target_x</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.target_y"><code class="name">var <span class="ident">target_y</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.x"><code class="name">var <span class="ident">x</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.y"><code class="name">var <span class="ident">y</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="textual.widgets.ScrollView.handle_cursor_move"><code class="name flex">
-<span>def <span class="ident">handle_cursor_move</span></span>(<span>self, message: CursorMove) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def handle_cursor_move(self, message: CursorMove) -&gt; None:
-    self.scroll_to_center(message.line)
-    message.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.handle_scroll_down"><code class="name flex">
-<span>async def <span class="ident">handle_scroll_down</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def handle_scroll_down(self) -&gt; None:
-    self.page_down()</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.handle_scroll_left"><code class="name flex">
-<span>async def <span class="ident">handle_scroll_left</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def handle_scroll_left(self) -&gt; None:
-    self.page_left()</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.handle_scroll_right"><code class="name flex">
-<span>async def <span class="ident">handle_scroll_right</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def handle_scroll_right(self) -&gt; None:
-    self.page_right()</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.handle_scroll_to"><code class="name flex">
-<span>async def <span class="ident">handle_scroll_to</span></span>(<span>self, message: ScrollTo) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def handle_scroll_to(self, message: ScrollTo) -&gt; None:
-    if message.x is not None:
-        self.target_x = message.x
-    if message.y is not None:
-        self.target_y = message.y
-    self.animate(&#34;x&#34;, self.target_x, speed=150, easing=&#34;out_cubic&#34;)
-    self.animate(&#34;y&#34;, self.target_y, speed=150, easing=&#34;out_cubic&#34;)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.handle_scroll_up"><code class="name flex">
-<span>async def <span class="ident">handle_scroll_up</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def handle_scroll_up(self) -&gt; None:
-    self.page_up()</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.handle_window_change"><code class="name flex">
-<span>async def <span class="ident">handle_window_change</span></span>(<span>self, message: Message) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def handle_window_change(self, message: Message) -&gt; None:
-
-    message.stop()
-
-    virtual_width, virtual_height = self.window.virtual_size
-    width, height = self.size
-
-    self.x = self.validate_x(self.x)
-    self.y = self.validate_y(self.y)
-
-    self.hscroll.virtual_size = virtual_width
-    self.hscroll.window_size = width
-    self.vscroll.virtual_size = virtual_height
-    self.vscroll.window_size = height
-
-    assert isinstance(self.layout, GridLayout)
-
-    vscroll_change = self.layout.show_column(&#34;vscroll&#34;, virtual_height &gt; height)
-    hscroll_change = self.layout.show_row(&#34;hscroll&#34;, virtual_width &gt; width)
-    if hscroll_change or vscroll_change:
-        self.refresh(layout=True)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.home"><code class="name flex">
-<span>def <span class="ident">home</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def home(self) -&gt; None:
-    self.x = self.y = 0</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.key_down"><code class="name flex">
-<span>async def <span class="ident">key_down</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def key_down(self) -&gt; None:
-    self.target_y += 2
-    self.animate(&#34;y&#34;, self.target_y, easing=&#34;linear&#34;, speed=100)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.key_end"><code class="name flex">
-<span>async def <span class="ident">key_end</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def key_end(self) -&gt; None:
-    self.target_x = 0
-    self.target_y = self.window.virtual_size.height - self.size.height
-    self.animate(&#34;x&#34;, self.target_x, duration=1, easing=&#34;out_cubic&#34;)
-    self.animate(&#34;y&#34;, self.target_y, duration=1, easing=&#34;out_cubic&#34;)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.key_home"><code class="name flex">
-<span>async def <span class="ident">key_home</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def key_home(self) -&gt; None:
-    self.target_x = 0
-    self.target_y = 0
-    self.animate(&#34;x&#34;, self.target_x, duration=1, easing=&#34;out_cubic&#34;)
-    self.animate(&#34;y&#34;, self.target_y, duration=1, easing=&#34;out_cubic&#34;)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.key_pagedown"><code class="name flex">
-<span>async def <span class="ident">key_pagedown</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def key_pagedown(self) -&gt; None:
-    self.target_y += self.size.height
-    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.key_pageup"><code class="name flex">
-<span>async def <span class="ident">key_pageup</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def key_pageup(self) -&gt; None:
-    self.target_y -= self.size.height
-    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.key_up"><code class="name flex">
-<span>async def <span class="ident">key_up</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def key_up(self) -&gt; None:
-    self.target_y -= 2
-    self.animate(&#34;y&#34;, self.target_y, easing=&#34;linear&#34;, speed=100)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.on_key"><code class="name flex">
-<span>async def <span class="ident">on_key</span></span>(<span>self, event: events.Key) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_key(self, event: events.Key) -&gt; None:
-    await self.dispatch_key(event)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.on_mount"><code class="name flex">
-<span>async def <span class="ident">on_mount</span></span>(<span>self, event: events.Mount) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_mount(self, event: events.Mount) -&gt; None:
-    assert isinstance(self.layout, GridLayout)
-    self.layout.place(
-        content=self.window,
-        vscroll=self.vscroll,
-        hscroll=self.hscroll,
-    )
-    await self.layout.mount_all(self)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.on_mouse_scroll_down"><code class="name flex">
-<span>async def <span class="ident">on_mouse_scroll_down</span></span>(<span>self, event: events.MouseScrollUp) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_mouse_scroll_down(self, event: events.MouseScrollUp) -&gt; None:
-    self.scroll_down()</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.on_mouse_scroll_up"><code class="name flex">
-<span>async def <span class="ident">on_mouse_scroll_up</span></span>(<span>self, event: events.MouseScrollUp) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_mouse_scroll_up(self, event: events.MouseScrollUp) -&gt; None:
-    self.scroll_up()</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.page_down"><code class="name flex">
-<span>def <span class="ident">page_down</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def page_down(self) -&gt; None:
-    self.target_y += self.size.height
-    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.page_left"><code class="name flex">
-<span>def <span class="ident">page_left</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def page_left(self) -&gt; None:
-    self.target_x -= self.size.width
-    self.animate(&#34;x&#34;, self.target_x, speed=120, easing=&#34;out_cubic&#34;)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.page_right"><code class="name flex">
-<span>def <span class="ident">page_right</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def page_right(self) -&gt; None:
-    self.target_x += self.size.width
-    self.animate(&#34;x&#34;, self.target_x, speed=120, easing=&#34;out_cubic&#34;)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.page_up"><code class="name flex">
-<span>def <span class="ident">page_up</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def page_up(self) -&gt; None:
-    self.target_y -= self.size.height
-    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.scroll_down"><code class="name flex">
-<span>def <span class="ident">scroll_down</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def scroll_down(self) -&gt; None:
-    self.target_y -= 1.5
-    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;, speed=80)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.scroll_in_to_view"><code class="name flex">
-<span>def <span class="ident">scroll_in_to_view</span></span>(<span>self, line: int) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def scroll_in_to_view(self, line: int) -&gt; None:
-    if line &lt; self.y:
-        self.y = line
-    elif line &gt;= self.y + self.size.height:
-        self.y = line - self.size.height + 1</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.scroll_to_center"><code class="name flex">
-<span>def <span class="ident">scroll_to_center</span></span>(<span>self, line: int) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def scroll_to_center(self, line: int) -&gt; None:
-    self.target_y = line - self.size.height // 2
-    if abs(self.target_y - self.y) &gt; 1:
-        # Animate if its more than 1
-        self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;)
-    else:
-        # Jump if its just one step
-        self.y = self.target_y</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.scroll_up"><code class="name flex">
-<span>def <span class="ident">scroll_up</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def scroll_up(self) -&gt; None:
-    self.target_y += 1.5
-    self.animate(&#34;y&#34;, self.target_y, easing=&#34;out_cubic&#34;, speed=80)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.update"><code class="name flex">
-<span>async def <span class="ident">update</span></span>(<span>self, renderable: RenderableType, home: bool = True) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def update(self, renderable: RenderableType, home: bool = True) -&gt; None:
-    if home:
-        self.home()
-    await self.window.update(renderable)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.validate_target_x"><code class="name flex">
-<span>def <span class="ident">validate_target_x</span></span>(<span>self, value: float) ‑> float</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def validate_target_x(self, value: float) -&gt; float:
-    return clamp(value, 0, self.max_scroll_x)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.validate_target_y"><code class="name flex">
-<span>def <span class="ident">validate_target_y</span></span>(<span>self, value: float) ‑> float</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def validate_target_y(self, value: float) -&gt; float:
-    return clamp(value, 0, self.max_scroll_y)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.validate_x"><code class="name flex">
-<span>def <span class="ident">validate_x</span></span>(<span>self, value: float) ‑> float</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def validate_x(self, value: float) -&gt; float:
-    return clamp(value, 0, self.max_scroll_x)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.validate_y"><code class="name flex">
-<span>def <span class="ident">validate_y</span></span>(<span>self, value: float) ‑> float</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def validate_y(self, value: float) -&gt; float:
-    return clamp(value, 0, self.max_scroll_y)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.watch_x"><code class="name flex">
-<span>async def <span class="ident">watch_x</span></span>(<span>self, new_value: float) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def watch_x(self, new_value: float) -&gt; None:
-    self.window.scroll_x = round(new_value)
-    self.hscroll.position = round(new_value)</code></pre>
-</details>
-</dd>
-<dt id="textual.widgets.ScrollView.watch_y"><code class="name flex">
-<span>async def <span class="ident">watch_y</span></span>(<span>self, new_value: float) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def watch_y(self, new_value: float) -&gt; None:
-    self.window.scroll_y = round(new_value)
-    self.vscroll.position = round(new_value)</code></pre>
-</details>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="textual.view.View" href="../view.html#textual.view.View">View</a></b></code>:
-<ul class="hlist">
-<li><code><a title="textual.view.View.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.view.View.background" href="../view.html#textual.view.View.background">background</a></code></li>
-<li><code><a title="textual.view.View.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.view.View.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.view.View.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
-<li><code><a title="textual.view.View.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
-<li><code><a title="textual.view.View.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
-<li><code><a title="textual.view.View.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
-<li><code><a title="textual.view.View.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.view.View.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
-<li><code><a title="textual.view.View.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
-<li><code><a title="textual.view.View.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.view.View.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.view.View.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.view.View.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.view.View.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.view.View.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.view.View.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.view.View.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
-<li><code><a title="textual.view.View.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
-<li><code><a title="textual.view.View.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
-<li><code><a title="textual.view.View.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
-<li><code><a title="textual.view.View.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
-<li><code><a title="textual.view.View.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.view.View.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
-<li><code><a title="textual.view.View.scroll_x" href="../view.html#textual.view.View.scroll_x">scroll_x</a></code></li>
-<li><code><a title="textual.view.View.scroll_y" href="../view.html#textual.view.View.scroll_y">scroll_y</a></code></li>
-<li><code><a title="textual.view.View.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.view.View.virtual_size" href="../view.html#textual.view.View.virtual_size">virtual_size</a></code></li>
-<li><code><a title="textual.view.View.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.rich_text_style" href="../dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
+<li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_y" href="../widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to" href="../widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
+<li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="../widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="../widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.toggle_class" href="../dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.widget.Widget.tree" href="../dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="../widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.walk_children" href="../dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_has_focus" href="../widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_mouse_over" href="../widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
 <dt id="textual.widgets.Static"><code class="flex name class">
 <span>class <span class="ident">Static</span></span>
-<span>(</span><span>renderable: RenderableType, name: str | None = None, style: StyleType = '', padding: PaddingDimensions = 0)</span>
+<span>(</span><span>renderable: RenderableType, *, name: str | None = None, id: str | None = None, classes: set[str] | None = None, style: StyleType = '', padding: PaddingDimensions = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
+<p>Nodes are mountable and may be styled with CSS.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2101,11 +1449,14 @@ def max_scroll_y(self) -&gt; float:
     def __init__(
         self,
         renderable: RenderableType,
+        *,
         name: str | None = None,
+        id: str | None = None,
+        classes: set[str] | None = None,
         style: StyleType = &#34;&#34;,
         padding: PaddingDimensions = 0,
     ) -&gt; None:
-        super().__init__(name)
+        super().__init__(name=name, id=id, classes=classes)
         self.renderable = renderable
         self.style = style
         self.padding = padding
@@ -2123,6 +1474,7 @@ def max_scroll_y(self) -&gt; float:
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.dom.DOMNode" href="../dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
 <h3>Class variables</h3>
@@ -2153,32 +1505,69 @@ def max_scroll_y(self) -&gt; float:
 <ul class="hlist">
 <li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
 <ul class="hlist">
+<li><code><a title="textual.widget.Widget.add_child" href="../dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.widget.Widget.add_children" href="../dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.widget.Widget.add_class" href="../dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_height" href="../widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_width" href="../widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.css_path" href="../dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.display" href="../dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.focus" href="../widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.widget.Widget.get_box_model" href="../widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.widget.Widget.get_child" href="../dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
-<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="../widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.get_render_lines" href="../widget.html#textual.widget.Widget.get_render_lines">get_render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.has_class" href="../dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.widget.Widget.has_focus" href="../widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.has_pseudo_class" href="../dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="../widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.id" href="../dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.widget.Widget.is_container" href="../widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.widget.Widget.is_transparent" href="../widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.widget.Widget.mouse_over" href="../widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_idle" href="../widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.parent" href="../dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_priority_message" href="../message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.widget.Widget.pseudo_classes" href="../dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.query" href="../dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.release_mouse" href="../widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
-<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.rich_text_style" href="../dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
+<li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_y" href="../widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to" href="../widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
+<li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="../widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="../widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.toggle_class" href="../dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.widget.Widget.tree" href="../dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="../widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.walk_children" href="../dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_has_focus" href="../widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_mouse_over" href="../widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2225,6 +1614,10 @@ return default</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.widgets.TreeClick.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.widgets.TreeClick.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -2241,7 +1634,6 @@ return default</p></div>
 <li><code><a title="textual.message.Message.set_forwarded" href="../message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="../message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="../message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="../message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2412,6 +1804,7 @@ return default</p></div>
 <ul class="hlist">
 <li>typing.Generic</li>
 <li><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.dom.DOMNode" href="../dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="../message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
 <h3>Subclasses</h3>
@@ -2717,32 +2110,69 @@ return default</p></div>
 <ul class="hlist">
 <li><code><b><a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a></b></code>:
 <ul class="hlist">
+<li><code><a title="textual.widget.Widget.add_child" href="../dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.widget.Widget.add_children" href="../dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.widget.Widget.add_class" href="../dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.widget.Widget.app" href="../message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.border" href="../widget.html#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.widget.Widget.border_style" href="../widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.widget.Widget.border_title" href="../widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_height" href="../widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_width" href="../widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.css_path" href="../dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="../widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.display" href="../dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="../message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.focus" href="../widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.widget.Widget.get_box_model" href="../widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.widget.Widget.get_child" href="../dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_message" href="../message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_fraction" href="../widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_min_size" href="../widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset" href="../widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_x" href="../widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_y" href="../widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_size" href="../widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.widget.Widget.margin" href="../widget.html#textual.widget.Widget.margin">margin</a></code></li>
-<li><code><a title="textual.widget.Widget.padding" href="../widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="../widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.get_render_lines" href="../widget.html#textual.widget.Widget.get_render_lines">get_render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.has_class" href="../dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.widget.Widget.has_focus" href="../widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.has_pseudo_class" href="../dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="../widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.id" href="../dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.widget.Widget.is_container" href="../widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.widget.Widget.is_transparent" href="../widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.widget.Widget.mouse_over" href="../widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_idle" href="../widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.parent" href="../dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.peek_message" href="../message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_priority_message" href="../message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.widget.Widget.pseudo_classes" href="../dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.query" href="../dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="../widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.release_mouse" href="../widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.root_view" href="../widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
-<li><code><a title="textual.widget.Widget.style" href="../widget.html#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.widget.Widget.visible" href="../widget.html#textual.widget.Widget.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.rich_text_style" href="../dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
+<li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_y" href="../widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to" href="../widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
+<li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="../widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="../widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.toggle_class" href="../dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.widget.Widget.tree" href="../dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="../widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.walk_children" href="../dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_has_focus" href="../widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_mouse_over" href="../widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 </ul>
 </li>
 </ul>
@@ -3181,6 +2611,11 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual" href="../index.html">textual</a></code></li>
 </ul>
 </li>
+<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<ul>
+<li><code><a title="textual.widgets.tabs" href="tabs.html">textual.widgets.tabs</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="textual.widgets.NodeID" href="#textual.widgets.NodeID">NodeID</a></code></li>
@@ -3200,6 +2635,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.widgets.ButtonPressed" href="#textual.widgets.ButtonPressed">ButtonPressed</a></code></h4>
 <ul class="">
 <li><code><a title="textual.widgets.ButtonPressed.bubble" href="#textual.widgets.ButtonPressed.bubble">bubble</a></code></li>
+<li><code><a title="textual.widgets.ButtonPressed.system" href="#textual.widgets.ButtonPressed.system">system</a></code></li>
 <li><code><a title="textual.widgets.ButtonPressed.verbosity" href="#textual.widgets.ButtonPressed.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -3208,7 +2644,6 @@ setTimeout(() => input.focus(), 100);
 <ul class="two-column">
 <li><code><a title="textual.widgets.DirectoryTree.can_focus" href="#textual.widgets.DirectoryTree.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.widgets.DirectoryTree.handle_tree_click" href="#textual.widgets.DirectoryTree.handle_tree_click">handle_tree_click</a></code></li>
-<li><code><a title="textual.widgets.DirectoryTree.has_focus" href="#textual.widgets.DirectoryTree.has_focus">has_focus</a></code></li>
 <li><code><a title="textual.widgets.DirectoryTree.load_directory" href="#textual.widgets.DirectoryTree.load_directory">load_directory</a></code></li>
 <li><code><a title="textual.widgets.DirectoryTree.on_blur" href="#textual.widgets.DirectoryTree.on_blur">on_blur</a></code></li>
 <li><code><a title="textual.widgets.DirectoryTree.on_focus" href="#textual.widgets.DirectoryTree.on_focus">on_focus</a></code></li>
@@ -3222,6 +2657,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.widgets.FileClick" href="#textual.widgets.FileClick">FileClick</a></code></h4>
 <ul class="">
 <li><code><a title="textual.widgets.FileClick.bubble" href="#textual.widgets.FileClick.bubble">bubble</a></code></li>
+<li><code><a title="textual.widgets.FileClick.system" href="#textual.widgets.FileClick.system">system</a></code></li>
 <li><code><a title="textual.widgets.FileClick.verbosity" href="#textual.widgets.FileClick.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -3245,6 +2681,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widgets.Header.get_clock" href="#textual.widgets.Header.get_clock">get_clock</a></code></li>
 <li><code><a title="textual.widgets.Header.on_click" href="#textual.widgets.Header.on_click">on_click</a></code></li>
 <li><code><a title="textual.widgets.Header.on_mount" href="#textual.widgets.Header.on_mount">on_mount</a></code></li>
+<li><code><a title="textual.widgets.Header.style" href="#textual.widgets.Header.style">style</a></code></li>
 <li><code><a title="textual.widgets.Header.sub_title" href="#textual.widgets.Header.sub_title">sub_title</a></code></li>
 <li><code><a title="textual.widgets.Header.tall" href="#textual.widgets.Header.tall">tall</a></code></li>
 <li><code><a title="textual.widgets.Header.title" href="#textual.widgets.Header.title">title</a></code></li>
@@ -3255,58 +2692,11 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.widgets.Placeholder" href="#textual.widgets.Placeholder">Placeholder</a></code></h4>
 <ul class="two-column">
 <li><code><a title="textual.widgets.Placeholder.can_focus" href="#textual.widgets.Placeholder.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.widgets.Placeholder.has_focus" href="#textual.widgets.Placeholder.has_focus">has_focus</a></code></li>
-<li><code><a title="textual.widgets.Placeholder.height" href="#textual.widgets.Placeholder.height">height</a></code></li>
-<li><code><a title="textual.widgets.Placeholder.mouse_over" href="#textual.widgets.Placeholder.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widgets.Placeholder.on_blur" href="#textual.widgets.Placeholder.on_blur">on_blur</a></code></li>
 <li><code><a title="textual.widgets.Placeholder.on_enter" href="#textual.widgets.Placeholder.on_enter">on_enter</a></code></li>
 <li><code><a title="textual.widgets.Placeholder.on_focus" href="#textual.widgets.Placeholder.on_focus">on_focus</a></code></li>
 <li><code><a title="textual.widgets.Placeholder.on_leave" href="#textual.widgets.Placeholder.on_leave">on_leave</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="textual.widgets.ScrollView" href="#textual.widgets.ScrollView">ScrollView</a></code></h4>
-<ul class="">
-<li><code><a title="textual.widgets.ScrollView.can_focus" href="#textual.widgets.ScrollView.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.handle_cursor_move" href="#textual.widgets.ScrollView.handle_cursor_move">handle_cursor_move</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.handle_scroll_down" href="#textual.widgets.ScrollView.handle_scroll_down">handle_scroll_down</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.handle_scroll_left" href="#textual.widgets.ScrollView.handle_scroll_left">handle_scroll_left</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.handle_scroll_right" href="#textual.widgets.ScrollView.handle_scroll_right">handle_scroll_right</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.handle_scroll_to" href="#textual.widgets.ScrollView.handle_scroll_to">handle_scroll_to</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.handle_scroll_up" href="#textual.widgets.ScrollView.handle_scroll_up">handle_scroll_up</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.handle_window_change" href="#textual.widgets.ScrollView.handle_window_change">handle_window_change</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.home" href="#textual.widgets.ScrollView.home">home</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.key_down" href="#textual.widgets.ScrollView.key_down">key_down</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.key_end" href="#textual.widgets.ScrollView.key_end">key_end</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.key_home" href="#textual.widgets.ScrollView.key_home">key_home</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.key_pagedown" href="#textual.widgets.ScrollView.key_pagedown">key_pagedown</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.key_pageup" href="#textual.widgets.ScrollView.key_pageup">key_pageup</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.key_up" href="#textual.widgets.ScrollView.key_up">key_up</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.max_scroll_x" href="#textual.widgets.ScrollView.max_scroll_x">max_scroll_x</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.max_scroll_y" href="#textual.widgets.ScrollView.max_scroll_y">max_scroll_y</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.on_key" href="#textual.widgets.ScrollView.on_key">on_key</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.on_mount" href="#textual.widgets.ScrollView.on_mount">on_mount</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.on_mouse_scroll_down" href="#textual.widgets.ScrollView.on_mouse_scroll_down">on_mouse_scroll_down</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.on_mouse_scroll_up" href="#textual.widgets.ScrollView.on_mouse_scroll_up">on_mouse_scroll_up</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.page_down" href="#textual.widgets.ScrollView.page_down">page_down</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.page_left" href="#textual.widgets.ScrollView.page_left">page_left</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.page_right" href="#textual.widgets.ScrollView.page_right">page_right</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.page_up" href="#textual.widgets.ScrollView.page_up">page_up</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.scroll_down" href="#textual.widgets.ScrollView.scroll_down">scroll_down</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.scroll_in_to_view" href="#textual.widgets.ScrollView.scroll_in_to_view">scroll_in_to_view</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.scroll_to_center" href="#textual.widgets.ScrollView.scroll_to_center">scroll_to_center</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.scroll_up" href="#textual.widgets.ScrollView.scroll_up">scroll_up</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.target_x" href="#textual.widgets.ScrollView.target_x">target_x</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.target_y" href="#textual.widgets.ScrollView.target_y">target_y</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.update" href="#textual.widgets.ScrollView.update">update</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.validate_target_x" href="#textual.widgets.ScrollView.validate_target_x">validate_target_x</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.validate_target_y" href="#textual.widgets.ScrollView.validate_target_y">validate_target_y</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.validate_x" href="#textual.widgets.ScrollView.validate_x">validate_x</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.validate_y" href="#textual.widgets.ScrollView.validate_y">validate_y</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.watch_x" href="#textual.widgets.ScrollView.watch_x">watch_x</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.watch_y" href="#textual.widgets.ScrollView.watch_y">watch_y</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.x" href="#textual.widgets.ScrollView.x">x</a></code></li>
-<li><code><a title="textual.widgets.ScrollView.y" href="#textual.widgets.ScrollView.y">y</a></code></li>
+<li><code><a title="textual.widgets.Placeholder.style" href="#textual.widgets.Placeholder.style">style</a></code></li>
 </ul>
 </li>
 <li>
@@ -3320,6 +2710,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.widgets.TreeClick" href="#textual.widgets.TreeClick">TreeClick</a></code></h4>
 <ul class="">
 <li><code><a title="textual.widgets.TreeClick.bubble" href="#textual.widgets.TreeClick.bubble">bubble</a></code></li>
+<li><code><a title="textual.widgets.TreeClick.system" href="#textual.widgets.TreeClick.system">system</a></code></li>
 <li><code><a title="textual.widgets.TreeClick.verbosity" href="#textual.widgets.TreeClick.verbosity">verbosity</a></code></li>
 </ul>
 </li>

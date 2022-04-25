@@ -28,7 +28,6 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from asyncio import Event
 from time import monotonic
 from typing import ClassVar
 
@@ -53,8 +52,11 @@ class Message:
     ]
 
     sender: MessageTarget
-    bubble: ClassVar[bool] = True
-    verbosity: ClassVar[int] = 1
+    bubble: ClassVar[bool] = True  # Message will bubble to parent
+    verbosity: ClassVar[int] = 1  # Verbosity (higher the more verbose)
+    system: ClassVar[
+        bool
+    ] = False  # Message is system related and may not be handled by client code
 
     def __init__(self, sender: MessageTarget) -&gt; None:
         &#34;&#34;&#34;
@@ -69,22 +71,24 @@ class Message:
         self._forwarded = False
         self._no_default_action = False
         self._stop_propagation = False
-        self.__done_event: Event | None = None
         super().__init__()
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield self.sender
 
-    def __init_subclass__(cls, bubble: bool = True, verbosity: int = 1) -&gt; None:
+    def __init_subclass__(
+        cls,
+        bubble: bool | None = True,
+        verbosity: int | None = 1,
+        system: bool | None = False,
+    ) -&gt; None:
         super().__init_subclass__()
-        cls.bubble = bubble
-        cls.verbosity = verbosity
-
-    @property
-    def _done_event(self) -&gt; Event:
-        if self.__done_event is None:
-            self.__done_event = Event()
-        return self.__done_event
+        if bubble is not None:
+            cls.bubble = bubble
+        if verbosity is not None:
+            cls.verbosity = verbosity
+        if system is not None:
+            cls.system = system
 
     @property
     def is_forwarded(self) -&gt; bool:
@@ -122,11 +126,7 @@ class Message:
             stop (bool, optional): The stop flag. Defaults to True.
         &#34;&#34;&#34;
         self._stop_propagation = stop
-        return self
-
-    async def wait(self) -&gt; None:
-        &#34;&#34;&#34;Wait for the message to be processed.&#34;&#34;&#34;
-        await self._done_event.wait()</code></pre>
+        return self</code></pre>
 </details>
 </section>
 <section>
@@ -167,8 +167,11 @@ class Message:
     ]
 
     sender: MessageTarget
-    bubble: ClassVar[bool] = True
-    verbosity: ClassVar[int] = 1
+    bubble: ClassVar[bool] = True  # Message will bubble to parent
+    verbosity: ClassVar[int] = 1  # Verbosity (higher the more verbose)
+    system: ClassVar[
+        bool
+    ] = False  # Message is system related and may not be handled by client code
 
     def __init__(self, sender: MessageTarget) -&gt; None:
         &#34;&#34;&#34;
@@ -183,22 +186,24 @@ class Message:
         self._forwarded = False
         self._no_default_action = False
         self._stop_propagation = False
-        self.__done_event: Event | None = None
         super().__init__()
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield self.sender
 
-    def __init_subclass__(cls, bubble: bool = True, verbosity: int = 1) -&gt; None:
+    def __init_subclass__(
+        cls,
+        bubble: bool | None = True,
+        verbosity: int | None = 1,
+        system: bool | None = False,
+    ) -&gt; None:
         super().__init_subclass__()
-        cls.bubble = bubble
-        cls.verbosity = verbosity
-
-    @property
-    def _done_event(self) -&gt; Event:
-        if self.__done_event is None:
-            self.__done_event = Event()
-        return self.__done_event
+        if bubble is not None:
+            cls.bubble = bubble
+        if verbosity is not None:
+            cls.verbosity = verbosity
+        if system is not None:
+            cls.system = system
 
     @property
     def is_forwarded(self) -&gt; bool:
@@ -236,25 +241,17 @@ class Message:
             stop (bool, optional): The stop flag. Defaults to True.
         &#34;&#34;&#34;
         self._stop_propagation = stop
-        return self
-
-    async def wait(self) -&gt; None:
-        &#34;&#34;&#34;Wait for the message to be processed.&#34;&#34;&#34;
-        await self._done_event.wait()</code></pre>
+        return self</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="textual.events.Event" href="events.html#textual.events.Event">Event</a></li>
 <li><a title="textual.messages.CursorMove" href="messages.html#textual.messages.CursorMove">CursorMove</a></li>
 <li><a title="textual.messages.Layout" href="messages.html#textual.messages.Layout">Layout</a></li>
+<li><a title="textual.messages.Prompt" href="messages.html#textual.messages.Prompt">Prompt</a></li>
+<li><a title="textual.messages.StylesUpdated" href="messages.html#textual.messages.StylesUpdated">StylesUpdated</a></li>
 <li><a title="textual.messages.Update" href="messages.html#textual.messages.Update">Update</a></li>
-<li><a title="textual.page.PageUpdate" href="page.html#textual.page.PageUpdate">PageUpdate</a></li>
-<li><a title="textual.scrollbar.ScrollDown" href="scrollbar.html#textual.scrollbar.ScrollDown">ScrollDown</a></li>
-<li><a title="textual.scrollbar.ScrollLeft" href="scrollbar.html#textual.scrollbar.ScrollLeft">ScrollLeft</a></li>
-<li><a title="textual.scrollbar.ScrollRight" href="scrollbar.html#textual.scrollbar.ScrollRight">ScrollRight</a></li>
-<li><a title="textual.scrollbar.ScrollTo" href="scrollbar.html#textual.scrollbar.ScrollTo">ScrollTo</a></li>
-<li><a title="textual.scrollbar.ScrollUp" href="scrollbar.html#textual.scrollbar.ScrollUp">ScrollUp</a></li>
-<li>textual.views._window_view.WindowChange</li>
+<li><a title="textual.scrollbar.ScrollMessage" href="scrollbar.html#textual.scrollbar.ScrollMessage">ScrollMessage</a></li>
 <li>textual.widgets._button.ButtonPressed</li>
 <li>textual.widgets._directory_tree.FileClick</li>
 <li>textual.widgets._tree_control.TreeClick</li>
@@ -262,6 +259,10 @@ class Message:
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.message.Message.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.message.Message.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -394,20 +395,6 @@ or False if the default actions should be performed. Defaults to True.</dd>
     return self</code></pre>
 </details>
 </dd>
-<dt id="textual.message.Message.wait"><code class="name flex">
-<span>async def <span class="ident">wait</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Wait for the message to be processed.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def wait(self) -&gt; None:
-    &#34;&#34;&#34;Wait for the message to be processed.&#34;&#34;&#34;
-    await self._done_event.wait()</code></pre>
-</details>
-</dd>
 </dl>
 </dd>
 </dl>
@@ -483,9 +470,9 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.message.Message.sender" href="#textual.message.Message.sender">sender</a></code></li>
 <li><code><a title="textual.message.Message.set_forwarded" href="#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.message.Message.system" href="#textual.message.Message.system">system</a></code></li>
 <li><code><a title="textual.message.Message.time" href="#textual.message.Message.time">time</a></code></li>
 <li><code><a title="textual.message.Message.verbosity" href="#textual.message.Message.verbosity">verbosity</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>

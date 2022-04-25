@@ -1,0 +1,1655 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>textual.color API documentation</title>
+<meta name="description" content="Manages Color in Textual …" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}#lunr-search{width:100%;font-size:1em;padding:6px 9px 5px 9px;border:1px solid silver}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>textual.color</code></h1>
+</header>
+<section id="section-intro">
+<p>Manages Color in Textual.</p>
+<p>All instances where the developer is presented with a color should use this class. The only
+exception should be when passing things to a Rich renderable, which will need to use the
+<code>rich_color</code> attribute to perform a conversion.</p>
+<p>I'm not entirely happy with burdening the user with two similar color classes. In a future
+update we might add a protocol to convert automatically so the dev could use them interchangably.</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;
+Manages Color in Textual.
+
+All instances where the developer is presented with a color should use this class. The only 
+exception should be when passing things to a Rich renderable, which will need to use the
+`rich_color` attribute to perform a conversion.
+
+I&#39;m not entirely happy with burdening the user with two similar color classes. In a future
+update we might add a protocol to convert automatically so the dev could use them interchangably.
+
+&#34;&#34;&#34;
+
+from __future__ import annotations
+
+from colorsys import rgb_to_hls, hls_to_rgb
+from functools import lru_cache
+import re
+from operator import itemgetter
+from typing import Callable, NamedTuple
+
+import rich.repr
+from rich.color import Color as RichColor
+from rich.style import Style
+from rich.text import Text
+
+
+from ._color_constants import ANSI_COLOR_TO_RGB
+from .geometry import clamp
+
+
+class HLS(NamedTuple):
+    &#34;&#34;&#34;A color in HLS format.&#34;&#34;&#34;
+
+    h: float
+    l: float
+    s: float
+
+
+class HSV(NamedTuple):
+    &#34;&#34;&#34;A color in HSV format.&#34;&#34;&#34;
+
+    h: float
+    s: float
+    v: float
+
+
+class Lab(NamedTuple):
+    &#34;&#34;&#34;A color in CIE-L*ab format.&#34;&#34;&#34;
+
+    L: float
+    a: float
+    b: float
+
+
+RE_COLOR = re.compile(
+    r&#34;&#34;&#34;^
+\#([0-9a-fA-F]{6})$|
+\#([0-9a-fA-F]{8})$|
+rgb\((\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*)\)$|
+rgba\((\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*)\)$
+&#34;&#34;&#34;,
+    re.VERBOSE,
+)
+
+# Fast way to split a string of 8 characters in to 3 pairs of 2 characters
+split_pairs3: Callable[[str], tuple[str, str, str]] = itemgetter(
+    slice(0, 2), slice(2, 4), slice(4, 6)
+)
+# Fast way to split a string of 8 characters in to 4 pairs of 2 characters
+split_pairs4: Callable[[str], tuple[str, str, str, str]] = itemgetter(
+    slice(0, 2), slice(2, 4), slice(4, 6), slice(6, 8)
+)
+
+
+class ColorParseError(Exception):
+    &#34;&#34;&#34;A color failed to parse&#34;&#34;&#34;
+
+
+@rich.repr.auto
+class Color(NamedTuple):
+    &#34;&#34;&#34;A class to represent a single RGB color with alpha.&#34;&#34;&#34;
+
+    r: int
+    g: int
+    b: int
+    a: float = 1.0
+
+    @classmethod
+    def from_rich_color(cls, rich_color: RichColor) -&gt; Color:
+        &#34;&#34;&#34;Create a new color from Rich&#39;s Color class.
+
+        Args:
+            rich_color (RichColor): An instance of rich.color.Color.
+
+        Returns:
+            Color: A new Color.
+        &#34;&#34;&#34;
+        r, g, b = rich_color.get_truecolor()
+        return cls(r, g, b)
+
+    @classmethod
+    def from_hls(cls, h: float, l: float, s: float) -&gt; Color:
+        &#34;&#34;&#34;Create a color from HLS components.
+
+        Args:
+            h (float): Hue.
+            l (float): Lightness.
+            s (float): Saturation.
+
+        Returns:
+            Color: A new color.
+        &#34;&#34;&#34;
+        r, g, b = hls_to_rgb(h, l, s)
+        return cls(int(r * 255 + 0.5), int(g * 255 + 0.5), int(b * 255 + 0.5))
+
+    def __rich__(self) -&gt; Text:
+        &#34;&#34;&#34;A Rich method to show the color.&#34;&#34;&#34;
+        r, g, b, _ = self
+        return Text(
+            f&#34; {self!r} &#34;,
+            style=Style.from_color(
+                self.get_contrast_text().rich_color, RichColor.from_rgb(r, g, b)
+            ),
+        )
+
+    @property
+    def clamped(self) -&gt; Color:
+        &#34;&#34;&#34;Get a color with all components saturated to maximum and minimum values.&#34;&#34;&#34;
+        r, g, b, a = self
+        _clamp = clamp
+        color = Color(
+            _clamp(r, 0, 255),
+            _clamp(g, 0, 255),
+            _clamp(b, 0, 255),
+            _clamp(a, 0.0, 1.0),
+        )
+        return color
+
+    @property
+    def rich_color(self) -&gt; RichColor:
+        &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.&#34;&#34;&#34;
+        # TODO: This isn&#39;t cheap as I&#39;d like - cache in a LRUCache ?
+        r, g, b, _a = self
+        return RichColor.from_rgb(r, g, b)
+
+    @property
+    def normalized(self) -&gt; tuple[float, float, float]:
+        &#34;&#34;&#34;A tuple of the color components normalized to between 0 and 1.&#34;&#34;&#34;
+        r, g, b, _a = self
+        return (r / 255, g / 255, b / 255)
+
+    @property
+    def hls(self) -&gt; HLS:
+        &#34;&#34;&#34;Get the color as HLS.&#34;&#34;&#34;
+        r, g, b = self.normalized
+        return HLS(*rgb_to_hls(r, g, b))
+
+    @property
+    def brightness(self) -&gt; float:
+        &#34;&#34;&#34;Get the human perceptual brightness.&#34;&#34;&#34;
+        r, g, b = self.normalized
+        brightness = (299 * r + 587 * g + 114 * b) / 1000
+        return brightness
+
+    @property
+    def hex(self) -&gt; str:
+        &#34;&#34;&#34;The color in CSS hex form, with 6 digits for RGB, and 8 digits for RGBA.
+
+        Returns:
+            str: A CSS hex-style color, e.g. &#34;#46b3de&#34; or &#34;#3342457f&#34;
+
+        &#34;&#34;&#34;
+        r, g, b, a = self
+        return (
+            f&#34;#{r:02X}{g:02X}{b:02X}&#34;
+            if a == 1
+            else f&#34;#{r:02X}{g:02X}{b:02X}{int(a*255):02X}&#34;
+        )
+
+    @property
+    def css(self) -&gt; str:
+        &#34;&#34;&#34;The color in CSS rgb or rgba form.
+
+        Returns:
+            str: A CSS style color, e.g. &#34;rgb(10,20,30)&#34; or &#34;rgb(50,70,80,0.5)&#34;
+
+        &#34;&#34;&#34;
+        r, g, b, a = self
+        return f&#34;rgb({r},{g},{b})&#34; if a == 1 else f&#34;rgba({r},{g},{b},{a})&#34;
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        r, g, b, a = self
+        yield r
+        yield g
+        yield b
+        yield &#34;a&#34;, a
+
+    def with_alpha(self, alpha: float) -&gt; Color:
+        &#34;&#34;&#34;Create a new color with the given alpha.
+
+        Args:
+            alpha (float): New value for alpha.
+
+        Returns:
+            Color: A new color.
+        &#34;&#34;&#34;
+        r, g, b, _ = self
+        return Color(r, g, b, alpha)
+
+    @lru_cache(maxsize=2048)
+    def blend(self, destination: Color, factor: float) -&gt; Color:
+        &#34;&#34;&#34;Generate a new color between two colors.
+
+        Args:
+            destination (Color): Another color.
+            factor (float): A blend factor, 0 -&gt; 1
+
+        Returns:
+            Color: A new color.
+        &#34;&#34;&#34;
+        if factor == 0:
+            return self
+        elif factor == 1:
+            return destination
+        r1, g1, b1, _ = self
+        r2, g2, b2, _ = destination
+        return Color(
+            int(r1 + (r2 - r1) * factor),
+            int(g1 + (g2 - g1) * factor),
+            int(b1 + (b2 - b1) * factor),
+        )
+
+    def __add__(self, other: object) -&gt; Color:
+        if isinstance(other, Color):
+            new_color = self.blend(other, other.a)
+            return new_color
+        return NotImplemented
+
+    @classmethod
+    @lru_cache(maxsize=1024 * 4)
+    def parse(cls, color_text: str | Color) -&gt; Color:
+        &#34;&#34;&#34;Parse a string containing a CSS-style color.
+
+        Args:
+            color_text (str | Color): Text with a valid color format. Color objects will
+                be returned unmodified.
+
+        Raises:
+            ColorParseError: If the color is not encoded correctly.
+
+        Returns:
+            Color: New color object.
+        &#34;&#34;&#34;
+        if isinstance(color_text, Color):
+            return color_text
+        ansi_color = ANSI_COLOR_TO_RGB.get(color_text)
+        if ansi_color is not None:
+            return cls(*ansi_color)
+        color_match = RE_COLOR.match(color_text)
+        if color_match is None:
+            raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
+        rgb_hex, rgba_hex, rgb, rgba = color_match.groups()
+
+        if rgb_hex is not None:
+            r, g, b = [int(pair, 16) for pair in split_pairs3(rgb_hex)]
+            color = cls(r, g, b, 1.0)
+        elif rgba_hex is not None:
+            r, g, b, a = [int(pair, 16) for pair in split_pairs4(rgba_hex)]
+            color = cls(r, g, b, a / 255.0)
+        elif rgb is not None:
+            r, g, b = [clamp(int(float(value)), 0, 255) for value in rgb.split(&#34;,&#34;)]
+            color = cls(r, g, b, 1.0)
+        elif rgba is not None:
+            float_r, float_g, float_b, float_a = [
+                float(value) for value in rgba.split(&#34;,&#34;)
+            ]
+            color = cls(
+                clamp(int(float_r), 0, 255),
+                clamp(int(float_g), 0, 255),
+                clamp(int(float_b), 0, 255),
+                clamp(float_a, 0.0, 1.0),
+            )
+        else:
+            raise AssertionError(&#34;Can&#39;t get here if RE_COLOR matches&#34;)
+        return color
+
+    def darken(self, amount: float) -&gt; Color:
+        &#34;&#34;&#34;Darken the color by a given amount.
+
+        Args:
+            amount (float): Value between 0-1 to reduce luminance by.
+
+        Returns:
+            Color: New color.
+        &#34;&#34;&#34;
+        l, a, b = rgb_to_lab(self)
+        l -= amount * 100
+        return lab_to_rgb(Lab(l, a, b)).clamped
+
+    def lighten(self, amount: float) -&gt; Color:
+        &#34;&#34;&#34;Lighten the color by a given amount.
+
+        Args:
+            amount (float): Value between 0-1 to increase luminance by.
+
+        Returns:
+            Color: New color.
+        &#34;&#34;&#34;
+        return self.darken(-amount).clamped
+
+    def get_contrast_text(self, alpha=0.95) -&gt; Color:
+        &#34;&#34;&#34;Get a light or dark color that best contrasts this color, for use with text.
+
+        Args:
+            alpha (float, optional): An alpha value to adjust the pure white / black by.
+                Defaults to 0.95.
+
+        Returns:
+            Color: A new color, either an off-white or off-black
+        &#34;&#34;&#34;
+        white = self.blend(WHITE, alpha)
+        black = self.blend(BLACK, alpha)
+        brightness = self.brightness
+        white_contrast = abs(brightness - white.brightness)
+        black_contrast = abs(brightness - black.brightness)
+        return white if white_contrast &gt; black_contrast else black
+
+
+# Color constants
+WHITE = Color(255, 255, 255)
+BLACK = Color(0, 0, 0)
+
+
+class ColorPair(NamedTuple):
+    &#34;&#34;&#34;A pair of colors for foreground and background.&#34;&#34;&#34;
+
+    foreground: Color
+    background: Color
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        yield &#34;foreground&#34;, self.foreground
+        yield &#34;background&#34;, self.background
+
+    @property
+    def style(self) -&gt; Style:
+        &#34;&#34;&#34;A Rich style with foreground and background.&#34;&#34;&#34;
+        return self._get_style()
+
+    @lru_cache(maxsize=1024 * 4)
+    def _get_style(self) -&gt; Style:
+        &#34;&#34;&#34;Get a Rich style, foreground adjusted for transparency.&#34;&#34;&#34;
+        r, g, b, a = self.foreground
+        if a == 0:
+            return Style.from_color(
+                self.background.rich_color, self.background.rich_color
+            )
+        elif a == 1:
+            return Style.from_color(
+                self.foreground.rich_color, self.background.rich_color
+            )
+        else:
+            r2, g2, b2, _ = self.background
+            return Style.from_color(
+                RichColor.from_rgb(
+                    r + (r2 - r) * a, g + (g2 - g) * a, b + (b2 - b) * a
+                ),
+                self.background.rich_color,
+            )
+
+
+def rgb_to_lab(rgb: Color) -&gt; Lab:
+    &#34;&#34;&#34;Convert an RGB color to the CIE-L*ab format.
+
+    Uses the standard RGB color space with a D65/2⁰ standard illuminant.
+    Conversion passes through the XYZ color space.
+    Cf. http://www.easyrgb.com/en/math.php.
+    &#34;&#34;&#34;
+
+    r, g, b = rgb.r / 255, rgb.g / 255, rgb.b / 255
+
+    r = pow((r + 0.055) / 1.055, 2.4) if r &gt; 0.04045 else r / 12.92
+    g = pow((g + 0.055) / 1.055, 2.4) if g &gt; 0.04045 else g / 12.92
+    b = pow((b + 0.055) / 1.055, 2.4) if b &gt; 0.04045 else b / 12.92
+
+    x = (r * 41.24 + g * 35.76 + b * 18.05) / 95.047
+    y = (r * 21.26 + g * 71.52 + b * 7.22) / 100
+    z = (r * 1.93 + g * 11.92 + b * 95.05) / 108.883
+
+    off = 16 / 116
+    x = pow(x, 1 / 3) if x &gt; 0.008856 else 7.787 * x + off
+    y = pow(y, 1 / 3) if y &gt; 0.008856 else 7.787 * y + off
+    z = pow(z, 1 / 3) if z &gt; 0.008856 else 7.787 * z + off
+
+    return Lab(116 * y - 16, 500 * (x - y), 200 * (y - z))
+
+
+def lab_to_rgb(lab: Lab) -&gt; Color:
+    &#34;&#34;&#34;Convert a CIE-L*ab color to RGB.
+
+    Uses the standard RGB color space with a D65/2⁰ standard illuminant.
+    Conversion passes through the XYZ color space.
+    Cf. http://www.easyrgb.com/en/math.php.
+    &#34;&#34;&#34;
+
+    y = (lab.L + 16) / 116
+    x = lab.a / 500 + y
+    z = y - lab.b / 200
+
+    off = 16 / 116
+    y = pow(y, 3) if y &gt; 0.2068930344 else (y - off) / 7.787
+    x = 0.95047 * pow(x, 3) if x &gt; 0.2068930344 else 0.122059 * (x - off)
+    z = 1.08883 * pow(z, 3) if z &gt; 0.2068930344 else 0.139827 * (z - off)
+
+    r = x * 3.2406 + y * -1.5372 + z * -0.4986
+    g = x * -0.9689 + y * 1.8758 + z * 0.0415
+    b = x * 0.0557 + y * -0.2040 + z * 1.0570
+
+    r = 1.055 * pow(r, 1 / 2.4) - 0.055 if r &gt; 0.0031308 else 12.92 * r
+    g = 1.055 * pow(g, 1 / 2.4) - 0.055 if g &gt; 0.0031308 else 12.92 * g
+    b = 1.055 * pow(b, 1 / 2.4) - 0.055 if b &gt; 0.0031308 else 12.92 * b
+
+    return Color(int(r * 255), int(g * 255), int(b * 255))
+
+
+if __name__ == &#34;__main__&#34;:
+
+    from rich import print
+
+    c1 = Color.parse(&#34;#112233&#34;)
+    print(c1, c1.hex, c1.css)
+
+    c2 = Color.parse(&#34;#11223344&#34;)
+    print(c2)
+
+    c3 = Color.parse(&#34;rgb(10,20,30)&#34;)
+    print(c3)
+
+    c4 = Color.parse(&#34;rgba(10,20,30,0.5)&#34;)
+    print(c4, c4.hex, c4.css)
+
+    p1 = ColorPair(c4, c1)
+    print(p1)
+
+    print(p1.style)
+
+    print(Color.parse(&#34;dark_blue&#34;))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="textual.color.lab_to_rgb"><code class="name flex">
+<span>def <span class="ident">lab_to_rgb</span></span>(<span>lab: <a title="textual.color.Lab" href="#textual.color.Lab">Lab</a>) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert a CIE-L*ab color to RGB.</p>
+<p>Uses the standard RGB color space with a D65/2⁰ standard illuminant.
+Conversion passes through the XYZ color space.
+Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math.php.</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def lab_to_rgb(lab: Lab) -&gt; Color:
+    &#34;&#34;&#34;Convert a CIE-L*ab color to RGB.
+
+    Uses the standard RGB color space with a D65/2⁰ standard illuminant.
+    Conversion passes through the XYZ color space.
+    Cf. http://www.easyrgb.com/en/math.php.
+    &#34;&#34;&#34;
+
+    y = (lab.L + 16) / 116
+    x = lab.a / 500 + y
+    z = y - lab.b / 200
+
+    off = 16 / 116
+    y = pow(y, 3) if y &gt; 0.2068930344 else (y - off) / 7.787
+    x = 0.95047 * pow(x, 3) if x &gt; 0.2068930344 else 0.122059 * (x - off)
+    z = 1.08883 * pow(z, 3) if z &gt; 0.2068930344 else 0.139827 * (z - off)
+
+    r = x * 3.2406 + y * -1.5372 + z * -0.4986
+    g = x * -0.9689 + y * 1.8758 + z * 0.0415
+    b = x * 0.0557 + y * -0.2040 + z * 1.0570
+
+    r = 1.055 * pow(r, 1 / 2.4) - 0.055 if r &gt; 0.0031308 else 12.92 * r
+    g = 1.055 * pow(g, 1 / 2.4) - 0.055 if g &gt; 0.0031308 else 12.92 * g
+    b = 1.055 * pow(b, 1 / 2.4) - 0.055 if b &gt; 0.0031308 else 12.92 * b
+
+    return Color(int(r * 255), int(g * 255), int(b * 255))</code></pre>
+</details>
+</dd>
+<dt id="textual.color.rgb_to_lab"><code class="name flex">
+<span>def <span class="ident">rgb_to_lab</span></span>(<span>rgb: <a title="textual.color.Color" href="#textual.color.Color">Color</a>) ‑> <a title="textual.color.Lab" href="#textual.color.Lab">Lab</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert an RGB color to the CIE-L*ab format.</p>
+<p>Uses the standard RGB color space with a D65/2⁰ standard illuminant.
+Conversion passes through the XYZ color space.
+Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math.php.</a></p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def rgb_to_lab(rgb: Color) -&gt; Lab:
+    &#34;&#34;&#34;Convert an RGB color to the CIE-L*ab format.
+
+    Uses the standard RGB color space with a D65/2⁰ standard illuminant.
+    Conversion passes through the XYZ color space.
+    Cf. http://www.easyrgb.com/en/math.php.
+    &#34;&#34;&#34;
+
+    r, g, b = rgb.r / 255, rgb.g / 255, rgb.b / 255
+
+    r = pow((r + 0.055) / 1.055, 2.4) if r &gt; 0.04045 else r / 12.92
+    g = pow((g + 0.055) / 1.055, 2.4) if g &gt; 0.04045 else g / 12.92
+    b = pow((b + 0.055) / 1.055, 2.4) if b &gt; 0.04045 else b / 12.92
+
+    x = (r * 41.24 + g * 35.76 + b * 18.05) / 95.047
+    y = (r * 21.26 + g * 71.52 + b * 7.22) / 100
+    z = (r * 1.93 + g * 11.92 + b * 95.05) / 108.883
+
+    off = 16 / 116
+    x = pow(x, 1 / 3) if x &gt; 0.008856 else 7.787 * x + off
+    y = pow(y, 1 / 3) if y &gt; 0.008856 else 7.787 * y + off
+    z = pow(z, 1 / 3) if z &gt; 0.008856 else 7.787 * z + off
+
+    return Lab(116 * y - 16, 500 * (x - y), 200 * (y - z))</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="textual.color.Color"><code class="flex name class">
+<span>class <span class="ident">Color</span></span>
+<span>(</span><span>r: int, g: int, b: int, a: float = 1.0)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class to represent a single RGB color with alpha.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Color(NamedTuple):
+    &#34;&#34;&#34;A class to represent a single RGB color with alpha.&#34;&#34;&#34;
+
+    r: int
+    g: int
+    b: int
+    a: float = 1.0
+
+    @classmethod
+    def from_rich_color(cls, rich_color: RichColor) -&gt; Color:
+        &#34;&#34;&#34;Create a new color from Rich&#39;s Color class.
+
+        Args:
+            rich_color (RichColor): An instance of rich.color.Color.
+
+        Returns:
+            Color: A new Color.
+        &#34;&#34;&#34;
+        r, g, b = rich_color.get_truecolor()
+        return cls(r, g, b)
+
+    @classmethod
+    def from_hls(cls, h: float, l: float, s: float) -&gt; Color:
+        &#34;&#34;&#34;Create a color from HLS components.
+
+        Args:
+            h (float): Hue.
+            l (float): Lightness.
+            s (float): Saturation.
+
+        Returns:
+            Color: A new color.
+        &#34;&#34;&#34;
+        r, g, b = hls_to_rgb(h, l, s)
+        return cls(int(r * 255 + 0.5), int(g * 255 + 0.5), int(b * 255 + 0.5))
+
+    def __rich__(self) -&gt; Text:
+        &#34;&#34;&#34;A Rich method to show the color.&#34;&#34;&#34;
+        r, g, b, _ = self
+        return Text(
+            f&#34; {self!r} &#34;,
+            style=Style.from_color(
+                self.get_contrast_text().rich_color, RichColor.from_rgb(r, g, b)
+            ),
+        )
+
+    @property
+    def clamped(self) -&gt; Color:
+        &#34;&#34;&#34;Get a color with all components saturated to maximum and minimum values.&#34;&#34;&#34;
+        r, g, b, a = self
+        _clamp = clamp
+        color = Color(
+            _clamp(r, 0, 255),
+            _clamp(g, 0, 255),
+            _clamp(b, 0, 255),
+            _clamp(a, 0.0, 1.0),
+        )
+        return color
+
+    @property
+    def rich_color(self) -&gt; RichColor:
+        &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.&#34;&#34;&#34;
+        # TODO: This isn&#39;t cheap as I&#39;d like - cache in a LRUCache ?
+        r, g, b, _a = self
+        return RichColor.from_rgb(r, g, b)
+
+    @property
+    def normalized(self) -&gt; tuple[float, float, float]:
+        &#34;&#34;&#34;A tuple of the color components normalized to between 0 and 1.&#34;&#34;&#34;
+        r, g, b, _a = self
+        return (r / 255, g / 255, b / 255)
+
+    @property
+    def hls(self) -&gt; HLS:
+        &#34;&#34;&#34;Get the color as HLS.&#34;&#34;&#34;
+        r, g, b = self.normalized
+        return HLS(*rgb_to_hls(r, g, b))
+
+    @property
+    def brightness(self) -&gt; float:
+        &#34;&#34;&#34;Get the human perceptual brightness.&#34;&#34;&#34;
+        r, g, b = self.normalized
+        brightness = (299 * r + 587 * g + 114 * b) / 1000
+        return brightness
+
+    @property
+    def hex(self) -&gt; str:
+        &#34;&#34;&#34;The color in CSS hex form, with 6 digits for RGB, and 8 digits for RGBA.
+
+        Returns:
+            str: A CSS hex-style color, e.g. &#34;#46b3de&#34; or &#34;#3342457f&#34;
+
+        &#34;&#34;&#34;
+        r, g, b, a = self
+        return (
+            f&#34;#{r:02X}{g:02X}{b:02X}&#34;
+            if a == 1
+            else f&#34;#{r:02X}{g:02X}{b:02X}{int(a*255):02X}&#34;
+        )
+
+    @property
+    def css(self) -&gt; str:
+        &#34;&#34;&#34;The color in CSS rgb or rgba form.
+
+        Returns:
+            str: A CSS style color, e.g. &#34;rgb(10,20,30)&#34; or &#34;rgb(50,70,80,0.5)&#34;
+
+        &#34;&#34;&#34;
+        r, g, b, a = self
+        return f&#34;rgb({r},{g},{b})&#34; if a == 1 else f&#34;rgba({r},{g},{b},{a})&#34;
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        r, g, b, a = self
+        yield r
+        yield g
+        yield b
+        yield &#34;a&#34;, a
+
+    def with_alpha(self, alpha: float) -&gt; Color:
+        &#34;&#34;&#34;Create a new color with the given alpha.
+
+        Args:
+            alpha (float): New value for alpha.
+
+        Returns:
+            Color: A new color.
+        &#34;&#34;&#34;
+        r, g, b, _ = self
+        return Color(r, g, b, alpha)
+
+    @lru_cache(maxsize=2048)
+    def blend(self, destination: Color, factor: float) -&gt; Color:
+        &#34;&#34;&#34;Generate a new color between two colors.
+
+        Args:
+            destination (Color): Another color.
+            factor (float): A blend factor, 0 -&gt; 1
+
+        Returns:
+            Color: A new color.
+        &#34;&#34;&#34;
+        if factor == 0:
+            return self
+        elif factor == 1:
+            return destination
+        r1, g1, b1, _ = self
+        r2, g2, b2, _ = destination
+        return Color(
+            int(r1 + (r2 - r1) * factor),
+            int(g1 + (g2 - g1) * factor),
+            int(b1 + (b2 - b1) * factor),
+        )
+
+    def __add__(self, other: object) -&gt; Color:
+        if isinstance(other, Color):
+            new_color = self.blend(other, other.a)
+            return new_color
+        return NotImplemented
+
+    @classmethod
+    @lru_cache(maxsize=1024 * 4)
+    def parse(cls, color_text: str | Color) -&gt; Color:
+        &#34;&#34;&#34;Parse a string containing a CSS-style color.
+
+        Args:
+            color_text (str | Color): Text with a valid color format. Color objects will
+                be returned unmodified.
+
+        Raises:
+            ColorParseError: If the color is not encoded correctly.
+
+        Returns:
+            Color: New color object.
+        &#34;&#34;&#34;
+        if isinstance(color_text, Color):
+            return color_text
+        ansi_color = ANSI_COLOR_TO_RGB.get(color_text)
+        if ansi_color is not None:
+            return cls(*ansi_color)
+        color_match = RE_COLOR.match(color_text)
+        if color_match is None:
+            raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
+        rgb_hex, rgba_hex, rgb, rgba = color_match.groups()
+
+        if rgb_hex is not None:
+            r, g, b = [int(pair, 16) for pair in split_pairs3(rgb_hex)]
+            color = cls(r, g, b, 1.0)
+        elif rgba_hex is not None:
+            r, g, b, a = [int(pair, 16) for pair in split_pairs4(rgba_hex)]
+            color = cls(r, g, b, a / 255.0)
+        elif rgb is not None:
+            r, g, b = [clamp(int(float(value)), 0, 255) for value in rgb.split(&#34;,&#34;)]
+            color = cls(r, g, b, 1.0)
+        elif rgba is not None:
+            float_r, float_g, float_b, float_a = [
+                float(value) for value in rgba.split(&#34;,&#34;)
+            ]
+            color = cls(
+                clamp(int(float_r), 0, 255),
+                clamp(int(float_g), 0, 255),
+                clamp(int(float_b), 0, 255),
+                clamp(float_a, 0.0, 1.0),
+            )
+        else:
+            raise AssertionError(&#34;Can&#39;t get here if RE_COLOR matches&#34;)
+        return color
+
+    def darken(self, amount: float) -&gt; Color:
+        &#34;&#34;&#34;Darken the color by a given amount.
+
+        Args:
+            amount (float): Value between 0-1 to reduce luminance by.
+
+        Returns:
+            Color: New color.
+        &#34;&#34;&#34;
+        l, a, b = rgb_to_lab(self)
+        l -= amount * 100
+        return lab_to_rgb(Lab(l, a, b)).clamped
+
+    def lighten(self, amount: float) -&gt; Color:
+        &#34;&#34;&#34;Lighten the color by a given amount.
+
+        Args:
+            amount (float): Value between 0-1 to increase luminance by.
+
+        Returns:
+            Color: New color.
+        &#34;&#34;&#34;
+        return self.darken(-amount).clamped
+
+    def get_contrast_text(self, alpha=0.95) -&gt; Color:
+        &#34;&#34;&#34;Get a light or dark color that best contrasts this color, for use with text.
+
+        Args:
+            alpha (float, optional): An alpha value to adjust the pure white / black by.
+                Defaults to 0.95.
+
+        Returns:
+            Color: A new color, either an off-white or off-black
+        &#34;&#34;&#34;
+        white = self.blend(WHITE, alpha)
+        black = self.blend(BLACK, alpha)
+        brightness = self.brightness
+        white_contrast = abs(brightness - white.brightness)
+        black_contrast = abs(brightness - black.brightness)
+        return white if white_contrast &gt; black_contrast else black</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Static methods</h3>
+<dl>
+<dt id="textual.color.Color.from_hls"><code class="name flex">
+<span>def <span class="ident">from_hls</span></span>(<span>h: float, l: float, s: float) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a color from HLS components.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>h</code></strong> :&ensp;<code>float</code></dt>
+<dd>Hue.</dd>
+<dt><strong><code>l</code></strong> :&ensp;<code>float</code></dt>
+<dd>Lightness.</dd>
+<dt><strong><code>s</code></strong> :&ensp;<code>float</code></dt>
+<dd>Saturation.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>A new color.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_hls(cls, h: float, l: float, s: float) -&gt; Color:
+    &#34;&#34;&#34;Create a color from HLS components.
+
+    Args:
+        h (float): Hue.
+        l (float): Lightness.
+        s (float): Saturation.
+
+    Returns:
+        Color: A new color.
+    &#34;&#34;&#34;
+    r, g, b = hls_to_rgb(h, l, s)
+    return cls(int(r * 255 + 0.5), int(g * 255 + 0.5), int(b * 255 + 0.5))</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.from_rich_color"><code class="name flex">
+<span>def <span class="ident">from_rich_color</span></span>(<span>rich_color: RichColor) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a new color from Rich's Color class.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rich_color</code></strong> :&ensp;<code>RichColor</code></dt>
+<dd>An instance of rich.color.Color.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>A new Color.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_rich_color(cls, rich_color: RichColor) -&gt; Color:
+    &#34;&#34;&#34;Create a new color from Rich&#39;s Color class.
+
+    Args:
+        rich_color (RichColor): An instance of rich.color.Color.
+
+    Returns:
+        Color: A new Color.
+    &#34;&#34;&#34;
+    r, g, b = rich_color.get_truecolor()
+    return cls(r, g, b)</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.parse"><code class="name flex">
+<span>def <span class="ident">parse</span></span>(<span>cls, color_text: str | <a title="textual.color.Color" href="#textual.color.Color">Color</a>) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse a string containing a CSS-style color.</p>
+<h2 id="args">Args</h2>
+<p>color_text (str | Color): Text with a valid color format. Color objects will
+be returned unmodified.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code><a title="textual.color.ColorParseError" href="#textual.color.ColorParseError">ColorParseError</a></code></dt>
+<dd>If the color is not encoded correctly.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>New color object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+@lru_cache(maxsize=1024 * 4)
+def parse(cls, color_text: str | Color) -&gt; Color:
+    &#34;&#34;&#34;Parse a string containing a CSS-style color.
+
+    Args:
+        color_text (str | Color): Text with a valid color format. Color objects will
+            be returned unmodified.
+
+    Raises:
+        ColorParseError: If the color is not encoded correctly.
+
+    Returns:
+        Color: New color object.
+    &#34;&#34;&#34;
+    if isinstance(color_text, Color):
+        return color_text
+    ansi_color = ANSI_COLOR_TO_RGB.get(color_text)
+    if ansi_color is not None:
+        return cls(*ansi_color)
+    color_match = RE_COLOR.match(color_text)
+    if color_match is None:
+        raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
+    rgb_hex, rgba_hex, rgb, rgba = color_match.groups()
+
+    if rgb_hex is not None:
+        r, g, b = [int(pair, 16) for pair in split_pairs3(rgb_hex)]
+        color = cls(r, g, b, 1.0)
+    elif rgba_hex is not None:
+        r, g, b, a = [int(pair, 16) for pair in split_pairs4(rgba_hex)]
+        color = cls(r, g, b, a / 255.0)
+    elif rgb is not None:
+        r, g, b = [clamp(int(float(value)), 0, 255) for value in rgb.split(&#34;,&#34;)]
+        color = cls(r, g, b, 1.0)
+    elif rgba is not None:
+        float_r, float_g, float_b, float_a = [
+            float(value) for value in rgba.split(&#34;,&#34;)
+        ]
+        color = cls(
+            clamp(int(float_r), 0, 255),
+            clamp(int(float_g), 0, 255),
+            clamp(int(float_b), 0, 255),
+            clamp(float_a, 0.0, 1.0),
+        )
+    else:
+        raise AssertionError(&#34;Can&#39;t get here if RE_COLOR matches&#34;)
+    return color</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.color.Color.a"><code class="name">var <span class="ident">a</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 3</p></div>
+</dd>
+<dt id="textual.color.Color.b"><code class="name">var <span class="ident">b</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+<dt id="textual.color.Color.brightness"><code class="name">var <span class="ident">brightness</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Get the human perceptual brightness.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def brightness(self) -&gt; float:
+    &#34;&#34;&#34;Get the human perceptual brightness.&#34;&#34;&#34;
+    r, g, b = self.normalized
+    brightness = (299 * r + 587 * g + 114 * b) / 1000
+    return brightness</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.clamped"><code class="name">var <span class="ident">clamped</span> : <a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>
+<div class="desc"><p>Get a color with all components saturated to maximum and minimum values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def clamped(self) -&gt; Color:
+    &#34;&#34;&#34;Get a color with all components saturated to maximum and minimum values.&#34;&#34;&#34;
+    r, g, b, a = self
+    _clamp = clamp
+    color = Color(
+        _clamp(r, 0, 255),
+        _clamp(g, 0, 255),
+        _clamp(b, 0, 255),
+        _clamp(a, 0.0, 1.0),
+    )
+    return color</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.css"><code class="name">var <span class="ident">css</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The color in CSS rgb or rgba form.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>A CSS style color, e.g. "rgb(10,20,30)" or "rgb(50,70,80,0.5)"</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def css(self) -&gt; str:
+    &#34;&#34;&#34;The color in CSS rgb or rgba form.
+
+    Returns:
+        str: A CSS style color, e.g. &#34;rgb(10,20,30)&#34; or &#34;rgb(50,70,80,0.5)&#34;
+
+    &#34;&#34;&#34;
+    r, g, b, a = self
+    return f&#34;rgb({r},{g},{b})&#34; if a == 1 else f&#34;rgba({r},{g},{b},{a})&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.g"><code class="name">var <span class="ident">g</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="textual.color.Color.hex"><code class="name">var <span class="ident">hex</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The color in CSS hex form, with 6 digits for RGB, and 8 digits for RGBA.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>A CSS hex-style color, e.g. "#46b3de" or "#3342457f"</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def hex(self) -&gt; str:
+    &#34;&#34;&#34;The color in CSS hex form, with 6 digits for RGB, and 8 digits for RGBA.
+
+    Returns:
+        str: A CSS hex-style color, e.g. &#34;#46b3de&#34; or &#34;#3342457f&#34;
+
+    &#34;&#34;&#34;
+    r, g, b, a = self
+    return (
+        f&#34;#{r:02X}{g:02X}{b:02X}&#34;
+        if a == 1
+        else f&#34;#{r:02X}{g:02X}{b:02X}{int(a*255):02X}&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.hls"><code class="name">var <span class="ident">hls</span> : <a title="textual.color.HLS" href="#textual.color.HLS">HLS</a></code></dt>
+<dd>
+<div class="desc"><p>Get the color as HLS.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def hls(self) -&gt; HLS:
+    &#34;&#34;&#34;Get the color as HLS.&#34;&#34;&#34;
+    r, g, b = self.normalized
+    return HLS(*rgb_to_hls(r, g, b))</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.normalized"><code class="name">var <span class="ident">normalized</span> : tuple[float, float, float]</code></dt>
+<dd>
+<div class="desc"><p>A tuple of the color components normalized to between 0 and 1.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def normalized(self) -&gt; tuple[float, float, float]:
+    &#34;&#34;&#34;A tuple of the color components normalized to between 0 and 1.&#34;&#34;&#34;
+    r, g, b, _a = self
+    return (r / 255, g / 255, b / 255)</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.r"><code class="name">var <span class="ident">r</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="textual.color.Color.rich_color"><code class="name">var <span class="ident">rich_color</span> : rich.color.Color</code></dt>
+<dd>
+<div class="desc"><p>This color encoded in Rich's Color class.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def rich_color(self) -&gt; RichColor:
+    &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.&#34;&#34;&#34;
+    # TODO: This isn&#39;t cheap as I&#39;d like - cache in a LRUCache ?
+    r, g, b, _a = self
+    return RichColor.from_rgb(r, g, b)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.color.Color.blend"><code class="name flex">
+<span>def <span class="ident">blend</span></span>(<span>self, destination: <a title="textual.color.Color" href="#textual.color.Color">Color</a>, factor: float) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Generate a new color between two colors.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>destination</code></strong> :&ensp;<code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>Another color.</dd>
+<dt><strong><code>factor</code></strong> :&ensp;<code>float</code></dt>
+<dd>A blend factor, 0 -&gt; 1</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>A new color.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@lru_cache(maxsize=2048)
+def blend(self, destination: Color, factor: float) -&gt; Color:
+    &#34;&#34;&#34;Generate a new color between two colors.
+
+    Args:
+        destination (Color): Another color.
+        factor (float): A blend factor, 0 -&gt; 1
+
+    Returns:
+        Color: A new color.
+    &#34;&#34;&#34;
+    if factor == 0:
+        return self
+    elif factor == 1:
+        return destination
+    r1, g1, b1, _ = self
+    r2, g2, b2, _ = destination
+    return Color(
+        int(r1 + (r2 - r1) * factor),
+        int(g1 + (g2 - g1) * factor),
+        int(b1 + (b2 - b1) * factor),
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.darken"><code class="name flex">
+<span>def <span class="ident">darken</span></span>(<span>self, amount: float) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Darken the color by a given amount.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>amount</code></strong> :&ensp;<code>float</code></dt>
+<dd>Value between 0-1 to reduce luminance by.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>New color.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def darken(self, amount: float) -&gt; Color:
+    &#34;&#34;&#34;Darken the color by a given amount.
+
+    Args:
+        amount (float): Value between 0-1 to reduce luminance by.
+
+    Returns:
+        Color: New color.
+    &#34;&#34;&#34;
+    l, a, b = rgb_to_lab(self)
+    l -= amount * 100
+    return lab_to_rgb(Lab(l, a, b)).clamped</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.get_contrast_text"><code class="name flex">
+<span>def <span class="ident">get_contrast_text</span></span>(<span>self, alpha=0.95) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a light or dark color that best contrasts this color, for use with text.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>An alpha value to adjust the pure white / black by.
+Defaults to 0.95.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>A new color, either an off-white or off-black</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_contrast_text(self, alpha=0.95) -&gt; Color:
+    &#34;&#34;&#34;Get a light or dark color that best contrasts this color, for use with text.
+
+    Args:
+        alpha (float, optional): An alpha value to adjust the pure white / black by.
+            Defaults to 0.95.
+
+    Returns:
+        Color: A new color, either an off-white or off-black
+    &#34;&#34;&#34;
+    white = self.blend(WHITE, alpha)
+    black = self.blend(BLACK, alpha)
+    brightness = self.brightness
+    white_contrast = abs(brightness - white.brightness)
+    black_contrast = abs(brightness - black.brightness)
+    return white if white_contrast &gt; black_contrast else black</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.lighten"><code class="name flex">
+<span>def <span class="ident">lighten</span></span>(<span>self, amount: float) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Lighten the color by a given amount.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>amount</code></strong> :&ensp;<code>float</code></dt>
+<dd>Value between 0-1 to increase luminance by.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>New color.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def lighten(self, amount: float) -&gt; Color:
+    &#34;&#34;&#34;Lighten the color by a given amount.
+
+    Args:
+        amount (float): Value between 0-1 to increase luminance by.
+
+    Returns:
+        Color: New color.
+    &#34;&#34;&#34;
+    return self.darken(-amount).clamped</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.with_alpha"><code class="name flex">
+<span>def <span class="ident">with_alpha</span></span>(<span>self, alpha: float) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a new color with the given alpha.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>alpha</code></strong> :&ensp;<code>float</code></dt>
+<dd>New value for alpha.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>A new color.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def with_alpha(self, alpha: float) -&gt; Color:
+    &#34;&#34;&#34;Create a new color with the given alpha.
+
+    Args:
+        alpha (float): New value for alpha.
+
+    Returns:
+        Color: A new color.
+    &#34;&#34;&#34;
+    r, g, b, _ = self
+    return Color(r, g, b, alpha)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="textual.color.ColorPair"><code class="flex name class">
+<span>class <span class="ident">ColorPair</span></span>
+<span>(</span><span>foreground: <a title="textual.color.Color" href="#textual.color.Color">Color</a>, background: <a title="textual.color.Color" href="#textual.color.Color">Color</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A pair of colors for foreground and background.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ColorPair(NamedTuple):
+    &#34;&#34;&#34;A pair of colors for foreground and background.&#34;&#34;&#34;
+
+    foreground: Color
+    background: Color
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        yield &#34;foreground&#34;, self.foreground
+        yield &#34;background&#34;, self.background
+
+    @property
+    def style(self) -&gt; Style:
+        &#34;&#34;&#34;A Rich style with foreground and background.&#34;&#34;&#34;
+        return self._get_style()
+
+    @lru_cache(maxsize=1024 * 4)
+    def _get_style(self) -&gt; Style:
+        &#34;&#34;&#34;Get a Rich style, foreground adjusted for transparency.&#34;&#34;&#34;
+        r, g, b, a = self.foreground
+        if a == 0:
+            return Style.from_color(
+                self.background.rich_color, self.background.rich_color
+            )
+        elif a == 1:
+            return Style.from_color(
+                self.foreground.rich_color, self.background.rich_color
+            )
+        else:
+            r2, g2, b2, _ = self.background
+            return Style.from_color(
+                RichColor.from_rgb(
+                    r + (r2 - r) * a, g + (g2 - g) * a, b + (b2 - b) * a
+                ),
+                self.background.rich_color,
+            )</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.color.ColorPair.background"><code class="name">var <span class="ident">background</span> : <a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="textual.color.ColorPair.foreground"><code class="name">var <span class="ident">foreground</span> : <a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="textual.color.ColorPair.style"><code class="name">var <span class="ident">style</span> : rich.style.Style</code></dt>
+<dd>
+<div class="desc"><p>A Rich style with foreground and background.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def style(self) -&gt; Style:
+    &#34;&#34;&#34;A Rich style with foreground and background.&#34;&#34;&#34;
+    return self._get_style()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="textual.color.ColorParseError"><code class="flex name class">
+<span>class <span class="ident">ColorParseError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A color failed to parse</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ColorParseError(Exception):
+    &#34;&#34;&#34;A color failed to parse&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="textual.color.HLS"><code class="flex name class">
+<span>class <span class="ident">HLS</span></span>
+<span>(</span><span>h: float, l: float, s: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A color in HLS format.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HLS(NamedTuple):
+    &#34;&#34;&#34;A color in HLS format.&#34;&#34;&#34;
+
+    h: float
+    l: float
+    s: float</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.color.HLS.h"><code class="name">var <span class="ident">h</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="textual.color.HLS.l"><code class="name">var <span class="ident">l</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="textual.color.HLS.s"><code class="name">var <span class="ident">s</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="textual.color.HSV"><code class="flex name class">
+<span>class <span class="ident">HSV</span></span>
+<span>(</span><span>h: float, s: float, v: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A color in HSV format.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HSV(NamedTuple):
+    &#34;&#34;&#34;A color in HSV format.&#34;&#34;&#34;
+
+    h: float
+    s: float
+    v: float</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.color.HSV.h"><code class="name">var <span class="ident">h</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="textual.color.HSV.s"><code class="name">var <span class="ident">s</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="textual.color.HSV.v"><code class="name">var <span class="ident">v</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="textual.color.Lab"><code class="flex name class">
+<span>class <span class="ident">Lab</span></span>
+<span>(</span><span>L: float, a: float, b: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A color in CIE-L*ab format.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Lab(NamedTuple):
+    &#34;&#34;&#34;A color in CIE-L*ab format.&#34;&#34;&#34;
+
+    L: float
+    a: float
+    b: float</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.color.Lab.L"><code class="name">var <span class="ident">L</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="textual.color.Lab.a"><code class="name">var <span class="ident">a</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="textual.color.Lab.b"><code class="name">var <span class="ident">b</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<form>
+<input id="lunr-search" name="q" placeholder="🔎 Search ..." aria-label="Search"
+disabled minlength="2">
+</form>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin></script>
+<style>
+.modal-dialog iframe {
+width: 100vw;
+height: calc(100vh - 80px);
+}
+@media screen and (min-width: 700px) {
+.modal-dialog iframe {
+width: 70vw;
+height: 80vh;
+}
+}
+.modal-dialog .tingle-modal-box {width: auto;}
+.modal-dialog .tingle-modal-box__content {padding: 0;}
+</style>
+<script>
+const input = document.getElementById('lunr-search');
+input.disabled = false;
+input.form.addEventListener('submit', (ev) => {
+ev.preventDefault();
+const url = new URL(window.location);
+url.searchParams.set('q', input.value);
+history.replaceState({}, null, url.toString());
+search(input.value);
+});
+const query = new URL(window.location).searchParams.get('q');
+if (query)
+search(query);
+function search(query) {
+const url = '../doc-search.html#' + encodeURIComponent(query);
+new tingle.modal({
+cssClass: ['modal-dialog'],
+onClose: () => {
+const url = new URL(window.location);
+url.searchParams.delete('q');
+history.replaceState({}, null, url.toString());
+setTimeout(() => input.focus(), 100);
+}
+}).setContent('<iframe src="' + url + '"></iframe>').open();
+}
+</script>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="textual" href="index.html">textual</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="textual.color.lab_to_rgb" href="#textual.color.lab_to_rgb">lab_to_rgb</a></code></li>
+<li><code><a title="textual.color.rgb_to_lab" href="#textual.color.rgb_to_lab">rgb_to_lab</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.color.Color.a" href="#textual.color.Color.a">a</a></code></li>
+<li><code><a title="textual.color.Color.b" href="#textual.color.Color.b">b</a></code></li>
+<li><code><a title="textual.color.Color.blend" href="#textual.color.Color.blend">blend</a></code></li>
+<li><code><a title="textual.color.Color.brightness" href="#textual.color.Color.brightness">brightness</a></code></li>
+<li><code><a title="textual.color.Color.clamped" href="#textual.color.Color.clamped">clamped</a></code></li>
+<li><code><a title="textual.color.Color.css" href="#textual.color.Color.css">css</a></code></li>
+<li><code><a title="textual.color.Color.darken" href="#textual.color.Color.darken">darken</a></code></li>
+<li><code><a title="textual.color.Color.from_hls" href="#textual.color.Color.from_hls">from_hls</a></code></li>
+<li><code><a title="textual.color.Color.from_rich_color" href="#textual.color.Color.from_rich_color">from_rich_color</a></code></li>
+<li><code><a title="textual.color.Color.g" href="#textual.color.Color.g">g</a></code></li>
+<li><code><a title="textual.color.Color.get_contrast_text" href="#textual.color.Color.get_contrast_text">get_contrast_text</a></code></li>
+<li><code><a title="textual.color.Color.hex" href="#textual.color.Color.hex">hex</a></code></li>
+<li><code><a title="textual.color.Color.hls" href="#textual.color.Color.hls">hls</a></code></li>
+<li><code><a title="textual.color.Color.lighten" href="#textual.color.Color.lighten">lighten</a></code></li>
+<li><code><a title="textual.color.Color.normalized" href="#textual.color.Color.normalized">normalized</a></code></li>
+<li><code><a title="textual.color.Color.parse" href="#textual.color.Color.parse">parse</a></code></li>
+<li><code><a title="textual.color.Color.r" href="#textual.color.Color.r">r</a></code></li>
+<li><code><a title="textual.color.Color.rich_color" href="#textual.color.Color.rich_color">rich_color</a></code></li>
+<li><code><a title="textual.color.Color.with_alpha" href="#textual.color.Color.with_alpha">with_alpha</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.color.ColorPair" href="#textual.color.ColorPair">ColorPair</a></code></h4>
+<ul class="">
+<li><code><a title="textual.color.ColorPair.background" href="#textual.color.ColorPair.background">background</a></code></li>
+<li><code><a title="textual.color.ColorPair.foreground" href="#textual.color.ColorPair.foreground">foreground</a></code></li>
+<li><code><a title="textual.color.ColorPair.style" href="#textual.color.ColorPair.style">style</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.color.ColorParseError" href="#textual.color.ColorParseError">ColorParseError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="textual.color.HLS" href="#textual.color.HLS">HLS</a></code></h4>
+<ul class="">
+<li><code><a title="textual.color.HLS.h" href="#textual.color.HLS.h">h</a></code></li>
+<li><code><a title="textual.color.HLS.l" href="#textual.color.HLS.l">l</a></code></li>
+<li><code><a title="textual.color.HLS.s" href="#textual.color.HLS.s">s</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.color.HSV" href="#textual.color.HSV">HSV</a></code></h4>
+<ul class="">
+<li><code><a title="textual.color.HSV.h" href="#textual.color.HSV.h">h</a></code></li>
+<li><code><a title="textual.color.HSV.s" href="#textual.color.HSV.s">s</a></code></li>
+<li><code><a title="textual.color.HSV.v" href="#textual.color.HSV.v">v</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.color.Lab" href="#textual.color.Lab">Lab</a></code></h4>
+<ul class="">
+<li><code><a title="textual.color.Lab.L" href="#textual.color.Lab.L">L</a></code></li>
+<li><code><a title="textual.color.Lab.a" href="#textual.color.Lab.a">a</a></code></li>
+<li><code><a title="textual.color.Lab.b" href="#textual.color.Lab.b">b</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

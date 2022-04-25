@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.layouts API documentation</title>
+<title>textual.css API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,30 +19,62 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.layouts</code></h1>
+<h1 class="title">Module <code>textual.css</code></h1>
 </header>
 <section id="section-intro">
 </section>
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
-<dt><code class="name"><a title="textual.layouts.dock" href="dock.html">textual.layouts.dock</a></code></dt>
+<dt><code class="name"><a title="textual.css.constants" href="constants.html">textual.css.constants</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="textual.layouts.factory" href="factory.html">textual.layouts.factory</a></code></dt>
+<dt><code class="name"><a title="textual.css.errors" href="errors.html">textual.css.errors</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="textual.layouts.grid" href="grid.html">textual.layouts.grid</a></code></dt>
+<dt><code class="name"><a title="textual.css.match" href="match.html">textual.css.match</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="textual.layouts.horizontal" href="horizontal.html">textual.layouts.horizontal</a></code></dt>
+<dt><code class="name"><a title="textual.css.model" href="model.html">textual.css.model</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="textual.layouts.vertical" href="vertical.html">textual.layouts.vertical</a></code></dt>
+<dt><code class="name"><a title="textual.css.parse" href="parse.html">textual.css.parse</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.css.query" href="query.html">textual.css.query</a></code></dt>
+<dd>
+<div class="desc"><p>A DOMQuery is a set of DOM nodes associated with a given CSS selector …</p></div>
+</dd>
+<dt><code class="name"><a title="textual.css.scalar" href="scalar.html">textual.css.scalar</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.css.scalar_animation" href="scalar_animation.html">textual.css.scalar_animation</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.css.stylesheet" href="stylesheet.html">textual.css.stylesheet</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.css.tokenize" href="tokenize.html">textual.css.tokenize</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.css.tokenizer" href="tokenizer.html">textual.css.tokenizer</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.css.transition" href="transition.html">textual.css.transition</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.css.types" href="types.html">textual.css.types</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -114,11 +146,19 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
-<li><code><a title="textual.layouts.dock" href="dock.html">textual.layouts.dock</a></code></li>
-<li><code><a title="textual.layouts.factory" href="factory.html">textual.layouts.factory</a></code></li>
-<li><code><a title="textual.layouts.grid" href="grid.html">textual.layouts.grid</a></code></li>
-<li><code><a title="textual.layouts.horizontal" href="horizontal.html">textual.layouts.horizontal</a></code></li>
-<li><code><a title="textual.layouts.vertical" href="vertical.html">textual.layouts.vertical</a></code></li>
+<li><code><a title="textual.css.constants" href="constants.html">textual.css.constants</a></code></li>
+<li><code><a title="textual.css.errors" href="errors.html">textual.css.errors</a></code></li>
+<li><code><a title="textual.css.match" href="match.html">textual.css.match</a></code></li>
+<li><code><a title="textual.css.model" href="model.html">textual.css.model</a></code></li>
+<li><code><a title="textual.css.parse" href="parse.html">textual.css.parse</a></code></li>
+<li><code><a title="textual.css.query" href="query.html">textual.css.query</a></code></li>
+<li><code><a title="textual.css.scalar" href="scalar.html">textual.css.scalar</a></code></li>
+<li><code><a title="textual.css.scalar_animation" href="scalar_animation.html">textual.css.scalar_animation</a></code></li>
+<li><code><a title="textual.css.stylesheet" href="stylesheet.html">textual.css.stylesheet</a></code></li>
+<li><code><a title="textual.css.tokenize" href="tokenize.html">textual.css.tokenize</a></code></li>
+<li><code><a title="textual.css.tokenizer" href="tokenizer.html">textual.css.tokenizer</a></code></li>
+<li><code><a title="textual.css.transition" href="transition.html">textual.css.transition</a></code></li>
+<li><code><a title="textual.css.types" href="types.html">textual.css.types</a></code></li>
 </ul>
 </li>
 </ul>

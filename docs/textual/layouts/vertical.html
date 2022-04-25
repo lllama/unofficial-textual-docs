@@ -28,68 +28,61 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from typing import Iterable
+from typing import cast, TYPE_CHECKING
 
-from ..geometry import Offset, Region, Size, Spacing, SpacingDimensions
+from .. import log
+
+from ..geometry import Offset, Region, Size
 from ..layout import Layout, WidgetPlacement
-from ..widget import Widget
-from .._loop import loop_last
+
+if TYPE_CHECKING:
+    from ..widget import Widget
 
 
 class VerticalLayout(Layout):
-    def __init__(
-        self,
-        *,
-        auto_width: bool = False,
-        z: int = 0,
-        gutter: SpacingDimensions = (0, 0, 0, 0)
-    ):
-        self.auto_width = auto_width
-        self.z = z
-        self.gutter = Spacing.unpack(gutter)
-        self._widgets: list[Widget] = []
-        self._max_widget_width = 0
-        super().__init__()
+    &#34;&#34;&#34;Used to layout Widgets vertically on screen, from top to bottom.&#34;&#34;&#34;
 
-    def add(self, widget: Widget) -&gt; None:
-        self._widgets.append(widget)
-        self._max_widget_width = max(widget.app.measure(widget), self._max_widget_width)
+    name = &#34;vertical&#34;
 
-    def clear(self) -&gt; None:
-        del self._widgets[:]
-        self._max_widget_width = 0
+    def arrange(
+        self, parent: Widget, size: Size, scroll: Offset
+    ) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
 
-    def get_widgets(self) -&gt; Iterable[Widget]:
-        return self._widgets
+        placements: list[WidgetPlacement] = []
+        add_placement = placements.append
 
-    def arrange(self, size: Size, scroll: Offset) -&gt; Iterable[WidgetPlacement]:
-        index = 0
-        width, _height = size
-        gutter = self.gutter
-        x, y = self.gutter.top_left
-        render_width = (
-            max(width, self._max_widget_width)
-            if self.auto_width
-            else width - gutter.width
-        )
+        y = max_width = max_height = 0
+        parent_size = parent.size
 
-        total_width = render_width
+        box_models = [
+            widget.get_box_model(size, parent_size)
+            for widget in cast(&#34;list[Widget]&#34;, parent.children)
+        ]
 
-        gutter_height = max(gutter.top, gutter.bottom)
+        margins = [
+            max((box1.margin.bottom, box2.margin.top))
+            for box1, box2 in zip(box_models, box_models[1:])
+        ]
+        if box_models:
+            margins.append(box_models[-1].margin.bottom)
 
-        for last, widget in loop_last(self._widgets):
-            if (
-                not widget.render_cache
-                or widget.render_cache.size.width != render_width
-            ):
-                widget.render_lines_free(render_width)
-            assert widget.render_cache is not None
-            render_height = widget.render_cache.size.height
-            region = Region(x, y, render_width, render_height)
-            yield WidgetPlacement(region, widget, (self.z, index))
-            y += render_height + (gutter.bottom if last else gutter_height)
+        y = box_models[0].margin.top if box_models else 0
 
-        yield WidgetPlacement(Region(0, 0, total_width + gutter.width, y))</code></pre>
+        for widget, box_model, margin in zip(parent.children, box_models, margins):
+            content_width, content_height = box_model.size
+            offset_x = widget.styles.align_width(content_width, parent_size.width)
+            region = Region(offset_x, y, content_width, content_height)
+            max_height = max(max_height, content_height)
+            add_placement(WidgetPlacement(region, widget, 0))
+            y += region.height + margin
+            max_height = y
+
+        max_height += margins[-1] if margins else 0
+
+        total_region = Region(0, 0, max_width, max_height)
+        add_placement(WidgetPlacement(total_region, None, 0))
+
+        return placements, set(parent.children)</code></pre>
 </details>
 </section>
 <section>
@@ -103,116 +96,68 @@ class VerticalLayout(Layout):
 <dl>
 <dt id="textual.layouts.vertical.VerticalLayout"><code class="flex name class">
 <span>class <span class="ident">VerticalLayout</span></span>
-<span>(</span><span>*, auto_width: bool = False, z: int = 0, gutter: SpacingDimensions = (0, 0, 0, 0))</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Responsible for arranging Widgets in a view and rendering them.</p></div>
+<div class="desc"><p>Used to layout Widgets vertically on screen, from top to bottom.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class VerticalLayout(Layout):
-    def __init__(
-        self,
-        *,
-        auto_width: bool = False,
-        z: int = 0,
-        gutter: SpacingDimensions = (0, 0, 0, 0)
-    ):
-        self.auto_width = auto_width
-        self.z = z
-        self.gutter = Spacing.unpack(gutter)
-        self._widgets: list[Widget] = []
-        self._max_widget_width = 0
-        super().__init__()
+    &#34;&#34;&#34;Used to layout Widgets vertically on screen, from top to bottom.&#34;&#34;&#34;
 
-    def add(self, widget: Widget) -&gt; None:
-        self._widgets.append(widget)
-        self._max_widget_width = max(widget.app.measure(widget), self._max_widget_width)
+    name = &#34;vertical&#34;
 
-    def clear(self) -&gt; None:
-        del self._widgets[:]
-        self._max_widget_width = 0
+    def arrange(
+        self, parent: Widget, size: Size, scroll: Offset
+    ) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
 
-    def get_widgets(self) -&gt; Iterable[Widget]:
-        return self._widgets
+        placements: list[WidgetPlacement] = []
+        add_placement = placements.append
 
-    def arrange(self, size: Size, scroll: Offset) -&gt; Iterable[WidgetPlacement]:
-        index = 0
-        width, _height = size
-        gutter = self.gutter
-        x, y = self.gutter.top_left
-        render_width = (
-            max(width, self._max_widget_width)
-            if self.auto_width
-            else width - gutter.width
-        )
+        y = max_width = max_height = 0
+        parent_size = parent.size
 
-        total_width = render_width
+        box_models = [
+            widget.get_box_model(size, parent_size)
+            for widget in cast(&#34;list[Widget]&#34;, parent.children)
+        ]
 
-        gutter_height = max(gutter.top, gutter.bottom)
+        margins = [
+            max((box1.margin.bottom, box2.margin.top))
+            for box1, box2 in zip(box_models, box_models[1:])
+        ]
+        if box_models:
+            margins.append(box_models[-1].margin.bottom)
 
-        for last, widget in loop_last(self._widgets):
-            if (
-                not widget.render_cache
-                or widget.render_cache.size.width != render_width
-            ):
-                widget.render_lines_free(render_width)
-            assert widget.render_cache is not None
-            render_height = widget.render_cache.size.height
-            region = Region(x, y, render_width, render_height)
-            yield WidgetPlacement(region, widget, (self.z, index))
-            y += render_height + (gutter.bottom if last else gutter_height)
+        y = box_models[0].margin.top if box_models else 0
 
-        yield WidgetPlacement(Region(0, 0, total_width + gutter.width, y))</code></pre>
+        for widget, box_model, margin in zip(parent.children, box_models, margins):
+            content_width, content_height = box_model.size
+            offset_x = widget.styles.align_width(content_width, parent_size.width)
+            region = Region(offset_x, y, content_width, content_height)
+            max_height = max(max_height, content_height)
+            add_placement(WidgetPlacement(region, widget, 0))
+            y += region.height + margin
+            max_height = y
+
+        max_height += margins[-1] if margins else 0
+
+        total_region = Region(0, 0, max_width, max_height)
+        add_placement(WidgetPlacement(total_region, None, 0))
+
+        return placements, set(parent.children)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="textual.layout.Layout" href="../layout.html#textual.layout.Layout">Layout</a></li>
 <li>abc.ABC</li>
 </ul>
-<h3>Methods</h3>
+<h3>Class variables</h3>
 <dl>
-<dt id="textual.layouts.vertical.VerticalLayout.add"><code class="name flex">
-<span>def <span class="ident">add</span></span>(<span>self, widget: Widget) ‑> None</span>
-</code></dt>
+<dt id="textual.layouts.vertical.VerticalLayout.name"><code class="name">var <span class="ident">name</span> : ClassVar[str]</code></dt>
 <dd>
 <div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def add(self, widget: Widget) -&gt; None:
-    self._widgets.append(widget)
-    self._max_widget_width = max(widget.app.measure(widget), self._max_widget_width)</code></pre>
-</details>
-</dd>
-<dt id="textual.layouts.vertical.VerticalLayout.clear"><code class="name flex">
-<span>def <span class="ident">clear</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def clear(self) -&gt; None:
-    del self._widgets[:]
-    self._max_widget_width = 0</code></pre>
-</details>
-</dd>
-<dt id="textual.layouts.vertical.VerticalLayout.get_widgets"><code class="name flex">
-<span>def <span class="ident">get_widgets</span></span>(<span>self) ‑> Iterable[<a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_widgets(self) -&gt; Iterable[Widget]:
-    return self._widgets</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -220,10 +165,6 @@ class VerticalLayout(Layout):
 <li><code><b><a title="textual.layout.Layout" href="../layout.html#textual.layout.Layout">Layout</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.layout.Layout.arrange" href="../layout.html#textual.layout.Layout.arrange">arrange</a></code></li>
-<li><code><a title="textual.layout.Layout.cuts" href="../layout.html#textual.layout.Layout.cuts">cuts</a></code></li>
-<li><code><a title="textual.layout.Layout.get_offset" href="../layout.html#textual.layout.Layout.get_offset">get_offset</a></code></li>
-<li><code><a title="textual.layout.Layout.get_widget_at" href="../layout.html#textual.layout.Layout.get_widget_at">get_widget_at</a></code></li>
-<li><code><a title="textual.layout.Layout.render" href="../layout.html#textual.layout.Layout.render">render</a></code></li>
 </ul>
 </li>
 </ul>
@@ -293,9 +234,7 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.layouts.vertical.VerticalLayout" href="#textual.layouts.vertical.VerticalLayout">VerticalLayout</a></code></h4>
 <ul class="">
-<li><code><a title="textual.layouts.vertical.VerticalLayout.add" href="#textual.layouts.vertical.VerticalLayout.add">add</a></code></li>
-<li><code><a title="textual.layouts.vertical.VerticalLayout.clear" href="#textual.layouts.vertical.VerticalLayout.clear">clear</a></code></li>
-<li><code><a title="textual.layouts.vertical.VerticalLayout.get_widgets" href="#textual.layouts.vertical.VerticalLayout.get_widgets">get_widgets</a></code></li>
+<li><code><a title="textual.layouts.vertical.VerticalLayout.name" href="#textual.layouts.vertical.VerticalLayout.name">name</a></code></li>
 </ul>
 </li>
 </ul>

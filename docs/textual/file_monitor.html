@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.layouts API documentation</title>
+<title>textual.file_monitor API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,40 +19,123 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.layouts</code></h1>
+<h1 class="title">Module <code>textual.file_monitor</code></h1>
 </header>
 <section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">import os
+from typing import Callable
+
+import rich.repr
+
+from ._callback import invoke
+
+
+@rich.repr.auto
+class FileMonitor:
+    def __init__(self, path: str, callback: Callable) -&gt; None:
+        self.path = path
+        self.callback = callback
+        self._modified = self._get_modified()
+
+    def _get_modified(self) -&gt; float:
+        return os.stat(self.path).st_mtime
+
+    def check(self) -&gt; bool:
+        modified = self._get_modified()
+        changed = modified != self._modified
+        self._modified = modified
+        return changed
+
+    async def __call__(self) -&gt; None:
+        if self.check():
+            await self.on_change()
+
+    async def on_change(self) -&gt; None:
+        &#34;&#34;&#34;Called when file changes.&#34;&#34;&#34;
+        await invoke(self.callback)</code></pre>
+</details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="textual.layouts.dock" href="dock.html">textual.layouts.dock</a></code></dt>
+<dt id="textual.file_monitor.FileMonitor"><code class="flex name class">
+<span>class <span class="ident">FileMonitor</span></span>
+<span>(</span><span>path: str, callback: Callable)</span>
+</code></dt>
 <dd>
 <div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class FileMonitor:
+    def __init__(self, path: str, callback: Callable) -&gt; None:
+        self.path = path
+        self.callback = callback
+        self._modified = self._get_modified()
+
+    def _get_modified(self) -&gt; float:
+        return os.stat(self.path).st_mtime
+
+    def check(self) -&gt; bool:
+        modified = self._get_modified()
+        changed = modified != self._modified
+        self._modified = modified
+        return changed
+
+    async def __call__(self) -&gt; None:
+        if self.check():
+            await self.on_change()
+
+    async def on_change(self) -&gt; None:
+        &#34;&#34;&#34;Called when file changes.&#34;&#34;&#34;
+        await invoke(self.callback)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.file_monitor.FileMonitor.check"><code class="name flex">
+<span>def <span class="ident">check</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check(self) -&gt; bool:
+    modified = self._get_modified()
+    changed = modified != self._modified
+    self._modified = modified
+    return changed</code></pre>
+</details>
 </dd>
-<dt><code class="name"><a title="textual.layouts.factory" href="factory.html">textual.layouts.factory</a></code></dt>
+<dt id="textual.file_monitor.FileMonitor.on_change"><code class="name flex">
+<span>async def <span class="ident">on_change</span></span>(<span>self) ‑> None</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.grid" href="grid.html">textual.layouts.grid</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.horizontal" href="horizontal.html">textual.layouts.horizontal</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.vertical" href="vertical.html">textual.layouts.vertical</a></code></dt>
-<dd>
-<div class="desc"></div>
+<div class="desc"><p>Called when file changes.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_change(self) -&gt; None:
+    &#34;&#34;&#34;Called when file changes.&#34;&#34;&#34;
+    await invoke(self.callback)</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -90,7 +173,7 @@ const query = new URL(window.location).searchParams.get('q');
 if (query)
 search(query);
 function search(query) {
-const url = '../../doc-search.html#' + encodeURIComponent(query);
+const url = '../doc-search.html#' + encodeURIComponent(query);
 new tingle.modal({
 cssClass: ['modal-dialog'],
 onClose: () => {
@@ -109,16 +192,18 @@ setTimeout(() => input.focus(), 100);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="textual" href="../index.html">textual</a></code></li>
+<li><code><a title="textual" href="index.html">textual</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li><code><a title="textual.layouts.dock" href="dock.html">textual.layouts.dock</a></code></li>
-<li><code><a title="textual.layouts.factory" href="factory.html">textual.layouts.factory</a></code></li>
-<li><code><a title="textual.layouts.grid" href="grid.html">textual.layouts.grid</a></code></li>
-<li><code><a title="textual.layouts.horizontal" href="horizontal.html">textual.layouts.horizontal</a></code></li>
-<li><code><a title="textual.layouts.vertical" href="vertical.html">textual.layouts.vertical</a></code></li>
+<li>
+<h4><code><a title="textual.file_monitor.FileMonitor" href="#textual.file_monitor.FileMonitor">FileMonitor</a></code></h4>
+<ul class="">
+<li><code><a title="textual.file_monitor.FileMonitor.check" href="#textual.file_monitor.FileMonitor.check">check</a></code></li>
+<li><code><a title="textual.file_monitor.FileMonitor.on_change" href="#textual.file_monitor.FileMonitor.on_change">on_change</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

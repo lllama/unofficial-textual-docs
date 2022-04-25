@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.background API documentation</title>
+<title>textual.errors API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,42 +19,22 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.background</code></h1>
+<h1 class="title">Module <code>textual.errors</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from rich.console import Console, ConsoleOptions, RenderResult
-from rich.segment import Segment, SegmentLines
-from rich.style import StyleType
-
-from .widget import Widget
+<pre><code class="python">from __future__ import annotations
 
 
-class BackgroundRenderable:
-    def __init__(self, style: StyleType) -&gt; None:
-        self.style = style
-
-    def __rich_console__(
-        self, console: Console, options: ConsoleOptions
-    ) -&gt; RenderResult:
-
-        width = options.max_width
-        height = options.height or console.height
-        style = console.get_style(self.style)
-        blank_segment = Segment(&#34; &#34; * width, style)
-        lines = SegmentLines([[blank_segment]] * height, new_lines=True)
-        yield lines
+class TextualError(Exception):
+    &#34;&#34;&#34;Base class for Textual errors.&#34;&#34;&#34;
 
 
-class Background(Widget):
-    def __init__(self, style: StyleType = &#34;on blue&#34;) -&gt; None:
-        self.background_style = style
-
-    def render(self) -&gt; BackgroundRenderable:
-        return BackgroundRenderable(self.background_style)</code></pre>
+class NoWidget(TextualError):
+    &#34;&#34;&#34;Specified widget was not found.&#34;&#34;&#34;</code></pre>
 </details>
 </section>
 <section>
@@ -66,94 +46,48 @@ class Background(Widget):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="textual.background.Background"><code class="flex name class">
-<span>class <span class="ident">Background</span></span>
-<span>(</span><span>style: Union[str, ForwardRef('Style')] = 'on blue')</span>
+<dt id="textual.errors.NoWidget"><code class="flex name class">
+<span>class <span class="ident">NoWidget</span></span>
+<span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Specified widget was not found.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Background(Widget):
-    def __init__(self, style: StyleType = &#34;on blue&#34;) -&gt; None:
-        self.background_style = style
-
-    def render(self) -&gt; BackgroundRenderable:
-        return BackgroundRenderable(self.background_style)</code></pre>
+<pre><code class="python">class NoWidget(TextualError):
+    &#34;&#34;&#34;Specified widget was not found.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="textual.widget.Widget" href="widget.html#textual.widget.Widget">Widget</a></li>
-<li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="textual.background.Background.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="textual.widget.Widget" href="widget.html#textual.widget.Widget">Widget</a></b></code>:
-<ul class="hlist">
-<li><code><a title="textual.widget.Widget.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.border" href="widget.html#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.widget.Widget.border_style" href="widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.widget.Widget.border_title" href="widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
-<li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
-<li><code><a title="textual.widget.Widget.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.console" href="widget.html#textual.widget.Widget.console">console</a></code></li>
-<li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
-<li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_fraction" href="widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_min_size" href="widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset" href="widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_x" href="widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_y" href="widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_size" href="widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.widget.Widget.margin" href="widget.html#textual.widget.Widget.margin">margin</a></code></li>
-<li><code><a title="textual.widget.Widget.padding" href="widget.html#textual.widget.Widget.padding">padding</a></code></li>
-<li><code><a title="textual.widget.Widget.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
-<li><code><a title="textual.widget.Widget.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
-<li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
-<li><code><a title="textual.widget.Widget.render_styled" href="widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.root_view" href="widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
-<li><code><a title="textual.widget.Widget.style" href="widget.html#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.widget.Widget.visible" href="widget.html#textual.widget.Widget.visible">visible</a></code></li>
-</ul>
-</li>
+<li><a title="textual.errors.TextualError" href="#textual.errors.TextualError">TextualError</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
 </ul>
 </dd>
-<dt id="textual.background.BackgroundRenderable"><code class="flex name class">
-<span>class <span class="ident">BackgroundRenderable</span></span>
-<span>(</span><span>style: Union[str, ForwardRef('Style')])</span>
+<dt id="textual.errors.TextualError"><code class="flex name class">
+<span>class <span class="ident">TextualError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Base class for Textual errors.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class BackgroundRenderable:
-    def __init__(self, style: StyleType) -&gt; None:
-        self.style = style
-
-    def __rich_console__(
-        self, console: Console, options: ConsoleOptions
-    ) -&gt; RenderResult:
-
-        width = options.max_width
-        height = options.height or console.height
-        style = console.get_style(self.style)
-        blank_segment = Segment(&#34; &#34; * width, style)
-        lines = SegmentLines([[blank_segment]] * height, new_lines=True)
-        yield lines</code></pre>
+<pre><code class="python">class TextualError(Exception):
+    &#34;&#34;&#34;Base class for Textual errors.&#34;&#34;&#34;</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="textual.errors.NoWidget" href="#textual.errors.NoWidget">NoWidget</a></li>
+</ul>
 </dd>
 </dl>
 </section>
@@ -218,13 +152,10 @@ setTimeout(() => input.focus(), 100);
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="textual.background.Background" href="#textual.background.Background">Background</a></code></h4>
-<ul class="">
-<li><code><a title="textual.background.Background.can_focus" href="#textual.background.Background.can_focus">can_focus</a></code></li>
-</ul>
+<h4><code><a title="textual.errors.NoWidget" href="#textual.errors.NoWidget">NoWidget</a></code></h4>
 </li>
 <li>
-<h4><code><a title="textual.background.BackgroundRenderable" href="#textual.background.BackgroundRenderable">BackgroundRenderable</a></code></h4>
+<h4><code><a title="textual.errors.TextualError" href="#textual.errors.TextualError">TextualError</a></code></h4>
 </li>
 </ul>
 </li>

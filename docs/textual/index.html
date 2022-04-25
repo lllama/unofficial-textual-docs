@@ -26,19 +26,23 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from typing import Any
+<pre><code class="python">import inspect
+
+from rich.console import RenderableType
 
 __all__ = [&#34;log&#34;, &#34;panic&#34;]
 
 
-def log(*args: Any, verbosity: int = 0, **kwargs) -&gt; None:
+def log(*args: object, verbosity: int = 0, **kwargs) -&gt; None:
     from ._context import active_app
 
     app = active_app.get()
-    app.log(*args, verbosity=verbosity, **kwargs)
+
+    caller = inspect.stack()[1]
+    app.log(*args, verbosity=verbosity, _textual_calling_frame=caller, **kwargs)
 
 
-def panic(*args: Any) -&gt; None:
+def panic(*args: RenderableType) -&gt; None:
     from ._context import active_app
 
     app = active_app.get()
@@ -52,19 +56,47 @@ def panic(*args: Any) -&gt; None:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="textual.app" href="app.html">textual.app</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.background" href="background.html">textual.background</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt><code class="name"><a title="textual.binding" href="binding.html">textual.binding</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt><code class="name"><a title="textual.blank" href="blank.html">textual.blank</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.box_model" href="box_model.html">textual.box_model</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt><code class="name"><a title="textual.case" href="case.html">textual.case</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.cli" href="cli/index.html">textual.cli</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.color" href="color.html">textual.color</a></code></dt>
+<dd>
+<div class="desc"><p>Manages Color in Textual …</p></div>
+</dd>
+<dt><code class="name"><a title="textual.css" href="css/index.html">textual.css</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.design" href="design.html">textual.design</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.devtools" href="devtools/index.html">textual.devtools</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.dom" href="dom.html">textual.dom</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.draw" href="draw.html">textual.draw</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -76,23 +108,27 @@ def panic(*args: Any) -&gt; None:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt><code class="name"><a title="textual.errors" href="errors.html">textual.errors</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt><code class="name"><a title="textual.events" href="events.html">textual.events</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.file_monitor" href="file_monitor.html">textual.file_monitor</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt><code class="name"><a title="textual.geometry" href="geometry.html">textual.geometry</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Functions and classes to manage terminal geometry (anything involving coordinates or dimensions).</p></div>
 </dd>
 <dt><code class="name"><a title="textual.keys" href="keys.html">textual.keys</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt><code class="name"><a title="textual.layout" href="layout.html">textual.layout</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layout_map" href="layout_map.html">textual.layout_map</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -112,27 +148,19 @@ def panic(*args: Any) -&gt; None:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="textual.page" href="page.html">textual.page</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt><code class="name"><a title="textual.reactive" href="reactive.html">textual.reactive</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt><code class="name"><a title="textual.screen_update" href="screen_update.html">textual.screen_update</a></code></dt>
+<dt><code class="name"><a title="textual.renderables" href="renderables/index.html">textual.renderables</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.screen" href="screen.html">textual.screen</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt><code class="name"><a title="textual.scrollbar" href="scrollbar.html">textual.scrollbar</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.view" href="view.html">textual.view</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.views" href="views/index.html">textual.views</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -152,7 +180,7 @@ def panic(*args: Any) -&gt; None:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="textual.log"><code class="name flex">
-<span>def <span class="ident">log</span></span>(<span>*args: Any, verbosity: int = 0, **kwargs) ‑> None</span>
+<span>def <span class="ident">log</span></span>(<span>*args: object, verbosity: int = 0, **kwargs) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -160,15 +188,17 @@ def panic(*args: Any) -&gt; None:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def log(*args: Any, verbosity: int = 0, **kwargs) -&gt; None:
+<pre><code class="python">def log(*args: object, verbosity: int = 0, **kwargs) -&gt; None:
     from ._context import active_app
 
     app = active_app.get()
-    app.log(*args, verbosity=verbosity, **kwargs)</code></pre>
+
+    caller = inspect.stack()[1]
+    app.log(*args, verbosity=verbosity, _textual_calling_frame=caller, **kwargs)</code></pre>
 </details>
 </dd>
 <dt id="textual.panic"><code class="name flex">
-<span>def <span class="ident">panic</span></span>(<span>*args: Any) ‑> None</span>
+<span>def <span class="ident">panic</span></span>(<span>*args: Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -176,7 +206,7 @@ def panic(*args: Any) -&gt; None:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def panic(*args: Any) -&gt; None:
+<pre><code class="python">def panic(*args: RenderableType) -&gt; None:
     from ._context import active_app
 
     app = active_app.get()
@@ -243,27 +273,33 @@ setTimeout(() => input.focus(), 100);
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
 <li><code><a title="textual.actions" href="actions.html">textual.actions</a></code></li>
-<li><code><a title="textual.app" href="app.html">textual.app</a></code></li>
-<li><code><a title="textual.background" href="background.html">textual.background</a></code></li>
 <li><code><a title="textual.binding" href="binding.html">textual.binding</a></code></li>
+<li><code><a title="textual.blank" href="blank.html">textual.blank</a></code></li>
+<li><code><a title="textual.box_model" href="box_model.html">textual.box_model</a></code></li>
 <li><code><a title="textual.case" href="case.html">textual.case</a></code></li>
+<li><code><a title="textual.cli" href="cli/index.html">textual.cli</a></code></li>
+<li><code><a title="textual.color" href="color.html">textual.color</a></code></li>
+<li><code><a title="textual.css" href="css/index.html">textual.css</a></code></li>
+<li><code><a title="textual.design" href="design.html">textual.design</a></code></li>
+<li><code><a title="textual.devtools" href="devtools/index.html">textual.devtools</a></code></li>
+<li><code><a title="textual.dom" href="dom.html">textual.dom</a></code></li>
+<li><code><a title="textual.draw" href="draw.html">textual.draw</a></code></li>
 <li><code><a title="textual.driver" href="driver.html">textual.driver</a></code></li>
 <li><code><a title="textual.drivers" href="drivers/index.html">textual.drivers</a></code></li>
+<li><code><a title="textual.errors" href="errors.html">textual.errors</a></code></li>
 <li><code><a title="textual.events" href="events.html">textual.events</a></code></li>
+<li><code><a title="textual.file_monitor" href="file_monitor.html">textual.file_monitor</a></code></li>
 <li><code><a title="textual.geometry" href="geometry.html">textual.geometry</a></code></li>
 <li><code><a title="textual.keys" href="keys.html">textual.keys</a></code></li>
 <li><code><a title="textual.layout" href="layout.html">textual.layout</a></code></li>
-<li><code><a title="textual.layout_map" href="layout_map.html">textual.layout_map</a></code></li>
 <li><code><a title="textual.layouts" href="layouts/index.html">textual.layouts</a></code></li>
 <li><code><a title="textual.message" href="message.html">textual.message</a></code></li>
 <li><code><a title="textual.message_pump" href="message_pump.html">textual.message_pump</a></code></li>
 <li><code><a title="textual.messages" href="messages.html">textual.messages</a></code></li>
-<li><code><a title="textual.page" href="page.html">textual.page</a></code></li>
 <li><code><a title="textual.reactive" href="reactive.html">textual.reactive</a></code></li>
-<li><code><a title="textual.screen_update" href="screen_update.html">textual.screen_update</a></code></li>
+<li><code><a title="textual.renderables" href="renderables/index.html">textual.renderables</a></code></li>
+<li><code><a title="textual.screen" href="screen.html">textual.screen</a></code></li>
 <li><code><a title="textual.scrollbar" href="scrollbar.html">textual.scrollbar</a></code></li>
-<li><code><a title="textual.view" href="view.html">textual.view</a></code></li>
-<li><code><a title="textual.views" href="views/index.html">textual.views</a></code></li>
 <li><code><a title="textual.widget" href="widget.html">textual.widget</a></code></li>
 <li><code><a title="textual.widgets" href="widgets/index.html">textual.widgets</a></code></li>
 </ul>

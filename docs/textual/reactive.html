@@ -41,7 +41,6 @@ from typing import (
     TYPE_CHECKING,
 )
 
-from . import log
 from . import events
 
 from ._callback import count_parameters, invoke
@@ -55,6 +54,9 @@ if TYPE_CHECKING:
 
 
 ReactiveType = TypeVar(&#34;ReactiveType&#34;)
+
+
+T = TypeVar(&#34;T&#34;)
 
 
 class Reactive(Generic[ReactiveType]):
@@ -83,7 +85,7 @@ class Reactive(Generic[ReactiveType]):
             computes.append(name)
 
         self.name = name
-        self.internal_name = f&#34;__{name}&#34;
+        self.internal_name = f&#34;_reactive_{name}&#34;
         setattr(owner, self.internal_name, self._default)
 
     def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
@@ -103,15 +105,13 @@ class Reactive(Generic[ReactiveType]):
             setattr(obj, self.internal_name, value)
             self.check_watchers(obj, name, current_value)
 
-            if self.layout:
-                obj.refresh(layout=True)
-            elif self.repaint:
-                obj.refresh()
+            if self.layout or self.repaint:
+                obj.refresh(repaint=self.repaint, layout=self.layout)
 
     @classmethod
     def check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
 
-        internal_name = f&#34;__{name}&#34;
+        internal_name = f&#34;_reactive_{name}&#34;
         value = getattr(obj, internal_name)
 
         async def update_watcher(
@@ -241,7 +241,7 @@ def watch(
             computes.append(name)
 
         self.name = name
-        self.internal_name = f&#34;__{name}&#34;
+        self.internal_name = f&#34;_reactive_{name}&#34;
         setattr(owner, self.internal_name, self._default)
 
     def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
@@ -261,15 +261,13 @@ def watch(
             setattr(obj, self.internal_name, value)
             self.check_watchers(obj, name, current_value)
 
-            if self.layout:
-                obj.refresh(layout=True)
-            elif self.repaint:
-                obj.refresh()
+            if self.layout or self.repaint:
+                obj.refresh(repaint=self.repaint, layout=self.layout)
 
     @classmethod
     def check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
 
-        internal_name = f&#34;__{name}&#34;
+        internal_name = f&#34;_reactive_{name}&#34;
         value = getattr(obj, internal_name)
 
         async def update_watcher(
@@ -335,7 +333,7 @@ def watch(
 <pre><code class="python">@classmethod
 def check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
 
-    internal_name = f&#34;__{name}&#34;
+    internal_name = f&#34;_reactive_{name}&#34;
     value = getattr(obj, internal_name)
 
     async def update_watcher(

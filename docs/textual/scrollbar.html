@@ -28,53 +28,65 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
+from math import ceil
 
 import rich.repr
 from rich.color import Color
-from rich.console import Console, ConsoleOptions, RenderResult, RenderableType
+from rich.console import ConsoleOptions, RenderResult, RenderableType
 from rich.segment import Segment, Segments
 from rich.style import Style, StyleType
 
+from textual.reactive import Reactive
 from . import events
-from .geometry import Offset
 from ._types import MessageTarget
+from .geometry import Offset
 from .message import Message
-from .widget import Reactive, Widget
+from .widget import Widget
+
+
+class ScrollMessage(Message, bubble=False):
+    pass
 
 
 @rich.repr.auto
-class ScrollUp(Message):
+class ScrollUp(ScrollMessage):
     &#34;&#34;&#34;Message sent when clicking above handle.&#34;&#34;&#34;
 
 
 @rich.repr.auto
-class ScrollDown(Message):
+class ScrollDown(ScrollMessage):
     &#34;&#34;&#34;Message sent when clicking below handle.&#34;&#34;&#34;
 
 
 @rich.repr.auto
-class ScrollLeft(Message):
+class ScrollLeft(ScrollMessage):
     &#34;&#34;&#34;Message sent when clicking above handle.&#34;&#34;&#34;
 
 
 @rich.repr.auto
-class ScrollRight(Message):
+class ScrollRight(ScrollMessage):
     &#34;&#34;&#34;Message sent when clicking below handle.&#34;&#34;&#34;
 
 
-class ScrollTo(Message):
+class ScrollTo(ScrollMessage):
     &#34;&#34;&#34;Message sent when click and dragging handle.&#34;&#34;&#34;
 
     def __init__(
-        self, sender: MessageTarget, x: float | None = None, y: float | None = None
+        self,
+        sender: MessageTarget,
+        x: float | None = None,
+        y: float | None = None,
+        animate: bool = True,
     ) -&gt; None:
         self.x = x
         self.y = y
+        self.animate = animate
         super().__init__(sender)
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;x&#34;, self.x, None
         yield &#34;y&#34;, self.y, None
+        yield &#34;animate&#34;, self.animate, True
 
 
 class ScrollBarRender:
@@ -129,11 +141,11 @@ class ScrollBarRender:
         blank = &#34; &#34; * width_thickness
 
         foreground_meta = {&#34;@mouse.up&#34;: &#34;release&#34;, &#34;@mouse.down&#34;: &#34;grab&#34;}
-        if window_size and size and virtual_size:
+        if window_size and size and virtual_size and size != virtual_size:
             step_size = virtual_size / size
 
             start = int(position / step_size * 8)
-            end = start + max(8, int(window_size / step_size * 8))
+            end = start + max(8, int(ceil(window_size / step_size * 8)))
 
             start_index, start_bar = divmod(start, 8)
             end_index, end_bar = divmod(end, 8)
@@ -166,7 +178,8 @@ class ScrollBarRender:
                     else _Style(bgcolor=back, color=bar, meta=foreground_meta),
                 )
         else:
-            segments = [_Segment(blank)] * int(size)
+            style = _Style(bgcolor=back)
+            segments = [_Segment(blank, style=style)] * int(size)
         if vertical:
             return Segments(segments, new_lines=True)
         else:
@@ -208,29 +221,42 @@ class ScrollBar(Widget):
         self.grabbed_position: float = 0
         super().__init__(name=name)
 
-    virtual_size: Reactive[int] = Reactive(100)
+    window_virtual_size: Reactive[int] = Reactive(100)
     window_size: Reactive[int] = Reactive(0)
     position: Reactive[int] = Reactive(0)
     mouse_over: Reactive[bool] = Reactive(False)
     grabbed: Reactive[Offset | None] = Reactive(None)
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield &#34;virtual_size&#34;, self.virtual_size
+        yield from super().__rich_repr__()
+        yield &#34;window_virtual_size&#34;, self.window_virtual_size
         yield &#34;window_size&#34;, self.window_size
         yield &#34;position&#34;, self.position
 
     def render(self) -&gt; RenderableType:
+        styles = self.parent.styles
         style = Style(
-            bgcolor=(Color.parse(&#34;#555555&#34; if self.mouse_over else &#34;#444444&#34;)),
-            color=Color.parse(&#34;bright_yellow&#34; if self.grabbed else &#34;bright_magenta&#34;),
+            bgcolor=(
+                styles.scrollbar_background_hover.rich_color
+                if self.mouse_over
+                else styles.scrollbar_background.rich_color
+            ),
+            color=(
+                styles.scrollbar_color_active.rich_color
+                if self.grabbed
+                else styles.scrollbar_color.rich_color
+            ),
         )
         return ScrollBarRender(
-            virtual_size=self.virtual_size,
+            virtual_size=self.window_virtual_size,
             window_size=self.window_size,
             position=self.position,
             vertical=self.vertical,
             style=style,
         )
+
+    async def on_event(self, event) -&gt; None:
+        await super().on_event(event)
 
     async def on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
@@ -262,7 +288,7 @@ class ScrollBar(Widget):
         self.grabbed = None
 
     async def on_mouse_move(self, event: events.MouseMove) -&gt; None:
-        if self.grabbed:
+        if self.grabbed and self.window_size:
             x: float | None = None
             y: float | None = None
             if self.vertical:
@@ -270,7 +296,7 @@ class ScrollBar(Widget):
                     self.grabbed_position
                     + (
                         (event.screen_y - self.grabbed.y)
-                        * (self.virtual_size / self.window_size)
+                        * (self.window_virtual_size / self.window_size)
                     )
                 )
             else:
@@ -278,7 +304,7 @@ class ScrollBar(Widget):
                     self.grabbed_position
                     + (
                         (event.screen_x - self.grabbed.x)
-                        * (self.virtual_size / self.window_size)
+                        * (self.window_virtual_size / self.window_size)
                     )
                 )
             await self.emit(ScrollTo(self, x=x, y=y))
@@ -310,7 +336,8 @@ if __name__ == &#34;__main__&#34;:
 <span>(</span><span>vertical: bool = True, name: str | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
+<p>Nodes are mountable and may be styled with CSS.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -321,29 +348,42 @@ if __name__ == &#34;__main__&#34;:
         self.grabbed_position: float = 0
         super().__init__(name=name)
 
-    virtual_size: Reactive[int] = Reactive(100)
+    window_virtual_size: Reactive[int] = Reactive(100)
     window_size: Reactive[int] = Reactive(0)
     position: Reactive[int] = Reactive(0)
     mouse_over: Reactive[bool] = Reactive(False)
     grabbed: Reactive[Offset | None] = Reactive(None)
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield &#34;virtual_size&#34;, self.virtual_size
+        yield from super().__rich_repr__()
+        yield &#34;window_virtual_size&#34;, self.window_virtual_size
         yield &#34;window_size&#34;, self.window_size
         yield &#34;position&#34;, self.position
 
     def render(self) -&gt; RenderableType:
+        styles = self.parent.styles
         style = Style(
-            bgcolor=(Color.parse(&#34;#555555&#34; if self.mouse_over else &#34;#444444&#34;)),
-            color=Color.parse(&#34;bright_yellow&#34; if self.grabbed else &#34;bright_magenta&#34;),
+            bgcolor=(
+                styles.scrollbar_background_hover.rich_color
+                if self.mouse_over
+                else styles.scrollbar_background.rich_color
+            ),
+            color=(
+                styles.scrollbar_color_active.rich_color
+                if self.grabbed
+                else styles.scrollbar_color.rich_color
+            ),
         )
         return ScrollBarRender(
-            virtual_size=self.virtual_size,
+            virtual_size=self.window_virtual_size,
             window_size=self.window_size,
             position=self.position,
             vertical=self.vertical,
             style=style,
         )
+
+    async def on_event(self, event) -&gt; None:
+        await super().on_event(event)
 
     async def on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
@@ -375,7 +415,7 @@ if __name__ == &#34;__main__&#34;:
         self.grabbed = None
 
     async def on_mouse_move(self, event: events.MouseMove) -&gt; None:
-        if self.grabbed:
+        if self.grabbed and self.window_size:
             x: float | None = None
             y: float | None = None
             if self.vertical:
@@ -383,7 +423,7 @@ if __name__ == &#34;__main__&#34;:
                     self.grabbed_position
                     + (
                         (event.screen_y - self.grabbed.y)
-                        * (self.virtual_size / self.window_size)
+                        * (self.window_virtual_size / self.window_size)
                     )
                 )
             else:
@@ -391,7 +431,7 @@ if __name__ == &#34;__main__&#34;:
                     self.grabbed_position
                     + (
                         (event.screen_x - self.grabbed.x)
-                        * (self.virtual_size / self.window_size)
+                        * (self.window_virtual_size / self.window_size)
                     )
                 )
             await self.emit(ScrollTo(self, x=x, y=y))</code></pre>
@@ -399,6 +439,7 @@ if __name__ == &#34;__main__&#34;:
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="textual.widget.Widget" href="widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
 <h3>Class variables</h3>
@@ -421,17 +462,6 @@ if __name__ == &#34;__main__&#34;:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.scrollbar.ScrollBar.mouse_over"><code class="name">var <span class="ident">mouse_over</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
 <dt id="textual.scrollbar.ScrollBar.position"><code class="name">var <span class="ident">position</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
@@ -443,7 +473,7 @@ if __name__ == &#34;__main__&#34;:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.scrollbar.ScrollBar.virtual_size"><code class="name">var <span class="ident">virtual_size</span> : ReactiveType</code></dt>
+<dt id="textual.scrollbar.ScrollBar.window_size"><code class="name">var <span class="ident">window_size</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -454,7 +484,7 @@ if __name__ == &#34;__main__&#34;:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.scrollbar.ScrollBar.window_size"><code class="name">var <span class="ident">window_size</span> : ReactiveType</code></dt>
+<dt id="textual.scrollbar.ScrollBar.window_virtual_size"><code class="name">var <span class="ident">window_virtual_size</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -533,6 +563,19 @@ if __name__ == &#34;__main__&#34;:
     self.mouse_over = True</code></pre>
 </details>
 </dd>
+<dt id="textual.scrollbar.ScrollBar.on_event"><code class="name flex">
+<span>async def <span class="ident">on_event</span></span>(<span>self, event) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_event(self, event) -&gt; None:
+    await super().on_event(event)</code></pre>
+</details>
+</dd>
 <dt id="textual.scrollbar.ScrollBar.on_leave"><code class="name flex">
 <span>async def <span class="ident">on_leave</span></span>(<span>self, event: events.Leave) ‑> None</span>
 </code></dt>
@@ -570,7 +613,7 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">async def on_mouse_move(self, event: events.MouseMove) -&gt; None:
-    if self.grabbed:
+    if self.grabbed and self.window_size:
         x: float | None = None
         y: float | None = None
         if self.vertical:
@@ -578,7 +621,7 @@ if __name__ == &#34;__main__&#34;:
                 self.grabbed_position
                 + (
                     (event.screen_y - self.grabbed.y)
-                    * (self.virtual_size / self.window_size)
+                    * (self.window_virtual_size / self.window_size)
                 )
             )
         else:
@@ -586,7 +629,7 @@ if __name__ == &#34;__main__&#34;:
                 self.grabbed_position
                 + (
                     (event.screen_x - self.grabbed.x)
-                    * (self.virtual_size / self.window_size)
+                    * (self.window_virtual_size / self.window_size)
                 )
             )
         await self.emit(ScrollTo(self, x=x, y=y))</code></pre>
@@ -624,32 +667,69 @@ if __name__ == &#34;__main__&#34;:
 <ul class="hlist">
 <li><code><b><a title="textual.widget.Widget" href="widget.html#textual.widget.Widget">Widget</a></b></code>:
 <ul class="hlist">
+<li><code><a title="textual.widget.Widget.add_child" href="dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.widget.Widget.add_children" href="dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.widget.Widget.add_class" href="dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.widget.Widget.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.border" href="widget.html#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.widget.Widget.border_style" href="widget.html#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.widget.Widget.border_title" href="widget.html#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_height" href="widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.check_layout" href="widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.css_path" href="dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.widget.Widget.css_type" href="dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="widget.html#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.widget.Widget.get_box_model" href="widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_fraction" href="widget.html#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_min_size" href="widget.html#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset" href="widget.html#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_x" href="widget.html#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_y" href="widget.html#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_size" href="widget.html#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.widget.Widget.margin" href="widget.html#textual.widget.Widget.margin">margin</a></code></li>
-<li><code><a title="textual.widget.Widget.padding" href="widget.html#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.get_render_lines" href="widget.html#textual.widget.Widget.get_render_lines">get_render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.widget.Widget.has_focus" href="widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.widget.Widget.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.root_view" href="widget.html#textual.widget.Widget.root_view">root_view</a></code></li>
-<li><code><a title="textual.widget.Widget.style" href="widget.html#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.widget.Widget.visible" href="widget.html#textual.widget.Widget.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.rich_text_style" href="dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
+<li><code><a title="textual.widget.Widget.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_x" href="widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_y" href="widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_dirty" href="widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
+<li><code><a title="textual.widget.Widget.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.widget.Widget.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 </ul>
 </li>
 </ul>
@@ -716,11 +796,11 @@ if __name__ == &#34;__main__&#34;:
         blank = &#34; &#34; * width_thickness
 
         foreground_meta = {&#34;@mouse.up&#34;: &#34;release&#34;, &#34;@mouse.down&#34;: &#34;grab&#34;}
-        if window_size and size and virtual_size:
+        if window_size and size and virtual_size and size != virtual_size:
             step_size = virtual_size / size
 
             start = int(position / step_size * 8)
-            end = start + max(8, int(window_size / step_size * 8))
+            end = start + max(8, int(ceil(window_size / step_size * 8)))
 
             start_index, start_bar = divmod(start, 8)
             end_index, end_bar = divmod(end, 8)
@@ -753,7 +833,8 @@ if __name__ == &#34;__main__&#34;:
                     else _Style(bgcolor=back, color=bar, meta=foreground_meta),
                 )
         else:
-            segments = [_Segment(blank)] * int(size)
+            style = _Style(bgcolor=back)
+            segments = [_Segment(blank, style=style)] * int(size)
         if vertical:
             return Segments(segments, new_lines=True)
         else:
@@ -833,11 +914,11 @@ def render_bar(
     blank = &#34; &#34; * width_thickness
 
     foreground_meta = {&#34;@mouse.up&#34;: &#34;release&#34;, &#34;@mouse.down&#34;: &#34;grab&#34;}
-    if window_size and size and virtual_size:
+    if window_size and size and virtual_size and size != virtual_size:
         step_size = virtual_size / size
 
         start = int(position / step_size * 8)
-        end = start + max(8, int(window_size / step_size * 8))
+        end = start + max(8, int(ceil(window_size / step_size * 8)))
 
         start_index, start_bar = divmod(start, 8)
         end_index, end_bar = divmod(end, 8)
@@ -870,7 +951,8 @@ def render_bar(
                 else _Style(bgcolor=back, color=bar, meta=foreground_meta),
             )
     else:
-        segments = [_Segment(blank)] * int(size)
+        style = _Style(bgcolor=back)
+        segments = [_Segment(blank, style=style)] * int(size)
     if vertical:
         return Segments(segments, new_lines=True)
     else:
@@ -894,16 +976,21 @@ def render_bar(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ScrollDown(Message):
+<pre><code class="python">class ScrollDown(ScrollMessage):
     &#34;&#34;&#34;Message sent when clicking below handle.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></li>
 <li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.scrollbar.ScrollDown.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollDown.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -914,16 +1001,15 @@ def render_bar(
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
+<li><code><b><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></b></code>:
 <ul class="hlist">
-<li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
-<li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
-<li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
-<li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
-<li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
-<li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
 </li>
 </ul>
@@ -943,11 +1029,12 @@ def render_bar(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ScrollLeft(Message):
+<pre><code class="python">class ScrollLeft(ScrollMessage):
     &#34;&#34;&#34;Message sent when clicking above handle.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></li>
 <li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
 </ul>
 <h3>Class variables</h3>
@@ -956,7 +1043,71 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.scrollbar.ScrollLeft.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.scrollbar.ScrollLeft.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.scrollbar.ScrollMessage.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.time" href="message.html#textual.message.Message.time">time</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.scrollbar.ScrollMessage"><code class="flex name class">
+<span>class <span class="ident">ScrollMessage</span></span>
+<span>(</span><span>sender: MessageTarget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for a message.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ScrollMessage(Message, bubble=False):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="textual.scrollbar.ScrollDown" href="#textual.scrollbar.ScrollDown">ScrollDown</a></li>
+<li><a title="textual.scrollbar.ScrollLeft" href="#textual.scrollbar.ScrollLeft">ScrollLeft</a></li>
+<li><a title="textual.scrollbar.ScrollRight" href="#textual.scrollbar.ScrollRight">ScrollRight</a></li>
+<li><a title="textual.scrollbar.ScrollTo" href="#textual.scrollbar.ScrollTo">ScrollTo</a></li>
+<li><a title="textual.scrollbar.ScrollUp" href="#textual.scrollbar.ScrollUp">ScrollUp</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.scrollbar.ScrollMessage.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollMessage.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollMessage.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -972,7 +1123,6 @@ def render_bar(
 <li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -992,16 +1142,21 @@ def render_bar(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ScrollRight(Message):
+<pre><code class="python">class ScrollRight(ScrollMessage):
     &#34;&#34;&#34;Message sent when clicking below handle.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></li>
 <li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.scrollbar.ScrollRight.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollRight.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1012,23 +1167,22 @@ def render_bar(
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
+<li><code><b><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></b></code>:
 <ul class="hlist">
-<li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
-<li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
-<li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
-<li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
-<li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
-<li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
 </li>
 </ul>
 </dd>
 <dt id="textual.scrollbar.ScrollTo"><code class="flex name class">
 <span>class <span class="ident">ScrollTo</span></span>
-<span>(</span><span>sender: MessageTarget, x: float | None = None, y: float | None = None)</span>
+<span>(</span><span>sender: MessageTarget, x: float | None = None, y: float | None = None, animate: bool = True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Message sent when click and dragging handle.</p>
@@ -1041,27 +1195,38 @@ def render_bar(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ScrollTo(Message):
+<pre><code class="python">class ScrollTo(ScrollMessage):
     &#34;&#34;&#34;Message sent when click and dragging handle.&#34;&#34;&#34;
 
     def __init__(
-        self, sender: MessageTarget, x: float | None = None, y: float | None = None
+        self,
+        sender: MessageTarget,
+        x: float | None = None,
+        y: float | None = None,
+        animate: bool = True,
     ) -&gt; None:
         self.x = x
         self.y = y
+        self.animate = animate
         super().__init__(sender)
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;x&#34;, self.x, None
-        yield &#34;y&#34;, self.y, None</code></pre>
+        yield &#34;y&#34;, self.y, None
+        yield &#34;animate&#34;, self.animate, True</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></li>
 <li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.scrollbar.ScrollTo.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollTo.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1072,16 +1237,15 @@ def render_bar(
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
+<li><code><b><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></b></code>:
 <ul class="hlist">
-<li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
-<li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
-<li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
-<li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
-<li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
-<li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1101,16 +1265,21 @@ def render_bar(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ScrollUp(Message):
+<pre><code class="python">class ScrollUp(ScrollMessage):
     &#34;&#34;&#34;Message sent when clicking above handle.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></li>
 <li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.scrollbar.ScrollUp.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollUp.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1121,16 +1290,15 @@ def render_bar(
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
+<li><code><b><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></b></code>:
 <ul class="hlist">
-<li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
-<li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
-<li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
-<li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
-<li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
-<li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1206,16 +1374,16 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scrollbar.ScrollBar.action_scroll_up" href="#textual.scrollbar.ScrollBar.action_scroll_up">action_scroll_up</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.can_focus" href="#textual.scrollbar.ScrollBar.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.grabbed" href="#textual.scrollbar.ScrollBar.grabbed">grabbed</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollBar.mouse_over" href="#textual.scrollbar.ScrollBar.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_enter" href="#textual.scrollbar.ScrollBar.on_enter">on_enter</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollBar.on_event" href="#textual.scrollbar.ScrollBar.on_event">on_event</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_leave" href="#textual.scrollbar.ScrollBar.on_leave">on_leave</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_mouse_capture" href="#textual.scrollbar.ScrollBar.on_mouse_capture">on_mouse_capture</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_mouse_move" href="#textual.scrollbar.ScrollBar.on_mouse_move">on_mouse_move</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_mouse_release" href="#textual.scrollbar.ScrollBar.on_mouse_release">on_mouse_release</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_mouse_up" href="#textual.scrollbar.ScrollBar.on_mouse_up">on_mouse_up</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.position" href="#textual.scrollbar.ScrollBar.position">position</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollBar.virtual_size" href="#textual.scrollbar.ScrollBar.virtual_size">virtual_size</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.window_size" href="#textual.scrollbar.ScrollBar.window_size">window_size</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollBar.window_virtual_size" href="#textual.scrollbar.ScrollBar.window_virtual_size">window_virtual_size</a></code></li>
 </ul>
 </li>
 <li>
@@ -1228,6 +1396,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollDown" href="#textual.scrollbar.ScrollDown">ScrollDown</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollDown.bubble" href="#textual.scrollbar.ScrollDown.bubble">bubble</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollDown.system" href="#textual.scrollbar.ScrollDown.system">system</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollDown.verbosity" href="#textual.scrollbar.ScrollDown.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -1235,13 +1404,23 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollLeft" href="#textual.scrollbar.ScrollLeft">ScrollLeft</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollLeft.bubble" href="#textual.scrollbar.ScrollLeft.bubble">bubble</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollLeft.system" href="#textual.scrollbar.ScrollLeft.system">system</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollLeft.verbosity" href="#textual.scrollbar.ScrollLeft.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></code></h4>
+<ul class="">
+<li><code><a title="textual.scrollbar.ScrollMessage.bubble" href="#textual.scrollbar.ScrollMessage.bubble">bubble</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.system" href="#textual.scrollbar.ScrollMessage.system">system</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.verbosity" href="#textual.scrollbar.ScrollMessage.verbosity">verbosity</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="textual.scrollbar.ScrollRight" href="#textual.scrollbar.ScrollRight">ScrollRight</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollRight.bubble" href="#textual.scrollbar.ScrollRight.bubble">bubble</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollRight.system" href="#textual.scrollbar.ScrollRight.system">system</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollRight.verbosity" href="#textual.scrollbar.ScrollRight.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -1249,6 +1428,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollTo" href="#textual.scrollbar.ScrollTo">ScrollTo</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollTo.bubble" href="#textual.scrollbar.ScrollTo.bubble">bubble</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollTo.system" href="#textual.scrollbar.ScrollTo.system">system</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollTo.verbosity" href="#textual.scrollbar.ScrollTo.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -1256,6 +1436,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollUp" href="#textual.scrollbar.ScrollUp">ScrollUp</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollUp.bubble" href="#textual.scrollbar.ScrollUp.bubble">bubble</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollUp.system" href="#textual.scrollbar.ScrollUp.system">system</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollUp.verbosity" href="#textual.scrollbar.ScrollUp.verbosity">verbosity</a></code></li>
 </ul>
 </li>

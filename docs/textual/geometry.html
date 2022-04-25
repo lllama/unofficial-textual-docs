@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>textual.geometry API documentation</title>
-<meta name="description" content="" />
+<meta name="description" content="Functions and classes to manage terminal geometry (anything involving coordinates or dimensions)." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,11 +22,19 @@
 <h1 class="title">Module <code>textual.geometry</code></h1>
 </header>
 <section id="section-intro">
+<p>Functions and classes to manage terminal geometry (anything involving coordinates or dimensions).</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from __future__ import annotations
+<pre><code class="python">&#34;&#34;&#34;
+
+Functions and classes to manage terminal geometry (anything involving coordinates or dimensions).
+
+&#34;&#34;&#34;
+
+
+from __future__ import annotations
 
 from typing import Any, cast, NamedTuple, Tuple, Union, TypeVar
 
@@ -69,6 +77,9 @@ class Offset(NamedTuple):
         &#34;&#34;&#34;Check if the point is at the origin (0, 0)&#34;&#34;&#34;
         return self == (0, 0)
 
+    def __bool__(self) -&gt; bool:
+        return self != (0, 0)
+
     def __add__(self, other: object) -&gt; Offset:
         if isinstance(other, tuple):
             _x, _y = self
@@ -81,6 +92,12 @@ class Offset(NamedTuple):
             _x, _y = self
             x, y = other
             return Offset(_x - x, _y - y)
+        return NotImplemented
+
+    def __mul__(self, other: object) -&gt; Offset:
+        if isinstance(other, (float, int)):
+            x, y = self
+            return Offset(int(x * other), int(y * other))
         return NotImplemented
 
     def blend(self, destination: Offset, factor: float) -&gt; Offset:
@@ -97,6 +114,20 @@ class Offset(NamedTuple):
         x2, y2 = destination
         return Offset(int(x1 + (x2 - x1) * factor), int((y1 + (y2 - y1) * factor)))
 
+    def get_distance_to(self, other: Offset) -&gt; float:
+        &#34;&#34;&#34;Get the distance to another offset.
+
+        Args:
+            other (Offset): An offset
+
+        Returns:
+            float: Distance to other offset
+        &#34;&#34;&#34;
+        x1, y1 = self
+        x2, y2 = other
+        distance = ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) ** 0.5
+        return distance
+
 
 class Size(NamedTuple):
     &#34;&#34;&#34;An area defined by its width and height.&#34;&#34;&#34;
@@ -105,7 +136,7 @@ class Size(NamedTuple):
     height: int = 0
 
     def __bool__(self) -&gt; bool:
-        &#34;&#34;&#34;A Size is Falsey if it has area 0.&#34;&#34;&#34;
+        &#34;&#34;&#34;A Size is Falsy if it has area 0.&#34;&#34;&#34;
         return self.width * self.height != 0
 
     @property
@@ -123,15 +154,19 @@ class Size(NamedTuple):
         width, height = self
         return Region(0, 0, width, height)
 
-    def __add__(self, other: tuple[int, int]) -&gt; Size:
-        width, height = self
-        width2, height2 = other
-        return Size(width + width2, height + height2)
+    def __add__(self, other: object) -&gt; Size:
+        if isinstance(other, tuple):
+            width, height = self
+            width2, height2 = other
+            return Size(max(0, width + width2), max(0, height + height2))
+        return NotImplemented
 
-    def __sub__(self, other: tuple[int, int]) -&gt; Size:
-        width, height = self
-        width2, height2 = other
-        return Size(width - width2, height - height2)
+    def __sub__(self, other: object) -&gt; Size:
+        if isinstance(other, tuple):
+            width, height = self
+            width2, height2 = other
+            return Size(max(0, width - width2), max(0, height - height2))
+        return NotImplemented
 
     def contains(self, x: int, y: int) -&gt; bool:
         &#34;&#34;&#34;Check if a point is in the size.
@@ -209,6 +244,7 @@ class Region(NamedTuple):
         return cls(x, y, width, height)
 
     def __bool__(self) -&gt; bool:
+        &#34;&#34;&#34;A Region is considered False when it has no area.&#34;&#34;&#34;
         return bool(self.width and self.height)
 
     @property
@@ -278,14 +314,20 @@ class Region(NamedTuple):
         &#34;&#34;&#34;A range object for Y coordinates&#34;&#34;&#34;
         return range(self.y, self.y + self.height)
 
-    def __add__(self, other: Any) -&gt; Region:
+    @property
+    def reset_origin(self) -&gt; Region:
+        &#34;&#34;&#34;An region of the same size at the origin.&#34;&#34;&#34;
+        _, _, width, height = self
+        return Region(0, 0, width, height)
+
+    def __add__(self, other: object) -&gt; Region:
         if isinstance(other, tuple):
             ox, oy = other
             x, y, width, height = self
             return Region(x + ox, y + oy, width, height)
         return NotImplemented
 
-    def __sub__(self, other: Any) -&gt; Region:
+    def __sub__(self, other: object) -&gt; Region:
         if isinstance(other, tuple):
             ox, oy = other
             x, y, width, height = self
@@ -415,6 +457,25 @@ class Region(NamedTuple):
         )
         return new_region
 
+    def shrink(self, margin: tuple[int, int, int, int]) -&gt; Region:
+        &#34;&#34;&#34;Shrink a region by pushing each edge inwards.
+
+        Args:
+            margin (Spacing): Defines how many cells to shrink the Region by at each edge.
+
+        Returns:
+            Region: The new, smaller region.
+        &#34;&#34;&#34;
+
+        top, right, bottom, left = margin
+        x, y, width, height = self
+        return Region(
+            x=x + left,
+            y=y + top,
+            width=max(0, width - left - right),
+            height=max(0, height - top - bottom),
+        )
+
     def intersection(self, region: Region) -&gt; Region:
         &#34;&#34;&#34;Get that covers both regions.
 
@@ -451,10 +512,100 @@ class Region(NamedTuple):
         x1, y1, x2, y2 = self.corners
         ox1, oy1, ox2, oy2 = region.corners
 
-        union_region = Region.from_corners(
+        union_region = self.from_corners(
             min(x1, ox1), min(y1, oy1), max(x2, ox2), max(y2, oy2)
         )
         return union_region
+
+    def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Region]:
+        &#34;&#34;&#34;Split a region in to 4 from given x and y offsets (cuts).
+
+                   cut_x ↓
+                ┌────────┐┌───┐
+                │        ││   │
+                │    0   ││ 1 │
+                │        ││   │
+        cut_y → └────────┘└───┘
+                ┌────────┐┌───┐
+                │    2   ││ 3 │
+                └────────┘└───┘
+
+        Args:
+            cut_x (int): Offset from self.x where the cut should be made. If negative, the cut
+                is taken from the right edge.
+            cut_y (int): Offset from self.y where the cut should be made. If negative, the cut
+                is taken from the lower edge.
+
+        Returns:
+            tuple[Region, Region, Region, Region]: Four new regions which add up to the original (self).
+        &#34;&#34;&#34;
+
+        x, y, width, height = self
+        if cut_x &lt; 0:
+            cut_x = width + cut_x
+        if cut_y &lt; 0:
+            cut_y = height + cut_y
+
+        _Region = Region
+        return (
+            _Region(x, y, cut_x, cut_y),
+            _Region(x + cut_x, y, width - cut_x, cut_y),
+            _Region(x, y + cut_y, cut_x, height - cut_y),
+            _Region(x + cut_x, y + cut_y, width - cut_x, height - cut_y),
+        )
+
+    def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
+        &#34;&#34;&#34;Split a region in to two, from a given x offset.
+
+                 cut ↓
+            ┌────────┐┌───┐
+            │    0   ││ 1 │
+            │        ││   │
+            └────────┘└───┘
+
+        Args:
+            cut (int): An offset from self.x where the cut should be made. If cut is negative,
+                it is taken from the right edge.
+
+        Returns:
+            tuple[Region, Region]: Two regions, which add up to the original (self).
+        &#34;&#34;&#34;
+
+        x, y, width, height = self
+        if cut &lt; 0:
+            cut = width + cut
+
+        return (
+            Region(x, y, cut, height),
+            Region(x + cut, y, width - cut, height),
+        )
+
+    def split_horizontal(self, cut: int) -&gt; tuple[Region, Region]:
+        &#34;&#34;&#34;Split a region in to two, from a given x offset.
+
+                    ┌─────────┐
+                    │    0    │
+                    │         │
+            cut →   └─────────┘
+                    ┌─────────┐
+                    │    1    │
+                    └─────────┘
+
+        Args:
+            cut (int): An offset from self.x where the cut should be made. May be negative,
+                for the offset to start from the right edge.
+
+        Returns:
+            tuple[Region, Region]: Two regions, which add up to the original (self).
+        &#34;&#34;&#34;
+        x, y, width, height = self
+        if cut &lt; 0:
+            cut = height + cut
+
+        return (
+            Region(x, y, width, cut),
+            Region(x, y + cut, width, height - cut),
+        )
 
 
 class Spacing(NamedTuple):
@@ -464,6 +615,9 @@ class Spacing(NamedTuple):
     right: int = 0
     bottom: int = 0
     left: int = 0
+
+    def __bool__(self) -&gt; bool:
+        return self != (0, 0, 0, 0)
 
     @property
     def width(self) -&gt; int:
@@ -485,21 +639,60 @@ class Spacing(NamedTuple):
         &#34;&#34;&#34;Bottom right space.&#34;&#34;&#34;
         return (self.right, self.bottom)
 
+    @property
+    def totals(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Returns a tuple of (&lt;HORIZONTAL SPACE&gt;, &lt;VERTICAL SPACE&gt;).&#34;&#34;&#34;
+        top, right, bottom, left = self
+        return (left + right, top + bottom)
+
+    @property
+    def css(self) -&gt; str:
+        &#34;&#34;&#34;Gets a string containing the spacing in CSS format.&#34;&#34;&#34;
+        top, right, bottom, left = self
+        if top == right == bottom == left:
+            return f&#34;{top}&#34;
+        if (top, right) == (bottom, left):
+            return f&#34;{top} {right}&#34;
+        else:
+            return f&#34;{top} {right} {bottom} {left}&#34;
+
     @classmethod
     def unpack(cls, pad: SpacingDimensions) -&gt; Spacing:
         &#34;&#34;&#34;Unpack padding specified in CSS style.&#34;&#34;&#34;
         if isinstance(pad, int):
             return cls(pad, pad, pad, pad)
-        if len(pad) == 1:
+        pad_len = len(pad)
+        if pad_len == 1:
             _pad = pad[0]
             return cls(_pad, _pad, _pad, _pad)
-        if len(pad) == 2:
+        if pad_len == 2:
             pad_top, pad_right = cast(Tuple[int, int], pad)
             return cls(pad_top, pad_right, pad_top, pad_right)
-        if len(pad) == 4:
+        if pad_len == 4:
             top, right, bottom, left = cast(Tuple[int, int, int, int], pad)
             return cls(top, right, bottom, left)
-        raise ValueError(f&#34;1, 2 or 4 integers required for spacing; {len(pad)} given&#34;)</code></pre>
+        raise ValueError(f&#34;1, 2 or 4 integers required for spacing; {pad_len} given&#34;)
+
+    def __add__(self, other: object) -&gt; Spacing:
+        if isinstance(other, tuple):
+            top1, right1, bottom1, left1 = self
+            top2, right2, bottom2, left2 = other
+            return Spacing(
+                top1 + top2, right1 + right2, bottom1 + bottom2, left1 + left2
+            )
+        return NotImplemented
+
+    def __sub__(self, other: object) -&gt; Spacing:
+        if isinstance(other, tuple):
+            top1, right1, bottom1, left1 = self
+            top2, right2, bottom2, left2 = other
+            return Spacing(
+                top1 - top2, right1 - right2, bottom1 - bottom2, left1 - left2
+            )
+        return NotImplemented
+
+
+NULL_OFFSET = Offset(0, 0)</code></pre>
 </details>
 </section>
 <section>
@@ -579,6 +772,9 @@ class Spacing(NamedTuple):
         &#34;&#34;&#34;Check if the point is at the origin (0, 0)&#34;&#34;&#34;
         return self == (0, 0)
 
+    def __bool__(self) -&gt; bool:
+        return self != (0, 0)
+
     def __add__(self, other: object) -&gt; Offset:
         if isinstance(other, tuple):
             _x, _y = self
@@ -593,6 +789,12 @@ class Spacing(NamedTuple):
             return Offset(_x - x, _y - y)
         return NotImplemented
 
+    def __mul__(self, other: object) -&gt; Offset:
+        if isinstance(other, (float, int)):
+            x, y = self
+            return Offset(int(x * other), int(y * other))
+        return NotImplemented
+
     def blend(self, destination: Offset, factor: float) -&gt; Offset:
         &#34;&#34;&#34;Blend (interpolate) to a new point.
 
@@ -605,7 +807,21 @@ class Spacing(NamedTuple):
         &#34;&#34;&#34;
         x1, y1 = self
         x2, y2 = destination
-        return Offset(int(x1 + (x2 - x1) * factor), int((y1 + (y2 - y1) * factor)))</code></pre>
+        return Offset(int(x1 + (x2 - x1) * factor), int((y1 + (y2 - y1) * factor)))
+
+    def get_distance_to(self, other: Offset) -&gt; float:
+        &#34;&#34;&#34;Get the distance to another offset.
+
+        Args:
+            other (Offset): An offset
+
+        Returns:
+            float: Distance to other offset
+        &#34;&#34;&#34;
+        x1, y1 = self
+        x2, y2 = other
+        distance = ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) ** 0.5
+        return distance</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -673,6 +889,40 @@ def is_origin(self) -&gt; bool:
     return Offset(int(x1 + (x2 - x1) * factor), int((y1 + (y2 - y1) * factor)))</code></pre>
 </details>
 </dd>
+<dt id="textual.geometry.Offset.get_distance_to"><code class="name flex">
+<span>def <span class="ident">get_distance_to</span></span>(<span>self, other: <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a>) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the distance to another offset.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>other</code></strong> :&ensp;<code><a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
+<dd>An offset</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Distance to other offset</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_distance_to(self, other: Offset) -&gt; float:
+    &#34;&#34;&#34;Get the distance to another offset.
+
+    Args:
+        other (Offset): An offset
+
+    Returns:
+        float: Distance to other offset
+    &#34;&#34;&#34;
+    x1, y1 = self
+    x2, y2 = other
+    distance = ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)) ** 0.5
+    return distance</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 <dt id="textual.geometry.Region"><code class="flex name class">
@@ -724,6 +974,7 @@ def is_origin(self) -&gt; bool:
         return cls(x, y, width, height)
 
     def __bool__(self) -&gt; bool:
+        &#34;&#34;&#34;A Region is considered False when it has no area.&#34;&#34;&#34;
         return bool(self.width and self.height)
 
     @property
@@ -793,14 +1044,20 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;A range object for Y coordinates&#34;&#34;&#34;
         return range(self.y, self.y + self.height)
 
-    def __add__(self, other: Any) -&gt; Region:
+    @property
+    def reset_origin(self) -&gt; Region:
+        &#34;&#34;&#34;An region of the same size at the origin.&#34;&#34;&#34;
+        _, _, width, height = self
+        return Region(0, 0, width, height)
+
+    def __add__(self, other: object) -&gt; Region:
         if isinstance(other, tuple):
             ox, oy = other
             x, y, width, height = self
             return Region(x + ox, y + oy, width, height)
         return NotImplemented
 
-    def __sub__(self, other: Any) -&gt; Region:
+    def __sub__(self, other: object) -&gt; Region:
         if isinstance(other, tuple):
             ox, oy = other
             x, y, width, height = self
@@ -930,6 +1187,25 @@ def is_origin(self) -&gt; bool:
         )
         return new_region
 
+    def shrink(self, margin: tuple[int, int, int, int]) -&gt; Region:
+        &#34;&#34;&#34;Shrink a region by pushing each edge inwards.
+
+        Args:
+            margin (Spacing): Defines how many cells to shrink the Region by at each edge.
+
+        Returns:
+            Region: The new, smaller region.
+        &#34;&#34;&#34;
+
+        top, right, bottom, left = margin
+        x, y, width, height = self
+        return Region(
+            x=x + left,
+            y=y + top,
+            width=max(0, width - left - right),
+            height=max(0, height - top - bottom),
+        )
+
     def intersection(self, region: Region) -&gt; Region:
         &#34;&#34;&#34;Get that covers both regions.
 
@@ -966,10 +1242,100 @@ def is_origin(self) -&gt; bool:
         x1, y1, x2, y2 = self.corners
         ox1, oy1, ox2, oy2 = region.corners
 
-        union_region = Region.from_corners(
+        union_region = self.from_corners(
             min(x1, ox1), min(y1, oy1), max(x2, ox2), max(y2, oy2)
         )
-        return union_region</code></pre>
+        return union_region
+
+    def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Region]:
+        &#34;&#34;&#34;Split a region in to 4 from given x and y offsets (cuts).
+
+                   cut_x ↓
+                ┌────────┐┌───┐
+                │        ││   │
+                │    0   ││ 1 │
+                │        ││   │
+        cut_y → └────────┘└───┘
+                ┌────────┐┌───┐
+                │    2   ││ 3 │
+                └────────┘└───┘
+
+        Args:
+            cut_x (int): Offset from self.x where the cut should be made. If negative, the cut
+                is taken from the right edge.
+            cut_y (int): Offset from self.y where the cut should be made. If negative, the cut
+                is taken from the lower edge.
+
+        Returns:
+            tuple[Region, Region, Region, Region]: Four new regions which add up to the original (self).
+        &#34;&#34;&#34;
+
+        x, y, width, height = self
+        if cut_x &lt; 0:
+            cut_x = width + cut_x
+        if cut_y &lt; 0:
+            cut_y = height + cut_y
+
+        _Region = Region
+        return (
+            _Region(x, y, cut_x, cut_y),
+            _Region(x + cut_x, y, width - cut_x, cut_y),
+            _Region(x, y + cut_y, cut_x, height - cut_y),
+            _Region(x + cut_x, y + cut_y, width - cut_x, height - cut_y),
+        )
+
+    def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
+        &#34;&#34;&#34;Split a region in to two, from a given x offset.
+
+                 cut ↓
+            ┌────────┐┌───┐
+            │    0   ││ 1 │
+            │        ││   │
+            └────────┘└───┘
+
+        Args:
+            cut (int): An offset from self.x where the cut should be made. If cut is negative,
+                it is taken from the right edge.
+
+        Returns:
+            tuple[Region, Region]: Two regions, which add up to the original (self).
+        &#34;&#34;&#34;
+
+        x, y, width, height = self
+        if cut &lt; 0:
+            cut = width + cut
+
+        return (
+            Region(x, y, cut, height),
+            Region(x + cut, y, width - cut, height),
+        )
+
+    def split_horizontal(self, cut: int) -&gt; tuple[Region, Region]:
+        &#34;&#34;&#34;Split a region in to two, from a given x offset.
+
+                    ┌─────────┐
+                    │    0    │
+                    │         │
+            cut →   └─────────┘
+                    ┌─────────┐
+                    │    1    │
+                    └─────────┘
+
+        Args:
+            cut (int): An offset from self.x where the cut should be made. May be negative,
+                for the offset to start from the right edge.
+
+        Returns:
+            tuple[Region, Region]: Two regions, which add up to the original (self).
+        &#34;&#34;&#34;
+        x, y, width, height = self
+        if cut &lt; 0:
+            cut = height + cut
+
+        return (
+            Region(x, y, width, cut),
+            Region(x, y + cut, width, height - cut),
+        )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1109,6 +1475,20 @@ def corners(self) -&gt; tuple[int, int, int, int]:
 def origin(self) -&gt; Offset:
     &#34;&#34;&#34;Get the start point of the region.&#34;&#34;&#34;
     return Offset(self.x, self.y)</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.reset_origin"><code class="name">var <span class="ident">reset_origin</span> : <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>
+<div class="desc"><p>An region of the same size at the origin.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def reset_origin(self) -&gt; Region:
+    &#34;&#34;&#34;An region of the same size at the origin.&#34;&#34;&#34;
+    _, _, width, height = self
+    return Region(0, 0, width, height)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="#textual.geometry.Size">Size</a></code></dt>
@@ -1508,6 +1888,227 @@ def y_range(self) -&gt; range:
     )</code></pre>
 </details>
 </dd>
+<dt id="textual.geometry.Region.shrink"><code class="name flex">
+<span>def <span class="ident">shrink</span></span>(<span>self, margin: tuple[int, int, int, int]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Shrink a region by pushing each edge inwards.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>margin</code></strong> :&ensp;<code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd>Defines how many cells to shrink the Region by at each edge.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>The new, smaller region.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def shrink(self, margin: tuple[int, int, int, int]) -&gt; Region:
+    &#34;&#34;&#34;Shrink a region by pushing each edge inwards.
+
+    Args:
+        margin (Spacing): Defines how many cells to shrink the Region by at each edge.
+
+    Returns:
+        Region: The new, smaller region.
+    &#34;&#34;&#34;
+
+    top, right, bottom, left = margin
+    x, y, width, height = self
+    return Region(
+        x=x + left,
+        y=y + top,
+        width=max(0, width - left - right),
+        height=max(0, height - top - bottom),
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.split"><code class="name flex">
+<span>def <span class="ident">split</span></span>(<span>self, cut_x: int, cut_y: int) ‑> tuple[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Split a region in to 4 from given x and y offsets (cuts).</p>
+<pre><code>       cut_x ↓
+    ┌────────┐┌───┐
+    │        ││   │
+    │    0   ││ 1 │
+    │        ││   │
+</code></pre>
+<p>cut_y → └────────┘└───┘
+┌────────┐┌───┐
+│
+2
+││ 3 │
+└────────┘└───┘</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>cut_x</code></strong> :&ensp;<code>int</code></dt>
+<dd>Offset from self.x where the cut should be made. If negative, the cut
+is taken from the right edge.</dd>
+<dt><strong><code>cut_y</code></strong> :&ensp;<code>int</code></dt>
+<dd>Offset from self.y where the cut should be made. If negative, the cut
+is taken from the lower edge.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]</code></dt>
+<dd>Four new regions which add up to the original (self).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Region]:
+    &#34;&#34;&#34;Split a region in to 4 from given x and y offsets (cuts).
+
+               cut_x ↓
+            ┌────────┐┌───┐
+            │        ││   │
+            │    0   ││ 1 │
+            │        ││   │
+    cut_y → └────────┘└───┘
+            ┌────────┐┌───┐
+            │    2   ││ 3 │
+            └────────┘└───┘
+
+    Args:
+        cut_x (int): Offset from self.x where the cut should be made. If negative, the cut
+            is taken from the right edge.
+        cut_y (int): Offset from self.y where the cut should be made. If negative, the cut
+            is taken from the lower edge.
+
+    Returns:
+        tuple[Region, Region, Region, Region]: Four new regions which add up to the original (self).
+    &#34;&#34;&#34;
+
+    x, y, width, height = self
+    if cut_x &lt; 0:
+        cut_x = width + cut_x
+    if cut_y &lt; 0:
+        cut_y = height + cut_y
+
+    _Region = Region
+    return (
+        _Region(x, y, cut_x, cut_y),
+        _Region(x + cut_x, y, width - cut_x, cut_y),
+        _Region(x, y + cut_y, cut_x, height - cut_y),
+        _Region(x + cut_x, y + cut_y, width - cut_x, height - cut_y),
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.split_horizontal"><code class="name flex">
+<span>def <span class="ident">split_horizontal</span></span>(<span>self, cut: int) ‑> tuple[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Split a region in to two, from a given x offset.</p>
+<pre><code>        ┌─────────┐
+        │    0    │
+        │         │
+cut →   └─────────┘
+        ┌─────────┐
+        │    1    │
+        └─────────┘
+</code></pre>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>cut</code></strong> :&ensp;<code>int</code></dt>
+<dd>An offset from self.x where the cut should be made. May be negative,
+for the offset to start from the right edge.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]</code></dt>
+<dd>Two regions, which add up to the original (self).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def split_horizontal(self, cut: int) -&gt; tuple[Region, Region]:
+    &#34;&#34;&#34;Split a region in to two, from a given x offset.
+
+                ┌─────────┐
+                │    0    │
+                │         │
+        cut →   └─────────┘
+                ┌─────────┐
+                │    1    │
+                └─────────┘
+
+    Args:
+        cut (int): An offset from self.x where the cut should be made. May be negative,
+            for the offset to start from the right edge.
+
+    Returns:
+        tuple[Region, Region]: Two regions, which add up to the original (self).
+    &#34;&#34;&#34;
+    x, y, width, height = self
+    if cut &lt; 0:
+        cut = height + cut
+
+    return (
+        Region(x, y, width, cut),
+        Region(x, y + cut, width, height - cut),
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.split_vertical"><code class="name flex">
+<span>def <span class="ident">split_vertical</span></span>(<span>self, cut: int) ‑> tuple[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Split a region in to two, from a given x offset.</p>
+<pre><code>     cut ↓
+┌────────┐┌───┐
+│    0   ││ 1 │
+│        ││   │
+└────────┘└───┘
+</code></pre>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>cut</code></strong> :&ensp;<code>int</code></dt>
+<dd>An offset from self.x where the cut should be made. If cut is negative,
+it is taken from the right edge.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]</code></dt>
+<dd>Two regions, which add up to the original (self).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
+    &#34;&#34;&#34;Split a region in to two, from a given x offset.
+
+             cut ↓
+        ┌────────┐┌───┐
+        │    0   ││ 1 │
+        │        ││   │
+        └────────┘└───┘
+
+    Args:
+        cut (int): An offset from self.x where the cut should be made. If cut is negative,
+            it is taken from the right edge.
+
+    Returns:
+        tuple[Region, Region]: Two regions, which add up to the original (self).
+    &#34;&#34;&#34;
+
+    x, y, width, height = self
+    if cut &lt; 0:
+        cut = width + cut
+
+    return (
+        Region(x, y, cut, height),
+        Region(x + cut, y, width - cut, height),
+    )</code></pre>
+</details>
+</dd>
 <dt id="textual.geometry.Region.translate"><code class="name flex">
 <span>def <span class="ident">translate</span></span>(<span>self, x: int = 0, y: int = 0) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
 </code></dt>
@@ -1575,7 +2176,7 @@ def y_range(self) -&gt; range:
     x1, y1, x2, y2 = self.corners
     ox1, oy1, ox2, oy2 = region.corners
 
-    union_region = Region.from_corners(
+    union_region = self.from_corners(
         min(x1, ox1), min(y1, oy1), max(x2, ox2), max(y2, oy2)
     )
     return union_region</code></pre>
@@ -1600,7 +2201,7 @@ def y_range(self) -&gt; range:
     height: int = 0
 
     def __bool__(self) -&gt; bool:
-        &#34;&#34;&#34;A Size is Falsey if it has area 0.&#34;&#34;&#34;
+        &#34;&#34;&#34;A Size is Falsy if it has area 0.&#34;&#34;&#34;
         return self.width * self.height != 0
 
     @property
@@ -1618,15 +2219,19 @@ def y_range(self) -&gt; range:
         width, height = self
         return Region(0, 0, width, height)
 
-    def __add__(self, other: tuple[int, int]) -&gt; Size:
-        width, height = self
-        width2, height2 = other
-        return Size(width + width2, height + height2)
+    def __add__(self, other: object) -&gt; Size:
+        if isinstance(other, tuple):
+            width, height = self
+            width2, height2 = other
+            return Size(max(0, width + width2), max(0, height + height2))
+        return NotImplemented
 
-    def __sub__(self, other: tuple[int, int]) -&gt; Size:
-        width, height = self
-        width2, height2 = other
-        return Size(width - width2, height - height2)
+    def __sub__(self, other: object) -&gt; Size:
+        if isinstance(other, tuple):
+            width, height = self
+            width2, height2 = other
+            return Size(max(0, width - width2), max(0, height - height2))
+        return NotImplemented
 
     def contains(self, x: int, y: int) -&gt; bool:
         &#34;&#34;&#34;Check if a point is in the size.
@@ -1805,6 +2410,9 @@ def region(self) -&gt; Region:
     bottom: int = 0
     left: int = 0
 
+    def __bool__(self) -&gt; bool:
+        return self != (0, 0, 0, 0)
+
     @property
     def width(self) -&gt; int:
         &#34;&#34;&#34;Total space in width.&#34;&#34;&#34;
@@ -1825,21 +2433,57 @@ def region(self) -&gt; Region:
         &#34;&#34;&#34;Bottom right space.&#34;&#34;&#34;
         return (self.right, self.bottom)
 
+    @property
+    def totals(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Returns a tuple of (&lt;HORIZONTAL SPACE&gt;, &lt;VERTICAL SPACE&gt;).&#34;&#34;&#34;
+        top, right, bottom, left = self
+        return (left + right, top + bottom)
+
+    @property
+    def css(self) -&gt; str:
+        &#34;&#34;&#34;Gets a string containing the spacing in CSS format.&#34;&#34;&#34;
+        top, right, bottom, left = self
+        if top == right == bottom == left:
+            return f&#34;{top}&#34;
+        if (top, right) == (bottom, left):
+            return f&#34;{top} {right}&#34;
+        else:
+            return f&#34;{top} {right} {bottom} {left}&#34;
+
     @classmethod
     def unpack(cls, pad: SpacingDimensions) -&gt; Spacing:
         &#34;&#34;&#34;Unpack padding specified in CSS style.&#34;&#34;&#34;
         if isinstance(pad, int):
             return cls(pad, pad, pad, pad)
-        if len(pad) == 1:
+        pad_len = len(pad)
+        if pad_len == 1:
             _pad = pad[0]
             return cls(_pad, _pad, _pad, _pad)
-        if len(pad) == 2:
+        if pad_len == 2:
             pad_top, pad_right = cast(Tuple[int, int], pad)
             return cls(pad_top, pad_right, pad_top, pad_right)
-        if len(pad) == 4:
+        if pad_len == 4:
             top, right, bottom, left = cast(Tuple[int, int, int, int], pad)
             return cls(top, right, bottom, left)
-        raise ValueError(f&#34;1, 2 or 4 integers required for spacing; {len(pad)} given&#34;)</code></pre>
+        raise ValueError(f&#34;1, 2 or 4 integers required for spacing; {pad_len} given&#34;)
+
+    def __add__(self, other: object) -&gt; Spacing:
+        if isinstance(other, tuple):
+            top1, right1, bottom1, left1 = self
+            top2, right2, bottom2, left2 = other
+            return Spacing(
+                top1 + top2, right1 + right2, bottom1 + bottom2, left1 + left2
+            )
+        return NotImplemented
+
+    def __sub__(self, other: object) -&gt; Spacing:
+        if isinstance(other, tuple):
+            top1, right1, bottom1, left1 = self
+            top2, right2, bottom2, left2 = other
+            return Spacing(
+                top1 - top2, right1 - right2, bottom1 - bottom2, left1 - left2
+            )
+        return NotImplemented</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1861,16 +2505,17 @@ def unpack(cls, pad: SpacingDimensions) -&gt; Spacing:
     &#34;&#34;&#34;Unpack padding specified in CSS style.&#34;&#34;&#34;
     if isinstance(pad, int):
         return cls(pad, pad, pad, pad)
-    if len(pad) == 1:
+    pad_len = len(pad)
+    if pad_len == 1:
         _pad = pad[0]
         return cls(_pad, _pad, _pad, _pad)
-    if len(pad) == 2:
+    if pad_len == 2:
         pad_top, pad_right = cast(Tuple[int, int], pad)
         return cls(pad_top, pad_right, pad_top, pad_right)
-    if len(pad) == 4:
+    if pad_len == 4:
         top, right, bottom, left = cast(Tuple[int, int, int, int], pad)
         return cls(top, right, bottom, left)
-    raise ValueError(f&#34;1, 2 or 4 integers required for spacing; {len(pad)} given&#34;)</code></pre>
+    raise ValueError(f&#34;1, 2 or 4 integers required for spacing; {pad_len} given&#34;)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1891,6 +2536,25 @@ def unpack(cls, pad: SpacingDimensions) -&gt; Spacing:
 def bottom_right(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Bottom right space.&#34;&#34;&#34;
     return (self.right, self.bottom)</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Spacing.css"><code class="name">var <span class="ident">css</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Gets a string containing the spacing in CSS format.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def css(self) -&gt; str:
+    &#34;&#34;&#34;Gets a string containing the spacing in CSS format.&#34;&#34;&#34;
+    top, right, bottom, left = self
+    if top == right == bottom == left:
+        return f&#34;{top}&#34;
+    if (top, right) == (bottom, left):
+        return f&#34;{top} {right}&#34;
+    else:
+        return f&#34;{top} {right} {bottom} {left}&#34;</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Spacing.height"><code class="name">var <span class="ident">height</span> : int</code></dt>
@@ -1929,6 +2593,20 @@ def height(self) -&gt; int:
 def top_left(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Top left space.&#34;&#34;&#34;
     return (self.left, self.top)</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Spacing.totals"><code class="name">var <span class="ident">totals</span> : tuple[int, int]</code></dt>
+<dd>
+<div class="desc"><p>Returns a tuple of (<HORIZONTAL SPACE>, <VERTICAL SPACE>).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def totals(self) -&gt; tuple[int, int]:
+    &#34;&#34;&#34;Returns a tuple of (&lt;HORIZONTAL SPACE&gt;, &lt;VERTICAL SPACE&gt;).&#34;&#34;&#34;
+    top, right, bottom, left = self
+    return (left + right, top + bottom)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Spacing.width"><code class="name">var <span class="ident">width</span> : int</code></dt>
@@ -2017,6 +2695,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></h4>
 <ul class="">
 <li><code><a title="textual.geometry.Offset.blend" href="#textual.geometry.Offset.blend">blend</a></code></li>
+<li><code><a title="textual.geometry.Offset.get_distance_to" href="#textual.geometry.Offset.get_distance_to">get_distance_to</a></code></li>
 <li><code><a title="textual.geometry.Offset.is_origin" href="#textual.geometry.Offset.is_origin">is_origin</a></code></li>
 <li><code><a title="textual.geometry.Offset.x" href="#textual.geometry.Offset.x">x</a></code></li>
 <li><code><a title="textual.geometry.Offset.y" href="#textual.geometry.Offset.y">y</a></code></li>
@@ -2038,7 +2717,12 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Region.intersection" href="#textual.geometry.Region.intersection">intersection</a></code></li>
 <li><code><a title="textual.geometry.Region.origin" href="#textual.geometry.Region.origin">origin</a></code></li>
 <li><code><a title="textual.geometry.Region.overlaps" href="#textual.geometry.Region.overlaps">overlaps</a></code></li>
+<li><code><a title="textual.geometry.Region.reset_origin" href="#textual.geometry.Region.reset_origin">reset_origin</a></code></li>
+<li><code><a title="textual.geometry.Region.shrink" href="#textual.geometry.Region.shrink">shrink</a></code></li>
 <li><code><a title="textual.geometry.Region.size" href="#textual.geometry.Region.size">size</a></code></li>
+<li><code><a title="textual.geometry.Region.split" href="#textual.geometry.Region.split">split</a></code></li>
+<li><code><a title="textual.geometry.Region.split_horizontal" href="#textual.geometry.Region.split_horizontal">split_horizontal</a></code></li>
+<li><code><a title="textual.geometry.Region.split_vertical" href="#textual.geometry.Region.split_vertical">split_vertical</a></code></li>
 <li><code><a title="textual.geometry.Region.translate" href="#textual.geometry.Region.translate">translate</a></code></li>
 <li><code><a title="textual.geometry.Region.union" href="#textual.geometry.Region.union">union</a></code></li>
 <li><code><a title="textual.geometry.Region.width" href="#textual.geometry.Region.width">width</a></code></li>
@@ -2068,11 +2752,13 @@ setTimeout(() => input.focus(), 100);
 <ul class="two-column">
 <li><code><a title="textual.geometry.Spacing.bottom" href="#textual.geometry.Spacing.bottom">bottom</a></code></li>
 <li><code><a title="textual.geometry.Spacing.bottom_right" href="#textual.geometry.Spacing.bottom_right">bottom_right</a></code></li>
+<li><code><a title="textual.geometry.Spacing.css" href="#textual.geometry.Spacing.css">css</a></code></li>
 <li><code><a title="textual.geometry.Spacing.height" href="#textual.geometry.Spacing.height">height</a></code></li>
 <li><code><a title="textual.geometry.Spacing.left" href="#textual.geometry.Spacing.left">left</a></code></li>
 <li><code><a title="textual.geometry.Spacing.right" href="#textual.geometry.Spacing.right">right</a></code></li>
 <li><code><a title="textual.geometry.Spacing.top" href="#textual.geometry.Spacing.top">top</a></code></li>
 <li><code><a title="textual.geometry.Spacing.top_left" href="#textual.geometry.Spacing.top_left">top_left</a></code></li>
+<li><code><a title="textual.geometry.Spacing.totals" href="#textual.geometry.Spacing.totals">totals</a></code></li>
 <li><code><a title="textual.geometry.Spacing.unpack" href="#textual.geometry.Spacing.unpack">unpack</a></code></li>
 <li><code><a title="textual.geometry.Spacing.width" href="#textual.geometry.Spacing.width">width</a></code></li>
 </ul>

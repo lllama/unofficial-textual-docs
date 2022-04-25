@@ -34,38 +34,47 @@ from typing import (
     Awaitable,
     TYPE_CHECKING,
     Callable,
-    ClassVar,
+    Iterable,
     NamedTuple,
-    NewType,
     cast,
 )
+
 import rich.repr
-from rich import box
 from rich.align import Align
 from rich.console import Console, RenderableType
-from rich.panel import Panel
+from rich.measure import Measurement
 from rich.padding import Padding
-from rich.pretty import Pretty
 from rich.style import Style
 from rich.styled import Styled
-from rich.text import TextType
 
+
+from . import errors, log
 from . import events
 from ._animator import BoundAnimator
+from ._border import Border
+from .box_model import BoxModel, get_box_model
 from ._callback import invoke
+from .color import Color
 from ._context import active_app
-from .geometry import Size, Spacing, SpacingDimensions
-from .message import Message
-from .message_pump import MessagePump
-from .messages import Layout, Update
-from .reactive import Reactive, watch
 from ._types import Lines
+from .dom import DOMNode
+from .geometry import clamp, Offset, Region, Size, Spacing
+from .message import Message
+from . import messages
+from .layout import Layout
+from .reactive import Reactive, watch
+from .renderables.opacity import Opacity
+
 
 if TYPE_CHECKING:
-    from .app import App
-    from .view import View
-
-log = getLogger(&#34;rich&#34;)
+    from .scrollbar import (
+        ScrollBar,
+        ScrollTo,
+        ScrollUp,
+        ScrollDown,
+        ScrollLeft,
+        ScrollRight,
+    )
 
 
 class RenderCache(NamedTuple):
@@ -75,74 +84,352 @@ class RenderCache(NamedTuple):
     @property
     def cursor_line(self) -&gt; int | None:
         for index, line in enumerate(self.lines):
-            for text, style, control in line:
+            for _text, style, _control in line:
                 if style and style._meta and style.meta.get(&#34;cursor&#34;, False):
                     return index
         return None
 
 
 @rich.repr.auto
-class Widget(MessagePump):
-    _id: ClassVar[int] = 0
-    _counts: ClassVar[dict[str, int]] = {}
+class Widget(DOMNode):
+
     can_focus: bool = False
 
-    def __init__(self, name: str | None = None) -&gt; None:
-        class_name = self.__class__.__name__
-        Widget._counts.setdefault(class_name, 0)
-        Widget._counts[class_name] += 1
-        _count = self._counts[class_name]
+    DEFAULT_STYLES = &#34;&#34;&#34;
 
-        self.name = name or f&#34;{class_name}#{_count}&#34;
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        *children: Widget,
+        name: str | None = None,
+        id: str | None = None,
+        classes: set[str] | None = None,
+    ) -&gt; None:
 
         self._size = Size(0, 0)
-        self._repaint_required = False
+        self._virtual_size = Size(0, 0)
+        self._container_size = Size(0, 0)
         self._layout_required = False
         self._animate: BoundAnimator | None = None
         self._reactive_watches: dict[str, Callable] = {}
-        self.render_cache: RenderCache | None = None
         self.highlight_style: Style | None = None
 
-        super().__init__()
+        self._vertical_scrollbar: ScrollBar | None = None
+        self._horizontal_scrollbar: ScrollBar | None = None
 
-    visible: Reactive[bool] = Reactive(True, layout=True)
-    layout_size: Reactive[int | None] = Reactive(None, layout=True)
-    layout_fraction: Reactive[int] = Reactive(1, layout=True)
-    layout_min_size: Reactive[int] = Reactive(1, layout=True)
-    layout_offset_x: Reactive[float] = Reactive(0.0, layout=True)
-    layout_offset_y: Reactive[float] = Reactive(0.0, layout=True)
+        self._render_cache = RenderCache(Size(0, 0), [])
+        self._dirty_regions: list[Region] = []
 
-    style: Reactive[str | None] = Reactive(None)
-    padding: Reactive[Spacing | None] = Reactive(None, layout=True)
-    margin: Reactive[Spacing | None] = Reactive(None, layout=True)
-    border: Reactive[str] = Reactive(&#34;none&#34;, layout=True)
-    border_style: Reactive[str] = Reactive(&#34;&#34;)
-    border_title: Reactive[TextType] = Reactive(&#34;&#34;)
+        super().__init__(name=name, id=id, classes=classes)
+        self.add_children(*children)
 
-    BOX_MAP = {&#34;normal&#34;: box.SQUARE, &#34;round&#34;: box.ROUNDED, &#34;bold&#34;: box.HEAVY}
+    auto_width = Reactive(True)
+    auto_height = Reactive(True)
+    has_focus = Reactive(False)
+    mouse_over = Reactive(False)
+    scroll_x = Reactive(0.0, repaint=False)
+    scroll_y = Reactive(0.0, repaint=False)
+    scroll_target_x = Reactive(0.0, repaint=False)
+    scroll_target_y = Reactive(0.0, repaint=False)
+    show_vertical_scrollbar = Reactive(False, layout=True)
+    show_horizontal_scrollbar = Reactive(False, layout=True)
 
-    def validate_padding(self, padding: SpacingDimensions) -&gt; Spacing:
-        return Spacing.unpack(padding)
+    def get_box_model(self, container: Size, viewport: Size) -&gt; BoxModel:
+        &#34;&#34;&#34;Process the box model for this widget.
 
-    def validate_margin(self, margin: SpacingDimensions) -&gt; Spacing:
-        return Spacing.unpack(margin)
+        Args:
+            container (Size): The size of the container widget (with a layout)
+            viewport (Size): The viewport size.
 
-    def validate_layout_offset_x(self, value) -&gt; int:
-        return int(value)
+        Returns:
+            BoxModel: The size and margin for this widget.
+        &#34;&#34;&#34;
+        box_model = get_box_model(
+            self.styles,
+            container,
+            viewport,
+            self.get_content_width,
+            self.get_content_height,
+        )
+        return box_model
 
-    def validate_layout_offset_y(self, value) -&gt; int:
-        return int(value)
+    def get_content_width(self, container_size: Size, parent_size: Size) -&gt; int:
+        console = self.app.console
+        renderable = self.render()
+        measurement = Measurement.get(console, console.options, renderable)
+        return measurement.maximum
+
+    def get_content_height(self, container_size: Size, parent_size: Size) -&gt; int:
+        return container_size.height
+
+    async def watch_scroll_x(self, new_value: float) -&gt; None:
+        self.horizontal_scrollbar.position = int(new_value)
+
+    async def watch_scroll_y(self, new_value: float) -&gt; None:
+        self.vertical_scrollbar.position = int(new_value)
+
+    def validate_scroll_x(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_x)
+
+    def validate_scroll_target_x(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_x)
+
+    def validate_scroll_y(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_y)
+
+    def validate_scroll_target_y(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_y)
+
+    @property
+    def max_scroll_x(self) -&gt; float:
+        return max(0, self.virtual_size.width - self.container_size.width)
+
+    @property
+    def max_scroll_y(self) -&gt; float:
+        return max(0, self.virtual_size.height - self.container_size.height)
+
+    @property
+    def vertical_scrollbar(self) -&gt; ScrollBar:
+        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+
+        Returns:
+            ScrollBar: ScrollBar Widget.
+        &#34;&#34;&#34;
+        from .scrollbar import ScrollBar
+
+        if self._vertical_scrollbar is not None:
+            return self._vertical_scrollbar
+        self._vertical_scrollbar = scroll_bar = ScrollBar(
+            vertical=True, name=&#34;vertical&#34;
+        )
+        self.app.start_widget(self, scroll_bar)
+        return scroll_bar
+
+    @property
+    def horizontal_scrollbar(self) -&gt; ScrollBar:
+        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+
+        Returns:
+            ScrollBar: ScrollBar Widget.
+        &#34;&#34;&#34;
+        from .scrollbar import ScrollBar
+
+        if self._horizontal_scrollbar is not None:
+            return self._horizontal_scrollbar
+        self._horizontal_scrollbar = scroll_bar = ScrollBar(
+            vertical=False, name=&#34;horizontal&#34;
+        )
+
+        self.app.start_widget(self, scroll_bar)
+        return scroll_bar
+
+    def _refresh_scrollbars(self) -&gt; None:
+        &#34;&#34;&#34;Refresh scrollbar visibility.&#34;&#34;&#34;
+        if not self.is_container:
+            return
+
+        styles = self.styles
+        overflow_x = styles.overflow_x
+        overflow_y = styles.overflow_y
+        width, height = self.container_size
+
+        show_horizontal = self.show_horizontal_scrollbar
+        if overflow_x == &#34;hidden&#34;:
+            show_horizontal = False
+        if overflow_x == &#34;scroll&#34;:
+            show_horizontal = True
+        elif overflow_x == &#34;auto&#34;:
+            show_horizontal = self.virtual_size.width &gt; width
+
+        show_vertical = self.show_vertical_scrollbar
+        if overflow_y == &#34;hidden&#34;:
+            show_vertical = False
+        elif overflow_y == &#34;scroll&#34;:
+            show_vertical = True
+        elif overflow_y == &#34;auto&#34;:
+            show_vertical = self.virtual_size.height &gt; height
+
+        self.show_horizontal_scrollbar = show_horizontal
+        self.show_vertical_scrollbar = show_vertical
+
+    @property
+    def scrollbars_enabled(self) -&gt; tuple[bool, bool]:
+        &#34;&#34;&#34;A tuple of booleans that indicate if scrollbars are enabled.
+
+        Returns:
+            tuple[bool, bool]: A tuple of (&lt;vertical scrollbar enabled&gt;, &lt;horizontal scrollbar enabled&gt;)
+
+        &#34;&#34;&#34;
+        if self.layout is None:
+            return False, False
+
+        enabled = self.show_vertical_scrollbar, self.show_horizontal_scrollbar
+        return enabled
+
+    def set_dirty(self) -&gt; None:
+        &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-render).&#34;&#34;&#34;
+        self._dirty_regions.clear()
+        self._dirty_regions.append(self.size.region)
+
+    def scroll_to(
+        self,
+        x: float | None = None,
+        y: float | None = None,
+        *,
+        animate: bool = True,
+    ) -&gt; bool:
+        &#34;&#34;&#34;Scroll to a given (absolute) coordinate, optionally animating.
+
+        Args:
+            scroll_x (int | None, optional): X coordinate (column) to scroll to, or ``None`` for no change. Defaults to None.
+            scroll_y (int | None, optional): Y coordinate (row) to scroll to, or ``None`` for no change. Defaults to None.
+            animate (bool, optional): Animate to new scroll position. Defaults to False.
+        &#34;&#34;&#34;
+
+        scrolled_x = False
+        scrolled_y = False
+
+        if animate:
+            # TODO: configure animation speed
+            if x is not None:
+                self.scroll_target_x = x
+                if x != self.scroll_x:
+                    self.animate(
+                        &#34;scroll_x&#34;, self.scroll_target_x, speed=80, easing=&#34;out_cubic&#34;
+                    )
+                    scrolled_x = True
+            if y is not None:
+                self.scroll_target_y = y
+                if y != self.scroll_y:
+                    self.animate(
+                        &#34;scroll_y&#34;, self.scroll_target_y, speed=80, easing=&#34;out_cubic&#34;
+                    )
+                    scrolled_y = True
+
+        else:
+            if x is not None:
+                self.scroll_target_x = self.scroll_x = x
+                if x != self.scroll_x:
+                    scrolled_x = True
+            if y is not None:
+                self.scroll_target_y = self.scroll_y = y
+                if y != self.scroll_y:
+                    scrolled_y = True
+            self.refresh(repaint=False, layout=True)
+        return scrolled_x or scrolled_y
+
+    def scroll_home(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(0, 0, animate=animate)
+
+    def scroll_end(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(0, self.max_scroll_y, animate=animate)
+
+    def scroll_left(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(x=self.scroll_target_x - 1, animate=animate)
+
+    def scroll_right(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(x=self.scroll_target_x + 1, animate=animate)
+
+    def scroll_up(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(y=self.scroll_target_y + 1, animate=animate)
+
+    def scroll_down(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(y=self.scroll_target_y - 1, animate=animate)
+
+    def scroll_page_up(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(
+            y=self.scroll_target_y - self.container_size.height, animate=animate
+        )
+
+    def scroll_page_down(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(
+            y=self.scroll_target_y + self.container_size.height, animate=animate
+        )
+
+    def scroll_page_left(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(
+            x=self.scroll_target_x - self.container_size.width, animate=animate
+        )
+
+    def scroll_page_right(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(
+            x=self.scroll_target_x + self.container_size.width, animate=animate
+        )
 
     def __init_subclass__(cls, can_focus: bool = True) -&gt; None:
         super().__init_subclass__()
         cls.can_focus = can_focus
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield &#34;name&#34;, self.name
+        yield &#34;id&#34;, self.id, None
+        if self.name:
+            yield &#34;name&#34;, self.name
+        if self.classes:
+            yield &#34;classes&#34;, set(self.classes)
+        pseudo_classes = self.pseudo_classes
+        if pseudo_classes:
+            yield &#34;pseudo_classes&#34;, set(pseudo_classes)
 
-    def __rich__(self) -&gt; RenderableType:
-        renderable = self.render_styled()
-        return renderable
+    def _arrange_container(self, region: Region) -&gt; Region:
+        &#34;&#34;&#34;Adjusts the Widget region to accommodate scrollbars.
+
+        Args:
+            region (Region): A region for the widget.
+
+        Returns:
+            Region: The widget region minus scrollbars.
+        &#34;&#34;&#34;
+        show_vertical_scrollbar, show_horizontal_scrollbar = self.scrollbars_enabled
+        if show_horizontal_scrollbar and show_vertical_scrollbar:
+            (region, _, _, _) = region.split(-1, -1)
+        elif show_vertical_scrollbar:
+            region, _ = region.split_vertical(-1)
+        elif show_horizontal_scrollbar:
+            region, _ = region.split_horizontal(-1)
+        return region
+
+    def _arrange_scrollbars(self, size: Size) -&gt; Iterable[tuple[Widget, Region]]:
+        &#34;&#34;&#34;Arrange the &#39;chrome&#39; widgets (typically scrollbars) for a layout element.
+
+        Args:
+            size (Size): _description_
+
+        Returns:
+            Iterable[tuple[Widget, Region]]: _description_
+
+        Yields:
+            Iterator[Iterable[tuple[Widget, Region]]]: _description_
+        &#34;&#34;&#34;
+        region = size.region
+        show_vertical_scrollbar, show_horizontal_scrollbar = self.scrollbars_enabled
+
+        if show_horizontal_scrollbar and show_vertical_scrollbar:
+            (
+                region,
+                vertical_scrollbar_region,
+                horizontal_scrollbar_region,
+                _,
+            ) = region.split(-1, -1)
+            if vertical_scrollbar_region:
+                yield self.vertical_scrollbar, vertical_scrollbar_region
+            if horizontal_scrollbar_region:
+                yield self.horizontal_scrollbar, horizontal_scrollbar_region
+        elif show_vertical_scrollbar:
+            region, scrollbar_region = region.split_vertical(-1)
+            if scrollbar_region:
+                yield self.vertical_scrollbar, scrollbar_region
+        elif show_horizontal_scrollbar:
+            region, scrollbar_region = region.split_horizontal(-1)
+            if scrollbar_region:
+                yield self.horizontal_scrollbar, scrollbar_region
+
+    def get_pseudo_classes(self) -&gt; Iterable[str]:
+        &#34;&#34;&#34;Pseudo classes for a widget&#34;&#34;&#34;
+        if self.mouse_over:
+            yield &#34;hover&#34;
+        if self.has_focus:
+            yield &#34;focus&#34;
 
     def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
         watch(self, attribute_name, callback)
@@ -153,19 +440,40 @@ class Widget(MessagePump):
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
+
         renderable = self.render()
-        if self.padding is not None:
-            renderable = Padding(renderable, self.padding)
-        if self.border in self.BOX_MAP:
-            renderable = Panel(
+        styles = self.styles
+        parent_styles = self.parent.styles
+
+        parent_text_style = self.parent.rich_text_style
+        text_style = styles.rich_style
+
+        renderable_text_style = parent_text_style + text_style
+        if renderable_text_style:
+            renderable = Styled(renderable, renderable_text_style)
+
+        renderable = Padding(renderable, styles.padding, style=renderable_text_style)
+
+        if styles.border:
+            renderable = Border(
                 renderable,
-                box=self.BOX_MAP.get(self.border) or box.SQUARE,
-                style=self.border_style,
+                styles.border,
+                inner_color=styles.background,
+                outer_color=Color.from_rich_color(parent_text_style.bgcolor),
             )
-        if self.margin is not None:
-            renderable = Padding(renderable, self.margin)
-        if self.style:
-            renderable = Styled(renderable, self.style)
+
+        if styles.outline:
+            renderable = Border(
+                renderable,
+                styles.outline,
+                inner_color=styles.background,
+                outer_color=parent_styles.background,
+                outline=True,
+            )
+
+        if styles.opacity != 1.0:
+            renderable = Opacity(renderable, opacity=styles.opacity)
+
         return renderable
 
     @property
@@ -173,18 +481,38 @@ class Widget(MessagePump):
         return self._size
 
     @property
-    def is_visual(self) -&gt; bool:
-        return True
+    def container_size(self) -&gt; Size:
+        return self._container_size
+
+    @property
+    def virtual_size(self) -&gt; Size:
+        return self._virtual_size
+
+    @property
+    def region(self) -&gt; Region:
+        try:
+            return self.screen._compositor.get_widget_region(self)
+        except errors.NoWidget:
+            return Region()
+
+    @property
+    def scroll_offset(self) -&gt; Offset:
+        return Offset(int(self.scroll_x), int(self.scroll_y))
+
+    @property
+    def is_transparent(self) -&gt; bool:
+        &#34;&#34;&#34;Check if the background styles is not set.
+
+        Returns:
+            bool: ``True`` if there is background color, otherwise ``False``.
+        &#34;&#34;&#34;
+        return False
+        return self.layout is not None
 
     @property
     def console(self) -&gt; Console:
         &#34;&#34;&#34;Get the current console.&#34;&#34;&#34;
         return active_app.get().console
-
-    @property
-    def root_view(self) -&gt; &#34;View&#34;:
-        &#34;&#34;&#34;Return the top-most view.&#34;&#34;&#34;
-        return active_app.get().view
 
     @property
     def animate(self) -&gt; BoundAnimator:
@@ -194,71 +522,103 @@ class Widget(MessagePump):
         return self._animate
 
     @property
-    def layout_offset(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Get the layout offset as a tuple.&#34;&#34;&#34;
-        return (round(self.layout_offset_x), round(self.layout_offset_y))
+    def layout(self) -&gt; Layout | None:
+        return self.styles.layout
 
     @property
-    def gutter(self) -&gt; Spacing:
-        mt, mr, mb, bl = self.margin or (0, 0, 0, 0)
-        pt, pr, pb, pl = self.padding or (0, 0, 0, 0)
-        border = 1 if self.border else 0
-        gutter = Spacing(
-            mt + pt + border, mr + pr + border, mb + pb + border, bl + pl + border
-        )
-        return gutter
+    def is_container(self) -&gt; bool:
+        &#34;&#34;&#34;Check if this widget is a container (contains other widgets)
 
-    def _update_size(self, size: Size) -&gt; None:
-        self._size = size
+        Returns:
+            bool: True if this widget is a container.
+        &#34;&#34;&#34;
+        return self.styles.layout is not None
 
-    def render_lines(self) -&gt; None:
+    def watch_mouse_over(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
+        self.app.update_styles()
+
+    def watch_has_focus(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Update from CSS if has focus state changes.&#34;&#34;&#34;
+        self.app.update_styles()
+
+    def on_style_change(self) -&gt; None:
+        self.set_dirty()
+        self.check_idle()
+
+    def size_updated(
+        self, size: Size, virtual_size: Size, container_size: Size
+    ) -&gt; None:
+        if self._size != size or self._virtual_size != virtual_size:
+            self._size = size
+            self._virtual_size = virtual_size
+            self._container_size = container_size
+
+            if self.is_container:
+                self._refresh_scrollbars()
+                width, height = self.container_size
+                if self.show_vertical_scrollbar:
+                    self.vertical_scrollbar.window_virtual_size = virtual_size.height
+                    self.vertical_scrollbar.window_size = height
+                if self.show_horizontal_scrollbar:
+                    self.horizontal_scrollbar.window_virtual_size = virtual_size.width
+                    self.horizontal_scrollbar.window_size = width
+
+                self.refresh(layout=True)
+                self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
+            else:
+                self.refresh()
+
+    def _render_lines(self) -&gt; None:
+        &#34;&#34;&#34;Render all lines.&#34;&#34;&#34;
         width, height = self.size
         renderable = self.render_styled()
-        options = self.console.options.update_dimensions(width, height)
+        options = self.console.options.update_dimensions(width, height).update(
+            highlight=False
+        )
         lines = self.console.render_lines(renderable, options)
-        self.render_cache = RenderCache(self.size, lines)
+        self._render_cache = RenderCache(self.size, lines)
+        self._dirty_regions.clear()
 
-    def render_lines_free(self, width: int) -&gt; None:
-        renderable = self.render_styled()
-        options = self.console.options.update(width=width, height=None)
-        lines = self.console.render_lines(renderable, options)
-        self.render_cache = RenderCache(Size(width, len(lines)), lines)
+    def get_render_lines(
+        self, start: int | None = None, end: int | None = None
+    ) -&gt; Lines:
+        &#34;&#34;&#34;Get segment lines to render the widget.
 
-    def _get_lines(self) -&gt; Lines:
-        &#34;&#34;&#34;Get segment lines to render the widget.&#34;&#34;&#34;
-        if self.render_cache is None:
-            self.render_lines()
-        assert self.render_cache is not None
-        lines = self.render_cache.lines
+        Args:
+            start (int | None, optional): line start index, or None for first line. Defaults to None.
+            end (int | None, optional): line end index, or None for last line. Defaults to None.
+
+        Returns:
+            Lines: A list of lists of segments.
+        &#34;&#34;&#34;
+        if self._dirty_regions:
+            self._render_lines()
+            if self.is_container:
+                self.horizontal_scrollbar.refresh()
+                self.vertical_scrollbar.refresh()
+        lines = self._render_cache.lines[start:end]
         return lines
 
-    def clear_render_cache(self) -&gt; None:
-        self.render_cache = None
-
-    def check_repaint(self) -&gt; bool:
-        return self._repaint_required
-
     def check_layout(self) -&gt; bool:
+        &#34;&#34;&#34;Check if a layout has been requested.&#34;&#34;&#34;
         return self._layout_required
 
-    def reset_check_repaint(self) -&gt; None:
-        self._repaint_required = False
-
-    def reset_check_layout(self) -&gt; None:
+    def _reset_check_layout(self) -&gt; None:
         self._layout_required = False
 
     def get_style_at(self, x: int, y: int) -&gt; Style:
-        offset_x, offset_y = self.root_view.get_offset(self)
-        return self.root_view.get_style_at(x + offset_x, y + offset_y)
+        offset_x, offset_y = self.screen.get_offset(self)
+        return self.screen.get_style_at(x + offset_x, y + offset_y)
 
-    async def call_later(self, callback: Callable, *args, **kwargs) -&gt; None:
-        await self.app.call_later(callback, *args, **kwargs)
+    def call_later(self, callback: Callable, *args, **kwargs) -&gt; None:
+        self.app.call_later(callback, *args, **kwargs)
 
     async def forward_event(self, event: events.Event) -&gt; None:
         event.set_forwarded()
         await self.post_message(event)
 
-    def refresh(self, repaint: bool = True, layout: bool = False) -&gt; None:
+    def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
         &#34;&#34;&#34;Initiate a refresh of the widget.
 
         This method sets an internal flag to perform a refresh, which will be done on the
@@ -269,12 +629,10 @@ class Widget(MessagePump):
             layout (bool, optional): Also layout widgets in the view. Defaults to False.
         &#34;&#34;&#34;
         if layout:
-            self.clear_render_cache()
             self._layout_required = True
-        elif repaint:
-            self.clear_render_cache()
-            self._repaint_required = True
-        self.post_message_no_wait(events.Null(self))
+        if repaint:
+            self.set_dirty()
+        self.check_idle()
 
     def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
@@ -282,9 +640,11 @@ class Widget(MessagePump):
         Returns:
             RenderableType: Any renderable
         &#34;&#34;&#34;
-        return Panel(
-            Align.center(Pretty(self), vertical=&#34;middle&#34;), title=self.__class__.__name__
-        )
+
+        # Default displays a pretty repr in the center of the screen
+
+        label = self.css_identifier_styled
+        return Align.center(label, vertical=&#34;middle&#34;)
 
     async def action(self, action: str, *params) -&gt; None:
         await self.app.action(action, self)
@@ -293,56 +653,146 @@ class Widget(MessagePump):
         if not self.check_message_enabled(message):
             return True
         if not self.is_running:
-            self.log(self, &#34;IS NOT RUNNING&#34;)
+            self.log(self, f&#34;IS NOT RUNNING, {message!r} not sent&#34;)
         return await super().post_message(message)
 
-    async def on_resize(self, event: events.Resize) -&gt; None:
-        self.refresh()
+    def on_idle(self, event: events.Idle) -&gt; None:
+        &#34;&#34;&#34;Called when there are no more events on the queue.
 
-    async def on_idle(self, event: events.Idle) -&gt; None:
+        Args:
+            event (events.Idle): Idle event.
+        &#34;&#34;&#34;
+
         if self.check_layout():
-            self.render_cache = None
-            self.reset_check_repaint()
-            self.reset_check_layout()
-            await self.emit(Layout(self))
-        elif self.check_repaint():
-            self.render_cache = None
-            self.reset_check_repaint()
-            await self.emit(Update(self, self))
+            self._reset_check_layout()
+            self.screen.post_message_no_wait(messages.Layout(self))
+        elif self._dirty_regions:
+            self.emit_no_wait(messages.Update(self, self))
 
     async def focus(self) -&gt; None:
+        &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
         await self.app.set_focus(self)
 
     async def capture_mouse(self, capture: bool = True) -&gt; None:
+        &#34;&#34;&#34;Capture (or release) the mouse.
+
+        When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.
+
+        Args:
+            capture (bool, optional): True to capture or False to release. Defaults to True.
+        &#34;&#34;&#34;
         await self.app.capture_mouse(self if capture else None)
 
     async def release_mouse(self) -&gt; None:
+        &#34;&#34;&#34;Release the mouse.
+
+        Mouse events will only be sent when the mouse is over the widget.
+        &#34;&#34;&#34;
         await self.app.capture_mouse(None)
 
     async def broker_event(self, event_name: str, event: events.Event) -&gt; bool:
         return await self.app.broker_event(event_name, event, default_namespace=self)
 
-    async def dispatch_key(self, event: events.Key) -&gt; None:
-        &#34;&#34;&#34;Dispatch a key event to method.
-
-        This method will call the method named &#39;key_&lt;event.key&gt;&#39; if it exists.
-
-        Args:
-            event (events.Key): A key event.
-        &#34;&#34;&#34;
-
-        key_method = getattr(self, f&#34;key_{event.key}&#34;, None)
-        if key_method is not None:
-            await invoke(key_method, event)
-
-    async def on_mouse_down(self, event: events.MouseDown) -&gt; None:
+    async def on_mouse_down(self, event: events.MouseUp) -&gt; None:
         await self.broker_event(&#34;mouse.down&#34;, event)
 
     async def on_mouse_up(self, event: events.MouseUp) -&gt; None:
         await self.broker_event(&#34;mouse.up&#34;, event)
 
     async def on_click(self, event: events.Click) -&gt; None:
-        await self.broker_event(&#34;click&#34;, event)</code></pre>
+        await self.broker_event(&#34;click&#34;, event)
+
+    async def on_key(self, event: events.Key) -&gt; None:
+        await self.dispatch_key(event)
+
+    def on_leave(self) -&gt; None:
+        self.mouse_over = False
+
+    def on_enter(self) -&gt; None:
+        self.mouse_over = True
+
+    def on_mouse_scroll_down(self, event) -&gt; None:
+        if self.is_container:
+            self.scroll_down(animate=False)
+            event.stop()
+
+    def on_mouse_scroll_up(self, event) -&gt; None:
+        if self.is_container:
+            self.scroll_up(animate=False)
+            event.stop()
+
+    def handle_scroll_to(self, message: ScrollTo) -&gt; None:
+        if self.is_container:
+            self.scroll_to(message.x, message.y, animate=message.animate)
+            message.stop()
+
+    def handle_scroll_up(self, event: ScrollUp) -&gt; None:
+        if self.is_container:
+            self.scroll_page_up()
+            event.stop()
+
+    def handle_scroll_down(self, event: ScrollDown) -&gt; None:
+        if self.is_container:
+            self.scroll_page_down()
+            event.stop()
+
+    def handle_scroll_left(self, event: ScrollLeft) -&gt; None:
+        if self.is_container:
+            self.scroll_page_left()
+            event.stop()
+
+    def handle_scroll_right(self, event: ScrollRight) -&gt; None:
+        if self.is_container:
+            self.scroll_page_right()
+            event.stop()
+
+    def key_home(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_home()
+            return True
+        return False
+
+    def key_end(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_end()
+            return True
+        return False
+
+    def key_left(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_left()
+            return True
+        return False
+
+    def key_right(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_right()
+            return True
+        return False
+
+    def key_down(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_up()
+            return True
+        return False
+
+    def key_up(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_down()
+            return True
+        return False
+
+    def key_pagedown(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_page_down()
+            return True
+        return False
+
+    def key_pageup(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_page_up()
+            return True
+        return False</code></pre>
 </details>
 </section>
 <section>
@@ -371,7 +821,7 @@ class Widget(MessagePump):
     @property
     def cursor_line(self) -&gt; int | None:
         for index, line in enumerate(self.lines):
-            for text, style, control in line:
+            for _text, style, _control in line:
                 if style and style._meta and style.meta.get(&#34;cursor&#34;, False):
                     return index
         return None</code></pre>
@@ -392,7 +842,7 @@ class Widget(MessagePump):
 <pre><code class="python">@property
 def cursor_line(self) -&gt; int | None:
     for index, line in enumerate(self.lines):
-        for text, style, control in line:
+        for _text, style, _control in line:
             if style and style._meta and style.meta.get(&#34;cursor&#34;, False):
                 return index
     return None</code></pre>
@@ -410,75 +860,354 @@ def cursor_line(self) -&gt; int | None:
 </dd>
 <dt id="textual.widget.Widget"><code class="flex name class">
 <span>class <span class="ident">Widget</span></span>
-<span>(</span><span>name: str | None = None)</span>
+<span>(</span><span>*children: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>, name: str | None = None, id: str | None = None, classes: set[str] | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
+<p>Nodes are mountable and may be styled with CSS.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Widget(MessagePump):
-    _id: ClassVar[int] = 0
-    _counts: ClassVar[dict[str, int]] = {}
+<pre><code class="python">class Widget(DOMNode):
+
     can_focus: bool = False
 
-    def __init__(self, name: str | None = None) -&gt; None:
-        class_name = self.__class__.__name__
-        Widget._counts.setdefault(class_name, 0)
-        Widget._counts[class_name] += 1
-        _count = self._counts[class_name]
+    DEFAULT_STYLES = &#34;&#34;&#34;
 
-        self.name = name or f&#34;{class_name}#{_count}&#34;
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        *children: Widget,
+        name: str | None = None,
+        id: str | None = None,
+        classes: set[str] | None = None,
+    ) -&gt; None:
 
         self._size = Size(0, 0)
-        self._repaint_required = False
+        self._virtual_size = Size(0, 0)
+        self._container_size = Size(0, 0)
         self._layout_required = False
         self._animate: BoundAnimator | None = None
         self._reactive_watches: dict[str, Callable] = {}
-        self.render_cache: RenderCache | None = None
         self.highlight_style: Style | None = None
 
-        super().__init__()
+        self._vertical_scrollbar: ScrollBar | None = None
+        self._horizontal_scrollbar: ScrollBar | None = None
 
-    visible: Reactive[bool] = Reactive(True, layout=True)
-    layout_size: Reactive[int | None] = Reactive(None, layout=True)
-    layout_fraction: Reactive[int] = Reactive(1, layout=True)
-    layout_min_size: Reactive[int] = Reactive(1, layout=True)
-    layout_offset_x: Reactive[float] = Reactive(0.0, layout=True)
-    layout_offset_y: Reactive[float] = Reactive(0.0, layout=True)
+        self._render_cache = RenderCache(Size(0, 0), [])
+        self._dirty_regions: list[Region] = []
 
-    style: Reactive[str | None] = Reactive(None)
-    padding: Reactive[Spacing | None] = Reactive(None, layout=True)
-    margin: Reactive[Spacing | None] = Reactive(None, layout=True)
-    border: Reactive[str] = Reactive(&#34;none&#34;, layout=True)
-    border_style: Reactive[str] = Reactive(&#34;&#34;)
-    border_title: Reactive[TextType] = Reactive(&#34;&#34;)
+        super().__init__(name=name, id=id, classes=classes)
+        self.add_children(*children)
 
-    BOX_MAP = {&#34;normal&#34;: box.SQUARE, &#34;round&#34;: box.ROUNDED, &#34;bold&#34;: box.HEAVY}
+    auto_width = Reactive(True)
+    auto_height = Reactive(True)
+    has_focus = Reactive(False)
+    mouse_over = Reactive(False)
+    scroll_x = Reactive(0.0, repaint=False)
+    scroll_y = Reactive(0.0, repaint=False)
+    scroll_target_x = Reactive(0.0, repaint=False)
+    scroll_target_y = Reactive(0.0, repaint=False)
+    show_vertical_scrollbar = Reactive(False, layout=True)
+    show_horizontal_scrollbar = Reactive(False, layout=True)
 
-    def validate_padding(self, padding: SpacingDimensions) -&gt; Spacing:
-        return Spacing.unpack(padding)
+    def get_box_model(self, container: Size, viewport: Size) -&gt; BoxModel:
+        &#34;&#34;&#34;Process the box model for this widget.
 
-    def validate_margin(self, margin: SpacingDimensions) -&gt; Spacing:
-        return Spacing.unpack(margin)
+        Args:
+            container (Size): The size of the container widget (with a layout)
+            viewport (Size): The viewport size.
 
-    def validate_layout_offset_x(self, value) -&gt; int:
-        return int(value)
+        Returns:
+            BoxModel: The size and margin for this widget.
+        &#34;&#34;&#34;
+        box_model = get_box_model(
+            self.styles,
+            container,
+            viewport,
+            self.get_content_width,
+            self.get_content_height,
+        )
+        return box_model
 
-    def validate_layout_offset_y(self, value) -&gt; int:
-        return int(value)
+    def get_content_width(self, container_size: Size, parent_size: Size) -&gt; int:
+        console = self.app.console
+        renderable = self.render()
+        measurement = Measurement.get(console, console.options, renderable)
+        return measurement.maximum
+
+    def get_content_height(self, container_size: Size, parent_size: Size) -&gt; int:
+        return container_size.height
+
+    async def watch_scroll_x(self, new_value: float) -&gt; None:
+        self.horizontal_scrollbar.position = int(new_value)
+
+    async def watch_scroll_y(self, new_value: float) -&gt; None:
+        self.vertical_scrollbar.position = int(new_value)
+
+    def validate_scroll_x(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_x)
+
+    def validate_scroll_target_x(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_x)
+
+    def validate_scroll_y(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_y)
+
+    def validate_scroll_target_y(self, value: float) -&gt; float:
+        return clamp(value, 0, self.max_scroll_y)
+
+    @property
+    def max_scroll_x(self) -&gt; float:
+        return max(0, self.virtual_size.width - self.container_size.width)
+
+    @property
+    def max_scroll_y(self) -&gt; float:
+        return max(0, self.virtual_size.height - self.container_size.height)
+
+    @property
+    def vertical_scrollbar(self) -&gt; ScrollBar:
+        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+
+        Returns:
+            ScrollBar: ScrollBar Widget.
+        &#34;&#34;&#34;
+        from .scrollbar import ScrollBar
+
+        if self._vertical_scrollbar is not None:
+            return self._vertical_scrollbar
+        self._vertical_scrollbar = scroll_bar = ScrollBar(
+            vertical=True, name=&#34;vertical&#34;
+        )
+        self.app.start_widget(self, scroll_bar)
+        return scroll_bar
+
+    @property
+    def horizontal_scrollbar(self) -&gt; ScrollBar:
+        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+
+        Returns:
+            ScrollBar: ScrollBar Widget.
+        &#34;&#34;&#34;
+        from .scrollbar import ScrollBar
+
+        if self._horizontal_scrollbar is not None:
+            return self._horizontal_scrollbar
+        self._horizontal_scrollbar = scroll_bar = ScrollBar(
+            vertical=False, name=&#34;horizontal&#34;
+        )
+
+        self.app.start_widget(self, scroll_bar)
+        return scroll_bar
+
+    def _refresh_scrollbars(self) -&gt; None:
+        &#34;&#34;&#34;Refresh scrollbar visibility.&#34;&#34;&#34;
+        if not self.is_container:
+            return
+
+        styles = self.styles
+        overflow_x = styles.overflow_x
+        overflow_y = styles.overflow_y
+        width, height = self.container_size
+
+        show_horizontal = self.show_horizontal_scrollbar
+        if overflow_x == &#34;hidden&#34;:
+            show_horizontal = False
+        if overflow_x == &#34;scroll&#34;:
+            show_horizontal = True
+        elif overflow_x == &#34;auto&#34;:
+            show_horizontal = self.virtual_size.width &gt; width
+
+        show_vertical = self.show_vertical_scrollbar
+        if overflow_y == &#34;hidden&#34;:
+            show_vertical = False
+        elif overflow_y == &#34;scroll&#34;:
+            show_vertical = True
+        elif overflow_y == &#34;auto&#34;:
+            show_vertical = self.virtual_size.height &gt; height
+
+        self.show_horizontal_scrollbar = show_horizontal
+        self.show_vertical_scrollbar = show_vertical
+
+    @property
+    def scrollbars_enabled(self) -&gt; tuple[bool, bool]:
+        &#34;&#34;&#34;A tuple of booleans that indicate if scrollbars are enabled.
+
+        Returns:
+            tuple[bool, bool]: A tuple of (&lt;vertical scrollbar enabled&gt;, &lt;horizontal scrollbar enabled&gt;)
+
+        &#34;&#34;&#34;
+        if self.layout is None:
+            return False, False
+
+        enabled = self.show_vertical_scrollbar, self.show_horizontal_scrollbar
+        return enabled
+
+    def set_dirty(self) -&gt; None:
+        &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-render).&#34;&#34;&#34;
+        self._dirty_regions.clear()
+        self._dirty_regions.append(self.size.region)
+
+    def scroll_to(
+        self,
+        x: float | None = None,
+        y: float | None = None,
+        *,
+        animate: bool = True,
+    ) -&gt; bool:
+        &#34;&#34;&#34;Scroll to a given (absolute) coordinate, optionally animating.
+
+        Args:
+            scroll_x (int | None, optional): X coordinate (column) to scroll to, or ``None`` for no change. Defaults to None.
+            scroll_y (int | None, optional): Y coordinate (row) to scroll to, or ``None`` for no change. Defaults to None.
+            animate (bool, optional): Animate to new scroll position. Defaults to False.
+        &#34;&#34;&#34;
+
+        scrolled_x = False
+        scrolled_y = False
+
+        if animate:
+            # TODO: configure animation speed
+            if x is not None:
+                self.scroll_target_x = x
+                if x != self.scroll_x:
+                    self.animate(
+                        &#34;scroll_x&#34;, self.scroll_target_x, speed=80, easing=&#34;out_cubic&#34;
+                    )
+                    scrolled_x = True
+            if y is not None:
+                self.scroll_target_y = y
+                if y != self.scroll_y:
+                    self.animate(
+                        &#34;scroll_y&#34;, self.scroll_target_y, speed=80, easing=&#34;out_cubic&#34;
+                    )
+                    scrolled_y = True
+
+        else:
+            if x is not None:
+                self.scroll_target_x = self.scroll_x = x
+                if x != self.scroll_x:
+                    scrolled_x = True
+            if y is not None:
+                self.scroll_target_y = self.scroll_y = y
+                if y != self.scroll_y:
+                    scrolled_y = True
+            self.refresh(repaint=False, layout=True)
+        return scrolled_x or scrolled_y
+
+    def scroll_home(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(0, 0, animate=animate)
+
+    def scroll_end(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(0, self.max_scroll_y, animate=animate)
+
+    def scroll_left(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(x=self.scroll_target_x - 1, animate=animate)
+
+    def scroll_right(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(x=self.scroll_target_x + 1, animate=animate)
+
+    def scroll_up(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(y=self.scroll_target_y + 1, animate=animate)
+
+    def scroll_down(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(y=self.scroll_target_y - 1, animate=animate)
+
+    def scroll_page_up(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(
+            y=self.scroll_target_y - self.container_size.height, animate=animate
+        )
+
+    def scroll_page_down(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(
+            y=self.scroll_target_y + self.container_size.height, animate=animate
+        )
+
+    def scroll_page_left(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(
+            x=self.scroll_target_x - self.container_size.width, animate=animate
+        )
+
+    def scroll_page_right(self, animate: bool = True) -&gt; bool:
+        return self.scroll_to(
+            x=self.scroll_target_x + self.container_size.width, animate=animate
+        )
 
     def __init_subclass__(cls, can_focus: bool = True) -&gt; None:
         super().__init_subclass__()
         cls.can_focus = can_focus
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield &#34;name&#34;, self.name
+        yield &#34;id&#34;, self.id, None
+        if self.name:
+            yield &#34;name&#34;, self.name
+        if self.classes:
+            yield &#34;classes&#34;, set(self.classes)
+        pseudo_classes = self.pseudo_classes
+        if pseudo_classes:
+            yield &#34;pseudo_classes&#34;, set(pseudo_classes)
 
-    def __rich__(self) -&gt; RenderableType:
-        renderable = self.render_styled()
-        return renderable
+    def _arrange_container(self, region: Region) -&gt; Region:
+        &#34;&#34;&#34;Adjusts the Widget region to accommodate scrollbars.
+
+        Args:
+            region (Region): A region for the widget.
+
+        Returns:
+            Region: The widget region minus scrollbars.
+        &#34;&#34;&#34;
+        show_vertical_scrollbar, show_horizontal_scrollbar = self.scrollbars_enabled
+        if show_horizontal_scrollbar and show_vertical_scrollbar:
+            (region, _, _, _) = region.split(-1, -1)
+        elif show_vertical_scrollbar:
+            region, _ = region.split_vertical(-1)
+        elif show_horizontal_scrollbar:
+            region, _ = region.split_horizontal(-1)
+        return region
+
+    def _arrange_scrollbars(self, size: Size) -&gt; Iterable[tuple[Widget, Region]]:
+        &#34;&#34;&#34;Arrange the &#39;chrome&#39; widgets (typically scrollbars) for a layout element.
+
+        Args:
+            size (Size): _description_
+
+        Returns:
+            Iterable[tuple[Widget, Region]]: _description_
+
+        Yields:
+            Iterator[Iterable[tuple[Widget, Region]]]: _description_
+        &#34;&#34;&#34;
+        region = size.region
+        show_vertical_scrollbar, show_horizontal_scrollbar = self.scrollbars_enabled
+
+        if show_horizontal_scrollbar and show_vertical_scrollbar:
+            (
+                region,
+                vertical_scrollbar_region,
+                horizontal_scrollbar_region,
+                _,
+            ) = region.split(-1, -1)
+            if vertical_scrollbar_region:
+                yield self.vertical_scrollbar, vertical_scrollbar_region
+            if horizontal_scrollbar_region:
+                yield self.horizontal_scrollbar, horizontal_scrollbar_region
+        elif show_vertical_scrollbar:
+            region, scrollbar_region = region.split_vertical(-1)
+            if scrollbar_region:
+                yield self.vertical_scrollbar, scrollbar_region
+        elif show_horizontal_scrollbar:
+            region, scrollbar_region = region.split_horizontal(-1)
+            if scrollbar_region:
+                yield self.horizontal_scrollbar, scrollbar_region
+
+    def get_pseudo_classes(self) -&gt; Iterable[str]:
+        &#34;&#34;&#34;Pseudo classes for a widget&#34;&#34;&#34;
+        if self.mouse_over:
+            yield &#34;hover&#34;
+        if self.has_focus:
+            yield &#34;focus&#34;
 
     def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
         watch(self, attribute_name, callback)
@@ -489,19 +1218,40 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
+
         renderable = self.render()
-        if self.padding is not None:
-            renderable = Padding(renderable, self.padding)
-        if self.border in self.BOX_MAP:
-            renderable = Panel(
+        styles = self.styles
+        parent_styles = self.parent.styles
+
+        parent_text_style = self.parent.rich_text_style
+        text_style = styles.rich_style
+
+        renderable_text_style = parent_text_style + text_style
+        if renderable_text_style:
+            renderable = Styled(renderable, renderable_text_style)
+
+        renderable = Padding(renderable, styles.padding, style=renderable_text_style)
+
+        if styles.border:
+            renderable = Border(
                 renderable,
-                box=self.BOX_MAP.get(self.border) or box.SQUARE,
-                style=self.border_style,
+                styles.border,
+                inner_color=styles.background,
+                outer_color=Color.from_rich_color(parent_text_style.bgcolor),
             )
-        if self.margin is not None:
-            renderable = Padding(renderable, self.margin)
-        if self.style:
-            renderable = Styled(renderable, self.style)
+
+        if styles.outline:
+            renderable = Border(
+                renderable,
+                styles.outline,
+                inner_color=styles.background,
+                outer_color=parent_styles.background,
+                outline=True,
+            )
+
+        if styles.opacity != 1.0:
+            renderable = Opacity(renderable, opacity=styles.opacity)
+
         return renderable
 
     @property
@@ -509,18 +1259,38 @@ def cursor_line(self) -&gt; int | None:
         return self._size
 
     @property
-    def is_visual(self) -&gt; bool:
-        return True
+    def container_size(self) -&gt; Size:
+        return self._container_size
+
+    @property
+    def virtual_size(self) -&gt; Size:
+        return self._virtual_size
+
+    @property
+    def region(self) -&gt; Region:
+        try:
+            return self.screen._compositor.get_widget_region(self)
+        except errors.NoWidget:
+            return Region()
+
+    @property
+    def scroll_offset(self) -&gt; Offset:
+        return Offset(int(self.scroll_x), int(self.scroll_y))
+
+    @property
+    def is_transparent(self) -&gt; bool:
+        &#34;&#34;&#34;Check if the background styles is not set.
+
+        Returns:
+            bool: ``True`` if there is background color, otherwise ``False``.
+        &#34;&#34;&#34;
+        return False
+        return self.layout is not None
 
     @property
     def console(self) -&gt; Console:
         &#34;&#34;&#34;Get the current console.&#34;&#34;&#34;
         return active_app.get().console
-
-    @property
-    def root_view(self) -&gt; &#34;View&#34;:
-        &#34;&#34;&#34;Return the top-most view.&#34;&#34;&#34;
-        return active_app.get().view
 
     @property
     def animate(self) -&gt; BoundAnimator:
@@ -530,71 +1300,103 @@ def cursor_line(self) -&gt; int | None:
         return self._animate
 
     @property
-    def layout_offset(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Get the layout offset as a tuple.&#34;&#34;&#34;
-        return (round(self.layout_offset_x), round(self.layout_offset_y))
+    def layout(self) -&gt; Layout | None:
+        return self.styles.layout
 
     @property
-    def gutter(self) -&gt; Spacing:
-        mt, mr, mb, bl = self.margin or (0, 0, 0, 0)
-        pt, pr, pb, pl = self.padding or (0, 0, 0, 0)
-        border = 1 if self.border else 0
-        gutter = Spacing(
-            mt + pt + border, mr + pr + border, mb + pb + border, bl + pl + border
-        )
-        return gutter
+    def is_container(self) -&gt; bool:
+        &#34;&#34;&#34;Check if this widget is a container (contains other widgets)
 
-    def _update_size(self, size: Size) -&gt; None:
-        self._size = size
+        Returns:
+            bool: True if this widget is a container.
+        &#34;&#34;&#34;
+        return self.styles.layout is not None
 
-    def render_lines(self) -&gt; None:
+    def watch_mouse_over(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
+        self.app.update_styles()
+
+    def watch_has_focus(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Update from CSS if has focus state changes.&#34;&#34;&#34;
+        self.app.update_styles()
+
+    def on_style_change(self) -&gt; None:
+        self.set_dirty()
+        self.check_idle()
+
+    def size_updated(
+        self, size: Size, virtual_size: Size, container_size: Size
+    ) -&gt; None:
+        if self._size != size or self._virtual_size != virtual_size:
+            self._size = size
+            self._virtual_size = virtual_size
+            self._container_size = container_size
+
+            if self.is_container:
+                self._refresh_scrollbars()
+                width, height = self.container_size
+                if self.show_vertical_scrollbar:
+                    self.vertical_scrollbar.window_virtual_size = virtual_size.height
+                    self.vertical_scrollbar.window_size = height
+                if self.show_horizontal_scrollbar:
+                    self.horizontal_scrollbar.window_virtual_size = virtual_size.width
+                    self.horizontal_scrollbar.window_size = width
+
+                self.refresh(layout=True)
+                self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
+            else:
+                self.refresh()
+
+    def _render_lines(self) -&gt; None:
+        &#34;&#34;&#34;Render all lines.&#34;&#34;&#34;
         width, height = self.size
         renderable = self.render_styled()
-        options = self.console.options.update_dimensions(width, height)
+        options = self.console.options.update_dimensions(width, height).update(
+            highlight=False
+        )
         lines = self.console.render_lines(renderable, options)
-        self.render_cache = RenderCache(self.size, lines)
+        self._render_cache = RenderCache(self.size, lines)
+        self._dirty_regions.clear()
 
-    def render_lines_free(self, width: int) -&gt; None:
-        renderable = self.render_styled()
-        options = self.console.options.update(width=width, height=None)
-        lines = self.console.render_lines(renderable, options)
-        self.render_cache = RenderCache(Size(width, len(lines)), lines)
+    def get_render_lines(
+        self, start: int | None = None, end: int | None = None
+    ) -&gt; Lines:
+        &#34;&#34;&#34;Get segment lines to render the widget.
 
-    def _get_lines(self) -&gt; Lines:
-        &#34;&#34;&#34;Get segment lines to render the widget.&#34;&#34;&#34;
-        if self.render_cache is None:
-            self.render_lines()
-        assert self.render_cache is not None
-        lines = self.render_cache.lines
+        Args:
+            start (int | None, optional): line start index, or None for first line. Defaults to None.
+            end (int | None, optional): line end index, or None for last line. Defaults to None.
+
+        Returns:
+            Lines: A list of lists of segments.
+        &#34;&#34;&#34;
+        if self._dirty_regions:
+            self._render_lines()
+            if self.is_container:
+                self.horizontal_scrollbar.refresh()
+                self.vertical_scrollbar.refresh()
+        lines = self._render_cache.lines[start:end]
         return lines
 
-    def clear_render_cache(self) -&gt; None:
-        self.render_cache = None
-
-    def check_repaint(self) -&gt; bool:
-        return self._repaint_required
-
     def check_layout(self) -&gt; bool:
+        &#34;&#34;&#34;Check if a layout has been requested.&#34;&#34;&#34;
         return self._layout_required
 
-    def reset_check_repaint(self) -&gt; None:
-        self._repaint_required = False
-
-    def reset_check_layout(self) -&gt; None:
+    def _reset_check_layout(self) -&gt; None:
         self._layout_required = False
 
     def get_style_at(self, x: int, y: int) -&gt; Style:
-        offset_x, offset_y = self.root_view.get_offset(self)
-        return self.root_view.get_style_at(x + offset_x, y + offset_y)
+        offset_x, offset_y = self.screen.get_offset(self)
+        return self.screen.get_style_at(x + offset_x, y + offset_y)
 
-    async def call_later(self, callback: Callable, *args, **kwargs) -&gt; None:
-        await self.app.call_later(callback, *args, **kwargs)
+    def call_later(self, callback: Callable, *args, **kwargs) -&gt; None:
+        self.app.call_later(callback, *args, **kwargs)
 
     async def forward_event(self, event: events.Event) -&gt; None:
         event.set_forwarded()
         await self.post_message(event)
 
-    def refresh(self, repaint: bool = True, layout: bool = False) -&gt; None:
+    def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
         &#34;&#34;&#34;Initiate a refresh of the widget.
 
         This method sets an internal flag to perform a refresh, which will be done on the
@@ -605,12 +1407,10 @@ def cursor_line(self) -&gt; int | None:
             layout (bool, optional): Also layout widgets in the view. Defaults to False.
         &#34;&#34;&#34;
         if layout:
-            self.clear_render_cache()
             self._layout_required = True
-        elif repaint:
-            self.clear_render_cache()
-            self._repaint_required = True
-        self.post_message_no_wait(events.Null(self))
+        if repaint:
+            self.set_dirty()
+        self.check_idle()
 
     def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
@@ -618,9 +1418,11 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             RenderableType: Any renderable
         &#34;&#34;&#34;
-        return Panel(
-            Align.center(Pretty(self), vertical=&#34;middle&#34;), title=self.__class__.__name__
-        )
+
+        # Default displays a pretty repr in the center of the screen
+
+        label = self.css_identifier_styled
+        return Align.center(label, vertical=&#34;middle&#34;)
 
     async def action(self, action: str, *params) -&gt; None:
         await self.app.action(action, self)
@@ -629,77 +1431,167 @@ def cursor_line(self) -&gt; int | None:
         if not self.check_message_enabled(message):
             return True
         if not self.is_running:
-            self.log(self, &#34;IS NOT RUNNING&#34;)
+            self.log(self, f&#34;IS NOT RUNNING, {message!r} not sent&#34;)
         return await super().post_message(message)
 
-    async def on_resize(self, event: events.Resize) -&gt; None:
-        self.refresh()
+    def on_idle(self, event: events.Idle) -&gt; None:
+        &#34;&#34;&#34;Called when there are no more events on the queue.
 
-    async def on_idle(self, event: events.Idle) -&gt; None:
+        Args:
+            event (events.Idle): Idle event.
+        &#34;&#34;&#34;
+
         if self.check_layout():
-            self.render_cache = None
-            self.reset_check_repaint()
-            self.reset_check_layout()
-            await self.emit(Layout(self))
-        elif self.check_repaint():
-            self.render_cache = None
-            self.reset_check_repaint()
-            await self.emit(Update(self, self))
+            self._reset_check_layout()
+            self.screen.post_message_no_wait(messages.Layout(self))
+        elif self._dirty_regions:
+            self.emit_no_wait(messages.Update(self, self))
 
     async def focus(self) -&gt; None:
+        &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
         await self.app.set_focus(self)
 
     async def capture_mouse(self, capture: bool = True) -&gt; None:
+        &#34;&#34;&#34;Capture (or release) the mouse.
+
+        When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.
+
+        Args:
+            capture (bool, optional): True to capture or False to release. Defaults to True.
+        &#34;&#34;&#34;
         await self.app.capture_mouse(self if capture else None)
 
     async def release_mouse(self) -&gt; None:
+        &#34;&#34;&#34;Release the mouse.
+
+        Mouse events will only be sent when the mouse is over the widget.
+        &#34;&#34;&#34;
         await self.app.capture_mouse(None)
 
     async def broker_event(self, event_name: str, event: events.Event) -&gt; bool:
         return await self.app.broker_event(event_name, event, default_namespace=self)
 
-    async def dispatch_key(self, event: events.Key) -&gt; None:
-        &#34;&#34;&#34;Dispatch a key event to method.
-
-        This method will call the method named &#39;key_&lt;event.key&gt;&#39; if it exists.
-
-        Args:
-            event (events.Key): A key event.
-        &#34;&#34;&#34;
-
-        key_method = getattr(self, f&#34;key_{event.key}&#34;, None)
-        if key_method is not None:
-            await invoke(key_method, event)
-
-    async def on_mouse_down(self, event: events.MouseDown) -&gt; None:
+    async def on_mouse_down(self, event: events.MouseUp) -&gt; None:
         await self.broker_event(&#34;mouse.down&#34;, event)
 
     async def on_mouse_up(self, event: events.MouseUp) -&gt; None:
         await self.broker_event(&#34;mouse.up&#34;, event)
 
     async def on_click(self, event: events.Click) -&gt; None:
-        await self.broker_event(&#34;click&#34;, event)</code></pre>
+        await self.broker_event(&#34;click&#34;, event)
+
+    async def on_key(self, event: events.Key) -&gt; None:
+        await self.dispatch_key(event)
+
+    def on_leave(self) -&gt; None:
+        self.mouse_over = False
+
+    def on_enter(self) -&gt; None:
+        self.mouse_over = True
+
+    def on_mouse_scroll_down(self, event) -&gt; None:
+        if self.is_container:
+            self.scroll_down(animate=False)
+            event.stop()
+
+    def on_mouse_scroll_up(self, event) -&gt; None:
+        if self.is_container:
+            self.scroll_up(animate=False)
+            event.stop()
+
+    def handle_scroll_to(self, message: ScrollTo) -&gt; None:
+        if self.is_container:
+            self.scroll_to(message.x, message.y, animate=message.animate)
+            message.stop()
+
+    def handle_scroll_up(self, event: ScrollUp) -&gt; None:
+        if self.is_container:
+            self.scroll_page_up()
+            event.stop()
+
+    def handle_scroll_down(self, event: ScrollDown) -&gt; None:
+        if self.is_container:
+            self.scroll_page_down()
+            event.stop()
+
+    def handle_scroll_left(self, event: ScrollLeft) -&gt; None:
+        if self.is_container:
+            self.scroll_page_left()
+            event.stop()
+
+    def handle_scroll_right(self, event: ScrollRight) -&gt; None:
+        if self.is_container:
+            self.scroll_page_right()
+            event.stop()
+
+    def key_home(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_home()
+            return True
+        return False
+
+    def key_end(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_end()
+            return True
+        return False
+
+    def key_left(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_left()
+            return True
+        return False
+
+    def key_right(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_right()
+            return True
+        return False
+
+    def key_down(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_up()
+            return True
+        return False
+
+    def key_up(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_down()
+            return True
+        return False
+
+    def key_pagedown(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_page_down()
+            return True
+        return False
+
+    def key_pageup(self) -&gt; bool:
+        if self.is_container:
+            self.scroll_page_up()
+            return True
+        return False</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="textual.background.Background" href="background.html#textual.background.Background">Background</a></li>
-<li><a title="textual.page.Page" href="page.html#textual.page.Page">Page</a></li>
+<li><a title="textual.screen.Screen" href="screen.html#textual.screen.Screen">Screen</a></li>
 <li><a title="textual.scrollbar.ScrollBar" href="scrollbar.html#textual.scrollbar.ScrollBar">ScrollBar</a></li>
-<li><a title="textual.view.View" href="view.html#textual.view.View">View</a></li>
 <li>textual.widgets._button.Button</li>
 <li>textual.widgets._footer.Footer</li>
 <li>textual.widgets._header.Header</li>
 <li>textual.widgets._placeholder.Placeholder</li>
 <li>textual.widgets._static.Static</li>
 <li>textual.widgets._tree_control.TreeControl</li>
+<li><a title="textual.widgets.tabs.Tabs" href="widgets/tabs.html#textual.widgets.tabs.Tabs">Tabs</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.widget.Widget.BOX_MAP"><code class="name">var <span class="ident">BOX_MAP</span></code></dt>
+<dt id="textual.widget.Widget.DEFAULT_STYLES"><code class="name">var <span class="ident">DEFAULT_STYLES</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -725,7 +1617,7 @@ def animate(self) -&gt; BoundAnimator:
     return self._animate</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.border"><code class="name">var <span class="ident">border</span> : ReactiveType</code></dt>
+<dt id="textual.widget.Widget.auto_height"><code class="name">var <span class="ident">auto_height</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -736,18 +1628,7 @@ def animate(self) -&gt; BoundAnimator:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.border_style"><code class="name">var <span class="ident">border_style</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.border_title"><code class="name">var <span class="ident">border_title</span> : ReactiveType</code></dt>
+<dt id="textual.widget.Widget.auto_width"><code class="name">var <span class="ident">auto_width</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -771,7 +1652,7 @@ def console(self) -&gt; Console:
     return active_app.get().console</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.gutter"><code class="name">var <span class="ident">gutter</span> : <a title="textual.geometry.Spacing" href="geometry.html#textual.geometry.Spacing">Spacing</a></code></dt>
+<dt id="textual.widget.Widget.container_size"><code class="name">var <span class="ident">container_size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
@@ -779,17 +1660,98 @@ def console(self) -&gt; Console:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def gutter(self) -&gt; Spacing:
-    mt, mr, mb, bl = self.margin or (0, 0, 0, 0)
-    pt, pr, pb, pl = self.padding or (0, 0, 0, 0)
-    border = 1 if self.border else 0
-    gutter = Spacing(
-        mt + pt + border, mr + pr + border, mb + pb + border, bl + pl + border
+def container_size(self) -&gt; Size:
+    return self._container_size</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.has_focus"><code class="name">var <span class="ident">has_focus</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.horizontal_scrollbar"><code class="name">var <span class="ident">horizontal_scrollbar</span> : ScrollBar</code></dt>
+<dd>
+<div class="desc"><p>Get a vertical scrollbar (create if necessary)</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>ScrollBar</code></dt>
+<dd>ScrollBar Widget.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def horizontal_scrollbar(self) -&gt; ScrollBar:
+    &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+
+    Returns:
+        ScrollBar: ScrollBar Widget.
+    &#34;&#34;&#34;
+    from .scrollbar import ScrollBar
+
+    if self._horizontal_scrollbar is not None:
+        return self._horizontal_scrollbar
+    self._horizontal_scrollbar = scroll_bar = ScrollBar(
+        vertical=False, name=&#34;horizontal&#34;
     )
-    return gutter</code></pre>
+
+    self.app.start_widget(self, scroll_bar)
+    return scroll_bar</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.is_visual"><code class="name">var <span class="ident">is_visual</span> : bool</code></dt>
+<dt id="textual.widget.Widget.is_container"><code class="name">var <span class="ident">is_container</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Check if this widget is a container (contains other widgets)</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if this widget is a container.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_container(self) -&gt; bool:
+    &#34;&#34;&#34;Check if this widget is a container (contains other widgets)
+
+    Returns:
+        bool: True if this widget is a container.
+    &#34;&#34;&#34;
+    return self.styles.layout is not None</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.is_transparent"><code class="name">var <span class="ident">is_transparent</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Check if the background styles is not set.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if there is background color, otherwise <code>False</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_transparent(self) -&gt; bool:
+    &#34;&#34;&#34;Check if the background styles is not set.
+
+    Returns:
+        bool: ``True`` if there is background color, otherwise ``False``.
+    &#34;&#34;&#34;
+    return False
+    return self.layout is not None</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.layout"><code class="name">var <span class="ident">layout</span> : Layout | None</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
@@ -797,111 +1759,163 @@ def gutter(self) -&gt; Spacing:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def is_visual(self) -&gt; bool:
-    return True</code></pre>
+def layout(self) -&gt; Layout | None:
+    return self.styles.layout</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.layout_fraction"><code class="name">var <span class="ident">layout_fraction</span> : ReactiveType</code></dt>
+<dt id="textual.widget.Widget.max_scroll_x"><code class="name">var <span class="ident">max_scroll_x</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.layout_min_size"><code class="name">var <span class="ident">layout_min_size</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.layout_offset"><code class="name">var <span class="ident">layout_offset</span> : tuple[int, int]</code></dt>
-<dd>
-<div class="desc"><p>Get the layout offset as a tuple.</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def layout_offset(self) -&gt; tuple[int, int]:
-    &#34;&#34;&#34;Get the layout offset as a tuple.&#34;&#34;&#34;
-    return (round(self.layout_offset_x), round(self.layout_offset_y))</code></pre>
+def max_scroll_x(self) -&gt; float:
+    return max(0, self.virtual_size.width - self.container_size.width)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.layout_offset_x"><code class="name">var <span class="ident">layout_offset_x</span> : ReactiveType</code></dt>
+<dt id="textual.widget.Widget.max_scroll_y"><code class="name">var <span class="ident">max_scroll_y</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.layout_offset_y"><code class="name">var <span class="ident">layout_offset_y</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.layout_size"><code class="name">var <span class="ident">layout_size</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.margin"><code class="name">var <span class="ident">margin</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.padding"><code class="name">var <span class="ident">padding</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.root_view"><code class="name">var <span class="ident">root_view</span> : View</code></dt>
-<dd>
-<div class="desc"><p>Return the top-most view.</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def root_view(self) -&gt; &#34;View&#34;:
-    &#34;&#34;&#34;Return the top-most view.&#34;&#34;&#34;
-    return active_app.get().view</code></pre>
+def max_scroll_y(self) -&gt; float:
+    return max(0, self.virtual_size.height - self.container_size.height)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.mouse_over"><code class="name">var <span class="ident">mouse_over</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.region"><code class="name">var <span class="ident">region</span> : <a title="textual.geometry.Region" href="geometry.html#textual.geometry.Region">Region</a></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def region(self) -&gt; Region:
+    try:
+        return self.screen._compositor.get_widget_region(self)
+    except errors.NoWidget:
+        return Region()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_offset"><code class="name">var <span class="ident">scroll_offset</span> : <a title="textual.geometry.Offset" href="geometry.html#textual.geometry.Offset">Offset</a></code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def scroll_offset(self) -&gt; Offset:
+    return Offset(int(self.scroll_x), int(self.scroll_y))</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_target_x"><code class="name">var <span class="ident">scroll_target_x</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_target_y"><code class="name">var <span class="ident">scroll_target_y</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_x"><code class="name">var <span class="ident">scroll_x</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_y"><code class="name">var <span class="ident">scroll_y</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scrollbars_enabled"><code class="name">var <span class="ident">scrollbars_enabled</span> : tuple[bool, bool]</code></dt>
+<dd>
+<div class="desc"><p>A tuple of booleans that indicate if scrollbars are enabled.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[bool, bool]</code></dt>
+<dd>A tuple of (<vertical scrollbar enabled>, <horizontal scrollbar enabled>)</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def scrollbars_enabled(self) -&gt; tuple[bool, bool]:
+    &#34;&#34;&#34;A tuple of booleans that indicate if scrollbars are enabled.
+
+    Returns:
+        tuple[bool, bool]: A tuple of (&lt;vertical scrollbar enabled&gt;, &lt;horizontal scrollbar enabled&gt;)
+
+    &#34;&#34;&#34;
+    if self.layout is None:
+        return False, False
+
+    enabled = self.show_vertical_scrollbar, self.show_horizontal_scrollbar
+    return enabled</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.show_horizontal_scrollbar"><code class="name">var <span class="ident">show_horizontal_scrollbar</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.show_vertical_scrollbar"><code class="name">var <span class="ident">show_vertical_scrollbar</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
@@ -916,26 +1930,46 @@ def size(self) -&gt; Size:
     return self._size</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.style"><code class="name">var <span class="ident">style</span> : ReactiveType</code></dt>
+<dt id="textual.widget.Widget.vertical_scrollbar"><code class="name">var <span class="ident">vertical_scrollbar</span> : ScrollBar</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Get a vertical scrollbar (create if necessary)</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>ScrollBar</code></dt>
+<dd>ScrollBar Widget.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+<pre><code class="python">@property
+def vertical_scrollbar(self) -&gt; ScrollBar:
+    &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+
+    Returns:
+        ScrollBar: ScrollBar Widget.
+    &#34;&#34;&#34;
+    from .scrollbar import ScrollBar
+
+    if self._vertical_scrollbar is not None:
+        return self._vertical_scrollbar
+    self._vertical_scrollbar = scroll_bar = ScrollBar(
+        vertical=True, name=&#34;vertical&#34;
+    )
+    self.app.start_widget(self, scroll_bar)
+    return scroll_bar</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.visible"><code class="name">var <span class="ident">visible</span> : ReactiveType</code></dt>
+<dt id="textual.widget.Widget.virtual_size"><code class="name">var <span class="ident">virtual_size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+<pre><code class="python">@property
+def virtual_size(self) -&gt; Size:
+    return self._virtual_size</code></pre>
 </details>
 </dd>
 </dl>
@@ -971,12 +2005,25 @@ def size(self) -&gt; Size:
 <span>async def <span class="ident">capture_mouse</span></span>(<span>self, capture: bool = True) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Capture (or release) the mouse.</p>
+<p>When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>capture</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>True to capture or False to release. Defaults to True.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">async def capture_mouse(self, capture: bool = True) -&gt; None:
+    &#34;&#34;&#34;Capture (or release) the mouse.
+
+    When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.
+
+    Args:
+        capture (bool, optional): True to capture or False to release. Defaults to True.
+    &#34;&#34;&#34;
     await self.app.capture_mouse(self if capture else None)</code></pre>
 </details>
 </dd>
@@ -984,80 +2031,27 @@ def size(self) -&gt; Size:
 <span>def <span class="ident">check_layout</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Check if a layout has been requested.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def check_layout(self) -&gt; bool:
+    &#34;&#34;&#34;Check if a layout has been requested.&#34;&#34;&#34;
     return self._layout_required</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.check_repaint"><code class="name flex">
-<span>def <span class="ident">check_repaint</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def check_repaint(self) -&gt; bool:
-    return self._repaint_required</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.clear_render_cache"><code class="name flex">
-<span>def <span class="ident">clear_render_cache</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def clear_render_cache(self) -&gt; None:
-    self.render_cache = None</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.dispatch_key"><code class="name flex">
-<span>async def <span class="ident">dispatch_key</span></span>(<span>self, event: events.Key) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Dispatch a key event to method.</p>
-<p>This method will call the method named 'key_<event.key>' if it exists.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>event</code></strong> :&ensp;<code>events.Key</code></dt>
-<dd>A key event.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def dispatch_key(self, event: events.Key) -&gt; None:
-    &#34;&#34;&#34;Dispatch a key event to method.
-
-    This method will call the method named &#39;key_&lt;event.key&gt;&#39; if it exists.
-
-    Args:
-        event (events.Key): A key event.
-    &#34;&#34;&#34;
-
-    key_method = getattr(self, f&#34;key_{event.key}&#34;, None)
-    if key_method is not None:
-        await invoke(key_method, event)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.focus"><code class="name flex">
 <span>async def <span class="ident">focus</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Give input focus to this widget.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">async def focus(self) -&gt; None:
+    &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
     await self.app.set_focus(self)</code></pre>
 </details>
 </dd>
@@ -1075,6 +2069,131 @@ def size(self) -&gt; Size:
     await self.post_message(event)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.get_box_model"><code class="name flex">
+<span>def <span class="ident">get_box_model</span></span>(<span>self, container: Size, viewport: Size) ‑> <a title="textual.box_model.BoxModel" href="box_model.html#textual.box_model.BoxModel">BoxModel</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Process the box model for this widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>container</code></strong> :&ensp;<code>Size</code></dt>
+<dd>The size of the container widget (with a layout)</dd>
+<dt><strong><code>viewport</code></strong> :&ensp;<code>Size</code></dt>
+<dd>The viewport size.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>BoxModel</code></dt>
+<dd>The size and margin for this widget.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_box_model(self, container: Size, viewport: Size) -&gt; BoxModel:
+    &#34;&#34;&#34;Process the box model for this widget.
+
+    Args:
+        container (Size): The size of the container widget (with a layout)
+        viewport (Size): The viewport size.
+
+    Returns:
+        BoxModel: The size and margin for this widget.
+    &#34;&#34;&#34;
+    box_model = get_box_model(
+        self.styles,
+        container,
+        viewport,
+        self.get_content_width,
+        self.get_content_height,
+    )
+    return box_model</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.get_content_height"><code class="name flex">
+<span>def <span class="ident">get_content_height</span></span>(<span>self, container_size: Size, parent_size: Size) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_content_height(self, container_size: Size, parent_size: Size) -&gt; int:
+    return container_size.height</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.get_content_width"><code class="name flex">
+<span>def <span class="ident">get_content_width</span></span>(<span>self, container_size: Size, parent_size: Size) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_content_width(self, container_size: Size, parent_size: Size) -&gt; int:
+    console = self.app.console
+    renderable = self.render()
+    measurement = Measurement.get(console, console.options, renderable)
+    return measurement.maximum</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.get_pseudo_classes"><code class="name flex">
+<span>def <span class="ident">get_pseudo_classes</span></span>(<span>self) ‑> Iterable[str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Pseudo classes for a widget</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_pseudo_classes(self) -&gt; Iterable[str]:
+    &#34;&#34;&#34;Pseudo classes for a widget&#34;&#34;&#34;
+    if self.mouse_over:
+        yield &#34;hover&#34;
+    if self.has_focus:
+        yield &#34;focus&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.get_render_lines"><code class="name flex">
+<span>def <span class="ident">get_render_lines</span></span>(<span>self, start: int | None = None, end: int | None = None) ‑> Lines</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get segment lines to render the widget.</p>
+<h2 id="args">Args</h2>
+<p>start (int | None, optional): line start index, or None for first line. Defaults to None.
+end (int | None, optional): line end index, or None for last line. Defaults to None.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Lines</code></dt>
+<dd>A list of lists of segments.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_render_lines(
+    self, start: int | None = None, end: int | None = None
+) -&gt; Lines:
+    &#34;&#34;&#34;Get segment lines to render the widget.
+
+    Args:
+        start (int | None, optional): line start index, or None for first line. Defaults to None.
+        end (int | None, optional): line end index, or None for last line. Defaults to None.
+
+    Returns:
+        Lines: A list of lists of segments.
+    &#34;&#34;&#34;
+    if self._dirty_regions:
+        self._render_lines()
+        if self.is_container:
+            self.horizontal_scrollbar.refresh()
+            self.vertical_scrollbar.refresh()
+    lines = self._render_cache.lines[start:end]
+    return lines</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.get_style_at"><code class="name flex">
 <span>def <span class="ident">get_style_at</span></span>(<span>self, x: int, y: int) ‑> rich.style.Style</span>
 </code></dt>
@@ -1085,8 +2204,211 @@ def size(self) -&gt; Size:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_style_at(self, x: int, y: int) -&gt; Style:
-    offset_x, offset_y = self.root_view.get_offset(self)
-    return self.root_view.get_style_at(x + offset_x, y + offset_y)</code></pre>
+    offset_x, offset_y = self.screen.get_offset(self)
+    return self.screen.get_style_at(x + offset_x, y + offset_y)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.handle_scroll_down"><code class="name flex">
+<span>def <span class="ident">handle_scroll_down</span></span>(<span>self, event: ScrollDown) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_scroll_down(self, event: ScrollDown) -&gt; None:
+    if self.is_container:
+        self.scroll_page_down()
+        event.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.handle_scroll_left"><code class="name flex">
+<span>def <span class="ident">handle_scroll_left</span></span>(<span>self, event: ScrollLeft) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_scroll_left(self, event: ScrollLeft) -&gt; None:
+    if self.is_container:
+        self.scroll_page_left()
+        event.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.handle_scroll_right"><code class="name flex">
+<span>def <span class="ident">handle_scroll_right</span></span>(<span>self, event: ScrollRight) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_scroll_right(self, event: ScrollRight) -&gt; None:
+    if self.is_container:
+        self.scroll_page_right()
+        event.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.handle_scroll_to"><code class="name flex">
+<span>def <span class="ident">handle_scroll_to</span></span>(<span>self, message: ScrollTo) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_scroll_to(self, message: ScrollTo) -&gt; None:
+    if self.is_container:
+        self.scroll_to(message.x, message.y, animate=message.animate)
+        message.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.handle_scroll_up"><code class="name flex">
+<span>def <span class="ident">handle_scroll_up</span></span>(<span>self, event: ScrollUp) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_scroll_up(self, event: ScrollUp) -&gt; None:
+    if self.is_container:
+        self.scroll_page_up()
+        event.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.key_down"><code class="name flex">
+<span>def <span class="ident">key_down</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def key_down(self) -&gt; bool:
+    if self.is_container:
+        self.scroll_up()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.key_end"><code class="name flex">
+<span>def <span class="ident">key_end</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def key_end(self) -&gt; bool:
+    if self.is_container:
+        self.scroll_end()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.key_home"><code class="name flex">
+<span>def <span class="ident">key_home</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def key_home(self) -&gt; bool:
+    if self.is_container:
+        self.scroll_home()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.key_left"><code class="name flex">
+<span>def <span class="ident">key_left</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def key_left(self) -&gt; bool:
+    if self.is_container:
+        self.scroll_left()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.key_pagedown"><code class="name flex">
+<span>def <span class="ident">key_pagedown</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def key_pagedown(self) -&gt; bool:
+    if self.is_container:
+        self.scroll_page_down()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.key_pageup"><code class="name flex">
+<span>def <span class="ident">key_pageup</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def key_pageup(self) -&gt; bool:
+    if self.is_container:
+        self.scroll_page_up()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.key_right"><code class="name flex">
+<span>def <span class="ident">key_right</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def key_right(self) -&gt; bool:
+    if self.is_container:
+        self.scroll_right()
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.key_up"><code class="name flex">
+<span>def <span class="ident">key_up</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def key_up(self) -&gt; bool:
+    if self.is_container:
+        self.scroll_down()
+        return True
+    return False</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_click"><code class="name flex">
@@ -1102,8 +2424,8 @@ def size(self) -&gt; Size:
     await self.broker_event(&#34;click&#34;, event)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.on_idle"><code class="name flex">
-<span>async def <span class="ident">on_idle</span></span>(<span>self, event: events.Idle) ‑> None</span>
+<dt id="textual.widget.Widget.on_enter"><code class="name flex">
+<span>def <span class="ident">on_enter</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1111,20 +2433,66 @@ def size(self) -&gt; Size:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def on_idle(self, event: events.Idle) -&gt; None:
+<pre><code class="python">def on_enter(self) -&gt; None:
+    self.mouse_over = True</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_idle"><code class="name flex">
+<span>def <span class="ident">on_idle</span></span>(<span>self, event: events.Idle) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Called when there are no more events on the queue.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>event</code></strong> :&ensp;<code>events.Idle</code></dt>
+<dd>Idle event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_idle(self, event: events.Idle) -&gt; None:
+    &#34;&#34;&#34;Called when there are no more events on the queue.
+
+    Args:
+        event (events.Idle): Idle event.
+    &#34;&#34;&#34;
+
     if self.check_layout():
-        self.render_cache = None
-        self.reset_check_repaint()
-        self.reset_check_layout()
-        await self.emit(Layout(self))
-    elif self.check_repaint():
-        self.render_cache = None
-        self.reset_check_repaint()
-        await self.emit(Update(self, self))</code></pre>
+        self._reset_check_layout()
+        self.screen.post_message_no_wait(messages.Layout(self))
+    elif self._dirty_regions:
+        self.emit_no_wait(messages.Update(self, self))</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_key"><code class="name flex">
+<span>async def <span class="ident">on_key</span></span>(<span>self, event: events.Key) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_key(self, event: events.Key) -&gt; None:
+    await self.dispatch_key(event)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_leave"><code class="name flex">
+<span>def <span class="ident">on_leave</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_leave(self) -&gt; None:
+    self.mouse_over = False</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_mouse_down"><code class="name flex">
-<span>async def <span class="ident">on_mouse_down</span></span>(<span>self, event: events.MouseDown) ‑> None</span>
+<span>async def <span class="ident">on_mouse_down</span></span>(<span>self, event: events.MouseUp) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1132,8 +2500,38 @@ def size(self) -&gt; Size:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def on_mouse_down(self, event: events.MouseDown) -&gt; None:
+<pre><code class="python">async def on_mouse_down(self, event: events.MouseUp) -&gt; None:
     await self.broker_event(&#34;mouse.down&#34;, event)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_mouse_scroll_down"><code class="name flex">
+<span>def <span class="ident">on_mouse_scroll_down</span></span>(<span>self, event) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_mouse_scroll_down(self, event) -&gt; None:
+    if self.is_container:
+        self.scroll_down(animate=False)
+        event.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_mouse_scroll_up"><code class="name flex">
+<span>def <span class="ident">on_mouse_scroll_up</span></span>(<span>self, event) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_mouse_scroll_up(self, event) -&gt; None:
+    if self.is_container:
+        self.scroll_up(animate=False)
+        event.stop()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_mouse_up"><code class="name flex">
@@ -1149,8 +2547,8 @@ def size(self) -&gt; Size:
     await self.broker_event(&#34;mouse.up&#34;, event)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.on_resize"><code class="name flex">
-<span>async def <span class="ident">on_resize</span></span>(<span>self, event: events.Resize) ‑> None</span>
+<dt id="textual.widget.Widget.on_style_change"><code class="name flex">
+<span>def <span class="ident">on_style_change</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1158,8 +2556,9 @@ def size(self) -&gt; Size:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def on_resize(self, event: events.Resize) -&gt; None:
-    self.refresh()</code></pre>
+<pre><code class="python">def on_style_change(self) -&gt; None:
+    self.set_dirty()
+    self.check_idle()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.post_message"><code class="name flex">
@@ -1175,12 +2574,12 @@ def size(self) -&gt; Size:
     if not self.check_message_enabled(message):
         return True
     if not self.is_running:
-        self.log(self, &#34;IS NOT RUNNING&#34;)
+        self.log(self, f&#34;IS NOT RUNNING, {message!r} not sent&#34;)
     return await super().post_message(message)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.refresh"><code class="name flex">
-<span>def <span class="ident">refresh</span></span>(<span>self, repaint: bool = True, layout: bool = False) ‑> None</span>
+<span>def <span class="ident">refresh</span></span>(<span>self, *, repaint: bool = True, layout: bool = False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Initiate a refresh of the widget.</p>
@@ -1197,7 +2596,7 @@ next idle event. Only one refresh will be done even if this method is called mul
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def refresh(self, repaint: bool = True, layout: bool = False) -&gt; None:
+<pre><code class="python">def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
     &#34;&#34;&#34;Initiate a refresh of the widget.
 
     This method sets an internal flag to perform a refresh, which will be done on the
@@ -1208,24 +2607,27 @@ next idle event. Only one refresh will be done even if this method is called mul
         layout (bool, optional): Also layout widgets in the view. Defaults to False.
     &#34;&#34;&#34;
     if layout:
-        self.clear_render_cache()
         self._layout_required = True
-    elif repaint:
-        self.clear_render_cache()
-        self._repaint_required = True
-    self.post_message_no_wait(events.Null(self))</code></pre>
+    if repaint:
+        self.set_dirty()
+    self.check_idle()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.release_mouse"><code class="name flex">
 <span>async def <span class="ident">release_mouse</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Release the mouse.</p>
+<p>Mouse events will only be sent when the mouse is over the widget.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">async def release_mouse(self) -&gt; None:
+    &#34;&#34;&#34;Release the mouse.
+
+    Mouse events will only be sent when the mouse is over the widget.
+    &#34;&#34;&#34;
     await self.app.capture_mouse(None)</code></pre>
 </details>
 </dd>
@@ -1249,42 +2651,11 @@ next idle event. Only one refresh will be done even if this method is called mul
     Returns:
         RenderableType: Any renderable
     &#34;&#34;&#34;
-    return Panel(
-        Align.center(Pretty(self), vertical=&#34;middle&#34;), title=self.__class__.__name__
-    )</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.render_lines"><code class="name flex">
-<span>def <span class="ident">render_lines</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def render_lines(self) -&gt; None:
-    width, height = self.size
-    renderable = self.render_styled()
-    options = self.console.options.update_dimensions(width, height)
-    lines = self.console.render_lines(renderable, options)
-    self.render_cache = RenderCache(self.size, lines)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.render_lines_free"><code class="name flex">
-<span>def <span class="ident">render_lines_free</span></span>(<span>self, width: int) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def render_lines_free(self, width: int) -&gt; None:
-    renderable = self.render_styled()
-    options = self.console.options.update(width=width, height=None)
-    lines = self.console.render_lines(renderable, options)
-    self.render_cache = RenderCache(Size(width, len(lines)), lines)</code></pre>
+
+    # Default displays a pretty repr in the center of the screen
+
+    label = self.css_identifier_styled
+    return Align.center(label, vertical=&#34;middle&#34;)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.render_styled"><code class="name flex">
@@ -1307,24 +2678,45 @@ next idle event. Only one refresh will be done even if this method is called mul
     Returns:
         RenderableType: A new renderable.
     &#34;&#34;&#34;
+
     renderable = self.render()
-    if self.padding is not None:
-        renderable = Padding(renderable, self.padding)
-    if self.border in self.BOX_MAP:
-        renderable = Panel(
+    styles = self.styles
+    parent_styles = self.parent.styles
+
+    parent_text_style = self.parent.rich_text_style
+    text_style = styles.rich_style
+
+    renderable_text_style = parent_text_style + text_style
+    if renderable_text_style:
+        renderable = Styled(renderable, renderable_text_style)
+
+    renderable = Padding(renderable, styles.padding, style=renderable_text_style)
+
+    if styles.border:
+        renderable = Border(
             renderable,
-            box=self.BOX_MAP.get(self.border) or box.SQUARE,
-            style=self.border_style,
+            styles.border,
+            inner_color=styles.background,
+            outer_color=Color.from_rich_color(parent_text_style.bgcolor),
         )
-    if self.margin is not None:
-        renderable = Padding(renderable, self.margin)
-    if self.style:
-        renderable = Styled(renderable, self.style)
+
+    if styles.outline:
+        renderable = Border(
+            renderable,
+            styles.outline,
+            inner_color=styles.background,
+            outer_color=parent_styles.background,
+            outline=True,
+        )
+
+    if styles.opacity != 1.0:
+        renderable = Opacity(renderable, opacity=styles.opacity)
+
     return renderable</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.reset_check_layout"><code class="name flex">
-<span>def <span class="ident">reset_check_layout</span></span>(<span>self) ‑> None</span>
+<dt id="textual.widget.Widget.scroll_down"><code class="name flex">
+<span>def <span class="ident">scroll_down</span></span>(<span>self, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1332,12 +2724,12 @@ next idle event. Only one refresh will be done even if this method is called mul
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reset_check_layout(self) -&gt; None:
-    self._layout_required = False</code></pre>
+<pre><code class="python">def scroll_down(self, animate: bool = True) -&gt; bool:
+    return self.scroll_to(y=self.scroll_target_y - 1, animate=animate)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.reset_check_repaint"><code class="name flex">
-<span>def <span class="ident">reset_check_repaint</span></span>(<span>self) ‑> None</span>
+<dt id="textual.widget.Widget.scroll_end"><code class="name flex">
+<span>def <span class="ident">scroll_end</span></span>(<span>self, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1345,12 +2737,12 @@ next idle event. Only one refresh will be done even if this method is called mul
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def reset_check_repaint(self) -&gt; None:
-    self._repaint_required = False</code></pre>
+<pre><code class="python">def scroll_end(self, animate: bool = True) -&gt; bool:
+    return self.scroll_to(0, self.max_scroll_y, animate=animate)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.validate_layout_offset_x"><code class="name flex">
-<span>def <span class="ident">validate_layout_offset_x</span></span>(<span>self, value) ‑> int</span>
+<dt id="textual.widget.Widget.scroll_home"><code class="name flex">
+<span>def <span class="ident">scroll_home</span></span>(<span>self, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1358,12 +2750,12 @@ next idle event. Only one refresh will be done even if this method is called mul
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_layout_offset_x(self, value) -&gt; int:
-    return int(value)</code></pre>
+<pre><code class="python">def scroll_home(self, animate: bool = True) -&gt; bool:
+    return self.scroll_to(0, 0, animate=animate)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.validate_layout_offset_y"><code class="name flex">
-<span>def <span class="ident">validate_layout_offset_y</span></span>(<span>self, value) ‑> int</span>
+<dt id="textual.widget.Widget.scroll_left"><code class="name flex">
+<span>def <span class="ident">scroll_left</span></span>(<span>self, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1371,12 +2763,12 @@ next idle event. Only one refresh will be done even if this method is called mul
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_layout_offset_y(self, value) -&gt; int:
-    return int(value)</code></pre>
+<pre><code class="python">def scroll_left(self, animate: bool = True) -&gt; bool:
+    return self.scroll_to(x=self.scroll_target_x - 1, animate=animate)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.validate_margin"><code class="name flex">
-<span>def <span class="ident">validate_margin</span></span>(<span>self, margin: SpacingDimensions) ‑> <a title="textual.geometry.Spacing" href="geometry.html#textual.geometry.Spacing">Spacing</a></span>
+<dt id="textual.widget.Widget.scroll_page_down"><code class="name flex">
+<span>def <span class="ident">scroll_page_down</span></span>(<span>self, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1384,12 +2776,14 @@ next idle event. Only one refresh will be done even if this method is called mul
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_margin(self, margin: SpacingDimensions) -&gt; Spacing:
-    return Spacing.unpack(margin)</code></pre>
+<pre><code class="python">def scroll_page_down(self, animate: bool = True) -&gt; bool:
+    return self.scroll_to(
+        y=self.scroll_target_y + self.container_size.height, animate=animate
+    )</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.validate_padding"><code class="name flex">
-<span>def <span class="ident">validate_padding</span></span>(<span>self, padding: SpacingDimensions) ‑> <a title="textual.geometry.Spacing" href="geometry.html#textual.geometry.Spacing">Spacing</a></span>
+<dt id="textual.widget.Widget.scroll_page_left"><code class="name flex">
+<span>def <span class="ident">scroll_page_left</span></span>(<span>self, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1397,8 +2791,230 @@ next idle event. Only one refresh will be done even if this method is called mul
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def validate_padding(self, padding: SpacingDimensions) -&gt; Spacing:
-    return Spacing.unpack(padding)</code></pre>
+<pre><code class="python">def scroll_page_left(self, animate: bool = True) -&gt; bool:
+    return self.scroll_to(
+        x=self.scroll_target_x - self.container_size.width, animate=animate
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_page_right"><code class="name flex">
+<span>def <span class="ident">scroll_page_right</span></span>(<span>self, animate: bool = True) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_page_right(self, animate: bool = True) -&gt; bool:
+    return self.scroll_to(
+        x=self.scroll_target_x + self.container_size.width, animate=animate
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_page_up"><code class="name flex">
+<span>def <span class="ident">scroll_page_up</span></span>(<span>self, animate: bool = True) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_page_up(self, animate: bool = True) -&gt; bool:
+    return self.scroll_to(
+        y=self.scroll_target_y - self.container_size.height, animate=animate
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_right"><code class="name flex">
+<span>def <span class="ident">scroll_right</span></span>(<span>self, animate: bool = True) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_right(self, animate: bool = True) -&gt; bool:
+    return self.scroll_to(x=self.scroll_target_x + 1, animate=animate)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_to"><code class="name flex">
+<span>def <span class="ident">scroll_to</span></span>(<span>self, x: float | None = None, y: float | None = None, *, animate: bool = True) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Scroll to a given (absolute) coordinate, optionally animating.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>scroll_x (int | None, optional): X coordinate (column) to scroll to, or <code>None</code> for no change. Defaults to None.</dt>
+<dt>scroll_y (int | None, optional): Y coordinate (row) to scroll to, or <code>None</code> for no change. Defaults to None.</dt>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate to new scroll position. Defaults to False.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_to(
+    self,
+    x: float | None = None,
+    y: float | None = None,
+    *,
+    animate: bool = True,
+) -&gt; bool:
+    &#34;&#34;&#34;Scroll to a given (absolute) coordinate, optionally animating.
+
+    Args:
+        scroll_x (int | None, optional): X coordinate (column) to scroll to, or ``None`` for no change. Defaults to None.
+        scroll_y (int | None, optional): Y coordinate (row) to scroll to, or ``None`` for no change. Defaults to None.
+        animate (bool, optional): Animate to new scroll position. Defaults to False.
+    &#34;&#34;&#34;
+
+    scrolled_x = False
+    scrolled_y = False
+
+    if animate:
+        # TODO: configure animation speed
+        if x is not None:
+            self.scroll_target_x = x
+            if x != self.scroll_x:
+                self.animate(
+                    &#34;scroll_x&#34;, self.scroll_target_x, speed=80, easing=&#34;out_cubic&#34;
+                )
+                scrolled_x = True
+        if y is not None:
+            self.scroll_target_y = y
+            if y != self.scroll_y:
+                self.animate(
+                    &#34;scroll_y&#34;, self.scroll_target_y, speed=80, easing=&#34;out_cubic&#34;
+                )
+                scrolled_y = True
+
+    else:
+        if x is not None:
+            self.scroll_target_x = self.scroll_x = x
+            if x != self.scroll_x:
+                scrolled_x = True
+        if y is not None:
+            self.scroll_target_y = self.scroll_y = y
+            if y != self.scroll_y:
+                scrolled_y = True
+        self.refresh(repaint=False, layout=True)
+    return scrolled_x or scrolled_y</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_up"><code class="name flex">
+<span>def <span class="ident">scroll_up</span></span>(<span>self, animate: bool = True) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_up(self, animate: bool = True) -&gt; bool:
+    return self.scroll_to(y=self.scroll_target_y + 1, animate=animate)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.set_dirty"><code class="name flex">
+<span>def <span class="ident">set_dirty</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the Widget as 'dirty' (requiring re-render).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_dirty(self) -&gt; None:
+    &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-render).&#34;&#34;&#34;
+    self._dirty_regions.clear()
+    self._dirty_regions.append(self.size.region)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.size_updated"><code class="name flex">
+<span>def <span class="ident">size_updated</span></span>(<span>self, size: Size, virtual_size: Size, container_size: Size) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def size_updated(
+    self, size: Size, virtual_size: Size, container_size: Size
+) -&gt; None:
+    if self._size != size or self._virtual_size != virtual_size:
+        self._size = size
+        self._virtual_size = virtual_size
+        self._container_size = container_size
+
+        if self.is_container:
+            self._refresh_scrollbars()
+            width, height = self.container_size
+            if self.show_vertical_scrollbar:
+                self.vertical_scrollbar.window_virtual_size = virtual_size.height
+                self.vertical_scrollbar.window_size = height
+            if self.show_horizontal_scrollbar:
+                self.horizontal_scrollbar.window_virtual_size = virtual_size.width
+                self.horizontal_scrollbar.window_size = width
+
+            self.refresh(layout=True)
+            self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
+        else:
+            self.refresh()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.validate_scroll_target_x"><code class="name flex">
+<span>def <span class="ident">validate_scroll_target_x</span></span>(<span>self, value: float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_scroll_target_x(self, value: float) -&gt; float:
+    return clamp(value, 0, self.max_scroll_x)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.validate_scroll_target_y"><code class="name flex">
+<span>def <span class="ident">validate_scroll_target_y</span></span>(<span>self, value: float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_scroll_target_y(self, value: float) -&gt; float:
+    return clamp(value, 0, self.max_scroll_y)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.validate_scroll_x"><code class="name flex">
+<span>def <span class="ident">validate_scroll_x</span></span>(<span>self, value: float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_scroll_x(self, value: float) -&gt; float:
+    return clamp(value, 0, self.max_scroll_x)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.validate_scroll_y"><code class="name flex">
+<span>def <span class="ident">validate_scroll_y</span></span>(<span>self, value: float) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def validate_scroll_y(self, value: float) -&gt; float:
+    return clamp(value, 0, self.max_scroll_y)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.watch"><code class="name flex">
@@ -1414,18 +3030,97 @@ next idle event. Only one refresh will be done even if this method is called mul
     watch(self, attribute_name, callback)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.watch_has_focus"><code class="name flex">
+<span>def <span class="ident">watch_has_focus</span></span>(<span>self, value: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update from CSS if has focus state changes.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_has_focus(self, value: bool) -&gt; None:
+    &#34;&#34;&#34;Update from CSS if has focus state changes.&#34;&#34;&#34;
+    self.app.update_styles()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.watch_mouse_over"><code class="name flex">
+<span>def <span class="ident">watch_mouse_over</span></span>(<span>self, value: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Update from CSS if mouse over state changes.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_mouse_over(self, value: bool) -&gt; None:
+    &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
+    self.app.update_styles()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.watch_scroll_x"><code class="name flex">
+<span>async def <span class="ident">watch_scroll_x</span></span>(<span>self, new_value: float) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def watch_scroll_x(self, new_value: float) -&gt; None:
+    self.horizontal_scrollbar.position = int(new_value)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.watch_scroll_y"><code class="name flex">
+<span>async def <span class="ident">watch_scroll_y</span></span>(<span>self, new_value: float) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def watch_scroll_y(self, new_value: float) -&gt; None:
+    self.vertical_scrollbar.position = int(new_value)</code></pre>
+</details>
+</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></b></code>:
+<li><code><b><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></b></code>:
 <ul class="hlist">
-<li><code><a title="textual.message_pump.MessagePump.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.dom.DOMNode.add_child" href="dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.dom.DOMNode.add_children" href="dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.dom.DOMNode.add_class" href="dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
+<li><code><a title="textual.dom.DOMNode.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.dom.DOMNode.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.dom.DOMNode.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.dom.DOMNode.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.dom.DOMNode.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.dom.DOMNode.css_path" href="dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.dom.DOMNode.css_type" href="dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
+<li><code><a title="textual.dom.DOMNode.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.dom.DOMNode.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.dom.DOMNode.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
+<li><code><a title="textual.dom.DOMNode.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.dom.DOMNode.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
+<li><code><a title="textual.dom.DOMNode.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.dom.DOMNode.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.dom.DOMNode.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.dom.DOMNode.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.dom.DOMNode.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
+<li><code><a title="textual.dom.DOMNode.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.dom.DOMNode.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.dom.DOMNode.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.dom.DOMNode.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
+<li><code><a title="textual.dom.DOMNode.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
+<li><code><a title="textual.dom.DOMNode.rich_text_style" href="dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
+<li><code><a title="textual.dom.DOMNode.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.dom.DOMNode.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.dom.DOMNode.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.dom.DOMNode.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.dom.DOMNode.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1503,56 +3198,95 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a></code></h4>
 <ul class="">
-<li><code><a title="textual.widget.Widget.BOX_MAP" href="#textual.widget.Widget.BOX_MAP">BOX_MAP</a></code></li>
+<li><code><a title="textual.widget.Widget.DEFAULT_STYLES" href="#textual.widget.Widget.DEFAULT_STYLES">DEFAULT_STYLES</a></code></li>
 <li><code><a title="textual.widget.Widget.action" href="#textual.widget.Widget.action">action</a></code></li>
 <li><code><a title="textual.widget.Widget.animate" href="#textual.widget.Widget.animate">animate</a></code></li>
-<li><code><a title="textual.widget.Widget.border" href="#textual.widget.Widget.border">border</a></code></li>
-<li><code><a title="textual.widget.Widget.border_style" href="#textual.widget.Widget.border_style">border_style</a></code></li>
-<li><code><a title="textual.widget.Widget.border_title" href="#textual.widget.Widget.border_title">border_title</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_height" href="#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_width" href="#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.broker_event" href="#textual.widget.Widget.broker_event">broker_event</a></code></li>
 <li><code><a title="textual.widget.Widget.can_focus" href="#textual.widget.Widget.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_layout" href="#textual.widget.Widget.check_layout">check_layout</a></code></li>
-<li><code><a title="textual.widget.Widget.check_repaint" href="#textual.widget.Widget.check_repaint">check_repaint</a></code></li>
-<li><code><a title="textual.widget.Widget.clear_render_cache" href="#textual.widget.Widget.clear_render_cache">clear_render_cache</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="#textual.widget.Widget.console">console</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="#textual.widget.Widget.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.container_size" href="#textual.widget.Widget.container_size">container_size</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.forward_event" href="#textual.widget.Widget.forward_event">forward_event</a></code></li>
+<li><code><a title="textual.widget.Widget.get_box_model" href="#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.widget.Widget.get_content_height" href="#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
+<li><code><a title="textual.widget.Widget.get_content_width" href="#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
+<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.widget.Widget.get_render_lines" href="#textual.widget.Widget.get_render_lines">get_render_lines</a></code></li>
 <li><code><a title="textual.widget.Widget.get_style_at" href="#textual.widget.Widget.get_style_at">get_style_at</a></code></li>
-<li><code><a title="textual.widget.Widget.gutter" href="#textual.widget.Widget.gutter">gutter</a></code></li>
-<li><code><a title="textual.widget.Widget.is_visual" href="#textual.widget.Widget.is_visual">is_visual</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_fraction" href="#textual.widget.Widget.layout_fraction">layout_fraction</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_min_size" href="#textual.widget.Widget.layout_min_size">layout_min_size</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset" href="#textual.widget.Widget.layout_offset">layout_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_x" href="#textual.widget.Widget.layout_offset_x">layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_offset_y" href="#textual.widget.Widget.layout_offset_y">layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.layout_size" href="#textual.widget.Widget.layout_size">layout_size</a></code></li>
-<li><code><a title="textual.widget.Widget.margin" href="#textual.widget.Widget.margin">margin</a></code></li>
+<li><code><a title="textual.widget.Widget.handle_scroll_down" href="#textual.widget.Widget.handle_scroll_down">handle_scroll_down</a></code></li>
+<li><code><a title="textual.widget.Widget.handle_scroll_left" href="#textual.widget.Widget.handle_scroll_left">handle_scroll_left</a></code></li>
+<li><code><a title="textual.widget.Widget.handle_scroll_right" href="#textual.widget.Widget.handle_scroll_right">handle_scroll_right</a></code></li>
+<li><code><a title="textual.widget.Widget.handle_scroll_to" href="#textual.widget.Widget.handle_scroll_to">handle_scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.handle_scroll_up" href="#textual.widget.Widget.handle_scroll_up">handle_scroll_up</a></code></li>
+<li><code><a title="textual.widget.Widget.has_focus" href="#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.is_container" href="#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.widget.Widget.is_transparent" href="#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.widget.Widget.key_down" href="#textual.widget.Widget.key_down">key_down</a></code></li>
+<li><code><a title="textual.widget.Widget.key_end" href="#textual.widget.Widget.key_end">key_end</a></code></li>
+<li><code><a title="textual.widget.Widget.key_home" href="#textual.widget.Widget.key_home">key_home</a></code></li>
+<li><code><a title="textual.widget.Widget.key_left" href="#textual.widget.Widget.key_left">key_left</a></code></li>
+<li><code><a title="textual.widget.Widget.key_pagedown" href="#textual.widget.Widget.key_pagedown">key_pagedown</a></code></li>
+<li><code><a title="textual.widget.Widget.key_pageup" href="#textual.widget.Widget.key_pageup">key_pageup</a></code></li>
+<li><code><a title="textual.widget.Widget.key_right" href="#textual.widget.Widget.key_right">key_right</a></code></li>
+<li><code><a title="textual.widget.Widget.key_up" href="#textual.widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="textual.widget.Widget.layout" href="#textual.widget.Widget.layout">layout</a></code></li>
+<li><code><a title="textual.widget.Widget.max_scroll_x" href="#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.max_scroll_y" href="#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.mouse_over" href="#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_click" href="#textual.widget.Widget.on_click">on_click</a></code></li>
+<li><code><a title="textual.widget.Widget.on_enter" href="#textual.widget.Widget.on_enter">on_enter</a></code></li>
 <li><code><a title="textual.widget.Widget.on_idle" href="#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.on_key" href="#textual.widget.Widget.on_key">on_key</a></code></li>
+<li><code><a title="textual.widget.Widget.on_leave" href="#textual.widget.Widget.on_leave">on_leave</a></code></li>
 <li><code><a title="textual.widget.Widget.on_mouse_down" href="#textual.widget.Widget.on_mouse_down">on_mouse_down</a></code></li>
+<li><code><a title="textual.widget.Widget.on_mouse_scroll_down" href="#textual.widget.Widget.on_mouse_scroll_down">on_mouse_scroll_down</a></code></li>
+<li><code><a title="textual.widget.Widget.on_mouse_scroll_up" href="#textual.widget.Widget.on_mouse_scroll_up">on_mouse_scroll_up</a></code></li>
 <li><code><a title="textual.widget.Widget.on_mouse_up" href="#textual.widget.Widget.on_mouse_up">on_mouse_up</a></code></li>
-<li><code><a title="textual.widget.Widget.on_resize" href="#textual.widget.Widget.on_resize">on_resize</a></code></li>
-<li><code><a title="textual.widget.Widget.padding" href="#textual.widget.Widget.padding">padding</a></code></li>
+<li><code><a title="textual.widget.Widget.on_style_change" href="#textual.widget.Widget.on_style_change">on_style_change</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.region" href="#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.widget.Widget.release_mouse" href="#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="#textual.widget.Widget.render">render</a></code></li>
-<li><code><a title="textual.widget.Widget.render_lines" href="#textual.widget.Widget.render_lines">render_lines</a></code></li>
-<li><code><a title="textual.widget.Widget.render_lines_free" href="#textual.widget.Widget.render_lines_free">render_lines_free</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.reset_check_layout" href="#textual.widget.Widget.reset_check_layout">reset_check_layout</a></code></li>
-<li><code><a title="textual.widget.Widget.reset_check_repaint" href="#textual.widget.Widget.reset_check_repaint">reset_check_repaint</a></code></li>
-<li><code><a title="textual.widget.Widget.root_view" href="#textual.widget.Widget.root_view">root_view</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_down" href="#textual.widget.Widget.scroll_down">scroll_down</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_end" href="#textual.widget.Widget.scroll_end">scroll_end</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_home" href="#textual.widget.Widget.scroll_home">scroll_home</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_left" href="#textual.widget.Widget.scroll_left">scroll_left</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_offset" href="#textual.widget.Widget.scroll_offset">scroll_offset</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_page_down" href="#textual.widget.Widget.scroll_page_down">scroll_page_down</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_page_left" href="#textual.widget.Widget.scroll_page_left">scroll_page_left</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_page_right" href="#textual.widget.Widget.scroll_page_right">scroll_page_right</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_page_up" href="#textual.widget.Widget.scroll_page_up">scroll_page_up</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_right" href="#textual.widget.Widget.scroll_right">scroll_right</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_x" href="#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_target_y" href="#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to" href="#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_up" href="#textual.widget.Widget.scroll_up">scroll_up</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_x" href="#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_y" href="#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_dirty" href="#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
+<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="#textual.widget.Widget.size">size</a></code></li>
-<li><code><a title="textual.widget.Widget.style" href="#textual.widget.Widget.style">style</a></code></li>
-<li><code><a title="textual.widget.Widget.validate_layout_offset_x" href="#textual.widget.Widget.validate_layout_offset_x">validate_layout_offset_x</a></code></li>
-<li><code><a title="textual.widget.Widget.validate_layout_offset_y" href="#textual.widget.Widget.validate_layout_offset_y">validate_layout_offset_y</a></code></li>
-<li><code><a title="textual.widget.Widget.validate_margin" href="#textual.widget.Widget.validate_margin">validate_margin</a></code></li>
-<li><code><a title="textual.widget.Widget.validate_padding" href="#textual.widget.Widget.validate_padding">validate_padding</a></code></li>
-<li><code><a title="textual.widget.Widget.visible" href="#textual.widget.Widget.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.size_updated" href="#textual.widget.Widget.size_updated">size_updated</a></code></li>
+<li><code><a title="textual.widget.Widget.validate_scroll_target_x" href="#textual.widget.Widget.validate_scroll_target_x">validate_scroll_target_x</a></code></li>
+<li><code><a title="textual.widget.Widget.validate_scroll_target_y" href="#textual.widget.Widget.validate_scroll_target_y">validate_scroll_target_y</a></code></li>
+<li><code><a title="textual.widget.Widget.validate_scroll_x" href="#textual.widget.Widget.validate_scroll_x">validate_scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.validate_scroll_y" href="#textual.widget.Widget.validate_scroll_y">validate_scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.virtual_size" href="#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
 <li><code><a title="textual.widget.Widget.watch" href="#textual.widget.Widget.watch">watch</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_has_focus" href="#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_mouse_over" href="#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_scroll_x" href="#textual.widget.Widget.watch_scroll_x">watch_scroll_x</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_scroll_y" href="#textual.widget.Widget.watch_scroll_y">watch_scroll_y</a></code></li>
 </ul>
 </li>
 </ul>

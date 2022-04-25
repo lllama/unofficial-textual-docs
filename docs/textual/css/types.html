@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.layouts API documentation</title>
+<title>textual.css.types API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,34 +19,55 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.layouts</code></h1>
+<h1 class="title">Module <code>textual.css.types</code></h1>
 </header>
 <section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+import sys
+from typing import Tuple
+
+from ..color import Color
+
+if sys.version_info &gt;= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
+
+
+Edge = Literal[&#34;top&#34;, &#34;right&#34;, &#34;bottom&#34;, &#34;left&#34;]
+EdgeType = Literal[
+    &#34;&#34;,
+    &#34;none&#34;,
+    &#34;hidden&#34;,
+    &#34;round&#34;,
+    &#34;solid&#34;,
+    &#34;double&#34;,
+    &#34;dashed&#34;,
+    &#34;heavy&#34;,
+    &#34;inner&#34;,
+    &#34;outer&#34;,
+    &#34;hkey&#34;,
+    &#34;vkey&#34;,
+    &#34;tall&#34;,
+    &#34;wide&#34;,
+]
+Visibility = Literal[&#34;visible&#34;, &#34;hidden&#34;, &#34;initial&#34;, &#34;inherit&#34;]
+Display = Literal[&#34;block&#34;, &#34;none&#34;]
+AlignHorizontal = Literal[&#34;left&#34;, &#34;center&#34;, &#34;right&#34;]
+AlignVertical = Literal[&#34;top&#34;, &#34;middle&#34;, &#34;bottom&#34;]
+BoxSizing = Literal[&#34;border-box&#34;, &#34;content-box&#34;]
+Overflow = Literal[&#34;scroll&#34;, &#34;hidden&#34;, &#34;auto&#34;]
+EdgeStyle = Tuple[str, Color]
+Specificity3 = Tuple[int, int, int]
+Specificity4 = Tuple[int, int, int, int]</code></pre>
+</details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
-<dl>
-<dt><code class="name"><a title="textual.layouts.dock" href="dock.html">textual.layouts.dock</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.factory" href="factory.html">textual.layouts.factory</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.grid" href="grid.html">textual.layouts.grid</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.horizontal" href="horizontal.html">textual.layouts.horizontal</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.vertical" href="vertical.html">textual.layouts.vertical</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 </section>
 <section>
 </section>
@@ -109,16 +130,7 @@ setTimeout(() => input.focus(), 100);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="textual" href="../index.html">textual</a></code></li>
-</ul>
-</li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
-<ul>
-<li><code><a title="textual.layouts.dock" href="dock.html">textual.layouts.dock</a></code></li>
-<li><code><a title="textual.layouts.factory" href="factory.html">textual.layouts.factory</a></code></li>
-<li><code><a title="textual.layouts.grid" href="grid.html">textual.layouts.grid</a></code></li>
-<li><code><a title="textual.layouts.horizontal" href="horizontal.html">textual.layouts.horizontal</a></code></li>
-<li><code><a title="textual.layouts.vertical" href="vertical.html">textual.layouts.vertical</a></code></li>
+<li><code><a title="textual.css" href="index.html">textual.css</a></code></li>
 </ul>
 </li>
 </ul>

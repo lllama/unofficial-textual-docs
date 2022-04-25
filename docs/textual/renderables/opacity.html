@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.screen_update API documentation</title>
+<title>textual.renderables.opacity API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,48 +19,105 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.screen_update</code></h1>
+<h1 class="title">Module <code>textual.renderables.opacity</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from __future__ import annotations
+<pre><code class="python">import functools
 
-from typing import Iterable
+from rich.color import Color
+from rich.console import ConsoleOptions, Console, RenderResult, RenderableType
+from rich.segment import Segment
+from rich.style import Style
 
-from rich.console import Console, RenderableType
-from rich.control import Control
-from rich.segment import Segment, Segments
-
-from .geometry import Offset
-from ._loop import loop_last
+from textual.renderables._blend_colors import blend_colors
 
 
-class ScreenUpdate:
-    def __init__(
-        self, console: Console, renderable: RenderableType, width: int, height: int
-    ) -&gt; None:
+class Opacity:
+    &#34;&#34;&#34;Wrap a renderable to blend foreground color into the background color.
 
-        self.lines = console.render_lines(
-            renderable, console.options.update_dimensions(width, height)
-        )
-        self.offset = Offset(0, 0)
+    Args:
+        renderable (RenderableType): The RenderableType to manipulate.
+        opacity (float): The opacity as a float. A value of 1.0 means text is fully visible.
+    &#34;&#34;&#34;
 
-    def render(self, x: int, y: int) -&gt; Iterable[Segment]:
-        move_to = Control.move_to
-        new_line = Segment.line()
-        for last, (offset_y, line) in loop_last(enumerate(self.lines, y)):
-            yield move_to(x, offset_y).segment
-            yield from line
-            if not last:
-                yield new_line
+    def __init__(self, renderable: RenderableType, opacity: float = 1.0) -&gt; None:
+        self.renderable = renderable
+        self.opacity = opacity
 
-    def __rich__(self) -&gt; RenderableType:
-        x, y = self.offset
-        update = self.render(x, y)
-        return Segments(update)</code></pre>
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
+        segments = console.render(self.renderable, options)
+        opacity = self.opacity
+        for segment in segments:
+            style = segment.style
+            if not style:
+                yield segment
+                continue
+            fg = style.color
+            bg = style.bgcolor
+            if fg and fg.triplet and bg and bg.triplet:
+                color_style = _get_blended_style_cached(
+                    fg_color=fg, bg_color=bg, opacity=opacity
+                )
+                yield Segment(
+                    segment.text,
+                    style + color_style,
+                    segment.control,
+                )
+            else:
+                yield segment
+
+
+@functools.lru_cache(maxsize=1024)
+def _get_blended_style_cached(
+    fg_color: Color, bg_color: Color, opacity: float
+) -&gt; Style:
+    return Style.from_color(
+        color=blend_colors(bg_color, fg_color, ratio=opacity),
+        bgcolor=bg_color,
+    )
+
+
+if __name__ == &#34;__main__&#34;:
+    from rich.live import Live
+    from rich.panel import Panel
+    from rich.text import Text
+
+    from time import sleep
+
+    console = Console()
+
+    panel = Panel.fit(
+        Text(&#34;Steak: £30&#34;, style=&#34;#fcffde on #03761e&#34;),
+        title=&#34;Menu&#34;,
+        style=&#34;#ffffff on #000000&#34;,
+    )
+    console.print(panel)
+
+    opacity_panel = Opacity(panel, opacity=0.5)
+    console.print(opacity_panel)
+
+    def frange(start, end, step):
+        current = start
+        while current &lt; end:
+            yield current
+            current += step
+
+        while current &gt;= 0:
+            yield current
+            current -= step
+
+    import itertools
+
+    with Live(opacity_panel, refresh_per_second=60) as live:
+        for value in itertools.cycle(frange(0, 1, 0.05)):
+            opacity_panel.value = value
+            sleep(0.05)</code></pre>
 </details>
 </section>
 <section>
@@ -72,62 +129,59 @@ class ScreenUpdate:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="textual.screen_update.ScreenUpdate"><code class="flex name class">
-<span>class <span class="ident">ScreenUpdate</span></span>
-<span>(</span><span>console: Console, renderable: RenderableType, width: int, height: int)</span>
+<dt id="textual.renderables.opacity.Opacity"><code class="flex name class">
+<span>class <span class="ident">Opacity</span></span>
+<span>(</span><span>renderable: Union[rich.console.ConsoleRenderable, rich.console.RichCast, str], opacity: float = 1.0)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class ScreenUpdate:
-    def __init__(
-        self, console: Console, renderable: RenderableType, width: int, height: int
-    ) -&gt; None:
-
-        self.lines = console.render_lines(
-            renderable, console.options.update_dimensions(width, height)
-        )
-        self.offset = Offset(0, 0)
-
-    def render(self, x: int, y: int) -&gt; Iterable[Segment]:
-        move_to = Control.move_to
-        new_line = Segment.line()
-        for last, (offset_y, line) in loop_last(enumerate(self.lines, y)):
-            yield move_to(x, offset_y).segment
-            yield from line
-            if not last:
-                yield new_line
-
-    def __rich__(self) -&gt; RenderableType:
-        x, y = self.offset
-        update = self.render(x, y)
-        return Segments(update)</code></pre>
-</details>
-<h3>Methods</h3>
+<div class="desc"><p>Wrap a renderable to blend foreground color into the background color.</p>
+<h2 id="args">Args</h2>
 <dl>
-<dt id="textual.screen_update.ScreenUpdate.render"><code class="name flex">
-<span>def <span class="ident">render</span></span>(<span>self, x: int, y: int) ‑> Iterable[rich.segment.Segment]</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
+<dt><strong><code>renderable</code></strong> :&ensp;<code>RenderableType</code></dt>
+<dd>The RenderableType to manipulate.</dd>
+<dt><strong><code>opacity</code></strong> :&ensp;<code>float</code></dt>
+<dd>The opacity as a float. A value of 1.0 means text is fully visible.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def render(self, x: int, y: int) -&gt; Iterable[Segment]:
-    move_to = Control.move_to
-    new_line = Segment.line()
-    for last, (offset_y, line) in loop_last(enumerate(self.lines, y)):
-        yield move_to(x, offset_y).segment
-        yield from line
-        if not last:
-            yield new_line</code></pre>
+<pre><code class="python">class Opacity:
+    &#34;&#34;&#34;Wrap a renderable to blend foreground color into the background color.
+
+    Args:
+        renderable (RenderableType): The RenderableType to manipulate.
+        opacity (float): The opacity as a float. A value of 1.0 means text is fully visible.
+    &#34;&#34;&#34;
+
+    def __init__(self, renderable: RenderableType, opacity: float = 1.0) -&gt; None:
+        self.renderable = renderable
+        self.opacity = opacity
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
+        segments = console.render(self.renderable, options)
+        opacity = self.opacity
+        for segment in segments:
+            style = segment.style
+            if not style:
+                yield segment
+                continue
+            fg = style.color
+            bg = style.bgcolor
+            if fg and fg.triplet and bg and bg.triplet:
+                color_style = _get_blended_style_cached(
+                    fg_color=fg, bg_color=bg, opacity=opacity
+                )
+                yield Segment(
+                    segment.text,
+                    style + color_style,
+                    segment.control,
+                )
+            else:
+                yield segment</code></pre>
 </details>
-</dd>
-</dl>
 </dd>
 </dl>
 </section>
@@ -167,7 +221,7 @@ const query = new URL(window.location).searchParams.get('q');
 if (query)
 search(query);
 function search(query) {
-const url = '../doc-search.html#' + encodeURIComponent(query);
+const url = '../../doc-search.html#' + encodeURIComponent(query);
 new tingle.modal({
 cssClass: ['modal-dialog'],
 onClose: () => {
@@ -186,16 +240,13 @@ setTimeout(() => input.focus(), 100);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="textual" href="index.html">textual</a></code></li>
+<li><code><a title="textual.renderables" href="index.html">textual.renderables</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="textual.screen_update.ScreenUpdate" href="#textual.screen_update.ScreenUpdate">ScreenUpdate</a></code></h4>
-<ul class="">
-<li><code><a title="textual.screen_update.ScreenUpdate.render" href="#textual.screen_update.ScreenUpdate.render">render</a></code></li>
-</ul>
+<h4><code><a title="textual.renderables.opacity.Opacity" href="#textual.renderables.opacity.Opacity">Opacity</a></code></h4>
 </li>
 </ul>
 </li>

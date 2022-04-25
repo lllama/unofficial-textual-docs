@@ -28,26 +28,28 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
+import sys
 from collections import defaultdict
 from dataclasses import dataclass
-from operator import itemgetter
-from logging import getLogger
 from itertools import cycle, product
-import sys
-from typing import Iterable, NamedTuple
-
-from rich.console import Console
+from logging import getLogger
+from operator import itemgetter
+from typing import Iterable, NamedTuple, TYPE_CHECKING
 
 from .._layout_resolve import layout_resolve
 from ..geometry import Size, Offset, Region
 from ..layout import Layout, WidgetPlacement
-from ..layout_map import LayoutMap
-from ..widget import Widget
+
+if TYPE_CHECKING:
+    from ..widget import Widget
+    from ..screen import Screen
+
 
 if sys.version_info &gt;= (3, 8):
     from typing import Literal
 else:
     from typing_extensions import Literal
+
 
 log = getLogger(&#34;rich&#34;)
 
@@ -291,7 +293,9 @@ class GridLayout(Layout):
     def get_widgets(self) -&gt; Iterable[Widget]:
         return self.widgets.keys()
 
-    def arrange(self, size: Size, scroll: Offset) -&gt; Iterable[WidgetPlacement]:
+    def arrange(
+        self, view: Screen, size: Size, scroll: Offset
+    ) -&gt; Iterable[WidgetPlacement]:
         &#34;&#34;&#34;Generate a map that associates widgets with their location on screen.
 
         Args:
@@ -374,10 +378,12 @@ class GridLayout(Layout):
         widget_areas = (
             (widget, area)
             for widget, area in self.widgets.items()
-            if area and widget.visible
+            if area and widget.display
         )
 
-        free_slots = set(product(range(column_count), range(row_count)))
+        free_slots = {
+            (col, row) for col, row in product(range(column_count), range(row_count))
+        }
         order = 1
         from_corners = Region.from_corners
         gutter = Offset(self.column_gutter, self.row_gutter)
@@ -744,7 +750,9 @@ if __name__ == &#34;__main__&#34;:
     def get_widgets(self) -&gt; Iterable[Widget]:
         return self.widgets.keys()
 
-    def arrange(self, size: Size, scroll: Offset) -&gt; Iterable[WidgetPlacement]:
+    def arrange(
+        self, view: Screen, size: Size, scroll: Offset
+    ) -&gt; Iterable[WidgetPlacement]:
         &#34;&#34;&#34;Generate a map that associates widgets with their location on screen.
 
         Args:
@@ -827,10 +835,12 @@ if __name__ == &#34;__main__&#34;:
         widget_areas = (
             (widget, area)
             for widget, area in self.widgets.items()
-            if area and widget.visible
+            if area and widget.display
         )
 
-        free_slots = set(product(range(column_count), range(row_count)))
+        free_slots = {
+            (col, row) for col, row in product(range(column_count), range(row_count))
+        }
         order = 1
         from_corners = Region.from_corners
         gutter = Offset(self.column_gutter, self.row_gutter)
@@ -897,6 +907,13 @@ if __name__ == &#34;__main__&#34;:
 <li><a title="textual.layout.Layout" href="../layout.html#textual.layout.Layout">Layout</a></li>
 <li>abc.ABC</li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.layouts.grid.GridLayout.name"><code class="name">var <span class="ident">name</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="textual.layouts.grid.GridLayout.add_areas"><code class="name flex">
@@ -1016,7 +1033,7 @@ if __name__ == &#34;__main__&#34;:
 </details>
 </dd>
 <dt id="textual.layouts.grid.GridLayout.arrange"><code class="name flex">
-<span>def <span class="ident">arrange</span></span>(<span>self, size: Size, scroll: Offset) ‑> Iterable[<a title="textual.layout.WidgetPlacement" href="../layout.html#textual.layout.WidgetPlacement">WidgetPlacement</a>]</span>
+<span>def <span class="ident">arrange</span></span>(<span>self, view: Screen, size: Size, scroll: Offset) ‑> Iterable[WidgetPlacement]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate a map that associates widgets with their location on screen.</p>
@@ -1038,7 +1055,9 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def arrange(self, size: Size, scroll: Offset) -&gt; Iterable[WidgetPlacement]:
+<pre><code class="python">def arrange(
+    self, view: Screen, size: Size, scroll: Offset
+) -&gt; Iterable[WidgetPlacement]:
     &#34;&#34;&#34;Generate a map that associates widgets with their location on screen.
 
     Args:
@@ -1121,10 +1140,12 @@ if __name__ == &#34;__main__&#34;:
     widget_areas = (
         (widget, area)
         for widget, area in self.widgets.items()
-        if area and widget.visible
+        if area and widget.display
     )
 
-    free_slots = set(product(range(column_count), range(row_count)))
+    free_slots = {
+        (col, row) for col, row in product(range(column_count), range(row_count))
+    }
     order = 1
     from_corners = Region.from_corners
     gutter = Offset(self.column_gutter, self.row_gutter)
@@ -1188,7 +1209,7 @@ if __name__ == &#34;__main__&#34;:
 </details>
 </dd>
 <dt id="textual.layouts.grid.GridLayout.get_widgets"><code class="name flex">
-<span>def <span class="ident">get_widgets</span></span>(<span>self) ‑> Iterable[<a title="textual.widget.Widget" href="../widget.html#textual.widget.Widget">Widget</a>]</span>
+<span>def <span class="ident">get_widgets</span></span>(<span>self) ‑> Iterable[Widget]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1351,17 +1372,6 @@ if __name__ == &#34;__main__&#34;:
 </details>
 </dd>
 </dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="textual.layout.Layout" href="../layout.html#textual.layout.Layout">Layout</a></b></code>:
-<ul class="hlist">
-<li><code><a title="textual.layout.Layout.cuts" href="../layout.html#textual.layout.Layout.cuts">cuts</a></code></li>
-<li><code><a title="textual.layout.Layout.get_offset" href="../layout.html#textual.layout.Layout.get_offset">get_offset</a></code></li>
-<li><code><a title="textual.layout.Layout.get_widget_at" href="../layout.html#textual.layout.Layout.get_widget_at">get_widget_at</a></code></li>
-<li><code><a title="textual.layout.Layout.render" href="../layout.html#textual.layout.Layout.render">render</a></code></li>
-</ul>
-</li>
-</ul>
 </dd>
 <dt id="textual.layouts.grid.GridOptions"><code class="flex name class">
 <span>class <span class="ident">GridOptions</span></span>
@@ -1486,6 +1496,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.layouts.grid.GridLayout.get_widgets" href="#textual.layouts.grid.GridLayout.get_widgets">get_widgets</a></code></li>
 <li><code><a title="textual.layouts.grid.GridLayout.is_column_visible" href="#textual.layouts.grid.GridLayout.is_column_visible">is_column_visible</a></code></li>
 <li><code><a title="textual.layouts.grid.GridLayout.is_row_visible" href="#textual.layouts.grid.GridLayout.is_row_visible">is_row_visible</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.name" href="#textual.layouts.grid.GridLayout.name">name</a></code></li>
 <li><code><a title="textual.layouts.grid.GridLayout.place" href="#textual.layouts.grid.GridLayout.place">place</a></code></li>
 <li><code><a title="textual.layouts.grid.GridLayout.set_align" href="#textual.layouts.grid.GridLayout.set_align">set_align</a></code></li>
 <li><code><a title="textual.layouts.grid.GridLayout.set_gap" href="#textual.layouts.grid.GridLayout.set_gap">set_gap</a></code></li>

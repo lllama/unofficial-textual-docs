@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.layouts API documentation</title>
+<title>textual.layouts.horizontal API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,40 +19,159 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.layouts</code></h1>
+<h1 class="title">Module <code>textual.layouts.horizontal</code></h1>
 </header>
 <section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+from typing import cast
+
+from textual.geometry import Size, Offset, Region
+from textual.layout import Layout, WidgetPlacement
+
+from textual.widget import Widget
+
+
+class HorizontalLayout(Layout):
+    &#34;&#34;&#34;Used to layout Widgets horizontally on screen, from left to right. Since Widgets naturally
+    fill the space of their parent container, all widgets used in a horizontal layout should have a specified.
+    &#34;&#34;&#34;
+
+    name = &#34;horizontal&#34;
+
+    def arrange(
+        self, parent: Widget, size: Size, scroll: Offset
+    ) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
+
+        placements: list[WidgetPlacement] = []
+        add_placement = placements.append
+
+        x = max_width = max_height = 0
+        parent_size = parent.size
+
+        box_models = [
+            widget.get_box_model(size, parent_size)
+            for widget in cast(&#34;list[Widget]&#34;, parent.children)
+        ]
+
+        margins = [
+            max((box1.margin.right, box2.margin.left))
+            for box1, box2 in zip(box_models, box_models[1:])
+        ]
+        if box_models:
+            margins.append(box_models[-1].margin.right)
+
+        x = box_models[0].margin.left if box_models else 0
+
+        for widget, box_model, margin in zip(parent.children, box_models, margins):
+            content_width, content_height = box_model.size
+            offset_y = widget.styles.align_height(content_height, parent_size.height)
+            region = Region(x, offset_y, content_width, content_height)
+            max_height = max(max_height, content_height)
+            add_placement(WidgetPlacement(region, widget, 0))
+            x += region.width + margin
+            max_width = x
+
+        max_width += margins[-1] if margins else 0
+
+        total_region = Region(0, 0, max_width, max_height)
+        add_placement(WidgetPlacement(total_region, None, 0))
+
+        return placements, set(parent.children)</code></pre>
+</details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="textual.layouts.dock" href="dock.html">textual.layouts.dock</a></code></dt>
+<dt id="textual.layouts.horizontal.HorizontalLayout"><code class="flex name class">
+<span>class <span class="ident">HorizontalLayout</span></span>
+</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.factory" href="factory.html">textual.layouts.factory</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.grid" href="grid.html">textual.layouts.grid</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.horizontal" href="horizontal.html">textual.layouts.horizontal</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.vertical" href="vertical.html">textual.layouts.vertical</a></code></dt>
+<div class="desc"><p>Used to layout Widgets horizontally on screen, from left to right. Since Widgets naturally
+fill the space of their parent container, all widgets used in a horizontal layout should have a specified.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class HorizontalLayout(Layout):
+    &#34;&#34;&#34;Used to layout Widgets horizontally on screen, from left to right. Since Widgets naturally
+    fill the space of their parent container, all widgets used in a horizontal layout should have a specified.
+    &#34;&#34;&#34;
+
+    name = &#34;horizontal&#34;
+
+    def arrange(
+        self, parent: Widget, size: Size, scroll: Offset
+    ) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
+
+        placements: list[WidgetPlacement] = []
+        add_placement = placements.append
+
+        x = max_width = max_height = 0
+        parent_size = parent.size
+
+        box_models = [
+            widget.get_box_model(size, parent_size)
+            for widget in cast(&#34;list[Widget]&#34;, parent.children)
+        ]
+
+        margins = [
+            max((box1.margin.right, box2.margin.left))
+            for box1, box2 in zip(box_models, box_models[1:])
+        ]
+        if box_models:
+            margins.append(box_models[-1].margin.right)
+
+        x = box_models[0].margin.left if box_models else 0
+
+        for widget, box_model, margin in zip(parent.children, box_models, margins):
+            content_width, content_height = box_model.size
+            offset_y = widget.styles.align_height(content_height, parent_size.height)
+            region = Region(x, offset_y, content_width, content_height)
+            max_height = max(max_height, content_height)
+            add_placement(WidgetPlacement(region, widget, 0))
+            x += region.width + margin
+            max_width = x
+
+        max_width += margins[-1] if margins else 0
+
+        total_region = Region(0, 0, max_width, max_height)
+        add_placement(WidgetPlacement(total_region, None, 0))
+
+        return placements, set(parent.children)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.layout.Layout" href="../layout.html#textual.layout.Layout">Layout</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.layouts.horizontal.HorizontalLayout.name"><code class="name">var <span class="ident">name</span> : ClassVar[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.layout.Layout" href="../layout.html#textual.layout.Layout">Layout</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.layout.Layout.arrange" href="../layout.html#textual.layout.Layout.arrange">arrange</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -109,16 +228,17 @@ setTimeout(() => input.focus(), 100);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="textual" href="../index.html">textual</a></code></li>
+<li><code><a title="textual.layouts" href="index.html">textual.layouts</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li><code><a title="textual.layouts.dock" href="dock.html">textual.layouts.dock</a></code></li>
-<li><code><a title="textual.layouts.factory" href="factory.html">textual.layouts.factory</a></code></li>
-<li><code><a title="textual.layouts.grid" href="grid.html">textual.layouts.grid</a></code></li>
-<li><code><a title="textual.layouts.horizontal" href="horizontal.html">textual.layouts.horizontal</a></code></li>
-<li><code><a title="textual.layouts.vertical" href="vertical.html">textual.layouts.vertical</a></code></li>
+<li>
+<h4><code><a title="textual.layouts.horizontal.HorizontalLayout" href="#textual.layouts.horizontal.HorizontalLayout">HorizontalLayout</a></code></h4>
+<ul class="">
+<li><code><a title="textual.layouts.horizontal.HorizontalLayout.name" href="#textual.layouts.horizontal.HorizontalLayout.name">name</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

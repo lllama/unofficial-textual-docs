@@ -55,6 +55,7 @@ class Update(Message, verbosity=3):
         return NotImplemented
 
     def can_replace(self, message: Message) -&gt; bool:
+        # Update messages can replace update for the same widget
         return isinstance(message, Update) and self == message
 
 
@@ -68,7 +69,23 @@ class Layout(Message, verbosity=3):
 class CursorMove(Message):
     def __init__(self, sender: MessagePump, line: int) -&gt; None:
         self.line = line
-        super().__init__(sender)</code></pre>
+        super().__init__(sender)
+
+
+@rich.repr.auto
+class StylesUpdated(Message):
+    def __init__(self, sender: MessagePump) -&gt; None:
+        super().__init__(sender)
+
+    def can_replace(self, message: Message) -&gt; bool:
+        return isinstance(message, StylesUpdated)
+
+
+class Prompt(Message, system=True):
+    &#34;&#34;&#34;Used to &#39;wake up&#39; an event loop.&#34;&#34;&#34;
+
+    def can_replace(self, message: Message) -&gt; bool:
+        return isinstance(message, StylesUpdated)</code></pre>
 </details>
 </section>
 <section>
@@ -110,6 +127,10 @@ class CursorMove(Message):
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.messages.CursorMove.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.messages.CursorMove.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -126,7 +147,6 @@ class CursorMove(Message):
 <li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -160,6 +180,10 @@ class CursorMove(Message):
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.messages.Layout.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.messages.Layout.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -176,7 +200,117 @@ class CursorMove(Message):
 <li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.messages.Prompt"><code class="flex name class">
+<span>class <span class="ident">Prompt</span></span>
+<span>(</span><span>sender: MessageTarget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Used to 'wake up' an event loop.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Prompt(Message, system=True):
+    &#34;&#34;&#34;Used to &#39;wake up&#39; an event loop.&#34;&#34;&#34;
+
+    def can_replace(self, message: Message) -&gt; bool:
+        return isinstance(message, StylesUpdated)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.messages.Prompt.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.Prompt.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.Prompt.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.messages.StylesUpdated"><code class="flex name class">
+<span>class <span class="ident">StylesUpdated</span></span>
+<span>(</span><span>sender: MessagePump)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for a message.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StylesUpdated(Message):
+    def __init__(self, sender: MessagePump) -&gt; None:
+        super().__init__(sender)
+
+    def can_replace(self, message: Message) -&gt; bool:
+        return isinstance(message, StylesUpdated)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.messages.StylesUpdated.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.StylesUpdated.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.StylesUpdated.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
 </li>
 </ul>
@@ -211,6 +345,7 @@ class CursorMove(Message):
         return NotImplemented
 
     def can_replace(self, message: Message) -&gt; bool:
+        # Update messages can replace update for the same widget
         return isinstance(message, Update) and self == message</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -220,6 +355,10 @@ class CursorMove(Message):
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.messages.Update.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.Update.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -239,7 +378,6 @@ class CursorMove(Message):
 <li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.wait" href="message.html#textual.message.Message.wait">wait</a></code></li>
 </ul>
 </li>
 </ul>
@@ -310,6 +448,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.messages.CursorMove" href="#textual.messages.CursorMove">CursorMove</a></code></h4>
 <ul class="">
 <li><code><a title="textual.messages.CursorMove.bubble" href="#textual.messages.CursorMove.bubble">bubble</a></code></li>
+<li><code><a title="textual.messages.CursorMove.system" href="#textual.messages.CursorMove.system">system</a></code></li>
 <li><code><a title="textual.messages.CursorMove.verbosity" href="#textual.messages.CursorMove.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -317,13 +456,31 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.messages.Layout" href="#textual.messages.Layout">Layout</a></code></h4>
 <ul class="">
 <li><code><a title="textual.messages.Layout.bubble" href="#textual.messages.Layout.bubble">bubble</a></code></li>
+<li><code><a title="textual.messages.Layout.system" href="#textual.messages.Layout.system">system</a></code></li>
 <li><code><a title="textual.messages.Layout.verbosity" href="#textual.messages.Layout.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.messages.Prompt" href="#textual.messages.Prompt">Prompt</a></code></h4>
+<ul class="">
+<li><code><a title="textual.messages.Prompt.bubble" href="#textual.messages.Prompt.bubble">bubble</a></code></li>
+<li><code><a title="textual.messages.Prompt.system" href="#textual.messages.Prompt.system">system</a></code></li>
+<li><code><a title="textual.messages.Prompt.verbosity" href="#textual.messages.Prompt.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.messages.StylesUpdated" href="#textual.messages.StylesUpdated">StylesUpdated</a></code></h4>
+<ul class="">
+<li><code><a title="textual.messages.StylesUpdated.bubble" href="#textual.messages.StylesUpdated.bubble">bubble</a></code></li>
+<li><code><a title="textual.messages.StylesUpdated.system" href="#textual.messages.StylesUpdated.system">system</a></code></li>
+<li><code><a title="textual.messages.StylesUpdated.verbosity" href="#textual.messages.StylesUpdated.verbosity">verbosity</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="textual.messages.Update" href="#textual.messages.Update">Update</a></code></h4>
 <ul class="">
 <li><code><a title="textual.messages.Update.bubble" href="#textual.messages.Update.bubble">bubble</a></code></li>
+<li><code><a title="textual.messages.Update.system" href="#textual.messages.Update.system">system</a></code></li>
 <li><code><a title="textual.messages.Update.verbosity" href="#textual.messages.Update.verbosity">verbosity</a></code></li>
 </ul>
 </li>

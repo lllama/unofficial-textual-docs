@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.layouts API documentation</title>
+<title>textual.renderables.gradient API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,40 +19,109 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.layouts</code></h1>
+<h1 class="title">Module <code>textual.renderables.gradient</code></h1>
 </header>
 <section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+from rich.console import ConsoleOptions, Console, RenderResult
+
+from rich.segment import Segment
+from rich.style import Style
+
+from ..color import Color
+
+
+class VerticalGradient:
+    &#34;&#34;&#34;Draw a vertical gradient.&#34;&#34;&#34;
+
+    def __init__(self, color1: str, color2: str) -&gt; None:
+        self._color1 = Color.parse(color1)
+        self._color2 = Color.parse(color2)
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
+        width = options.max_width
+        height = options.height or options.max_height
+        color1 = self._color1
+        color2 = self._color2
+        default_color = Color(0, 0, 0).rich_color
+        from_color = Style.from_color
+        blend = color1.blend
+        rich_color1 = color1.rich_color
+        for y in range(height):
+            line_color = from_color(
+                default_color,
+                (
+                    blend(color2, y / (height - 1)).rich_color
+                    if height &gt; 1
+                    else rich_color1
+                ),
+            )
+            yield Segment(f&#34;{width * &#39; &#39;}\n&#34;, line_color)
+
+
+if __name__ == &#34;__main__&#34;:
+    from rich import print
+
+    print(VerticalGradient(&#34;red&#34;, &#34;blue&#34;))</code></pre>
+</details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="textual.layouts.dock" href="dock.html">textual.layouts.dock</a></code></dt>
+<dt id="textual.renderables.gradient.VerticalGradient"><code class="flex name class">
+<span>class <span class="ident">VerticalGradient</span></span>
+<span>(</span><span>color1: str, color2: str)</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.factory" href="factory.html">textual.layouts.factory</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.grid" href="grid.html">textual.layouts.grid</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.horizontal" href="horizontal.html">textual.layouts.horizontal</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.layouts.vertical" href="vertical.html">textual.layouts.vertical</a></code></dt>
-<dd>
-<div class="desc"></div>
+<div class="desc"><p>Draw a vertical gradient.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class VerticalGradient:
+    &#34;&#34;&#34;Draw a vertical gradient.&#34;&#34;&#34;
+
+    def __init__(self, color1: str, color2: str) -&gt; None:
+        self._color1 = Color.parse(color1)
+        self._color2 = Color.parse(color2)
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
+        width = options.max_width
+        height = options.height or options.max_height
+        color1 = self._color1
+        color2 = self._color2
+        default_color = Color(0, 0, 0).rich_color
+        from_color = Style.from_color
+        blend = color1.blend
+        rich_color1 = color1.rich_color
+        for y in range(height):
+            line_color = from_color(
+                default_color,
+                (
+                    blend(color2, y / (height - 1)).rich_color
+                    if height &gt; 1
+                    else rich_color1
+                ),
+            )
+            yield Segment(f&#34;{width * &#39; &#39;}\n&#34;, line_color)</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
 </section>
 </article>
 <nav id="sidebar">
@@ -109,16 +178,14 @@ setTimeout(() => input.focus(), 100);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="textual" href="../index.html">textual</a></code></li>
+<li><code><a title="textual.renderables" href="index.html">textual.renderables</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li><code><a title="textual.layouts.dock" href="dock.html">textual.layouts.dock</a></code></li>
-<li><code><a title="textual.layouts.factory" href="factory.html">textual.layouts.factory</a></code></li>
-<li><code><a title="textual.layouts.grid" href="grid.html">textual.layouts.grid</a></code></li>
-<li><code><a title="textual.layouts.horizontal" href="horizontal.html">textual.layouts.horizontal</a></code></li>
-<li><code><a title="textual.layouts.vertical" href="vertical.html">textual.layouts.vertical</a></code></li>
+<li>
+<h4><code><a title="textual.renderables.gradient.VerticalGradient" href="#textual.renderables.gradient.VerticalGradient">VerticalGradient</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>
