@@ -25,7 +25,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Install pdoc3
-        run: pip install pdoc3
+        run: pip install pdoc3 aiohttp typing_extensions
       - name: Install ourselves
         run: pip install https://github.com/Textualize/textual/archive/refs/heads/css.zip
 
