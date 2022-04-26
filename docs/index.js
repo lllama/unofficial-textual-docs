@@ -39,14 +39,20 @@ URLS=[
 "textual/design.html",
 "textual/geometry.html",
 "textual/cli/index.html",
+"textual/cli/cli.html",
 "textual/scrollbar.html",
 "textual/box_model.html",
 "textual/messages.html",
 "textual/blank.html",
 "textual/devtools/index.html",
+"textual/devtools/client.html",
+"textual/devtools/service.html",
 "textual/devtools/renderables.html",
+"textual/devtools/redirect_output.html",
+"textual/devtools/server.html",
 "textual/actions.html",
 "textual/draw.html",
+"textual/app.html",
 "textual/widgets/index.html",
 "textual/widgets/tabs.html",
 "textual/file_monitor.html",
@@ -4732,33 +4738,38 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar",
+"ref":"textual.cli.cli",
 "url":40,
+"doc":""
+},
+{
+"ref":"textual.scrollbar",
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollMessage",
-"url":40,
+"url":41,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollMessage.sender",
-"url":40,
+"url":41,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollMessage.bubble",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollMessage.verbosity",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollMessage.system",
-"url":40,
+"url":41,
 "doc":""
 },
 {
@@ -4797,27 +4808,27 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollUp",
-"url":40,
+"url":41,
 "doc":"Message sent when clicking above handle. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollUp.sender",
-"url":40,
+"url":41,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollUp.bubble",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollUp.verbosity",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollUp.system",
-"url":40,
+"url":41,
 "doc":""
 },
 {
@@ -4856,27 +4867,27 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollDown",
-"url":40,
+"url":41,
 "doc":"Message sent when clicking below handle. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollDown.sender",
-"url":40,
+"url":41,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollDown.bubble",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollDown.verbosity",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollDown.system",
-"url":40,
+"url":41,
 "doc":""
 },
 {
@@ -4915,27 +4926,27 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollLeft",
-"url":40,
+"url":41,
 "doc":"Message sent when clicking above handle. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollLeft.sender",
-"url":40,
+"url":41,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollLeft.bubble",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollLeft.verbosity",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollLeft.system",
-"url":40,
+"url":41,
 "doc":""
 },
 {
@@ -4974,27 +4985,27 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollRight",
-"url":40,
+"url":41,
 "doc":"Message sent when clicking below handle. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollRight.sender",
-"url":40,
+"url":41,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollRight.bubble",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollRight.verbosity",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollRight.system",
-"url":40,
+"url":41,
 "doc":""
 },
 {
@@ -5033,27 +5044,27 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollTo",
-"url":40,
+"url":41,
 "doc":"Message sent when click and dragging handle. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollTo.sender",
-"url":40,
+"url":41,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollTo.bubble",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollTo.verbosity",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollTo.system",
-"url":40,
+"url":41,
 "doc":""
 },
 {
@@ -5092,120 +5103,120 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollBarRender",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollBarRender.render_bar",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar",
-"url":40,
+"url":41,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.window_virtual_size",
-"url":40,
+"url":41,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.window_size",
-"url":40,
+"url":41,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.position",
-"url":40,
+"url":41,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.mouse_over",
-"url":40,
+"url":41,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.grabbed",
-"url":40,
+"url":41,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.render",
-"url":40,
+"url":41,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_event",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_enter",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_leave",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.action_scroll_down",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.action_scroll_up",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.action_grab",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.action_released",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_mouse_up",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_mouse_capture",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_mouse_release",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_mouse_move",
-"url":40,
+"url":41,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.can_focus",
-"url":40,
+"url":41,
 "doc":""
 },
 {
@@ -5549,64 +5560,64 @@ INDEX=[
 },
 {
 "ref":"textual.box_model",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.box_model.BoxModel",
-"url":41,
+"url":42,
 "doc":"The result of  get_box_model ."
 },
 {
 "ref":"textual.box_model.BoxModel.size",
-"url":41,
+"url":42,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.box_model.BoxModel.margin",
-"url":41,
+"url":42,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.box_model.get_box_model",
-"url":41,
+"url":42,
 "doc":"Resolve the box model for this Styles. Args: styles (StylesBase): Styles object. container (Size): The size of the widget container. viewport (Size): The viewport size. get_auto_width (Callable): A callable which accepts container size and parent size and returns a width. get_auto_height (Callable): A callable which accepts container size and parent size and returns a height. Returns: BoxModel: A tuple with the size of the content area and margin.",
 "func":1
 },
 {
 "ref":"textual.messages",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.Update",
-"url":42,
+"url":43,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.Update.sender",
-"url":42,
+"url":43,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.Update.can_replace",
-"url":42,
+"url":43,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.Update.bubble",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.Update.verbosity",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.Update.system",
-"url":42,
+"url":43,
 "doc":""
 },
 {
@@ -5639,33 +5650,33 @@ INDEX=[
 },
 {
 "ref":"textual.messages.Layout",
-"url":42,
+"url":43,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.Layout.sender",
-"url":42,
+"url":43,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.Layout.can_replace",
-"url":42,
+"url":43,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.Layout.bubble",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.Layout.verbosity",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.Layout.system",
-"url":42,
+"url":43,
 "doc":""
 },
 {
@@ -5698,27 +5709,27 @@ INDEX=[
 },
 {
 "ref":"textual.messages.CursorMove",
-"url":42,
+"url":43,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.CursorMove.sender",
-"url":42,
+"url":43,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.CursorMove.bubble",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.CursorMove.verbosity",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.CursorMove.system",
-"url":42,
+"url":43,
 "doc":""
 },
 {
@@ -5757,33 +5768,33 @@ INDEX=[
 },
 {
 "ref":"textual.messages.StylesUpdated",
-"url":42,
+"url":43,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.StylesUpdated.sender",
-"url":42,
+"url":43,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.StylesUpdated.can_replace",
-"url":42,
+"url":43,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.StylesUpdated.bubble",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.StylesUpdated.verbosity",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.StylesUpdated.system",
-"url":42,
+"url":43,
 "doc":""
 },
 {
@@ -5816,33 +5827,33 @@ INDEX=[
 },
 {
 "ref":"textual.messages.Prompt",
-"url":42,
+"url":43,
 "doc":"Used to 'wake up' an event loop. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.Prompt.sender",
-"url":42,
+"url":43,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.Prompt.can_replace",
-"url":42,
+"url":43,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.Prompt.bubble",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.Prompt.verbosity",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.messages.Prompt.system",
-"url":42,
+"url":43,
 "doc":""
 },
 {
@@ -5875,94 +5886,776 @@ INDEX=[
 },
 {
 "ref":"textual.blank",
-"url":43,
-"doc":""
-},
-{
-"ref":"textual.blank.Blank",
-"url":43,
-"doc":"Render an empty rectangle. Args: style (StyleType): Style to apply to the box. width (int, optional): Width of the box in number of cells. Will expand to fit parent if  None . height (int, optional): Height of the box in number of cells. Will expand to fit parent if  None ."
-},
-{
-"ref":"textual.devtools",
 "url":44,
 "doc":""
 },
 {
-"ref":"textual.devtools.renderables",
+"ref":"textual.blank.Blank",
+"url":44,
+"doc":"Render an empty rectangle. Args: style (StyleType): Style to apply to the box. width (int, optional): Width of the box in number of cells. Will expand to fit parent if  None . height (int, optional): Height of the box in number of cells. Will expand to fit parent if  None ."
+},
+{
+"ref":"textual.devtools",
 "url":45,
+"doc":""
+},
+{
+"ref":"textual.devtools.client",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.devtools.client.DevtoolsLog",
+"url":46,
+"doc":"A devtools log message. Attributes: objects_or_string (tuple[Any,  .]): Corresponds to the data that will ultimately be passed to Console.print in order to generate the log Segments. caller (inspect.FrameInfo): Information about where this log message was created. In other words, where did the user call  print or  App.log from. Used to display line number and file name in the devtools window."
+},
+{
+"ref":"textual.devtools.client.DevtoolsLog.objects_or_string",
+"url":46,
+"doc":"Alias for field number 0"
+},
+{
+"ref":"textual.devtools.client.DevtoolsLog.caller",
+"url":46,
+"doc":"Alias for field number 1"
+},
+{
+"ref":"textual.devtools.client.DevtoolsConsole",
+"url":46,
+"doc":"A high level console interface. Args: color_system (str, optional): The color system supported by your terminal, either  \"standard\" ,  \"256\" or  \"truecolor\" . Leave as  \"auto\" to autodetect. force_terminal (Optional[bool], optional): Enable/disable terminal control codes, or None to auto-detect terminal. Defaults to None. force_jupyter (Optional[bool], optional): Enable/disable Jupyter rendering, or None to auto-detect Jupyter. Defaults to None. force_interactive (Optional[bool], optional): Enable/disable interactive mode, or None to auto detect. Defaults to None. soft_wrap (Optional[bool], optional): Set soft wrap default on print method. Defaults to False. theme (Theme, optional): An optional style theme object, or  None for default theme. stderr (bool, optional): Use stderr rather than stdout if  file is not specified. Defaults to False. file (IO, optional): A file object where the console should write to. Defaults to stdout. quiet (bool, Optional): Boolean to suppress all output. Defaults to False. width (int, optional): The width of the terminal. Leave as default to auto-detect width. height (int, optional): The height of the terminal. Leave as default to auto-detect height. style (StyleType, optional): Style to apply to all output, or None for no style. Defaults to None. no_color (Optional[bool], optional): Enabled no color mode, or None to auto detect. Defaults to None. tab_size (int, optional): Number of spaces used to replace a tab character. Defaults to 8. record (bool, optional): Boolean to enable recording of terminal output, required to call :meth: export_html , :meth: export_svg , and :meth: export_text . Defaults to False. markup (bool, optional): Boolean to enable :ref: console_markup . Defaults to True. emoji (bool, optional): Enable emoji code. Defaults to True. emoji_variant (str, optional): Optional emoji variant, either \"text\" or \"emoji\". Defaults to None. highlight (bool, optional): Enable automatic highlighting. Defaults to True. log_time (bool, optional): Boolean to enable logging of time by :meth: log methods. Defaults to True. log_path (bool, optional): Boolean to enable the logging of the caller by :meth: log . Defaults to True. log_time_format (Union[str, TimeFormatterCallable], optional): If  log_time is enabled, either string for strftime or callable that formats the time. Defaults to \"[%X] \". highlighter (HighlighterType, optional): Default highlighter. legacy_windows (bool, optional): Enable legacy Windows mode, or  None to auto detect. Defaults to  None . safe_box (bool, optional): Restrict box options that don't render on legacy Windows. get_datetime (Callable ], datetime], optional): Callable that gets the current time as a datetime.datetime object (used by Console.log), or None for datetime.now. get_time (Callable ], time], optional): Callable that gets the current time in seconds, default uses time.monotonic."
+},
+{
+"ref":"textual.devtools.client.DevtoolsConsole.export_segments",
+"url":46,
+"doc":"Return the list of Segments that have be printed using this console Returns: list[Segment]: The list of Segments that have been printed using this console",
+"func":1
+},
+{
+"ref":"textual.devtools.client.DevtoolsConnectionError",
+"url":46,
+"doc":"Raise when the devtools client is unable to connect to the server"
+},
+{
+"ref":"textual.devtools.client.ClientShutdown",
+"url":46,
+"doc":"Sentinel type sent to client queue(s) to indicate shutdown"
+},
+{
+"ref":"textual.devtools.client.DevtoolsClient",
+"url":46,
+"doc":"Client responsible for websocket communication with the devtools server. Communicates using a simple JSON protocol. Messages have the format  {\"type\":  , \"payload\":  } . Valid values for  \"type\" (that can be sent from client -> server) are  \"client_log\" (for log messages) and  \"client_spillover\" (for reporting to the server that messages were discarded due to rate limiting). A  \"client_log\" message has a  \"payload\" format as follows:   {\"timestamp\":  , \"path\":  , \"line_number\":  , \"encoded_segments\":  }   A  \"client_spillover\" message has a  \"payload\" format as follows:   {\"spillover\":  }   Args: host (str): The host the devtools server is running on, defaults to \"127.0.0.1\" port (int): The port the devtools server is accessed via, defaults to 8081"
+},
+{
+"ref":"textual.devtools.client.DevtoolsClient.connect",
+"url":46,
+"doc":"Connect to the devtools server. Raises: DevtoolsConnectionError: If we're unable to establish a connection to the server for any reason.",
+"func":1
+},
+{
+"ref":"textual.devtools.client.DevtoolsClient.disconnect",
+"url":46,
+"doc":"Disconnect from the devtools server by stopping tasks and closing connections.",
+"func":1
+},
+{
+"ref":"textual.devtools.client.DevtoolsClient.is_connected",
+"url":46,
+"doc":"Checks connection to devtools server. Returns: bool: True if this host is connected to the server. False otherwise."
+},
+{
+"ref":"textual.devtools.client.DevtoolsClient.log",
+"url":46,
+"doc":"Queue a log to be sent to the devtools server for display. Args: log (DevtoolsLog): The log to write to devtools",
+"func":1
+},
+{
+"ref":"textual.devtools.service",
+"url":47,
+"doc":"Manages a running devtools instance"
+},
+{
+"ref":"textual.devtools.service.DevtoolsService",
+"url":47,
+"doc":"A running instance of devtools has a single DevtoolsService which is responsible for tracking connected client applications. Args: update_frequency (float): The number of seconds to wait between sending updates of the console size to connected clients."
+},
+{
+"ref":"textual.devtools.service.DevtoolsService.start",
+"url":47,
+"doc":"Starts devtools tasks",
+"func":1
+},
+{
+"ref":"textual.devtools.service.DevtoolsService.clients_connected",
+"url":47,
+"doc":"Returns True if there are connected clients, False otherwise."
+},
+{
+"ref":"textual.devtools.service.DevtoolsService.send_server_info",
+"url":47,
+"doc":"Send information about the server e.g. width and height of Console to a connected client. Args: client_handler (ClientHandler): The client to send information to",
+"func":1
+},
+{
+"ref":"textual.devtools.service.DevtoolsService.handle",
+"url":47,
+"doc":"Handles a single client connection",
+"func":1
+},
+{
+"ref":"textual.devtools.service.DevtoolsService.shutdown",
+"url":47,
+"doc":"Stop server async tasks and clean up all client handlers",
+"func":1
+},
+{
+"ref":"textual.devtools.service.ClientHandler",
+"url":47,
+"doc":"Handles a single client connection to the devtools. A single DevtoolsService managers many ClientHandlers. A single ClientHandler corresponds to a single running Textual application instance, and is responsible for communication with that Textual app. Args: request (Request): The aiohttp.Request associated with this client service (DevtoolsService): The parent DevtoolsService which is responsible for the handling of this client."
+},
+{
+"ref":"textual.devtools.service.ClientHandler.send_message",
+"url":47,
+"doc":"Send a message to a client Args: message (dict[str, object]): The dict which will be sent to the client.",
+"func":1
+},
+{
+"ref":"textual.devtools.service.ClientHandler.run",
+"url":47,
+"doc":"Prepare the websocket and communication queues, and continuously read messages from the queues. Returns: WebSocketResponse: The WebSocketResponse associated with this client.",
+"func":1
+},
+{
+"ref":"textual.devtools.service.ClientHandler.close",
+"url":47,
+"doc":"Stop all incoming/outgoing message processing, and shutdown the websocket connection associated with this client.",
+"func":1
+},
+{
+"ref":"textual.devtools.renderables",
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleHeader",
-"url":45,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleLog",
-"url":45,
+"url":48,
 "doc":"Renderable representing a single log message Args: segments (Iterable[Segment]): The segments to display path (str): The path of the file on the client that the log call was made from line_number (int): The line number of the file on the client the log call was made from unix_timestamp (int): Seconds since January 1st 1970"
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleNotice",
-"url":45,
+"url":48,
 "doc":"Renderable for messages written by the devtools console itself Args: message (str): The message to display level (DevtoolsMessageLevel): The message level (\"info\", \"warning\", or \"error\"). Determines colors used to render the message and the perceived importance."
 },
 {
+"ref":"textual.devtools.redirect_output",
+"url":49,
+"doc":""
+},
+{
+"ref":"textual.devtools.redirect_output.StdoutRedirector",
+"url":49,
+"doc":"A write-only file-like object which redirects anything written to it to the devtools instance associated with the given Textual application. Used within Textual to redirect data written using  print (or any other stdout writes) to the devtools and/or to the log file. Args: devtools (DevtoolsClient): The running Textual app instance. log_file (TextIOWrapper): The log file for the Textual App."
+},
+{
+"ref":"textual.devtools.redirect_output.StdoutRedirector.write",
+"url":49,
+"doc":"Write the log string to the internal buffer. If the string contains a newline character   , the whole string will be buffered and then the buffer will be flushed immediately after. Args: string (str): The string to write to the buffer.",
+"func":1
+},
+{
+"ref":"textual.devtools.redirect_output.StdoutRedirector.flush",
+"url":49,
+"doc":"Flush the buffer. This will send all buffered log messages to the devtools server and the log file. In the case of the devtools, where possible, log messages will be batched and sent as one.",
+"func":1
+},
+{
+"ref":"textual.devtools.server",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.devtools.server.websocket_handler",
+"url":50,
+"doc":"aiohttp websocket handler for sending data between devtools client and server Args: request (Request): The request to the websocket endpoint Returns: WebSocketResponse: The websocket response",
+"func":1
+},
+{
 "ref":"textual.actions",
-"url":46,
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.actions.ActionError",
-"url":46,
+"url":51,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.actions.parse",
-"url":46,
+"url":51,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.draw",
-"url":47,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle",
-"url":47,
+"url":52,
 "doc":"An enumeration."
 },
 {
 "ref":"textual.draw.DrawStyle.NONE",
-"url":47,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.ASCII",
-"url":47,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.SQUARE",
-"url":47,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.HEAVY",
-"url":47,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.ROUNDED",
-"url":47,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.DOUBLE",
-"url":47,
+"url":52,
 "doc":""
+},
+{
+"ref":"textual.app",
+"url":53,
+"doc":""
+},
+{
+"ref":"textual.app.AppError",
+"url":53,
+"doc":"Common base class for all non-exit exceptions."
+},
+{
+"ref":"textual.app.ActionError",
+"url":53,
+"doc":"Common base class for all non-exit exceptions."
+},
+{
+"ref":"textual.app.App",
+"url":53,
+"doc":"The base class for Textual Applications The Textual Application base class Args: console (Console, optional): A Rich Console. Defaults to None. screen (bool, optional): Enable full-screen application mode. Defaults to True. driver_class (Type[Driver], optional): Driver class, or None to use default. Defaults to None. title (str, optional): Title of the application. Defaults to \"Textual Application\"."
+},
+{
+"ref":"textual.app.App.css",
+"url":53,
+"doc":""
+},
+{
+"ref":"textual.app.App.title",
+"url":53,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.app.App.sub_title",
+"url":53,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.app.App.background",
+"url":53,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.app.App.dark",
+"url":53,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.app.App.get_css_variables",
+"url":53,
+"doc":"Get a mapping of variables used to pre-populate CSS. Returns: dict[str, str]: A mapping of variable name to value.",
+"func":1
+},
+{
+"ref":"textual.app.App.watch_dark",
+"url":53,
+"doc":"Watches the dark bool.",
+"func":1
+},
+{
+"ref":"textual.app.App.get_driver_class",
+"url":53,
+"doc":"Get a driver class for this platform. Called by the constructor. Returns: Driver: A Driver class which manages input and display.",
+"func":1
+},
+{
+"ref":"textual.app.App.animator",
+"url":53,
+"doc":""
+},
+{
+"ref":"textual.app.App.screen",
+"url":53,
+"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
+},
+{
+"ref":"textual.app.App.css_type",
+"url":53,
+"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
+},
+{
+"ref":"textual.app.App.size",
+"url":53,
+"doc":""
+},
+{
+"ref":"textual.app.App.log",
+"url":53,
+"doc":"Write to logs. Args:  objects (Any): Positional arguments are converted to string and written to logs. verbosity (int, optional): Verbosity level 0-3. Defaults to 1. _textual_calling_frame (inspect.FrameInfo | None): The frame info to include in the log message sent to the devtools server.",
+"func":1
+},
+{
+"ref":"textual.app.App.bind",
+"url":53,
+"doc":"Bind a key to an action. Args: keys (str): A comma separated list of keys, i.e. action (str): Action to bind to. description (str, optional): Short description of action. Defaults to  . show (bool, optional): Show key in UI. Defaults to True. key_display (str, optional): Replacement text for key, or None to use default. Defaults to None.",
+"func":1
+},
+{
+"ref":"textual.app.App.run",
+"url":53,
+"doc":"Run the app. Args: console (Console, optional): Console object. Defaults to None. screen (bool, optional): Enable application mode. Defaults to True. driver (Type[Driver], optional): Driver class or None for default. Defaults to None. loop (AbstractEventLoop): Event loop to run the application on. If not specified, uvloop will be used.",
+"func":1
+},
+{
+"ref":"textual.app.App.query",
+"url":53,
+"doc":"Get a DOM query in the current screen. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.app.App.get_child",
+"url":53,
+"doc":"Shorthand for self.screen.get_child(id: str) Returns the first child (immediate descendent) of this DOMNode with the given ID. Args: id (str): The ID of the node to search for. Returns: DOMNode: The first child of this node with the specified ID.",
+"func":1
+},
+{
+"ref":"textual.app.App.update_styles",
+"url":53,
+"doc":"Request update of styles. Should be called whenever CSS classes / pseudo classes change.",
+"func":1
+},
+{
+"ref":"textual.app.App.mount",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.push_screen",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.set_focus",
+"url":53,
+"doc":"Focus (or unfocus) a widget. A focused widget will receive key events first. Args: widget (Widget): [description]",
+"func":1
+},
+{
+"ref":"textual.app.App.set_mouse_over",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.capture_mouse",
+"url":53,
+"doc":"Send all mouse events to the given widget, disable mouse capture. Args: widget (Widget | None): If a widget, capture mouse event, or None to end mouse capture.",
+"func":1
+},
+{
+"ref":"textual.app.App.panic",
+"url":53,
+"doc":"Exits the app after displaying a message. Args:  renderables (RenderableType, optional): Rich renderables to display on exit.",
+"func":1
+},
+{
+"ref":"textual.app.App.on_exception",
+"url":53,
+"doc":"Called with an unhandled exception. Args: error (Exception): An exception instance.",
+"func":1
+},
+{
+"ref":"textual.app.App.fatal_error",
+"url":53,
+"doc":"Exits the app after an unhandled exception.",
+"func":1
+},
+{
+"ref":"textual.app.App.process_messages",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.on_idle",
+"url":53,
+"doc":"Perform actions when there are no messages in the queue.",
+"func":1
+},
+{
+"ref":"textual.app.App.register",
+"url":53,
+"doc":"Mount widget(s) so they may receive events. Args: parent (Widget): Parent Widget",
+"func":1
+},
+{
+"ref":"textual.app.App.start_widget",
+"url":53,
+"doc":"Start a widget (run it's task) so that it can receive messages. Args: parent (Widget): The parent of the Widget. widget (Widget): The Widget to start.",
+"func":1
+},
+{
+"ref":"textual.app.App.is_mounted",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.close_all",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.remove",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.shutdown",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.refresh",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.refresh_css",
+"url":53,
+"doc":"Refresh CSS. Args: animate (bool, optional): Also execute CSS animations. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.app.App.display",
+"url":53,
+"doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise.",
+"func":1
+},
+{
+"ref":"textual.app.App.measure",
+"url":53,
+"doc":"Get the optimal width for a widget or renderable. Args: renderable (RenderableType): A renderable (including Widget) max_width ([type], optional): Maximum width. Defaults to 100_000. Returns: int: Number of cells required to render.",
+"func":1
+},
+{
+"ref":"textual.app.App.get_widget_at",
+"url":53,
+"doc":"Get the widget under the given coordinates. Args: x (int): X Coord. y (int): Y Coord. Returns: tuple[Widget, Region]: The widget and the widget's screen region.",
+"func":1
+},
+{
+"ref":"textual.app.App.bell",
+"url":53,
+"doc":"Play the console 'bell'.",
+"func":1
+},
+{
+"ref":"textual.app.App.press",
+"url":53,
+"doc":"Handle a key press. Args: key (str): A key Returns: bool: True if the key was handled by a binding, otherwise False",
+"func":1
+},
+{
+"ref":"textual.app.App.on_event",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.action",
+"url":53,
+"doc":"Perform an action. Args: action (str): Action encoded in a string.",
+"func":1
+},
+{
+"ref":"textual.app.App.dispatch_action",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.broker_event",
+"url":53,
+"doc":"Allow the app an opportunity to dispatch events to action system. Args: event_name (str): _description_ event (events.Event): An event object. default_namespace (object | None): TODO: _description_ Returns: bool: True if an action was processed.",
+"func":1
+},
+{
+"ref":"textual.app.App.handle_update",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.handle_layout",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.on_key",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.on_shutdown_request",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.on_resize",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.action_press",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.action_quit",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.action_bang",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.action_bell",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.action_add_class_",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.action_remove_class_",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.action_toggle_class",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.handle_styles_updated",
+"url":53,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.parent",
+"url":4,
+"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+},
+{
+"ref":"textual.app.App.id",
+"url":4,
+"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
+},
+{
+"ref":"textual.app.App.css_identifier",
+"url":4,
+"doc":"A CSS selector that identifies this DOM node."
+},
+{
+"ref":"textual.app.App.css_identifier_styled",
+"url":4,
+"doc":"A stylized CSS identifier."
+},
+{
+"ref":"textual.app.App.pseudo_classes",
+"url":4,
+"doc":"Get a set of all pseudo classes"
+},
+{
+"ref":"textual.app.App.css_path",
+"url":4,
+"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
+},
+{
+"ref":"textual.app.App.rich_text_style",
+"url":4,
+"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.app.App.tree",
+"url":4,
+"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.app.App.get_pseudo_classes",
+"url":4,
+"doc":"Get any pseudo classes applicable to this Node, e.g. hover, focus. Returns: Iterable[str]: Iterable of strings, such as a generator.",
+"func":1
+},
+{
+"ref":"textual.app.App.add_child",
+"url":4,
+"doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
+"func":1
+},
+{
+"ref":"textual.app.App.add_children",
+"url":4,
+"doc":"Add multiple children to this node. Args:  nodes (DOMNode): Positional args should be new DOM nodes.  named_nodes (DOMNode): Keyword args will be assigned the argument name as an ID.",
+"func":1
+},
+{
+"ref":"textual.app.App.walk_children",
+"url":4,
+"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.app.App.set_styles",
+"url":4,
+"doc":"Set custom styles on this object.",
+"func":1
+},
+{
+"ref":"textual.app.App.has_class",
+"url":4,
+"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.app.App.add_class",
+"url":4,
+"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
+"func":1
+},
+{
+"ref":"textual.app.App.remove_class",
+"url":4,
+"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
+"func":1
+},
+{
+"ref":"textual.app.App.toggle_class",
+"url":4,
+"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
+"func":1
+},
+{
+"ref":"textual.app.App.has_pseudo_class",
+"url":4,
+"doc":"Check for pseudo class (such as hover, focus etc)",
+"func":1
+},
+{
+"ref":"textual.app.App.app",
+"url":1,
+"doc":"Get the current app."
+},
+{
+"ref":"textual.app.App.disable_messages",
+"url":1,
+"doc":"Disable message types from being processed.",
+"func":1
+},
+{
+"ref":"textual.app.App.enable_messages",
+"url":1,
+"doc":"Enable processing of messages types.",
+"func":1
+},
+{
+"ref":"textual.app.App.get_message",
+"url":1,
+"doc":"Get the next event on the queue, or None if queue is closed. Returns: Optional[Event]: Event object or None.",
+"func":1
+},
+{
+"ref":"textual.app.App.peek_message",
+"url":1,
+"doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.app.App.call_later",
+"url":1,
+"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"func":1
+},
+{
+"ref":"textual.app.App.close_messages",
+"url":1,
+"doc":"Close message queue, and optionally wait for queue to finish processing.",
+"func":1
+},
+{
+"ref":"textual.app.App.check_idle",
+"url":1,
+"doc":"Prompt the message pump to call idle if the queue is empty.",
+"func":1
+},
+{
+"ref":"textual.app.App.post_priority_message",
+"url":1,
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"func":1
+},
+{
+"ref":"textual.app.App.dispatch_key",
+"url":1,
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
+"func":1
 },
 {
 "ref":"textual.widget",
@@ -6683,34 +7376,34 @@ INDEX=[
 },
 {
 "ref":"textual.widgets",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.Button",
-"url":48,
+"url":54,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.widgets.Button.label",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Button.render",
-"url":48,
+"url":54,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.Button.on_click",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Button.can_focus",
-"url":48,
+"url":54,
 "doc":""
 },
 {
@@ -7059,27 +7752,27 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.ButtonPressed",
-"url":48,
+"url":54,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.widgets.ButtonPressed.sender",
-"url":48,
+"url":54,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.widgets.ButtonPressed.bubble",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.ButtonPressed.verbosity",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.ButtonPressed.system",
-"url":48,
+"url":54,
 "doc":""
 },
 {
@@ -7118,65 +7811,65 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.DirectoryTree",
-"url":48,
+"url":54,
 "doc":"Abstract base class for generic types. A generic type is typically declared by inheriting from this class parameterized with one or more type variables. For example, a generic mapping type might be defined as class Mapping(Generic[KT, VT]): def __getitem__(self, key: KT) -> VT:  .  Etc. This class can then be used as follows def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT: try: return mapping[key] except KeyError: return default"
 },
 {
 "ref":"textual.widgets.DirectoryTree.has_focus",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.DirectoryTree.on_focus",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.on_blur",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.watch_hover_node",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.render_node",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.render_tree_label",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.on_mount",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.load_directory",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.handle_tree_click",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.can_focus",
-"url":48,
+"url":54,
 "doc":""
 },
 {
@@ -7526,27 +8219,27 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.FileClick",
-"url":48,
+"url":54,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.widgets.FileClick.sender",
-"url":48,
+"url":54,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.widgets.FileClick.bubble",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.FileClick.verbosity",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.FileClick.system",
-"url":48,
+"url":54,
 "doc":""
 },
 {
@@ -7585,47 +8278,47 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Footer",
-"url":48,
+"url":54,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.widgets.Footer.highlight_key",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Footer.watch_highlight_key",
-"url":48,
+"url":54,
 "doc":"If highlight key changes we need to regenerate the text.",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.on_mouse_move",
-"url":48,
+"url":54,
 "doc":"Store any key we are moving over.",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.on_leave",
-"url":48,
+"url":54,
 "doc":"Clear any highlight when the mouse leave the widget",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.make_key_text",
-"url":48,
+"url":54,
 "doc":"Create text containing all the keys.",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.render",
-"url":48,
+"url":54,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.can_focus",
-"url":48,
+"url":54,
 "doc":""
 },
 {
@@ -7974,72 +8667,72 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Header",
-"url":48,
+"url":54,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.widgets.Header.tall",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Header.style",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Header.clock",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Header.title",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Header.sub_title",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Header.full_title",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.Header.watch_tall",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.get_clock",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.render",
-"url":48,
+"url":54,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.on_mount",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.on_click",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.can_focus",
-"url":48,
+"url":54,
 "doc":""
 },
 {
@@ -8388,57 +9081,57 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Placeholder",
-"url":48,
+"url":54,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.widgets.Placeholder.has_focus",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Placeholder.mouse_over",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Placeholder.style",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Placeholder.render",
-"url":48,
+"url":54,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.on_focus",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.on_blur",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.on_enter",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.on_leave",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.can_focus",
-"url":48,
+"url":54,
 "doc":""
 },
 {
@@ -8777,24 +9470,24 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Static",
-"url":48,
+"url":54,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.widgets.Static.render",
-"url":48,
+"url":54,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.Static.update",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Static.can_focus",
-"url":48,
+"url":54,
 "doc":""
 },
 {
@@ -9143,27 +9836,27 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.TreeClick",
-"url":48,
+"url":54,
 "doc":"Abstract base class for generic types. A generic type is typically declared by inheriting from this class parameterized with one or more type variables. For example, a generic mapping type might be defined as class Mapping(Generic[KT, VT]): def __getitem__(self, key: KT) -> VT:  .  Etc. This class can then be used as follows def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT: try: return mapping[key] except KeyError: return default"
 },
 {
 "ref":"textual.widgets.TreeClick.sender",
-"url":48,
+"url":54,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.widgets.TreeClick.bubble",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeClick.verbosity",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeClick.system",
-"url":48,
+"url":54,
 "doc":""
 },
 {
@@ -9202,116 +9895,116 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.TreeControl",
-"url":48,
+"url":54,
 "doc":"Abstract base class for generic types. A generic type is typically declared by inheriting from this class parameterized with one or more type variables. For example, a generic mapping type might be defined as class Mapping(Generic[KT, VT]): def __getitem__(self, key: KT) -> VT:  .  Etc. This class can then be used as follows def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT: try: return mapping[key] except KeyError: return default"
 },
 {
 "ref":"textual.widgets.TreeControl.hover_node",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.TreeControl.cursor",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.TreeControl.cursor_line",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.TreeControl.show_cursor",
-"url":48,
+"url":54,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.TreeControl.watch_show_cursor",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.watch_cursor_line",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.add",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.find_cursor",
-"url":48,
+"url":54,
 "doc":"Find the line location for the cursor node.",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.render",
-"url":48,
+"url":54,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.render_node",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.action_click_label",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.on_mouse_move",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.on_key",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.key_down",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.key_up",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.key_enter",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.cursor_down",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.cursor_up",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.can_focus",
-"url":48,
+"url":54,
 "doc":""
 },
 {
@@ -9660,165 +10353,165 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.TreeNode",
-"url":48,
+"url":54,
 "doc":"Abstract base class for generic types. A generic type is typically declared by inheriting from this class parameterized with one or more type variables. For example, a generic mapping type might be defined as class Mapping(Generic[KT, VT]): def __getitem__(self, key: KT) -> VT:  .  Etc. This class can then be used as follows def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT: try: return mapping[key] except KeyError: return default"
 },
 {
 "ref":"textual.widgets.TreeNode.control",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeNode.empty",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeNode.expanded",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeNode.is_cursor",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeNode.tree",
-"url":48,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeNode.next_node",
-"url":48,
+"url":54,
 "doc":"The next node in the tree, or None if at the end."
 },
 {
 "ref":"textual.widgets.TreeNode.previous_node",
-"url":48,
+"url":54,
 "doc":"The previous node in the tree, or None if at the end."
 },
 {
 "ref":"textual.widgets.TreeNode.next_sibling",
-"url":48,
+"url":54,
 "doc":"The next sibling, or None if last sibling."
 },
 {
 "ref":"textual.widgets.TreeNode.previous_sibling",
-"url":48,
+"url":54,
 "doc":"Previous sibling or None if first sibling."
 },
 {
 "ref":"textual.widgets.TreeNode.expand",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeNode.toggle",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeNode.add",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.NodeID",
-"url":48,
+"url":54,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs",
-"url":49,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.widgets.tabs.Tab",
-"url":49,
+"url":55,
 "doc":"Data container representing a single tab. Attributes: label (str): The user-facing label that will appear inside the tab. name (str, optional): A unique string key that will identify the tab. If None, it will default to the label. If the name is not unique within a single list of tabs, only the final Tab will be displayed."
 },
 {
 "ref":"textual.widgets.tabs.Tab.label",
-"url":49,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.widgets.tabs.Tab.name",
-"url":49,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.widgets.tabs.Tabs",
-"url":49,
+"url":55,
 "doc":"Widget which displays a set of horizontal tabs. Args: tabs (list[Tab]): A list of Tab objects defining the tabs which should be rendered. active_tab (str, optional): The name of the tab that should be active on first render. active_tab_style (StyleType): Style to apply to the label of the active tab. active_bar_style (StyleType): Style to apply to the underline of the active tab. inactive_tab_style (StyleType): Style to apply to the label of inactive tabs. inactive_bar_style (StyleType): Style to apply to the underline of inactive tabs. inactive_text_opacity (float): Opacity of the text labels of inactive tabs. animation_duration (float): The duration of the tab change animation, in seconds. animation_function (str): The easing function to use for the tab change animation. tab_padding (int, optional): The padding at the side of each tab. If None, tabs will automatically be padded such that they fit the available horizontal space. search_by_first_character (bool): If True, entering a character on your keyboard will activate the next tab (in left-to-right order) with a label starting with that character."
 },
 {
 "ref":"textual.widgets.tabs.Tabs.DEFAULT_STYLES",
-"url":49,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.widgets.tabs.Tabs.on_key",
-"url":49,
+"url":55,
 "doc":"Handles key press events when this widget is in focus. Pressing \"escape\" removes focus from this widget. Use the left and right arrow keys to cycle through tabs. Use number keys to jump to tabs based in their number (\"1\" jumps to the leftmost tab). Type a character to cycle through tabs with labels beginning with that character. Args: event (events.Key): The Key event being handled",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.activate_next_tab",
-"url":49,
+"url":55,
 "doc":"Activate the tab to the right of the currently active tab",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.activate_previous_tab",
-"url":49,
+"url":55,
 "doc":"Activate the tab to the left of the currently active tab",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.activate_tab_by_first_char",
-"url":49,
+"url":55,
 "doc":"Activate the next tab that begins with the character Args: char (str): The character to search for",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.activate_tab_by_number",
-"url":49,
+"url":55,
 "doc":"Activate a tab using the tab number. Args: tab_number (int): The number of the tab. The leftmost tab is number 1, the next is 2, and so on. 0 represents the 10th tab.",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.action_range_clicked",
-"url":49,
+"url":55,
 "doc":"Handles 'range_clicked' actions which are fired when tabs are clicked",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.watch__active_tab_name",
-"url":49,
+"url":55,
 "doc":"Animates the underline bar position when the active tab changes",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.find_tab_by_name",
-"url":49,
+"url":55,
 "doc":"Return the index of the first tab with a certain name Args: tab_name (str): The name to search for.",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.render",
-"url":49,
+"url":55,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.can_focus",
-"url":49,
+"url":55,
 "doc":""
 },
 {
@@ -10167,122 +10860,122 @@ INDEX=[
 },
 {
 "ref":"textual.file_monitor",
-"url":50,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.file_monitor.FileMonitor",
-"url":50,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.file_monitor.FileMonitor.check",
-"url":50,
+"url":56,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.file_monitor.FileMonitor.on_change",
-"url":50,
+"url":56,
 "doc":"Called when file changes.",
 "func":1
 },
 {
 "ref":"textual.reactive",
-"url":51,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.reactive.Reactive",
-"url":51,
+"url":57,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.reactive.Reactive.check_watchers",
-"url":51,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.reactive.Reactive.compute",
-"url":51,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.reactive.watch",
-"url":51,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.driver",
-"url":52,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.driver.Driver",
-"url":52,
+"url":58,
 "doc":"Helper class that provides a standard way to create an ABC using inheritance."
 },
 {
 "ref":"textual.driver.Driver.send_event",
-"url":52,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.driver.Driver.process_event",
-"url":52,
+"url":58,
 "doc":"Performs some additional processing of events.",
 "func":1
 },
 {
 "ref":"textual.driver.Driver.start_application_mode",
-"url":52,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.driver.Driver.disable_input",
-"url":52,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.driver.Driver.stop_application_mode",
-"url":52,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Event",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Event.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Event.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Event.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Event.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10321,33 +11014,33 @@ INDEX=[
 },
 {
 "ref":"textual.events.Null",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Null.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Null.can_replace",
-"url":53,
+"url":59,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.events.Null.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Null.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Null.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10380,27 +11073,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Callback",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Callback.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Callback.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10439,27 +11132,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.ShutdownRequest",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.ShutdownRequest.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.ShutdownRequest.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10498,27 +11191,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Shutdown",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Shutdown.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Shutdown.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10557,27 +11250,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Load",
-"url":53,
+"url":59,
 "doc":"Sent when the App is running but  before the terminal is in application mode. Use this event to run any set up that doesn't require any visuals such as loading configuration and binding keys. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Load.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Load.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Load.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Load.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10616,27 +11309,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Idle",
-"url":53,
+"url":59,
 "doc":"Sent when there are no more items in the message queue. This is a pseudo-event in that it is created by the Textual system and doesn't go through the usual message queue. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Idle.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Idle.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10675,32 +11368,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Action",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Action.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Action.action",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Action.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Action.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Action.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10739,38 +11432,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Resize",
-"url":53,
+"url":59,
 "doc":"Sent when the app or widget has been resized. Args: sender (MessageTarget): Event sender. width (int): New width in terminal cells. height (int): New height in terminal cells."
 },
 {
 "ref":"textual.events.Resize.can_replace",
-"url":53,
+"url":59,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.events.Resize.size",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -10803,27 +11496,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Mount",
-"url":53,
+"url":59,
 "doc":"Sent when a widget is  mounted and may receive messages. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Mount.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Mount.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10862,27 +11555,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Unmount",
-"url":53,
+"url":59,
 "doc":"Sent when a widget is unmounted, and may no longer receive messages. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Unmount.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Unmount.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Unmount.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Unmount.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10921,27 +11614,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Show",
-"url":53,
+"url":59,
 "doc":"Sent when a widget has become visible. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Show.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Show.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Show.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Show.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -10980,27 +11673,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Hide",
-"url":53,
+"url":59,
 "doc":"Sent when a widget has been hidden. A widget may be hidden by setting its  visible flag to  False , if it is no longer in a layout, or if it has been offset beyond the edges of the terminal. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Hide.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Hide.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -11039,27 +11732,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseCapture",
-"url":53,
+"url":59,
 "doc":"Sent when the mouse has been captured. When a mouse has been captures, all further mouse events will be sent to the capturing widget. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when captured."
 },
 {
 "ref":"textual.events.MouseCapture.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseCapture.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -11098,27 +11791,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseRelease",
-"url":53,
+"url":59,
 "doc":"Mouse has been released. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when released."
 },
 {
 "ref":"textual.events.MouseRelease.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseRelease.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -11157,27 +11850,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.InputEvent",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.InputEvent.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.InputEvent.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -11216,32 +11909,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Key",
-"url":53,
+"url":59,
 "doc":"Sent when the user hits a key on the keyboard Args: sender (MessageTarget): The sender of the event (the App) key (str): The pressed key if a single character (or a longer string for special characters)"
 },
 {
 "ref":"textual.events.Key.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.key",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Key.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Key.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -11280,94 +11973,94 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseEvent",
-"url":53,
+"url":59,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseEvent.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.from_event",
-"url":53,
+"url":59,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events.MouseEvent.style",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.offset",
-"url":53,
+"url":59,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events.MouseEvent.button",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.ctrl",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.delta_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.delta_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.meta",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.screen_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.screen_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.shift",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -11406,77 +12099,77 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseMove",
-"url":53,
+"url":59,
 "doc":"Sent when the mouse cursor moves. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseMove.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.button",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.ctrl",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.delta_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.delta_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.meta",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.screen_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.screen_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.shift",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -11515,77 +12208,77 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseDown",
-"url":53,
+"url":59,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseDown.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.button",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.ctrl",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.delta_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.delta_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.meta",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.screen_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.screen_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.shift",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -11624,77 +12317,77 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseUp",
-"url":53,
+"url":59,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseUp.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.button",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.ctrl",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.delta_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.delta_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.meta",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.screen_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.screen_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.shift",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -11733,37 +12426,37 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseScrollDown",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.MouseScrollDown.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -11802,37 +12495,37 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseScrollUp",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.MouseScrollUp.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -11871,77 +12564,77 @@ INDEX=[
 },
 {
 "ref":"textual.events.Click",
-"url":53,
+"url":59,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.Click.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Click.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Click.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Click.button",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.ctrl",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.delta_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.delta_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.meta",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.screen_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.screen_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.shift",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -11980,77 +12673,77 @@ INDEX=[
 },
 {
 "ref":"textual.events.DoubleClick",
-"url":53,
+"url":59,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.DoubleClick.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.DoubleClick.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.DoubleClick.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.DoubleClick.button",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.ctrl",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.delta_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.delta_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.meta",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.screen_x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.screen_y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.shift",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.x",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.y",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -12089,42 +12782,42 @@ INDEX=[
 },
 {
 "ref":"textual.events.Timer",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Timer.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.callback",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.count",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.time",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -12158,27 +12851,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Enter",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Enter.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Enter.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -12217,27 +12910,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Leave",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Leave.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Leave.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -12276,27 +12969,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Focus",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Focus.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Focus.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -12335,27 +13028,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Blur",
-"url":53,
+"url":59,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Blur.sender",
-"url":53,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Blur.bubble",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.verbosity",
-"url":53,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.system",
-"url":53,
+"url":59,
 "doc":""
 },
 {
@@ -12394,297 +13087,297 @@ INDEX=[
 },
 {
 "ref":"textual.color",
-"url":54,
+"url":60,
 "doc":"Manages Color in Textual. All instances where the developer is presented with a color should use this class. The only exception should be when passing things to a Rich renderable, which will need to use the  rich_color attribute to perform a conversion. I'm not entirely happy with burdening the user with two similar color classes. In a future update we might add a protocol to convert automatically so the dev could use them interchangably."
 },
 {
 "ref":"textual.color.HLS",
-"url":54,
+"url":60,
 "doc":"A color in HLS format."
 },
 {
 "ref":"textual.color.HLS.h",
-"url":54,
+"url":60,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.HLS.l",
-"url":54,
+"url":60,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.HLS.s",
-"url":54,
+"url":60,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.color.HSV",
-"url":54,
+"url":60,
 "doc":"A color in HSV format."
 },
 {
 "ref":"textual.color.HSV.h",
-"url":54,
+"url":60,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.HSV.s",
-"url":54,
+"url":60,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.HSV.v",
-"url":54,
+"url":60,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.color.Lab",
-"url":54,
+"url":60,
 "doc":"A color in CIE-L ab format."
 },
 {
 "ref":"textual.color.Lab.L",
-"url":54,
+"url":60,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.Lab.a",
-"url":54,
+"url":60,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.Lab.b",
-"url":54,
+"url":60,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.color.ColorParseError",
-"url":54,
+"url":60,
 "doc":"A color failed to parse"
 },
 {
 "ref":"textual.color.Color",
-"url":54,
+"url":60,
 "doc":"A class to represent a single RGB color with alpha."
 },
 {
 "ref":"textual.color.Color.r",
-"url":54,
+"url":60,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.Color.g",
-"url":54,
+"url":60,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.Color.b",
-"url":54,
+"url":60,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.color.Color.a",
-"url":54,
+"url":60,
 "doc":"Alias for field number 3"
 },
 {
 "ref":"textual.color.Color.from_rich_color",
-"url":54,
+"url":60,
 "doc":"Create a new color from Rich's Color class. Args: rich_color (RichColor): An instance of rich.color.Color. Returns: Color: A new Color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.from_hls",
-"url":54,
+"url":60,
 "doc":"Create a color from HLS components. Args: h (float): Hue. l (float): Lightness. s (float): Saturation. Returns: Color: A new color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.clamped",
-"url":54,
+"url":60,
 "doc":"Get a color with all components saturated to maximum and minimum values."
 },
 {
 "ref":"textual.color.Color.rich_color",
-"url":54,
+"url":60,
 "doc":"This color encoded in Rich's Color class."
 },
 {
 "ref":"textual.color.Color.normalized",
-"url":54,
+"url":60,
 "doc":"A tuple of the color components normalized to between 0 and 1."
 },
 {
 "ref":"textual.color.Color.hls",
-"url":54,
+"url":60,
 "doc":"Get the color as HLS."
 },
 {
 "ref":"textual.color.Color.brightness",
-"url":54,
+"url":60,
 "doc":"Get the human perceptual brightness."
 },
 {
 "ref":"textual.color.Color.hex",
-"url":54,
+"url":60,
 "doc":"The color in CSS hex form, with 6 digits for RGB, and 8 digits for RGBA. Returns: str: A CSS hex-style color, e.g. \" 46b3de\" or \" 3342457f\""
 },
 {
 "ref":"textual.color.Color.css",
-"url":54,
+"url":60,
 "doc":"The color in CSS rgb or rgba form. Returns: str: A CSS style color, e.g. \"rgb(10,20,30)\" or \"rgb(50,70,80,0.5)\""
 },
 {
 "ref":"textual.color.Color.with_alpha",
-"url":54,
+"url":60,
 "doc":"Create a new color with the given alpha. Args: alpha (float): New value for alpha. Returns: Color: A new color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.blend",
-"url":54,
+"url":60,
 "doc":"Generate a new color between two colors. Args: destination (Color): Another color. factor (float): A blend factor, 0 -> 1 Returns: Color: A new color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.parse",
-"url":54,
+"url":60,
 "doc":"Parse a string containing a CSS-style color. Args: color_text (str | Color): Text with a valid color format. Color objects will be returned unmodified. Raises: ColorParseError: If the color is not encoded correctly. Returns: Color: New color object.",
 "func":1
 },
 {
 "ref":"textual.color.Color.darken",
-"url":54,
+"url":60,
 "doc":"Darken the color by a given amount. Args: amount (float): Value between 0-1 to reduce luminance by. Returns: Color: New color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.lighten",
-"url":54,
+"url":60,
 "doc":"Lighten the color by a given amount. Args: amount (float): Value between 0-1 to increase luminance by. Returns: Color: New color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.get_contrast_text",
-"url":54,
+"url":60,
 "doc":"Get a light or dark color that best contrasts this color, for use with text. Args: alpha (float, optional): An alpha value to adjust the pure white / black by. Defaults to 0.95. Returns: Color: A new color, either an off-white or off-black",
 "func":1
 },
 {
 "ref":"textual.color.ColorPair",
-"url":54,
+"url":60,
 "doc":"A pair of colors for foreground and background."
 },
 {
 "ref":"textual.color.ColorPair.foreground",
-"url":54,
+"url":60,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.ColorPair.background",
-"url":54,
+"url":60,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.ColorPair.style",
-"url":54,
+"url":60,
 "doc":"A Rich style with foreground and background."
 },
 {
 "ref":"textual.color.rgb_to_lab",
-"url":54,
+"url":60,
 "doc":"Convert an RGB color to the CIE-L ab format. Uses the standard RGB color space with a D65/2\u2070 standard illuminant. Conversion passes through the XYZ color space. Cf. http: www.easyrgb.com/en/math.php.",
 "func":1
 },
 {
 "ref":"textual.color.lab_to_rgb",
-"url":54,
+"url":60,
 "doc":"Convert a CIE-L ab color to RGB. Uses the standard RGB color space with a D65/2\u2070 standard illuminant. Conversion passes through the XYZ color space. Cf. http: www.easyrgb.com/en/math.php.",
 "func":1
 },
 {
 "ref":"textual.drivers",
-"url":55,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.drivers.linux_driver",
-"url":56,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver",
-"url":56,
+"url":62,
 "doc":"Powers display and input for Linux / MacOS"
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver.start_application_mode",
-"url":56,
+"url":62,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver.disable_input",
-"url":56,
+"url":62,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver.stop_application_mode",
-"url":56,
+"url":62,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver.run_input_thread",
-"url":56,
+"url":62,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver.process_event",
-"url":52,
+"url":58,
 "doc":"Performs some additional processing of events.",
 "func":1
 },
 {
 "ref":"textual.layout",
-"url":57,
+"url":63,
 "doc":""
 },
 {
 "ref":"textual.layout.WidgetPlacement",
-"url":57,
+"url":63,
 "doc":"The position, size, and relative order of a widget within its parent."
 },
 {
 "ref":"textual.layout.WidgetPlacement.region",
-"url":57,
+"url":63,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.layout.WidgetPlacement.widget",
-"url":57,
+"url":63,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.layout.WidgetPlacement.order",
-"url":57,
+"url":63,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.layout.Layout",
-"url":57,
+"url":63,
 "doc":"Responsible for arranging Widgets in a view and rendering them."
 },
 {
 "ref":"textual.layout.Layout.name",
-"url":57,
+"url":63,
 "doc":""
 },
 {
 "ref":"textual.layout.Layout.arrange",
-"url":57,
+"url":63,
 "doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. scroll (Offset): Offset to apply to the Widget placements. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 }

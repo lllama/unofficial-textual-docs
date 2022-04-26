@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.devtools API documentation</title>
+<title>textual.devtools.server API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,38 +19,125 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.devtools</code></h1>
+<h1 class="title">Module <code>textual.devtools.server</code></h1>
 </header>
 <section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+from aiohttp.web import run_app
+from aiohttp.web_app import Application
+from aiohttp.web_request import Request
+from aiohttp.web_routedef import get
+from aiohttp.web_ws import WebSocketResponse
+
+from textual.devtools.client import DEVTOOLS_PORT
+from textual.devtools.service import DevtoolsService
+
+DEFAULT_SIZE_CHANGE_POLL_DELAY_SECONDS = 2
+
+
+async def websocket_handler(request: Request) -&gt; WebSocketResponse:
+    &#34;&#34;&#34;aiohttp websocket handler for sending data between devtools client and server
+
+    Args:
+        request (Request): The request to the websocket endpoint
+
+    Returns:
+        WebSocketResponse: The websocket response
+    &#34;&#34;&#34;
+    service: DevtoolsService = request.app[&#34;service&#34;]
+    return await service.handle(request)
+
+
+async def _on_shutdown(app: Application) -&gt; None:
+    &#34;&#34;&#34;aiohttp shutdown handler, called when the aiohttp server is stopped&#34;&#34;&#34;
+    service: DevtoolsService = app[&#34;service&#34;]
+    await service.shutdown()
+
+
+async def _on_startup(app: Application) -&gt; None:
+    service: DevtoolsService = app[&#34;service&#34;]
+    await service.start()
+
+
+def _run_devtools() -&gt; None:
+    app = _make_devtools_aiohttp_app()
+
+    def noop_print(_: str):
+        return None
+
+    run_app(app, port=DEVTOOLS_PORT, print=noop_print)
+
+
+def _make_devtools_aiohttp_app(
+    size_change_poll_delay_secs: float = DEFAULT_SIZE_CHANGE_POLL_DELAY_SECONDS,
+) -&gt; Application:
+    app = Application()
+
+    app.on_shutdown.append(_on_shutdown)
+    app.on_startup.append(_on_startup)
+
+    app[&#34;service&#34;] = DevtoolsService(
+        update_frequency=size_change_poll_delay_secs,
+    )
+
+    app.add_routes(
+        [
+            get(&#34;/textual-devtools-websocket&#34;, websocket_handler),
+        ]
+    )
+
+    return app
+
+
+if __name__ == &#34;__main__&#34;:
+    _run_devtools()</code></pre>
+</details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt><code class="name"><a title="textual.devtools.client" href="client.html">textual.devtools.client</a></code></dt>
+<dt id="textual.devtools.server.websocket_handler"><code class="name flex">
+<span>async def <span class="ident">websocket_handler</span></span>(<span>request: Request) ‑> aiohttp.web_ws.WebSocketResponse</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.devtools.redirect_output" href="redirect_output.html">textual.devtools.redirect_output</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.devtools.renderables" href="renderables.html">textual.devtools.renderables</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.devtools.server" href="server.html">textual.devtools.server</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.devtools.service" href="service.html">textual.devtools.service</a></code></dt>
-<dd>
-<div class="desc"><p>Manages a running devtools instance</p></div>
+<div class="desc"><p>aiohttp websocket handler for sending data between devtools client and server</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>request</code></strong> :&ensp;<code>Request</code></dt>
+<dd>The request to the websocket endpoint</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>WebSocketResponse</code></dt>
+<dd>The websocket response</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def websocket_handler(request: Request) -&gt; WebSocketResponse:
+    &#34;&#34;&#34;aiohttp websocket handler for sending data between devtools client and server
+
+    Args:
+        request (Request): The request to the websocket endpoint
+
+    Returns:
+        WebSocketResponse: The websocket response
+    &#34;&#34;&#34;
+    service: DevtoolsService = request.app[&#34;service&#34;]
+    return await service.handle(request)</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
 </section>
 <section>
 </section>
@@ -109,16 +196,12 @@ setTimeout(() => input.focus(), 100);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="textual" href="../index.html">textual</a></code></li>
+<li><code><a title="textual.devtools" href="index.html">textual.devtools</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
-<ul>
-<li><code><a title="textual.devtools.client" href="client.html">textual.devtools.client</a></code></li>
-<li><code><a title="textual.devtools.redirect_output" href="redirect_output.html">textual.devtools.redirect_output</a></code></li>
-<li><code><a title="textual.devtools.renderables" href="renderables.html">textual.devtools.renderables</a></code></li>
-<li><code><a title="textual.devtools.server" href="server.html">textual.devtools.server</a></code></li>
-<li><code><a title="textual.devtools.service" href="service.html">textual.devtools.service</a></code></li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="textual.devtools.server.websocket_handler" href="#textual.devtools.server.websocket_handler">websocket_handler</a></code></li>
 </ul>
 </li>
 </ul>

@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>textual.devtools.service API documentation</title>
+<meta name="description" content="Manages a running devtools instance" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}#lunr-search{width:100%;font-size:1em;padding:6px 9px 5px 9px;border:1px solid silver}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>textual.devtools.service</code></h1>
+</header>
+<section id="section-intro">
+<p>Manages a running devtools instance</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">&#34;&#34;&#34;Manages a running devtools instance&#34;&#34;&#34;
+from __future__ import annotations
+
+import asyncio
+import base64
+import json
+import pickle
+from json import JSONDecodeError
+from typing import cast
+
+from aiohttp import WSMessage, WSMsgType
+from aiohttp.abc import Request
+from aiohttp.web_ws import WebSocketResponse
+from rich.console import Console
+from rich.markup import escape
+
+from textual.devtools.renderables import (
+    DevConsoleLog,
+    DevConsoleNotice,
+    DevConsoleHeader,
+)
+
+QUEUEABLE_TYPES = {&#34;client_log&#34;, &#34;client_spillover&#34;}
+
+
+class DevtoolsService:
+    &#34;&#34;&#34;A running instance of devtools has a single DevtoolsService which is
+    responsible for tracking connected client applications.
+    &#34;&#34;&#34;
+
+    def __init__(self, update_frequency: float) -&gt; None:
+        &#34;&#34;&#34;
+        Args:
+            update_frequency (float): The number of seconds to wait between
+                sending updates of the console size to connected clients.
+        &#34;&#34;&#34;
+        self.update_frequency = update_frequency
+        self.console = Console()
+        self.shutdown_event = asyncio.Event()
+        self.clients: list[ClientHandler] = []
+
+    async def start(self):
+        &#34;&#34;&#34;Starts devtools tasks&#34;&#34;&#34;
+        self.size_poll_task = asyncio.create_task(self._console_size_poller())
+        self.console.print(DevConsoleHeader())
+
+    @property
+    def clients_connected(self) -&gt; bool:
+        &#34;&#34;&#34;Returns True if there are connected clients, False otherwise.&#34;&#34;&#34;
+        return len(self.clients) &gt; 0
+
+    async def _console_size_poller(self) -&gt; None:
+        &#34;&#34;&#34;Poll console dimensions, and add a `server_info` message to the Queue
+        any time a change occurs. We only poll if there are clients connected,
+        and if we&#39;re not shutting down the server.
+        &#34;&#34;&#34;
+        current_width = self.console.width
+        current_height = self.console.height
+        while not self.shutdown_event.is_set():
+            width = self.console.width
+            height = self.console.height
+            dimensions_changed = width != current_width or height != current_height
+            if dimensions_changed:
+                await self._send_server_info_to_all()
+                current_width = width
+                current_height = height
+            try:
+                await asyncio.wait_for(
+                    self.shutdown_event.wait(), timeout=self.update_frequency
+                )
+            except asyncio.TimeoutError:
+                pass
+
+    async def _send_server_info_to_all(self) -&gt; None:
+        &#34;&#34;&#34;Add `server_info` message to the queues of every client&#34;&#34;&#34;
+        for client_handler in self.clients:
+            await self.send_server_info(client_handler)
+
+    async def send_server_info(self, client_handler: ClientHandler) -&gt; None:
+        &#34;&#34;&#34;Send information about the server e.g. width and height of Console to
+        a connected client.
+
+        Args:
+            client_handler (ClientHandler): The client to send information to
+        &#34;&#34;&#34;
+        await client_handler.send_message(
+            {
+                &#34;type&#34;: &#34;server_info&#34;,
+                &#34;payload&#34;: {
+                    &#34;width&#34;: self.console.width,
+                    &#34;height&#34;: self.console.height,
+                },
+            }
+        )
+
+    async def handle(self, request: Request) -&gt; WebSocketResponse:
+        &#34;&#34;&#34;Handles a single client connection&#34;&#34;&#34;
+        client = ClientHandler(request, service=self)
+        self.clients.append(client)
+        websocket = await client.run()
+        self.clients.remove(client)
+        return websocket
+
+    async def shutdown(self) -&gt; None:
+        &#34;&#34;&#34;Stop server async tasks and clean up all client handlers&#34;&#34;&#34;
+
+        # Stop polling/writing Console dimensions to clients
+        self.shutdown_event.set()
+        await self.size_poll_task
+
+        # We&#39;re shutting down the server, so inform all connected clients
+        for client in self.clients:
+            await client.close()
+        self.clients.clear()
+
+
+class ClientHandler:
+    &#34;&#34;&#34;Handles a single client connection to the devtools.
+    A single DevtoolsService managers many ClientHandlers. A single ClientHandler
+    corresponds to a single running Textual application instance, and is responsible
+    for communication with that Textual app.
+    &#34;&#34;&#34;
+
+    def __init__(self, request: Request, service: DevtoolsService) -&gt; None:
+        &#34;&#34;&#34;
+        Args:
+            request (Request): The aiohttp.Request associated with this client
+            service (DevtoolsService): The parent DevtoolsService which is responsible
+                for the handling of this client.
+        &#34;&#34;&#34;
+        self.request = request
+        self.service = service
+        self.websocket = WebSocketResponse()
+
+    async def send_message(self, message: dict[str, object]) -&gt; None:
+        &#34;&#34;&#34;Send a message to a client
+
+        Args:
+            message (dict[str, object]): The dict which will be sent
+                to the client.
+        &#34;&#34;&#34;
+        await self.outgoing_queue.put(message)
+
+    async def _consume_outgoing(self) -&gt; None:
+        &#34;&#34;&#34;Consume messages from the outgoing (server -&gt; client) Queue.&#34;&#34;&#34;
+        while True:
+            message_json = await self.outgoing_queue.get()
+            if message_json is None:
+                self.outgoing_queue.task_done()
+                break
+            type = message_json[&#34;type&#34;]
+            if type == &#34;server_info&#34;:
+                await self.websocket.send_json(message_json)
+            self.outgoing_queue.task_done()
+
+    async def _consume_incoming(self) -&gt; None:
+        &#34;&#34;&#34;Consume messages from the incoming (client -&gt; server) Queue, and print
+        the corresponding renderables to the console for each message.
+        &#34;&#34;&#34;
+        while True:
+            message_json = await self.incoming_queue.get()
+            if message_json is None:
+                self.incoming_queue.task_done()
+                break
+
+            type = message_json[&#34;type&#34;]
+            if type == &#34;client_log&#34;:
+                path = message_json[&#34;payload&#34;][&#34;path&#34;]
+                line_number = message_json[&#34;payload&#34;][&#34;line_number&#34;]
+                timestamp = message_json[&#34;payload&#34;][&#34;timestamp&#34;]
+                encoded_segments = message_json[&#34;payload&#34;][&#34;encoded_segments&#34;]
+                decoded_segments = base64.b64decode(encoded_segments)
+                segments = pickle.loads(decoded_segments)
+                self.service.console.print(
+                    DevConsoleLog(
+                        segments=segments,
+                        path=path,
+                        line_number=line_number,
+                        unix_timestamp=timestamp,
+                    )
+                )
+            elif type == &#34;client_spillover&#34;:
+                spillover = int(message_json[&#34;payload&#34;][&#34;spillover&#34;])
+                info_renderable = DevConsoleNotice(
+                    f&#34;Discarded {spillover} messages&#34;, level=&#34;warning&#34;
+                )
+                self.service.console.print(info_renderable)
+            self.incoming_queue.task_done()
+
+    async def run(self) -&gt; WebSocketResponse:
+        &#34;&#34;&#34;Prepare the websocket and communication queues, and continuously
+        read messages from the queues.
+
+        Returns:
+            WebSocketResponse: The WebSocketResponse associated with this client.
+        &#34;&#34;&#34;
+
+        await self.websocket.prepare(self.request)
+        self.incoming_queue: asyncio.Queue[dict | None] = asyncio.Queue()
+        self.outgoing_queue: asyncio.Queue[dict | None] = asyncio.Queue()
+        self.outgoing_messages_task = asyncio.create_task(self._consume_outgoing())
+        self.incoming_messages_task = asyncio.create_task(self._consume_incoming())
+
+        if self.request.remote:
+            self.service.console.print(
+                DevConsoleNotice(f&#34;Client &#39;{escape(self.request.remote)}&#39; connected&#34;)
+            )
+        try:
+            await self.service.send_server_info(client_handler=self)
+            async for message in self.websocket:
+                message = cast(WSMessage, message)
+                if message.type == WSMsgType.TEXT:
+                    try:
+                        message_json = json.loads(message.data)
+                    except JSONDecodeError:
+                        self.service.console.print(escape(str(message.data)))
+                        continue
+
+                    type = message_json.get(&#34;type&#34;)
+                    if not type:
+                        continue
+                    if (
+                        type in QUEUEABLE_TYPES
+                        and not self.service.shutdown_event.is_set()
+                    ):
+                        await self.incoming_queue.put(message_json)
+                elif message.type == WSMsgType.ERROR:
+                    self.service.console.print(
+                        DevConsoleNotice(&#34;Websocket error occurred&#34;, level=&#34;error&#34;)
+                    )
+                    break
+        except Exception as error:
+            self.service.console.print(DevConsoleNotice(str(error), level=&#34;error&#34;))
+        finally:
+            if self.request.remote:
+                self.service.console.print(
+                    &#34;\n&#34;,
+                    DevConsoleNotice(
+                        f&#34;Client &#39;{escape(self.request.remote)}&#39; disconnected&#34;
+                    ),
+                )
+            await self.close()
+
+        return self.websocket
+
+    async def close(self) -&gt; None:
+        &#34;&#34;&#34;Stop all incoming/outgoing message processing,
+        and shutdown the websocket connection associated with this
+        client.
+        &#34;&#34;&#34;
+
+        # Stop any writes to the websocket first
+        await self.outgoing_queue.put(None)
+        await self.outgoing_messages_task
+
+        # Now we can shut the socket down
+        await self.websocket.close()
+
+        # This task is independent of the websocket
+        await self.incoming_queue.put(None)
+        await self.incoming_messages_task</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="textual.devtools.service.ClientHandler"><code class="flex name class">
+<span>class <span class="ident">ClientHandler</span></span>
+<span>(</span><span>request: Request, service: <a title="textual.devtools.service.DevtoolsService" href="#textual.devtools.service.DevtoolsService">DevtoolsService</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handles a single client connection to the devtools.
+A single DevtoolsService managers many ClientHandlers. A single ClientHandler
+corresponds to a single running Textual application instance, and is responsible
+for communication with that Textual app.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>request</code></strong> :&ensp;<code>Request</code></dt>
+<dd>The aiohttp.Request associated with this client</dd>
+<dt><strong><code>service</code></strong> :&ensp;<code><a title="textual.devtools.service.DevtoolsService" href="#textual.devtools.service.DevtoolsService">DevtoolsService</a></code></dt>
+<dd>The parent DevtoolsService which is responsible
+for the handling of this client.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ClientHandler:
+    &#34;&#34;&#34;Handles a single client connection to the devtools.
+    A single DevtoolsService managers many ClientHandlers. A single ClientHandler
+    corresponds to a single running Textual application instance, and is responsible
+    for communication with that Textual app.
+    &#34;&#34;&#34;
+
+    def __init__(self, request: Request, service: DevtoolsService) -&gt; None:
+        &#34;&#34;&#34;
+        Args:
+            request (Request): The aiohttp.Request associated with this client
+            service (DevtoolsService): The parent DevtoolsService which is responsible
+                for the handling of this client.
+        &#34;&#34;&#34;
+        self.request = request
+        self.service = service
+        self.websocket = WebSocketResponse()
+
+    async def send_message(self, message: dict[str, object]) -&gt; None:
+        &#34;&#34;&#34;Send a message to a client
+
+        Args:
+            message (dict[str, object]): The dict which will be sent
+                to the client.
+        &#34;&#34;&#34;
+        await self.outgoing_queue.put(message)
+
+    async def _consume_outgoing(self) -&gt; None:
+        &#34;&#34;&#34;Consume messages from the outgoing (server -&gt; client) Queue.&#34;&#34;&#34;
+        while True:
+            message_json = await self.outgoing_queue.get()
+            if message_json is None:
+                self.outgoing_queue.task_done()
+                break
+            type = message_json[&#34;type&#34;]
+            if type == &#34;server_info&#34;:
+                await self.websocket.send_json(message_json)
+            self.outgoing_queue.task_done()
+
+    async def _consume_incoming(self) -&gt; None:
+        &#34;&#34;&#34;Consume messages from the incoming (client -&gt; server) Queue, and print
+        the corresponding renderables to the console for each message.
+        &#34;&#34;&#34;
+        while True:
+            message_json = await self.incoming_queue.get()
+            if message_json is None:
+                self.incoming_queue.task_done()
+                break
+
+            type = message_json[&#34;type&#34;]
+            if type == &#34;client_log&#34;:
+                path = message_json[&#34;payload&#34;][&#34;path&#34;]
+                line_number = message_json[&#34;payload&#34;][&#34;line_number&#34;]
+                timestamp = message_json[&#34;payload&#34;][&#34;timestamp&#34;]
+                encoded_segments = message_json[&#34;payload&#34;][&#34;encoded_segments&#34;]
+                decoded_segments = base64.b64decode(encoded_segments)
+                segments = pickle.loads(decoded_segments)
+                self.service.console.print(
+                    DevConsoleLog(
+                        segments=segments,
+                        path=path,
+                        line_number=line_number,
+                        unix_timestamp=timestamp,
+                    )
+                )
+            elif type == &#34;client_spillover&#34;:
+                spillover = int(message_json[&#34;payload&#34;][&#34;spillover&#34;])
+                info_renderable = DevConsoleNotice(
+                    f&#34;Discarded {spillover} messages&#34;, level=&#34;warning&#34;
+                )
+                self.service.console.print(info_renderable)
+            self.incoming_queue.task_done()
+
+    async def run(self) -&gt; WebSocketResponse:
+        &#34;&#34;&#34;Prepare the websocket and communication queues, and continuously
+        read messages from the queues.
+
+        Returns:
+            WebSocketResponse: The WebSocketResponse associated with this client.
+        &#34;&#34;&#34;
+
+        await self.websocket.prepare(self.request)
+        self.incoming_queue: asyncio.Queue[dict | None] = asyncio.Queue()
+        self.outgoing_queue: asyncio.Queue[dict | None] = asyncio.Queue()
+        self.outgoing_messages_task = asyncio.create_task(self._consume_outgoing())
+        self.incoming_messages_task = asyncio.create_task(self._consume_incoming())
+
+        if self.request.remote:
+            self.service.console.print(
+                DevConsoleNotice(f&#34;Client &#39;{escape(self.request.remote)}&#39; connected&#34;)
+            )
+        try:
+            await self.service.send_server_info(client_handler=self)
+            async for message in self.websocket:
+                message = cast(WSMessage, message)
+                if message.type == WSMsgType.TEXT:
+                    try:
+                        message_json = json.loads(message.data)
+                    except JSONDecodeError:
+                        self.service.console.print(escape(str(message.data)))
+                        continue
+
+                    type = message_json.get(&#34;type&#34;)
+                    if not type:
+                        continue
+                    if (
+                        type in QUEUEABLE_TYPES
+                        and not self.service.shutdown_event.is_set()
+                    ):
+                        await self.incoming_queue.put(message_json)
+                elif message.type == WSMsgType.ERROR:
+                    self.service.console.print(
+                        DevConsoleNotice(&#34;Websocket error occurred&#34;, level=&#34;error&#34;)
+                    )
+                    break
+        except Exception as error:
+            self.service.console.print(DevConsoleNotice(str(error), level=&#34;error&#34;))
+        finally:
+            if self.request.remote:
+                self.service.console.print(
+                    &#34;\n&#34;,
+                    DevConsoleNotice(
+                        f&#34;Client &#39;{escape(self.request.remote)}&#39; disconnected&#34;
+                    ),
+                )
+            await self.close()
+
+        return self.websocket
+
+    async def close(self) -&gt; None:
+        &#34;&#34;&#34;Stop all incoming/outgoing message processing,
+        and shutdown the websocket connection associated with this
+        client.
+        &#34;&#34;&#34;
+
+        # Stop any writes to the websocket first
+        await self.outgoing_queue.put(None)
+        await self.outgoing_messages_task
+
+        # Now we can shut the socket down
+        await self.websocket.close()
+
+        # This task is independent of the websocket
+        await self.incoming_queue.put(None)
+        await self.incoming_messages_task</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.devtools.service.ClientHandler.close"><code class="name flex">
+<span>async def <span class="ident">close</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Stop all incoming/outgoing message processing,
+and shutdown the websocket connection associated with this
+client.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def close(self) -&gt; None:
+    &#34;&#34;&#34;Stop all incoming/outgoing message processing,
+    and shutdown the websocket connection associated with this
+    client.
+    &#34;&#34;&#34;
+
+    # Stop any writes to the websocket first
+    await self.outgoing_queue.put(None)
+    await self.outgoing_messages_task
+
+    # Now we can shut the socket down
+    await self.websocket.close()
+
+    # This task is independent of the websocket
+    await self.incoming_queue.put(None)
+    await self.incoming_messages_task</code></pre>
+</details>
+</dd>
+<dt id="textual.devtools.service.ClientHandler.run"><code class="name flex">
+<span>async def <span class="ident">run</span></span>(<span>self) ‑> aiohttp.web_ws.WebSocketResponse</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Prepare the websocket and communication queues, and continuously
+read messages from the queues.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>WebSocketResponse</code></dt>
+<dd>The WebSocketResponse associated with this client.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def run(self) -&gt; WebSocketResponse:
+    &#34;&#34;&#34;Prepare the websocket and communication queues, and continuously
+    read messages from the queues.
+
+    Returns:
+        WebSocketResponse: The WebSocketResponse associated with this client.
+    &#34;&#34;&#34;
+
+    await self.websocket.prepare(self.request)
+    self.incoming_queue: asyncio.Queue[dict | None] = asyncio.Queue()
+    self.outgoing_queue: asyncio.Queue[dict | None] = asyncio.Queue()
+    self.outgoing_messages_task = asyncio.create_task(self._consume_outgoing())
+    self.incoming_messages_task = asyncio.create_task(self._consume_incoming())
+
+    if self.request.remote:
+        self.service.console.print(
+            DevConsoleNotice(f&#34;Client &#39;{escape(self.request.remote)}&#39; connected&#34;)
+        )
+    try:
+        await self.service.send_server_info(client_handler=self)
+        async for message in self.websocket:
+            message = cast(WSMessage, message)
+            if message.type == WSMsgType.TEXT:
+                try:
+                    message_json = json.loads(message.data)
+                except JSONDecodeError:
+                    self.service.console.print(escape(str(message.data)))
+                    continue
+
+                type = message_json.get(&#34;type&#34;)
+                if not type:
+                    continue
+                if (
+                    type in QUEUEABLE_TYPES
+                    and not self.service.shutdown_event.is_set()
+                ):
+                    await self.incoming_queue.put(message_json)
+            elif message.type == WSMsgType.ERROR:
+                self.service.console.print(
+                    DevConsoleNotice(&#34;Websocket error occurred&#34;, level=&#34;error&#34;)
+                )
+                break
+    except Exception as error:
+        self.service.console.print(DevConsoleNotice(str(error), level=&#34;error&#34;))
+    finally:
+        if self.request.remote:
+            self.service.console.print(
+                &#34;\n&#34;,
+                DevConsoleNotice(
+                    f&#34;Client &#39;{escape(self.request.remote)}&#39; disconnected&#34;
+                ),
+            )
+        await self.close()
+
+    return self.websocket</code></pre>
+</details>
+</dd>
+<dt id="textual.devtools.service.ClientHandler.send_message"><code class="name flex">
+<span>async def <span class="ident">send_message</span></span>(<span>self, message: dict[str, object]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Send a message to a client</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>message</code></strong> :&ensp;<code>dict[str, object]</code></dt>
+<dd>The dict which will be sent
+to the client.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def send_message(self, message: dict[str, object]) -&gt; None:
+    &#34;&#34;&#34;Send a message to a client
+
+    Args:
+        message (dict[str, object]): The dict which will be sent
+            to the client.
+    &#34;&#34;&#34;
+    await self.outgoing_queue.put(message)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="textual.devtools.service.DevtoolsService"><code class="flex name class">
+<span>class <span class="ident">DevtoolsService</span></span>
+<span>(</span><span>update_frequency: float)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A running instance of devtools has a single DevtoolsService which is
+responsible for tracking connected client applications.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>update_frequency</code></strong> :&ensp;<code>float</code></dt>
+<dd>The number of seconds to wait between
+sending updates of the console size to connected clients.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DevtoolsService:
+    &#34;&#34;&#34;A running instance of devtools has a single DevtoolsService which is
+    responsible for tracking connected client applications.
+    &#34;&#34;&#34;
+
+    def __init__(self, update_frequency: float) -&gt; None:
+        &#34;&#34;&#34;
+        Args:
+            update_frequency (float): The number of seconds to wait between
+                sending updates of the console size to connected clients.
+        &#34;&#34;&#34;
+        self.update_frequency = update_frequency
+        self.console = Console()
+        self.shutdown_event = asyncio.Event()
+        self.clients: list[ClientHandler] = []
+
+    async def start(self):
+        &#34;&#34;&#34;Starts devtools tasks&#34;&#34;&#34;
+        self.size_poll_task = asyncio.create_task(self._console_size_poller())
+        self.console.print(DevConsoleHeader())
+
+    @property
+    def clients_connected(self) -&gt; bool:
+        &#34;&#34;&#34;Returns True if there are connected clients, False otherwise.&#34;&#34;&#34;
+        return len(self.clients) &gt; 0
+
+    async def _console_size_poller(self) -&gt; None:
+        &#34;&#34;&#34;Poll console dimensions, and add a `server_info` message to the Queue
+        any time a change occurs. We only poll if there are clients connected,
+        and if we&#39;re not shutting down the server.
+        &#34;&#34;&#34;
+        current_width = self.console.width
+        current_height = self.console.height
+        while not self.shutdown_event.is_set():
+            width = self.console.width
+            height = self.console.height
+            dimensions_changed = width != current_width or height != current_height
+            if dimensions_changed:
+                await self._send_server_info_to_all()
+                current_width = width
+                current_height = height
+            try:
+                await asyncio.wait_for(
+                    self.shutdown_event.wait(), timeout=self.update_frequency
+                )
+            except asyncio.TimeoutError:
+                pass
+
+    async def _send_server_info_to_all(self) -&gt; None:
+        &#34;&#34;&#34;Add `server_info` message to the queues of every client&#34;&#34;&#34;
+        for client_handler in self.clients:
+            await self.send_server_info(client_handler)
+
+    async def send_server_info(self, client_handler: ClientHandler) -&gt; None:
+        &#34;&#34;&#34;Send information about the server e.g. width and height of Console to
+        a connected client.
+
+        Args:
+            client_handler (ClientHandler): The client to send information to
+        &#34;&#34;&#34;
+        await client_handler.send_message(
+            {
+                &#34;type&#34;: &#34;server_info&#34;,
+                &#34;payload&#34;: {
+                    &#34;width&#34;: self.console.width,
+                    &#34;height&#34;: self.console.height,
+                },
+            }
+        )
+
+    async def handle(self, request: Request) -&gt; WebSocketResponse:
+        &#34;&#34;&#34;Handles a single client connection&#34;&#34;&#34;
+        client = ClientHandler(request, service=self)
+        self.clients.append(client)
+        websocket = await client.run()
+        self.clients.remove(client)
+        return websocket
+
+    async def shutdown(self) -&gt; None:
+        &#34;&#34;&#34;Stop server async tasks and clean up all client handlers&#34;&#34;&#34;
+
+        # Stop polling/writing Console dimensions to clients
+        self.shutdown_event.set()
+        await self.size_poll_task
+
+        # We&#39;re shutting down the server, so inform all connected clients
+        for client in self.clients:
+            await client.close()
+        self.clients.clear()</code></pre>
+</details>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.devtools.service.DevtoolsService.clients_connected"><code class="name">var <span class="ident">clients_connected</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Returns True if there are connected clients, False otherwise.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def clients_connected(self) -&gt; bool:
+    &#34;&#34;&#34;Returns True if there are connected clients, False otherwise.&#34;&#34;&#34;
+    return len(self.clients) &gt; 0</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.devtools.service.DevtoolsService.handle"><code class="name flex">
+<span>async def <span class="ident">handle</span></span>(<span>self, request: Request) ‑> aiohttp.web_ws.WebSocketResponse</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handles a single client connection</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def handle(self, request: Request) -&gt; WebSocketResponse:
+    &#34;&#34;&#34;Handles a single client connection&#34;&#34;&#34;
+    client = ClientHandler(request, service=self)
+    self.clients.append(client)
+    websocket = await client.run()
+    self.clients.remove(client)
+    return websocket</code></pre>
+</details>
+</dd>
+<dt id="textual.devtools.service.DevtoolsService.send_server_info"><code class="name flex">
+<span>async def <span class="ident">send_server_info</span></span>(<span>self, client_handler: <a title="textual.devtools.service.ClientHandler" href="#textual.devtools.service.ClientHandler">ClientHandler</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Send information about the server e.g. width and height of Console to
+a connected client.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>client_handler</code></strong> :&ensp;<code><a title="textual.devtools.service.ClientHandler" href="#textual.devtools.service.ClientHandler">ClientHandler</a></code></dt>
+<dd>The client to send information to</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def send_server_info(self, client_handler: ClientHandler) -&gt; None:
+    &#34;&#34;&#34;Send information about the server e.g. width and height of Console to
+    a connected client.
+
+    Args:
+        client_handler (ClientHandler): The client to send information to
+    &#34;&#34;&#34;
+    await client_handler.send_message(
+        {
+            &#34;type&#34;: &#34;server_info&#34;,
+            &#34;payload&#34;: {
+                &#34;width&#34;: self.console.width,
+                &#34;height&#34;: self.console.height,
+            },
+        }
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.devtools.service.DevtoolsService.shutdown"><code class="name flex">
+<span>async def <span class="ident">shutdown</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Stop server async tasks and clean up all client handlers</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def shutdown(self) -&gt; None:
+    &#34;&#34;&#34;Stop server async tasks and clean up all client handlers&#34;&#34;&#34;
+
+    # Stop polling/writing Console dimensions to clients
+    self.shutdown_event.set()
+    await self.size_poll_task
+
+    # We&#39;re shutting down the server, so inform all connected clients
+    for client in self.clients:
+        await client.close()
+    self.clients.clear()</code></pre>
+</details>
+</dd>
+<dt id="textual.devtools.service.DevtoolsService.start"><code class="name flex">
+<span>async def <span class="ident">start</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Starts devtools tasks</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def start(self):
+    &#34;&#34;&#34;Starts devtools tasks&#34;&#34;&#34;
+    self.size_poll_task = asyncio.create_task(self._console_size_poller())
+    self.console.print(DevConsoleHeader())</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<form>
+<input id="lunr-search" name="q" placeholder="🔎 Search ..." aria-label="Search"
+disabled minlength="2">
+</form>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin></script>
+<style>
+.modal-dialog iframe {
+width: 100vw;
+height: calc(100vh - 80px);
+}
+@media screen and (min-width: 700px) {
+.modal-dialog iframe {
+width: 70vw;
+height: 80vh;
+}
+}
+.modal-dialog .tingle-modal-box {width: auto;}
+.modal-dialog .tingle-modal-box__content {padding: 0;}
+</style>
+<script>
+const input = document.getElementById('lunr-search');
+input.disabled = false;
+input.form.addEventListener('submit', (ev) => {
+ev.preventDefault();
+const url = new URL(window.location);
+url.searchParams.set('q', input.value);
+history.replaceState({}, null, url.toString());
+search(input.value);
+});
+const query = new URL(window.location).searchParams.get('q');
+if (query)
+search(query);
+function search(query) {
+const url = '../../doc-search.html#' + encodeURIComponent(query);
+new tingle.modal({
+cssClass: ['modal-dialog'],
+onClose: () => {
+const url = new URL(window.location);
+url.searchParams.delete('q');
+history.replaceState({}, null, url.toString());
+setTimeout(() => input.focus(), 100);
+}
+}).setContent('<iframe src="' + url + '"></iframe>').open();
+}
+</script>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="textual.devtools" href="index.html">textual.devtools</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="textual.devtools.service.ClientHandler" href="#textual.devtools.service.ClientHandler">ClientHandler</a></code></h4>
+<ul class="">
+<li><code><a title="textual.devtools.service.ClientHandler.close" href="#textual.devtools.service.ClientHandler.close">close</a></code></li>
+<li><code><a title="textual.devtools.service.ClientHandler.run" href="#textual.devtools.service.ClientHandler.run">run</a></code></li>
+<li><code><a title="textual.devtools.service.ClientHandler.send_message" href="#textual.devtools.service.ClientHandler.send_message">send_message</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.devtools.service.DevtoolsService" href="#textual.devtools.service.DevtoolsService">DevtoolsService</a></code></h4>
+<ul class="">
+<li><code><a title="textual.devtools.service.DevtoolsService.clients_connected" href="#textual.devtools.service.DevtoolsService.clients_connected">clients_connected</a></code></li>
+<li><code><a title="textual.devtools.service.DevtoolsService.handle" href="#textual.devtools.service.DevtoolsService.handle">handle</a></code></li>
+<li><code><a title="textual.devtools.service.DevtoolsService.send_server_info" href="#textual.devtools.service.DevtoolsService.send_server_info">send_server_info</a></code></li>
+<li><code><a title="textual.devtools.service.DevtoolsService.shutdown" href="#textual.devtools.service.DevtoolsService.shutdown">shutdown</a></code></li>
+<li><code><a title="textual.devtools.service.DevtoolsService.start" href="#textual.devtools.service.DevtoolsService.start">start</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
