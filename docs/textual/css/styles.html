@@ -1,0 +1,3854 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>textual.css.styles API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}#lunr-search{width:100%;font-size:1em;padding:6px 9px 5px 9px;border:1px solid silver}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>textual.css.styles</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+import sys
+from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
+from functools import lru_cache
+from operator import attrgetter
+from typing import TYPE_CHECKING, Any, Iterable, NamedTuple, cast
+
+import rich.repr
+from rich.style import Style
+
+from .. import log
+from .._animator import Animation, EasingFunction
+from ..color import Color
+from ..geometry import Offset, Size, Spacing
+from ._style_properties import (
+    BorderProperty,
+    BoxProperty,
+    ColorProperty,
+    DockProperty,
+    DocksProperty,
+    LayoutProperty,
+    NameListProperty,
+    NameProperty,
+    OffsetProperty,
+    ScalarProperty,
+    SpacingProperty,
+    StringEnumProperty,
+    StyleFlagsProperty,
+    StyleProperty,
+    TransitionsProperty,
+    FractionalProperty,
+)
+from .constants import (
+    VALID_ALIGN_HORIZONTAL,
+    VALID_ALIGN_VERTICAL,
+    VALID_BOX_SIZING,
+    VALID_DISPLAY,
+    VALID_VISIBILITY,
+    VALID_OVERFLOW,
+)
+from .scalar import Scalar, ScalarOffset, Unit
+from .scalar_animation import ScalarAnimation
+from .transition import Transition
+from .types import (
+    BoxSizing,
+    Display,
+    AlignHorizontal,
+    AlignVertical,
+    Edge,
+    AlignHorizontal,
+    Overflow,
+    Specificity3,
+    Specificity4,
+    AlignVertical,
+    Visibility,
+)
+
+if sys.version_info &gt;= (3, 8):
+    from typing import TypedDict
+else:
+    from typing_extensions import TypedDict
+
+if TYPE_CHECKING:
+    from ..dom import DOMNode
+    from ..layout import Layout
+
+
+class RulesMap(TypedDict, total=False):
+    &#34;&#34;&#34;A typed dict for CSS rules.
+
+    Any key may be absent, indiciating that rule has not been set.
+
+    Does not define composite rules, that is a rule that is made of a combination of other rules.
+
+    &#34;&#34;&#34;
+
+    display: Display
+    visibility: Visibility
+    layout: &#34;Layout&#34;
+
+    color: Color
+    background: Color
+    text_style: Style
+
+    opacity: float
+
+    padding: Spacing
+    margin: Spacing
+    offset: ScalarOffset
+
+    border_top: tuple[str, Color]
+    border_right: tuple[str, Color]
+    border_bottom: tuple[str, Color]
+    border_left: tuple[str, Color]
+
+    outline_top: tuple[str, Color]
+    outline_right: tuple[str, Color]
+    outline_bottom: tuple[str, Color]
+    outline_left: tuple[str, Color]
+
+    box_sizing: BoxSizing
+    width: Scalar
+    height: Scalar
+    min_width: Scalar
+    min_height: Scalar
+    max_width: Scalar
+    max_height: Scalar
+
+    dock: str
+    docks: tuple[DockGroup, ...]
+
+    overflow_x: Overflow
+    overflow_y: Overflow
+
+    layers: tuple[str, ...]
+    layer: str
+
+    transitions: dict[str, Transition]
+
+    scrollbar_color: Color
+    scrollbar_color_hover: Color
+    scrollbar_color_active: Color
+
+    scrollbar_background: Color
+    scrollbar_background_hover: Color
+    scrollbar_background_active: Color
+
+    align_horizontal: AlignHorizontal
+    align_vertical: AlignVertical
+
+
+RULE_NAMES = list(RulesMap.__annotations__.keys())
+RULE_NAMES_SET = frozenset(RULE_NAMES)
+_rule_getter = attrgetter(*RULE_NAMES)
+
+
+class DockGroup(NamedTuple):
+    name: str
+    edge: Edge
+    z: int
+
+
+class StylesBase(ABC):
+    &#34;&#34;&#34;A common base class for Styles and RenderStyles&#34;&#34;&#34;
+
+    ANIMATABLE = {
+        &#34;offset&#34;,
+        &#34;padding&#34;,
+        &#34;margin&#34;,
+        &#34;width&#34;,
+        &#34;height&#34;,
+        &#34;min_width&#34;,
+        &#34;min_height&#34;,
+        &#34;max_width&#34;,
+        &#34;max_height&#34;,
+        &#34;color&#34;,
+        &#34;background&#34;,
+        &#34;scrollbar_color&#34;,
+        &#34;scrollbar_color_hover&#34;,
+        &#34;scrollbar_color_active&#34;,
+        &#34;scrollbar_background&#34;,
+        &#34;scrollbar_background_hover&#34;,
+        &#34;scrollbar_background_active&#34;,
+    }
+
+    display = StringEnumProperty(VALID_DISPLAY, &#34;block&#34;)
+    visibility = StringEnumProperty(VALID_VISIBILITY, &#34;visible&#34;)
+    layout = LayoutProperty()
+
+    color = ColorProperty(Color(255, 255, 255))
+    background = ColorProperty(Color(0, 0, 0))
+    text_style = StyleFlagsProperty()
+
+    opacity = FractionalProperty()
+
+    padding = SpacingProperty()
+    margin = SpacingProperty()
+    offset = OffsetProperty()
+
+    border = BorderProperty()
+    border_top = BoxProperty(Color(0, 255, 0))
+    border_right = BoxProperty(Color(0, 255, 0))
+    border_bottom = BoxProperty(Color(0, 255, 0))
+    border_left = BoxProperty(Color(0, 255, 0))
+
+    outline = BorderProperty()
+    outline_top = BoxProperty(Color(0, 255, 0))
+    outline_right = BoxProperty(Color(0, 255, 0))
+    outline_bottom = BoxProperty(Color(0, 255, 0))
+    outline_left = BoxProperty(Color(0, 255, 0))
+
+    box_sizing = StringEnumProperty(VALID_BOX_SIZING, &#34;border-box&#34;)
+    width = ScalarProperty(percent_unit=Unit.WIDTH)
+    height = ScalarProperty(percent_unit=Unit.HEIGHT)
+    min_width = ScalarProperty(percent_unit=Unit.WIDTH, allow_auto=False)
+    min_height = ScalarProperty(percent_unit=Unit.HEIGHT, allow_auto=False)
+    max_width = ScalarProperty(percent_unit=Unit.WIDTH, allow_auto=False)
+    max_height = ScalarProperty(percent_unit=Unit.HEIGHT, allow_auto=False)
+
+    dock = DockProperty()
+    docks = DocksProperty()
+
+    overflow_x = StringEnumProperty(VALID_OVERFLOW, &#34;hidden&#34;)
+    overflow_y = StringEnumProperty(VALID_OVERFLOW, &#34;hidden&#34;)
+
+    layer = NameProperty()
+    layers = NameListProperty()
+    transitions = TransitionsProperty()
+
+    rich_style = StyleProperty()
+
+    scrollbar_color = ColorProperty(&#34;bright_magenta&#34;)
+    scrollbar_color_hover = ColorProperty(&#34;yellow&#34;)
+    scrollbar_color_active = ColorProperty(&#34;bright_yellow&#34;)
+
+    scrollbar_background = ColorProperty(&#34;#555555&#34;)
+    scrollbar_background_hover = ColorProperty(&#34;#444444&#34;)
+    scrollbar_background_active = ColorProperty(&#34;black&#34;)
+
+    align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
+    align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
+
+    def __eq__(self, styles: object) -&gt; bool:
+        &#34;&#34;&#34;Check that Styles containts the same rules.&#34;&#34;&#34;
+        if not isinstance(styles, StylesBase):
+            return NotImplemented
+        return self.get_rules() == styles.get_rules()
+
+    @property
+    def gutter(self) -&gt; Spacing:
+        &#34;&#34;&#34;Get space around widget.
+
+        Returns:
+            Spacing: Space around widget.
+        &#34;&#34;&#34;
+        spacing = Spacing() + self.padding + self.border.spacing
+        return spacing
+
+    @abstractmethod
+    def has_rule(self, rule: str) -&gt; bool:
+        &#34;&#34;&#34;Check if a rule is set on this Styles object.
+
+        Args:
+            rule (str): Rule name.
+
+        Returns:
+            bool: ``True`` if the rules is present, otherwise ``False``.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def clear_rule(self, rule: str) -&gt; bool:
+        &#34;&#34;&#34;Removes the rule from the Styles object, as if it had never been set.
+
+        Args:
+            rule (str): Rule name.
+
+        Returns:
+            bool: ``True`` if a rule was cleared, or ``False`` if the rule is already not set.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def get_rules(self) -&gt; RulesMap:
+        &#34;&#34;&#34;Get the rules in a mapping.
+
+        Returns:
+            RulesMap: A TypedDict of the rules.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def set_rule(self, rule: str, value: object | None) -&gt; bool:
+        &#34;&#34;&#34;Set a rule.
+
+        Args:
+            rule (str): Rule name.
+            value (object | None): New rule value.
+
+        Returns:
+            bool: ``True`` if the rule changed, otherwise ``False``.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def get_rule(self, rule: str, default: object = None) -&gt; object:
+        &#34;&#34;&#34;Get an individual rule.
+
+        Args:
+            rule (str): Name of rule.
+            default (object, optional): Default if rule does not exists. Defaults to None.
+
+        Returns:
+            object: Rule value or default.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def refresh(self, *, layout: bool = False) -&gt; None:
+        &#34;&#34;&#34;Mark the styles as requiring a refresh.
+
+        Args:
+            layout (bool, optional): Also require a layout. Defaults to False.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def reset(self) -&gt; None:
+        &#34;&#34;&#34;Reset the rules to initial state.&#34;&#34;&#34;
+
+    @abstractmethod
+    def merge(self, other: StylesBase) -&gt; None:
+        &#34;&#34;&#34;Merge values from another Styles.
+
+        Args:
+            other (Styles): A Styles object.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def merge_rules(self, rules: RulesMap) -&gt; None:
+        &#34;&#34;&#34;Merge rules in to Styles.
+
+        Args:
+            rules (RulesMap): A mapping of rules.
+        &#34;&#34;&#34;
+
+    def get_render_rules(self) -&gt; RulesMap:
+        &#34;&#34;&#34;Get rules map with defaults.&#34;&#34;&#34;
+        # Get a dictionary of rules, going through the properties
+        rules = dict(zip(RULE_NAMES, _rule_getter(self)))
+        return cast(RulesMap, rules)
+
+    @classmethod
+    def is_animatable(cls, rule: str) -&gt; bool:
+        &#34;&#34;&#34;Check if a given rule may be animated.
+
+        Args:
+            rule (str): Name of the rule.
+
+        Returns:
+            bool: ``True`` if the rule may be animated, otherwise ``False``.
+        &#34;&#34;&#34;
+        return rule in cls.ANIMATABLE
+
+    @classmethod
+    @lru_cache(maxsize=1024)
+    def parse(cls, css: str, path: str, *, node: DOMNode = None) -&gt; Styles:
+        &#34;&#34;&#34;Parse CSS and return a Styles object.
+
+        Args:
+            css (str): Textual CSS.
+            path (str): Path or string indicating source of CSS.
+            node (DOMNode, optional): Node to associate with the Styles. Defaults to None.
+
+        Returns:
+            Styles: A Styles instance containing result of parsing CSS.
+        &#34;&#34;&#34;
+        from .parse import parse_declarations
+
+        styles = parse_declarations(css, path)
+        styles.node = node
+        return styles
+
+    def get_transition(self, key: str) -&gt; Transition | None:
+        if key in self.ANIMATABLE:
+            return self.transitions.get(key, None)
+        else:
+            return None
+
+    def align_width(self, width: int, parent_width: int) -&gt; int:
+        &#34;&#34;&#34;Align the width dimension.
+
+        Args:
+            width (int): Width of the content.
+            parent_width (int): Width of the parent container.
+
+        Returns:
+            int: An offset to add to the X coordinate.
+        &#34;&#34;&#34;
+        offset_x = 0
+        align_horizontal = self.align_horizontal
+        if align_horizontal != &#34;left&#34;:
+            if align_horizontal == &#34;center&#34;:
+                offset_x = (parent_width - width) // 2
+            else:
+                offset_x = parent_width - width
+        return offset_x
+
+    def align_height(self, height: int, parent_height: int) -&gt; int:
+        &#34;&#34;&#34;Align the height dimensions
+
+        Args:
+            height (int): Height of the content.
+            parent_height (int): Height of the parent container.
+
+        Returns:
+            int: An offset to add to the Y coordinate.
+        &#34;&#34;&#34;
+        offset_y = 0
+        align_vertical = self.align_vertical
+        if align_vertical != &#34;top&#34;:
+            if align_vertical == &#34;middle&#34;:
+                offset_y = (parent_height - height) // 2
+            else:
+                offset_y = parent_height - height
+        return offset_y
+
+
+@rich.repr.auto
+@dataclass
+class Styles(StylesBase):
+
+    node: DOMNode | None = None
+
+    _rules: RulesMap = field(default_factory=dict)
+
+    important: set[str] = field(default_factory=set)
+
+    def copy(self) -&gt; Styles:
+        &#34;&#34;&#34;Get a copy of this Styles object.&#34;&#34;&#34;
+        return Styles(node=self.node, _rules=self.get_rules(), important=self.important)
+
+    def has_rule(self, rule: str) -&gt; bool:
+        assert rule in RULE_NAMES_SET, f&#34;no such rule {rule!r}&#34;
+        return rule in self._rules
+
+    def clear_rule(self, rule: str) -&gt; bool:
+        &#34;&#34;&#34;Removes the rule from the Styles object, as if it had never been set.
+
+        Args:
+            rule (str): Rule name.
+
+        Returns:
+            bool: ``True`` if a rule was cleared, or ``False`` if it was already not set.
+        &#34;&#34;&#34;
+        return self._rules.pop(rule, None) is not None
+
+    def get_rules(self) -&gt; RulesMap:
+        return self._rules.copy()
+
+    def set_rule(self, rule: str, value: object | None) -&gt; bool:
+        &#34;&#34;&#34;Set a rule.
+
+        Args:
+            rule (str): Rule name.
+            value (object | None): New rule value.
+
+        Returns:
+            bool: ``True`` if the rule changed, otherwise ``False``.
+        &#34;&#34;&#34;
+        if value is None:
+            return self._rules.pop(rule, None) is not None
+        else:
+            current = self._rules.get(rule)
+            self._rules[rule] = value
+            return current != value
+
+    def get_rule(self, rule: str, default: object = None) -&gt; object:
+        return self._rules.get(rule, default)
+
+    def refresh(self, *, layout: bool = False) -&gt; None:
+        if self.node is not None:
+            self.node.refresh(layout=layout)
+
+    def reset(self) -&gt; None:
+        &#34;&#34;&#34;Reset the rules to initial state.&#34;&#34;&#34;
+        self._rules.clear()
+
+    def merge(self, other: Styles) -&gt; None:
+        &#34;&#34;&#34;Merge values from another Styles.
+
+        Args:
+            other (Styles): A Styles object.
+        &#34;&#34;&#34;
+
+        self._rules.update(other._rules)
+
+    def merge_rules(self, rules: RulesMap) -&gt; None:
+        self._rules.update(rules)
+
+    def extract_rules(
+        self, specificity: Specificity3
+    ) -&gt; list[tuple[str, Specificity4, Any]]:
+        &#34;&#34;&#34;Extract rules from Styles object, and apply !important css specificity.
+
+        Args:
+            specificity (Specificity3): A node specificity.
+
+        Returns:
+            list[tuple[str, Specificity4, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
+        &#34;&#34;&#34;
+        is_important = self.important.__contains__
+
+        rules = [
+            (rule_name, (int(is_important(rule_name)), *specificity), rule_value)
+            for rule_name, rule_value in self._rules.items()
+        ]
+
+        return rules
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        has_rule = self.has_rule
+        for name in RULE_NAMES:
+            if has_rule(name):
+                yield name, getattr(self, name)
+        if self.important:
+            yield &#34;important&#34;, self.important
+
+    def __textual_animation__(
+        self,
+        attribute: str,
+        value: Any,
+        start_time: float,
+        duration: float | None,
+        speed: float | None,
+        easing: EasingFunction,
+    ) -&gt; Animation | None:
+        from ..widget import Widget
+
+        assert isinstance(self.node, Widget)
+        if isinstance(value, ScalarOffset):
+            return ScalarAnimation(
+                self.node,
+                self,
+                start_time,
+                attribute,
+                value,
+                duration=duration,
+                speed=speed,
+                easing=easing,
+            )
+        return None
+
+    def _get_border_css_lines(
+        self, rules: RulesMap, name: str
+    ) -&gt; Iterable[tuple[str, str]]:
+        &#34;&#34;&#34;Get pairs of strings containing &lt;RULE NAME&gt;, &lt;RULE VALUE&gt; for border css declarations.
+
+        Args:
+            rules (RulesMap): A rules map.
+            name (str): Name of rules (border or outline)
+
+        Returns:
+            Iterable[tuple[str, str]]: An iterable of CSS declarations.
+
+        &#34;&#34;&#34;
+
+        has_rule = rules.__contains__
+        get_rule = rules.__getitem__
+
+        has_top = has_rule(f&#34;{name}_top&#34;)
+        has_right = has_rule(f&#34;{name}_right&#34;)
+        has_bottom = has_rule(f&#34;{name}_bottom&#34;)
+        has_left = has_rule(f&#34;{name}_left&#34;)
+        if not any((has_top, has_right, has_bottom, has_left)):
+            # No border related rules
+            return
+
+        if all((has_top, has_right, has_bottom, has_left)):
+            # All rules are set
+            # See if we can set them with a single border: declaration
+            top = get_rule(f&#34;{name}_top&#34;)
+            right = get_rule(f&#34;{name}_right&#34;)
+            bottom = get_rule(f&#34;{name}_bottom&#34;)
+            left = get_rule(f&#34;{name}_left&#34;)
+
+            if top == right and right == bottom and bottom == left:
+                border_type, border_color = rules[f&#34;{name}_top&#34;]
+                yield name, f&#34;{border_type} {border_color.hex}&#34;
+                return
+
+        # Check for edges
+        if has_top:
+            border_type, border_color = rules[f&#34;{name}_top&#34;]
+            yield f&#34;{name}-top&#34;, f&#34;{border_type} {border_color.hex}&#34;
+
+        if has_right:
+            border_type, border_color = rules[f&#34;{name}_right&#34;]
+            yield f&#34;{name}-right&#34;, f&#34;{border_type} {border_color.hex}&#34;
+
+        if has_bottom:
+            border_type, border_color = rules[f&#34;{name}_bottom&#34;]
+            yield f&#34;{name}-bottom&#34;, f&#34;{border_type} {border_color.hex}&#34;
+
+        if has_left:
+            border_type, border_color = rules[f&#34;{name}_left&#34;]
+            yield f&#34;{name}-left&#34;, f&#34;{border_type} {border_color.hex}&#34;
+
+    @property
+    def css_lines(self) -&gt; list[str]:
+        lines: list[str] = []
+        append = lines.append
+
+        def append_declaration(name: str, value: str) -&gt; None:
+            if name in self.important:
+                append(f&#34;{name}: {value} !important;&#34;)
+            else:
+                append(f&#34;{name}: {value};&#34;)
+
+        rules = self.get_rules()
+        get_rule = rules.get
+        has_rule = rules.__contains__
+
+        if has_rule(&#34;display&#34;):
+            append_declaration(&#34;display&#34;, rules[&#34;display&#34;])
+        if has_rule(&#34;visibility&#34;):
+            append_declaration(&#34;visibility&#34;, rules[&#34;visibility&#34;])
+        if has_rule(&#34;padding&#34;):
+            append_declaration(&#34;padding&#34;, rules[&#34;padding&#34;].css)
+        if has_rule(&#34;margin&#34;):
+            append_declaration(&#34;margin&#34;, rules[&#34;margin&#34;].css)
+
+        for name, rule in self._get_border_css_lines(rules, &#34;border&#34;):
+            append_declaration(name, rule)
+
+        for name, rule in self._get_border_css_lines(rules, &#34;outline&#34;):
+            append_declaration(name, rule)
+
+        if has_rule(&#34;offset&#34;):
+            x, y = self.offset
+            append_declaration(&#34;offset&#34;, f&#34;{x} {y}&#34;)
+        if has_rule(&#34;dock&#34;):
+            append_declaration(&#34;dock&#34;, rules[&#34;dock&#34;])
+        if has_rule(&#34;docks&#34;):
+            append_declaration(
+                &#34;docks&#34;,
+                &#34; &#34;.join(
+                    (f&#34;{name}={edge}/{z}&#34; if z else f&#34;{name}={edge}&#34;)
+                    for name, edge, z in rules[&#34;docks&#34;]
+                ),
+            )
+        if has_rule(&#34;layers&#34;):
+            append_declaration(&#34;layers&#34;, &#34; &#34;.join(self.layers))
+        if has_rule(&#34;layer&#34;):
+            append_declaration(&#34;layer&#34;, self.layer)
+        if has_rule(&#34;layout&#34;):
+            assert self.layout is not None
+            append_declaration(&#34;layout&#34;, self.layout.name)
+
+        if has_rule(&#34;color&#34;):
+            append_declaration(&#34;color&#34;, self.color.hex)
+        if has_rule(&#34;background&#34;):
+            append_declaration(&#34;background&#34;, self.background.hex)
+        if has_rule(&#34;text_style&#34;):
+            append_declaration(&#34;text-style&#34;, str(get_rule(&#34;text_style&#34;)))
+
+        if has_rule(&#34;overflow-x&#34;):
+            append_declaration(&#34;overflow-x&#34;, self.overflow_x)
+        if has_rule(&#34;overflow-y&#34;):
+            append_declaration(&#34;overflow-y&#34;, self.overflow_y)
+
+        if has_rule(&#34;box-sizing&#34;):
+            append_declaration(&#34;box-sizing&#34;, self.box_sizing)
+        if has_rule(&#34;width&#34;):
+            append_declaration(&#34;width&#34;, str(self.width))
+        if has_rule(&#34;height&#34;):
+            append_declaration(&#34;height&#34;, str(self.height))
+        if has_rule(&#34;min_width&#34;):
+            append_declaration(&#34;min-width&#34;, str(self.min_width))
+        if has_rule(&#34;min_height&#34;):
+            append_declaration(&#34;min-height&#34;, str(self.min_height))
+        if has_rule(&#34;max_width&#34;):
+            append_declaration(&#34;max-width&#34;, str(self.min_width))
+        if has_rule(&#34;max_height&#34;):
+            append_declaration(&#34;max-height&#34;, str(self.min_height))
+        if has_rule(&#34;transitions&#34;):
+            append_declaration(
+                &#34;transition&#34;,
+                &#34;, &#34;.join(
+                    f&#34;{name} {transition}&#34;
+                    for name, transition in self.transitions.items()
+                ),
+            )
+
+        if has_rule(&#34;align_horizontal&#34;) and has_rule(&#34;align_vertical&#34;):
+            append_declaration(
+                &#34;align&#34;, f&#34;{self.align_horizontal} {self.align_vertical}&#34;
+            )
+        elif has_rule(&#34;align_horizontal&#34;):
+            append_declaration(&#34;align-horizontal&#34;, self.align_horizontal)
+        elif has_rule(&#34;align_horizontal&#34;):
+            append_declaration(&#34;align-vertical&#34;, self.align_vertical)
+
+        lines.sort()
+        return lines
+
+    @property
+    def css(self) -&gt; str:
+        return &#34;\n&#34;.join(self.css_lines)
+
+
+@rich.repr.auto
+class RenderStyles(StylesBase):
+    &#34;&#34;&#34;Presents a combined view of two Styles object: a base Styles and inline Styles.&#34;&#34;&#34;
+
+    def __init__(self, node: DOMNode, base: Styles, inline_styles: Styles) -&gt; None:
+        self.node = node
+        self._base_styles = base
+        self._inline_styles = inline_styles
+
+    @property
+    def base(self) -&gt; Styles:
+        &#34;&#34;&#34;Quick access to base (css) style.&#34;&#34;&#34;
+        return self._base_styles
+
+    @property
+    def inline(self) -&gt; Styles:
+        &#34;&#34;&#34;Quick access to the inline styles.&#34;&#34;&#34;
+        return self._inline_styles
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        for rule_name in RULE_NAMES:
+            if self.has_rule(rule_name):
+                yield rule_name, getattr(self, rule_name)
+
+    def refresh(self, *, layout: bool = False) -&gt; None:
+        self._inline_styles.refresh(layout=layout)
+
+    def merge(self, other: Styles) -&gt; None:
+        &#34;&#34;&#34;Merge values from another Styles.
+
+        Args:
+            other (Styles): A Styles object.
+        &#34;&#34;&#34;
+        self._inline_styles.merge(other)
+
+    def merge_rules(self, rules: RulesMap) -&gt; None:
+        self._inline_styles.merge_rules(rules)
+
+    def reset(self) -&gt; None:
+        &#34;&#34;&#34;Reset the rules to initial state.&#34;&#34;&#34;
+        self._inline_styles.reset()
+
+    def has_rule(self, rule: str) -&gt; bool:
+        &#34;&#34;&#34;Check if a rule has been set.&#34;&#34;&#34;
+        return self._inline_styles.has_rule(rule) or self._base_styles.has_rule(rule)
+
+    def set_rule(self, rule: str, value: object | None) -&gt; bool:
+        return self._inline_styles.set_rule(rule, value)
+
+    def get_rule(self, rule: str, default: object = None) -&gt; object:
+        if self._inline_styles.has_rule(rule):
+            return self._inline_styles.get_rule(rule, default)
+        return self._base_styles.get_rule(rule, default)
+
+    def clear_rule(self, rule_name: str) -&gt; bool:
+        &#34;&#34;&#34;Clear a rule (from inline).&#34;&#34;&#34;
+        return self._inline_styles.clear_rule(rule_name)
+
+    def get_rules(self) -&gt; RulesMap:
+        &#34;&#34;&#34;Get rules as a dictionary&#34;&#34;&#34;
+        rules = {**self._base_styles._rules, **self._inline_styles._rules}
+        return cast(RulesMap, rules)
+
+    @property
+    def css(self) -&gt; str:
+        &#34;&#34;&#34;Get the CSS for the combined styles.&#34;&#34;&#34;
+        styles = Styles()
+        styles.merge(self._base_styles)
+        styles.merge(self._inline_styles)
+        combined_css = styles.css
+        return combined_css
+
+
+if __name__ == &#34;__main__&#34;:
+    styles = Styles()
+
+    styles.display = &#34;none&#34;
+    styles.visibility = &#34;hidden&#34;
+    styles.border = (&#34;solid&#34;, &#34;rgb(10,20,30)&#34;)
+    styles.outline_right = (&#34;solid&#34;, &#34;red&#34;)
+    styles.docks = &#34;foo bar&#34;
+    styles.text_style = &#34;italic&#34;
+    styles.dock = &#34;bar&#34;
+    styles.layers = &#34;foo bar&#34;
+
+    from rich import print
+
+    print(styles.text_style)
+    print(styles.text)
+
+    print(styles)
+    print(styles.css)
+
+    print(styles.extract_rules((0, 1, 0)))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="textual.css.styles.DockGroup"><code class="flex name class">
+<span>class <span class="ident">DockGroup</span></span>
+<span>(</span><span>name: str, edge: Edge, z: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>DockGroup(name, edge, z)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DockGroup(NamedTuple):
+    name: str
+    edge: Edge
+    z: int</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.css.styles.DockGroup.edge"><code class="name">var <span class="ident">edge</span> : Literal['top', 'right', 'bottom', 'left']</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="textual.css.styles.DockGroup.name"><code class="name">var <span class="ident">name</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="textual.css.styles.DockGroup.z"><code class="name">var <span class="ident">z</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="textual.css.styles.RenderStyles"><code class="flex name class">
+<span>class <span class="ident">RenderStyles</span></span>
+<span>(</span><span>node: DOMNode, base: <a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a>, inline_styles: <a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Presents a combined view of two Styles object: a base Styles and inline Styles.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RenderStyles(StylesBase):
+    &#34;&#34;&#34;Presents a combined view of two Styles object: a base Styles and inline Styles.&#34;&#34;&#34;
+
+    def __init__(self, node: DOMNode, base: Styles, inline_styles: Styles) -&gt; None:
+        self.node = node
+        self._base_styles = base
+        self._inline_styles = inline_styles
+
+    @property
+    def base(self) -&gt; Styles:
+        &#34;&#34;&#34;Quick access to base (css) style.&#34;&#34;&#34;
+        return self._base_styles
+
+    @property
+    def inline(self) -&gt; Styles:
+        &#34;&#34;&#34;Quick access to the inline styles.&#34;&#34;&#34;
+        return self._inline_styles
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        for rule_name in RULE_NAMES:
+            if self.has_rule(rule_name):
+                yield rule_name, getattr(self, rule_name)
+
+    def refresh(self, *, layout: bool = False) -&gt; None:
+        self._inline_styles.refresh(layout=layout)
+
+    def merge(self, other: Styles) -&gt; None:
+        &#34;&#34;&#34;Merge values from another Styles.
+
+        Args:
+            other (Styles): A Styles object.
+        &#34;&#34;&#34;
+        self._inline_styles.merge(other)
+
+    def merge_rules(self, rules: RulesMap) -&gt; None:
+        self._inline_styles.merge_rules(rules)
+
+    def reset(self) -&gt; None:
+        &#34;&#34;&#34;Reset the rules to initial state.&#34;&#34;&#34;
+        self._inline_styles.reset()
+
+    def has_rule(self, rule: str) -&gt; bool:
+        &#34;&#34;&#34;Check if a rule has been set.&#34;&#34;&#34;
+        return self._inline_styles.has_rule(rule) or self._base_styles.has_rule(rule)
+
+    def set_rule(self, rule: str, value: object | None) -&gt; bool:
+        return self._inline_styles.set_rule(rule, value)
+
+    def get_rule(self, rule: str, default: object = None) -&gt; object:
+        if self._inline_styles.has_rule(rule):
+            return self._inline_styles.get_rule(rule, default)
+        return self._base_styles.get_rule(rule, default)
+
+    def clear_rule(self, rule_name: str) -&gt; bool:
+        &#34;&#34;&#34;Clear a rule (from inline).&#34;&#34;&#34;
+        return self._inline_styles.clear_rule(rule_name)
+
+    def get_rules(self) -&gt; RulesMap:
+        &#34;&#34;&#34;Get rules as a dictionary&#34;&#34;&#34;
+        rules = {**self._base_styles._rules, **self._inline_styles._rules}
+        return cast(RulesMap, rules)
+
+    @property
+    def css(self) -&gt; str:
+        &#34;&#34;&#34;Get the CSS for the combined styles.&#34;&#34;&#34;
+        styles = Styles()
+        styles.merge(self._base_styles)
+        styles.merge(self._inline_styles)
+        combined_css = styles.css
+        return combined_css</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.css.styles.RenderStyles.base"><code class="name">var <span class="ident">base</span> : <a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></code></dt>
+<dd>
+<div class="desc"><p>Quick access to base (css) style.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def base(self) -&gt; Styles:
+    &#34;&#34;&#34;Quick access to base (css) style.&#34;&#34;&#34;
+    return self._base_styles</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.RenderStyles.css"><code class="name">var <span class="ident">css</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Get the CSS for the combined styles.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def css(self) -&gt; str:
+    &#34;&#34;&#34;Get the CSS for the combined styles.&#34;&#34;&#34;
+    styles = Styles()
+    styles.merge(self._base_styles)
+    styles.merge(self._inline_styles)
+    combined_css = styles.css
+    return combined_css</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.RenderStyles.inline"><code class="name">var <span class="ident">inline</span> : <a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></code></dt>
+<dd>
+<div class="desc"><p>Quick access to the inline styles.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def inline(self) -&gt; Styles:
+    &#34;&#34;&#34;Quick access to the inline styles.&#34;&#34;&#34;
+    return self._inline_styles</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.css.styles.RenderStyles.clear_rule"><code class="name flex">
+<span>def <span class="ident">clear_rule</span></span>(<span>self, rule_name: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clear a rule (from inline).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clear_rule(self, rule_name: str) -&gt; bool:
+    &#34;&#34;&#34;Clear a rule (from inline).&#34;&#34;&#34;
+    return self._inline_styles.clear_rule(rule_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.RenderStyles.get_rules"><code class="name flex">
+<span>def <span class="ident">get_rules</span></span>(<span>self) ‑> <a title="textual.css.styles.RulesMap" href="#textual.css.styles.RulesMap">RulesMap</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get rules as a dictionary</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_rules(self) -&gt; RulesMap:
+    &#34;&#34;&#34;Get rules as a dictionary&#34;&#34;&#34;
+    rules = {**self._base_styles._rules, **self._inline_styles._rules}
+    return cast(RulesMap, rules)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.RenderStyles.has_rule"><code class="name flex">
+<span>def <span class="ident">has_rule</span></span>(<span>self, rule: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if a rule has been set.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def has_rule(self, rule: str) -&gt; bool:
+    &#34;&#34;&#34;Check if a rule has been set.&#34;&#34;&#34;
+    return self._inline_styles.has_rule(rule) or self._base_styles.has_rule(rule)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_bottom" href="#textual.css.styles.StylesBase.border_bottom">border_bottom</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_left" href="#textual.css.styles.StylesBase.border_left">border_left</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_right" href="#textual.css.styles.StylesBase.border_right">border_right</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_top" href="#textual.css.styles.StylesBase.border_top">border_top</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.box_sizing" href="#textual.css.styles.StylesBase.box_sizing">box_sizing</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.get_render_rules" href="#textual.css.styles.StylesBase.get_render_rules">get_render_rules</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.get_rule" href="#textual.css.styles.StylesBase.get_rule">get_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.gutter" href="#textual.css.styles.StylesBase.gutter">gutter</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.height" href="#textual.css.styles.StylesBase.height">height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.is_animatable" href="#textual.css.styles.StylesBase.is_animatable">is_animatable</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.layer" href="#textual.css.styles.StylesBase.layer">layer</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.layout" href="#textual.css.styles.StylesBase.layout">layout</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.margin" href="#textual.css.styles.StylesBase.margin">margin</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.max_height" href="#textual.css.styles.StylesBase.max_height">max_height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.max_width" href="#textual.css.styles.StylesBase.max_width">max_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.merge" href="#textual.css.styles.StylesBase.merge">merge</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.merge_rules" href="#textual.css.styles.StylesBase.merge_rules">merge_rules</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.min_height" href="#textual.css.styles.StylesBase.min_height">min_height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.min_width" href="#textual.css.styles.StylesBase.min_width">min_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.offset" href="#textual.css.styles.StylesBase.offset">offset</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.opacity" href="#textual.css.styles.StylesBase.opacity">opacity</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline" href="#textual.css.styles.StylesBase.outline">outline</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_bottom" href="#textual.css.styles.StylesBase.outline_bottom">outline_bottom</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_left" href="#textual.css.styles.StylesBase.outline_left">outline_left</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_right" href="#textual.css.styles.StylesBase.outline_right">outline_right</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_top" href="#textual.css.styles.StylesBase.outline_top">outline_top</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.overflow_x" href="#textual.css.styles.StylesBase.overflow_x">overflow_x</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.overflow_y" href="#textual.css.styles.StylesBase.overflow_y">overflow_y</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.padding" href="#textual.css.styles.StylesBase.padding">padding</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.parse" href="#textual.css.styles.StylesBase.parse">parse</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.refresh" href="#textual.css.styles.StylesBase.refresh">refresh</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.reset" href="#textual.css.styles.StylesBase.reset">reset</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.rich_style" href="#textual.css.styles.StylesBase.rich_style">rich_style</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_background" href="#textual.css.styles.StylesBase.scrollbar_background">scrollbar_background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_background_active" href="#textual.css.styles.StylesBase.scrollbar_background_active">scrollbar_background_active</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_background_hover" href="#textual.css.styles.StylesBase.scrollbar_background_hover">scrollbar_background_hover</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_color" href="#textual.css.styles.StylesBase.scrollbar_color">scrollbar_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.transitions" href="#textual.css.styles.StylesBase.transitions">transitions</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.visibility" href="#textual.css.styles.StylesBase.visibility">visibility</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.width" href="#textual.css.styles.StylesBase.width">width</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.css.styles.RulesMap"><code class="flex name class">
+<span>class <span class="ident">RulesMap</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A typed dict for CSS rules.</p>
+<p>Any key may be absent, indiciating that rule has not been set.</p>
+<p>Does not define composite rules, that is a rule that is made of a combination of other rules.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RulesMap(TypedDict, total=False):
+    &#34;&#34;&#34;A typed dict for CSS rules.
+
+    Any key may be absent, indiciating that rule has not been set.
+
+    Does not define composite rules, that is a rule that is made of a combination of other rules.
+
+    &#34;&#34;&#34;
+
+    display: Display
+    visibility: Visibility
+    layout: &#34;Layout&#34;
+
+    color: Color
+    background: Color
+    text_style: Style
+
+    opacity: float
+
+    padding: Spacing
+    margin: Spacing
+    offset: ScalarOffset
+
+    border_top: tuple[str, Color]
+    border_right: tuple[str, Color]
+    border_bottom: tuple[str, Color]
+    border_left: tuple[str, Color]
+
+    outline_top: tuple[str, Color]
+    outline_right: tuple[str, Color]
+    outline_bottom: tuple[str, Color]
+    outline_left: tuple[str, Color]
+
+    box_sizing: BoxSizing
+    width: Scalar
+    height: Scalar
+    min_width: Scalar
+    min_height: Scalar
+    max_width: Scalar
+    max_height: Scalar
+
+    dock: str
+    docks: tuple[DockGroup, ...]
+
+    overflow_x: Overflow
+    overflow_y: Overflow
+
+    layers: tuple[str, ...]
+    layer: str
+
+    transitions: dict[str, Transition]
+
+    scrollbar_color: Color
+    scrollbar_color_hover: Color
+    scrollbar_color_active: Color
+
+    scrollbar_background: Color
+    scrollbar_background_hover: Color
+    scrollbar_background_active: Color
+
+    align_horizontal: AlignHorizontal
+    align_vertical: AlignVertical</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.dict</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.css.styles.RulesMap.align_horizontal"><code class="name">var <span class="ident">align_horizontal</span> : AlignHorizontal</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.align_vertical"><code class="name">var <span class="ident">align_vertical</span> : AlignVertical</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.background"><code class="name">var <span class="ident">background</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.border_bottom"><code class="name">var <span class="ident">border_bottom</span> : tuple[str, Color]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.border_left"><code class="name">var <span class="ident">border_left</span> : tuple[str, Color]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.border_right"><code class="name">var <span class="ident">border_right</span> : tuple[str, Color]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.border_top"><code class="name">var <span class="ident">border_top</span> : tuple[str, Color]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.box_sizing"><code class="name">var <span class="ident">box_sizing</span> : BoxSizing</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.color"><code class="name">var <span class="ident">color</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.display"><code class="name">var <span class="ident">display</span> : Display</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.dock"><code class="name">var <span class="ident">dock</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.docks"><code class="name">var <span class="ident">docks</span> : tuple[<a title="textual.css.styles.DockGroup" href="#textual.css.styles.DockGroup">DockGroup</a>, ...]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.height"><code class="name">var <span class="ident">height</span> : Scalar</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.layer"><code class="name">var <span class="ident">layer</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.layers"><code class="name">var <span class="ident">layers</span> : tuple[str, ...]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.layout"><code class="name">var <span class="ident">layout</span> : 'Layout'</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.margin"><code class="name">var <span class="ident">margin</span> : Spacing</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.max_height"><code class="name">var <span class="ident">max_height</span> : Scalar</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.max_width"><code class="name">var <span class="ident">max_width</span> : Scalar</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.min_height"><code class="name">var <span class="ident">min_height</span> : Scalar</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.min_width"><code class="name">var <span class="ident">min_width</span> : Scalar</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.offset"><code class="name">var <span class="ident">offset</span> : ScalarOffset</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.opacity"><code class="name">var <span class="ident">opacity</span> : float</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.outline_bottom"><code class="name">var <span class="ident">outline_bottom</span> : tuple[str, Color]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.outline_left"><code class="name">var <span class="ident">outline_left</span> : tuple[str, Color]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.outline_right"><code class="name">var <span class="ident">outline_right</span> : tuple[str, Color]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.outline_top"><code class="name">var <span class="ident">outline_top</span> : tuple[str, Color]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.overflow_x"><code class="name">var <span class="ident">overflow_x</span> : Overflow</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.overflow_y"><code class="name">var <span class="ident">overflow_y</span> : Overflow</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.padding"><code class="name">var <span class="ident">padding</span> : Spacing</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.scrollbar_background"><code class="name">var <span class="ident">scrollbar_background</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.scrollbar_background_active"><code class="name">var <span class="ident">scrollbar_background_active</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.scrollbar_background_hover"><code class="name">var <span class="ident">scrollbar_background_hover</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.scrollbar_color"><code class="name">var <span class="ident">scrollbar_color</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.scrollbar_color_active"><code class="name">var <span class="ident">scrollbar_color_active</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.scrollbar_color_hover"><code class="name">var <span class="ident">scrollbar_color_hover</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.text_style"><code class="name">var <span class="ident">text_style</span> : Style</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.transitions"><code class="name">var <span class="ident">transitions</span> : dict[str, Transition]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.visibility"><code class="name">var <span class="ident">visibility</span> : Visibility</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.width"><code class="name">var <span class="ident">width</span> : Scalar</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="textual.css.styles.Styles"><code class="flex name class">
+<span>class <span class="ident">Styles</span></span>
+<span>(</span><span>node: DOMNode | None = None, important: set[str] = &lt;factory&gt;)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Styles(node: 'DOMNode | None' = None, _rules: 'RulesMap' = <factory>, important: 'set[str]' = <factory>)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Styles(StylesBase):
+
+    node: DOMNode | None = None
+
+    _rules: RulesMap = field(default_factory=dict)
+
+    important: set[str] = field(default_factory=set)
+
+    def copy(self) -&gt; Styles:
+        &#34;&#34;&#34;Get a copy of this Styles object.&#34;&#34;&#34;
+        return Styles(node=self.node, _rules=self.get_rules(), important=self.important)
+
+    def has_rule(self, rule: str) -&gt; bool:
+        assert rule in RULE_NAMES_SET, f&#34;no such rule {rule!r}&#34;
+        return rule in self._rules
+
+    def clear_rule(self, rule: str) -&gt; bool:
+        &#34;&#34;&#34;Removes the rule from the Styles object, as if it had never been set.
+
+        Args:
+            rule (str): Rule name.
+
+        Returns:
+            bool: ``True`` if a rule was cleared, or ``False`` if it was already not set.
+        &#34;&#34;&#34;
+        return self._rules.pop(rule, None) is not None
+
+    def get_rules(self) -&gt; RulesMap:
+        return self._rules.copy()
+
+    def set_rule(self, rule: str, value: object | None) -&gt; bool:
+        &#34;&#34;&#34;Set a rule.
+
+        Args:
+            rule (str): Rule name.
+            value (object | None): New rule value.
+
+        Returns:
+            bool: ``True`` if the rule changed, otherwise ``False``.
+        &#34;&#34;&#34;
+        if value is None:
+            return self._rules.pop(rule, None) is not None
+        else:
+            current = self._rules.get(rule)
+            self._rules[rule] = value
+            return current != value
+
+    def get_rule(self, rule: str, default: object = None) -&gt; object:
+        return self._rules.get(rule, default)
+
+    def refresh(self, *, layout: bool = False) -&gt; None:
+        if self.node is not None:
+            self.node.refresh(layout=layout)
+
+    def reset(self) -&gt; None:
+        &#34;&#34;&#34;Reset the rules to initial state.&#34;&#34;&#34;
+        self._rules.clear()
+
+    def merge(self, other: Styles) -&gt; None:
+        &#34;&#34;&#34;Merge values from another Styles.
+
+        Args:
+            other (Styles): A Styles object.
+        &#34;&#34;&#34;
+
+        self._rules.update(other._rules)
+
+    def merge_rules(self, rules: RulesMap) -&gt; None:
+        self._rules.update(rules)
+
+    def extract_rules(
+        self, specificity: Specificity3
+    ) -&gt; list[tuple[str, Specificity4, Any]]:
+        &#34;&#34;&#34;Extract rules from Styles object, and apply !important css specificity.
+
+        Args:
+            specificity (Specificity3): A node specificity.
+
+        Returns:
+            list[tuple[str, Specificity4, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
+        &#34;&#34;&#34;
+        is_important = self.important.__contains__
+
+        rules = [
+            (rule_name, (int(is_important(rule_name)), *specificity), rule_value)
+            for rule_name, rule_value in self._rules.items()
+        ]
+
+        return rules
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        has_rule = self.has_rule
+        for name in RULE_NAMES:
+            if has_rule(name):
+                yield name, getattr(self, name)
+        if self.important:
+            yield &#34;important&#34;, self.important
+
+    def __textual_animation__(
+        self,
+        attribute: str,
+        value: Any,
+        start_time: float,
+        duration: float | None,
+        speed: float | None,
+        easing: EasingFunction,
+    ) -&gt; Animation | None:
+        from ..widget import Widget
+
+        assert isinstance(self.node, Widget)
+        if isinstance(value, ScalarOffset):
+            return ScalarAnimation(
+                self.node,
+                self,
+                start_time,
+                attribute,
+                value,
+                duration=duration,
+                speed=speed,
+                easing=easing,
+            )
+        return None
+
+    def _get_border_css_lines(
+        self, rules: RulesMap, name: str
+    ) -&gt; Iterable[tuple[str, str]]:
+        &#34;&#34;&#34;Get pairs of strings containing &lt;RULE NAME&gt;, &lt;RULE VALUE&gt; for border css declarations.
+
+        Args:
+            rules (RulesMap): A rules map.
+            name (str): Name of rules (border or outline)
+
+        Returns:
+            Iterable[tuple[str, str]]: An iterable of CSS declarations.
+
+        &#34;&#34;&#34;
+
+        has_rule = rules.__contains__
+        get_rule = rules.__getitem__
+
+        has_top = has_rule(f&#34;{name}_top&#34;)
+        has_right = has_rule(f&#34;{name}_right&#34;)
+        has_bottom = has_rule(f&#34;{name}_bottom&#34;)
+        has_left = has_rule(f&#34;{name}_left&#34;)
+        if not any((has_top, has_right, has_bottom, has_left)):
+            # No border related rules
+            return
+
+        if all((has_top, has_right, has_bottom, has_left)):
+            # All rules are set
+            # See if we can set them with a single border: declaration
+            top = get_rule(f&#34;{name}_top&#34;)
+            right = get_rule(f&#34;{name}_right&#34;)
+            bottom = get_rule(f&#34;{name}_bottom&#34;)
+            left = get_rule(f&#34;{name}_left&#34;)
+
+            if top == right and right == bottom and bottom == left:
+                border_type, border_color = rules[f&#34;{name}_top&#34;]
+                yield name, f&#34;{border_type} {border_color.hex}&#34;
+                return
+
+        # Check for edges
+        if has_top:
+            border_type, border_color = rules[f&#34;{name}_top&#34;]
+            yield f&#34;{name}-top&#34;, f&#34;{border_type} {border_color.hex}&#34;
+
+        if has_right:
+            border_type, border_color = rules[f&#34;{name}_right&#34;]
+            yield f&#34;{name}-right&#34;, f&#34;{border_type} {border_color.hex}&#34;
+
+        if has_bottom:
+            border_type, border_color = rules[f&#34;{name}_bottom&#34;]
+            yield f&#34;{name}-bottom&#34;, f&#34;{border_type} {border_color.hex}&#34;
+
+        if has_left:
+            border_type, border_color = rules[f&#34;{name}_left&#34;]
+            yield f&#34;{name}-left&#34;, f&#34;{border_type} {border_color.hex}&#34;
+
+    @property
+    def css_lines(self) -&gt; list[str]:
+        lines: list[str] = []
+        append = lines.append
+
+        def append_declaration(name: str, value: str) -&gt; None:
+            if name in self.important:
+                append(f&#34;{name}: {value} !important;&#34;)
+            else:
+                append(f&#34;{name}: {value};&#34;)
+
+        rules = self.get_rules()
+        get_rule = rules.get
+        has_rule = rules.__contains__
+
+        if has_rule(&#34;display&#34;):
+            append_declaration(&#34;display&#34;, rules[&#34;display&#34;])
+        if has_rule(&#34;visibility&#34;):
+            append_declaration(&#34;visibility&#34;, rules[&#34;visibility&#34;])
+        if has_rule(&#34;padding&#34;):
+            append_declaration(&#34;padding&#34;, rules[&#34;padding&#34;].css)
+        if has_rule(&#34;margin&#34;):
+            append_declaration(&#34;margin&#34;, rules[&#34;margin&#34;].css)
+
+        for name, rule in self._get_border_css_lines(rules, &#34;border&#34;):
+            append_declaration(name, rule)
+
+        for name, rule in self._get_border_css_lines(rules, &#34;outline&#34;):
+            append_declaration(name, rule)
+
+        if has_rule(&#34;offset&#34;):
+            x, y = self.offset
+            append_declaration(&#34;offset&#34;, f&#34;{x} {y}&#34;)
+        if has_rule(&#34;dock&#34;):
+            append_declaration(&#34;dock&#34;, rules[&#34;dock&#34;])
+        if has_rule(&#34;docks&#34;):
+            append_declaration(
+                &#34;docks&#34;,
+                &#34; &#34;.join(
+                    (f&#34;{name}={edge}/{z}&#34; if z else f&#34;{name}={edge}&#34;)
+                    for name, edge, z in rules[&#34;docks&#34;]
+                ),
+            )
+        if has_rule(&#34;layers&#34;):
+            append_declaration(&#34;layers&#34;, &#34; &#34;.join(self.layers))
+        if has_rule(&#34;layer&#34;):
+            append_declaration(&#34;layer&#34;, self.layer)
+        if has_rule(&#34;layout&#34;):
+            assert self.layout is not None
+            append_declaration(&#34;layout&#34;, self.layout.name)
+
+        if has_rule(&#34;color&#34;):
+            append_declaration(&#34;color&#34;, self.color.hex)
+        if has_rule(&#34;background&#34;):
+            append_declaration(&#34;background&#34;, self.background.hex)
+        if has_rule(&#34;text_style&#34;):
+            append_declaration(&#34;text-style&#34;, str(get_rule(&#34;text_style&#34;)))
+
+        if has_rule(&#34;overflow-x&#34;):
+            append_declaration(&#34;overflow-x&#34;, self.overflow_x)
+        if has_rule(&#34;overflow-y&#34;):
+            append_declaration(&#34;overflow-y&#34;, self.overflow_y)
+
+        if has_rule(&#34;box-sizing&#34;):
+            append_declaration(&#34;box-sizing&#34;, self.box_sizing)
+        if has_rule(&#34;width&#34;):
+            append_declaration(&#34;width&#34;, str(self.width))
+        if has_rule(&#34;height&#34;):
+            append_declaration(&#34;height&#34;, str(self.height))
+        if has_rule(&#34;min_width&#34;):
+            append_declaration(&#34;min-width&#34;, str(self.min_width))
+        if has_rule(&#34;min_height&#34;):
+            append_declaration(&#34;min-height&#34;, str(self.min_height))
+        if has_rule(&#34;max_width&#34;):
+            append_declaration(&#34;max-width&#34;, str(self.min_width))
+        if has_rule(&#34;max_height&#34;):
+            append_declaration(&#34;max-height&#34;, str(self.min_height))
+        if has_rule(&#34;transitions&#34;):
+            append_declaration(
+                &#34;transition&#34;,
+                &#34;, &#34;.join(
+                    f&#34;{name} {transition}&#34;
+                    for name, transition in self.transitions.items()
+                ),
+            )
+
+        if has_rule(&#34;align_horizontal&#34;) and has_rule(&#34;align_vertical&#34;):
+            append_declaration(
+                &#34;align&#34;, f&#34;{self.align_horizontal} {self.align_vertical}&#34;
+            )
+        elif has_rule(&#34;align_horizontal&#34;):
+            append_declaration(&#34;align-horizontal&#34;, self.align_horizontal)
+        elif has_rule(&#34;align_horizontal&#34;):
+            append_declaration(&#34;align-vertical&#34;, self.align_vertical)
+
+        lines.sort()
+        return lines
+
+    @property
+    def css(self) -&gt; str:
+        return &#34;\n&#34;.join(self.css_lines)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.css.styles.Styles.important"><code class="name">var <span class="ident">important</span> : set[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.Styles.node"><code class="name">var <span class="ident">node</span> : DOMNode | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.css.styles.Styles.css"><code class="name">var <span class="ident">css</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def css(self) -&gt; str:
+    return &#34;\n&#34;.join(self.css_lines)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.Styles.css_lines"><code class="name">var <span class="ident">css_lines</span> : list[str]</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def css_lines(self) -&gt; list[str]:
+    lines: list[str] = []
+    append = lines.append
+
+    def append_declaration(name: str, value: str) -&gt; None:
+        if name in self.important:
+            append(f&#34;{name}: {value} !important;&#34;)
+        else:
+            append(f&#34;{name}: {value};&#34;)
+
+    rules = self.get_rules()
+    get_rule = rules.get
+    has_rule = rules.__contains__
+
+    if has_rule(&#34;display&#34;):
+        append_declaration(&#34;display&#34;, rules[&#34;display&#34;])
+    if has_rule(&#34;visibility&#34;):
+        append_declaration(&#34;visibility&#34;, rules[&#34;visibility&#34;])
+    if has_rule(&#34;padding&#34;):
+        append_declaration(&#34;padding&#34;, rules[&#34;padding&#34;].css)
+    if has_rule(&#34;margin&#34;):
+        append_declaration(&#34;margin&#34;, rules[&#34;margin&#34;].css)
+
+    for name, rule in self._get_border_css_lines(rules, &#34;border&#34;):
+        append_declaration(name, rule)
+
+    for name, rule in self._get_border_css_lines(rules, &#34;outline&#34;):
+        append_declaration(name, rule)
+
+    if has_rule(&#34;offset&#34;):
+        x, y = self.offset
+        append_declaration(&#34;offset&#34;, f&#34;{x} {y}&#34;)
+    if has_rule(&#34;dock&#34;):
+        append_declaration(&#34;dock&#34;, rules[&#34;dock&#34;])
+    if has_rule(&#34;docks&#34;):
+        append_declaration(
+            &#34;docks&#34;,
+            &#34; &#34;.join(
+                (f&#34;{name}={edge}/{z}&#34; if z else f&#34;{name}={edge}&#34;)
+                for name, edge, z in rules[&#34;docks&#34;]
+            ),
+        )
+    if has_rule(&#34;layers&#34;):
+        append_declaration(&#34;layers&#34;, &#34; &#34;.join(self.layers))
+    if has_rule(&#34;layer&#34;):
+        append_declaration(&#34;layer&#34;, self.layer)
+    if has_rule(&#34;layout&#34;):
+        assert self.layout is not None
+        append_declaration(&#34;layout&#34;, self.layout.name)
+
+    if has_rule(&#34;color&#34;):
+        append_declaration(&#34;color&#34;, self.color.hex)
+    if has_rule(&#34;background&#34;):
+        append_declaration(&#34;background&#34;, self.background.hex)
+    if has_rule(&#34;text_style&#34;):
+        append_declaration(&#34;text-style&#34;, str(get_rule(&#34;text_style&#34;)))
+
+    if has_rule(&#34;overflow-x&#34;):
+        append_declaration(&#34;overflow-x&#34;, self.overflow_x)
+    if has_rule(&#34;overflow-y&#34;):
+        append_declaration(&#34;overflow-y&#34;, self.overflow_y)
+
+    if has_rule(&#34;box-sizing&#34;):
+        append_declaration(&#34;box-sizing&#34;, self.box_sizing)
+    if has_rule(&#34;width&#34;):
+        append_declaration(&#34;width&#34;, str(self.width))
+    if has_rule(&#34;height&#34;):
+        append_declaration(&#34;height&#34;, str(self.height))
+    if has_rule(&#34;min_width&#34;):
+        append_declaration(&#34;min-width&#34;, str(self.min_width))
+    if has_rule(&#34;min_height&#34;):
+        append_declaration(&#34;min-height&#34;, str(self.min_height))
+    if has_rule(&#34;max_width&#34;):
+        append_declaration(&#34;max-width&#34;, str(self.min_width))
+    if has_rule(&#34;max_height&#34;):
+        append_declaration(&#34;max-height&#34;, str(self.min_height))
+    if has_rule(&#34;transitions&#34;):
+        append_declaration(
+            &#34;transition&#34;,
+            &#34;, &#34;.join(
+                f&#34;{name} {transition}&#34;
+                for name, transition in self.transitions.items()
+            ),
+        )
+
+    if has_rule(&#34;align_horizontal&#34;) and has_rule(&#34;align_vertical&#34;):
+        append_declaration(
+            &#34;align&#34;, f&#34;{self.align_horizontal} {self.align_vertical}&#34;
+        )
+    elif has_rule(&#34;align_horizontal&#34;):
+        append_declaration(&#34;align-horizontal&#34;, self.align_horizontal)
+    elif has_rule(&#34;align_horizontal&#34;):
+        append_declaration(&#34;align-vertical&#34;, self.align_vertical)
+
+    lines.sort()
+    return lines</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.css.styles.Styles.clear_rule"><code class="name flex">
+<span>def <span class="ident">clear_rule</span></span>(<span>self, rule: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Removes the rule from the Styles object, as if it had never been set.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Rule name.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if a rule was cleared, or <code>False</code> if it was already not set.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clear_rule(self, rule: str) -&gt; bool:
+    &#34;&#34;&#34;Removes the rule from the Styles object, as if it had never been set.
+
+    Args:
+        rule (str): Rule name.
+
+    Returns:
+        bool: ``True`` if a rule was cleared, or ``False`` if it was already not set.
+    &#34;&#34;&#34;
+    return self._rules.pop(rule, None) is not None</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.Styles.copy"><code class="name flex">
+<span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a copy of this Styles object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy(self) -&gt; Styles:
+    &#34;&#34;&#34;Get a copy of this Styles object.&#34;&#34;&#34;
+    return Styles(node=self.node, _rules=self.get_rules(), important=self.important)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.Styles.extract_rules"><code class="name flex">
+<span>def <span class="ident">extract_rules</span></span>(<span>self, specificity: Specificity3) ‑> list[tuple[str, Specificity4, Any]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Extract rules from Styles object, and apply !important css specificity.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>specificity</code></strong> :&ensp;<code>Specificity3</code></dt>
+<dd>A node specificity.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list[tuple[str, Specificity4, Any]]]</code></dt>
+<dd>A list containing a tuple of <RULE NAME>, <SPECIFICITY> <RULE VALUE>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def extract_rules(
+    self, specificity: Specificity3
+) -&gt; list[tuple[str, Specificity4, Any]]:
+    &#34;&#34;&#34;Extract rules from Styles object, and apply !important css specificity.
+
+    Args:
+        specificity (Specificity3): A node specificity.
+
+    Returns:
+        list[tuple[str, Specificity4, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
+    &#34;&#34;&#34;
+    is_important = self.important.__contains__
+
+    rules = [
+        (rule_name, (int(is_important(rule_name)), *specificity), rule_value)
+        for rule_name, rule_value in self._rules.items()
+    ]
+
+    return rules</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_bottom" href="#textual.css.styles.StylesBase.border_bottom">border_bottom</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_left" href="#textual.css.styles.StylesBase.border_left">border_left</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_right" href="#textual.css.styles.StylesBase.border_right">border_right</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_top" href="#textual.css.styles.StylesBase.border_top">border_top</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.box_sizing" href="#textual.css.styles.StylesBase.box_sizing">box_sizing</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.get_render_rules" href="#textual.css.styles.StylesBase.get_render_rules">get_render_rules</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.get_rule" href="#textual.css.styles.StylesBase.get_rule">get_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.get_rules" href="#textual.css.styles.StylesBase.get_rules">get_rules</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.gutter" href="#textual.css.styles.StylesBase.gutter">gutter</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.has_rule" href="#textual.css.styles.StylesBase.has_rule">has_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.height" href="#textual.css.styles.StylesBase.height">height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.is_animatable" href="#textual.css.styles.StylesBase.is_animatable">is_animatable</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.layer" href="#textual.css.styles.StylesBase.layer">layer</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.layout" href="#textual.css.styles.StylesBase.layout">layout</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.margin" href="#textual.css.styles.StylesBase.margin">margin</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.max_height" href="#textual.css.styles.StylesBase.max_height">max_height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.max_width" href="#textual.css.styles.StylesBase.max_width">max_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.merge" href="#textual.css.styles.StylesBase.merge">merge</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.merge_rules" href="#textual.css.styles.StylesBase.merge_rules">merge_rules</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.min_height" href="#textual.css.styles.StylesBase.min_height">min_height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.min_width" href="#textual.css.styles.StylesBase.min_width">min_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.offset" href="#textual.css.styles.StylesBase.offset">offset</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.opacity" href="#textual.css.styles.StylesBase.opacity">opacity</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline" href="#textual.css.styles.StylesBase.outline">outline</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_bottom" href="#textual.css.styles.StylesBase.outline_bottom">outline_bottom</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_left" href="#textual.css.styles.StylesBase.outline_left">outline_left</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_right" href="#textual.css.styles.StylesBase.outline_right">outline_right</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_top" href="#textual.css.styles.StylesBase.outline_top">outline_top</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.overflow_x" href="#textual.css.styles.StylesBase.overflow_x">overflow_x</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.overflow_y" href="#textual.css.styles.StylesBase.overflow_y">overflow_y</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.padding" href="#textual.css.styles.StylesBase.padding">padding</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.parse" href="#textual.css.styles.StylesBase.parse">parse</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.refresh" href="#textual.css.styles.StylesBase.refresh">refresh</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.reset" href="#textual.css.styles.StylesBase.reset">reset</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.rich_style" href="#textual.css.styles.StylesBase.rich_style">rich_style</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_background" href="#textual.css.styles.StylesBase.scrollbar_background">scrollbar_background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_background_active" href="#textual.css.styles.StylesBase.scrollbar_background_active">scrollbar_background_active</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_background_hover" href="#textual.css.styles.StylesBase.scrollbar_background_hover">scrollbar_background_hover</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_color" href="#textual.css.styles.StylesBase.scrollbar_color">scrollbar_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.transitions" href="#textual.css.styles.StylesBase.transitions">transitions</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.visibility" href="#textual.css.styles.StylesBase.visibility">visibility</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.width" href="#textual.css.styles.StylesBase.width">width</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.css.styles.StylesBase"><code class="flex name class">
+<span>class <span class="ident">StylesBase</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A common base class for Styles and RenderStyles</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class StylesBase(ABC):
+    &#34;&#34;&#34;A common base class for Styles and RenderStyles&#34;&#34;&#34;
+
+    ANIMATABLE = {
+        &#34;offset&#34;,
+        &#34;padding&#34;,
+        &#34;margin&#34;,
+        &#34;width&#34;,
+        &#34;height&#34;,
+        &#34;min_width&#34;,
+        &#34;min_height&#34;,
+        &#34;max_width&#34;,
+        &#34;max_height&#34;,
+        &#34;color&#34;,
+        &#34;background&#34;,
+        &#34;scrollbar_color&#34;,
+        &#34;scrollbar_color_hover&#34;,
+        &#34;scrollbar_color_active&#34;,
+        &#34;scrollbar_background&#34;,
+        &#34;scrollbar_background_hover&#34;,
+        &#34;scrollbar_background_active&#34;,
+    }
+
+    display = StringEnumProperty(VALID_DISPLAY, &#34;block&#34;)
+    visibility = StringEnumProperty(VALID_VISIBILITY, &#34;visible&#34;)
+    layout = LayoutProperty()
+
+    color = ColorProperty(Color(255, 255, 255))
+    background = ColorProperty(Color(0, 0, 0))
+    text_style = StyleFlagsProperty()
+
+    opacity = FractionalProperty()
+
+    padding = SpacingProperty()
+    margin = SpacingProperty()
+    offset = OffsetProperty()
+
+    border = BorderProperty()
+    border_top = BoxProperty(Color(0, 255, 0))
+    border_right = BoxProperty(Color(0, 255, 0))
+    border_bottom = BoxProperty(Color(0, 255, 0))
+    border_left = BoxProperty(Color(0, 255, 0))
+
+    outline = BorderProperty()
+    outline_top = BoxProperty(Color(0, 255, 0))
+    outline_right = BoxProperty(Color(0, 255, 0))
+    outline_bottom = BoxProperty(Color(0, 255, 0))
+    outline_left = BoxProperty(Color(0, 255, 0))
+
+    box_sizing = StringEnumProperty(VALID_BOX_SIZING, &#34;border-box&#34;)
+    width = ScalarProperty(percent_unit=Unit.WIDTH)
+    height = ScalarProperty(percent_unit=Unit.HEIGHT)
+    min_width = ScalarProperty(percent_unit=Unit.WIDTH, allow_auto=False)
+    min_height = ScalarProperty(percent_unit=Unit.HEIGHT, allow_auto=False)
+    max_width = ScalarProperty(percent_unit=Unit.WIDTH, allow_auto=False)
+    max_height = ScalarProperty(percent_unit=Unit.HEIGHT, allow_auto=False)
+
+    dock = DockProperty()
+    docks = DocksProperty()
+
+    overflow_x = StringEnumProperty(VALID_OVERFLOW, &#34;hidden&#34;)
+    overflow_y = StringEnumProperty(VALID_OVERFLOW, &#34;hidden&#34;)
+
+    layer = NameProperty()
+    layers = NameListProperty()
+    transitions = TransitionsProperty()
+
+    rich_style = StyleProperty()
+
+    scrollbar_color = ColorProperty(&#34;bright_magenta&#34;)
+    scrollbar_color_hover = ColorProperty(&#34;yellow&#34;)
+    scrollbar_color_active = ColorProperty(&#34;bright_yellow&#34;)
+
+    scrollbar_background = ColorProperty(&#34;#555555&#34;)
+    scrollbar_background_hover = ColorProperty(&#34;#444444&#34;)
+    scrollbar_background_active = ColorProperty(&#34;black&#34;)
+
+    align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
+    align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
+
+    def __eq__(self, styles: object) -&gt; bool:
+        &#34;&#34;&#34;Check that Styles containts the same rules.&#34;&#34;&#34;
+        if not isinstance(styles, StylesBase):
+            return NotImplemented
+        return self.get_rules() == styles.get_rules()
+
+    @property
+    def gutter(self) -&gt; Spacing:
+        &#34;&#34;&#34;Get space around widget.
+
+        Returns:
+            Spacing: Space around widget.
+        &#34;&#34;&#34;
+        spacing = Spacing() + self.padding + self.border.spacing
+        return spacing
+
+    @abstractmethod
+    def has_rule(self, rule: str) -&gt; bool:
+        &#34;&#34;&#34;Check if a rule is set on this Styles object.
+
+        Args:
+            rule (str): Rule name.
+
+        Returns:
+            bool: ``True`` if the rules is present, otherwise ``False``.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def clear_rule(self, rule: str) -&gt; bool:
+        &#34;&#34;&#34;Removes the rule from the Styles object, as if it had never been set.
+
+        Args:
+            rule (str): Rule name.
+
+        Returns:
+            bool: ``True`` if a rule was cleared, or ``False`` if the rule is already not set.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def get_rules(self) -&gt; RulesMap:
+        &#34;&#34;&#34;Get the rules in a mapping.
+
+        Returns:
+            RulesMap: A TypedDict of the rules.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def set_rule(self, rule: str, value: object | None) -&gt; bool:
+        &#34;&#34;&#34;Set a rule.
+
+        Args:
+            rule (str): Rule name.
+            value (object | None): New rule value.
+
+        Returns:
+            bool: ``True`` if the rule changed, otherwise ``False``.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def get_rule(self, rule: str, default: object = None) -&gt; object:
+        &#34;&#34;&#34;Get an individual rule.
+
+        Args:
+            rule (str): Name of rule.
+            default (object, optional): Default if rule does not exists. Defaults to None.
+
+        Returns:
+            object: Rule value or default.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def refresh(self, *, layout: bool = False) -&gt; None:
+        &#34;&#34;&#34;Mark the styles as requiring a refresh.
+
+        Args:
+            layout (bool, optional): Also require a layout. Defaults to False.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def reset(self) -&gt; None:
+        &#34;&#34;&#34;Reset the rules to initial state.&#34;&#34;&#34;
+
+    @abstractmethod
+    def merge(self, other: StylesBase) -&gt; None:
+        &#34;&#34;&#34;Merge values from another Styles.
+
+        Args:
+            other (Styles): A Styles object.
+        &#34;&#34;&#34;
+
+    @abstractmethod
+    def merge_rules(self, rules: RulesMap) -&gt; None:
+        &#34;&#34;&#34;Merge rules in to Styles.
+
+        Args:
+            rules (RulesMap): A mapping of rules.
+        &#34;&#34;&#34;
+
+    def get_render_rules(self) -&gt; RulesMap:
+        &#34;&#34;&#34;Get rules map with defaults.&#34;&#34;&#34;
+        # Get a dictionary of rules, going through the properties
+        rules = dict(zip(RULE_NAMES, _rule_getter(self)))
+        return cast(RulesMap, rules)
+
+    @classmethod
+    def is_animatable(cls, rule: str) -&gt; bool:
+        &#34;&#34;&#34;Check if a given rule may be animated.
+
+        Args:
+            rule (str): Name of the rule.
+
+        Returns:
+            bool: ``True`` if the rule may be animated, otherwise ``False``.
+        &#34;&#34;&#34;
+        return rule in cls.ANIMATABLE
+
+    @classmethod
+    @lru_cache(maxsize=1024)
+    def parse(cls, css: str, path: str, *, node: DOMNode = None) -&gt; Styles:
+        &#34;&#34;&#34;Parse CSS and return a Styles object.
+
+        Args:
+            css (str): Textual CSS.
+            path (str): Path or string indicating source of CSS.
+            node (DOMNode, optional): Node to associate with the Styles. Defaults to None.
+
+        Returns:
+            Styles: A Styles instance containing result of parsing CSS.
+        &#34;&#34;&#34;
+        from .parse import parse_declarations
+
+        styles = parse_declarations(css, path)
+        styles.node = node
+        return styles
+
+    def get_transition(self, key: str) -&gt; Transition | None:
+        if key in self.ANIMATABLE:
+            return self.transitions.get(key, None)
+        else:
+            return None
+
+    def align_width(self, width: int, parent_width: int) -&gt; int:
+        &#34;&#34;&#34;Align the width dimension.
+
+        Args:
+            width (int): Width of the content.
+            parent_width (int): Width of the parent container.
+
+        Returns:
+            int: An offset to add to the X coordinate.
+        &#34;&#34;&#34;
+        offset_x = 0
+        align_horizontal = self.align_horizontal
+        if align_horizontal != &#34;left&#34;:
+            if align_horizontal == &#34;center&#34;:
+                offset_x = (parent_width - width) // 2
+            else:
+                offset_x = parent_width - width
+        return offset_x
+
+    def align_height(self, height: int, parent_height: int) -&gt; int:
+        &#34;&#34;&#34;Align the height dimensions
+
+        Args:
+            height (int): Height of the content.
+            parent_height (int): Height of the parent container.
+
+        Returns:
+            int: An offset to add to the Y coordinate.
+        &#34;&#34;&#34;
+        offset_y = 0
+        align_vertical = self.align_vertical
+        if align_vertical != &#34;top&#34;:
+            if align_vertical == &#34;middle&#34;:
+                offset_y = (parent_height - height) // 2
+            else:
+                offset_y = parent_height - height
+        return offset_y</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="textual.css.styles.RenderStyles" href="#textual.css.styles.RenderStyles">RenderStyles</a></li>
+<li><a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.css.styles.StylesBase.ANIMATABLE"><code class="name">var <span class="ident">ANIMATABLE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="textual.css.styles.StylesBase.is_animatable"><code class="name flex">
+<span>def <span class="ident">is_animatable</span></span>(<span>rule: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if a given rule may be animated.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the rule.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if the rule may be animated, otherwise <code>False</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def is_animatable(cls, rule: str) -&gt; bool:
+    &#34;&#34;&#34;Check if a given rule may be animated.
+
+    Args:
+        rule (str): Name of the rule.
+
+    Returns:
+        bool: ``True`` if the rule may be animated, otherwise ``False``.
+    &#34;&#34;&#34;
+    return rule in cls.ANIMATABLE</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.parse"><code class="name flex">
+<span>def <span class="ident">parse</span></span>(<span>cls, css: str, path: str, *, node: DOMNode = None) ‑> <a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Parse CSS and return a Styles object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>css</code></strong> :&ensp;<code>str</code></dt>
+<dd>Textual CSS.</dd>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path or string indicating source of CSS.</dd>
+<dt><strong><code>node</code></strong> :&ensp;<code>DOMNode</code>, optional</dt>
+<dd>Node to associate with the Styles. Defaults to None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></code></dt>
+<dd>A Styles instance containing result of parsing CSS.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+@lru_cache(maxsize=1024)
+def parse(cls, css: str, path: str, *, node: DOMNode = None) -&gt; Styles:
+    &#34;&#34;&#34;Parse CSS and return a Styles object.
+
+    Args:
+        css (str): Textual CSS.
+        path (str): Path or string indicating source of CSS.
+        node (DOMNode, optional): Node to associate with the Styles. Defaults to None.
+
+    Returns:
+        Styles: A Styles instance containing result of parsing CSS.
+    &#34;&#34;&#34;
+    from .parse import parse_declarations
+
+    styles = parse_declarations(css, path)
+    styles.node = node
+    return styles</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.css.styles.StylesBase.align_horizontal"><code class="name">var <span class="ident">align_horizontal</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
+value belongs in the set of valid values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the string property, or the default value if it&#39;s not set
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The string property value
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.align_vertical"><code class="name">var <span class="ident">align_vertical</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
+value belongs in the set of valid values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the string property, or the default value if it&#39;s not set
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The string property value
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.background"><code class="name">var <span class="ident">background</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.border"><code class="name">var <span class="ident">border</span> : Edges</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting full borders and outlines.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Edges:
+    &#34;&#34;&#34;Get the border
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        An ``Edges`` object describing the type and style of each edge.
+    &#34;&#34;&#34;
+    top, right, bottom, left = self._properties
+
+    border = Edges(
+        getattr(obj, top),
+        getattr(obj, right),
+        getattr(obj, bottom),
+        getattr(obj, left),
+    )
+    return border</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.border_bottom"><code class="name">var <span class="ident">border_bottom</span> : tuple[EdgeType, Color]</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting outlines and borders along a single edge.
+For example "border-right", "outline-bottom", etc.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[EdgeType, Color]:
+    &#34;&#34;&#34;Get the box property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        A ``tuple[EdgeType, Style]`` containing the string type of the box and
+            it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
+    &#34;&#34;&#34;
+    box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    return (box_type, color)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.border_left"><code class="name">var <span class="ident">border_left</span> : tuple[EdgeType, Color]</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting outlines and borders along a single edge.
+For example "border-right", "outline-bottom", etc.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[EdgeType, Color]:
+    &#34;&#34;&#34;Get the box property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        A ``tuple[EdgeType, Style]`` containing the string type of the box and
+            it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
+    &#34;&#34;&#34;
+    box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    return (box_type, color)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.border_right"><code class="name">var <span class="ident">border_right</span> : tuple[EdgeType, Color]</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting outlines and borders along a single edge.
+For example "border-right", "outline-bottom", etc.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[EdgeType, Color]:
+    &#34;&#34;&#34;Get the box property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        A ``tuple[EdgeType, Style]`` containing the string type of the box and
+            it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
+    &#34;&#34;&#34;
+    box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    return (box_type, color)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.border_top"><code class="name">var <span class="ident">border_top</span> : tuple[EdgeType, Color]</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting outlines and borders along a single edge.
+For example "border-right", "outline-bottom", etc.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[EdgeType, Color]:
+    &#34;&#34;&#34;Get the box property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        A ``tuple[EdgeType, Style]`` containing the string type of the box and
+            it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
+    &#34;&#34;&#34;
+    box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    return (box_type, color)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.box_sizing"><code class="name">var <span class="ident">box_sizing</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
+value belongs in the set of valid values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the string property, or the default value if it&#39;s not set
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The string property value
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.color"><code class="name">var <span class="ident">color</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.display"><code class="name">var <span class="ident">display</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
+value belongs in the set of valid values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the string property, or the default value if it&#39;s not set
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The string property value
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.dock"><code class="name">var <span class="ident">dock</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting the dock property. The dock property
+allows you to specify which dock you wish a Widget to be attached to. This
+should be used in conjunction with the "docks" property which lets you define
+the docks themselves, and where they are located on screen.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the Dock property
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The dock name as a string, or &#34;&#34; if the rule is not set.
+    &#34;&#34;&#34;
+    return obj.get_rule(&#34;dock&#34;, &#34;_default&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.docks"><code class="name">var <span class="ident">docks</span> : tuple[<a title="textual.css.styles.DockGroup" href="#textual.css.styles.DockGroup">DockGroup</a>, ...]</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting the docks property. This property
+is used to define docks and their location on screen.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[DockGroup, ...]:
+    &#34;&#34;&#34;Get the Docks property
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        tuple[DockGroup, ...]: A ``tuple`` containing the defined docks.
+    &#34;&#34;&#34;
+    if obj.has_rule(&#34;docks&#34;):
+        return obj.get_rule(&#34;docks&#34;)
+    from .styles import DockGroup
+
+    return (DockGroup(&#34;_default&#34;, &#34;top&#34;, 1),)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.gutter"><code class="name">var <span class="ident">gutter</span> : <a title="textual.geometry.Spacing" href="../geometry.html#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd>
+<div class="desc"><p>Get space around widget.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Spacing</code></dt>
+<dd>Space around widget.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def gutter(self) -&gt; Spacing:
+    &#34;&#34;&#34;Get space around widget.
+
+    Returns:
+        Spacing: Space around widget.
+    &#34;&#34;&#34;
+    spacing = Spacing() + self.padding + self.border.spacing
+    return spacing</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.height"><code class="name">var <span class="ident">height</span> : Scalar | None</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. "50vh".</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[Styles] | None = None
+) -&gt; Scalar | None:
+    &#34;&#34;&#34;Get the scalar property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        The Scalar object or ``None`` if it&#39;s not set.
+    &#34;&#34;&#34;
+    value = obj.get_rule(self.name)
+    return value</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.layer"><code class="name">var <span class="ident">layer</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting name properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None) -&gt; str:
+    &#34;&#34;&#34;Get the name property
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The name
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, &#34;&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.layers"><code class="name">var <span class="ident">layers</span> : tuple[str, ...]</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[str, ...]:
+    return cast(&#34;tuple[str, ...]&#34;, obj.get_rule(self.name, ()))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.layout"><code class="name">var <span class="ident">layout</span> : Layout | None</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting layout.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Layout | None:
+    &#34;&#34;&#34;
+    Args:
+        obj (Styles): The Styles object
+        objtype (type[Styles]): The Styles class
+    Returns:
+        The ``Layout`` object.
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.margin"><code class="name">var <span class="ident">margin</span> : Spacing</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting spacing properties (e.g. padding and margin).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Spacing:
+    &#34;&#34;&#34;Get the Spacing
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        Spacing: The Spacing. If unset, returns the null spacing ``(0, 0, 0, 0)``.
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, NULL_SPACING)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.max_height"><code class="name">var <span class="ident">max_height</span> : Scalar | None</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. "50vh".</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[Styles] | None = None
+) -&gt; Scalar | None:
+    &#34;&#34;&#34;Get the scalar property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        The Scalar object or ``None`` if it&#39;s not set.
+    &#34;&#34;&#34;
+    value = obj.get_rule(self.name)
+    return value</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.max_width"><code class="name">var <span class="ident">max_width</span> : Scalar | None</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. "50vh".</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[Styles] | None = None
+) -&gt; Scalar | None:
+    &#34;&#34;&#34;Get the scalar property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        The Scalar object or ``None`` if it&#39;s not set.
+    &#34;&#34;&#34;
+    value = obj.get_rule(self.name)
+    return value</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.min_height"><code class="name">var <span class="ident">min_height</span> : Scalar | None</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. "50vh".</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[Styles] | None = None
+) -&gt; Scalar | None:
+    &#34;&#34;&#34;Get the scalar property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        The Scalar object or ``None`` if it&#39;s not set.
+    &#34;&#34;&#34;
+    value = obj.get_rule(self.name)
+    return value</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.min_width"><code class="name">var <span class="ident">min_width</span> : Scalar | None</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. "50vh".</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[Styles] | None = None
+) -&gt; Scalar | None:
+    &#34;&#34;&#34;Get the scalar property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        The Scalar object or ``None`` if it&#39;s not set.
+    &#34;&#34;&#34;
+    value = obj.get_rule(self.name)
+    return value</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.offset"><code class="name">var <span class="ident">offset</span> : ScalarOffset</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting the offset property.
+Offset consists of two values, x and y, that a widget's position
+will be adjusted by before it is rendered.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; ScalarOffset:
+    &#34;&#34;&#34;Get the offset
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        ScalarOffset: The ``ScalarOffset`` indicating the adjustment that
+            will be made to widget position prior to it being rendered.
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, ScalarOffset.null())</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.opacity"><code class="name">var <span class="ident">opacity</span> : float</code></dt>
+<dd>
+<div class="desc"><p>Property that can be set either as a float (e.g. 0.1) or a
+string percentage (e.g. '10%'). Values will be clamped to the range (0, 1).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, type: type[StylesBase]) -&gt; float:
+    &#34;&#34;&#34;Get the property value as a float between 0 and 1
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        float: The value of the property (in the range (0, 1))
+    &#34;&#34;&#34;
+    return cast(float, obj.get_rule(self.name, self.default))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.outline"><code class="name">var <span class="ident">outline</span> : Edges</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting full borders and outlines.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Edges:
+    &#34;&#34;&#34;Get the border
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        An ``Edges`` object describing the type and style of each edge.
+    &#34;&#34;&#34;
+    top, right, bottom, left = self._properties
+
+    border = Edges(
+        getattr(obj, top),
+        getattr(obj, right),
+        getattr(obj, bottom),
+        getattr(obj, left),
+    )
+    return border</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.outline_bottom"><code class="name">var <span class="ident">outline_bottom</span> : tuple[EdgeType, Color]</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting outlines and borders along a single edge.
+For example "border-right", "outline-bottom", etc.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[EdgeType, Color]:
+    &#34;&#34;&#34;Get the box property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        A ``tuple[EdgeType, Style]`` containing the string type of the box and
+            it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
+    &#34;&#34;&#34;
+    box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    return (box_type, color)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.outline_left"><code class="name">var <span class="ident">outline_left</span> : tuple[EdgeType, Color]</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting outlines and borders along a single edge.
+For example "border-right", "outline-bottom", etc.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[EdgeType, Color]:
+    &#34;&#34;&#34;Get the box property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        A ``tuple[EdgeType, Style]`` containing the string type of the box and
+            it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
+    &#34;&#34;&#34;
+    box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    return (box_type, color)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.outline_right"><code class="name">var <span class="ident">outline_right</span> : tuple[EdgeType, Color]</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting outlines and borders along a single edge.
+For example "border-right", "outline-bottom", etc.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[EdgeType, Color]:
+    &#34;&#34;&#34;Get the box property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        A ``tuple[EdgeType, Style]`` containing the string type of the box and
+            it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
+    &#34;&#34;&#34;
+    box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    return (box_type, color)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.outline_top"><code class="name">var <span class="ident">outline_top</span> : tuple[EdgeType, Color]</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting outlines and borders along a single edge.
+For example "border-right", "outline-bottom", etc.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[EdgeType, Color]:
+    &#34;&#34;&#34;Get the box property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        A ``tuple[EdgeType, Style]`` containing the string type of the box and
+            it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
+    &#34;&#34;&#34;
+    box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    return (box_type, color)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.overflow_x"><code class="name">var <span class="ident">overflow_x</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
+value belongs in the set of valid values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the string property, or the default value if it&#39;s not set
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The string property value
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.overflow_y"><code class="name">var <span class="ident">overflow_y</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
+value belongs in the set of valid values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the string property, or the default value if it&#39;s not set
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The string property value
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.padding"><code class="name">var <span class="ident">padding</span> : Spacing</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting spacing properties (e.g. padding and margin).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Spacing:
+    &#34;&#34;&#34;Get the Spacing
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        Spacing: The Spacing. If unset, returns the null spacing ``(0, 0, 0, 0)``.
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, NULL_SPACING)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.rich_style"><code class="name">var <span class="ident">rich_style</span> : Style</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting the text style.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Style:
+    &#34;&#34;&#34;Get the Style
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        A ``Style`` object.
+    &#34;&#34;&#34;
+    style = ColorPair(obj.color, obj.background).style + obj.text_style
+    return style</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.scrollbar_background"><code class="name">var <span class="ident">scrollbar_background</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.scrollbar_background_active"><code class="name">var <span class="ident">scrollbar_background_active</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.scrollbar_background_hover"><code class="name">var <span class="ident">scrollbar_background_hover</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.scrollbar_color"><code class="name">var <span class="ident">scrollbar_color</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.scrollbar_color_active"><code class="name">var <span class="ident">scrollbar_color_active</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.scrollbar_color_hover"><code class="name">var <span class="ident">scrollbar_color_hover</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.text_style"><code class="name">var <span class="ident">text_style</span> : Style</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and set style flag properties (e.g. <code>bold italic underline</code>).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Style:
+    &#34;&#34;&#34;Get the ``Style``
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Style: The ``Style`` object
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, Style.null())</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.transitions"><code class="name">var <span class="ident">transitions</span> : dict[str, Transition]</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting transitions properties</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; dict[str, Transition]:
+    &#34;&#34;&#34;Get a mapping of properties to the transitions applied to them.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        dict[str, Transition]: A ``dict`` mapping property names to the ``Transition`` applied to them.
+            e.g. ``{&#34;offset&#34;: Transition(...), ...}``. If no transitions have been set, an empty ``dict``
+            is returned.
+    &#34;&#34;&#34;
+    return obj.get_rule(&#34;transitions&#34;, {})</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.visibility"><code class="name">var <span class="ident">visibility</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
+value belongs in the set of valid values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the string property, or the default value if it&#39;s not set
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The string property value
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.width"><code class="name">var <span class="ident">width</span> : Scalar | None</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. "50vh".</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[Styles] | None = None
+) -&gt; Scalar | None:
+    &#34;&#34;&#34;Get the scalar property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        The Scalar object or ``None`` if it&#39;s not set.
+    &#34;&#34;&#34;
+    value = obj.get_rule(self.name)
+    return value</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.css.styles.StylesBase.align_height"><code class="name flex">
+<span>def <span class="ident">align_height</span></span>(<span>self, height: int, parent_height: int) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Align the height dimensions</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>height</code></strong> :&ensp;<code>int</code></dt>
+<dd>Height of the content.</dd>
+<dt><strong><code>parent_height</code></strong> :&ensp;<code>int</code></dt>
+<dd>Height of the parent container.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>An offset to add to the Y coordinate.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def align_height(self, height: int, parent_height: int) -&gt; int:
+    &#34;&#34;&#34;Align the height dimensions
+
+    Args:
+        height (int): Height of the content.
+        parent_height (int): Height of the parent container.
+
+    Returns:
+        int: An offset to add to the Y coordinate.
+    &#34;&#34;&#34;
+    offset_y = 0
+    align_vertical = self.align_vertical
+    if align_vertical != &#34;top&#34;:
+        if align_vertical == &#34;middle&#34;:
+            offset_y = (parent_height - height) // 2
+        else:
+            offset_y = parent_height - height
+    return offset_y</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.align_width"><code class="name flex">
+<span>def <span class="ident">align_width</span></span>(<span>self, width: int, parent_width: int) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Align the width dimension.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>width</code></strong> :&ensp;<code>int</code></dt>
+<dd>Width of the content.</dd>
+<dt><strong><code>parent_width</code></strong> :&ensp;<code>int</code></dt>
+<dd>Width of the parent container.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>An offset to add to the X coordinate.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def align_width(self, width: int, parent_width: int) -&gt; int:
+    &#34;&#34;&#34;Align the width dimension.
+
+    Args:
+        width (int): Width of the content.
+        parent_width (int): Width of the parent container.
+
+    Returns:
+        int: An offset to add to the X coordinate.
+    &#34;&#34;&#34;
+    offset_x = 0
+    align_horizontal = self.align_horizontal
+    if align_horizontal != &#34;left&#34;:
+        if align_horizontal == &#34;center&#34;:
+            offset_x = (parent_width - width) // 2
+        else:
+            offset_x = parent_width - width
+    return offset_x</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.clear_rule"><code class="name flex">
+<span>def <span class="ident">clear_rule</span></span>(<span>self, rule: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Removes the rule from the Styles object, as if it had never been set.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Rule name.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if a rule was cleared, or <code>False</code> if the rule is already not set.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def clear_rule(self, rule: str) -&gt; bool:
+    &#34;&#34;&#34;Removes the rule from the Styles object, as if it had never been set.
+
+    Args:
+        rule (str): Rule name.
+
+    Returns:
+        bool: ``True`` if a rule was cleared, or ``False`` if the rule is already not set.
+    &#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.get_render_rules"><code class="name flex">
+<span>def <span class="ident">get_render_rules</span></span>(<span>self) ‑> <a title="textual.css.styles.RulesMap" href="#textual.css.styles.RulesMap">RulesMap</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get rules map with defaults.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_render_rules(self) -&gt; RulesMap:
+    &#34;&#34;&#34;Get rules map with defaults.&#34;&#34;&#34;
+    # Get a dictionary of rules, going through the properties
+    rules = dict(zip(RULE_NAMES, _rule_getter(self)))
+    return cast(RulesMap, rules)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.get_rule"><code class="name flex">
+<span>def <span class="ident">get_rule</span></span>(<span>self, rule: str, default: object = None) ‑> object</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get an individual rule.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of rule.</dd>
+<dt><strong><code>default</code></strong> :&ensp;<code>object</code>, optional</dt>
+<dd>Default if rule does not exists. Defaults to None.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>object</code></dt>
+<dd>Rule value or default.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def get_rule(self, rule: str, default: object = None) -&gt; object:
+    &#34;&#34;&#34;Get an individual rule.
+
+    Args:
+        rule (str): Name of rule.
+        default (object, optional): Default if rule does not exists. Defaults to None.
+
+    Returns:
+        object: Rule value or default.
+    &#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.get_rules"><code class="name flex">
+<span>def <span class="ident">get_rules</span></span>(<span>self) ‑> <a title="textual.css.styles.RulesMap" href="#textual.css.styles.RulesMap">RulesMap</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the rules in a mapping.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.css.styles.RulesMap" href="#textual.css.styles.RulesMap">RulesMap</a></code></dt>
+<dd>A TypedDict of the rules.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def get_rules(self) -&gt; RulesMap:
+    &#34;&#34;&#34;Get the rules in a mapping.
+
+    Returns:
+        RulesMap: A TypedDict of the rules.
+    &#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.get_transition"><code class="name flex">
+<span>def <span class="ident">get_transition</span></span>(<span>self, key: str) ‑> Transition | None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_transition(self, key: str) -&gt; Transition | None:
+    if key in self.ANIMATABLE:
+        return self.transitions.get(key, None)
+    else:
+        return None</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.has_rule"><code class="name flex">
+<span>def <span class="ident">has_rule</span></span>(<span>self, rule: str) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Check if a rule is set on this Styles object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Rule name.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if the rules is present, otherwise <code>False</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def has_rule(self, rule: str) -&gt; bool:
+    &#34;&#34;&#34;Check if a rule is set on this Styles object.
+
+    Args:
+        rule (str): Rule name.
+
+    Returns:
+        bool: ``True`` if the rules is present, otherwise ``False``.
+    &#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.merge"><code class="name flex">
+<span>def <span class="ident">merge</span></span>(<span>self, other: <a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Merge values from another Styles.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>other</code></strong> :&ensp;<code><a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></code></dt>
+<dd>A Styles object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def merge(self, other: StylesBase) -&gt; None:
+    &#34;&#34;&#34;Merge values from another Styles.
+
+    Args:
+        other (Styles): A Styles object.
+    &#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.merge_rules"><code class="name flex">
+<span>def <span class="ident">merge_rules</span></span>(<span>self, rules: <a title="textual.css.styles.RulesMap" href="#textual.css.styles.RulesMap">RulesMap</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Merge rules in to Styles.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rules</code></strong> :&ensp;<code><a title="textual.css.styles.RulesMap" href="#textual.css.styles.RulesMap">RulesMap</a></code></dt>
+<dd>A mapping of rules.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def merge_rules(self, rules: RulesMap) -&gt; None:
+    &#34;&#34;&#34;Merge rules in to Styles.
+
+    Args:
+        rules (RulesMap): A mapping of rules.
+    &#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.refresh"><code class="name flex">
+<span>def <span class="ident">refresh</span></span>(<span>self, *, layout: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Mark the styles as requiring a refresh.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Also require a layout. Defaults to False.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def refresh(self, *, layout: bool = False) -&gt; None:
+    &#34;&#34;&#34;Mark the styles as requiring a refresh.
+
+    Args:
+        layout (bool, optional): Also require a layout. Defaults to False.
+    &#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.reset"><code class="name flex">
+<span>def <span class="ident">reset</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reset the rules to initial state.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def reset(self) -&gt; None:
+    &#34;&#34;&#34;Reset the rules to initial state.&#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.set_rule"><code class="name flex">
+<span>def <span class="ident">set_rule</span></span>(<span>self, rule: str, value: object | None) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set a rule.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>rule</code></strong> :&ensp;<code>str</code></dt>
+<dd>Rule name.</dd>
+</dl>
+<p>value (object | None): New rule value.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd><code>True</code> if the rule changed, otherwise <code>False</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@abstractmethod
+def set_rule(self, rule: str, value: object | None) -&gt; bool:
+    &#34;&#34;&#34;Set a rule.
+
+    Args:
+        rule (str): Rule name.
+        value (object | None): New rule value.
+
+    Returns:
+        bool: ``True`` if the rule changed, otherwise ``False``.
+    &#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<form>
+<input id="lunr-search" name="q" placeholder="🔎 Search ..." aria-label="Search"
+disabled minlength="2">
+</form>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.css" integrity="sha512-j1u8eUJ4f23xPPxwOrLUPQaCD2dwzNqqmDDcWS4deWsMv2ohLqmXXuP3hU7g8TyzbMSakP/mMqoNBYWj8AEIFg==" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tingle/0.15.3/tingle.min.js" integrity="sha512-plGUER9JkeEWPPqQBE4sdLqBoQug5Ap+BCGMc7bJ8BXkm+VVj6QzkpBz5Yv2yPkkq+cqg9IpkBaGCas6uDbW8g==" crossorigin></script>
+<style>
+.modal-dialog iframe {
+width: 100vw;
+height: calc(100vh - 80px);
+}
+@media screen and (min-width: 700px) {
+.modal-dialog iframe {
+width: 70vw;
+height: 80vh;
+}
+}
+.modal-dialog .tingle-modal-box {width: auto;}
+.modal-dialog .tingle-modal-box__content {padding: 0;}
+</style>
+<script>
+const input = document.getElementById('lunr-search');
+input.disabled = false;
+input.form.addEventListener('submit', (ev) => {
+ev.preventDefault();
+const url = new URL(window.location);
+url.searchParams.set('q', input.value);
+history.replaceState({}, null, url.toString());
+search(input.value);
+});
+const query = new URL(window.location).searchParams.get('q');
+if (query)
+search(query);
+function search(query) {
+const url = '../../doc-search.html#' + encodeURIComponent(query);
+new tingle.modal({
+cssClass: ['modal-dialog'],
+onClose: () => {
+const url = new URL(window.location);
+url.searchParams.delete('q');
+history.replaceState({}, null, url.toString());
+setTimeout(() => input.focus(), 100);
+}
+}).setContent('<iframe src="' + url + '"></iframe>').open();
+}
+</script>
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="textual.css" href="index.html">textual.css</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="textual.css.styles.DockGroup" href="#textual.css.styles.DockGroup">DockGroup</a></code></h4>
+<ul class="">
+<li><code><a title="textual.css.styles.DockGroup.edge" href="#textual.css.styles.DockGroup.edge">edge</a></code></li>
+<li><code><a title="textual.css.styles.DockGroup.name" href="#textual.css.styles.DockGroup.name">name</a></code></li>
+<li><code><a title="textual.css.styles.DockGroup.z" href="#textual.css.styles.DockGroup.z">z</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.css.styles.RenderStyles" href="#textual.css.styles.RenderStyles">RenderStyles</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.css.styles.RenderStyles.base" href="#textual.css.styles.RenderStyles.base">base</a></code></li>
+<li><code><a title="textual.css.styles.RenderStyles.clear_rule" href="#textual.css.styles.RenderStyles.clear_rule">clear_rule</a></code></li>
+<li><code><a title="textual.css.styles.RenderStyles.css" href="#textual.css.styles.RenderStyles.css">css</a></code></li>
+<li><code><a title="textual.css.styles.RenderStyles.get_rules" href="#textual.css.styles.RenderStyles.get_rules">get_rules</a></code></li>
+<li><code><a title="textual.css.styles.RenderStyles.has_rule" href="#textual.css.styles.RenderStyles.has_rule">has_rule</a></code></li>
+<li><code><a title="textual.css.styles.RenderStyles.inline" href="#textual.css.styles.RenderStyles.inline">inline</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.css.styles.RulesMap" href="#textual.css.styles.RulesMap">RulesMap</a></code></h4>
+<ul class="">
+<li><code><a title="textual.css.styles.RulesMap.align_horizontal" href="#textual.css.styles.RulesMap.align_horizontal">align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.align_vertical" href="#textual.css.styles.RulesMap.align_vertical">align_vertical</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.background" href="#textual.css.styles.RulesMap.background">background</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.border_bottom" href="#textual.css.styles.RulesMap.border_bottom">border_bottom</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.border_left" href="#textual.css.styles.RulesMap.border_left">border_left</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.border_right" href="#textual.css.styles.RulesMap.border_right">border_right</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.border_top" href="#textual.css.styles.RulesMap.border_top">border_top</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.box_sizing" href="#textual.css.styles.RulesMap.box_sizing">box_sizing</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.color" href="#textual.css.styles.RulesMap.color">color</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.display" href="#textual.css.styles.RulesMap.display">display</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.dock" href="#textual.css.styles.RulesMap.dock">dock</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.docks" href="#textual.css.styles.RulesMap.docks">docks</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.height" href="#textual.css.styles.RulesMap.height">height</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.layer" href="#textual.css.styles.RulesMap.layer">layer</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.layers" href="#textual.css.styles.RulesMap.layers">layers</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.layout" href="#textual.css.styles.RulesMap.layout">layout</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.margin" href="#textual.css.styles.RulesMap.margin">margin</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.max_height" href="#textual.css.styles.RulesMap.max_height">max_height</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.max_width" href="#textual.css.styles.RulesMap.max_width">max_width</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.min_height" href="#textual.css.styles.RulesMap.min_height">min_height</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.min_width" href="#textual.css.styles.RulesMap.min_width">min_width</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.offset" href="#textual.css.styles.RulesMap.offset">offset</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.opacity" href="#textual.css.styles.RulesMap.opacity">opacity</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.outline_bottom" href="#textual.css.styles.RulesMap.outline_bottom">outline_bottom</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.outline_left" href="#textual.css.styles.RulesMap.outline_left">outline_left</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.outline_right" href="#textual.css.styles.RulesMap.outline_right">outline_right</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.outline_top" href="#textual.css.styles.RulesMap.outline_top">outline_top</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.overflow_x" href="#textual.css.styles.RulesMap.overflow_x">overflow_x</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.overflow_y" href="#textual.css.styles.RulesMap.overflow_y">overflow_y</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.padding" href="#textual.css.styles.RulesMap.padding">padding</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.scrollbar_background" href="#textual.css.styles.RulesMap.scrollbar_background">scrollbar_background</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.scrollbar_background_active" href="#textual.css.styles.RulesMap.scrollbar_background_active">scrollbar_background_active</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.scrollbar_background_hover" href="#textual.css.styles.RulesMap.scrollbar_background_hover">scrollbar_background_hover</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.scrollbar_color" href="#textual.css.styles.RulesMap.scrollbar_color">scrollbar_color</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.scrollbar_color_active" href="#textual.css.styles.RulesMap.scrollbar_color_active">scrollbar_color_active</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.scrollbar_color_hover" href="#textual.css.styles.RulesMap.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.text_style" href="#textual.css.styles.RulesMap.text_style">text_style</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.transitions" href="#textual.css.styles.RulesMap.transitions">transitions</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.visibility" href="#textual.css.styles.RulesMap.visibility">visibility</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.width" href="#textual.css.styles.RulesMap.width">width</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.css.styles.Styles.clear_rule" href="#textual.css.styles.Styles.clear_rule">clear_rule</a></code></li>
+<li><code><a title="textual.css.styles.Styles.copy" href="#textual.css.styles.Styles.copy">copy</a></code></li>
+<li><code><a title="textual.css.styles.Styles.css" href="#textual.css.styles.Styles.css">css</a></code></li>
+<li><code><a title="textual.css.styles.Styles.css_lines" href="#textual.css.styles.Styles.css_lines">css_lines</a></code></li>
+<li><code><a title="textual.css.styles.Styles.extract_rules" href="#textual.css.styles.Styles.extract_rules">extract_rules</a></code></li>
+<li><code><a title="textual.css.styles.Styles.important" href="#textual.css.styles.Styles.important">important</a></code></li>
+<li><code><a title="textual.css.styles.Styles.node" href="#textual.css.styles.Styles.node">node</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></code></h4>
+<ul class="">
+<li><code><a title="textual.css.styles.StylesBase.ANIMATABLE" href="#textual.css.styles.StylesBase.ANIMATABLE">ANIMATABLE</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_bottom" href="#textual.css.styles.StylesBase.border_bottom">border_bottom</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_left" href="#textual.css.styles.StylesBase.border_left">border_left</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_right" href="#textual.css.styles.StylesBase.border_right">border_right</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.border_top" href="#textual.css.styles.StylesBase.border_top">border_top</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.box_sizing" href="#textual.css.styles.StylesBase.box_sizing">box_sizing</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.clear_rule" href="#textual.css.styles.StylesBase.clear_rule">clear_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.get_render_rules" href="#textual.css.styles.StylesBase.get_render_rules">get_render_rules</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.get_rule" href="#textual.css.styles.StylesBase.get_rule">get_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.get_rules" href="#textual.css.styles.StylesBase.get_rules">get_rules</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.get_transition" href="#textual.css.styles.StylesBase.get_transition">get_transition</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.gutter" href="#textual.css.styles.StylesBase.gutter">gutter</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.has_rule" href="#textual.css.styles.StylesBase.has_rule">has_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.height" href="#textual.css.styles.StylesBase.height">height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.is_animatable" href="#textual.css.styles.StylesBase.is_animatable">is_animatable</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.layer" href="#textual.css.styles.StylesBase.layer">layer</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.layers" href="#textual.css.styles.StylesBase.layers">layers</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.layout" href="#textual.css.styles.StylesBase.layout">layout</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.margin" href="#textual.css.styles.StylesBase.margin">margin</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.max_height" href="#textual.css.styles.StylesBase.max_height">max_height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.max_width" href="#textual.css.styles.StylesBase.max_width">max_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.merge" href="#textual.css.styles.StylesBase.merge">merge</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.merge_rules" href="#textual.css.styles.StylesBase.merge_rules">merge_rules</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.min_height" href="#textual.css.styles.StylesBase.min_height">min_height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.min_width" href="#textual.css.styles.StylesBase.min_width">min_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.offset" href="#textual.css.styles.StylesBase.offset">offset</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.opacity" href="#textual.css.styles.StylesBase.opacity">opacity</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline" href="#textual.css.styles.StylesBase.outline">outline</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_bottom" href="#textual.css.styles.StylesBase.outline_bottom">outline_bottom</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_left" href="#textual.css.styles.StylesBase.outline_left">outline_left</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_right" href="#textual.css.styles.StylesBase.outline_right">outline_right</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.outline_top" href="#textual.css.styles.StylesBase.outline_top">outline_top</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.overflow_x" href="#textual.css.styles.StylesBase.overflow_x">overflow_x</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.overflow_y" href="#textual.css.styles.StylesBase.overflow_y">overflow_y</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.padding" href="#textual.css.styles.StylesBase.padding">padding</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.parse" href="#textual.css.styles.StylesBase.parse">parse</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.refresh" href="#textual.css.styles.StylesBase.refresh">refresh</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.reset" href="#textual.css.styles.StylesBase.reset">reset</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.rich_style" href="#textual.css.styles.StylesBase.rich_style">rich_style</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_background" href="#textual.css.styles.StylesBase.scrollbar_background">scrollbar_background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_background_active" href="#textual.css.styles.StylesBase.scrollbar_background_active">scrollbar_background_active</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_background_hover" href="#textual.css.styles.StylesBase.scrollbar_background_hover">scrollbar_background_hover</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_color" href="#textual.css.styles.StylesBase.scrollbar_color">scrollbar_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.transitions" href="#textual.css.styles.StylesBase.transitions">transitions</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.visibility" href="#textual.css.styles.StylesBase.visibility">visibility</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.width" href="#textual.css.styles.StylesBase.width">width</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>

@@ -28,6 +28,7 @@ URLS=[
 "textual/css/parse.html",
 "textual/css/scalar_animation.html",
 "textual/css/model.html",
+"textual/css/styles.html",
 "textual/renderables/index.html",
 "textual/renderables/underline_bar.html",
 "textual/renderables/opacity.html",
@@ -3044,515 +3045,1720 @@ INDEX=[
 "doc":"Generate the CSS this RuleSet Returns: str: A string containing CSS code."
 },
 {
-"ref":"textual.renderables",
+"ref":"textual.css.styles",
 "url":29,
 "doc":""
 },
 {
-"ref":"textual.renderables.underline_bar",
+"ref":"textual.css.styles.RulesMap",
+"url":29,
+"doc":"A typed dict for CSS rules. Any key may be absent, indiciating that rule has not been set. Does not define composite rules, that is a rule that is made of a combination of other rules."
+},
+{
+"ref":"textual.css.styles.RulesMap.display",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.visibility",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.layout",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.color",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.background",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.text_style",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.opacity",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.padding",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.margin",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.offset",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.border_top",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.border_right",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.border_bottom",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.border_left",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.outline_top",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.outline_right",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.outline_bottom",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.outline_left",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.box_sizing",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.width",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.height",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.min_width",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.min_height",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.max_width",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.max_height",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.dock",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.docks",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.overflow_x",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.overflow_y",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.layers",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.layer",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.transitions",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.scrollbar_color",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.scrollbar_color_hover",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.scrollbar_color_active",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.scrollbar_background",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.scrollbar_background_hover",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.scrollbar_background_active",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.align_horizontal",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.align_vertical",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.DockGroup",
+"url":29,
+"doc":"DockGroup(name, edge, z)"
+},
+{
+"ref":"textual.css.styles.DockGroup.name",
+"url":29,
+"doc":"Alias for field number 0"
+},
+{
+"ref":"textual.css.styles.DockGroup.edge",
+"url":29,
+"doc":"Alias for field number 1"
+},
+{
+"ref":"textual.css.styles.DockGroup.z",
+"url":29,
+"doc":"Alias for field number 2"
+},
+{
+"ref":"textual.css.styles.StylesBase",
+"url":29,
+"doc":"A common base class for Styles and RenderStyles"
+},
+{
+"ref":"textual.css.styles.StylesBase.ANIMATABLE",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.StylesBase.display",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.visibility",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.layout",
+"url":29,
+"doc":"Descriptor for getting and setting layout."
+},
+{
+"ref":"textual.css.styles.StylesBase.color",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.StylesBase.background",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.StylesBase.text_style",
+"url":29,
+"doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
+},
+{
+"ref":"textual.css.styles.StylesBase.opacity",
+"url":29,
+"doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
+},
+{
+"ref":"textual.css.styles.StylesBase.padding",
+"url":29,
+"doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
+},
+{
+"ref":"textual.css.styles.StylesBase.margin",
+"url":29,
+"doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
+},
+{
+"ref":"textual.css.styles.StylesBase.offset",
+"url":29,
+"doc":"Descriptor for getting and setting the offset property. Offset consists of two values, x and y, that a widget's position will be adjusted by before it is rendered."
+},
+{
+"ref":"textual.css.styles.StylesBase.border",
+"url":29,
+"doc":"Descriptor for getting and setting full borders and outlines."
+},
+{
+"ref":"textual.css.styles.StylesBase.border_top",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.StylesBase.border_right",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.StylesBase.border_bottom",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.StylesBase.border_left",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.StylesBase.outline",
+"url":29,
+"doc":"Descriptor for getting and setting full borders and outlines."
+},
+{
+"ref":"textual.css.styles.StylesBase.outline_top",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.StylesBase.outline_right",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.StylesBase.outline_bottom",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.StylesBase.outline_left",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.StylesBase.box_sizing",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.width",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.StylesBase.height",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.StylesBase.min_width",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.StylesBase.min_height",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.StylesBase.max_width",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.StylesBase.max_height",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.StylesBase.dock",
+"url":29,
+"doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which dock you wish a Widget to be attached to. This should be used in conjunction with the \"docks\" property which lets you define the docks themselves, and where they are located on screen."
+},
+{
+"ref":"textual.css.styles.StylesBase.docks",
+"url":29,
+"doc":"Descriptor for getting and setting the docks property. This property is used to define docks and their location on screen."
+},
+{
+"ref":"textual.css.styles.StylesBase.overflow_x",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.overflow_y",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.layer",
+"url":29,
+"doc":"Descriptor for getting and setting name properties."
+},
+{
+"ref":"textual.css.styles.StylesBase.layers",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.StylesBase.transitions",
+"url":29,
+"doc":"Descriptor for getting transitions properties"
+},
+{
+"ref":"textual.css.styles.StylesBase.rich_style",
+"url":29,
+"doc":"Descriptor for getting and setting the text style."
+},
+{
+"ref":"textual.css.styles.StylesBase.scrollbar_color",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.StylesBase.scrollbar_color_hover",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.StylesBase.scrollbar_color_active",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.StylesBase.scrollbar_background",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.StylesBase.scrollbar_background_hover",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.StylesBase.scrollbar_background_active",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.StylesBase.align_horizontal",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.align_vertical",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.gutter",
+"url":29,
+"doc":"Get space around widget. Returns: Spacing: Space around widget."
+},
+{
+"ref":"textual.css.styles.StylesBase.has_rule",
+"url":29,
+"doc":"Check if a rule is set on this Styles object. Args: rule (str): Rule name. Returns: bool:  True if the rules is present, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.clear_rule",
+"url":29,
+"doc":"Removes the rule from the Styles object, as if it had never been set. Args: rule (str): Rule name. Returns: bool:  True if a rule was cleared, or  False if the rule is already not set.",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.get_rules",
+"url":29,
+"doc":"Get the rules in a mapping. Returns: RulesMap: A TypedDict of the rules.",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.set_rule",
+"url":29,
+"doc":"Set a rule. Args: rule (str): Rule name. value (object | None): New rule value. Returns: bool:  True if the rule changed, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.get_rule",
+"url":29,
+"doc":"Get an individual rule. Args: rule (str): Name of rule. default (object, optional): Default if rule does not exists. Defaults to None. Returns: object: Rule value or default.",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.refresh",
+"url":29,
+"doc":"Mark the styles as requiring a refresh. Args: layout (bool, optional): Also require a layout. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.reset",
+"url":29,
+"doc":"Reset the rules to initial state.",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.merge",
+"url":29,
+"doc":"Merge values from another Styles. Args: other (Styles): A Styles object.",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.merge_rules",
+"url":29,
+"doc":"Merge rules in to Styles. Args: rules (RulesMap): A mapping of rules.",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.get_render_rules",
+"url":29,
+"doc":"Get rules map with defaults.",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.is_animatable",
+"url":29,
+"doc":"Check if a given rule may be animated. Args: rule (str): Name of the rule. Returns: bool:  True if the rule may be animated, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.parse",
+"url":29,
+"doc":"Parse CSS and return a Styles object. Args: css (str): Textual CSS. path (str): Path or string indicating source of CSS. node (DOMNode, optional): Node to associate with the Styles. Defaults to None. Returns: Styles: A Styles instance containing result of parsing CSS.",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.get_transition",
+"url":29,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.align_width",
+"url":29,
+"doc":"Align the width dimension. Args: width (int): Width of the content. parent_width (int): Width of the parent container. Returns: int: An offset to add to the X coordinate.",
+"func":1
+},
+{
+"ref":"textual.css.styles.StylesBase.align_height",
+"url":29,
+"doc":"Align the height dimensions Args: height (int): Height of the content. parent_height (int): Height of the parent container. Returns: int: An offset to add to the Y coordinate.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles",
+"url":29,
+"doc":"Styles(node: 'DOMNode | None' = None, _rules: 'RulesMap' =  , important: 'set[str]' =  )"
+},
+{
+"ref":"textual.css.styles.Styles.important",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.Styles.node",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.Styles.copy",
+"url":29,
+"doc":"Get a copy of this Styles object.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.has_rule",
+"url":29,
+"doc":"Check if a rule is set on this Styles object. Args: rule (str): Rule name. Returns: bool:  True if the rules is present, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.clear_rule",
+"url":29,
+"doc":"Removes the rule from the Styles object, as if it had never been set. Args: rule (str): Rule name. Returns: bool:  True if a rule was cleared, or  False if it was already not set.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.get_rules",
+"url":29,
+"doc":"Get the rules in a mapping. Returns: RulesMap: A TypedDict of the rules.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.set_rule",
+"url":29,
+"doc":"Set a rule. Args: rule (str): Rule name. value (object | None): New rule value. Returns: bool:  True if the rule changed, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.get_rule",
+"url":29,
+"doc":"Get an individual rule. Args: rule (str): Name of rule. default (object, optional): Default if rule does not exists. Defaults to None. Returns: object: Rule value or default.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.refresh",
+"url":29,
+"doc":"Mark the styles as requiring a refresh. Args: layout (bool, optional): Also require a layout. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.reset",
+"url":29,
+"doc":"Reset the rules to initial state.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.merge",
+"url":29,
+"doc":"Merge values from another Styles. Args: other (Styles): A Styles object.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.merge_rules",
+"url":29,
+"doc":"Merge rules in to Styles. Args: rules (RulesMap): A mapping of rules.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.extract_rules",
+"url":29,
+"doc":"Extract rules from Styles object, and apply !important css specificity. Args: specificity (Specificity3): A node specificity. Returns: list[tuple[str, Specificity4, Any ]: A list containing a tuple of  ,   .",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.css_lines",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.Styles.css",
+"url":29,
+"doc":""
+},
+{
+"ref":"textual.css.styles.Styles.display",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.Styles.visibility",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.Styles.layout",
+"url":29,
+"doc":"Descriptor for getting and setting layout."
+},
+{
+"ref":"textual.css.styles.Styles.color",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.Styles.background",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.Styles.text_style",
+"url":29,
+"doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
+},
+{
+"ref":"textual.css.styles.Styles.opacity",
+"url":29,
+"doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
+},
+{
+"ref":"textual.css.styles.Styles.padding",
+"url":29,
+"doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
+},
+{
+"ref":"textual.css.styles.Styles.margin",
+"url":29,
+"doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
+},
+{
+"ref":"textual.css.styles.Styles.offset",
+"url":29,
+"doc":"Descriptor for getting and setting the offset property. Offset consists of two values, x and y, that a widget's position will be adjusted by before it is rendered."
+},
+{
+"ref":"textual.css.styles.Styles.border",
+"url":29,
+"doc":"Descriptor for getting and setting full borders and outlines."
+},
+{
+"ref":"textual.css.styles.Styles.border_top",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.Styles.border_right",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.Styles.border_bottom",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.Styles.border_left",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.Styles.outline",
+"url":29,
+"doc":"Descriptor for getting and setting full borders and outlines."
+},
+{
+"ref":"textual.css.styles.Styles.outline_top",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.Styles.outline_right",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.Styles.outline_bottom",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.Styles.outline_left",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.Styles.box_sizing",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.Styles.width",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.Styles.height",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.Styles.min_width",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.Styles.min_height",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.Styles.max_width",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.Styles.max_height",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.Styles.dock",
+"url":29,
+"doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which dock you wish a Widget to be attached to. This should be used in conjunction with the \"docks\" property which lets you define the docks themselves, and where they are located on screen."
+},
+{
+"ref":"textual.css.styles.Styles.docks",
+"url":29,
+"doc":"Descriptor for getting and setting the docks property. This property is used to define docks and their location on screen."
+},
+{
+"ref":"textual.css.styles.Styles.overflow_x",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.Styles.overflow_y",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.Styles.layer",
+"url":29,
+"doc":"Descriptor for getting and setting name properties."
+},
+{
+"ref":"textual.css.styles.Styles.transitions",
+"url":29,
+"doc":"Descriptor for getting transitions properties"
+},
+{
+"ref":"textual.css.styles.Styles.rich_style",
+"url":29,
+"doc":"Descriptor for getting and setting the text style."
+},
+{
+"ref":"textual.css.styles.Styles.scrollbar_color",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.Styles.scrollbar_color_hover",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.Styles.scrollbar_color_active",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.Styles.scrollbar_background",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.Styles.scrollbar_background_hover",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.Styles.scrollbar_background_active",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.Styles.align_horizontal",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.Styles.align_vertical",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.Styles.gutter",
+"url":29,
+"doc":"Get space around widget. Returns: Spacing: Space around widget."
+},
+{
+"ref":"textual.css.styles.Styles.get_render_rules",
+"url":29,
+"doc":"Get rules map with defaults.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.is_animatable",
+"url":29,
+"doc":"Check if a given rule may be animated. Args: rule (str): Name of the rule. Returns: bool:  True if the rule may be animated, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.parse",
+"url":29,
+"doc":"Parse CSS and return a Styles object. Args: css (str): Textual CSS. path (str): Path or string indicating source of CSS. node (DOMNode, optional): Node to associate with the Styles. Defaults to None. Returns: Styles: A Styles instance containing result of parsing CSS.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.align_width",
+"url":29,
+"doc":"Align the width dimension. Args: width (int): Width of the content. parent_width (int): Width of the parent container. Returns: int: An offset to add to the X coordinate.",
+"func":1
+},
+{
+"ref":"textual.css.styles.Styles.align_height",
+"url":29,
+"doc":"Align the height dimensions Args: height (int): Height of the content. parent_height (int): Height of the parent container. Returns: int: An offset to add to the Y coordinate.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles",
+"url":29,
+"doc":"Presents a combined view of two Styles object: a base Styles and inline Styles."
+},
+{
+"ref":"textual.css.styles.RenderStyles.base",
+"url":29,
+"doc":"Quick access to base (css) style."
+},
+{
+"ref":"textual.css.styles.RenderStyles.inline",
+"url":29,
+"doc":"Quick access to the inline styles."
+},
+{
+"ref":"textual.css.styles.RenderStyles.refresh",
+"url":29,
+"doc":"Mark the styles as requiring a refresh. Args: layout (bool, optional): Also require a layout. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.merge",
+"url":29,
+"doc":"Merge values from another Styles. Args: other (Styles): A Styles object.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.merge_rules",
+"url":29,
+"doc":"Merge rules in to Styles. Args: rules (RulesMap): A mapping of rules.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.reset",
+"url":29,
+"doc":"Reset the rules to initial state.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.has_rule",
+"url":29,
+"doc":"Check if a rule has been set.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.set_rule",
+"url":29,
+"doc":"Set a rule. Args: rule (str): Rule name. value (object | None): New rule value. Returns: bool:  True if the rule changed, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.get_rule",
+"url":29,
+"doc":"Get an individual rule. Args: rule (str): Name of rule. default (object, optional): Default if rule does not exists. Defaults to None. Returns: object: Rule value or default.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.clear_rule",
+"url":29,
+"doc":"Clear a rule (from inline).",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.get_rules",
+"url":29,
+"doc":"Get rules as a dictionary",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.css",
+"url":29,
+"doc":"Get the CSS for the combined styles."
+},
+{
+"ref":"textual.css.styles.RenderStyles.display",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.visibility",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.layout",
+"url":29,
+"doc":"Descriptor for getting and setting layout."
+},
+{
+"ref":"textual.css.styles.RenderStyles.color",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.RenderStyles.background",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.RenderStyles.text_style",
+"url":29,
+"doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
+},
+{
+"ref":"textual.css.styles.RenderStyles.opacity",
+"url":29,
+"doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
+},
+{
+"ref":"textual.css.styles.RenderStyles.padding",
+"url":29,
+"doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
+},
+{
+"ref":"textual.css.styles.RenderStyles.margin",
+"url":29,
+"doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
+},
+{
+"ref":"textual.css.styles.RenderStyles.offset",
+"url":29,
+"doc":"Descriptor for getting and setting the offset property. Offset consists of two values, x and y, that a widget's position will be adjusted by before it is rendered."
+},
+{
+"ref":"textual.css.styles.RenderStyles.border",
+"url":29,
+"doc":"Descriptor for getting and setting full borders and outlines."
+},
+{
+"ref":"textual.css.styles.RenderStyles.border_top",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.RenderStyles.border_right",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.RenderStyles.border_bottom",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.RenderStyles.border_left",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.RenderStyles.outline",
+"url":29,
+"doc":"Descriptor for getting and setting full borders and outlines."
+},
+{
+"ref":"textual.css.styles.RenderStyles.outline_top",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.RenderStyles.outline_right",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.RenderStyles.outline_bottom",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.RenderStyles.outline_left",
+"url":29,
+"doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
+},
+{
+"ref":"textual.css.styles.RenderStyles.box_sizing",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.width",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.RenderStyles.height",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.RenderStyles.min_width",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.RenderStyles.min_height",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.RenderStyles.max_width",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.RenderStyles.max_height",
+"url":29,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.RenderStyles.dock",
+"url":29,
+"doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which dock you wish a Widget to be attached to. This should be used in conjunction with the \"docks\" property which lets you define the docks themselves, and where they are located on screen."
+},
+{
+"ref":"textual.css.styles.RenderStyles.docks",
+"url":29,
+"doc":"Descriptor for getting and setting the docks property. This property is used to define docks and their location on screen."
+},
+{
+"ref":"textual.css.styles.RenderStyles.overflow_x",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.overflow_y",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.layer",
+"url":29,
+"doc":"Descriptor for getting and setting name properties."
+},
+{
+"ref":"textual.css.styles.RenderStyles.transitions",
+"url":29,
+"doc":"Descriptor for getting transitions properties"
+},
+{
+"ref":"textual.css.styles.RenderStyles.rich_style",
+"url":29,
+"doc":"Descriptor for getting and setting the text style."
+},
+{
+"ref":"textual.css.styles.RenderStyles.scrollbar_color",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.RenderStyles.scrollbar_color_hover",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.RenderStyles.scrollbar_color_active",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.RenderStyles.scrollbar_background",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.RenderStyles.scrollbar_background_hover",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.RenderStyles.scrollbar_background_active",
+"url":29,
+"doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.RenderStyles.align_horizontal",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.align_vertical",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.gutter",
+"url":29,
+"doc":"Get space around widget. Returns: Spacing: Space around widget."
+},
+{
+"ref":"textual.css.styles.RenderStyles.get_render_rules",
+"url":29,
+"doc":"Get rules map with defaults.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.is_animatable",
+"url":29,
+"doc":"Check if a given rule may be animated. Args: rule (str): Name of the rule. Returns: bool:  True if the rule may be animated, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.parse",
+"url":29,
+"doc":"Parse CSS and return a Styles object. Args: css (str): Textual CSS. path (str): Path or string indicating source of CSS. node (DOMNode, optional): Node to associate with the Styles. Defaults to None. Returns: Styles: A Styles instance containing result of parsing CSS.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.align_width",
+"url":29,
+"doc":"Align the width dimension. Args: width (int): Width of the content. parent_width (int): Width of the parent container. Returns: int: An offset to add to the X coordinate.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.align_height",
+"url":29,
+"doc":"Align the height dimensions Args: height (int): Height of the content. parent_height (int): Height of the parent container. Returns: int: An offset to add to the Y coordinate.",
+"func":1
+},
+{
+"ref":"textual.renderables",
 "url":30,
+"doc":""
+},
+{
+"ref":"textual.renderables.underline_bar",
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.renderables.underline_bar.UnderlineBar",
-"url":30,
+"url":31,
 "doc":"Thin horizontal bar with a portion highlighted. Args: highlight_range (tuple[float, float]): The range to highlight. Defaults to  (0, 0) (no highlight) highlight_style (StyleType): The style of the highlighted range of the bar. background_style (StyleType): The style of the non-highlighted range(s) of the bar. width (int, optional): The width of the bar, or  None to fill available width."
 },
 {
 "ref":"textual.renderables.opacity",
-"url":31,
+"url":32,
 "doc":""
 },
 {
 "ref":"textual.renderables.opacity.Opacity",
-"url":31,
+"url":32,
 "doc":"Wrap a renderable to blend foreground color into the background color. Args: renderable (RenderableType): The RenderableType to manipulate. opacity (float): The opacity as a float. A value of 1.0 means text is fully visible."
 },
 {
 "ref":"textual.renderables.gradient",
-"url":32,
+"url":33,
 "doc":""
 },
 {
 "ref":"textual.renderables.gradient.VerticalGradient",
-"url":32,
+"url":33,
 "doc":"Draw a vertical gradient."
 },
 {
 "ref":"textual.renderables.sparkline",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.renderables.sparkline.Sparkline",
-"url":33,
+"url":34,
 "doc":"A sparkline representing a series of data. Args: data (Sequence[T]): The sequence of data to render. width (int, optional): The width of the sparkline/the number of buckets to partition the data into. min_color (Color, optional): The color of values equal to the min value in data. max_color (Color, optional): The color of values equal to the max value in data. summary_function (Callable[list[T ): Function that will be applied to each bucket."
 },
 {
 "ref":"textual.renderables.sparkline.Sparkline.BARS",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.renderables.blank",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.renderables.blank.Blank",
-"url":34,
+"url":35,
 "doc":"Draw solid background color."
 },
 {
 "ref":"textual.errors",
-"url":35,
+"url":36,
 "doc":""
 },
 {
 "ref":"textual.errors.TextualError",
-"url":35,
+"url":36,
 "doc":"Base class for Textual errors."
 },
 {
 "ref":"textual.errors.NoWidget",
-"url":35,
+"url":36,
 "doc":"Specified widget was not found."
 },
 {
 "ref":"textual.design",
-"url":36,
+"url":37,
 "doc":""
 },
 {
 "ref":"textual.design.ColorProperty",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem",
-"url":36,
+"url":37,
 "doc":"Defines a standard set of colors and variations for building a UI. Primary is the main theme color Secondary is a second theme color"
 },
 {
 "ref":"textual.design.ColorSystem.COLOR_NAMES",
-"url":36,
+"url":37,
 "doc":""
 },
 {
 "ref":"textual.design.ColorSystem.primary",
-"url":36,
+"url":37,
 "doc":"Get the primary color."
 },
 {
 "ref":"textual.design.ColorSystem.secondary",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.warning",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.error",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.success",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.accent",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.system",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.surface",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.background",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.dark_surface",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.dark_background",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.panel",
-"url":36,
+"url":37,
 "doc":"Descriptor to parse colors."
 },
 {
 "ref":"textual.design.ColorSystem.shades",
-"url":36,
+"url":37,
 "doc":"The names of the colors and derived shades."
 },
 {
 "ref":"textual.design.ColorSystem.generate",
-"url":36,
+"url":37,
 "doc":"Generate a mapping of color name on to a CSS color. Args: dark (bool, optional): Enable dark mode. Defaults to False. luminosity_spread (float, optional): Amount of luminosity to subtract and add to generate shades. Defaults to 0.2. text_alpha (float, optional): Alpha value for text. Defaults to 0.9. Returns: dict[str, str]: A mapping of color name on to a CSS-style encoded color",
 "func":1
 },
 {
 "ref":"textual.geometry",
-"url":37,
+"url":38,
 "doc":"Functions and classes to manage terminal geometry (anything involving coordinates or dimensions)."
 },
 {
 "ref":"textual.geometry.clamp",
-"url":37,
+"url":38,
 "doc":"Clamps a value between two other values. Args: value (T): A value minimum (T): Minimum value maximum (T): maximum value Returns: T: New value that is not less than the minimum or greater than the maximum.",
 "func":1
 },
 {
 "ref":"textual.geometry.Offset",
-"url":37,
+"url":38,
 "doc":"A point defined by x and y coordinates."
 },
 {
 "ref":"textual.geometry.Offset.x",
-"url":37,
+"url":38,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.geometry.Offset.y",
-"url":37,
+"url":38,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.geometry.Offset.is_origin",
-"url":37,
+"url":38,
 "doc":"Check if the point is at the origin (0, 0)"
 },
 {
 "ref":"textual.geometry.Offset.blend",
-"url":37,
+"url":38,
 "doc":"Blend (interpolate) to a new point. Args: destination (Point): Point where progress is 1.0 factor (float): A value between 0 and 1.0 Returns: Point: A new point on a line between self and destination",
 "func":1
 },
 {
 "ref":"textual.geometry.Offset.get_distance_to",
-"url":37,
+"url":38,
 "doc":"Get the distance to another offset. Args: other (Offset): An offset Returns: float: Distance to other offset",
 "func":1
 },
 {
 "ref":"textual.geometry.Size",
-"url":37,
+"url":38,
 "doc":"An area defined by its width and height."
 },
 {
 "ref":"textual.geometry.Size.width",
-"url":37,
+"url":38,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.geometry.Size.height",
-"url":37,
+"url":38,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.geometry.Size.area",
-"url":37,
+"url":38,
 "doc":"Get the area of the size. Returns: int: Area in cells."
 },
 {
 "ref":"textual.geometry.Size.region",
-"url":37,
+"url":38,
 "doc":"Get a region of the same size."
 },
 {
 "ref":"textual.geometry.Size.contains",
-"url":37,
+"url":38,
 "doc":"Check if a point is in the size. Args: x (int): X coordinate (column) y (int): Y coordinate (row) Returns: bool: True if the point is within the region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Size.contains_point",
-"url":37,
+"url":38,
 "doc":"Check if a point is in the size. Args: point (tuple[int, int]): A tuple of x and y coordinates. Returns: bool: True if the point is within the region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region",
-"url":37,
+"url":38,
 "doc":"Defines a rectangular region."
 },
 {
 "ref":"textual.geometry.Region.x",
-"url":37,
+"url":38,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.geometry.Region.y",
-"url":37,
+"url":38,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.geometry.Region.width",
-"url":37,
+"url":38,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.geometry.Region.height",
-"url":37,
+"url":38,
 "doc":"Alias for field number 3"
 },
 {
 "ref":"textual.geometry.Region.from_corners",
-"url":37,
+"url":38,
 "doc":"Construct a Region form the top left and bottom right corners. Args: x1 (int): Top left x y1 (int): Top left y x2 (int): Bottom right x y2 (int): Bottom right y Returns: Region: A new region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.from_origin",
-"url":37,
+"url":38,
 "doc":"Create a region from origin and size. Args: origin (Point): Origin (top left point) size (tuple[int, int]): Dimensions of region. Returns: Region: A region instance.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.x_extents",
-"url":37,
+"url":38,
 "doc":"Get the starting and ending x coord. The end value is non inclusive. Returns: tuple[int, int]: [description]"
 },
 {
 "ref":"textual.geometry.Region.y_extents",
-"url":37,
+"url":38,
 "doc":"Get the starting and ending x coord. The end value is non inclusive. Returns: tuple[int, int]: [description]"
 },
 {
 "ref":"textual.geometry.Region.x_max",
-"url":37,
+"url":38,
 "doc":"Maximum X value (non inclusive)"
 },
 {
 "ref":"textual.geometry.Region.y_max",
-"url":37,
+"url":38,
 "doc":"Maximum Y value (non inclusive)"
 },
 {
 "ref":"textual.geometry.Region.area",
-"url":37,
+"url":38,
 "doc":"Get the area within the region."
 },
 {
 "ref":"textual.geometry.Region.origin",
-"url":37,
+"url":38,
 "doc":"Get the start point of the region."
 },
 {
 "ref":"textual.geometry.Region.size",
-"url":37,
+"url":38,
 "doc":"Get the size of the region."
 },
 {
 "ref":"textual.geometry.Region.corners",
-"url":37,
+"url":38,
 "doc":"Get the maxima and minima of region. Returns: tuple[int, int, int, int]: A tuple of ( ,  ,  ,  )"
 },
 {
 "ref":"textual.geometry.Region.x_range",
-"url":37,
+"url":38,
 "doc":"A range object for X coordinates"
 },
 {
 "ref":"textual.geometry.Region.y_range",
-"url":37,
+"url":38,
 "doc":"A range object for Y coordinates"
 },
 {
 "ref":"textual.geometry.Region.reset_origin",
-"url":37,
+"url":38,
 "doc":"An region of the same size at the origin."
 },
 {
 "ref":"textual.geometry.Region.expand",
-"url":37,
+"url":38,
 "doc":"Increase the size of the region by adding a border. Args: size (tuple[int, int]): Additional width and height. Returns: Region: A new region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.overlaps",
-"url":37,
+"url":38,
 "doc":"Check if another region overlaps this region. Args: other (Region): A Region. Returns: bool: True if other region shares any cells with this region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.contains",
-"url":37,
+"url":38,
 "doc":"Check if a point is in the region. Args: x (int): X coordinate (column) y (int): Y coordinate (row) Returns: bool: True if the point is within the region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.contains_point",
-"url":37,
+"url":38,
 "doc":"Check if a point is in the region. Args: point (tuple[int, int]): A tuple of x and y coordinates. Returns: bool: True if the point is within the region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.contains_region",
-"url":37,
+"url":38,
 "doc":"Check if a region is entirely contained within this region. Args: other (Region): A region. Returns: bool: True if the other region fits perfectly within this region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.translate",
-"url":37,
+"url":38,
 "doc":"Move the origin of the Region. Args: translate_x (int): Value to add to x coordinate. translate_y (int): Value to add to y coordinate. Returns: Region: A new region shifted by x, y",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.clip",
-"url":37,
+"url":38,
 "doc":"Clip this region to fit within width, height. Args: width (int): Width of bounds. height (int): Height of bounds. Returns: Region: Clipped region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.shrink",
-"url":37,
+"url":38,
 "doc":"Shrink a region by pushing each edge inwards. Args: margin (Spacing): Defines how many cells to shrink the Region by at each edge. Returns: Region: The new, smaller region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.intersection",
-"url":37,
+"url":38,
 "doc":"Get that covers both regions. Args: region (Region): A region that overlaps this region. Returns: Region: A new region that fits within  region .",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.union",
-"url":37,
+"url":38,
 "doc":"Get a new region that contains both regions. Args: region (Region): [description] Returns: Region: [description]",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.split",
-"url":37,
+"url":38,
 "doc":"Split a region in to 4 from given x and y offsets (cuts). cut_x \u2193 \u250c    \u2510\u250c \u2500\u2510 \u2502  \u2502 \u2502 0  1 \u2502 \u2502  \u2502 cut_y \u2192 \u2514    \u2518\u2514 \u2500\u2518 \u250c    \u2510\u250c \u2500\u2510 \u2502 2  3 \u2502 \u2514    \u2518\u2514 \u2500\u2518 Args: cut_x (int): Offset from self.x where the cut should be made. If negative, the cut is taken from the right edge. cut_y (int): Offset from self.y where the cut should be made. If negative, the cut is taken from the lower edge. Returns: tuple[Region, Region, Region, Region]: Four new regions which add up to the original (self).",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.split_vertical",
-"url":37,
+"url":38,
 "doc":"Split a region in to two, from a given x offset. cut \u2193 \u250c    \u2510\u250c \u2500\u2510 \u2502 0  1 \u2502 \u2502  \u2502 \u2514    \u2518\u2514 \u2500\u2518 Args: cut (int): An offset from self.x where the cut should be made. If cut is negative, it is taken from the right edge. Returns: tuple[Region, Region]: Two regions, which add up to the original (self).",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.split_horizontal",
-"url":37,
+"url":38,
 "doc":"Split a region in to two, from a given x offset. \u250c    \u2500\u2510 \u2502 0 \u2502 \u2502 \u2502 cut \u2192 \u2514    \u2500\u2518 \u250c    \u2500\u2510 \u2502 1 \u2502 \u2514    \u2500\u2518 Args: cut (int): An offset from self.x where the cut should be made. May be negative, for the offset to start from the right edge. Returns: tuple[Region, Region]: Two regions, which add up to the original (self).",
 "func":1
 },
 {
 "ref":"textual.geometry.Spacing",
-"url":37,
+"url":38,
 "doc":"The spacing around a renderable."
 },
 {
 "ref":"textual.geometry.Spacing.top",
-"url":37,
+"url":38,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.geometry.Spacing.right",
-"url":37,
+"url":38,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.geometry.Spacing.bottom",
-"url":37,
+"url":38,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.geometry.Spacing.left",
-"url":37,
+"url":38,
 "doc":"Alias for field number 3"
 },
 {
 "ref":"textual.geometry.Spacing.width",
-"url":37,
+"url":38,
 "doc":"Total space in width."
 },
 {
 "ref":"textual.geometry.Spacing.height",
-"url":37,
+"url":38,
 "doc":"Total space in height."
 },
 {
 "ref":"textual.geometry.Spacing.top_left",
-"url":37,
+"url":38,
 "doc":"Top left space."
 },
 {
 "ref":"textual.geometry.Spacing.bottom_right",
-"url":37,
+"url":38,
 "doc":"Bottom right space."
 },
 {
 "ref":"textual.geometry.Spacing.totals",
-"url":37,
+"url":38,
 "doc":"Returns a tuple of ( ,  )."
 },
 {
 "ref":"textual.geometry.Spacing.css",
-"url":37,
+"url":38,
 "doc":"Gets a string containing the spacing in CSS format."
 },
 {
 "ref":"textual.geometry.Spacing.unpack",
-"url":37,
+"url":38,
 "doc":"Unpack padding specified in CSS style.",
 "func":1
 },
 {
 "ref":"textual.cli",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.scrollbar",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollMessage",
-"url":39,
+"url":40,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollMessage.sender",
-"url":39,
+"url":40,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollMessage.bubble",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollMessage.verbosity",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollMessage.system",
-"url":39,
+"url":40,
 "doc":""
 },
 {
@@ -3591,27 +4797,27 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollUp",
-"url":39,
+"url":40,
 "doc":"Message sent when clicking above handle. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollUp.sender",
-"url":39,
+"url":40,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollUp.bubble",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollUp.verbosity",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollUp.system",
-"url":39,
+"url":40,
 "doc":""
 },
 {
@@ -3650,27 +4856,27 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollDown",
-"url":39,
+"url":40,
 "doc":"Message sent when clicking below handle. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollDown.sender",
-"url":39,
+"url":40,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollDown.bubble",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollDown.verbosity",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollDown.system",
-"url":39,
+"url":40,
 "doc":""
 },
 {
@@ -3709,27 +4915,27 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollLeft",
-"url":39,
+"url":40,
 "doc":"Message sent when clicking above handle. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollLeft.sender",
-"url":39,
+"url":40,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollLeft.bubble",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollLeft.verbosity",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollLeft.system",
-"url":39,
+"url":40,
 "doc":""
 },
 {
@@ -3768,27 +4974,27 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollRight",
-"url":39,
+"url":40,
 "doc":"Message sent when clicking below handle. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollRight.sender",
-"url":39,
+"url":40,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollRight.bubble",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollRight.verbosity",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollRight.system",
-"url":39,
+"url":40,
 "doc":""
 },
 {
@@ -3827,27 +5033,27 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollTo",
-"url":39,
+"url":40,
 "doc":"Message sent when click and dragging handle. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.scrollbar.ScrollTo.sender",
-"url":39,
+"url":40,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.scrollbar.ScrollTo.bubble",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollTo.verbosity",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollTo.system",
-"url":39,
+"url":40,
 "doc":""
 },
 {
@@ -3886,120 +5092,120 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollBarRender",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.scrollbar.ScrollBarRender.render_bar",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar",
-"url":39,
+"url":40,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.window_virtual_size",
-"url":39,
+"url":40,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.window_size",
-"url":39,
+"url":40,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.position",
-"url":39,
+"url":40,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.mouse_over",
-"url":39,
+"url":40,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.grabbed",
-"url":39,
+"url":40,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.render",
-"url":39,
+"url":40,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_event",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_enter",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_leave",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.action_scroll_down",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.action_scroll_up",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.action_grab",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.action_released",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_mouse_up",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_mouse_capture",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_mouse_release",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.on_mouse_move",
-"url":39,
+"url":40,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.can_focus",
-"url":39,
+"url":40,
 "doc":""
 },
 {
@@ -4343,64 +5549,64 @@ INDEX=[
 },
 {
 "ref":"textual.box_model",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.box_model.BoxModel",
-"url":40,
+"url":41,
 "doc":"The result of  get_box_model ."
 },
 {
 "ref":"textual.box_model.BoxModel.size",
-"url":40,
+"url":41,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.box_model.BoxModel.margin",
-"url":40,
+"url":41,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.box_model.get_box_model",
-"url":40,
+"url":41,
 "doc":"Resolve the box model for this Styles. Args: styles (StylesBase): Styles object. container (Size): The size of the widget container. viewport (Size): The viewport size. get_auto_width (Callable): A callable which accepts container size and parent size and returns a width. get_auto_height (Callable): A callable which accepts container size and parent size and returns a height. Returns: BoxModel: A tuple with the size of the content area and margin.",
 "func":1
 },
 {
 "ref":"textual.messages",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.Update",
-"url":41,
+"url":42,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.Update.sender",
-"url":41,
+"url":42,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.Update.can_replace",
-"url":41,
+"url":42,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.Update.bubble",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.Update.verbosity",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.Update.system",
-"url":41,
+"url":42,
 "doc":""
 },
 {
@@ -4433,33 +5639,33 @@ INDEX=[
 },
 {
 "ref":"textual.messages.Layout",
-"url":41,
+"url":42,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.Layout.sender",
-"url":41,
+"url":42,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.Layout.can_replace",
-"url":41,
+"url":42,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.Layout.bubble",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.Layout.verbosity",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.Layout.system",
-"url":41,
+"url":42,
 "doc":""
 },
 {
@@ -4492,27 +5698,27 @@ INDEX=[
 },
 {
 "ref":"textual.messages.CursorMove",
-"url":41,
+"url":42,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.CursorMove.sender",
-"url":41,
+"url":42,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.CursorMove.bubble",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.CursorMove.verbosity",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.CursorMove.system",
-"url":41,
+"url":42,
 "doc":""
 },
 {
@@ -4551,33 +5757,33 @@ INDEX=[
 },
 {
 "ref":"textual.messages.StylesUpdated",
-"url":41,
+"url":42,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.StylesUpdated.sender",
-"url":41,
+"url":42,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.StylesUpdated.can_replace",
-"url":41,
+"url":42,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.StylesUpdated.bubble",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.StylesUpdated.verbosity",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.StylesUpdated.system",
-"url":41,
+"url":42,
 "doc":""
 },
 {
@@ -4610,33 +5816,33 @@ INDEX=[
 },
 {
 "ref":"textual.messages.Prompt",
-"url":41,
+"url":42,
 "doc":"Used to 'wake up' an event loop. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.Prompt.sender",
-"url":41,
+"url":42,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.Prompt.can_replace",
-"url":41,
+"url":42,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.Prompt.bubble",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.Prompt.verbosity",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.messages.Prompt.system",
-"url":41,
+"url":42,
 "doc":""
 },
 {
@@ -4669,93 +5875,93 @@ INDEX=[
 },
 {
 "ref":"textual.blank",
-"url":42,
-"doc":""
-},
-{
-"ref":"textual.blank.Blank",
-"url":42,
-"doc":"Render an empty rectangle. Args: style (StyleType): Style to apply to the box. width (int, optional): Width of the box in number of cells. Will expand to fit parent if  None . height (int, optional): Height of the box in number of cells. Will expand to fit parent if  None ."
-},
-{
-"ref":"textual.devtools",
 "url":43,
 "doc":""
 },
 {
-"ref":"textual.devtools.renderables",
+"ref":"textual.blank.Blank",
+"url":43,
+"doc":"Render an empty rectangle. Args: style (StyleType): Style to apply to the box. width (int, optional): Width of the box in number of cells. Will expand to fit parent if  None . height (int, optional): Height of the box in number of cells. Will expand to fit parent if  None ."
+},
+{
+"ref":"textual.devtools",
 "url":44,
+"doc":""
+},
+{
+"ref":"textual.devtools.renderables",
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleHeader",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleLog",
-"url":44,
+"url":45,
 "doc":"Renderable representing a single log message Args: segments (Iterable[Segment]): The segments to display path (str): The path of the file on the client that the log call was made from line_number (int): The line number of the file on the client the log call was made from unix_timestamp (int): Seconds since January 1st 1970"
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleNotice",
-"url":44,
+"url":45,
 "doc":"Renderable for messages written by the devtools console itself Args: message (str): The message to display level (DevtoolsMessageLevel): The message level (\"info\", \"warning\", or \"error\"). Determines colors used to render the message and the perceived importance."
 },
 {
 "ref":"textual.actions",
-"url":45,
+"url":46,
 "doc":""
 },
 {
 "ref":"textual.actions.ActionError",
-"url":45,
+"url":46,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.actions.parse",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.draw",
-"url":46,
+"url":47,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle",
-"url":46,
+"url":47,
 "doc":"An enumeration."
 },
 {
 "ref":"textual.draw.DrawStyle.NONE",
-"url":46,
+"url":47,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.ASCII",
-"url":46,
+"url":47,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.SQUARE",
-"url":46,
+"url":47,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.HEAVY",
-"url":46,
+"url":47,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.ROUNDED",
-"url":46,
+"url":47,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.DOUBLE",
-"url":46,
+"url":47,
 "doc":""
 },
 {
@@ -5477,34 +6683,34 @@ INDEX=[
 },
 {
 "ref":"textual.widgets",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.Button",
-"url":47,
+"url":48,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.widgets.Button.label",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Button.render",
-"url":47,
+"url":48,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.Button.on_click",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Button.can_focus",
-"url":47,
+"url":48,
 "doc":""
 },
 {
@@ -5853,27 +7059,27 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.ButtonPressed",
-"url":47,
+"url":48,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.widgets.ButtonPressed.sender",
-"url":47,
+"url":48,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.widgets.ButtonPressed.bubble",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.ButtonPressed.verbosity",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.ButtonPressed.system",
-"url":47,
+"url":48,
 "doc":""
 },
 {
@@ -5912,65 +7118,65 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.DirectoryTree",
-"url":47,
+"url":48,
 "doc":"Abstract base class for generic types. A generic type is typically declared by inheriting from this class parameterized with one or more type variables. For example, a generic mapping type might be defined as class Mapping(Generic[KT, VT]): def __getitem__(self, key: KT) -> VT:  .  Etc. This class can then be used as follows def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT: try: return mapping[key] except KeyError: return default"
 },
 {
 "ref":"textual.widgets.DirectoryTree.has_focus",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.DirectoryTree.on_focus",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.on_blur",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.watch_hover_node",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.render_node",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.render_tree_label",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.on_mount",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.load_directory",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.handle_tree_click",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.can_focus",
-"url":47,
+"url":48,
 "doc":""
 },
 {
@@ -6320,27 +7526,27 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.FileClick",
-"url":47,
+"url":48,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.widgets.FileClick.sender",
-"url":47,
+"url":48,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.widgets.FileClick.bubble",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.FileClick.verbosity",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.FileClick.system",
-"url":47,
+"url":48,
 "doc":""
 },
 {
@@ -6379,47 +7585,47 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Footer",
-"url":47,
+"url":48,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.widgets.Footer.highlight_key",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Footer.watch_highlight_key",
-"url":47,
+"url":48,
 "doc":"If highlight key changes we need to regenerate the text.",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.on_mouse_move",
-"url":47,
+"url":48,
 "doc":"Store any key we are moving over.",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.on_leave",
-"url":47,
+"url":48,
 "doc":"Clear any highlight when the mouse leave the widget",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.make_key_text",
-"url":47,
+"url":48,
 "doc":"Create text containing all the keys.",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.render",
-"url":47,
+"url":48,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.can_focus",
-"url":47,
+"url":48,
 "doc":""
 },
 {
@@ -6768,72 +7974,72 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Header",
-"url":47,
+"url":48,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.widgets.Header.tall",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Header.style",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Header.clock",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Header.title",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Header.sub_title",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Header.full_title",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.Header.watch_tall",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.get_clock",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.render",
-"url":47,
+"url":48,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.on_mount",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.on_click",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.can_focus",
-"url":47,
+"url":48,
 "doc":""
 },
 {
@@ -7182,57 +8388,57 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Placeholder",
-"url":47,
+"url":48,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.widgets.Placeholder.has_focus",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Placeholder.mouse_over",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Placeholder.style",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Placeholder.render",
-"url":47,
+"url":48,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.on_focus",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.on_blur",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.on_enter",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.on_leave",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.can_focus",
-"url":47,
+"url":48,
 "doc":""
 },
 {
@@ -7571,24 +8777,24 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Static",
-"url":47,
+"url":48,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
 "ref":"textual.widgets.Static.render",
-"url":47,
+"url":48,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.Static.update",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.Static.can_focus",
-"url":47,
+"url":48,
 "doc":""
 },
 {
@@ -7937,27 +9143,27 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.TreeClick",
-"url":47,
+"url":48,
 "doc":"Abstract base class for generic types. A generic type is typically declared by inheriting from this class parameterized with one or more type variables. For example, a generic mapping type might be defined as class Mapping(Generic[KT, VT]): def __getitem__(self, key: KT) -> VT:  .  Etc. This class can then be used as follows def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT: try: return mapping[key] except KeyError: return default"
 },
 {
 "ref":"textual.widgets.TreeClick.sender",
-"url":47,
+"url":48,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.widgets.TreeClick.bubble",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeClick.verbosity",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeClick.system",
-"url":47,
+"url":48,
 "doc":""
 },
 {
@@ -7996,116 +9202,116 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.TreeControl",
-"url":47,
+"url":48,
 "doc":"Abstract base class for generic types. A generic type is typically declared by inheriting from this class parameterized with one or more type variables. For example, a generic mapping type might be defined as class Mapping(Generic[KT, VT]): def __getitem__(self, key: KT) -> VT:  .  Etc. This class can then be used as follows def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT: try: return mapping[key] except KeyError: return default"
 },
 {
 "ref":"textual.widgets.TreeControl.hover_node",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.TreeControl.cursor",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.TreeControl.cursor_line",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.TreeControl.show_cursor",
-"url":47,
+"url":48,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.TreeControl.watch_show_cursor",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.watch_cursor_line",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.add",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.find_cursor",
-"url":47,
+"url":48,
 "doc":"Find the line location for the cursor node.",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.render",
-"url":47,
+"url":48,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.render_node",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.action_click_label",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.on_mouse_move",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.on_key",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.key_down",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.key_up",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.key_enter",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.cursor_down",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.cursor_up",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.can_focus",
-"url":47,
+"url":48,
 "doc":""
 },
 {
@@ -8454,165 +9660,165 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.TreeNode",
-"url":47,
+"url":48,
 "doc":"Abstract base class for generic types. A generic type is typically declared by inheriting from this class parameterized with one or more type variables. For example, a generic mapping type might be defined as class Mapping(Generic[KT, VT]): def __getitem__(self, key: KT) -> VT:  .  Etc. This class can then be used as follows def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT: try: return mapping[key] except KeyError: return default"
 },
 {
 "ref":"textual.widgets.TreeNode.control",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeNode.empty",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeNode.expanded",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeNode.is_cursor",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeNode.tree",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.widgets.TreeNode.next_node",
-"url":47,
+"url":48,
 "doc":"The next node in the tree, or None if at the end."
 },
 {
 "ref":"textual.widgets.TreeNode.previous_node",
-"url":47,
+"url":48,
 "doc":"The previous node in the tree, or None if at the end."
 },
 {
 "ref":"textual.widgets.TreeNode.next_sibling",
-"url":47,
+"url":48,
 "doc":"The next sibling, or None if last sibling."
 },
 {
 "ref":"textual.widgets.TreeNode.previous_sibling",
-"url":47,
+"url":48,
 "doc":"Previous sibling or None if first sibling."
 },
 {
 "ref":"textual.widgets.TreeNode.expand",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeNode.toggle",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeNode.add",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.NodeID",
-"url":47,
+"url":48,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.widgets.tabs.Tab",
-"url":48,
+"url":49,
 "doc":"Data container representing a single tab. Attributes: label (str): The user-facing label that will appear inside the tab. name (str, optional): A unique string key that will identify the tab. If None, it will default to the label. If the name is not unique within a single list of tabs, only the final Tab will be displayed."
 },
 {
 "ref":"textual.widgets.tabs.Tab.label",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.widgets.tabs.Tab.name",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.widgets.tabs.Tabs",
-"url":48,
+"url":49,
 "doc":"Widget which displays a set of horizontal tabs. Args: tabs (list[Tab]): A list of Tab objects defining the tabs which should be rendered. active_tab (str, optional): The name of the tab that should be active on first render. active_tab_style (StyleType): Style to apply to the label of the active tab. active_bar_style (StyleType): Style to apply to the underline of the active tab. inactive_tab_style (StyleType): Style to apply to the label of inactive tabs. inactive_bar_style (StyleType): Style to apply to the underline of inactive tabs. inactive_text_opacity (float): Opacity of the text labels of inactive tabs. animation_duration (float): The duration of the tab change animation, in seconds. animation_function (str): The easing function to use for the tab change animation. tab_padding (int, optional): The padding at the side of each tab. If None, tabs will automatically be padded such that they fit the available horizontal space. search_by_first_character (bool): If True, entering a character on your keyboard will activate the next tab (in left-to-right order) with a label starting with that character."
 },
 {
 "ref":"textual.widgets.tabs.Tabs.DEFAULT_STYLES",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.widgets.tabs.Tabs.on_key",
-"url":48,
+"url":49,
 "doc":"Handles key press events when this widget is in focus. Pressing \"escape\" removes focus from this widget. Use the left and right arrow keys to cycle through tabs. Use number keys to jump to tabs based in their number (\"1\" jumps to the leftmost tab). Type a character to cycle through tabs with labels beginning with that character. Args: event (events.Key): The Key event being handled",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.activate_next_tab",
-"url":48,
+"url":49,
 "doc":"Activate the tab to the right of the currently active tab",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.activate_previous_tab",
-"url":48,
+"url":49,
 "doc":"Activate the tab to the left of the currently active tab",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.activate_tab_by_first_char",
-"url":48,
+"url":49,
 "doc":"Activate the next tab that begins with the character Args: char (str): The character to search for",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.activate_tab_by_number",
-"url":48,
+"url":49,
 "doc":"Activate a tab using the tab number. Args: tab_number (int): The number of the tab. The leftmost tab is number 1, the next is 2, and so on. 0 represents the 10th tab.",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.action_range_clicked",
-"url":48,
+"url":49,
 "doc":"Handles 'range_clicked' actions which are fired when tabs are clicked",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.watch__active_tab_name",
-"url":48,
+"url":49,
 "doc":"Animates the underline bar position when the active tab changes",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.find_tab_by_name",
-"url":48,
+"url":49,
 "doc":"Return the index of the first tab with a certain name Args: tab_name (str): The name to search for.",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.render",
-"url":48,
+"url":49,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.can_focus",
-"url":48,
+"url":49,
 "doc":""
 },
 {
@@ -8961,122 +10167,122 @@ INDEX=[
 },
 {
 "ref":"textual.file_monitor",
-"url":49,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.file_monitor.FileMonitor",
-"url":49,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.file_monitor.FileMonitor.check",
-"url":49,
+"url":50,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.file_monitor.FileMonitor.on_change",
-"url":49,
+"url":50,
 "doc":"Called when file changes.",
 "func":1
 },
 {
 "ref":"textual.reactive",
-"url":50,
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.reactive.Reactive",
-"url":50,
+"url":51,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.reactive.Reactive.check_watchers",
-"url":50,
+"url":51,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.reactive.Reactive.compute",
-"url":50,
+"url":51,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.reactive.watch",
-"url":50,
+"url":51,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.driver",
-"url":51,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.driver.Driver",
-"url":51,
+"url":52,
 "doc":"Helper class that provides a standard way to create an ABC using inheritance."
 },
 {
 "ref":"textual.driver.Driver.send_event",
-"url":51,
+"url":52,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.driver.Driver.process_event",
-"url":51,
+"url":52,
 "doc":"Performs some additional processing of events.",
 "func":1
 },
 {
 "ref":"textual.driver.Driver.start_application_mode",
-"url":51,
+"url":52,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.driver.Driver.disable_input",
-"url":51,
+"url":52,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.driver.Driver.stop_application_mode",
-"url":51,
+"url":52,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Event",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Event.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Event.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Event.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Event.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9115,33 +10321,33 @@ INDEX=[
 },
 {
 "ref":"textual.events.Null",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Null.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Null.can_replace",
-"url":52,
+"url":53,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.events.Null.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Null.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Null.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9174,27 +10380,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Callback",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Callback.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Callback.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9233,27 +10439,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.ShutdownRequest",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.ShutdownRequest.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.ShutdownRequest.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9292,27 +10498,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Shutdown",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Shutdown.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Shutdown.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9351,27 +10557,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Load",
-"url":52,
+"url":53,
 "doc":"Sent when the App is running but  before the terminal is in application mode. Use this event to run any set up that doesn't require any visuals such as loading configuration and binding keys. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Load.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Load.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Load.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Load.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9410,27 +10616,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Idle",
-"url":52,
+"url":53,
 "doc":"Sent when there are no more items in the message queue. This is a pseudo-event in that it is created by the Textual system and doesn't go through the usual message queue. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Idle.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Idle.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9469,32 +10675,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Action",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Action.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Action.action",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Action.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Action.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Action.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9533,38 +10739,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Resize",
-"url":52,
+"url":53,
 "doc":"Sent when the app or widget has been resized. Args: sender (MessageTarget): Event sender. width (int): New width in terminal cells. height (int): New height in terminal cells."
 },
 {
 "ref":"textual.events.Resize.can_replace",
-"url":52,
+"url":53,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.events.Resize.size",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -9597,27 +10803,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Mount",
-"url":52,
+"url":53,
 "doc":"Sent when a widget is  mounted and may receive messages. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Mount.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Mount.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9656,27 +10862,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Unmount",
-"url":52,
+"url":53,
 "doc":"Sent when a widget is unmounted, and may no longer receive messages. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Unmount.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Unmount.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Unmount.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Unmount.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9715,27 +10921,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Show",
-"url":52,
+"url":53,
 "doc":"Sent when a widget has become visible. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Show.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Show.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Show.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Show.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9774,27 +10980,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Hide",
-"url":52,
+"url":53,
 "doc":"Sent when a widget has been hidden. A widget may be hidden by setting its  visible flag to  False , if it is no longer in a layout, or if it has been offset beyond the edges of the terminal. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Hide.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Hide.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9833,27 +11039,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseCapture",
-"url":52,
+"url":53,
 "doc":"Sent when the mouse has been captured. When a mouse has been captures, all further mouse events will be sent to the capturing widget. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when captured."
 },
 {
 "ref":"textual.events.MouseCapture.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseCapture.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9892,27 +11098,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseRelease",
-"url":52,
+"url":53,
 "doc":"Mouse has been released. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when released."
 },
 {
 "ref":"textual.events.MouseRelease.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseRelease.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -9951,27 +11157,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.InputEvent",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.InputEvent.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.InputEvent.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -10010,32 +11216,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Key",
-"url":52,
+"url":53,
 "doc":"Sent when the user hits a key on the keyboard Args: sender (MessageTarget): The sender of the event (the App) key (str): The pressed key if a single character (or a longer string for special characters)"
 },
 {
 "ref":"textual.events.Key.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.key",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Key.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Key.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -10074,94 +11280,94 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseEvent",
-"url":52,
+"url":53,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseEvent.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.from_event",
-"url":52,
+"url":53,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events.MouseEvent.style",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.offset",
-"url":52,
+"url":53,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events.MouseEvent.button",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.ctrl",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.delta_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.delta_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.meta",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.screen_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.screen_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.shift",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -10200,77 +11406,77 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseMove",
-"url":52,
+"url":53,
 "doc":"Sent when the mouse cursor moves. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseMove.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.button",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.ctrl",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.delta_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.delta_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.meta",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.screen_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.screen_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.shift",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -10309,77 +11515,77 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseDown",
-"url":52,
+"url":53,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseDown.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.button",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.ctrl",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.delta_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.delta_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.meta",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.screen_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.screen_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.shift",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -10418,77 +11624,77 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseUp",
-"url":52,
+"url":53,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseUp.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.button",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.ctrl",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.delta_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.delta_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.meta",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.screen_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.screen_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.shift",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -10527,37 +11733,37 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseScrollDown",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.MouseScrollDown.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -10596,37 +11802,37 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseScrollUp",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.MouseScrollUp.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -10665,77 +11871,77 @@ INDEX=[
 },
 {
 "ref":"textual.events.Click",
-"url":52,
+"url":53,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.Click.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Click.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Click.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Click.button",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.ctrl",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.delta_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.delta_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.meta",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.screen_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.screen_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.shift",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -10774,77 +11980,77 @@ INDEX=[
 },
 {
 "ref":"textual.events.DoubleClick",
-"url":52,
+"url":53,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.DoubleClick.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.DoubleClick.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.DoubleClick.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.DoubleClick.button",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.ctrl",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.delta_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.delta_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.meta",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.screen_x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.screen_y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.shift",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.x",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.y",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -10883,42 +12089,42 @@ INDEX=[
 },
 {
 "ref":"textual.events.Timer",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Timer.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.callback",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.count",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.time",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -10952,27 +12158,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Enter",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Enter.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Enter.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -11011,27 +12217,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Leave",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Leave.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Leave.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -11070,27 +12276,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Focus",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Focus.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Focus.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -11129,27 +12335,27 @@ INDEX=[
 },
 {
 "ref":"textual.events.Blur",
-"url":52,
+"url":53,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Blur.sender",
-"url":52,
+"url":53,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Blur.bubble",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.verbosity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.system",
-"url":52,
+"url":53,
 "doc":""
 },
 {
@@ -11188,297 +12394,297 @@ INDEX=[
 },
 {
 "ref":"textual.color",
-"url":53,
+"url":54,
 "doc":"Manages Color in Textual. All instances where the developer is presented with a color should use this class. The only exception should be when passing things to a Rich renderable, which will need to use the  rich_color attribute to perform a conversion. I'm not entirely happy with burdening the user with two similar color classes. In a future update we might add a protocol to convert automatically so the dev could use them interchangably."
 },
 {
 "ref":"textual.color.HLS",
-"url":53,
+"url":54,
 "doc":"A color in HLS format."
 },
 {
 "ref":"textual.color.HLS.h",
-"url":53,
+"url":54,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.HLS.l",
-"url":53,
+"url":54,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.HLS.s",
-"url":53,
+"url":54,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.color.HSV",
-"url":53,
+"url":54,
 "doc":"A color in HSV format."
 },
 {
 "ref":"textual.color.HSV.h",
-"url":53,
+"url":54,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.HSV.s",
-"url":53,
+"url":54,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.HSV.v",
-"url":53,
+"url":54,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.color.Lab",
-"url":53,
+"url":54,
 "doc":"A color in CIE-L ab format."
 },
 {
 "ref":"textual.color.Lab.L",
-"url":53,
+"url":54,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.Lab.a",
-"url":53,
+"url":54,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.Lab.b",
-"url":53,
+"url":54,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.color.ColorParseError",
-"url":53,
+"url":54,
 "doc":"A color failed to parse"
 },
 {
 "ref":"textual.color.Color",
-"url":53,
+"url":54,
 "doc":"A class to represent a single RGB color with alpha."
 },
 {
 "ref":"textual.color.Color.r",
-"url":53,
+"url":54,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.Color.g",
-"url":53,
+"url":54,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.Color.b",
-"url":53,
+"url":54,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.color.Color.a",
-"url":53,
+"url":54,
 "doc":"Alias for field number 3"
 },
 {
 "ref":"textual.color.Color.from_rich_color",
-"url":53,
+"url":54,
 "doc":"Create a new color from Rich's Color class. Args: rich_color (RichColor): An instance of rich.color.Color. Returns: Color: A new Color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.from_hls",
-"url":53,
+"url":54,
 "doc":"Create a color from HLS components. Args: h (float): Hue. l (float): Lightness. s (float): Saturation. Returns: Color: A new color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.clamped",
-"url":53,
+"url":54,
 "doc":"Get a color with all components saturated to maximum and minimum values."
 },
 {
 "ref":"textual.color.Color.rich_color",
-"url":53,
+"url":54,
 "doc":"This color encoded in Rich's Color class."
 },
 {
 "ref":"textual.color.Color.normalized",
-"url":53,
+"url":54,
 "doc":"A tuple of the color components normalized to between 0 and 1."
 },
 {
 "ref":"textual.color.Color.hls",
-"url":53,
+"url":54,
 "doc":"Get the color as HLS."
 },
 {
 "ref":"textual.color.Color.brightness",
-"url":53,
+"url":54,
 "doc":"Get the human perceptual brightness."
 },
 {
 "ref":"textual.color.Color.hex",
-"url":53,
+"url":54,
 "doc":"The color in CSS hex form, with 6 digits for RGB, and 8 digits for RGBA. Returns: str: A CSS hex-style color, e.g. \" 46b3de\" or \" 3342457f\""
 },
 {
 "ref":"textual.color.Color.css",
-"url":53,
+"url":54,
 "doc":"The color in CSS rgb or rgba form. Returns: str: A CSS style color, e.g. \"rgb(10,20,30)\" or \"rgb(50,70,80,0.5)\""
 },
 {
 "ref":"textual.color.Color.with_alpha",
-"url":53,
+"url":54,
 "doc":"Create a new color with the given alpha. Args: alpha (float): New value for alpha. Returns: Color: A new color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.blend",
-"url":53,
+"url":54,
 "doc":"Generate a new color between two colors. Args: destination (Color): Another color. factor (float): A blend factor, 0 -> 1 Returns: Color: A new color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.parse",
-"url":53,
+"url":54,
 "doc":"Parse a string containing a CSS-style color. Args: color_text (str | Color): Text with a valid color format. Color objects will be returned unmodified. Raises: ColorParseError: If the color is not encoded correctly. Returns: Color: New color object.",
 "func":1
 },
 {
 "ref":"textual.color.Color.darken",
-"url":53,
+"url":54,
 "doc":"Darken the color by a given amount. Args: amount (float): Value between 0-1 to reduce luminance by. Returns: Color: New color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.lighten",
-"url":53,
+"url":54,
 "doc":"Lighten the color by a given amount. Args: amount (float): Value between 0-1 to increase luminance by. Returns: Color: New color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.get_contrast_text",
-"url":53,
+"url":54,
 "doc":"Get a light or dark color that best contrasts this color, for use with text. Args: alpha (float, optional): An alpha value to adjust the pure white / black by. Defaults to 0.95. Returns: Color: A new color, either an off-white or off-black",
 "func":1
 },
 {
 "ref":"textual.color.ColorPair",
-"url":53,
+"url":54,
 "doc":"A pair of colors for foreground and background."
 },
 {
 "ref":"textual.color.ColorPair.foreground",
-"url":53,
+"url":54,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.ColorPair.background",
-"url":53,
+"url":54,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.ColorPair.style",
-"url":53,
+"url":54,
 "doc":"A Rich style with foreground and background."
 },
 {
 "ref":"textual.color.rgb_to_lab",
-"url":53,
+"url":54,
 "doc":"Convert an RGB color to the CIE-L ab format. Uses the standard RGB color space with a D65/2\u2070 standard illuminant. Conversion passes through the XYZ color space. Cf. http: www.easyrgb.com/en/math.php.",
 "func":1
 },
 {
 "ref":"textual.color.lab_to_rgb",
-"url":53,
+"url":54,
 "doc":"Convert a CIE-L ab color to RGB. Uses the standard RGB color space with a D65/2\u2070 standard illuminant. Conversion passes through the XYZ color space. Cf. http: www.easyrgb.com/en/math.php.",
 "func":1
 },
 {
 "ref":"textual.drivers",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.drivers.linux_driver",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver",
-"url":55,
+"url":56,
 "doc":"Powers display and input for Linux / MacOS"
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver.start_application_mode",
-"url":55,
+"url":56,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver.disable_input",
-"url":55,
+"url":56,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver.stop_application_mode",
-"url":55,
+"url":56,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver.run_input_thread",
-"url":55,
+"url":56,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.drivers.linux_driver.LinuxDriver.process_event",
-"url":51,
+"url":52,
 "doc":"Performs some additional processing of events.",
 "func":1
 },
 {
 "ref":"textual.layout",
-"url":56,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.layout.WidgetPlacement",
-"url":56,
+"url":57,
 "doc":"The position, size, and relative order of a widget within its parent."
 },
 {
 "ref":"textual.layout.WidgetPlacement.region",
-"url":56,
+"url":57,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.layout.WidgetPlacement.widget",
-"url":56,
+"url":57,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.layout.WidgetPlacement.order",
-"url":56,
+"url":57,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.layout.Layout",
-"url":56,
+"url":57,
 "doc":"Responsible for arranging Widgets in a view and rendering them."
 },
 {
 "ref":"textual.layout.Layout.name",
-"url":56,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.layout.Layout.arrange",
-"url":56,
+"url":57,
 "doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. scroll (Offset): Offset to apply to the Widget placements. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 }
