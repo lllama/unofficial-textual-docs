@@ -306,6 +306,10 @@ class DOMNode(MessagePump):
         add_children(tree, self)
         return tree
 
+    @property
+    def displayed_children(self) -&gt; list[DOMNode]:
+        return [child for child in self.children if child.display]
+
     def get_pseudo_classes(self) -&gt; Iterable[str]:
         &#34;&#34;&#34;Get any pseudo classes applicable to this Node, e.g. hover, focus.
 
@@ -732,6 +736,10 @@ class DOMNode(MessagePump):
         add_children(tree, self)
         return tree
 
+    @property
+    def displayed_children(self) -&gt; list[DOMNode]:
+        return [child for child in self.children if child.display]
+
     def get_pseudo_classes(self) -&gt; Iterable[str]:
         &#34;&#34;&#34;Get any pseudo classes applicable to this Node, e.g. hover, focus.
 
@@ -1022,6 +1030,18 @@ def display(self) -&gt; bool:
     Returns: ``True`` if this DOMNode is displayed (``display != &#34;none&#34;``), ``False`` otherwise.
     &#34;&#34;&#34;
     return self.styles.display != &#34;none&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.dom.DOMNode.displayed_children"><code class="name">var <span class="ident">displayed_children</span> : list[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def displayed_children(self) -&gt; list[DOMNode]:
+    return [child for child in self.children if child.display]</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.id"><code class="name">var <span class="ident">id</span> : str | None</code></dt>
@@ -1706,6 +1726,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.css_path" href="#textual.dom.DOMNode.css_path">css_path</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_type" href="#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="#textual.dom.DOMNode.display">display</a></code></li>
+<li><code><a title="textual.dom.DOMNode.displayed_children" href="#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_child" href="#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_pseudo_classes" href="#textual.dom.DOMNode.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_class" href="#textual.dom.DOMNode.has_class">has_class</a></code></li>
