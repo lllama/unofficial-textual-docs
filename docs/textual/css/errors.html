@@ -26,7 +26,13 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from .tokenize import Token
+<pre><code class="python">from __future__ import annotations
+
+from rich.console import ConsoleOptions, Console
+from rich.traceback import Traceback
+
+from ._help_renderables import HelpText
+from .tokenize import Token
 
 
 class DeclarationError(Exception):
@@ -46,7 +52,23 @@ class StyleTypeError(TypeError):
 
 
 class StyleValueError(ValueError):
-    pass
+    &#34;&#34;&#34;Raised when the value of a style property is not valid
+
+    Attributes:
+        help_text (HelpText | None): Optional HelpText to be rendered when this
+            error is raised.
+    &#34;&#34;&#34;
+
+    def __init__(self, *args, help_text: HelpText | None = None):
+        super().__init__(*args)
+        self.help_text = help_text
+
+    def __rich_console__(self, console: Console, options: ConsoleOptions):
+        yield Traceback.from_exception(type(self), self, self.__traceback__)
+        if self.help_text is not None:
+            yield &#34;&#34;
+            yield self.help_text
+            yield &#34;&#34;
 
 
 class StylesheetError(Exception):
@@ -64,7 +86,7 @@ class StylesheetError(Exception):
 <dl>
 <dt id="textual.css.errors.DeclarationError"><code class="flex name class">
 <span>class <span class="ident">DeclarationError</span></span>
-<span>(</span><span>name: str, token: <a title="textual.css.tokenizer.Token" href="tokenizer.html#textual.css.tokenizer.Token">Token</a>, message: str)</span>
+<span>(</span><span>name: str, token: Token, message: str)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
@@ -107,16 +129,35 @@ class StylesheetError(Exception):
 </dd>
 <dt id="textual.css.errors.StyleValueError"><code class="flex name class">
 <span>class <span class="ident">StyleValueError</span></span>
-<span>(</span><span>*args, **kwargs)</span>
+<span>(</span><span>*args, help_text: HelpText | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Inappropriate argument value (of correct type).</p></div>
+<div class="desc"><p>Raised when the value of a style property is not valid</p>
+<h2 id="attributes">Attributes</h2>
+<p>help_text (HelpText | None): Optional HelpText to be rendered when this
+error is raised.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class StyleValueError(ValueError):
-    pass</code></pre>
+    &#34;&#34;&#34;Raised when the value of a style property is not valid
+
+    Attributes:
+        help_text (HelpText | None): Optional HelpText to be rendered when this
+            error is raised.
+    &#34;&#34;&#34;
+
+    def __init__(self, *args, help_text: HelpText | None = None):
+        super().__init__(*args)
+        self.help_text = help_text
+
+    def __rich_console__(self, console: Console, options: ConsoleOptions):
+        yield Traceback.from_exception(type(self), self, self.__traceback__)
+        if self.help_text is not None:
+            yield &#34;&#34;
+            yield self.help_text
+            yield &#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

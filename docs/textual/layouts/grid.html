@@ -38,7 +38,7 @@ from typing import Iterable, NamedTuple, TYPE_CHECKING
 
 from .._layout_resolve import layout_resolve
 from ..geometry import Size, Offset, Region
-from ..layout import Layout, WidgetPlacement
+from .._layout import Layout, WidgetPlacement
 
 if TYPE_CHECKING:
     from ..widget import Widget
@@ -273,9 +273,6 @@ class GridLayout(Layout):
         col_align: GridAlign,
         row_align: GridAlign,
     ) -&gt; Region:
-        offset_x = 0
-        offset_y = 0
-
         def align(size: int, container: int, align: GridAlign) -&gt; int:
             offset = 0
             if align == &#34;end&#34;:
@@ -730,9 +727,6 @@ if __name__ == &#34;__main__&#34;:
         col_align: GridAlign,
         row_align: GridAlign,
     ) -&gt; Region:
-        offset_x = 0
-        offset_y = 0
-
         def align(size: int, container: int, align: GridAlign) -&gt; int:
             offset = 0
             if align == &#34;end&#34;:
@@ -904,7 +898,7 @@ if __name__ == &#34;__main__&#34;:
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="textual.layout.Layout" href="../layout.html#textual.layout.Layout">Layout</a></li>
+<li>textual._layout.Layout</li>
 <li>abc.ABC</li>
 </ul>
 <h3>Class variables</h3>

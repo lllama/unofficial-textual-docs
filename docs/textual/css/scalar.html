@@ -31,12 +31,10 @@
 from enum import Enum, unique
 from functools import lru_cache
 import re
-from typing import Callable, Iterable, NamedTuple, TYPE_CHECKING
+from typing import Iterable, NamedTuple, TYPE_CHECKING
 
 import rich.repr
 
-
-from .. import log
 from ..geometry import Offset
 
 
@@ -78,7 +76,6 @@ SYMBOL_UNIT = {v: k for k, v in UNIT_SYMBOL.items()}
 
 _MATCH_SCALAR = re.compile(r&#34;^(-?\d+\.?\d*)(fr|%|w|h|vw|vh)?$&#34;).match
 
-
 RESOLVE_MAP = {
     Unit.CELLS: lambda value, size, viewport: value,
     Unit.WIDTH: lambda value, size, viewport: size[0] * value / 100,
@@ -86,7 +83,6 @@ RESOLVE_MAP = {
     Unit.VIEW_WIDTH: lambda value, size, viewport: viewport[0] * value / 100,
     Unit.VIEW_HEIGHT: lambda value, size, viewport: viewport[1] * value / 100,
 }
-
 
 if TYPE_CHECKING:
     from ..widget import Widget
@@ -192,6 +188,25 @@ class Scalar(NamedTuple):
             raise ScalarResolveError(f&#34;expected dimensions; found {str(self)!r}&#34;)
         return dimension
 
+    def copy_with(
+        self,
+        value: float | None = None,
+        unit: Unit | None = None,
+        percent_unit: Unit | None = None,
+    ) -&gt; Scalar:
+        &#34;&#34;&#34;Get a copy of this Scalar, with values optionally modified
+
+        Args:
+            value (float | None): The new value, or None to keep the same value
+            unit (Unit | None): The new unit, or None to keep the same unit
+            percent_unit (Unit | None): The new percent_unit, or None to keep the same percent_unit
+        &#34;&#34;&#34;
+        return Scalar(
+            value if value is not None else self.value,
+            unit if unit is not None else self.unit,
+            percent_unit if percent_unit is not None else self.percent_unit,
+        )
+
 
 @rich.repr.auto(angular=True)
 class ScalarOffset(NamedTuple):
@@ -221,9 +236,7 @@ class ScalarOffset(NamedTuple):
 
 NULL_SCALAR = ScalarOffset(Scalar.from_number(0), Scalar.from_number(0))
 
-
 if __name__ == &#34;__main__&#34;:
-
     print(Scalar.parse(&#34;3.14fr&#34;))
     s = Scalar.parse(&#34;23&#34;)
     print(repr(s))
@@ -367,7 +380,26 @@ if __name__ == &#34;__main__&#34;:
             dimension = int(RESOLVE_MAP[unit](value, size, viewport))
         except KeyError:
             raise ScalarResolveError(f&#34;expected dimensions; found {str(self)!r}&#34;)
-        return dimension</code></pre>
+        return dimension
+
+    def copy_with(
+        self,
+        value: float | None = None,
+        unit: Unit | None = None,
+        percent_unit: Unit | None = None,
+    ) -&gt; Scalar:
+        &#34;&#34;&#34;Get a copy of this Scalar, with values optionally modified
+
+        Args:
+            value (float | None): The new value, or None to keep the same value
+            unit (Unit | None): The new unit, or None to keep the same unit
+            percent_unit (Unit | None): The new percent_unit, or None to keep the same percent_unit
+        &#34;&#34;&#34;
+        return Scalar(
+            value if value is not None else self.value,
+            unit if unit is not None else self.unit,
+            percent_unit if percent_unit is not None else self.percent_unit,
+        )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -517,6 +549,39 @@ def symbol(self) -&gt; str:
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="textual.css.scalar.Scalar.copy_with"><code class="name flex">
+<span>def <span class="ident">copy_with</span></span>(<span>self, value: float | None = None, unit: <a title="textual.css.scalar.Unit" href="#textual.css.scalar.Unit">Unit</a> | None = None, percent_unit: <a title="textual.css.scalar.Unit" href="#textual.css.scalar.Unit">Unit</a> | None = None) ‑> <a title="textual.css.scalar.Scalar" href="#textual.css.scalar.Scalar">Scalar</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a copy of this Scalar, with values optionally modified</p>
+<h2 id="args">Args</h2>
+<p>value (float | None): The new value, or None to keep the same value
+unit (Unit | None): The new unit, or None to keep the same unit
+percent_unit (Unit | None): The new percent_unit, or None to keep the same percent_unit</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy_with(
+    self,
+    value: float | None = None,
+    unit: Unit | None = None,
+    percent_unit: Unit | None = None,
+) -&gt; Scalar:
+    &#34;&#34;&#34;Get a copy of this Scalar, with values optionally modified
+
+    Args:
+        value (float | None): The new value, or None to keep the same value
+        unit (Unit | None): The new unit, or None to keep the same unit
+        percent_unit (Unit | None): The new percent_unit, or None to keep the same percent_unit
+    &#34;&#34;&#34;
+    return Scalar(
+        value if value is not None else self.value,
+        unit if unit is not None else self.unit,
+        percent_unit if percent_unit is not None else self.percent_unit,
+    )</code></pre>
+</details>
+</dd>
 <dt id="textual.css.scalar.Scalar.resolve_dimension"><code class="name flex">
 <span>def <span class="ident">resolve_dimension</span></span>(<span>self, size: tuple[int, int], viewport: tuple[int, int]) ‑> int</span>
 </code></dt>
@@ -855,6 +920,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.css.scalar.Scalar" href="#textual.css.scalar.Scalar">Scalar</a></code></h4>
 <ul class="two-column">
 <li><code><a title="textual.css.scalar.Scalar.cells" href="#textual.css.scalar.Scalar.cells">cells</a></code></li>
+<li><code><a title="textual.css.scalar.Scalar.copy_with" href="#textual.css.scalar.Scalar.copy_with">copy_with</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.fraction" href="#textual.css.scalar.Scalar.fraction">fraction</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.from_number" href="#textual.css.scalar.Scalar.from_number">from_number</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.is_auto" href="#textual.css.scalar.Scalar.is_auto">is_auto</a></code></li>

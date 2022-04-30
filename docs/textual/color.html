@@ -58,7 +58,7 @@ from rich.style import Style
 from rich.text import Text
 
 
-from ._color_constants import ANSI_COLOR_TO_RGB
+from ._color_constants import COLOR_NAME_TO_RGB
 from .geometry import clamp
 
 
@@ -156,6 +156,11 @@ class Color(NamedTuple):
                 self.get_contrast_text().rich_color, RichColor.from_rgb(r, g, b)
             ),
         )
+
+    @property
+    def is_transparent(self) -&gt; bool:
+        &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.&#34;&#34;&#34;
+        return self.a == 0
 
     @property
     def clamped(self) -&gt; Color:
@@ -287,9 +292,9 @@ class Color(NamedTuple):
         &#34;&#34;&#34;
         if isinstance(color_text, Color):
             return color_text
-        ansi_color = ANSI_COLOR_TO_RGB.get(color_text)
-        if ansi_color is not None:
-            return cls(*ansi_color)
+        color_from_name = COLOR_NAME_TO_RGB.get(color_text)
+        if color_from_name is not None:
+            return cls(*color_from_name)
         color_match = RE_COLOR.match(color_text)
         if color_match is None:
             raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
@@ -363,6 +368,7 @@ class Color(NamedTuple):
 # Color constants
 WHITE = Color(255, 255, 255)
 BLACK = Color(0, 0, 0)
+TRANSPARENT = Color(0, 0, 0, 0)
 
 
 class ColorPair(NamedTuple):
@@ -627,6 +633,11 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         )
 
     @property
+    def is_transparent(self) -&gt; bool:
+        &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.&#34;&#34;&#34;
+        return self.a == 0
+
+    @property
     def clamped(self) -&gt; Color:
         &#34;&#34;&#34;Get a color with all components saturated to maximum and minimum values.&#34;&#34;&#34;
         r, g, b, a = self
@@ -756,9 +767,9 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         &#34;&#34;&#34;
         if isinstance(color_text, Color):
             return color_text
-        ansi_color = ANSI_COLOR_TO_RGB.get(color_text)
-        if ansi_color is not None:
-            return cls(*ansi_color)
+        color_from_name = COLOR_NAME_TO_RGB.get(color_text)
+        if color_from_name is not None:
+            return cls(*color_from_name)
         color_match = RE_COLOR.match(color_text)
         if color_match is None:
             raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
@@ -945,9 +956,9 @@ def parse(cls, color_text: str | Color) -&gt; Color:
     &#34;&#34;&#34;
     if isinstance(color_text, Color):
         return color_text
-    ansi_color = ANSI_COLOR_TO_RGB.get(color_text)
-    if ansi_color is not None:
-        return cls(*ansi_color)
+    color_from_name = COLOR_NAME_TO_RGB.get(color_text)
+    if color_from_name is not None:
+        return cls(*color_from_name)
     color_match = RE_COLOR.match(color_text)
     if color_match is None:
         raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
@@ -1092,6 +1103,19 @@ def hls(self) -&gt; HLS:
     &#34;&#34;&#34;Get the color as HLS.&#34;&#34;&#34;
     r, g, b = self.normalized
     return HLS(*rgb_to_hls(r, g, b))</code></pre>
+</details>
+</dd>
+<dt id="textual.color.Color.is_transparent"><code class="name">var <span class="ident">is_transparent</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Check if the color is transparent, i.e. has 0 alpha.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_transparent(self) -&gt; bool:
+    &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.&#34;&#34;&#34;
+    return self.a == 0</code></pre>
 </details>
 </dd>
 <dt id="textual.color.Color.normalized"><code class="name">var <span class="ident">normalized</span> : tuple[float, float, float]</code></dt>
@@ -1600,6 +1624,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.color.Color.get_contrast_text" href="#textual.color.Color.get_contrast_text">get_contrast_text</a></code></li>
 <li><code><a title="textual.color.Color.hex" href="#textual.color.Color.hex">hex</a></code></li>
 <li><code><a title="textual.color.Color.hls" href="#textual.color.Color.hls">hls</a></code></li>
+<li><code><a title="textual.color.Color.is_transparent" href="#textual.color.Color.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.color.Color.lighten" href="#textual.color.Color.lighten">lighten</a></code></li>
 <li><code><a title="textual.color.Color.normalized" href="#textual.color.Color.normalized">normalized</a></code></li>
 <li><code><a title="textual.color.Color.parse" href="#textual.color.Color.parse">parse</a></code></li>

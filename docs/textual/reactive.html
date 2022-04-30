@@ -53,7 +53,7 @@ if TYPE_CHECKING:
     Reactable = Union[Widget, App]
 
 
-ReactiveType = TypeVar(&#34;ReactiveType&#34;)
+ReactiveType = TypeVar(&#34;ReactiveType&#34;, covariant=True)
 
 
 T = TypeVar(&#34;T&#34;)
@@ -64,7 +64,7 @@ class Reactive(Generic[ReactiveType]):
 
     def __init__(
         self,
-        default: ReactiveType,
+        default: ReactiveType | Callable[[], ReactiveType],
         *,
         layout: bool = False,
         repaint: bool = True,
@@ -86,7 +86,11 @@ class Reactive(Generic[ReactiveType]):
 
         self.name = name
         self.internal_name = f&#34;_reactive_{name}&#34;
-        setattr(owner, self.internal_name, self._default)
+        setattr(
+            owner,
+            self.internal_name,
+            self._default() if callable(self._default) else self._default,
+        )
 
     def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
         return getattr(obj, self.internal_name)
@@ -207,7 +211,7 @@ def watch(
 <dl>
 <dt id="textual.reactive.Reactive"><code class="flex name class">
 <span>class <span class="ident">Reactive</span></span>
-<span>(</span><span>default: ReactiveType, *, layout: bool = False, repaint: bool = True)</span>
+<span>(</span><span>default: ReactiveType | Callable[[], ReactiveType], *, layout: bool = False, repaint: bool = True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
@@ -220,7 +224,7 @@ def watch(
 
     def __init__(
         self,
-        default: ReactiveType,
+        default: ReactiveType | Callable[[], ReactiveType],
         *,
         layout: bool = False,
         repaint: bool = True,
@@ -242,7 +246,11 @@ def watch(
 
         self.name = name
         self.internal_name = f&#34;_reactive_{name}&#34;
-        setattr(owner, self.internal_name, self._default)
+        setattr(
+            owner,
+            self.internal_name,
+            self._default() if callable(self._default) else self._default,
+        )
 
     def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
         return getattr(obj, self.internal_name)

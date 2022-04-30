@@ -38,6 +38,7 @@ from rich.text import Text
 from rich.tree import Tree
 
 from ._node_list import NodeList
+from .color import Color
 from .css._error_tools import friendly_list
 from .css.constants import VALID_DISPLAY, VALID_VISIBILITY
 from .css.errors import StyleValueError
@@ -47,6 +48,7 @@ from .css.query import NoMatchingNodesError
 from .message_pump import MessagePump
 
 if TYPE_CHECKING:
+    from .app import App
     from .css.query import DOMQuery
     from .screen import Screen
 
@@ -68,42 +70,44 @@ class DOMNode(MessagePump):
 
     def __init__(
         self,
+        *,
         name: str | None = None,
         id: str | None = None,
-        classes: set[str] | None = None,
+        classes: str | None = None,
     ) -&gt; None:
         self._name = name
         self._id = id
-        self._classes: set[str] = set() if classes is None else classes
+        self._classes: set[str] = set() if classes is None else set(classes.split())
         self.children = NodeList()
         self._css_styles: Styles = Styles(self)
         self._inline_styles: Styles = Styles.parse(
             self.INLINE_STYLES, repr(self), node=self
         )
         self.styles = RenderStyles(self, self._css_styles, self._inline_styles)
-        self._default_styles = Styles.parse(self.DEFAULT_STYLES, f&#34;{self.__class__}&#34;)
+        self._default_styles = Styles()
         self._default_rules = self._default_styles.extract_rules((0, 0, 0))
         super().__init__()
+
+    def on_register(self, app: App) -&gt; None:
+        &#34;&#34;&#34;Called when the widget is registered
+
+        Args:
+            app (App): Parent application.
+        &#34;&#34;&#34;
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;name&#34;, self._name, None
         yield &#34;id&#34;, self._id, None
         if self._classes:
-            yield &#34;classes&#34;, self._classes
+            yield &#34;classes&#34;, &#34; &#34;.join(self._classes)
 
     @property
-    def parent(self) -&gt; DOMNode:
+    def parent(self) -&gt; DOMNode | None:
         &#34;&#34;&#34;Get the parent node.
-
-        Raises:
-            NoParent: If this is the root node.
 
         Returns:
             DOMNode: The node which is the direct parent of this node.
         &#34;&#34;&#34;
-        if self._parent is None:
-            raise NoParent(f&#34;{self} has no parent&#34;)
-        assert isinstance(self._parent, DOMNode)
         return self._parent
 
     @property
@@ -251,19 +255,6 @@ class DOMNode(MessagePump):
             )
 
     @property
-    def rich_text_style(self) -&gt; Style:
-        &#34;&#34;&#34;Get the text style (added to parent style).
-
-        Returns:
-            Style: Rich Style object.
-        &#34;&#34;&#34;
-        return (
-            self.parent.rich_text_style + self.styles.rich_style
-            if self.has_parent
-            else self.styles.rich_style
-        )
-
-    @property
     def tree(self) -&gt; Tree:
         &#34;&#34;&#34;Get a Rich tree object which will recursively render the structure of the node tree.
 
@@ -305,6 +296,48 @@ class DOMNode(MessagePump):
 
         add_children(tree, self)
         return tree
+
+    @property
+    def rich_text_style(self) -&gt; Style:
+        &#34;&#34;&#34;Get the text style object.
+
+        A widget&#39;s style is influenced by its parent. For instance if a widgets background has an alpha,
+        then its parent&#39;s background color will show through. Additionally, widgets will inherit their
+        parent&#39;s text style (i.e. bold, italic etc).
+
+        Returns:
+            Style: Rich Style object.
+        &#34;&#34;&#34;
+
+        # TODO: Feels like there may be opportunity for caching here.
+
+        background = Color(0, 0, 0, 0)
+        color = Color(255, 255, 255, 0)
+        style = Style()
+        for node in reversed(self.ancestors):
+            styles = node.styles
+            if styles.has_rule(&#34;background&#34;):
+                background += styles.background
+            if styles.has_rule(&#34;color&#34;):
+                color = styles.color
+            style += styles.text_style
+
+        style = Style(bgcolor=background.rich_color, color=color.rich_color) + style
+        return style
+
+    @property
+    def ancestors(self) -&gt; list[DOMNode]:
+        &#34;&#34;&#34;Get a list of Nodes by tracing ancestors all the way back to App.&#34;&#34;&#34;
+
+        nodes: list[DOMNode] = [self]
+        add_node = nodes.append
+        node = self
+        while True:
+            node = node.parent
+            if node is None:
+                break
+            add_node(node)
+        return nodes
 
     @property
     def displayed_children(self) -&gt; list[DOMNode]:
@@ -477,7 +510,7 @@ class DOMNode(MessagePump):
 <dl>
 <dt id="textual.dom.DOMNode"><code class="flex name class">
 <span>class <span class="ident">DOMNode</span></span>
-<span>(</span><span>name: str | None = None, id: str | None = None, classes: set[str] | None = None)</span>
+<span>(</span><span>*, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
@@ -498,42 +531,44 @@ class DOMNode(MessagePump):
 
     def __init__(
         self,
+        *,
         name: str | None = None,
         id: str | None = None,
-        classes: set[str] | None = None,
+        classes: str | None = None,
     ) -&gt; None:
         self._name = name
         self._id = id
-        self._classes: set[str] = set() if classes is None else classes
+        self._classes: set[str] = set() if classes is None else set(classes.split())
         self.children = NodeList()
         self._css_styles: Styles = Styles(self)
         self._inline_styles: Styles = Styles.parse(
             self.INLINE_STYLES, repr(self), node=self
         )
         self.styles = RenderStyles(self, self._css_styles, self._inline_styles)
-        self._default_styles = Styles.parse(self.DEFAULT_STYLES, f&#34;{self.__class__}&#34;)
+        self._default_styles = Styles()
         self._default_rules = self._default_styles.extract_rules((0, 0, 0))
         super().__init__()
+
+    def on_register(self, app: App) -&gt; None:
+        &#34;&#34;&#34;Called when the widget is registered
+
+        Args:
+            app (App): Parent application.
+        &#34;&#34;&#34;
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;name&#34;, self._name, None
         yield &#34;id&#34;, self._id, None
         if self._classes:
-            yield &#34;classes&#34;, self._classes
+            yield &#34;classes&#34;, &#34; &#34;.join(self._classes)
 
     @property
-    def parent(self) -&gt; DOMNode:
+    def parent(self) -&gt; DOMNode | None:
         &#34;&#34;&#34;Get the parent node.
-
-        Raises:
-            NoParent: If this is the root node.
 
         Returns:
             DOMNode: The node which is the direct parent of this node.
         &#34;&#34;&#34;
-        if self._parent is None:
-            raise NoParent(f&#34;{self} has no parent&#34;)
-        assert isinstance(self._parent, DOMNode)
         return self._parent
 
     @property
@@ -681,19 +716,6 @@ class DOMNode(MessagePump):
             )
 
     @property
-    def rich_text_style(self) -&gt; Style:
-        &#34;&#34;&#34;Get the text style (added to parent style).
-
-        Returns:
-            Style: Rich Style object.
-        &#34;&#34;&#34;
-        return (
-            self.parent.rich_text_style + self.styles.rich_style
-            if self.has_parent
-            else self.styles.rich_style
-        )
-
-    @property
     def tree(self) -&gt; Tree:
         &#34;&#34;&#34;Get a Rich tree object which will recursively render the structure of the node tree.
 
@@ -735,6 +757,48 @@ class DOMNode(MessagePump):
 
         add_children(tree, self)
         return tree
+
+    @property
+    def rich_text_style(self) -&gt; Style:
+        &#34;&#34;&#34;Get the text style object.
+
+        A widget&#39;s style is influenced by its parent. For instance if a widgets background has an alpha,
+        then its parent&#39;s background color will show through. Additionally, widgets will inherit their
+        parent&#39;s text style (i.e. bold, italic etc).
+
+        Returns:
+            Style: Rich Style object.
+        &#34;&#34;&#34;
+
+        # TODO: Feels like there may be opportunity for caching here.
+
+        background = Color(0, 0, 0, 0)
+        color = Color(255, 255, 255, 0)
+        style = Style()
+        for node in reversed(self.ancestors):
+            styles = node.styles
+            if styles.has_rule(&#34;background&#34;):
+                background += styles.background
+            if styles.has_rule(&#34;color&#34;):
+                color = styles.color
+            style += styles.text_style
+
+        style = Style(bgcolor=background.rich_color, color=color.rich_color) + style
+        return style
+
+    @property
+    def ancestors(self) -&gt; list[DOMNode]:
+        &#34;&#34;&#34;Get a list of Nodes by tracing ancestors all the way back to App.&#34;&#34;&#34;
+
+        nodes: list[DOMNode] = [self]
+        add_node = nodes.append
+        node = self
+        while True:
+            node = node.parent
+            if node is None:
+                break
+            add_node(node)
+        return nodes
 
     @property
     def displayed_children(self) -&gt; list[DOMNode]:
@@ -917,6 +981,28 @@ class DOMNode(MessagePump):
 </dl>
 <h3>Instance variables</h3>
 <dl>
+<dt id="textual.dom.DOMNode.ancestors"><code class="name">var <span class="ident">ancestors</span> : list[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>]</code></dt>
+<dd>
+<div class="desc"><p>Get a list of Nodes by tracing ancestors all the way back to App.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def ancestors(self) -&gt; list[DOMNode]:
+    &#34;&#34;&#34;Get a list of Nodes by tracing ancestors all the way back to App.&#34;&#34;&#34;
+
+    nodes: list[DOMNode] = [self]
+    add_node = nodes.append
+    node = self
+    while True:
+        node = node.parent
+        if node is None:
+            break
+        add_node(node)
+    return nodes</code></pre>
+</details>
+</dd>
 <dt id="textual.dom.DOMNode.classes"><code class="name">var <span class="ident">classes</span> : frozenset[str]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1075,14 +1161,9 @@ def name(self) -&gt; str | None:
     return self._name</code></pre>
 </details>
 </dd>
-<dt id="textual.dom.DOMNode.parent"><code class="name">var <span class="ident">parent</span> : <a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a></code></dt>
+<dt id="textual.dom.DOMNode.parent"><code class="name">var <span class="ident">parent</span> : <a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a> | None</code></dt>
 <dd>
 <div class="desc"><p>Get the parent node.</p>
-<h2 id="raises">Raises</h2>
-<dl>
-<dt><code><a title="textual.dom.NoParent" href="#textual.dom.NoParent">NoParent</a></code></dt>
-<dd>If this is the root node.</dd>
-</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code><a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a></code></dt>
@@ -1093,18 +1174,12 @@ def name(self) -&gt; str | None:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def parent(self) -&gt; DOMNode:
+def parent(self) -&gt; DOMNode | None:
     &#34;&#34;&#34;Get the parent node.
-
-    Raises:
-        NoParent: If this is the root node.
 
     Returns:
         DOMNode: The node which is the direct parent of this node.
     &#34;&#34;&#34;
-    if self._parent is None:
-        raise NoParent(f&#34;{self} has no parent&#34;)
-    assert isinstance(self._parent, DOMNode)
     return self._parent</code></pre>
 </details>
 </dd>
@@ -1124,7 +1199,10 @@ def pseudo_classes(self) -&gt; frozenset[str]:
 </dd>
 <dt id="textual.dom.DOMNode.rich_text_style"><code class="name">var <span class="ident">rich_text_style</span> : rich.style.Style</code></dt>
 <dd>
-<div class="desc"><p>Get the text style (added to parent style).</p>
+<div class="desc"><p>Get the text style object.</p>
+<p>A widget's style is influenced by its parent. For instance if a widgets background has an alpha,
+then its parent's background color will show through. Additionally, widgets will inherit their
+parent's text style (i.e. bold, italic etc).</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Style</code></dt>
@@ -1136,16 +1214,31 @@ def pseudo_classes(self) -&gt; frozenset[str]:
 </summary>
 <pre><code class="python">@property
 def rich_text_style(self) -&gt; Style:
-    &#34;&#34;&#34;Get the text style (added to parent style).
+    &#34;&#34;&#34;Get the text style object.
+
+    A widget&#39;s style is influenced by its parent. For instance if a widgets background has an alpha,
+    then its parent&#39;s background color will show through. Additionally, widgets will inherit their
+    parent&#39;s text style (i.e. bold, italic etc).
 
     Returns:
         Style: Rich Style object.
     &#34;&#34;&#34;
-    return (
-        self.parent.rich_text_style + self.styles.rich_style
-        if self.has_parent
-        else self.styles.rich_style
-    )</code></pre>
+
+    # TODO: Feels like there may be opportunity for caching here.
+
+    background = Color(0, 0, 0, 0)
+    color = Color(255, 255, 255, 0)
+    style = Style()
+    for node in reversed(self.ancestors):
+        styles = node.styles
+        if styles.has_rule(&#34;background&#34;):
+            background += styles.background
+        if styles.has_rule(&#34;color&#34;):
+            color = styles.color
+        style += styles.text_style
+
+    style = Style(bgcolor=background.rich_color, color=color.rich_color) + style
+    return style</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.screen"><code class="name">var <span class="ident">screen</span> : Screen</code></dt>
@@ -1423,6 +1516,28 @@ def visible(self) -&gt; bool:
     return has_pseudo_classes</code></pre>
 </details>
 </dd>
+<dt id="textual.dom.DOMNode.on_register"><code class="name flex">
+<span>def <span class="ident">on_register</span></span>(<span>self, app: App) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Called when the widget is registered</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>app</code></strong> :&ensp;<code>App</code></dt>
+<dd>Parent application.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_register(self, app: App) -&gt; None:
+    &#34;&#34;&#34;Called when the widget is registered
+
+    Args:
+        app (App): Parent application.
+    &#34;&#34;&#34;</code></pre>
+</details>
+</dd>
 <dt id="textual.dom.DOMNode.on_style_change"><code class="name flex">
 <span>def <span class="ident">on_style_change</span></span>(<span>self) ‑> None</span>
 </code></dt>
@@ -1621,6 +1736,7 @@ def visible(self) -&gt; bool:
 <li><code><a title="textual.message_pump.MessagePump.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
@@ -1720,6 +1836,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.add_child" href="#textual.dom.DOMNode.add_child">add_child</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_children" href="#textual.dom.DOMNode.add_children">add_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_class" href="#textual.dom.DOMNode.add_class">add_class</a></code></li>
+<li><code><a title="textual.dom.DOMNode.ancestors" href="#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.classes" href="#textual.dom.DOMNode.classes">classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
@@ -1733,6 +1850,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.has_pseudo_class" href="#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.id" href="#textual.dom.DOMNode.id">id</a></code></li>
 <li><code><a title="textual.dom.DOMNode.name" href="#textual.dom.DOMNode.name">name</a></code></li>
+<li><code><a title="textual.dom.DOMNode.on_register" href="#textual.dom.DOMNode.on_register">on_register</a></code></li>
 <li><code><a title="textual.dom.DOMNode.on_style_change" href="#textual.dom.DOMNode.on_style_change">on_style_change</a></code></li>
 <li><code><a title="textual.dom.DOMNode.parent" href="#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.dom.DOMNode.pseudo_classes" href="#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>

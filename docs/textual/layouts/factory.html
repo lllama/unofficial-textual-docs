@@ -26,23 +26,14 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import sys
-
-from .horizontal import HorizontalLayout
-from ..layout import Layout
+<pre><code class="python">from .horizontal import HorizontalLayout
+from .._layout import Layout
 from ..layouts.dock import DockLayout
-from ..layouts.grid import GridLayout
 from ..layouts.vertical import VerticalLayout
-
-if sys.version_info &gt;= (3, 8):
-    from typing import Literal
-else:
-    from typing_extensions import Literal
 
 
 LAYOUT_MAP = {
     &#34;dock&#34;: DockLayout,
-    # &#34;grid&#34;: GridLayout,
     &#34;vertical&#34;: VerticalLayout,
     &#34;horizontal&#34;: HorizontalLayout,
 }
@@ -79,7 +70,7 @@ def get_layout(name: str) -&gt; Layout:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="textual.layouts.factory.get_layout"><code class="name flex">
-<span>def <span class="ident">get_layout</span></span>(<span>name: str) ‑> <a title="textual.layout.Layout" href="../layout.html#textual.layout.Layout">Layout</a></span>
+<span>def <span class="ident">get_layout</span></span>(<span>name: str) ‑> textual._layout.Layout</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get a named layout object.</p>

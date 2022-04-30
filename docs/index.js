@@ -29,6 +29,7 @@ URLS=[
 "textual/screen.html",
 "textual/scrollbar.html",
 "textual/geometry.html",
+"textual/features.html",
 "textual/devtools/index.html",
 "textual/devtools/server.html",
 "textual/devtools/client.html",
@@ -201,12 +202,28 @@ INDEX=[
 {
 "ref":"textual.widgets.Button",
 "url":5,
-"doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
+"doc":"A simple clickable button."
+},
+{
+"ref":"textual.widgets.Button.CSS",
+"url":5,
+"doc":""
+},
+{
+"ref":"textual.widgets.Button.Pressed",
+"url":5,
+"doc":"Base class for a message."
 },
 {
 "ref":"textual.widgets.Button.label",
 "url":5,
 "doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.Button.validate_label",
+"url":5,
+"doc":"Parse markup for self.label",
+"func":1
 },
 {
 "ref":"textual.widgets.Button.render",
@@ -274,6 +291,18 @@ INDEX=[
 "ref":"textual.widgets.Button.show_horizontal_scrollbar",
 "url":6,
 "doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.Button.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.widgets.Button.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
 },
 {
 "ref":"textual.widgets.Button.get_box_model",
@@ -398,7 +427,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Button.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.Button.screen",
@@ -441,14 +470,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.widgets.Button.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.widgets.Button.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.widgets.Button.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.Button.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.widgets.Button.add_child",
@@ -546,6 +580,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Button.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
+"func":1
+},
+{
 "ref":"textual.widgets.Button.close_messages",
 "url":8,
 "doc":"Close message queue, and optionally wait for queue to finish processing.",
@@ -568,65 +608,6 @@ INDEX=[
 "url":8,
 "doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
 "func":1
-},
-{
-"ref":"textual.widgets.ButtonPressed",
-"url":5,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
-},
-{
-"ref":"textual.widgets.ButtonPressed.sender",
-"url":5,
-"doc":"Return an attribute of instance, which is of type owner."
-},
-{
-"ref":"textual.widgets.ButtonPressed.bubble",
-"url":5,
-"doc":""
-},
-{
-"ref":"textual.widgets.ButtonPressed.verbosity",
-"url":5,
-"doc":""
-},
-{
-"ref":"textual.widgets.ButtonPressed.system",
-"url":5,
-"doc":""
-},
-{
-"ref":"textual.widgets.ButtonPressed.set_forwarded",
-"url":9,
-"doc":"Mark this event as being forwarded.",
-"func":1
-},
-{
-"ref":"textual.widgets.ButtonPressed.can_replace",
-"url":9,
-"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
-"func":1
-},
-{
-"ref":"textual.widgets.ButtonPressed.prevent_default",
-"url":9,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.widgets.ButtonPressed.stop",
-"url":9,
-"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.widgets.ButtonPressed.name",
-"url":9,
-"doc":"Return an attribute of instance, which is of type owner."
-},
-{
-"ref":"textual.widgets.ButtonPressed.time",
-"url":9,
-"doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.widgets.DirectoryTree",
@@ -735,6 +716,18 @@ INDEX=[
 "ref":"textual.widgets.DirectoryTree.show_horizontal_scrollbar",
 "url":6,
 "doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.DirectoryTree.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.widgets.DirectoryTree.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.get_box_model",
@@ -865,7 +858,7 @@ INDEX=[
 {
 "ref":"textual.widgets.DirectoryTree.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.DirectoryTree.screen",
@@ -908,14 +901,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.widgets.DirectoryTree.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.widgets.DirectoryTree.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.widgets.DirectoryTree.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.DirectoryTree.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.widgets.DirectoryTree.add_child",
@@ -1010,6 +1008,12 @@ INDEX=[
 "ref":"textual.widgets.DirectoryTree.peek_message",
 "url":8,
 "doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.widgets.DirectoryTree.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
 "func":1
 },
 {
@@ -1191,6 +1195,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.Footer.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.widgets.Footer.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
+},
+{
 "ref":"textual.widgets.Footer.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
@@ -1313,7 +1329,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Footer.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.Footer.screen",
@@ -1356,14 +1372,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.widgets.Footer.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.widgets.Footer.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.widgets.Footer.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.Footer.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.widgets.Footer.add_child",
@@ -1458,6 +1479,12 @@ INDEX=[
 "ref":"textual.widgets.Footer.peek_message",
 "url":8,
 "doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.widgets.Footer.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
 "func":1
 },
 {
@@ -1605,6 +1632,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.Header.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.widgets.Header.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
+},
+{
 "ref":"textual.widgets.Header.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
@@ -1727,7 +1766,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Header.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.Header.screen",
@@ -1770,14 +1809,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.widgets.Header.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.widgets.Header.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.widgets.Header.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.Header.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.widgets.Header.add_child",
@@ -1872,6 +1916,12 @@ INDEX=[
 "ref":"textual.widgets.Header.peek_message",
 "url":8,
 "doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.widgets.Header.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
 "func":1
 },
 {
@@ -1992,6 +2042,18 @@ INDEX=[
 "ref":"textual.widgets.Placeholder.show_horizontal_scrollbar",
 "url":6,
 "doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.Placeholder.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.widgets.Placeholder.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
 },
 {
 "ref":"textual.widgets.Placeholder.get_box_model",
@@ -2116,7 +2178,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Placeholder.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.Placeholder.screen",
@@ -2159,14 +2221,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.widgets.Placeholder.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.widgets.Placeholder.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.widgets.Placeholder.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.Placeholder.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.widgets.Placeholder.add_child",
@@ -2264,6 +2331,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Placeholder.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
+"func":1
+},
+{
 "ref":"textual.widgets.Placeholder.close_messages",
 "url":8,
 "doc":"Close message queue, and optionally wait for queue to finish processing.",
@@ -2358,6 +2431,18 @@ INDEX=[
 "ref":"textual.widgets.Static.show_horizontal_scrollbar",
 "url":6,
 "doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.Static.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.widgets.Static.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
 },
 {
 "ref":"textual.widgets.Static.get_box_model",
@@ -2482,7 +2567,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Static.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.Static.screen",
@@ -2525,14 +2610,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.widgets.Static.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.widgets.Static.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.widgets.Static.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.Static.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.widgets.Static.add_child",
@@ -2627,6 +2717,12 @@ INDEX=[
 "ref":"textual.widgets.Static.peek_message",
 "url":8,
 "doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.widgets.Static.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
 "func":1
 },
 {
@@ -2877,6 +2973,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.TreeControl.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.widgets.TreeControl.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
+},
+{
 "ref":"textual.widgets.TreeControl.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
@@ -2999,7 +3107,7 @@ INDEX=[
 {
 "ref":"textual.widgets.TreeControl.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.TreeControl.screen",
@@ -3042,14 +3150,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.widgets.TreeControl.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.widgets.TreeControl.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.widgets.TreeControl.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.TreeControl.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.widgets.TreeControl.add_child",
@@ -3144,6 +3257,12 @@ INDEX=[
 "ref":"textual.widgets.TreeControl.peek_message",
 "url":8,
 "doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.widgets.TreeControl.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
 "func":1
 },
 {
@@ -3384,6 +3503,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.tabs.Tabs.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.widgets.tabs.Tabs.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
+},
+{
 "ref":"textual.widgets.tabs.Tabs.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
@@ -3506,7 +3637,7 @@ INDEX=[
 {
 "ref":"textual.widgets.tabs.Tabs.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.tabs.Tabs.screen",
@@ -3549,14 +3680,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.widgets.tabs.Tabs.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.widgets.tabs.Tabs.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.widgets.tabs.Tabs.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.tabs.Tabs.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.widgets.tabs.Tabs.add_child",
@@ -3651,6 +3787,12 @@ INDEX=[
 "ref":"textual.widgets.tabs.Tabs.peek_message",
 "url":8,
 "doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.widgets.tabs.Tabs.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
 "func":1
 },
 {
@@ -6240,39 +6382,779 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.layout.WidgetPlacement",
+"ref":"textual.layout.Vertical",
 "url":22,
-"doc":"The position, size, and relative order of a widget within its parent."
+"doc":"A container widget to align children vertically."
 },
 {
-"ref":"textual.layout.WidgetPlacement.region",
-"url":22,
-"doc":"Alias for field number 0"
-},
-{
-"ref":"textual.layout.WidgetPlacement.widget",
-"url":22,
-"doc":"Alias for field number 1"
-},
-{
-"ref":"textual.layout.WidgetPlacement.order",
-"url":22,
-"doc":"Alias for field number 2"
-},
-{
-"ref":"textual.layout.Layout",
-"url":22,
-"doc":"Responsible for arranging Widgets in a view and rendering them."
-},
-{
-"ref":"textual.layout.Layout.name",
+"ref":"textual.layout.Vertical.CSS",
 "url":22,
 "doc":""
 },
 {
-"ref":"textual.layout.Layout.arrange",
+"ref":"textual.layout.Vertical.can_focus",
 "url":22,
-"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. scroll (Offset): Offset to apply to the Widget placements. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
+"doc":""
+},
+{
+"ref":"textual.layout.Vertical.auto_width",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.auto_height",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.mouse_over",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.scroll_x",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.scroll_y",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.scroll_target_x",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.scroll_target_y",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.show_vertical_scrollbar",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.show_horizontal_scrollbar",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.get_box_model",
+"url":6,
+"doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.vertical_scrollbar",
+"url":6,
+"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.layout.Vertical.horizontal_scrollbar",
+"url":6,
+"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.layout.Vertical.scrollbars_enabled",
+"url":6,
+"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.layout.Vertical.set_dirty",
+"url":6,
+"doc":"Set the Widget as 'dirty' (requiring re-render).",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.scroll_to",
+"url":6,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.get_pseudo_classes",
+"url":6,
+"doc":"Pseudo classes for a widget",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.render_styled",
+"url":6,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.is_transparent",
+"url":6,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
+},
+{
+"ref":"textual.layout.Vertical.console",
+"url":6,
+"doc":"Get the current console."
+},
+{
+"ref":"textual.layout.Vertical.is_container",
+"url":6,
+"doc":"Check if this widget is a container (contains other widgets) Returns: bool: True if this widget is a container."
+},
+{
+"ref":"textual.layout.Vertical.watch_mouse_over",
+"url":6,
+"doc":"Update from CSS if mouse over state changes.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.watch_has_focus",
+"url":6,
+"doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.get_render_lines",
+"url":6,
+"doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.check_layout",
+"url":6,
+"doc":"Check if a layout has been requested.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.call_later",
+"url":6,
+"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.refresh",
+"url":6,
+"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. Args: repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.render",
+"url":6,
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.on_idle",
+"url":6,
+"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.focus",
+"url":6,
+"doc":"Give input focus to this widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.capture_mouse",
+"url":6,
+"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.release_mouse",
+"url":6,
+"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.parent",
+"url":7,
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+},
+{
+"ref":"textual.layout.Vertical.screen",
+"url":7,
+"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
+},
+{
+"ref":"textual.layout.Vertical.id",
+"url":7,
+"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
+},
+{
+"ref":"textual.layout.Vertical.css_identifier",
+"url":7,
+"doc":"A CSS selector that identifies this DOM node."
+},
+{
+"ref":"textual.layout.Vertical.css_identifier_styled",
+"url":7,
+"doc":"A stylized CSS identifier."
+},
+{
+"ref":"textual.layout.Vertical.pseudo_classes",
+"url":7,
+"doc":"Get a set of all pseudo classes"
+},
+{
+"ref":"textual.layout.Vertical.css_type",
+"url":7,
+"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
+},
+{
+"ref":"textual.layout.Vertical.css_path",
+"url":7,
+"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
+},
+{
+"ref":"textual.layout.Vertical.display",
+"url":7,
+"doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
+},
+{
+"ref":"textual.layout.Vertical.tree",
+"url":7,
+"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.layout.Vertical.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.layout.Vertical.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
+},
+{
+"ref":"textual.layout.Vertical.add_child",
+"url":7,
+"doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.add_children",
+"url":7,
+"doc":"Add multiple children to this node. Args:  nodes (DOMNode): Positional args should be new DOM nodes.  named_nodes (DOMNode): Keyword args will be assigned the argument name as an ID.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.walk_children",
+"url":7,
+"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.get_child",
+"url":7,
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.query",
+"url":7,
+"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.set_styles",
+"url":7,
+"doc":"Set custom styles on this object.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.has_class",
+"url":7,
+"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.add_class",
+"url":7,
+"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.remove_class",
+"url":7,
+"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.toggle_class",
+"url":7,
+"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.has_pseudo_class",
+"url":7,
+"doc":"Check for pseudo class (such as hover, focus etc)",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.app",
+"url":8,
+"doc":"Get the current app."
+},
+{
+"ref":"textual.layout.Vertical.disable_messages",
+"url":8,
+"doc":"Disable message types from being processed.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.enable_messages",
+"url":8,
+"doc":"Enable processing of messages types.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.get_message",
+"url":8,
+"doc":"Get the next event on the queue, or None if queue is closed. Returns: Optional[Event]: Event object or None.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.peek_message",
+"url":8,
+"doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.close_messages",
+"url":8,
+"doc":"Close message queue, and optionally wait for queue to finish processing.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.check_idle",
+"url":8,
+"doc":"Prompt the message pump to call idle if the queue is empty.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.post_priority_message",
+"url":8,
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.dispatch_key",
+"url":8,
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal",
+"url":22,
+"doc":"A container widget to align children horizontally."
+},
+{
+"ref":"textual.layout.Horizontal.CSS",
+"url":22,
+"doc":""
+},
+{
+"ref":"textual.layout.Horizontal.can_focus",
+"url":22,
+"doc":""
+},
+{
+"ref":"textual.layout.Horizontal.auto_width",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.auto_height",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.mouse_over",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.scroll_x",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.scroll_y",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.scroll_target_x",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.scroll_target_y",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.show_vertical_scrollbar",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.show_horizontal_scrollbar",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.get_box_model",
+"url":6,
+"doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.vertical_scrollbar",
+"url":6,
+"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.layout.Horizontal.horizontal_scrollbar",
+"url":6,
+"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.layout.Horizontal.scrollbars_enabled",
+"url":6,
+"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.layout.Horizontal.set_dirty",
+"url":6,
+"doc":"Set the Widget as 'dirty' (requiring re-render).",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.scroll_to",
+"url":6,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.get_pseudo_classes",
+"url":6,
+"doc":"Pseudo classes for a widget",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.render_styled",
+"url":6,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.is_transparent",
+"url":6,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
+},
+{
+"ref":"textual.layout.Horizontal.console",
+"url":6,
+"doc":"Get the current console."
+},
+{
+"ref":"textual.layout.Horizontal.is_container",
+"url":6,
+"doc":"Check if this widget is a container (contains other widgets) Returns: bool: True if this widget is a container."
+},
+{
+"ref":"textual.layout.Horizontal.watch_mouse_over",
+"url":6,
+"doc":"Update from CSS if mouse over state changes.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.watch_has_focus",
+"url":6,
+"doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.get_render_lines",
+"url":6,
+"doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.check_layout",
+"url":6,
+"doc":"Check if a layout has been requested.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.call_later",
+"url":6,
+"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.refresh",
+"url":6,
+"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. Args: repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.render",
+"url":6,
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.on_idle",
+"url":6,
+"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.focus",
+"url":6,
+"doc":"Give input focus to this widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.capture_mouse",
+"url":6,
+"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.release_mouse",
+"url":6,
+"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.parent",
+"url":7,
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+},
+{
+"ref":"textual.layout.Horizontal.screen",
+"url":7,
+"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
+},
+{
+"ref":"textual.layout.Horizontal.id",
+"url":7,
+"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
+},
+{
+"ref":"textual.layout.Horizontal.css_identifier",
+"url":7,
+"doc":"A CSS selector that identifies this DOM node."
+},
+{
+"ref":"textual.layout.Horizontal.css_identifier_styled",
+"url":7,
+"doc":"A stylized CSS identifier."
+},
+{
+"ref":"textual.layout.Horizontal.pseudo_classes",
+"url":7,
+"doc":"Get a set of all pseudo classes"
+},
+{
+"ref":"textual.layout.Horizontal.css_type",
+"url":7,
+"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
+},
+{
+"ref":"textual.layout.Horizontal.css_path",
+"url":7,
+"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
+},
+{
+"ref":"textual.layout.Horizontal.display",
+"url":7,
+"doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
+},
+{
+"ref":"textual.layout.Horizontal.tree",
+"url":7,
+"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.layout.Horizontal.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.layout.Horizontal.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
+},
+{
+"ref":"textual.layout.Horizontal.add_child",
+"url":7,
+"doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.add_children",
+"url":7,
+"doc":"Add multiple children to this node. Args:  nodes (DOMNode): Positional args should be new DOM nodes.  named_nodes (DOMNode): Keyword args will be assigned the argument name as an ID.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.walk_children",
+"url":7,
+"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.get_child",
+"url":7,
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.query",
+"url":7,
+"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.set_styles",
+"url":7,
+"doc":"Set custom styles on this object.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.has_class",
+"url":7,
+"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.add_class",
+"url":7,
+"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.remove_class",
+"url":7,
+"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.toggle_class",
+"url":7,
+"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.has_pseudo_class",
+"url":7,
+"doc":"Check for pseudo class (such as hover, focus etc)",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.app",
+"url":8,
+"doc":"Get the current app."
+},
+{
+"ref":"textual.layout.Horizontal.disable_messages",
+"url":8,
+"doc":"Disable message types from being processed.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.enable_messages",
+"url":8,
+"doc":"Enable processing of messages types.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.get_message",
+"url":8,
+"doc":"Get the next event on the queue, or None if queue is closed. Returns: Optional[Event]: Event object or None.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.peek_message",
+"url":8,
+"doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.close_messages",
+"url":8,
+"doc":"Close message queue, and optionally wait for queue to finish processing.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.check_idle",
+"url":8,
+"doc":"Prompt the message pump to call idle if the queue is empty.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.post_priority_message",
+"url":8,
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.dispatch_key",
+"url":8,
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
 "func":1
 },
 {
@@ -6403,6 +7285,11 @@ INDEX=[
 "url":24,
 "doc":"Create a color from HLS components. Args: h (float): Hue. l (float): Lightness. s (float): Saturation. Returns: Color: A new color.",
 "func":1
+},
+{
+"ref":"textual.color.Color.is_transparent",
+"url":24,
+"doc":"Check if the color is transparent, i.e. has 0 alpha."
 },
 {
 "ref":"textual.color.Color.clamped",
@@ -6909,7 +7796,7 @@ INDEX=[
 "doc":"A widget for the root of the app."
 },
 {
-"ref":"textual.screen.Screen.DEFAULT_STYLES",
+"ref":"textual.screen.Screen.CSS",
 "url":27,
 "doc":""
 },
@@ -6923,11 +7810,6 @@ INDEX=[
 "url":27,
 "doc":"",
 "func":1
-},
-{
-"ref":"textual.screen.Screen.is_transparent",
-"url":27,
-"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
 },
 {
 "ref":"textual.screen.Screen.render",
@@ -7051,6 +7933,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.screen.Screen.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
@@ -7094,6 +7988,11 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.screen.Screen.is_transparent",
+"url":6,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
 },
 {
 "ref":"textual.screen.Screen.console",
@@ -7162,7 +8061,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.screen.Screen.screen",
@@ -7205,14 +8104,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.screen.Screen.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.screen.Screen.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.screen.Screen.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.screen.Screen.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.screen.Screen.add_child",
@@ -7307,6 +8211,12 @@ INDEX=[
 "ref":"textual.screen.Screen.peek_message",
 "url":8,
 "doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
 "func":1
 },
 {
@@ -7856,6 +8766,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
@@ -7978,7 +8900,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.screen",
@@ -8021,14 +8943,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.scrollbar.ScrollBar.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.add_child",
@@ -8123,6 +9050,12 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.peek_message",
 "url":8,
 "doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
 "func":1
 },
 {
@@ -8461,191 +9394,220 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.devtools",
+"ref":"textual.geometry.Spacing.vertical",
+"url":29,
+"doc":"Construct a Spacing with a given amount of spacing on vertical edges, and no horizontal spacing. Args: amount (int): The magnitude of spacing to apply to vertical edges Returns: Spacing:  Spacing(amount, 0, amount, 0) ",
+"func":1
+},
+{
+"ref":"textual.geometry.Spacing.horizontal",
+"url":29,
+"doc":"Construct a Spacing with a given amount of spacing on horizontal edges, and no vertical spacing. Args: amount (int): The magnitude of spacing to apply to horizontal edges Returns: Spacing:  Spacing(0, amount, 0, amount) ",
+"func":1
+},
+{
+"ref":"textual.geometry.Spacing.all",
+"url":29,
+"doc":"Construct a Spacing with a given amount of spacing on all edges. Args: amount (int): The magnitude of spacing to apply to all edges Returns: Spacing:  Spacing(amount, amount, amount, amount) ",
+"func":1
+},
+{
+"ref":"textual.features",
 "url":30,
 "doc":""
 },
 {
-"ref":"textual.devtools.server",
+"ref":"textual.features.parse_features",
+"url":30,
+"doc":"Parse features env var Args: features (str): Comma seprated feature flags Returns: frozenset[FeatureFlag]: A frozen set of known features.",
+"func":1
+},
+{
+"ref":"textual.devtools",
 "url":31,
 "doc":""
 },
 {
+"ref":"textual.devtools.server",
+"url":32,
+"doc":""
+},
+{
 "ref":"textual.devtools.server.websocket_handler",
-"url":31,
+"url":32,
 "doc":"aiohttp websocket handler for sending data between devtools client and server Args: request (Request): The request to the websocket endpoint Returns: WebSocketResponse: The websocket response",
 "func":1
 },
 {
 "ref":"textual.devtools.client",
-"url":32,
+"url":33,
 "doc":""
 },
 {
 "ref":"textual.devtools.client.DevtoolsLog",
-"url":32,
+"url":33,
 "doc":"A devtools log message. Attributes: objects_or_string (tuple[Any,  .]): Corresponds to the data that will ultimately be passed to Console.print in order to generate the log Segments. caller (inspect.FrameInfo): Information about where this log message was created. In other words, where did the user call  print or  App.log from. Used to display line number and file name in the devtools window."
 },
 {
 "ref":"textual.devtools.client.DevtoolsLog.objects_or_string",
-"url":32,
+"url":33,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.devtools.client.DevtoolsLog.caller",
-"url":32,
+"url":33,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.devtools.client.DevtoolsConsole",
-"url":32,
+"url":33,
 "doc":"A high level console interface. Args: color_system (str, optional): The color system supported by your terminal, either  \"standard\" ,  \"256\" or  \"truecolor\" . Leave as  \"auto\" to autodetect. force_terminal (Optional[bool], optional): Enable/disable terminal control codes, or None to auto-detect terminal. Defaults to None. force_jupyter (Optional[bool], optional): Enable/disable Jupyter rendering, or None to auto-detect Jupyter. Defaults to None. force_interactive (Optional[bool], optional): Enable/disable interactive mode, or None to auto detect. Defaults to None. soft_wrap (Optional[bool], optional): Set soft wrap default on print method. Defaults to False. theme (Theme, optional): An optional style theme object, or  None for default theme. stderr (bool, optional): Use stderr rather than stdout if  file is not specified. Defaults to False. file (IO, optional): A file object where the console should write to. Defaults to stdout. quiet (bool, Optional): Boolean to suppress all output. Defaults to False. width (int, optional): The width of the terminal. Leave as default to auto-detect width. height (int, optional): The height of the terminal. Leave as default to auto-detect height. style (StyleType, optional): Style to apply to all output, or None for no style. Defaults to None. no_color (Optional[bool], optional): Enabled no color mode, or None to auto detect. Defaults to None. tab_size (int, optional): Number of spaces used to replace a tab character. Defaults to 8. record (bool, optional): Boolean to enable recording of terminal output, required to call :meth: export_html , :meth: export_svg , and :meth: export_text . Defaults to False. markup (bool, optional): Boolean to enable :ref: console_markup . Defaults to True. emoji (bool, optional): Enable emoji code. Defaults to True. emoji_variant (str, optional): Optional emoji variant, either \"text\" or \"emoji\". Defaults to None. highlight (bool, optional): Enable automatic highlighting. Defaults to True. log_time (bool, optional): Boolean to enable logging of time by :meth: log methods. Defaults to True. log_path (bool, optional): Boolean to enable the logging of the caller by :meth: log . Defaults to True. log_time_format (Union[str, TimeFormatterCallable], optional): If  log_time is enabled, either string for strftime or callable that formats the time. Defaults to \"[%X] \". highlighter (HighlighterType, optional): Default highlighter. legacy_windows (bool, optional): Enable legacy Windows mode, or  None to auto detect. Defaults to  None . safe_box (bool, optional): Restrict box options that don't render on legacy Windows. get_datetime (Callable ], datetime], optional): Callable that gets the current time as a datetime.datetime object (used by Console.log), or None for datetime.now. get_time (Callable ], time], optional): Callable that gets the current time in seconds, default uses time.monotonic."
 },
 {
 "ref":"textual.devtools.client.DevtoolsConsole.export_segments",
-"url":32,
+"url":33,
 "doc":"Return the list of Segments that have be printed using this console Returns: list[Segment]: The list of Segments that have been printed using this console",
 "func":1
 },
 {
 "ref":"textual.devtools.client.DevtoolsConnectionError",
-"url":32,
+"url":33,
 "doc":"Raise when the devtools client is unable to connect to the server"
 },
 {
 "ref":"textual.devtools.client.ClientShutdown",
-"url":32,
+"url":33,
 "doc":"Sentinel type sent to client queue(s) to indicate shutdown"
 },
 {
 "ref":"textual.devtools.client.DevtoolsClient",
-"url":32,
+"url":33,
 "doc":"Client responsible for websocket communication with the devtools server. Communicates using a simple JSON protocol. Messages have the format  {\"type\":  , \"payload\":  } . Valid values for  \"type\" (that can be sent from client -> server) are  \"client_log\" (for log messages) and  \"client_spillover\" (for reporting to the server that messages were discarded due to rate limiting). A  \"client_log\" message has a  \"payload\" format as follows:   {\"timestamp\":  , \"path\":  , \"line_number\":  , \"encoded_segments\":  }   A  \"client_spillover\" message has a  \"payload\" format as follows:   {\"spillover\":  }   Args: host (str): The host the devtools server is running on, defaults to \"127.0.0.1\" port (int): The port the devtools server is accessed via, defaults to 8081"
 },
 {
 "ref":"textual.devtools.client.DevtoolsClient.connect",
-"url":32,
+"url":33,
 "doc":"Connect to the devtools server. Raises: DevtoolsConnectionError: If we're unable to establish a connection to the server for any reason.",
 "func":1
 },
 {
 "ref":"textual.devtools.client.DevtoolsClient.disconnect",
-"url":32,
+"url":33,
 "doc":"Disconnect from the devtools server by stopping tasks and closing connections.",
 "func":1
 },
 {
 "ref":"textual.devtools.client.DevtoolsClient.is_connected",
-"url":32,
+"url":33,
 "doc":"Checks connection to devtools server. Returns: bool: True if this host is connected to the server. False otherwise."
 },
 {
 "ref":"textual.devtools.client.DevtoolsClient.log",
-"url":32,
+"url":33,
 "doc":"Queue a log to be sent to the devtools server for display. Args: log (DevtoolsLog): The log to write to devtools",
 "func":1
 },
 {
 "ref":"textual.devtools.renderables",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleHeader",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleLog",
-"url":33,
+"url":34,
 "doc":"Renderable representing a single log message Args: segments (Iterable[Segment]): The segments to display path (str): The path of the file on the client that the log call was made from line_number (int): The line number of the file on the client the log call was made from unix_timestamp (int): Seconds since January 1st 1970"
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleNotice",
-"url":33,
+"url":34,
 "doc":"Renderable for messages written by the devtools console itself Args: message (str): The message to display level (DevtoolsMessageLevel): The message level (\"info\", \"warning\", or \"error\"). Determines colors used to render the message and the perceived importance."
 },
 {
 "ref":"textual.devtools.redirect_output",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.devtools.redirect_output.StdoutRedirector",
-"url":34,
+"url":35,
 "doc":"A write-only file-like object which redirects anything written to it to the devtools instance associated with the given Textual application. Used within Textual to redirect data written using  print (or any other stdout writes) to the devtools and/or to the log file. Args: devtools (DevtoolsClient): The running Textual app instance. log_file (TextIOWrapper): The log file for the Textual App."
 },
 {
 "ref":"textual.devtools.redirect_output.StdoutRedirector.write",
-"url":34,
+"url":35,
 "doc":"Write the log string to the internal buffer. If the string contains a newline character   , the whole string will be buffered and then the buffer will be flushed immediately after. Args: string (str): The string to write to the buffer.",
 "func":1
 },
 {
 "ref":"textual.devtools.redirect_output.StdoutRedirector.flush",
-"url":34,
+"url":35,
 "doc":"Flush the buffer. This will send all buffered log messages to the devtools server and the log file. In the case of the devtools, where possible, log messages will be batched and sent as one.",
 "func":1
 },
 {
 "ref":"textual.devtools.service",
-"url":35,
+"url":36,
 "doc":"Manages a running devtools instance"
 },
 {
 "ref":"textual.devtools.service.DevtoolsService",
-"url":35,
+"url":36,
 "doc":"A running instance of devtools has a single DevtoolsService which is responsible for tracking connected client applications. Args: update_frequency (float): The number of seconds to wait between sending updates of the console size to connected clients."
 },
 {
 "ref":"textual.devtools.service.DevtoolsService.start",
-"url":35,
+"url":36,
 "doc":"Starts devtools tasks",
 "func":1
 },
 {
 "ref":"textual.devtools.service.DevtoolsService.clients_connected",
-"url":35,
+"url":36,
 "doc":"Returns True if there are connected clients, False otherwise."
 },
 {
 "ref":"textual.devtools.service.DevtoolsService.send_server_info",
-"url":35,
+"url":36,
 "doc":"Send information about the server e.g. width and height of Console to a connected client. Args: client_handler (ClientHandler): The client to send information to",
 "func":1
 },
 {
 "ref":"textual.devtools.service.DevtoolsService.handle",
-"url":35,
+"url":36,
 "doc":"Handles a single client connection",
 "func":1
 },
 {
 "ref":"textual.devtools.service.DevtoolsService.shutdown",
-"url":35,
+"url":36,
 "doc":"Stop server async tasks and clean up all client handlers",
 "func":1
 },
 {
 "ref":"textual.devtools.service.ClientHandler",
-"url":35,
+"url":36,
 "doc":"Handles a single client connection to the devtools. A single DevtoolsService managers many ClientHandlers. A single ClientHandler corresponds to a single running Textual application instance, and is responsible for communication with that Textual app. Args: request (Request): The aiohttp.Request associated with this client service (DevtoolsService): The parent DevtoolsService which is responsible for the handling of this client."
 },
 {
 "ref":"textual.devtools.service.ClientHandler.send_message",
-"url":35,
+"url":36,
 "doc":"Send a message to a client Args: message (dict[str, object]): The dict which will be sent to the client.",
 "func":1
 },
 {
 "ref":"textual.devtools.service.ClientHandler.run",
-"url":35,
+"url":36,
 "doc":"Prepare the websocket and communication queues, and continuously read messages from the queues. Returns: WebSocketResponse: The WebSocketResponse associated with this client.",
 "func":1
 },
 {
 "ref":"textual.devtools.service.ClientHandler.close",
-"url":35,
+"url":36,
 "doc":"Stop all incoming/outgoing message processing, and shutdown the websocket connection associated with this client.",
 "func":1
 },
@@ -8777,7 +9739,7 @@ INDEX=[
 {
 "ref":"textual.message_pump.MessagePump.close_messages_no_wait",
 "url":8,
-"doc":"",
+"doc":"Request the message queue to exit.",
 "func":1
 },
 {
@@ -8908,9 +9870,15 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.dom.DOMNode.on_register",
+"url":7,
+"doc":"Called when the widget is registered Args: app (App): Parent application.",
+"func":1
+},
+{
 "ref":"textual.dom.DOMNode.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.dom.DOMNode.screen",
@@ -8968,14 +9936,19 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.dom.DOMNode.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.dom.DOMNode.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.dom.DOMNode.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.dom.DOMNode.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.dom.DOMNode.displayed_children",
@@ -9108,6 +10081,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.dom.DOMNode.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
+"func":1
+},
+{
 "ref":"textual.dom.DOMNode.close_messages",
 "url":8,
 "doc":"Close message queue, and optionally wait for queue to finish processing.",
@@ -9133,1282 +10112,1322 @@ INDEX=[
 },
 {
 "ref":"textual.blank",
-"url":36,
+"url":37,
 "doc":""
 },
 {
 "ref":"textual.blank.Blank",
-"url":36,
+"url":37,
 "doc":"Render an empty rectangle. Args: style (StyleType): Style to apply to the box. width (int, optional): Width of the box in number of cells. Will expand to fit parent if  None . height (int, optional): Height of the box in number of cells. Will expand to fit parent if  None ."
 },
 {
 "ref":"textual.errors",
-"url":37,
-"doc":""
-},
-{
-"ref":"textual.errors.TextualError",
-"url":37,
-"doc":"Base class for Textual errors."
-},
-{
-"ref":"textual.errors.NoWidget",
-"url":37,
-"doc":"Specified widget was not found."
-},
-{
-"ref":"textual.renderables",
 "url":38,
 "doc":""
 },
 {
-"ref":"textual.renderables.blank",
+"ref":"textual.errors.TextualError",
+"url":38,
+"doc":"Base class for Textual errors."
+},
+{
+"ref":"textual.errors.NoWidget",
+"url":38,
+"doc":"Specified widget was not found."
+},
+{
+"ref":"textual.renderables",
 "url":39,
+"doc":""
+},
+{
+"ref":"textual.renderables.blank",
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.renderables.blank.Blank",
-"url":39,
+"url":40,
 "doc":"Draw solid background color."
 },
 {
 "ref":"textual.renderables.underline_bar",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.renderables.underline_bar.UnderlineBar",
-"url":40,
+"url":41,
 "doc":"Thin horizontal bar with a portion highlighted. Args: highlight_range (tuple[float, float]): The range to highlight. Defaults to  (0, 0) (no highlight) highlight_style (StyleType): The style of the highlighted range of the bar. background_style (StyleType): The style of the non-highlighted range(s) of the bar. width (int, optional): The width of the bar, or  None to fill available width."
 },
 {
 "ref":"textual.renderables.gradient",
-"url":41,
+"url":42,
 "doc":""
 },
 {
 "ref":"textual.renderables.gradient.VerticalGradient",
-"url":41,
+"url":42,
 "doc":"Draw a vertical gradient."
 },
 {
 "ref":"textual.renderables.opacity",
-"url":42,
+"url":43,
 "doc":""
 },
 {
 "ref":"textual.renderables.opacity.Opacity",
-"url":42,
+"url":43,
 "doc":"Wrap a renderable to blend foreground color into the background color. Args: renderable (RenderableType): The RenderableType to manipulate. opacity (float): The opacity as a float. A value of 1.0 means text is fully visible."
 },
 {
 "ref":"textual.renderables.sparkline",
-"url":43,
+"url":44,
 "doc":""
 },
 {
 "ref":"textual.renderables.sparkline.Sparkline",
-"url":43,
+"url":44,
 "doc":"A sparkline representing a series of data. Args: data (Sequence[T]): The sequence of data to render. width (int, optional): The width of the sparkline/the number of buckets to partition the data into. min_color (Color, optional): The color of values equal to the min value in data. max_color (Color, optional): The color of values equal to the max value in data. summary_function (Callable[list[T ): Function that will be applied to each bucket."
 },
 {
 "ref":"textual.renderables.sparkline.Sparkline.BARS",
-"url":43,
+"url":44,
 "doc":""
 },
 {
 "ref":"textual.keys",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys",
-"url":44,
+"url":45,
 "doc":"List of keys for use in key bindings. Note that this is an \"StrEnum\", all values can be compared against strings."
 },
 {
 "ref":"textual.keys.Keys.value",
-"url":44,
+"url":45,
 "doc":"The value of the Enum member."
 },
 {
 "ref":"textual.keys.Keys.Escape",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftEscape",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Return",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlAt",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlA",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlB",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlC",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlD",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlE",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlG",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlH",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlI",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlJ",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlK",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlL",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlM",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlN",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlO",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlP",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlQ",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlR",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlS",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlT",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlU",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlV",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlW",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlX",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlY",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlZ",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control1",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control2",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control3",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control4",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control5",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control6",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control7",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control8",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control9",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control0",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift1",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift2",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift3",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift4",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift5",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift6",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift7",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift8",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift9",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift0",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlBackslash",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlSquareClose",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlCircumflex",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlUnderscore",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Left",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Right",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Up",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Down",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Home",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.End",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Insert",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Delete",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.PageUp",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.PageDown",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlLeft",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlRight",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlUp",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlDown",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlHome",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlEnd",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlInsert",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlDelete",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlPageUp",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlPageDown",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftLeft",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftRight",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftUp",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftDown",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftHome",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftEnd",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftInsert",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftDelete",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftPageUp",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftPageDown",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftLeft",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftRight",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftUp",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftDown",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftHome",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftEnd",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftInsert",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftDelete",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftPageUp",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftPageDown",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.BackTab",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F1",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F2",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F3",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F4",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F5",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F6",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F7",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F8",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F9",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F10",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F11",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F12",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F13",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F14",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F15",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F16",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F17",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F18",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F19",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F20",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F21",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F22",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F23",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F24",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF1",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF2",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF3",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF4",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF5",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF6",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF7",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF8",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF9",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF10",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF11",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF12",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF13",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF14",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF15",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF16",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF17",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF18",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF19",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF20",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF21",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF22",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF23",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF24",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Any",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ScrollUp",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ScrollDown",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.CPRResponse",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Vt100MouseEvent",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.WindowsMouseEvent",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.BracketedPaste",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Ignore",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlSpace",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Tab",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Enter",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Backspace",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftControlLeft",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftControlRight",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftControlHome",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftControlEnd",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Binding",
-"url":44,
+"url":45,
 "doc":"Binding(action: str, description: str, show: bool = False)"
 },
 {
 "ref":"textual.keys.Binding.action",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Binding.description",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.keys.Binding.show",
-"url":44,
+"url":45,
 "doc":""
 },
 {
 "ref":"textual.app",
-"url":45,
+"url":46,
 "doc":""
 },
 {
 "ref":"textual.app.AppError",
-"url":45,
+"url":46,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.app.ActionError",
-"url":45,
+"url":46,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.app.App",
-"url":45,
-"doc":"The base class for Textual Applications The Textual Application base class Args: console (Console, optional): A Rich Console. Defaults to None. screen (bool, optional): Enable full-screen application mode. Defaults to True. driver_class (Type[Driver], optional): Driver class, or None to use default. Defaults to None. title (str, optional): Title of the application. Defaults to \"Textual Application\"."
+"url":46,
+"doc":"The base class for Textual Applications Textual application base class Args: driver_class (Type[Driver] | None, optional): Driver class or  None to auto-detect. Defaults to None. log (str, optional): Path to log file, or  to disable. Defaults to  . log_verbosity (int, optional): Log verbosity from 0-3. Defaults to 1. title (str, optional): Default title of the application. Defaults to \"Textual Application\". css_file (str | None, optional): Path to CSS or  None for no CSS file. Defaults to None. css (str | None, optional): CSS code to parse, or  None for no literal CSS. Defaults to None. watch_css (bool, optional): Watch CSS for changes. Defaults to True."
 },
 {
 "ref":"textual.app.App.css",
-"url":45,
+"url":46,
 "doc":""
 },
 {
 "ref":"textual.app.App.title",
-"url":45,
+"url":46,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.app.App.sub_title",
-"url":45,
+"url":46,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.app.App.background",
-"url":45,
+"url":46,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.app.App.dark",
-"url":45,
+"url":46,
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.app.App.devtools_enabled",
+"url":46,
+"doc":"Check if devtools are enabled."
+},
+{
+"ref":"textual.app.App.debug",
+"url":46,
+"doc":"Check if debug mode is enabled."
+},
+{
+"ref":"textual.app.App.exit",
+"url":46,
+"doc":"Exit the app, and return the supplied result. Args: result (ReturnType | None, optional): Return value. Defaults to None.",
+"func":1
+},
+{
+"ref":"textual.app.App.compose",
+"url":46,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
 "ref":"textual.app.App.get_css_variables",
-"url":45,
+"url":46,
 "doc":"Get a mapping of variables used to pre-populate CSS. Returns: dict[str, str]: A mapping of variable name to value.",
 "func":1
 },
 {
 "ref":"textual.app.App.watch_dark",
-"url":45,
+"url":46,
 "doc":"Watches the dark bool.",
 "func":1
 },
 {
 "ref":"textual.app.App.get_driver_class",
-"url":45,
+"url":46,
 "doc":"Get a driver class for this platform. Called by the constructor. Returns: Driver: A Driver class which manages input and display.",
 "func":1
 },
 {
 "ref":"textual.app.App.animator",
-"url":45,
+"url":46,
 "doc":""
 },
 {
 "ref":"textual.app.App.screen",
-"url":45,
+"url":46,
 "doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
 },
 {
 "ref":"textual.app.App.css_type",
-"url":45,
+"url":46,
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.app.App.size",
-"url":45,
+"url":46,
 "doc":""
 },
 {
 "ref":"textual.app.App.log",
-"url":45,
+"url":46,
 "doc":"Write to logs. Args:  objects (Any): Positional arguments are converted to string and written to logs. verbosity (int, optional): Verbosity level 0-3. Defaults to 1. _textual_calling_frame (inspect.FrameInfo | None): The frame info to include in the log message sent to the devtools server.",
 "func":1
 },
 {
 "ref":"textual.app.App.bind",
-"url":45,
+"url":46,
 "doc":"Bind a key to an action. Args: keys (str): A comma separated list of keys, i.e. action (str): Action to bind to. description (str, optional): Short description of action. Defaults to  . show (bool, optional): Show key in UI. Defaults to True. key_display (str, optional): Replacement text for key, or None to use default. Defaults to None.",
 "func":1
 },
 {
 "ref":"textual.app.App.run",
-"url":45,
-"doc":"Run the app. Args: console (Console, optional): Console object. Defaults to None. screen (bool, optional): Enable application mode. Defaults to True. driver (Type[Driver], optional): Driver class or None for default. Defaults to None. loop (AbstractEventLoop): Event loop to run the application on. If not specified, uvloop will be used.",
+"url":46,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.render",
+"url":46,
+"doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.query",
-"url":45,
+"url":46,
 "doc":"Get a DOM query in the current screen. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.app.App.get_child",
-"url":45,
+"url":46,
 "doc":"Shorthand for self.screen.get_child(id: str) Returns the first child (immediate descendent) of this DOMNode with the given ID. Args: id (str): The ID of the node to search for. Returns: DOMNode: The first child of this node with the specified ID.",
 "func":1
 },
 {
 "ref":"textual.app.App.update_styles",
-"url":45,
+"url":46,
 "doc":"Request update of styles. Should be called whenever CSS classes / pseudo classes change.",
 "func":1
 },
 {
 "ref":"textual.app.App.mount",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.push_screen",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.set_focus",
-"url":45,
+"url":46,
 "doc":"Focus (or unfocus) a widget. A focused widget will receive key events first. Args: widget (Widget): [description]",
 "func":1
 },
 {
 "ref":"textual.app.App.set_mouse_over",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.capture_mouse",
-"url":45,
+"url":46,
 "doc":"Send all mouse events to the given widget, disable mouse capture. Args: widget (Widget | None): If a widget, capture mouse event, or None to end mouse capture.",
 "func":1
 },
 {
 "ref":"textual.app.App.panic",
-"url":45,
-"doc":"Exits the app after displaying a message. Args:  renderables (RenderableType, optional): Rich renderables to display on exit.",
+"url":46,
+"doc":"Exits the app then displays a message. Args:  renderables (RenderableType, optional): Rich renderables to display on exit.",
 "func":1
 },
 {
 "ref":"textual.app.App.on_exception",
-"url":45,
+"url":46,
 "doc":"Called with an unhandled exception. Args: error (Exception): An exception instance.",
 "func":1
 },
 {
 "ref":"textual.app.App.fatal_error",
-"url":45,
+"url":46,
 "doc":"Exits the app after an unhandled exception.",
 "func":1
 },
 {
 "ref":"textual.app.App.process_messages",
-"url":45,
+"url":46,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.on_mount",
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.on_idle",
-"url":45,
+"url":46,
 "doc":"Perform actions when there are no messages in the queue.",
 "func":1
 },
 {
 "ref":"textual.app.App.register",
-"url":45,
+"url":46,
 "doc":"Mount widget(s) so they may receive events. Args: parent (Widget): Parent Widget",
 "func":1
 },
 {
 "ref":"textual.app.App.start_widget",
-"url":45,
+"url":46,
 "doc":"Start a widget (run it's task) so that it can receive messages. Args: parent (Widget): The parent of the Widget. widget (Widget): The Widget to start.",
 "func":1
 },
 {
 "ref":"textual.app.App.is_mounted",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.close_all",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.remove",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.shutdown",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.refresh",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.refresh_css",
-"url":45,
+"url":46,
 "doc":"Refresh CSS. Args: animate (bool, optional): Also execute CSS animations. Defaults to True.",
 "func":1
 },
 {
 "ref":"textual.app.App.display",
-"url":45,
+"url":46,
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise.",
 "func":1
 },
 {
 "ref":"textual.app.App.measure",
-"url":45,
+"url":46,
 "doc":"Get the optimal width for a widget or renderable. Args: renderable (RenderableType): A renderable (including Widget) max_width ([type], optional): Maximum width. Defaults to 100_000. Returns: int: Number of cells required to render.",
 "func":1
 },
 {
 "ref":"textual.app.App.get_widget_at",
-"url":45,
+"url":46,
 "doc":"Get the widget under the given coordinates. Args: x (int): X Coord. y (int): Y Coord. Returns: tuple[Widget, Region]: The widget and the widget's screen region.",
 "func":1
 },
 {
 "ref":"textual.app.App.bell",
-"url":45,
+"url":46,
 "doc":"Play the console 'bell'.",
 "func":1
 },
 {
 "ref":"textual.app.App.press",
-"url":45,
+"url":46,
 "doc":"Handle a key press. Args: key (str): A key Returns: bool: True if the key was handled by a binding, otherwise False",
 "func":1
 },
 {
 "ref":"textual.app.App.on_event",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.action",
-"url":45,
+"url":46,
 "doc":"Perform an action. Args: action (str): Action encoded in a string.",
 "func":1
 },
 {
 "ref":"textual.app.App.dispatch_action",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.broker_event",
-"url":45,
+"url":46,
 "doc":"Allow the app an opportunity to dispatch events to action system. Args: event_name (str): _description_ event (events.Event): An event object. default_namespace (object | None): TODO: _description_ Returns: bool: True if an action was processed.",
 "func":1
 },
 {
 "ref":"textual.app.App.handle_update",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.handle_layout",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.on_key",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.on_shutdown_request",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.on_resize",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.action_press",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.action_quit",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.action_bang",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.action_bell",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.action_add_class_",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.action_remove_class_",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.action_toggle_class",
-"url":45,
+"url":46,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.app.App.handle_styles_updated",
-"url":45,
+"url":46,
 "doc":"",
+"func":1
+},
+{
+"ref":"textual.app.App.on_register",
+"url":7,
+"doc":"Called when the widget is registered Args: app (App): Parent application.",
 "func":1
 },
 {
 "ref":"textual.app.App.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.app.App.id",
@@ -10436,14 +11455,19 @@ INDEX=[
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
 {
-"ref":"textual.app.App.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.app.App.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.app.App.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.app.App.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.app.App.get_pseudo_classes",
@@ -10541,6 +11565,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.app.App.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
+"func":1
+},
+{
 "ref":"textual.app.App.close_messages",
 "url":8,
 "doc":"Close message queue, and optionally wait for queue to finish processing.",
@@ -10566,2010 +11596,2057 @@ INDEX=[
 },
 {
 "ref":"textual.actions",
-"url":46,
+"url":47,
 "doc":""
 },
 {
 "ref":"textual.actions.ActionError",
-"url":46,
+"url":47,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.actions.parse",
-"url":46,
+"url":47,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css",
-"url":47,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.css.model",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorType",
-"url":48,
+"url":49,
 "doc":"An enumeration."
 },
 {
 "ref":"textual.css.model.SelectorType.UNIVERSAL",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorType.TYPE",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorType.CLASS",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorType.ID",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.CombinatorType",
-"url":48,
+"url":49,
 "doc":"An enumeration."
 },
 {
 "ref":"textual.css.model.CombinatorType.SAME",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.CombinatorType.DESCENDENT",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.CombinatorType.CHILD",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector",
-"url":48,
+"url":49,
 "doc":"Represents a CSS selector. Some examples of selectors:  Header.title App > Content"
 },
 {
 "ref":"textual.css.model.Selector.name",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.pseudo_classes",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.specificity",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.combinator",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.type",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.advance",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.css",
-"url":48,
+"url":49,
 "doc":"Rebuilds the selector as it would appear in CSS."
 },
 {
 "ref":"textual.css.model.Selector.check",
-"url":48,
+"url":49,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.model.Declaration",
-"url":48,
+"url":49,
 "doc":"Declaration(token: 'Token', name: 'str', tokens: 'list[Token]' =  )"
 },
 {
 "ref":"textual.css.model.Declaration.token",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.Declaration.name",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.Declaration.tokens",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorSet",
-"url":48,
+"url":49,
 "doc":"SelectorSet(selectors: 'list[Selector]' =  , specificity: 'Specificity3' = (0, 0, 0 "
 },
 {
 "ref":"textual.css.model.SelectorSet.selectors",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorSet.specificity",
-"url":48,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorSet.from_selectors",
-"url":48,
+"url":49,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.model.RuleSet",
-"url":48,
+"url":49,
 "doc":"RuleSet(selector_set: 'list[SelectorSet]' =  , styles: 'Styles' =  , errors: 'list[tuple[Token, str ' =  , classes: 'set[str]' =  )"
 },
 {
 "ref":"textual.css.model.RuleSet.selector_set",
-"url":48,
-"doc":""
-},
-{
-"ref":"textual.css.model.RuleSet.styles",
-"url":48,
-"doc":""
-},
-{
-"ref":"textual.css.model.RuleSet.errors",
-"url":48,
-"doc":""
-},
-{
-"ref":"textual.css.model.RuleSet.classes",
-"url":48,
-"doc":""
-},
-{
-"ref":"textual.css.model.RuleSet.selectors",
-"url":48,
-"doc":""
-},
-{
-"ref":"textual.css.model.RuleSet.css",
-"url":48,
-"doc":"Generate the CSS this RuleSet Returns: str: A string containing CSS code."
-},
-{
-"ref":"textual.css.types",
 "url":49,
 "doc":""
 },
 {
-"ref":"textual.css.stylesheet",
+"ref":"textual.css.model.RuleSet.styles",
+"url":49,
+"doc":""
+},
+{
+"ref":"textual.css.model.RuleSet.errors",
+"url":49,
+"doc":""
+},
+{
+"ref":"textual.css.model.RuleSet.classes",
+"url":49,
+"doc":""
+},
+{
+"ref":"textual.css.model.RuleSet.selectors",
+"url":49,
+"doc":""
+},
+{
+"ref":"textual.css.model.RuleSet.css",
+"url":49,
+"doc":"Generate the CSS this RuleSet Returns: str: A string containing CSS code."
+},
+{
+"ref":"textual.css.types",
 "url":50,
+"doc":""
+},
+{
+"ref":"textual.css.stylesheet",
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.css.stylesheet.StylesheetParseError",
-"url":50,
+"url":51,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.stylesheet.StylesheetErrors",
-"url":50,
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.css.stylesheet.StylesheetErrors.set_variables",
-"url":50,
+"url":51,
 "doc":"Pre-populate CSS variables.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet",
-"url":50,
+"url":51,
+"doc":""
+},
+{
+"ref":"textual.css.stylesheet.Stylesheet.rules",
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.css",
-"url":50,
-"doc":""
-},
-{
-"ref":"textual.css.stylesheet.Stylesheet.any_errors",
-"url":50,
-"doc":"Check if there are any errors."
-},
-{
-"ref":"textual.css.stylesheet.Stylesheet.error_renderable",
-"url":50,
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.set_variables",
-"url":50,
+"url":51,
 "doc":"Set CSS variables. Args: variables (dict[str, str]): A mapping of name to variable.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.read",
-"url":50,
+"url":51,
 "doc":"Read Textual CSS file. Args: filename (str): filename of CSS. Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
 "func":1
 },
 {
-"ref":"textual.css.stylesheet.Stylesheet.parse",
-"url":50,
+"ref":"textual.css.stylesheet.Stylesheet.add_source",
+"url":51,
 "doc":"Parse CSS from a string. Args: css (str): String with CSS source. path (str, optional): The path of the source if a file, or some other identifier. Defaults to  . Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
 "func":1
 },
 {
+"ref":"textual.css.stylesheet.Stylesheet.parse",
+"url":51,
+"doc":"Parse the source in the stylesheet. Raises: StylesheetParseError: If there are any CSS related errors.",
+"func":1
+},
+{
 "ref":"textual.css.stylesheet.Stylesheet.reparse",
-"url":50,
+"url":51,
 "doc":"Re-parse source, applying new variables. Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.apply",
-"url":50,
+"url":51,
 "doc":"Apply the stylesheet to a DOM node. Args: node (DOMNode): The  DOMNode to apply the stylesheet to. Applies the styles defined in this  Stylesheet to the node. If the same rule is defined multiple times for the node (e.g. multiple classes modifying the same CSS property), then only the most specific rule will be applied. animate (bool, optional): Animate changed rules. Defaults to  False .",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.replace_rules",
-"url":50,
+"url":51,
 "doc":"Replace style rules on a node, animating as required. Args: node (DOMNode): A DOM node. rules (RulesMap): Mapping of rules. animate (bool, optional): Enable animation. Defaults to False.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.update",
-"url":50,
+"url":51,
 "doc":"Update a node and its children.",
 "func":1
 },
 {
 "ref":"textual.css.scalar_animation",
-"url":51,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.scalar_animation.ScalarAnimation",
-"url":51,
+"url":52,
 "doc":"Helper class that provides a standard way to create an ABC using inheritance."
 },
 {
 "ref":"textual.css.match",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.css.match.match",
-"url":52,
+"url":53,
 "doc":"Check if a given selector matches any of the given selector sets. Args: selector_sets (Iterable[SelectorSet]): Iterable of selector sets. node (DOMNode): DOM node. Returns: bool: True if the node matches the selector, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.css.constants",
-"url":53,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.css.scalar",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.ScalarError",
-"url":54,
+"url":55,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.scalar.ScalarResolveError",
-"url":54,
+"url":55,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.scalar.ScalarParseError",
-"url":54,
+"url":55,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.scalar.Unit",
-"url":54,
+"url":55,
 "doc":"An enumeration."
 },
 {
 "ref":"textual.css.scalar.Unit.CELLS",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.FRACTION",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.PERCENT",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.WIDTH",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.HEIGHT",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.VIEW_WIDTH",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.VIEW_HEIGHT",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.AUTO",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.get_symbols",
-"url":54,
+"url":55,
 "doc":"Get symbols for an iterable of units. Args: units (Iterable[Unit]): A number of units. Returns: list[str]: List of symbols.",
 "func":1
 },
 {
 "ref":"textual.css.scalar.Scalar",
-"url":54,
+"url":55,
 "doc":"A numeric value and a unit."
 },
 {
 "ref":"textual.css.scalar.Scalar.value",
-"url":54,
+"url":55,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.scalar.Scalar.unit",
-"url":54,
+"url":55,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.scalar.Scalar.percent_unit",
-"url":54,
+"url":55,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.scalar.Scalar.is_percent",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Scalar.cells",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Scalar.fraction",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Scalar.symbol",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Scalar.is_auto",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Scalar.from_number",
-"url":54,
+"url":55,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.scalar.Scalar.parse",
-"url":54,
+"url":55,
 "doc":"Parse a string in to a Scalar Args: token (str): A string containing a scalar, e.g. \"3.14fr\" Raises: ScalarParseError: If the value is not a valid scalar Returns: Scalar: New scalar",
 "func":1
 },
 {
 "ref":"textual.css.scalar.Scalar.resolve_dimension",
-"url":54,
+"url":55,
 "doc":"Resolve scalar with units in to a dimensions. Args: size (tuple[int, int]): Size of the container. viewport (tuple[int, int]): Size of the viewport (typically terminal size) Raises: ScalarResolveError: If the unit is unknown. Returns: int: A size (in cells)",
 "func":1
 },
 {
+"ref":"textual.css.scalar.Scalar.copy_with",
+"url":55,
+"doc":"Get a copy of this Scalar, with values optionally modified Args: value (float | None): The new value, or None to keep the same value unit (Unit | None): The new unit, or None to keep the same unit percent_unit (Unit | None): The new percent_unit, or None to keep the same percent_unit",
+"func":1
+},
+{
 "ref":"textual.css.scalar.ScalarOffset",
-"url":54,
+"url":55,
 "doc":"ScalarOffset(x, y)"
 },
 {
 "ref":"textual.css.scalar.ScalarOffset.x",
-"url":54,
+"url":55,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.scalar.ScalarOffset.y",
-"url":54,
+"url":55,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.scalar.ScalarOffset.null",
-"url":54,
+"url":55,
 "doc":"Get a null scalar offset (0, 0).",
 "func":1
 },
 {
 "ref":"textual.css.scalar.ScalarOffset.resolve",
-"url":54,
+"url":55,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.query",
-"url":55,
+"url":56,
 "doc":"A DOMQuery is a set of DOM nodes associated with a given CSS selector. This set of nodes may be further filtered with the filter method. Additional methods apply actions to the nodes in the query. If this sounds like JQuery, a (once) popular JS library, it is no coincidence. DOMQuery objects are typically created by Widget.filter method."
 },
 {
 "ref":"textual.css.query.NoMatchingNodesError",
-"url":55,
+"url":56,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.query.DOMQuery",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.css.query.DOMQuery.filter",
-"url":55,
+"url":56,
 "doc":"Filter this set by the given CSS selector. Args: selector (str): A CSS selector. Returns: DOMQuery: New DOM Query.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.exclude",
-"url":55,
+"url":56,
 "doc":"Exclude nodes that match a given selector. Args: selector (str): A CSS selector. Returns: DOMQuery: New DOM query.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.first",
-"url":55,
+"url":56,
 "doc":"Get the first matched node. Returns: DOMNode: A DOM Node.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.add_class",
-"url":55,
+"url":56,
 "doc":"Add the given class name(s) to nodes.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.remove_class",
-"url":55,
+"url":56,
 "doc":"Remove the given class names from the nodes.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.toggle_class",
-"url":55,
+"url":56,
 "doc":"Toggle the given class names from matched nodes.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.set_styles",
-"url":55,
+"url":56,
 "doc":"Set styles on matched nodes. Args: css (str, optional): CSS declarations to parser, or None. Defaults to None.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.refresh",
-"url":55,
+"url":56,
 "doc":"Refresh matched nodes. Args: repaint (bool): Repaint node(s). defaults to True. layout (bool): Layout node(s). Defaults to False. Returns: DOMQuery: Query for chaining.",
 "func":1
 },
 {
 "ref":"textual.css.tokenizer",
-"url":56,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.css.tokenizer.TokenizeError",
-"url":56,
+"url":57,
 "doc":"Error raised when the CSS cannot be tokenized (syntax error). Args: path (str): Path to source or \" \" if source is parsed from a literal. code (str): The code being parsed. line_no (int): Line number of the error. col_no (int): Column number of the error. message (str): A message associated with the error."
 },
 {
 "ref":"textual.css.tokenizer.EOFError",
-"url":56,
+"url":57,
 "doc":"Error raised when the CSS cannot be tokenized (syntax error). Args: path (str): Path to source or \" \" if source is parsed from a literal. code (str): The code being parsed. line_no (int): Line number of the error. col_no (int): Column number of the error. message (str): A message associated with the error."
 },
 {
 "ref":"textual.css.tokenizer.Expect",
-"url":56,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.css.tokenizer.Expect.expect_eof",
-"url":56,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.tokenizer.ReferencedBy",
-"url":56,
+"url":57,
 "doc":"ReferencedBy(name, location, length)"
 },
 {
 "ref":"textual.css.tokenizer.ReferencedBy.name",
-"url":56,
+"url":57,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.tokenizer.ReferencedBy.location",
-"url":56,
+"url":57,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.tokenizer.ReferencedBy.length",
-"url":56,
+"url":57,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.tokenizer.Token",
-"url":56,
+"url":57,
 "doc":"Token(name, value, path, code, location, referenced_by)"
 },
 {
 "ref":"textual.css.tokenizer.Token.name",
-"url":56,
+"url":57,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.tokenizer.Token.value",
-"url":56,
+"url":57,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.tokenizer.Token.path",
-"url":56,
+"url":57,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.tokenizer.Token.code",
-"url":56,
+"url":57,
 "doc":"Alias for field number 3"
 },
 {
 "ref":"textual.css.tokenizer.Token.location",
-"url":56,
+"url":57,
 "doc":"Alias for field number 4"
 },
 {
 "ref":"textual.css.tokenizer.Token.referenced_by",
-"url":56,
+"url":57,
 "doc":"Alias for field number 5"
 },
 {
 "ref":"textual.css.tokenizer.Token.with_reference",
-"url":56,
+"url":57,
 "doc":"Return a copy of the Token, with reference information attached. This is used for variable substitution, where a variable reference can refer to tokens which were defined elsewhere. With the additional ReferencedBy data attached, we can track where the token we are referring to is used.",
 "func":1
 },
 {
 "ref":"textual.css.tokenizer.Tokenizer",
-"url":56,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.css.tokenizer.Tokenizer.get_token",
-"url":56,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.tokenizer.Tokenizer.skip_to",
-"url":56,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.errors",
-"url":57,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.css.errors.DeclarationError",
-"url":57,
+"url":58,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.errors.UnresolvedVariableError",
-"url":57,
+"url":58,
 "doc":"Name not found globally."
 },
 {
 "ref":"textual.css.errors.StyleTypeError",
-"url":57,
+"url":58,
 "doc":"Inappropriate argument type."
 },
 {
 "ref":"textual.css.errors.StyleValueError",
-"url":57,
-"doc":"Inappropriate argument value (of correct type)."
+"url":58,
+"doc":"Raised when the value of a style property is not valid Attributes: help_text (HelpText | None): Optional HelpText to be rendered when this error is raised."
 },
 {
 "ref":"textual.css.errors.StylesheetError",
-"url":57,
+"url":58,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.parse",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.css.parse.parse_selectors",
-"url":58,
+"url":59,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.parse.parse_rule_set",
-"url":58,
+"url":59,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.parse.parse_declarations",
-"url":58,
+"url":59,
 "doc":"Parse declarations and return a Styles object. Args: css (str): String containing CSS. path (str): Path to the CSS, or something else to identify the location. Returns: Styles: A styles object.",
 "func":1
 },
 {
 "ref":"textual.css.parse.substitute_references",
-"url":58,
+"url":59,
 "doc":"Replace variable references with values by substituting variable reference tokens with the tokens representing their values. Args: tokens (Iterable[Token]): Iterator of Tokens which may contain tokens with the name \"variable_ref\". Returns: Iterable[Token]: Yields Tokens such that any variable references (tokens where token.name  \"variable_ref\") have been replaced with the tokens representing the value. In other words, an Iterable of Tokens similar to the original input, but with variables resolved. Substituted tokens will have their referenced_by attribute populated with information about where the tokens are being substituted to.",
 "func":1
 },
 {
 "ref":"textual.css.parse.parse",
-"url":58,
+"url":59,
 "doc":"Parse CSS by tokenizing it, performing variable substitution, and generating rule sets from it. Args: css (str): The input CSS path (str): Path to the CSS",
 "func":1
 },
 {
 "ref":"textual.css.tokenize",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.TokenizerState",
-"url":59,
+"url":60,
 "doc":"State machine for the tokenizer. Attributes: EXPECT: The initial expectation of the tokenizer. Since we start tokenizing at the root scope, we might expect to see either a variable or selector, for example. STATE_MAP: Maps token names to Expects, defines the sets of valid tokens that we'd expect to see next, given the current token. For example, if we've just processed a variable declaration name, we next expect to see the value of that variable."
 },
 {
 "ref":"textual.css.tokenize.TokenizerState.EXPECT",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.TokenizerState.STATE_MAP",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.DeclarationTokenizerState",
-"url":59,
+"url":60,
 "doc":"State machine for the tokenizer. Attributes: EXPECT: The initial expectation of the tokenizer. Since we start tokenizing at the root scope, we might expect to see either a variable or selector, for example. STATE_MAP: Maps token names to Expects, defines the sets of valid tokens that we'd expect to see next, given the current token. For example, if we've just processed a variable declaration name, we next expect to see the value of that variable."
 },
 {
 "ref":"textual.css.tokenize.DeclarationTokenizerState.EXPECT",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.DeclarationTokenizerState.STATE_MAP",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.ValueTokenizerState",
-"url":59,
+"url":60,
 "doc":"State machine for the tokenizer. Attributes: EXPECT: The initial expectation of the tokenizer. Since we start tokenizing at the root scope, we might expect to see either a variable or selector, for example. STATE_MAP: Maps token names to Expects, defines the sets of valid tokens that we'd expect to see next, given the current token. For example, if we've just processed a variable declaration name, we next expect to see the value of that variable."
 },
 {
 "ref":"textual.css.tokenize.ValueTokenizerState.EXPECT",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.tokenize_values",
-"url":59,
+"url":60,
 "doc":"Tokens the values in a dict of strings. Args: values (dict[str, str]): A mapping of CSS variable name on to a value, to be added to the CSS context. Returns: dict[str, list[Token : A mapping of name on to a list of tokens,",
 "func":1
 },
 {
 "ref":"textual.css.transition",
-"url":60,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.transition.Transition",
-"url":60,
+"url":61,
 "doc":"Transition(duration, easing, delay)"
 },
 {
 "ref":"textual.css.transition.Transition.duration",
-"url":60,
+"url":61,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.transition.Transition.easing",
-"url":60,
+"url":61,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.transition.Transition.delay",
-"url":60,
+"url":61,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.styles",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap",
-"url":61,
+"url":62,
 "doc":"A typed dict for CSS rules. Any key may be absent, indicating that rule has not been set. Does not define composite rules, that is a rule that is made of a combination of other rules."
 },
 {
 "ref":"textual.css.styles.RulesMap.display",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.visibility",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.layout",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.color",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.background",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.text_style",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.opacity",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.padding",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.margin",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.offset",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.border_top",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.border_right",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.border_bottom",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.border_left",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.outline_top",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.outline_right",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.outline_bottom",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.outline_left",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.box_sizing",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.width",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.height",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.min_width",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.min_height",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.max_width",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.max_height",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.dock",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.docks",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.overflow_x",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.overflow_y",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.layers",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.layer",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.transitions",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_color",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_color_hover",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_color_active",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_background",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_background_hover",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_background_active",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.align_horizontal",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.align_vertical",
-"url":61,
+"url":62,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.content_align_horizontal",
+"url":62,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.content_align_vertical",
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.DockGroup",
-"url":61,
+"url":62,
 "doc":"DockGroup(name, edge, z)"
 },
 {
 "ref":"textual.css.styles.DockGroup.name",
-"url":61,
+"url":62,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.styles.DockGroup.edge",
-"url":61,
+"url":62,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.styles.DockGroup.z",
-"url":61,
+"url":62,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.styles.StylesBase",
-"url":61,
+"url":62,
 "doc":"A common base class for Styles and RenderStyles"
 },
 {
 "ref":"textual.css.styles.StylesBase.ANIMATABLE",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.display",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.visibility",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.layout",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting layout."
 },
 {
 "ref":"textual.css.styles.StylesBase.color",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.background",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.text_style",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.StylesBase.opacity",
-"url":61,
+"url":62,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
 {
 "ref":"textual.css.styles.StylesBase.padding",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.StylesBase.margin",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.StylesBase.offset",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting the offset property. Offset consists of two values, x and y, that a widget's position will be adjusted by before it is rendered."
 },
 {
 "ref":"textual.css.styles.StylesBase.border",
-"url":61,
-"doc":"Descriptor for getting and setting full borders and outlines."
+"url":62,
+"doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.StylesBase.border_top",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.border_right",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.border_bottom",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.border_left",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.outline",
-"url":61,
-"doc":"Descriptor for getting and setting full borders and outlines."
+"url":62,
+"doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.StylesBase.outline_top",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.outline_right",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.outline_bottom",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.outline_left",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.box_sizing",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.width",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.height",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.min_width",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.min_height",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.max_width",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.max_height",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.dock",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which dock you wish a Widget to be attached to. This should be used in conjunction with the \"docks\" property which lets you define the docks themselves, and where they are located on screen."
 },
 {
 "ref":"textual.css.styles.StylesBase.docks",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting the docks property. This property is used to define docks and their location on screen."
 },
 {
 "ref":"textual.css.styles.StylesBase.overflow_x",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.overflow_y",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.layer",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting name properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.layers",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.transitions",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting transitions properties"
 },
 {
 "ref":"textual.css.styles.StylesBase.rich_style",
-"url":61,
-"doc":"Descriptor for getting and setting the text style."
+"url":62,
+"doc":"Descriptor for getting the Rich style."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_color",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_color_hover",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_color_active",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_background",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_background_hover",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_background_active",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.align_horizontal",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.align_vertical",
-"url":61,
+"url":62,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.content_align_horizontal",
+"url":62,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.content_align_vertical",
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.gutter",
-"url":61,
+"url":62,
 "doc":"Get space around widget. Returns: Spacing: Space around widget."
 },
 {
 "ref":"textual.css.styles.StylesBase.has_rule",
-"url":61,
+"url":62,
 "doc":"Check if a rule is set on this Styles object. Args: rule (str): Rule name. Returns: bool:  True if the rules is present, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.clear_rule",
-"url":61,
+"url":62,
 "doc":"Removes the rule from the Styles object, as if it had never been set. Args: rule (str): Rule name. Returns: bool:  True if a rule was cleared, or  False if the rule is already not set.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.get_rules",
-"url":61,
+"url":62,
 "doc":"Get the rules in a mapping. Returns: RulesMap: A TypedDict of the rules.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.set_rule",
-"url":61,
+"url":62,
 "doc":"Set a rule. Args: rule (str): Rule name. value (object | None): New rule value. Returns: bool:  True if the rule changed, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.get_rule",
-"url":61,
+"url":62,
 "doc":"Get an individual rule. Args: rule (str): Name of rule. default (object, optional): Default if rule does not exists. Defaults to None. Returns: object: Rule value or default.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.refresh",
-"url":61,
+"url":62,
 "doc":"Mark the styles as requiring a refresh. Args: layout (bool, optional): Also require a layout. Defaults to False.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.reset",
-"url":61,
+"url":62,
 "doc":"Reset the rules to initial state.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.merge",
-"url":61,
+"url":62,
 "doc":"Merge values from another Styles. Args: other (Styles): A Styles object.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.merge_rules",
-"url":61,
+"url":62,
 "doc":"Merge rules in to Styles. Args: rules (RulesMap): A mapping of rules.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.get_render_rules",
-"url":61,
+"url":62,
 "doc":"Get rules map with defaults.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.is_animatable",
-"url":61,
+"url":62,
 "doc":"Check if a given rule may be animated. Args: rule (str): Name of the rule. Returns: bool:  True if the rule may be animated, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.parse",
-"url":61,
+"url":62,
 "doc":"Parse CSS and return a Styles object. Args: css (str): Textual CSS. path (str): Path or string indicating source of CSS. node (DOMNode, optional): Node to associate with the Styles. Defaults to None. Returns: Styles: A Styles instance containing result of parsing CSS.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.get_transition",
-"url":61,
+"url":62,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.align_width",
-"url":61,
+"url":62,
 "doc":"Align the width dimension. Args: width (int): Width of the content. parent_width (int): Width of the parent container. Returns: int: An offset to add to the X coordinate.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.align_height",
-"url":61,
+"url":62,
 "doc":"Align the height dimensions Args: height (int): Height of the content. parent_height (int): Height of the parent container. Returns: int: An offset to add to the Y coordinate.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles",
-"url":61,
+"url":62,
 "doc":"Styles(node: 'DOMNode | None' = None, _rules: 'RulesMap' =  , important: 'set[str]' =  )"
 },
 {
 "ref":"textual.css.styles.Styles.important",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.Styles.node",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.Styles.copy",
-"url":61,
+"url":62,
 "doc":"Get a copy of this Styles object.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.has_rule",
-"url":61,
+"url":62,
 "doc":"Check if a rule is set on this Styles object. Args: rule (str): Rule name. Returns: bool:  True if the rules is present, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.clear_rule",
-"url":61,
+"url":62,
 "doc":"Removes the rule from the Styles object, as if it had never been set. Args: rule (str): Rule name. Returns: bool:  True if a rule was cleared, or  False if it was already not set.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.get_rules",
-"url":61,
+"url":62,
 "doc":"Get the rules in a mapping. Returns: RulesMap: A TypedDict of the rules.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.set_rule",
-"url":61,
+"url":62,
 "doc":"Set a rule. Args: rule (str): Rule name. value (object | None): New rule value. Returns: bool:  True if the rule changed, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.get_rule",
-"url":61,
+"url":62,
 "doc":"Get an individual rule. Args: rule (str): Name of rule. default (object, optional): Default if rule does not exists. Defaults to None. Returns: object: Rule value or default.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.refresh",
-"url":61,
+"url":62,
 "doc":"Mark the styles as requiring a refresh. Args: layout (bool, optional): Also require a layout. Defaults to False.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.reset",
-"url":61,
+"url":62,
 "doc":"Reset the rules to initial state.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.merge",
-"url":61,
+"url":62,
 "doc":"Merge values from another Styles. Args: other (Styles): A Styles object.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.merge_rules",
-"url":61,
+"url":62,
 "doc":"Merge rules in to Styles. Args: rules (RulesMap): A mapping of rules.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.extract_rules",
-"url":61,
+"url":62,
 "doc":"Extract rules from Styles object, and apply !important css specificity. Args: specificity (Specificity3): A node specificity. Returns: list[tuple[str, Specificity4, Any ]: A list containing a tuple of  ,   .",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.css_lines",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.Styles.css",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.styles.Styles.display",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.visibility",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.layout",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting layout."
 },
 {
 "ref":"textual.css.styles.Styles.color",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.background",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.text_style",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.Styles.opacity",
-"url":61,
+"url":62,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
 {
 "ref":"textual.css.styles.Styles.padding",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.Styles.margin",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.Styles.offset",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting the offset property. Offset consists of two values, x and y, that a widget's position will be adjusted by before it is rendered."
 },
 {
 "ref":"textual.css.styles.Styles.border",
-"url":61,
-"doc":"Descriptor for getting and setting full borders and outlines."
+"url":62,
+"doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.Styles.border_top",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.border_right",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.border_bottom",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.border_left",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.outline",
-"url":61,
-"doc":"Descriptor for getting and setting full borders and outlines."
+"url":62,
+"doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.Styles.outline_top",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.outline_right",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.outline_bottom",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.outline_left",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.box_sizing",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.width",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.height",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.min_width",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.min_height",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.max_width",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.max_height",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.dock",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which dock you wish a Widget to be attached to. This should be used in conjunction with the \"docks\" property which lets you define the docks themselves, and where they are located on screen."
 },
 {
 "ref":"textual.css.styles.Styles.docks",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting the docks property. This property is used to define docks and their location on screen."
 },
 {
 "ref":"textual.css.styles.Styles.overflow_x",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.overflow_y",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.layer",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting name properties."
 },
 {
 "ref":"textual.css.styles.Styles.transitions",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting transitions properties"
 },
 {
 "ref":"textual.css.styles.Styles.rich_style",
-"url":61,
-"doc":"Descriptor for getting and setting the text style."
+"url":62,
+"doc":"Descriptor for getting the Rich style."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_color",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_color_hover",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_color_active",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_background",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_background_hover",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_background_active",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.align_horizontal",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.align_vertical",
-"url":61,
+"url":62,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.Styles.content_align_horizontal",
+"url":62,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.Styles.content_align_vertical",
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.gutter",
-"url":61,
+"url":62,
 "doc":"Get space around widget. Returns: Spacing: Space around widget."
 },
 {
 "ref":"textual.css.styles.Styles.get_render_rules",
-"url":61,
+"url":62,
 "doc":"Get rules map with defaults.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.is_animatable",
-"url":61,
+"url":62,
 "doc":"Check if a given rule may be animated. Args: rule (str): Name of the rule. Returns: bool:  True if the rule may be animated, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.parse",
-"url":61,
+"url":62,
 "doc":"Parse CSS and return a Styles object. Args: css (str): Textual CSS. path (str): Path or string indicating source of CSS. node (DOMNode, optional): Node to associate with the Styles. Defaults to None. Returns: Styles: A Styles instance containing result of parsing CSS.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.align_width",
-"url":61,
+"url":62,
 "doc":"Align the width dimension. Args: width (int): Width of the content. parent_width (int): Width of the parent container. Returns: int: An offset to add to the X coordinate.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.align_height",
-"url":61,
+"url":62,
 "doc":"Align the height dimensions Args: height (int): Height of the content. parent_height (int): Height of the parent container. Returns: int: An offset to add to the Y coordinate.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles",
-"url":61,
+"url":62,
 "doc":"Presents a combined view of two Styles object: a base Styles and inline Styles."
 },
 {
 "ref":"textual.css.styles.RenderStyles.base",
-"url":61,
+"url":62,
 "doc":"Quick access to base (css) style."
 },
 {
 "ref":"textual.css.styles.RenderStyles.inline",
-"url":61,
+"url":62,
 "doc":"Quick access to the inline styles."
 },
 {
 "ref":"textual.css.styles.RenderStyles.refresh",
-"url":61,
+"url":62,
 "doc":"Mark the styles as requiring a refresh. Args: layout (bool, optional): Also require a layout. Defaults to False.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.merge",
-"url":61,
+"url":62,
 "doc":"Merge values from another Styles. Args: other (Styles): A Styles object.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.merge_rules",
-"url":61,
+"url":62,
 "doc":"Merge rules in to Styles. Args: rules (RulesMap): A mapping of rules.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.reset",
-"url":61,
+"url":62,
 "doc":"Reset the rules to initial state.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.has_rule",
-"url":61,
+"url":62,
 "doc":"Check if a rule has been set.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.set_rule",
-"url":61,
+"url":62,
 "doc":"Set a rule. Args: rule (str): Rule name. value (object | None): New rule value. Returns: bool:  True if the rule changed, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.get_rule",
-"url":61,
+"url":62,
 "doc":"Get an individual rule. Args: rule (str): Name of rule. default (object, optional): Default if rule does not exists. Defaults to None. Returns: object: Rule value or default.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.clear_rule",
-"url":61,
+"url":62,
 "doc":"Clear a rule (from inline).",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.get_rules",
-"url":61,
+"url":62,
 "doc":"Get rules as a dictionary",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.css",
-"url":61,
+"url":62,
 "doc":"Get the CSS for the combined styles."
 },
 {
 "ref":"textual.css.styles.RenderStyles.display",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.visibility",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.layout",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting layout."
 },
 {
 "ref":"textual.css.styles.RenderStyles.color",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.background",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.text_style",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.RenderStyles.opacity",
-"url":61,
+"url":62,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
 {
 "ref":"textual.css.styles.RenderStyles.padding",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.RenderStyles.margin",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.RenderStyles.offset",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting the offset property. Offset consists of two values, x and y, that a widget's position will be adjusted by before it is rendered."
 },
 {
 "ref":"textual.css.styles.RenderStyles.border",
-"url":61,
-"doc":"Descriptor for getting and setting full borders and outlines."
+"url":62,
+"doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.RenderStyles.border_top",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.border_right",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.border_bottom",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.border_left",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.outline",
-"url":61,
-"doc":"Descriptor for getting and setting full borders and outlines."
+"url":62,
+"doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.RenderStyles.outline_top",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.outline_right",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.outline_bottom",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.outline_left",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.box_sizing",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.width",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.height",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.min_width",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.min_height",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.max_width",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.max_height",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.dock",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which dock you wish a Widget to be attached to. This should be used in conjunction with the \"docks\" property which lets you define the docks themselves, and where they are located on screen."
 },
 {
 "ref":"textual.css.styles.RenderStyles.docks",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting the docks property. This property is used to define docks and their location on screen."
 },
 {
 "ref":"textual.css.styles.RenderStyles.overflow_x",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.overflow_y",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.layer",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting name properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.transitions",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting transitions properties"
 },
 {
 "ref":"textual.css.styles.RenderStyles.rich_style",
-"url":61,
-"doc":"Descriptor for getting and setting the text style."
+"url":62,
+"doc":"Descriptor for getting the Rich style."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_color",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_color_hover",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_color_active",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_background",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_background_hover",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_background_active",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.align_horizontal",
-"url":61,
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.align_vertical",
-"url":61,
+"url":62,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.content_align_horizontal",
+"url":62,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.content_align_vertical",
+"url":62,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.gutter",
-"url":61,
+"url":62,
 "doc":"Get space around widget. Returns: Spacing: Space around widget."
 },
 {
 "ref":"textual.css.styles.RenderStyles.get_render_rules",
-"url":61,
+"url":62,
 "doc":"Get rules map with defaults.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.is_animatable",
-"url":61,
+"url":62,
 "doc":"Check if a given rule may be animated. Args: rule (str): Name of the rule. Returns: bool:  True if the rule may be animated, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.parse",
-"url":61,
+"url":62,
 "doc":"Parse CSS and return a Styles object. Args: css (str): Textual CSS. path (str): Path or string indicating source of CSS. node (DOMNode, optional): Node to associate with the Styles. Defaults to None. Returns: Styles: A Styles instance containing result of parsing CSS.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.align_width",
-"url":61,
+"url":62,
 "doc":"Align the width dimension. Args: width (int): Width of the content. parent_width (int): Width of the parent container. Returns: int: An offset to add to the X coordinate.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.align_height",
-"url":61,
+"url":62,
 "doc":"Align the height dimensions Args: height (int): Height of the content. parent_height (int): Height of the parent container. Returns: int: An offset to add to the Y coordinate.",
 "func":1
 },
 {
 "ref":"textual.reactive",
-"url":62,
+"url":63,
 "doc":""
 },
 {
 "ref":"textual.reactive.Reactive",
-"url":62,
+"url":63,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.reactive.Reactive.check_watchers",
-"url":62,
+"url":63,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.reactive.Reactive.compute",
-"url":62,
+"url":63,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.reactive.watch",
-"url":62,
+"url":63,
 "doc":"",
 "func":1
 },
@@ -12609,7 +13686,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.widget.Widget.DEFAULT_STYLES",
+"ref":"textual.widget.Widget.CSS",
 "url":6,
 "doc":""
 },
@@ -12662,6 +13739,24 @@ INDEX=[
 "ref":"textual.widget.Widget.show_horizontal_scrollbar",
 "url":6,
 "doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widget.Widget.mount",
+"url":6,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.compose",
+"url":6,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.on_register",
+"url":6,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
 },
 {
 "ref":"textual.widget.Widget.get_box_model",
@@ -13015,6 +14110,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.on_mount",
+"url":6,
+"doc":"",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.on_leave",
 "url":6,
 "doc":"",
@@ -13119,7 +14220,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.parent",
 "url":7,
-"doc":"Get the parent node. Raises: NoParent: If this is the root node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widget.Widget.screen",
@@ -13162,14 +14263,19 @@ INDEX=[
 "doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
 },
 {
-"ref":"textual.widget.Widget.rich_text_style",
-"url":7,
-"doc":"Get the text style (added to parent style). Returns: Style: Rich Style object."
-},
-{
 "ref":"textual.widget.Widget.tree",
 "url":7,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.widget.Widget.rich_text_style",
+"url":7,
+"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widget.Widget.ancestors",
+"url":7,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
 },
 {
 "ref":"textual.widget.Widget.add_child",
@@ -13267,6 +14373,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.close_messages_no_wait",
+"url":8,
+"doc":"Request the message queue to exit.",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.close_messages",
 "url":8,
 "doc":"Close message queue, and optionally wait for queue to finish processing.",
@@ -13292,97 +14404,97 @@ INDEX=[
 },
 {
 "ref":"textual.binding",
-"url":63,
+"url":64,
 "doc":""
 },
 {
 "ref":"textual.binding.NoBinding",
-"url":63,
+"url":64,
 "doc":"A binding was not found."
 },
 {
 "ref":"textual.binding.Binding",
-"url":63,
+"url":64,
 "doc":"Binding(key: 'str', action: 'str', description: 'str', show: 'bool' = False, key_display: 'str | None' = None, allow_forward: 'bool' = True)"
 },
 {
 "ref":"textual.binding.Binding.key",
-"url":63,
+"url":64,
 "doc":""
 },
 {
 "ref":"textual.binding.Binding.action",
-"url":63,
+"url":64,
 "doc":""
 },
 {
 "ref":"textual.binding.Binding.description",
-"url":63,
+"url":64,
 "doc":""
 },
 {
 "ref":"textual.binding.Binding.show",
-"url":63,
+"url":64,
 "doc":""
 },
 {
 "ref":"textual.binding.Binding.key_display",
-"url":63,
+"url":64,
 "doc":""
 },
 {
 "ref":"textual.binding.Binding.allow_forward",
-"url":63,
+"url":64,
 "doc":""
 },
 {
 "ref":"textual.binding.Bindings",
-"url":63,
+"url":64,
 "doc":"Manage a set of bindings."
 },
 {
 "ref":"textual.binding.Bindings.shown_keys",
-"url":63,
+"url":64,
 "doc":""
 },
 {
 "ref":"textual.binding.Bindings.bind",
-"url":63,
+"url":64,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.binding.Bindings.get_key",
-"url":63,
+"url":64,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.binding.Bindings.allow_forward",
-"url":63,
+"url":64,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.binding.BindingStack",
-"url":63,
+"url":64,
 "doc":"Manage a stack of bindings."
 },
 {
 "ref":"textual.binding.BindingStack.push",
-"url":63,
+"url":64,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.binding.BindingStack.pop",
-"url":63,
+"url":64,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.binding.BindingStack.get_key",
-"url":63,
+"url":64,
 "doc":"",
 "func":1
 }

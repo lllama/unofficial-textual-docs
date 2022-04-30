@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.layouts.vertical API documentation</title>
+<title>textual.features API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.layouts.vertical</code></h1>
+<h1 class="title">Module <code>textual.features</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -28,64 +28,38 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from typing import cast, TYPE_CHECKING
+import sys
 
-from .. import log
+from typing import cast
 
-from ..geometry import Offset, Region, Size
-from .._layout import Layout, WidgetPlacement
+if sys.version_info &gt;= (3, 8):
+    from typing import Final, Literal
+else:
+    from typing_extensions import Final, Literal
 
-if TYPE_CHECKING:
-    from ..widget import Widget
+FEATURES: Final = {&#34;devtools&#34;, &#34;debug&#34;}
+
+FeatureFlag = Literal[&#34;devtools&#34;, &#34;debug&#34;]
 
 
-class VerticalLayout(Layout):
-    &#34;&#34;&#34;Used to layout Widgets vertically on screen, from top to bottom.&#34;&#34;&#34;
+def parse_features(features: str) -&gt; frozenset[FeatureFlag]:
+    &#34;&#34;&#34;Parse features env var
 
-    name = &#34;vertical&#34;
+    Args:
+        features (str): Comma seprated feature flags
 
-    def arrange(
-        self, parent: Widget, size: Size, scroll: Offset
-    ) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
+    Returns:
+        frozenset[FeatureFlag]: A frozen set of known features.
+    &#34;&#34;&#34;
 
-        placements: list[WidgetPlacement] = []
-        add_placement = placements.append
-
-        y = max_width = max_height = 0
-        parent_size = parent.size
-
-        box_models = [
-            widget.get_box_model(size, parent_size)
-            for widget in cast(&#34;list[Widget]&#34;, parent.children)
-        ]
-
-        margins = [
-            max((box1.margin.bottom, box2.margin.top))
-            for box1, box2 in zip(box_models, box_models[1:])
-        ]
-        if box_models:
-            margins.append(box_models[-1].margin.bottom)
-
-        y = box_models[0].margin.top if box_models else 0
-
-        displayed_children = parent.displayed_children
-
-        for widget, box_model, margin in zip(displayed_children, box_models, margins):
-            content_width, content_height = box_model.size
-            offset_x = widget.styles.align_width(content_width, parent_size.width)
-            region = Region(offset_x, y, content_width, content_height)
-            # TODO: it seems that `max_height` is not used?
-            max_height = max(max_height, content_height)
-            add_placement(WidgetPlacement(region, widget, 0))
-            y += region.height + margin
-            max_height = y
-
-        max_height += margins[-1] if margins else 0
-
-        total_region = Region(0, 0, max_width, max_height)
-        add_placement(WidgetPlacement(total_region, None, 0))
-
-        return placements, set(displayed_children)</code></pre>
+    features_set = frozenset(
+        set(
+            feature.strip().lower()
+            for feature in features.split(&#34;,&#34;)
+            if feature.strip()
+        ).intersection(FEATURES)
+    )
+    return cast(&#34;frozenset[FeatureFlag]&#34;, features_set)</code></pre>
 </details>
 </section>
 <section>
@@ -93,151 +67,50 @@ class VerticalLayout(Layout):
 <section>
 </section>
 <section>
-</section>
-<section>
-<h2 class="section-title" id="header-classes">Classes</h2>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="textual.layouts.vertical.VerticalLayout"><code class="flex name class">
-<span>class <span class="ident">VerticalLayout</span></span>
+<dt id="textual.features.parse_features"><code class="name flex">
+<span>def <span class="ident">parse_features</span></span>(<span>features: str) ‑> frozenset[FeatureFlag]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Used to layout Widgets vertically on screen, from top to bottom.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class VerticalLayout(Layout):
-    &#34;&#34;&#34;Used to layout Widgets vertically on screen, from top to bottom.&#34;&#34;&#34;
-
-    name = &#34;vertical&#34;
-
-    def arrange(
-        self, parent: Widget, size: Size, scroll: Offset
-    ) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
-
-        placements: list[WidgetPlacement] = []
-        add_placement = placements.append
-
-        y = max_width = max_height = 0
-        parent_size = parent.size
-
-        box_models = [
-            widget.get_box_model(size, parent_size)
-            for widget in cast(&#34;list[Widget]&#34;, parent.children)
-        ]
-
-        margins = [
-            max((box1.margin.bottom, box2.margin.top))
-            for box1, box2 in zip(box_models, box_models[1:])
-        ]
-        if box_models:
-            margins.append(box_models[-1].margin.bottom)
-
-        y = box_models[0].margin.top if box_models else 0
-
-        displayed_children = parent.displayed_children
-
-        for widget, box_model, margin in zip(displayed_children, box_models, margins):
-            content_width, content_height = box_model.size
-            offset_x = widget.styles.align_width(content_width, parent_size.width)
-            region = Region(offset_x, y, content_width, content_height)
-            # TODO: it seems that `max_height` is not used?
-            max_height = max(max_height, content_height)
-            add_placement(WidgetPlacement(region, widget, 0))
-            y += region.height + margin
-            max_height = y
-
-        max_height += margins[-1] if margins else 0
-
-        total_region = Region(0, 0, max_width, max_height)
-        add_placement(WidgetPlacement(total_region, None, 0))
-
-        return placements, set(displayed_children)</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>textual._layout.Layout</li>
-<li>abc.ABC</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="textual.layouts.vertical.VerticalLayout.name"><code class="name">var <span class="ident">name</span> : ClassVar[str]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="textual.layouts.vertical.VerticalLayout.arrange"><code class="name flex">
-<span>def <span class="ident">arrange</span></span>(<span>self, parent: Widget, size: Size, scroll: Offset) ‑> tuple[list[WidgetPlacement], set[Widget]]</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Generate a layout map that defines where on the screen the widgets will be drawn.</p>
+<div class="desc"><p>Parse features env var</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>parent</code></strong> :&ensp;<code>Widget</code></dt>
-<dd>Parent widget.</dd>
-<dt><strong><code>size</code></strong> :&ensp;<code>Size</code></dt>
-<dd>Size of container.</dd>
-<dt><strong><code>scroll</code></strong> :&ensp;<code>Offset</code></dt>
-<dd>Offset to apply to the Widget placements.</dd>
+<dt><strong><code>features</code></strong> :&ensp;<code>str</code></dt>
+<dd>Comma seprated feature flags</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>Iterable[WidgetPlacement]</code></dt>
-<dd>An iterable of widget location</dd>
+<dt><code>frozenset[FeatureFlag]</code></dt>
+<dd>A frozen set of known features.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def arrange(
-    self, parent: Widget, size: Size, scroll: Offset
-) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
+<pre><code class="python">def parse_features(features: str) -&gt; frozenset[FeatureFlag]:
+    &#34;&#34;&#34;Parse features env var
 
-    placements: list[WidgetPlacement] = []
-    add_placement = placements.append
+    Args:
+        features (str): Comma seprated feature flags
 
-    y = max_width = max_height = 0
-    parent_size = parent.size
+    Returns:
+        frozenset[FeatureFlag]: A frozen set of known features.
+    &#34;&#34;&#34;
 
-    box_models = [
-        widget.get_box_model(size, parent_size)
-        for widget in cast(&#34;list[Widget]&#34;, parent.children)
-    ]
-
-    margins = [
-        max((box1.margin.bottom, box2.margin.top))
-        for box1, box2 in zip(box_models, box_models[1:])
-    ]
-    if box_models:
-        margins.append(box_models[-1].margin.bottom)
-
-    y = box_models[0].margin.top if box_models else 0
-
-    displayed_children = parent.displayed_children
-
-    for widget, box_model, margin in zip(displayed_children, box_models, margins):
-        content_width, content_height = box_model.size
-        offset_x = widget.styles.align_width(content_width, parent_size.width)
-        region = Region(offset_x, y, content_width, content_height)
-        # TODO: it seems that `max_height` is not used?
-        max_height = max(max_height, content_height)
-        add_placement(WidgetPlacement(region, widget, 0))
-        y += region.height + margin
-        max_height = y
-
-    max_height += margins[-1] if margins else 0
-
-    total_region = Region(0, 0, max_width, max_height)
-    add_placement(WidgetPlacement(total_region, None, 0))
-
-    return placements, set(displayed_children)</code></pre>
+    features_set = frozenset(
+        set(
+            feature.strip().lower()
+            for feature in features.split(&#34;,&#34;)
+            if feature.strip()
+        ).intersection(FEATURES)
+    )
+    return cast(&#34;frozenset[FeatureFlag]&#34;, features_set)</code></pre>
 </details>
 </dd>
 </dl>
-</dd>
-</dl>
+</section>
+<section>
 </section>
 </article>
 <nav id="sidebar">
@@ -275,7 +148,7 @@ const query = new URL(window.location).searchParams.get('q');
 if (query)
 search(query);
 function search(query) {
-const url = '../../doc-search.html#' + encodeURIComponent(query);
+const url = '../doc-search.html#' + encodeURIComponent(query);
 new tingle.modal({
 cssClass: ['modal-dialog'],
 onClose: () => {
@@ -294,18 +167,12 @@ setTimeout(() => input.focus(), 100);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="textual.layouts" href="index.html">textual.layouts</a></code></li>
+<li><code><a title="textual" href="index.html">textual</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-classes">Classes</a></h3>
-<ul>
-<li>
-<h4><code><a title="textual.layouts.vertical.VerticalLayout" href="#textual.layouts.vertical.VerticalLayout">VerticalLayout</a></code></h4>
+<li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="textual.layouts.vertical.VerticalLayout.arrange" href="#textual.layouts.vertical.VerticalLayout.arrange">arrange</a></code></li>
-<li><code><a title="textual.layouts.vertical.VerticalLayout.name" href="#textual.layouts.vertical.VerticalLayout.name">name</a></code></li>
-</ul>
-</li>
+<li><code><a title="textual.features.parse_features" href="#textual.features.parse_features">parse_features</a></code></li>
 </ul>
 </li>
 </ul>

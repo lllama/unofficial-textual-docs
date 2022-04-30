@@ -38,10 +38,9 @@ from typing import TYPE_CHECKING, Any, Iterable, NamedTuple, cast
 import rich.repr
 from rich.style import Style
 
-from .. import log
 from .._animator import Animation, EasingFunction
 from ..color import Color
-from ..geometry import Offset, Size, Spacing
+from ..geometry import Spacing
 from ._style_properties import (
     BorderProperty,
     BoxProperty,
@@ -74,8 +73,6 @@ from .transition import Transition
 from .types import (
     BoxSizing,
     Display,
-    AlignHorizontal,
-    AlignVertical,
     Edge,
     AlignHorizontal,
     Overflow,
@@ -92,7 +89,7 @@ else:
 
 if TYPE_CHECKING:
     from ..dom import DOMNode
-    from ..layout import Layout
+    from .._layout import Layout
 
 
 class RulesMap(TypedDict, total=False):
@@ -101,7 +98,6 @@ class RulesMap(TypedDict, total=False):
     Any key may be absent, indicating that rule has not been set.
 
     Does not define composite rules, that is a rule that is made of a combination of other rules.
-
     &#34;&#34;&#34;
 
     display: Display
@@ -158,6 +154,9 @@ class RulesMap(TypedDict, total=False):
     align_horizontal: AlignHorizontal
     align_vertical: AlignVertical
 
+    content_align_horizontal: AlignHorizontal
+    content_align_vertical: AlignVertical
+
 
 RULE_NAMES = list(RulesMap.__annotations__.keys())
 RULE_NAMES_SET = frozenset(RULE_NAMES)
@@ -193,12 +192,12 @@ class StylesBase(ABC):
         &#34;scrollbar_background_active&#34;,
     }
 
-    display = StringEnumProperty(VALID_DISPLAY, &#34;block&#34;)
+    display = StringEnumProperty(VALID_DISPLAY, &#34;block&#34;, layout=True)
     visibility = StringEnumProperty(VALID_VISIBILITY, &#34;visible&#34;)
     layout = LayoutProperty()
 
     color = ColorProperty(Color(255, 255, 255))
-    background = ColorProperty(Color(0, 0, 0))
+    background = ColorProperty(Color(0, 0, 0, 0))
     text_style = StyleFlagsProperty()
 
     opacity = FractionalProperty()
@@ -207,19 +206,19 @@ class StylesBase(ABC):
     margin = SpacingProperty()
     offset = OffsetProperty()
 
-    border = BorderProperty()
+    border = BorderProperty(layout=True)
     border_top = BoxProperty(Color(0, 255, 0))
     border_right = BoxProperty(Color(0, 255, 0))
     border_bottom = BoxProperty(Color(0, 255, 0))
     border_left = BoxProperty(Color(0, 255, 0))
 
-    outline = BorderProperty()
+    outline = BorderProperty(layout=False)
     outline_top = BoxProperty(Color(0, 255, 0))
     outline_right = BoxProperty(Color(0, 255, 0))
     outline_bottom = BoxProperty(Color(0, 255, 0))
     outline_left = BoxProperty(Color(0, 255, 0))
 
-    box_sizing = StringEnumProperty(VALID_BOX_SIZING, &#34;border-box&#34;)
+    box_sizing = StringEnumProperty(VALID_BOX_SIZING, &#34;border-box&#34;, layout=True)
     width = ScalarProperty(percent_unit=Unit.WIDTH)
     height = ScalarProperty(percent_unit=Unit.HEIGHT)
     min_width = ScalarProperty(percent_unit=Unit.WIDTH, allow_auto=False)
@@ -239,9 +238,9 @@ class StylesBase(ABC):
 
     rich_style = StyleProperty()
 
-    scrollbar_color = ColorProperty(&#34;bright_magenta&#34;)
-    scrollbar_color_hover = ColorProperty(&#34;yellow&#34;)
-    scrollbar_color_active = ColorProperty(&#34;bright_yellow&#34;)
+    scrollbar_color = ColorProperty(&#34;ansi_bright_magenta&#34;)
+    scrollbar_color_hover = ColorProperty(&#34;ansi_yellow&#34;)
+    scrollbar_color_active = ColorProperty(&#34;ansi_bright_yellow&#34;)
 
     scrollbar_background = ColorProperty(&#34;#555555&#34;)
     scrollbar_background_hover = ColorProperty(&#34;#444444&#34;)
@@ -250,8 +249,11 @@ class StylesBase(ABC):
     align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
 
+    content_align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
+    content_align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
+
     def __eq__(self, styles: object) -&gt; bool:
-        &#34;&#34;&#34;Check that Styles containts the same rules.&#34;&#34;&#34;
+        &#34;&#34;&#34;Check that Styles contains the same rules.&#34;&#34;&#34;
         if not isinstance(styles, StylesBase):
             return NotImplemented
         return self.get_rules() == styles.get_rules()
@@ -705,6 +707,18 @@ class Styles(StylesBase):
         elif has_rule(&#34;align_horizontal&#34;):
             append_declaration(&#34;align-vertical&#34;, self.align_vertical)
 
+        if has_rule(&#34;content_align_horizontal&#34;) and has_rule(&#34;content_align_vertical&#34;):
+            append_declaration(
+                &#34;content-align&#34;,
+                f&#34;{self.content_align_horizontal} {self.content_align_vertical}&#34;,
+            )
+        elif has_rule(&#34;content_align_horizontal&#34;):
+            append_declaration(
+                &#34;content-align-horizontal&#34;, self.content_align_horizontal
+            )
+        elif has_rule(&#34;content_align_horizontal&#34;):
+            append_declaration(&#34;content-align-vertical&#34;, self.content_align_vertical)
+
         lines.sort()
         return lines
 
@@ -1047,6 +1061,8 @@ def inline(self) -&gt; Styles:
 <li><code><a title="textual.css.styles.StylesBase.border_top" href="#textual.css.styles.StylesBase.border_top">border_top</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.box_sizing" href="#textual.css.styles.StylesBase.box_sizing">box_sizing</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
@@ -1111,7 +1127,6 @@ def inline(self) -&gt; Styles:
     Any key may be absent, indicating that rule has not been set.
 
     Does not define composite rules, that is a rule that is made of a combination of other rules.
-
     &#34;&#34;&#34;
 
     display: Display
@@ -1166,7 +1181,10 @@ def inline(self) -&gt; Styles:
     scrollbar_background_active: Color
 
     align_horizontal: AlignHorizontal
-    align_vertical: AlignVertical</code></pre>
+    align_vertical: AlignVertical
+
+    content_align_horizontal: AlignHorizontal
+    content_align_vertical: AlignVertical</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1207,6 +1225,14 @@ def inline(self) -&gt; Styles:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.styles.RulesMap.color"><code class="name">var <span class="ident">color</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.content_align_horizontal"><code class="name">var <span class="ident">content_align_horizontal</span> : AlignHorizontal</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.content_align_vertical"><code class="name">var <span class="ident">content_align_vertical</span> : AlignVertical</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1619,6 +1645,18 @@ def inline(self) -&gt; Styles:
         elif has_rule(&#34;align_horizontal&#34;):
             append_declaration(&#34;align-vertical&#34;, self.align_vertical)
 
+        if has_rule(&#34;content_align_horizontal&#34;) and has_rule(&#34;content_align_vertical&#34;):
+            append_declaration(
+                &#34;content-align&#34;,
+                f&#34;{self.content_align_horizontal} {self.content_align_vertical}&#34;,
+            )
+        elif has_rule(&#34;content_align_horizontal&#34;):
+            append_declaration(
+                &#34;content-align-horizontal&#34;, self.content_align_horizontal
+            )
+        elif has_rule(&#34;content_align_horizontal&#34;):
+            append_declaration(&#34;content-align-vertical&#34;, self.content_align_vertical)
+
         lines.sort()
         return lines
 
@@ -1758,6 +1796,18 @@ def css_lines(self) -&gt; list[str]:
     elif has_rule(&#34;align_horizontal&#34;):
         append_declaration(&#34;align-vertical&#34;, self.align_vertical)
 
+    if has_rule(&#34;content_align_horizontal&#34;) and has_rule(&#34;content_align_vertical&#34;):
+        append_declaration(
+            &#34;content-align&#34;,
+            f&#34;{self.content_align_horizontal} {self.content_align_vertical}&#34;,
+        )
+    elif has_rule(&#34;content_align_horizontal&#34;):
+        append_declaration(
+            &#34;content-align-horizontal&#34;, self.content_align_horizontal
+        )
+    elif has_rule(&#34;content_align_horizontal&#34;):
+        append_declaration(&#34;content-align-vertical&#34;, self.content_align_vertical)
+
     lines.sort()
     return lines</code></pre>
 </details>
@@ -1867,6 +1917,8 @@ def css_lines(self) -&gt; list[str]:
 <li><code><a title="textual.css.styles.StylesBase.border_top" href="#textual.css.styles.StylesBase.border_top">border_top</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.box_sizing" href="#textual.css.styles.StylesBase.box_sizing">box_sizing</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
@@ -1947,12 +1999,12 @@ def css_lines(self) -&gt; list[str]:
         &#34;scrollbar_background_active&#34;,
     }
 
-    display = StringEnumProperty(VALID_DISPLAY, &#34;block&#34;)
+    display = StringEnumProperty(VALID_DISPLAY, &#34;block&#34;, layout=True)
     visibility = StringEnumProperty(VALID_VISIBILITY, &#34;visible&#34;)
     layout = LayoutProperty()
 
     color = ColorProperty(Color(255, 255, 255))
-    background = ColorProperty(Color(0, 0, 0))
+    background = ColorProperty(Color(0, 0, 0, 0))
     text_style = StyleFlagsProperty()
 
     opacity = FractionalProperty()
@@ -1961,19 +2013,19 @@ def css_lines(self) -&gt; list[str]:
     margin = SpacingProperty()
     offset = OffsetProperty()
 
-    border = BorderProperty()
+    border = BorderProperty(layout=True)
     border_top = BoxProperty(Color(0, 255, 0))
     border_right = BoxProperty(Color(0, 255, 0))
     border_bottom = BoxProperty(Color(0, 255, 0))
     border_left = BoxProperty(Color(0, 255, 0))
 
-    outline = BorderProperty()
+    outline = BorderProperty(layout=False)
     outline_top = BoxProperty(Color(0, 255, 0))
     outline_right = BoxProperty(Color(0, 255, 0))
     outline_bottom = BoxProperty(Color(0, 255, 0))
     outline_left = BoxProperty(Color(0, 255, 0))
 
-    box_sizing = StringEnumProperty(VALID_BOX_SIZING, &#34;border-box&#34;)
+    box_sizing = StringEnumProperty(VALID_BOX_SIZING, &#34;border-box&#34;, layout=True)
     width = ScalarProperty(percent_unit=Unit.WIDTH)
     height = ScalarProperty(percent_unit=Unit.HEIGHT)
     min_width = ScalarProperty(percent_unit=Unit.WIDTH, allow_auto=False)
@@ -1993,9 +2045,9 @@ def css_lines(self) -&gt; list[str]:
 
     rich_style = StyleProperty()
 
-    scrollbar_color = ColorProperty(&#34;bright_magenta&#34;)
-    scrollbar_color_hover = ColorProperty(&#34;yellow&#34;)
-    scrollbar_color_active = ColorProperty(&#34;bright_yellow&#34;)
+    scrollbar_color = ColorProperty(&#34;ansi_bright_magenta&#34;)
+    scrollbar_color_hover = ColorProperty(&#34;ansi_yellow&#34;)
+    scrollbar_color_active = ColorProperty(&#34;ansi_bright_yellow&#34;)
 
     scrollbar_background = ColorProperty(&#34;#555555&#34;)
     scrollbar_background_hover = ColorProperty(&#34;#444444&#34;)
@@ -2004,8 +2056,11 @@ def css_lines(self) -&gt; list[str]:
     align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
 
+    content_align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
+    content_align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
+
     def __eq__(self, styles: object) -&gt; bool:
-        &#34;&#34;&#34;Check that Styles containts the same rules.&#34;&#34;&#34;
+        &#34;&#34;&#34;Check that Styles contains the same rules.&#34;&#34;&#34;
         if not isinstance(styles, StylesBase):
             return NotImplemented
         return self.get_rules() == styles.get_rules()
@@ -2345,7 +2400,12 @@ value belongs in the set of valid values.</p></div>
 </dd>
 <dt id="textual.css.styles.StylesBase.border"><code class="name">var <span class="ident">border</span> : Edges</code></dt>
 <dd>
-<div class="desc"><p>Descriptor for getting and setting full borders and outlines.</p></div>
+<div class="desc"><p>Descriptor for getting and setting full borders and outlines.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code></dt>
+<dd>True if the layout should be refreshed after setting, False otherwise.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2514,6 +2574,48 @@ value belongs in the set of valid values.</p></div>
         Color: The Color
     &#34;&#34;&#34;
     return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.content_align_horizontal"><code class="name">var <span class="ident">content_align_horizontal</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
+value belongs in the set of valid values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the string property, or the default value if it&#39;s not set
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The string property value
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.content_align_vertical"><code class="name">var <span class="ident">content_align_vertical</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
+value belongs in the set of valid values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the string property, or the default value if it&#39;s not set
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The string property value
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, self._default)</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.display"><code class="name">var <span class="ident">display</span> : str</code></dt>
@@ -2848,7 +2950,12 @@ string percentage (e.g. '10%'). Values will be clamped to the range (0, 1).</p><
 </dd>
 <dt id="textual.css.styles.StylesBase.outline"><code class="name">var <span class="ident">outline</span> : Edges</code></dt>
 <dd>
-<div class="desc"><p>Descriptor for getting and setting full borders and outlines.</p></div>
+<div class="desc"><p>Descriptor for getting and setting full borders and outlines.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code></dt>
+<dd>True if the layout should be refreshed after setting, False otherwise.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3042,7 +3149,7 @@ value belongs in the set of valid values.</p></div>
 </dd>
 <dt id="textual.css.styles.StylesBase.rich_style"><code class="name">var <span class="ident">rich_style</span> : Style</code></dt>
 <dd>
-<div class="desc"><p>Descriptor for getting and setting the text style.</p></div>
+<div class="desc"><p>Descriptor for getting the Rich style.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3732,6 +3839,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.border_top" href="#textual.css.styles.RulesMap.border_top">border_top</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.box_sizing" href="#textual.css.styles.RulesMap.box_sizing">box_sizing</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.color" href="#textual.css.styles.RulesMap.color">color</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.content_align_horizontal" href="#textual.css.styles.RulesMap.content_align_horizontal">content_align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.content_align_vertical" href="#textual.css.styles.RulesMap.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.display" href="#textual.css.styles.RulesMap.display">display</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.dock" href="#textual.css.styles.RulesMap.dock">dock</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.docks" href="#textual.css.styles.RulesMap.docks">docks</a></code></li>
@@ -3794,6 +3903,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.box_sizing" href="#textual.css.styles.StylesBase.box_sizing">box_sizing</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.clear_rule" href="#textual.css.styles.StylesBase.clear_rule">clear_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>

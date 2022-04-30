@@ -202,6 +202,7 @@ class MessagePump:
         )
 
     def close_messages_no_wait(self) -&gt; None:
+        &#34;&#34;&#34;Request the message queue to exit.&#34;&#34;&#34;
         self._message_queue.put_nowait(MessagePriority(None))
 
     async def close_messages(self) -&gt; None:
@@ -615,6 +616,7 @@ class MessagePump:
         )
 
     def close_messages_no_wait(self) -&gt; None:
+        &#34;&#34;&#34;Request the message queue to exit.&#34;&#34;&#34;
         self._message_queue.put_nowait(MessagePriority(None))
 
     async def close_messages(self) -&gt; None:
@@ -979,12 +981,13 @@ def task(self) -&gt; Task:
 <span>def <span class="ident">close_messages_no_wait</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Request the message queue to exit.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def close_messages_no_wait(self) -&gt; None:
+    &#34;&#34;&#34;Request the message queue to exit.&#34;&#34;&#34;
     self._message_queue.put_nowait(MessagePriority(None))</code></pre>
 </details>
 </dd>

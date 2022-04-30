@@ -93,9 +93,11 @@ class TokenizeError(Exception):
         errors.append(Text(&#34; Tokenizer error in stylesheet:&#34;, style=&#34;bold red&#34;))
 
         errors.append(
-            highlighter(f&#34; {self.path or &#39;&lt;unknown&gt;&#39;}:{self.line_no}:{self.col_no}&#34;)
+            highlighter(
+                f&#34; {self.path or &#39;&lt;unknown&gt;&#39;}:{self.line_no + 1}:{self.col_no + 1}&#34;
+            )
         )
-        errors.append(self._get_snippet(self.code, self.line_no))
+        errors.append(self._get_snippet(self.code, self.line_no + 1))
         final_message = &#34;&#34;
         for is_last, message_part in loop_last(message.split(&#34;;&#34;)):
             end = &#34;&#34; if is_last else &#34;\n&#34;
@@ -557,9 +559,11 @@ to is used.</p></div>
         errors.append(Text(&#34; Tokenizer error in stylesheet:&#34;, style=&#34;bold red&#34;))
 
         errors.append(
-            highlighter(f&#34; {self.path or &#39;&lt;unknown&gt;&#39;}:{self.line_no}:{self.col_no}&#34;)
+            highlighter(
+                f&#34; {self.path or &#39;&lt;unknown&gt;&#39;}:{self.line_no + 1}:{self.col_no + 1}&#34;
+            )
         )
-        errors.append(self._get_snippet(self.code, self.line_no))
+        errors.append(self._get_snippet(self.code, self.line_no + 1))
         final_message = &#34;&#34;
         for is_last, message_part in loop_last(message.split(&#34;;&#34;)):
             end = &#34;&#34; if is_last else &#34;\n&#34;

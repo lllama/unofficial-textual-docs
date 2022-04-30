@@ -33,14 +33,11 @@ Functions and classes to manage terminal geometry (anything involving coordinate
 
 &#34;&#34;&#34;
 
-
 from __future__ import annotations
 
 from typing import Any, cast, NamedTuple, Tuple, Union, TypeVar
 
-
 SpacingDimensions = Union[int, Tuple[int], Tuple[int, int], Tuple[int, int, int, int]]
-
 
 T = TypeVar(&#34;T&#34;, int, float)
 
@@ -671,7 +668,47 @@ class Spacing(NamedTuple):
         if pad_len == 4:
             top, right, bottom, left = cast(Tuple[int, int, int, int], pad)
             return cls(top, right, bottom, left)
-        raise ValueError(f&#34;1, 2 or 4 integers required for spacing; {pad_len} given&#34;)
+        raise ValueError(
+            f&#34;1, 2 or 4 integers required for spacing properties; {pad_len} given&#34;
+        )
+
+    @classmethod
+    def vertical(cls, amount: int) -&gt; Spacing:
+        &#34;&#34;&#34;Construct a Spacing with a given amount of spacing on vertical edges,
+        and no horizontal spacing.
+
+        Args:
+            amount (int): The magnitude of spacing to apply to vertical edges
+
+        Returns:
+            Spacing: ``Spacing(amount, 0, amount, 0)``
+        &#34;&#34;&#34;
+        return Spacing(amount, 0, amount, 0)
+
+    @classmethod
+    def horizontal(cls, amount: int) -&gt; Spacing:
+        &#34;&#34;&#34;Construct a Spacing with a given amount of spacing on horizontal edges,
+        and no vertical spacing.
+
+        Args:
+            amount (int): The magnitude of spacing to apply to horizontal edges
+
+        Returns:
+            Spacing: ``Spacing(0, amount, 0, amount)``
+        &#34;&#34;&#34;
+        return Spacing(0, amount, 0, amount)
+
+    @classmethod
+    def all(cls, amount: int) -&gt; Spacing:
+        &#34;&#34;&#34;Construct a Spacing with a given amount of spacing on all edges.
+
+        Args:
+            amount (int): The magnitude of spacing to apply to all edges
+
+        Returns:
+            Spacing: ``Spacing(amount, amount, amount, amount)``
+        &#34;&#34;&#34;
+        return Spacing(amount, amount, amount, amount)
 
     def __add__(self, other: object) -&gt; Spacing:
         if isinstance(other, tuple):
@@ -2465,7 +2502,47 @@ def region(self) -&gt; Region:
         if pad_len == 4:
             top, right, bottom, left = cast(Tuple[int, int, int, int], pad)
             return cls(top, right, bottom, left)
-        raise ValueError(f&#34;1, 2 or 4 integers required for spacing; {pad_len} given&#34;)
+        raise ValueError(
+            f&#34;1, 2 or 4 integers required for spacing properties; {pad_len} given&#34;
+        )
+
+    @classmethod
+    def vertical(cls, amount: int) -&gt; Spacing:
+        &#34;&#34;&#34;Construct a Spacing with a given amount of spacing on vertical edges,
+        and no horizontal spacing.
+
+        Args:
+            amount (int): The magnitude of spacing to apply to vertical edges
+
+        Returns:
+            Spacing: ``Spacing(amount, 0, amount, 0)``
+        &#34;&#34;&#34;
+        return Spacing(amount, 0, amount, 0)
+
+    @classmethod
+    def horizontal(cls, amount: int) -&gt; Spacing:
+        &#34;&#34;&#34;Construct a Spacing with a given amount of spacing on horizontal edges,
+        and no vertical spacing.
+
+        Args:
+            amount (int): The magnitude of spacing to apply to horizontal edges
+
+        Returns:
+            Spacing: ``Spacing(0, amount, 0, amount)``
+        &#34;&#34;&#34;
+        return Spacing(0, amount, 0, amount)
+
+    @classmethod
+    def all(cls, amount: int) -&gt; Spacing:
+        &#34;&#34;&#34;Construct a Spacing with a given amount of spacing on all edges.
+
+        Args:
+            amount (int): The magnitude of spacing to apply to all edges
+
+        Returns:
+            Spacing: ``Spacing(amount, amount, amount, amount)``
+        &#34;&#34;&#34;
+        return Spacing(amount, amount, amount, amount)
 
     def __add__(self, other: object) -&gt; Spacing:
         if isinstance(other, tuple):
@@ -2491,6 +2568,72 @@ def region(self) -&gt; Region:
 </ul>
 <h3>Static methods</h3>
 <dl>
+<dt id="textual.geometry.Spacing.all"><code class="name flex">
+<span>def <span class="ident">all</span></span>(<span>amount: int) ‑> <a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct a Spacing with a given amount of spacing on all edges.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>amount</code></strong> :&ensp;<code>int</code></dt>
+<dd>The magnitude of spacing to apply to all edges</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd><code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a>(amount, amount, amount, amount)</code></dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def all(cls, amount: int) -&gt; Spacing:
+    &#34;&#34;&#34;Construct a Spacing with a given amount of spacing on all edges.
+
+    Args:
+        amount (int): The magnitude of spacing to apply to all edges
+
+    Returns:
+        Spacing: ``Spacing(amount, amount, amount, amount)``
+    &#34;&#34;&#34;
+    return Spacing(amount, amount, amount, amount)</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Spacing.horizontal"><code class="name flex">
+<span>def <span class="ident">horizontal</span></span>(<span>amount: int) ‑> <a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct a Spacing with a given amount of spacing on horizontal edges,
+and no vertical spacing.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>amount</code></strong> :&ensp;<code>int</code></dt>
+<dd>The magnitude of spacing to apply to horizontal edges</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd><code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a>(0, amount, 0, amount)</code></dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def horizontal(cls, amount: int) -&gt; Spacing:
+    &#34;&#34;&#34;Construct a Spacing with a given amount of spacing on horizontal edges,
+    and no vertical spacing.
+
+    Args:
+        amount (int): The magnitude of spacing to apply to horizontal edges
+
+    Returns:
+        Spacing: ``Spacing(0, amount, 0, amount)``
+    &#34;&#34;&#34;
+    return Spacing(0, amount, 0, amount)</code></pre>
+</details>
+</dd>
 <dt id="textual.geometry.Spacing.unpack"><code class="name flex">
 <span>def <span class="ident">unpack</span></span>(<span>pad: SpacingDimensions) ‑> <a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></span>
 </code></dt>
@@ -2515,7 +2658,43 @@ def unpack(cls, pad: SpacingDimensions) -&gt; Spacing:
     if pad_len == 4:
         top, right, bottom, left = cast(Tuple[int, int, int, int], pad)
         return cls(top, right, bottom, left)
-    raise ValueError(f&#34;1, 2 or 4 integers required for spacing; {pad_len} given&#34;)</code></pre>
+    raise ValueError(
+        f&#34;1, 2 or 4 integers required for spacing properties; {pad_len} given&#34;
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Spacing.vertical"><code class="name flex">
+<span>def <span class="ident">vertical</span></span>(<span>amount: int) ‑> <a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Construct a Spacing with a given amount of spacing on vertical edges,
+and no horizontal spacing.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>amount</code></strong> :&ensp;<code>int</code></dt>
+<dd>The magnitude of spacing to apply to vertical edges</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd><code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a>(amount, 0, amount, 0)</code></dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def vertical(cls, amount: int) -&gt; Spacing:
+    &#34;&#34;&#34;Construct a Spacing with a given amount of spacing on vertical edges,
+    and no horizontal spacing.
+
+    Args:
+        amount (int): The magnitude of spacing to apply to vertical edges
+
+    Returns:
+        Spacing: ``Spacing(amount, 0, amount, 0)``
+    &#34;&#34;&#34;
+    return Spacing(amount, 0, amount, 0)</code></pre>
 </details>
 </dd>
 </dl>
@@ -2750,16 +2929,19 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></h4>
 <ul class="two-column">
+<li><code><a title="textual.geometry.Spacing.all" href="#textual.geometry.Spacing.all">all</a></code></li>
 <li><code><a title="textual.geometry.Spacing.bottom" href="#textual.geometry.Spacing.bottom">bottom</a></code></li>
 <li><code><a title="textual.geometry.Spacing.bottom_right" href="#textual.geometry.Spacing.bottom_right">bottom_right</a></code></li>
 <li><code><a title="textual.geometry.Spacing.css" href="#textual.geometry.Spacing.css">css</a></code></li>
 <li><code><a title="textual.geometry.Spacing.height" href="#textual.geometry.Spacing.height">height</a></code></li>
+<li><code><a title="textual.geometry.Spacing.horizontal" href="#textual.geometry.Spacing.horizontal">horizontal</a></code></li>
 <li><code><a title="textual.geometry.Spacing.left" href="#textual.geometry.Spacing.left">left</a></code></li>
 <li><code><a title="textual.geometry.Spacing.right" href="#textual.geometry.Spacing.right">right</a></code></li>
 <li><code><a title="textual.geometry.Spacing.top" href="#textual.geometry.Spacing.top">top</a></code></li>
 <li><code><a title="textual.geometry.Spacing.top_left" href="#textual.geometry.Spacing.top_left">top_left</a></code></li>
 <li><code><a title="textual.geometry.Spacing.totals" href="#textual.geometry.Spacing.totals">totals</a></code></li>
 <li><code><a title="textual.geometry.Spacing.unpack" href="#textual.geometry.Spacing.unpack">unpack</a></code></li>
+<li><code><a title="textual.geometry.Spacing.vertical" href="#textual.geometry.Spacing.vertical">vertical</a></code></li>
 <li><code><a title="textual.geometry.Spacing.width" href="#textual.geometry.Spacing.width">width</a></code></li>
 </ul>
 </li>

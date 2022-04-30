@@ -28,7 +28,6 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from logging import getLogger
 from typing import (
     Any,
     Awaitable,
@@ -36,7 +35,6 @@ from typing import (
     Callable,
     Iterable,
     NamedTuple,
-    cast,
 )
 
 import rich.repr
@@ -48,25 +46,25 @@ from rich.style import Style
 from rich.styled import Styled
 
 
-from . import errors, log
+from . import errors
 from . import events
 from ._animator import BoundAnimator
 from ._border import Border
 from .box_model import BoxModel, get_box_model
-from ._callback import invoke
 from .color import Color
 from ._context import active_app
 from ._types import Lines
 from .dom import DOMNode
-from .geometry import clamp, Offset, Region, Size, Spacing
+from .geometry import clamp, Offset, Region, Size
 from .message import Message
 from . import messages
-from .layout import Layout
+from ._layout import Layout
 from .reactive import Reactive, watch
 from .renderables.opacity import Opacity
 
 
 if TYPE_CHECKING:
+    from .app import App, ComposeResult
     from .scrollbar import (
         ScrollBar,
         ScrollTo,
@@ -95,8 +93,7 @@ class Widget(DOMNode):
 
     can_focus: bool = False
 
-    DEFAULT_STYLES = &#34;&#34;&#34;
-
+    CSS = &#34;&#34;&#34;
     &#34;&#34;&#34;
 
     def __init__(
@@ -104,7 +101,7 @@ class Widget(DOMNode):
         *children: Widget,
         name: str | None = None,
         id: str | None = None,
-        classes: set[str] | None = None,
+        classes: str | None = None,
     ) -&gt; None:
 
         self._size = Size(0, 0)
@@ -134,6 +131,26 @@ class Widget(DOMNode):
     scroll_target_y = Reactive(0.0, repaint=False)
     show_vertical_scrollbar = Reactive(False, layout=True)
     show_horizontal_scrollbar = Reactive(False, layout=True)
+
+    def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
+        self.app.register(self, *anon_widgets, **widgets)
+        self.screen.refresh()
+
+    def compose(self) -&gt; ComposeResult:
+        &#34;&#34;&#34;Yield child widgets for a container.&#34;&#34;&#34;
+        return
+        yield
+
+    def on_register(self, app: App) -&gt; None:
+        &#34;&#34;&#34;Called when the instance is registered.
+
+        Args:
+            app (App): App instance.
+        &#34;&#34;&#34;
+        # Parser the Widget&#39;s CSS
+        self.app.stylesheet.add_source(
+            self.CSS, f&#34;{__file__}:&lt;{self.__class__.__name__}&gt;&#34;
+        )
 
     def get_box_model(self, container: Size, viewport: Size) -&gt; BoxModel:
         &#34;&#34;&#34;Process the box model for this widget.
@@ -442,11 +459,17 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
 
         renderable = self.render()
+
         styles = self.styles
         parent_styles = self.parent.styles
 
         parent_text_style = self.parent.rich_text_style
         text_style = styles.rich_style
+
+        content_align = (styles.content_align_horizontal, styles.content_align_vertical)
+        if content_align != (&#34;left&#34;, &#34;top&#34;):
+            horizontal, vertical = content_align
+            renderable = Align(renderable, horizontal, vertical=vertical)
 
         renderable_text_style = parent_text_style + text_style
         if renderable_text_style:
@@ -506,8 +529,7 @@ class Widget(DOMNode):
         Returns:
             bool: ``True`` if there is background color, otherwise ``False``.
         &#34;&#34;&#34;
-        return False
-        return self.layout is not None
+        return self.is_container and self.styles.background.is_transparent
 
     @property
     def console(self) -&gt; Console:
@@ -643,8 +665,10 @@ class Widget(DOMNode):
 
         # Default displays a pretty repr in the center of the screen
 
-        label = self.css_identifier_styled
-        return Align.center(label, vertical=&#34;middle&#34;)
+        if self.is_container:
+            return &#34;&#34;
+
+        return self.css_identifier_styled
 
     async def action(self, action: str, *params) -&gt; None:
         await self.app.action(action, self)
@@ -704,6 +728,12 @@ class Widget(DOMNode):
 
     async def on_key(self, event: events.Key) -&gt; None:
         await self.dispatch_key(event)
+
+    def on_mount(self, event: events.Mount) -&gt; None:
+        widgets = list(self.compose())
+        if widgets:
+            self.mount(*widgets)
+            self.screen.refresh()
 
     def on_leave(self) -&gt; None:
         self.mouse_over = False
@@ -860,7 +890,7 @@ def cursor_line(self) -&gt; int | None:
 </dd>
 <dt id="textual.widget.Widget"><code class="flex name class">
 <span>class <span class="ident">Widget</span></span>
-<span>(</span><span>*children: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>, name: str | None = None, id: str | None = None, classes: set[str] | None = None)</span>
+<span>(</span><span>*children: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
@@ -873,8 +903,7 @@ def cursor_line(self) -&gt; int | None:
 
     can_focus: bool = False
 
-    DEFAULT_STYLES = &#34;&#34;&#34;
-
+    CSS = &#34;&#34;&#34;
     &#34;&#34;&#34;
 
     def __init__(
@@ -882,7 +911,7 @@ def cursor_line(self) -&gt; int | None:
         *children: Widget,
         name: str | None = None,
         id: str | None = None,
-        classes: set[str] | None = None,
+        classes: str | None = None,
     ) -&gt; None:
 
         self._size = Size(0, 0)
@@ -912,6 +941,26 @@ def cursor_line(self) -&gt; int | None:
     scroll_target_y = Reactive(0.0, repaint=False)
     show_vertical_scrollbar = Reactive(False, layout=True)
     show_horizontal_scrollbar = Reactive(False, layout=True)
+
+    def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
+        self.app.register(self, *anon_widgets, **widgets)
+        self.screen.refresh()
+
+    def compose(self) -&gt; ComposeResult:
+        &#34;&#34;&#34;Yield child widgets for a container.&#34;&#34;&#34;
+        return
+        yield
+
+    def on_register(self, app: App) -&gt; None:
+        &#34;&#34;&#34;Called when the instance is registered.
+
+        Args:
+            app (App): App instance.
+        &#34;&#34;&#34;
+        # Parser the Widget&#39;s CSS
+        self.app.stylesheet.add_source(
+            self.CSS, f&#34;{__file__}:&lt;{self.__class__.__name__}&gt;&#34;
+        )
 
     def get_box_model(self, container: Size, viewport: Size) -&gt; BoxModel:
         &#34;&#34;&#34;Process the box model for this widget.
@@ -1220,11 +1269,17 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
 
         renderable = self.render()
+
         styles = self.styles
         parent_styles = self.parent.styles
 
         parent_text_style = self.parent.rich_text_style
         text_style = styles.rich_style
+
+        content_align = (styles.content_align_horizontal, styles.content_align_vertical)
+        if content_align != (&#34;left&#34;, &#34;top&#34;):
+            horizontal, vertical = content_align
+            renderable = Align(renderable, horizontal, vertical=vertical)
 
         renderable_text_style = parent_text_style + text_style
         if renderable_text_style:
@@ -1284,8 +1339,7 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             bool: ``True`` if there is background color, otherwise ``False``.
         &#34;&#34;&#34;
-        return False
-        return self.layout is not None
+        return self.is_container and self.styles.background.is_transparent
 
     @property
     def console(self) -&gt; Console:
@@ -1421,8 +1475,10 @@ def cursor_line(self) -&gt; int | None:
 
         # Default displays a pretty repr in the center of the screen
 
-        label = self.css_identifier_styled
-        return Align.center(label, vertical=&#34;middle&#34;)
+        if self.is_container:
+            return &#34;&#34;
+
+        return self.css_identifier_styled
 
     async def action(self, action: str, *params) -&gt; None:
         await self.app.action(action, self)
@@ -1482,6 +1538,12 @@ def cursor_line(self) -&gt; int | None:
 
     async def on_key(self, event: events.Key) -&gt; None:
         await self.dispatch_key(event)
+
+    def on_mount(self, event: events.Mount) -&gt; None:
+        widgets = list(self.compose())
+        if widgets:
+            self.mount(*widgets)
+            self.screen.refresh()
 
     def on_leave(self) -&gt; None:
         self.mouse_over = False
@@ -1579,6 +1641,8 @@ def cursor_line(self) -&gt; int | None:
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="textual.layout.Horizontal" href="layout.html#textual.layout.Horizontal">Horizontal</a></li>
+<li><a title="textual.layout.Vertical" href="layout.html#textual.layout.Vertical">Vertical</a></li>
 <li><a title="textual.screen.Screen" href="screen.html#textual.screen.Screen">Screen</a></li>
 <li><a title="textual.scrollbar.ScrollBar" href="scrollbar.html#textual.scrollbar.ScrollBar">ScrollBar</a></li>
 <li>textual.widgets._button.Button</li>
@@ -1591,7 +1655,7 @@ def cursor_line(self) -&gt; int | None:
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.widget.Widget.DEFAULT_STYLES"><code class="name">var <span class="ident">DEFAULT_STYLES</span></code></dt>
+<dt id="textual.widget.Widget.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1747,8 +1811,7 @@ def is_transparent(self) -&gt; bool:
     Returns:
         bool: ``True`` if there is background color, otherwise ``False``.
     &#34;&#34;&#34;
-    return False
-    return self.layout is not None</code></pre>
+    return self.is_container and self.styles.background.is_transparent</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.layout"><code class="name">var <span class="ident">layout</span> : Layout | None</code></dt>
@@ -2039,6 +2102,21 @@ def virtual_size(self) -&gt; Size:
 <pre><code class="python">def check_layout(self) -&gt; bool:
     &#34;&#34;&#34;Check if a layout has been requested.&#34;&#34;&#34;
     return self._layout_required</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.compose"><code class="name flex">
+<span>def <span class="ident">compose</span></span>(<span>self) ‑> ComposeResult</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Yield child widgets for a container.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def compose(self) -&gt; ComposeResult:
+    &#34;&#34;&#34;Yield child widgets for a container.&#34;&#34;&#34;
+    return
+    yield</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.focus"><code class="name flex">
@@ -2411,6 +2489,20 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
     return False</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.mount"><code class="name flex">
+<span>def <span class="ident">mount</span></span>(<span>self, *anon_widgets: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>, **widgets: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
+    self.app.register(self, *anon_widgets, **widgets)
+    self.screen.refresh()</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.on_click"><code class="name flex">
 <span>async def <span class="ident">on_click</span></span>(<span>self, event: events.Click) ‑> None</span>
 </code></dt>
@@ -2491,6 +2583,22 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
     self.mouse_over = False</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.on_mount"><code class="name flex">
+<span>def <span class="ident">on_mount</span></span>(<span>self, event: events.Mount) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_mount(self, event: events.Mount) -&gt; None:
+    widgets = list(self.compose())
+    if widgets:
+        self.mount(*widgets)
+        self.screen.refresh()</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.on_mouse_down"><code class="name flex">
 <span>async def <span class="ident">on_mouse_down</span></span>(<span>self, event: events.MouseUp) ‑> None</span>
 </code></dt>
@@ -2545,6 +2653,32 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 </summary>
 <pre><code class="python">async def on_mouse_up(self, event: events.MouseUp) -&gt; None:
     await self.broker_event(&#34;mouse.up&#34;, event)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_register"><code class="name flex">
+<span>def <span class="ident">on_register</span></span>(<span>self, app: App) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Called when the instance is registered.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>app</code></strong> :&ensp;<code>App</code></dt>
+<dd>App instance.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_register(self, app: App) -&gt; None:
+    &#34;&#34;&#34;Called when the instance is registered.
+
+    Args:
+        app (App): App instance.
+    &#34;&#34;&#34;
+    # Parser the Widget&#39;s CSS
+    self.app.stylesheet.add_source(
+        self.CSS, f&#34;{__file__}:&lt;{self.__class__.__name__}&gt;&#34;
+    )</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_style_change"><code class="name flex">
@@ -2654,8 +2788,10 @@ next idle event. Only one refresh will be done even if this method is called mul
 
     # Default displays a pretty repr in the center of the screen
 
-    label = self.css_identifier_styled
-    return Align.center(label, vertical=&#34;middle&#34;)</code></pre>
+    if self.is_container:
+        return &#34;&#34;
+
+    return self.css_identifier_styled</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.render_styled"><code class="name flex">
@@ -2680,11 +2816,17 @@ next idle event. Only one refresh will be done even if this method is called mul
     &#34;&#34;&#34;
 
     renderable = self.render()
+
     styles = self.styles
     parent_styles = self.parent.styles
 
     parent_text_style = self.parent.rich_text_style
     text_style = styles.rich_style
+
+    content_align = (styles.content_align_horizontal, styles.content_align_vertical)
+    if content_align != (&#34;left&#34;, &#34;top&#34;):
+        horizontal, vertical = content_align
+        renderable = Align(renderable, horizontal, vertical=vertical)
 
     renderable_text_style = parent_text_style + text_style
     if renderable_text_style:
@@ -3092,10 +3234,12 @@ next idle event. Only one refresh will be done even if this method is called mul
 <li><code><a title="textual.dom.DOMNode.add_child" href="dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_children" href="dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_class" href="dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
+<li><code><a title="textual.dom.DOMNode.ancestors" href="dom.html#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
 <li><code><a title="textual.dom.DOMNode.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.dom.DOMNode.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.dom.DOMNode.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.dom.DOMNode.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_path" href="dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
@@ -3198,7 +3342,7 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a></code></h4>
 <ul class="">
-<li><code><a title="textual.widget.Widget.DEFAULT_STYLES" href="#textual.widget.Widget.DEFAULT_STYLES">DEFAULT_STYLES</a></code></li>
+<li><code><a title="textual.widget.Widget.CSS" href="#textual.widget.Widget.CSS">CSS</a></code></li>
 <li><code><a title="textual.widget.Widget.action" href="#textual.widget.Widget.action">action</a></code></li>
 <li><code><a title="textual.widget.Widget.animate" href="#textual.widget.Widget.animate">animate</a></code></li>
 <li><code><a title="textual.widget.Widget.auto_height" href="#textual.widget.Widget.auto_height">auto_height</a></code></li>
@@ -3207,6 +3351,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.can_focus" href="#textual.widget.Widget.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_layout" href="#textual.widget.Widget.check_layout">check_layout</a></code></li>
+<li><code><a title="textual.widget.Widget.compose" href="#textual.widget.Widget.compose">compose</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.container_size" href="#textual.widget.Widget.container_size">container_size</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="#textual.widget.Widget.focus">focus</a></code></li>
@@ -3237,16 +3382,19 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.layout" href="#textual.widget.Widget.layout">layout</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.mount" href="#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_click" href="#textual.widget.Widget.on_click">on_click</a></code></li>
 <li><code><a title="textual.widget.Widget.on_enter" href="#textual.widget.Widget.on_enter">on_enter</a></code></li>
 <li><code><a title="textual.widget.Widget.on_idle" href="#textual.widget.Widget.on_idle">on_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.on_key" href="#textual.widget.Widget.on_key">on_key</a></code></li>
 <li><code><a title="textual.widget.Widget.on_leave" href="#textual.widget.Widget.on_leave">on_leave</a></code></li>
+<li><code><a title="textual.widget.Widget.on_mount" href="#textual.widget.Widget.on_mount">on_mount</a></code></li>
 <li><code><a title="textual.widget.Widget.on_mouse_down" href="#textual.widget.Widget.on_mouse_down">on_mouse_down</a></code></li>
 <li><code><a title="textual.widget.Widget.on_mouse_scroll_down" href="#textual.widget.Widget.on_mouse_scroll_down">on_mouse_scroll_down</a></code></li>
 <li><code><a title="textual.widget.Widget.on_mouse_scroll_up" href="#textual.widget.Widget.on_mouse_scroll_up">on_mouse_scroll_up</a></code></li>
 <li><code><a title="textual.widget.Widget.on_mouse_up" href="#textual.widget.Widget.on_mouse_up">on_mouse_up</a></code></li>
+<li><code><a title="textual.widget.Widget.on_register" href="#textual.widget.Widget.on_register">on_register</a></code></li>
 <li><code><a title="textual.widget.Widget.on_style_change" href="#textual.widget.Widget.on_style_change">on_style_change</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="#textual.widget.Widget.refresh">refresh</a></code></li>

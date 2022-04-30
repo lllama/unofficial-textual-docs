@@ -43,9 +43,12 @@ if TYPE_CHECKING:
 
 
 class Driver(ABC):
-    def __init__(self, console: &#34;Console&#34;, target: &#34;MessageTarget&#34;) -&gt; None:
+    def __init__(
+        self, console: &#34;Console&#34;, target: &#34;MessageTarget&#34;, debug: bool = False
+    ) -&gt; None:
         self.console = console
         self._target = target
+        self._debug = debug
         self._loop = asyncio.get_event_loop()
         self._mouse_down_time = time()
 
@@ -92,7 +95,7 @@ class Driver(ABC):
 <dl>
 <dt id="textual.driver.Driver"><code class="flex name class">
 <span>class <span class="ident">Driver</span></span>
-<span>(</span><span>console: "'Console'", target: "'MessageTarget'")</span>
+<span>(</span><span>console: "'Console'", target: "'MessageTarget'", debug: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Helper class that provides a standard way to create an ABC using
@@ -102,9 +105,12 @@ inheritance.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Driver(ABC):
-    def __init__(self, console: &#34;Console&#34;, target: &#34;MessageTarget&#34;) -&gt; None:
+    def __init__(
+        self, console: &#34;Console&#34;, target: &#34;MessageTarget&#34;, debug: bool = False
+    ) -&gt; None:
         self.console = console
         self._target = target
+        self._debug = debug
         self._loop = asyncio.get_event_loop()
         self._mouse_down_time = time()
 
