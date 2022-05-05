@@ -101,7 +101,7 @@ class LinuxDriver(Driver):
 
     def start_application_mode(self):
 
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
 
         def send_size_event():
             terminal_size = self._get_terminal_size()
@@ -149,7 +149,7 @@ class LinuxDriver(Driver):
         self.console.file.write(&#34;\033[?1003h\n&#34;)
         self.console.file.flush()
         self._key_thread = Thread(
-            target=self.run_input_thread, args=(asyncio.get_event_loop(),)
+            target=self.run_input_thread, args=(asyncio.get_running_loop(),)
         )
         send_size_event()
         self._key_thread.start()
@@ -327,7 +327,7 @@ if __name__ == &#34;__main__&#34;:
 
     def start_application_mode(self):
 
-        loop = asyncio.get_event_loop()
+        loop = asyncio.get_running_loop()
 
         def send_size_event():
             terminal_size = self._get_terminal_size()
@@ -375,7 +375,7 @@ if __name__ == &#34;__main__&#34;:
         self.console.file.write(&#34;\033[?1003h\n&#34;)
         self.console.file.flush()
         self._key_thread = Thread(
-            target=self.run_input_thread, args=(asyncio.get_event_loop(),)
+            target=self.run_input_thread, args=(asyncio.get_running_loop(),)
         )
         send_size_event()
         self._key_thread.start()
@@ -525,7 +525,7 @@ if __name__ == &#34;__main__&#34;:
 </summary>
 <pre><code class="python">def start_application_mode(self):
 
-    loop = asyncio.get_event_loop()
+    loop = asyncio.get_running_loop()
 
     def send_size_event():
         terminal_size = self._get_terminal_size()
@@ -573,7 +573,7 @@ if __name__ == &#34;__main__&#34;:
     self.console.file.write(&#34;\033[?1003h\n&#34;)
     self.console.file.flush()
     self._key_thread = Thread(
-        target=self.run_input_thread, args=(asyncio.get_event_loop(),)
+        target=self.run_input_thread, args=(asyncio.get_running_loop(),)
     )
     send_size_event()
     self._key_thread.start()</code></pre>

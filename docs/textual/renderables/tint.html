@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.renderables API documentation</title>
+<title>textual.renderables.tint API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,44 +19,129 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.renderables</code></h1>
+<h1 class="title">Module <code>textual.renderables.tint</code></h1>
 </header>
 <section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+
+from rich.console import ConsoleOptions, Console, RenderResult, RenderableType
+from rich.segment import Segment
+from rich.style import Style
+
+from ..color import Color
+
+
+class Tint:
+    &#34;&#34;&#34;Applies a color on top of an existing renderable.&#34;&#34;&#34;
+
+    def __init__(self, renderable: RenderableType, color: Color) -&gt; None:
+        &#34;&#34;&#34;_summary_
+
+        Args:
+            renderable (RenderableType): A renderable.
+            color (Color): A color (presumably with alpha).
+        &#34;&#34;&#34;
+        self.renderable = renderable
+        self.color = color
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
+        segments = console.render(self.renderable, options)
+
+        color = self.color
+        from_rich_color = Color.from_rich_color
+        style_from_color = Style.from_color
+        for segment in segments:
+            text, style, control = segment
+            if control or style is None:
+                yield segment
+            else:
+                yield Segment(
+                    text,
+                    (
+                        style
+                        + style_from_color(
+                            (from_rich_color(style.color) + color).rich_color,
+                            (from_rich_color(style.bgcolor) + color).rich_color,
+                        )
+                    ),
+                    control,
+                )</code></pre>
+</details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="textual.renderables.blank" href="blank.html">textual.renderables.blank</a></code></dt>
+<dt id="textual.renderables.tint.Tint"><code class="flex name class">
+<span>class <span class="ident">Tint</span></span>
+<span>(</span><span>renderable: RenderableType, color: Color)</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.gradient" href="gradient.html">textual.renderables.gradient</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.opacity" href="opacity.html">textual.renderables.opacity</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.sparkline" href="sparkline.html">textual.renderables.sparkline</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.tint" href="tint.html">textual.renderables.tint</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.underline_bar" href="underline_bar.html">textual.renderables.underline_bar</a></code></dt>
-<dd>
-<div class="desc"></div>
+<div class="desc"><p>Applies a color on top of an existing renderable.</p>
+<p><em>summary</em></p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>renderable</code></strong> :&ensp;<code>RenderableType</code></dt>
+<dd>A renderable.</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>Color</code></dt>
+<dd>A color (presumably with alpha).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Tint:
+    &#34;&#34;&#34;Applies a color on top of an existing renderable.&#34;&#34;&#34;
+
+    def __init__(self, renderable: RenderableType, color: Color) -&gt; None:
+        &#34;&#34;&#34;_summary_
+
+        Args:
+            renderable (RenderableType): A renderable.
+            color (Color): A color (presumably with alpha).
+        &#34;&#34;&#34;
+        self.renderable = renderable
+        self.color = color
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
+        segments = console.render(self.renderable, options)
+
+        color = self.color
+        from_rich_color = Color.from_rich_color
+        style_from_color = Style.from_color
+        for segment in segments:
+            text, style, control = segment
+            if control or style is None:
+                yield segment
+            else:
+                yield Segment(
+                    text,
+                    (
+                        style
+                        + style_from_color(
+                            (from_rich_color(style.color) + color).rich_color,
+                            (from_rich_color(style.bgcolor) + color).rich_color,
+                        )
+                    ),
+                    control,
+                )</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
 </section>
 </article>
 <nav id="sidebar">
@@ -113,17 +198,14 @@ setTimeout(() => input.focus(), 100);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="textual" href="../index.html">textual</a></code></li>
+<li><code><a title="textual.renderables" href="index.html">textual.renderables</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li><code><a title="textual.renderables.blank" href="blank.html">textual.renderables.blank</a></code></li>
-<li><code><a title="textual.renderables.gradient" href="gradient.html">textual.renderables.gradient</a></code></li>
-<li><code><a title="textual.renderables.opacity" href="opacity.html">textual.renderables.opacity</a></code></li>
-<li><code><a title="textual.renderables.sparkline" href="sparkline.html">textual.renderables.sparkline</a></code></li>
-<li><code><a title="textual.renderables.tint" href="tint.html">textual.renderables.tint</a></code></li>
-<li><code><a title="textual.renderables.underline_bar" href="underline_bar.html">textual.renderables.underline_bar</a></code></li>
+<li>
+<h4><code><a title="textual.renderables.tint.Tint" href="#textual.renderables.tint.Tint">Tint</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>

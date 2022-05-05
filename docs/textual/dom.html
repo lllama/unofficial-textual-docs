@@ -341,7 +341,14 @@ class DOMNode(MessagePump):
 
     @property
     def displayed_children(self) -&gt; list[DOMNode]:
+        &#34;&#34;&#34;The children which don&#39;t have display: none set.&#34;&#34;&#34;
         return [child for child in self.children if child.display]
+
+    @property
+    def focusable_children(self) -&gt; list[DOMNode]:
+        &#34;&#34;&#34;Get the children which may be focused.&#34;&#34;&#34;
+        # TODO: This may be the place to define order, other focus related rules
+        return [child for child in self.children if child.display and child.visible]
 
     def get_pseudo_classes(self) -&gt; Iterable[str]:
         &#34;&#34;&#34;Get any pseudo classes applicable to this Node, e.g. hover, focus.
@@ -467,7 +474,11 @@ class DOMNode(MessagePump):
 
         &#34;&#34;&#34;
         self._classes.update(class_names)
-        self.refresh()
+        try:
+            self.app.stylesheet.update(self.app, animate=True)
+            self.refresh()
+        except LookupError:
+            pass
 
     def remove_class(self, *class_names: str) -&gt; None:
         &#34;&#34;&#34;Remove class names from this Node.
@@ -477,7 +488,11 @@ class DOMNode(MessagePump):
 
         &#34;&#34;&#34;
         self._classes.difference_update(class_names)
-        self.refresh()
+        try:
+            self.app.stylesheet.update(self.app, animate=True)
+            self.refresh()
+        except LookupError:
+            pass
 
     def toggle_class(self, *class_names: str) -&gt; None:
         &#34;&#34;&#34;Toggle class names on this Node.
@@ -487,8 +502,11 @@ class DOMNode(MessagePump):
 
         &#34;&#34;&#34;
         self._classes.symmetric_difference_update(class_names)
-        self.app.stylesheet.update(self.app, animate=True)
-        self.refresh()
+        try:
+            self.app.stylesheet.update(self.app, animate=True)
+            self.refresh()
+        except LookupError:
+            pass
 
     def has_pseudo_class(self, *class_names: str) -&gt; bool:
         &#34;&#34;&#34;Check for pseudo class (such as hover, focus etc)&#34;&#34;&#34;
@@ -802,7 +820,14 @@ class DOMNode(MessagePump):
 
     @property
     def displayed_children(self) -&gt; list[DOMNode]:
+        &#34;&#34;&#34;The children which don&#39;t have display: none set.&#34;&#34;&#34;
         return [child for child in self.children if child.display]
+
+    @property
+    def focusable_children(self) -&gt; list[DOMNode]:
+        &#34;&#34;&#34;Get the children which may be focused.&#34;&#34;&#34;
+        # TODO: This may be the place to define order, other focus related rules
+        return [child for child in self.children if child.display and child.visible]
 
     def get_pseudo_classes(self) -&gt; Iterable[str]:
         &#34;&#34;&#34;Get any pseudo classes applicable to this Node, e.g. hover, focus.
@@ -928,7 +953,11 @@ class DOMNode(MessagePump):
 
         &#34;&#34;&#34;
         self._classes.update(class_names)
-        self.refresh()
+        try:
+            self.app.stylesheet.update(self.app, animate=True)
+            self.refresh()
+        except LookupError:
+            pass
 
     def remove_class(self, *class_names: str) -&gt; None:
         &#34;&#34;&#34;Remove class names from this Node.
@@ -938,7 +967,11 @@ class DOMNode(MessagePump):
 
         &#34;&#34;&#34;
         self._classes.difference_update(class_names)
-        self.refresh()
+        try:
+            self.app.stylesheet.update(self.app, animate=True)
+            self.refresh()
+        except LookupError:
+            pass
 
     def toggle_class(self, *class_names: str) -&gt; None:
         &#34;&#34;&#34;Toggle class names on this Node.
@@ -948,8 +981,11 @@ class DOMNode(MessagePump):
 
         &#34;&#34;&#34;
         self._classes.symmetric_difference_update(class_names)
-        self.app.stylesheet.update(self.app, animate=True)
-        self.refresh()
+        try:
+            self.app.stylesheet.update(self.app, animate=True)
+            self.refresh()
+        except LookupError:
+            pass
 
     def has_pseudo_class(self, *class_names: str) -&gt; bool:
         &#34;&#34;&#34;Check for pseudo class (such as hover, focus etc)&#34;&#34;&#34;
@@ -1120,14 +1156,29 @@ def display(self) -&gt; bool:
 </dd>
 <dt id="textual.dom.DOMNode.displayed_children"><code class="name">var <span class="ident">displayed_children</span> : list[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The children which don't have display: none set.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def displayed_children(self) -&gt; list[DOMNode]:
+    &#34;&#34;&#34;The children which don&#39;t have display: none set.&#34;&#34;&#34;
     return [child for child in self.children if child.display]</code></pre>
+</details>
+</dd>
+<dt id="textual.dom.DOMNode.focusable_children"><code class="name">var <span class="ident">focusable_children</span> : list[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>]</code></dt>
+<dd>
+<div class="desc"><p>Get the children which may be focused.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def focusable_children(self) -&gt; list[DOMNode]:
+    &#34;&#34;&#34;Get the children which may be focused.&#34;&#34;&#34;
+    # TODO: This may be the place to define order, other focus related rules
+    return [child for child in self.children if child.display and child.visible]</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.id"><code class="name">var <span class="ident">id</span> : str | None</code></dt>
@@ -1410,7 +1461,11 @@ def visible(self) -&gt; bool:
 
     &#34;&#34;&#34;
     self._classes.update(class_names)
-    self.refresh()</code></pre>
+    try:
+        self.app.stylesheet.update(self.app, animate=True)
+        self.refresh()
+    except LookupError:
+        pass</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.get_child"><code class="name flex">
@@ -1619,7 +1674,11 @@ def visible(self) -&gt; bool:
 
     &#34;&#34;&#34;
     self._classes.difference_update(class_names)
-    self.refresh()</code></pre>
+    try:
+        self.app.stylesheet.update(self.app, animate=True)
+        self.refresh()
+    except LookupError:
+        pass</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.reset_styles"><code class="name flex">
@@ -1684,8 +1743,11 @@ def visible(self) -&gt; bool:
 
     &#34;&#34;&#34;
     self._classes.symmetric_difference_update(class_names)
-    self.app.stylesheet.update(self.app, animate=True)
-    self.refresh()</code></pre>
+    try:
+        self.app.stylesheet.update(self.app, animate=True)
+        self.refresh()
+    except LookupError:
+        pass</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.walk_children"><code class="name flex">
@@ -1844,6 +1906,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.css_type" href="#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.dom.DOMNode.displayed_children" href="#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
+<li><code><a title="textual.dom.DOMNode.focusable_children" href="#textual.dom.DOMNode.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_child" href="#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_pseudo_classes" href="#textual.dom.DOMNode.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_class" href="#textual.dom.DOMNode.has_class">has_class</a></code></li>

@@ -143,6 +143,8 @@ class RulesMap(TypedDict, total=False):
 
     transitions: dict[str, Transition]
 
+    tint: Color
+
     scrollbar_color: Color
     scrollbar_color_hover: Color
     scrollbar_color_active: Color
@@ -184,6 +186,7 @@ class StylesBase(ABC):
         &#34;max_height&#34;,
         &#34;color&#34;,
         &#34;background&#34;,
+        &#34;tint&#34;,
         &#34;scrollbar_color&#34;,
         &#34;scrollbar_color_hover&#34;,
         &#34;scrollbar_color_active&#34;,
@@ -238,6 +241,7 @@ class StylesBase(ABC):
 
     rich_style = StyleProperty()
 
+    tint = ColorProperty(&#34;transparent&#34;)
     scrollbar_color = ColorProperty(&#34;ansi_bright_magenta&#34;)
     scrollbar_color_hover = ColorProperty(&#34;ansi_yellow&#34;)
     scrollbar_color_active = ColorProperty(&#34;ansi_bright_yellow&#34;)
@@ -1102,6 +1106,7 @@ def inline(self) -&gt; Styles:
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.transitions" href="#textual.css.styles.StylesBase.transitions">transitions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.visibility" href="#textual.css.styles.StylesBase.visibility">visibility</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.width" href="#textual.css.styles.StylesBase.width">width</a></code></li>
@@ -1171,6 +1176,8 @@ def inline(self) -&gt; Styles:
     layer: str
 
     transitions: dict[str, Transition]
+
+    tint: Color
 
     scrollbar_color: Color
     scrollbar_color_hover: Color
@@ -1345,6 +1352,10 @@ def inline(self) -&gt; Styles:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.styles.RulesMap.text_style"><code class="name">var <span class="ident">text_style</span> : Style</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.tint"><code class="name">var <span class="ident">tint</span> : Color</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1960,6 +1971,7 @@ def css_lines(self) -&gt; list[str]:
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.transitions" href="#textual.css.styles.StylesBase.transitions">transitions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.visibility" href="#textual.css.styles.StylesBase.visibility">visibility</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.width" href="#textual.css.styles.StylesBase.width">width</a></code></li>
@@ -1991,6 +2003,7 @@ def css_lines(self) -&gt; list[str]:
         &#34;max_height&#34;,
         &#34;color&#34;,
         &#34;background&#34;,
+        &#34;tint&#34;,
         &#34;scrollbar_color&#34;,
         &#34;scrollbar_color_hover&#34;,
         &#34;scrollbar_color_active&#34;,
@@ -2045,6 +2058,7 @@ def css_lines(self) -&gt; list[str]:
 
     rich_style = StyleProperty()
 
+    tint = ColorProperty(&#34;transparent&#34;)
     scrollbar_color = ColorProperty(&#34;ansi_bright_magenta&#34;)
     scrollbar_color_hover = ColorProperty(&#34;ansi_yellow&#34;)
     scrollbar_color_active = ColorProperty(&#34;ansi_bright_yellow&#34;)
@@ -3324,6 +3338,28 @@ value belongs in the set of valid values.</p></div>
     return obj.get_rule(self.name, Style.null())</code></pre>
 </details>
 </dd>
+<dt id="textual.css.styles.StylesBase.tint"><code class="name">var <span class="ident">tint</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.StylesBase.transitions"><code class="name">var <span class="ident">transitions</span> : dict[str, Transition]</code></dt>
 <dd>
 <div class="desc"><p>Descriptor for getting transitions properties</p></div>
@@ -3869,6 +3905,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_color_active" href="#textual.css.styles.RulesMap.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_color_hover" href="#textual.css.styles.RulesMap.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.text_style" href="#textual.css.styles.RulesMap.text_style">text_style</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.tint" href="#textual.css.styles.RulesMap.tint">tint</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.transitions" href="#textual.css.styles.RulesMap.transitions">transitions</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.visibility" href="#textual.css.styles.RulesMap.visibility">visibility</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.width" href="#textual.css.styles.RulesMap.width">width</a></code></li>
@@ -3948,6 +3985,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.transitions" href="#textual.css.styles.StylesBase.transitions">transitions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.visibility" href="#textual.css.styles.StylesBase.visibility">visibility</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.width" href="#textual.css.styles.StylesBase.width">width</a></code></li>

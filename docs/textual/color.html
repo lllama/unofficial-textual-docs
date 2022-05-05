@@ -35,7 +35,7 @@ update we might add a protocol to convert automatically so the dev could use the
 <pre><code class="python">&#34;&#34;&#34;
 Manages Color in Textual.
 
-All instances where the developer is presented with a color should use this class. The only 
+All instances where the developer is presented with a color should use this class. The only
 exception should be when passing things to a Rich renderable, which will need to use the
 `rich_color` attribute to perform a conversion.
 
@@ -88,6 +88,8 @@ class Lab(NamedTuple):
 
 RE_COLOR = re.compile(
     r&#34;&#34;&#34;^
+\#([0-9a-fA-F]{3})$|
+\#([0-9a-fA-F]{4})$|
 \#([0-9a-fA-F]{6})$|
 \#([0-9a-fA-F]{8})$|
 rgb\((\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*)\)$|
@@ -96,7 +98,7 @@ rgba\((\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*)\)$
     re.VERBOSE,
 )
 
-# Fast way to split a string of 8 characters in to 3 pairs of 2 characters
+# Fast way to split a string of 6 characters in to 3 pairs of 2 characters
 split_pairs3: Callable[[str], tuple[str, str, str]] = itemgetter(
     slice(0, 2), slice(2, 4), slice(4, 6)
 )
@@ -187,6 +189,12 @@ class Color(NamedTuple):
         &#34;&#34;&#34;A tuple of the color components normalized to between 0 and 1.&#34;&#34;&#34;
         r, g, b, _a = self
         return (r / 255, g / 255, b / 255)
+
+    @property
+    def rgb(self) -&gt; tuple[int, int, int]:
+        &#34;&#34;&#34;Get just the red, green, and blue components.&#34;&#34;&#34;
+        r, g, b, _ = self
+        return (r, g, b)
 
     @property
     def hls(self) -&gt; HLS:
@@ -298,9 +306,27 @@ class Color(NamedTuple):
         color_match = RE_COLOR.match(color_text)
         if color_match is None:
             raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
-        rgb_hex, rgba_hex, rgb, rgba = color_match.groups()
+        (
+            rgb_hex_triple,
+            rgb_hex_quad,
+            rgb_hex,
+            rgba_hex,
+            rgb,
+            rgba,
+        ) = color_match.groups()
 
-        if rgb_hex is not None:
+        if rgb_hex_triple is not None:
+            r, g, b = rgb_hex_triple
+            color = cls(int(f&#34;{r}{r}&#34;, 16), int(f&#34;{g}{g}&#34;, 16), int(f&#34;{b}{b}&#34;, 16))
+        elif rgb_hex_quad is not None:
+            r, g, b, a = rgb_hex_quad
+            color = cls(
+                int(f&#34;{r}{r}&#34;, 16),
+                int(f&#34;{g}{g}&#34;, 16),
+                int(f&#34;{b}{b}&#34;, 16),
+                int(f&#34;{a}{a}&#34;, 16) / 255.0,
+            )
+        elif rgb_hex is not None:
             r, g, b = [int(pair, 16) for pair in split_pairs3(rgb_hex)]
             color = cls(r, g, b, 1.0)
         elif rgba_hex is not None:
@@ -664,6 +690,12 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         return (r / 255, g / 255, b / 255)
 
     @property
+    def rgb(self) -&gt; tuple[int, int, int]:
+        &#34;&#34;&#34;Get just the red, green, and blue components.&#34;&#34;&#34;
+        r, g, b, _ = self
+        return (r, g, b)
+
+    @property
     def hls(self) -&gt; HLS:
         &#34;&#34;&#34;Get the color as HLS.&#34;&#34;&#34;
         r, g, b = self.normalized
@@ -773,9 +805,27 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         color_match = RE_COLOR.match(color_text)
         if color_match is None:
             raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
-        rgb_hex, rgba_hex, rgb, rgba = color_match.groups()
+        (
+            rgb_hex_triple,
+            rgb_hex_quad,
+            rgb_hex,
+            rgba_hex,
+            rgb,
+            rgba,
+        ) = color_match.groups()
 
-        if rgb_hex is not None:
+        if rgb_hex_triple is not None:
+            r, g, b = rgb_hex_triple
+            color = cls(int(f&#34;{r}{r}&#34;, 16), int(f&#34;{g}{g}&#34;, 16), int(f&#34;{b}{b}&#34;, 16))
+        elif rgb_hex_quad is not None:
+            r, g, b, a = rgb_hex_quad
+            color = cls(
+                int(f&#34;{r}{r}&#34;, 16),
+                int(f&#34;{g}{g}&#34;, 16),
+                int(f&#34;{b}{b}&#34;, 16),
+                int(f&#34;{a}{a}&#34;, 16) / 255.0,
+            )
+        elif rgb_hex is not None:
             r, g, b = [int(pair, 16) for pair in split_pairs3(rgb_hex)]
             color = cls(r, g, b, 1.0)
         elif rgba_hex is not None:
@@ -962,9 +1012,27 @@ def parse(cls, color_text: str | Color) -&gt; Color:
     color_match = RE_COLOR.match(color_text)
     if color_match is None:
         raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
-    rgb_hex, rgba_hex, rgb, rgba = color_match.groups()
+    (
+        rgb_hex_triple,
+        rgb_hex_quad,
+        rgb_hex,
+        rgba_hex,
+        rgb,
+        rgba,
+    ) = color_match.groups()
 
-    if rgb_hex is not None:
+    if rgb_hex_triple is not None:
+        r, g, b = rgb_hex_triple
+        color = cls(int(f&#34;{r}{r}&#34;, 16), int(f&#34;{g}{g}&#34;, 16), int(f&#34;{b}{b}&#34;, 16))
+    elif rgb_hex_quad is not None:
+        r, g, b, a = rgb_hex_quad
+        color = cls(
+            int(f&#34;{r}{r}&#34;, 16),
+            int(f&#34;{g}{g}&#34;, 16),
+            int(f&#34;{b}{b}&#34;, 16),
+            int(f&#34;{a}{a}&#34;, 16) / 255.0,
+        )
+    elif rgb_hex is not None:
         r, g, b = [int(pair, 16) for pair in split_pairs3(rgb_hex)]
         color = cls(r, g, b, 1.0)
     elif rgba_hex is not None:
@@ -1135,6 +1203,20 @@ def normalized(self) -&gt; tuple[float, float, float]:
 <dt id="textual.color.Color.r"><code class="name">var <span class="ident">r</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="textual.color.Color.rgb"><code class="name">var <span class="ident">rgb</span> : tuple[int, int, int]</code></dt>
+<dd>
+<div class="desc"><p>Get just the red, green, and blue components.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def rgb(self) -&gt; tuple[int, int, int]:
+    &#34;&#34;&#34;Get just the red, green, and blue components.&#34;&#34;&#34;
+    r, g, b, _ = self
+    return (r, g, b)</code></pre>
+</details>
 </dd>
 <dt id="textual.color.Color.rich_color"><code class="name">var <span class="ident">rich_color</span> : rich.color.Color</code></dt>
 <dd>
@@ -1629,6 +1711,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.color.Color.normalized" href="#textual.color.Color.normalized">normalized</a></code></li>
 <li><code><a title="textual.color.Color.parse" href="#textual.color.Color.parse">parse</a></code></li>
 <li><code><a title="textual.color.Color.r" href="#textual.color.Color.r">r</a></code></li>
+<li><code><a title="textual.color.Color.rgb" href="#textual.color.Color.rgb">rgb</a></code></li>
 <li><code><a title="textual.color.Color.rich_color" href="#textual.color.Color.rich_color">rich_color</a></code></li>
 <li><code><a title="textual.color.Color.with_alpha" href="#textual.color.Color.with_alpha">with_alpha</a></code></li>
 </ul>

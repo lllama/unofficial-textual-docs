@@ -34,16 +34,25 @@ import os
 import platform
 import sys
 import warnings
-from asyncio import AbstractEventLoop
 from contextlib import redirect_stdout
 from time import perf_counter
-from typing import Any, Generic, Iterable, TextIO, Type, TypeVar, TYPE_CHECKING
+from typing import (
+    Any,
+    Generic,
+    Iterable,
+    Iterator,
+    TextIO,
+    Type,
+    TypeVar,
+    TYPE_CHECKING,
+)
 
 import rich
 import rich.repr
 from rich.console import Console, RenderableType
 from rich.control import Control
 from rich.measure import Measurement
+from rich.protocol import is_renderable
 from rich.screen import Screen as ScreenRenderable
 from rich.segment import Segments
 from rich.traceback import Traceback
@@ -56,9 +65,9 @@ from ._animator import Animator
 from ._callback import invoke
 from ._context import active_app
 from ._event_broker import extract_handler_actions, NoHandler
-from ._profile import timer
+from ._timer import Timer
 from .binding import Bindings, NoBinding
-from .css.stylesheet import Stylesheet, StylesheetError
+from .css.stylesheet import Stylesheet
 from .design import ColorSystem
 from .devtools.client import DevtoolsClient, DevtoolsConnectionError, DevtoolsLog
 from .devtools.redirect_output import StdoutRedirector
@@ -81,6 +90,9 @@ WINDOWS = PLATFORM == &#34;Windows&#34;
 
 # asyncio will warn against resources not being cleared
 warnings.simplefilter(&#34;always&#34;, ResourceWarning)
+
+# `asyncio.get_event_loop()` is deprecated since Python 3.10:
+_ASYNCIO_GET_EVENT_LOOP_IS_DEPRECATED = sys.version_info &gt;= (3, 10, 0)
 
 LayoutDefinition = &#34;dict[str, Any]&#34;
 
@@ -114,7 +126,9 @@ ReturnType = TypeVar(&#34;ReturnType&#34;)
 class App(Generic[ReturnType], DOMNode):
     &#34;&#34;&#34;The base class for Textual Applications&#34;&#34;&#34;
 
-    css = &#34;&#34;
+    CSS = &#34;&#34;&#34;
+
+    &#34;&#34;&#34;
 
     def __init__(
         self,
@@ -123,7 +137,6 @@ class App(Generic[ReturnType], DOMNode):
         log_verbosity: int = 1,
         title: str = &#34;Textual Application&#34;,
         css_file: str | None = None,
-        css: str | None = None,
         watch_css: bool = True,
     ):
         &#34;&#34;&#34;Textual application base class
@@ -134,9 +147,13 @@ class App(Generic[ReturnType], DOMNode):
             log_verbosity (int, optional): Log verbosity from 0-3. Defaults to 1.
             title (str, optional): Default title of the application. Defaults to &#34;Textual Application&#34;.
             css_file (str | None, optional): Path to CSS or ``None`` for no CSS file. Defaults to None.
-            css (str | None, optional): CSS code to parse, or ``None`` for no literal CSS. Defaults to None.
             watch_css (bool, optional): Watch CSS for changes. Defaults to True.
         &#34;&#34;&#34;
+        # N.B. This must be done *before* we call the parent constructor, because MessagePump&#39;s
+        # constructor instantiates a `asyncio.PriorityQueue` and in Python versions older than 3.10
+        # this will create some first references to an asyncio loop.
+        _init_uvloop()
+
         self.console = Console(
             file=sys.__stdout__, markup=False, highlight=False, emoji=False
         )
@@ -187,16 +204,12 @@ class App(Generic[ReturnType], DOMNode):
             if (watch_css and css_file)
             else None
         )
-        if css is not None:
-            self.css = css
 
         self.features: frozenset[FeatureFlag] = parse_features(os.getenv(&#34;TEXTUAL&#34;, &#34;&#34;))
-
         self.registry: set[MessagePump] = set()
-
         self.devtools = DevtoolsClient()
-
         self._return_value: ReturnType | None = None
+        self._focus_timer: Timer | None = None
 
         super().__init__()
 
@@ -223,6 +236,105 @@ class App(Generic[ReturnType], DOMNode):
         &#34;&#34;&#34;
         self._return_value = result
         self.close_messages_no_wait()
+
+    @property
+    def focus_chain(self) -&gt; list[Widget]:
+        &#34;&#34;&#34;Get widgets that may receive focus, in focus order.&#34;&#34;&#34;
+        widgets: list[Widget] = []
+        add_widget = widgets.append
+        root = self.screen
+        stack: list[Iterator[Widget]] = [iter(root.focusable_children)]
+        pop = stack.pop
+        push = stack.append
+
+        while stack:
+            node = next(stack[-1], None)
+            if node is None:
+                pop()
+            else:
+                if node.is_container and node.can_focus:
+                    push(iter(node.focusable_children))
+                else:
+                    if node.can_focus:
+                        add_widget(node)
+
+        return widgets
+
+    def _set_active(self) -&gt; None:
+        &#34;&#34;&#34;Set this app to be the currently active app.&#34;&#34;&#34;
+        active_app.set(self)
+
+    def _move_focus(self, direction: int = 0) -&gt; Widget | None:
+        &#34;&#34;&#34;Move the focus in the given direction.
+
+        Args:
+            direction (int, optional): 1 to move forward, -1 to move backward, or
+                0 to highlight the current focus.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        if self._focus_timer:
+            # Cancel the timer that clears the show focus class
+            # We will be creating a new timer to extend the time until the focus is hidden
+            self._focus_timer.stop_no_wait()
+        focusable_widgets = self.focus_chain
+
+        if not focusable_widgets:
+            # Nothing focusable, so nothing to do
+            return self.focused
+        if self.focused is None:
+            # Nothing currently focused, so focus the first one
+            self.set_focus(focusable_widgets[0])
+        else:
+            try:
+                # Find the index of the currently focused widget
+                current_index = focusable_widgets.index(self.focused)
+            except ValueError:
+                # Focused widget was removed in the interim, start again
+                self.set_focus(focusable_widgets[0])
+            else:
+                # Only move the focus if we are currently showing the focus
+                if direction and self.has_class(&#34;-show-focus&#34;):
+                    current_index = (current_index + direction) % len(focusable_widgets)
+                    self.set_focus(focusable_widgets[current_index])
+
+        self._focus_timer = self.set_timer(2, self.hide_focus)
+        self.add_class(&#34;-show-focus&#34;)
+        return self.focused
+
+    def show_focus(self) -&gt; Widget | None:
+        &#34;&#34;&#34;Highlight the currently focused widget.
+
+        Returns:
+            Widget | None: Focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        return self._move_focus(0)
+
+    def focus_next(self) -&gt; Widget | None:
+        &#34;&#34;&#34;Focus the next widget.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        return self._move_focus(1)
+
+    def focus_previous(self) -&gt; Widget | None:
+        &#34;&#34;&#34;Focus the previous widget.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        return self._move_focus(-1)
+
+    def hide_focus(self) -&gt; None:
+        &#34;&#34;&#34;Hide the focus.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+
+        &#34;&#34;&#34;
+        self.remove_class(&#34;-show-focus&#34;)
 
     def compose(self) -&gt; ComposeResult:
         &#34;&#34;&#34;Yield child widgets for a container.&#34;&#34;&#34;
@@ -347,25 +459,19 @@ class App(Generic[ReturnType], DOMNode):
             keys, action, description, show=show, key_display=key_display
         )
 
-    def run(self, loop: AbstractEventLoop | None = None) -&gt; ReturnType | None:
+    def run(self) -&gt; ReturnType | None:
+        &#34;&#34;&#34;The entry point to run a Textual app.&#34;&#34;&#34;
+
         async def run_app() -&gt; None:
             await self.process_messages()
 
-        if loop:
-            asyncio.set_event_loop(loop)
-        else:
-            try:
-                import uvloop
-            except ImportError:
-                pass
-            else:
-                asyncio.set_event_loop(uvloop.new_event_loop())
-
-        event_loop = asyncio.get_event_loop()
-        try:
+        if _ASYNCIO_GET_EVENT_LOOP_IS_DEPRECATED:
+            # N.B. This doesn&#39;t work with Python&lt;3.10, as we end up with 2 event loops:
             asyncio.run(run_app())
-        finally:
-            event_loop.close()
+        else:
+            # However, this works with Python&lt;3.10:
+            event_loop = asyncio.get_event_loop()
+            event_loop.run_until_complete(run_app())
 
         return self._return_value
 
@@ -429,33 +535,52 @@ class App(Generic[ReturnType], DOMNode):
         self.register(self.screen, *anon_widgets, **widgets)
         self.screen.refresh()
 
-    async def push_screen(self, screen: Screen) -&gt; Screen:
-        self._screen_stack.append(screen)
-        return screen
+    def push_screen(self, screen: Screen | None = None) -&gt; Screen:
+        &#34;&#34;&#34;Push a new screen on the screen stack.
 
-    async def set_focus(self, widget: Widget | None) -&gt; None:
+        Args:
+            screen (Screen | None, optional): A new Screen instance or None to create
+                one internally. Defaults to None.
+
+        Returns:
+            Screen: Newly active screen.
+        &#34;&#34;&#34;
+        new_screen = Screen() if screen is None else screen
+        self._screen_stack.append(new_screen)
+        return new_screen
+
+    def set_focus(self, widget: Widget | None) -&gt; None:
         &#34;&#34;&#34;Focus (or unfocus) a widget. A focused widget will receive key events first.
 
         Args:
             widget (Widget): [description]
         &#34;&#34;&#34;
+        self.log(&#34;set_focus&#34;, widget=widget)
         if widget == self.focused:
             # Widget is already focused
             return
 
         if widget is None:
+            # No focus, so blur currently focused widget if it exists
             if self.focused is not None:
-                focused = self.focused
+                self.focused.post_message_no_wait(events.Blur(self))
                 self.focused = None
-                await focused.post_message(events.Blur(self))
         elif widget.can_focus:
-            if self.focused is not None:
-                await self.focused.post_message(events.Blur(self))
-            if widget is not None and self.focused != widget:
+            if self.focused != widget:
+                if self.focused is not None:
+                    # Blur currently focused widget
+                    self.focused.post_message_no_wait(events.Blur(self))
+                # Change focus
                 self.focused = widget
-                await widget.post_message(events.Focus(self))
+                # Send focus event
+                widget.post_message_no_wait(events.Focus(self))
 
-    async def set_mouse_over(self, widget: Widget | None) -&gt; None:
+    async def _set_mouse_over(self, widget: Widget | None) -&gt; None:
+        &#34;&#34;&#34;Called when the mouse is over another widget.
+
+        Args:
+            widget (Widget | None): Widget under mouse, or None for no widgets.
+        &#34;&#34;&#34;
         if widget is None:
             if self.mouse_over is not None:
                 try:
@@ -495,6 +620,10 @@ class App(Generic[ReturnType], DOMNode):
             *renderables (RenderableType, optional): Rich renderables to display on exit.
         &#34;&#34;&#34;
 
+        assert all(
+            is_renderable(renderable) for renderable in renderables
+        ), &#34;Can only call panic with strings or Rich renderables&#34;
+
         prerendered = [
             Segments(self.console.render(renderable, self.console.options))
             for renderable in renderables
@@ -533,9 +662,10 @@ class App(Generic[ReturnType], DOMNode):
         self._exit_renderables.clear()
 
     async def process_messages(self) -&gt; None:
-        active_app.set(self)
+        self._set_active()
         log(&#34;---&#34;)
         log(f&#34;driver={self.driver_class}&#34;)
+        log(f&#34;asyncio running loop={asyncio.get_running_loop()!r}&#34;)
 
         if self.devtools_enabled:
             try:
@@ -546,9 +676,9 @@ class App(Generic[ReturnType], DOMNode):
         try:
             if self.css_file is not None:
                 self.stylesheet.read(self.css_file)
-            if self.css is not None:
+            if self.CSS is not None:
                 self.stylesheet.add_source(
-                    self.css, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
+                    self.CSS, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
                 )
         except Exception as error:
             self.on_exception(error)
@@ -779,7 +909,7 @@ class App(Generic[ReturnType], DOMNode):
         if isinstance(event, events.Mount):
             screen = Screen()
             self.register(self, screen)
-            await self.push_screen(screen)
+            self.push_screen(screen)
             await super().on_event(event)
 
         elif isinstance(event, events.InputEvent) and not event.is_forwarded:
@@ -820,12 +950,18 @@ class App(Generic[ReturnType], DOMNode):
             action_target = default_namespace or self
             action_name = target
 
-        log(&#34;ACTION&#34;, action_target, action_name)
+        log(&#34;action&#34;, action)
         await self.dispatch_action(action_target, action_name, params)
 
     async def dispatch_action(
         self, namespace: object, action_name: str, params: Any
     ) -&gt; None:
+        log(
+            &#34;dispatch_action&#34;,
+            namespace=namespace,
+            action_name=action_name,
+            params=params,
+        )
         _rich_traceback_guard = True
         method_name = f&#34;action_{action_name}&#34;
         method = getattr(namespace, method_name, None)
@@ -873,7 +1009,12 @@ class App(Generic[ReturnType], DOMNode):
         self.app.refresh()
 
     async def on_key(self, event: events.Key) -&gt; None:
-        await self.press(event.key)
+        if event.key == &#34;tab&#34;:
+            self.focus_next()
+        elif event.key == &#34;shift+tab&#34;:
+            self.focus_previous()
+        else:
+            await self.press(event.key)
 
     async def on_shutdown_request(self, event: events.ShutdownRequest) -&gt; None:
         log(&#34;shutdown request&#34;)
@@ -904,7 +1045,30 @@ class App(Generic[ReturnType], DOMNode):
         self.screen.query(selector).toggle_class(class_name)
 
     async def handle_styles_updated(self, message: messages.StylesUpdated) -&gt; None:
-        self.stylesheet.update(self, animate=True)</code></pre>
+        self.stylesheet.update(self, animate=True)
+
+
+_uvloop_init_done: bool = False
+
+
+def _init_uvloop() -&gt; None:
+    &#34;&#34;&#34;
+    Import and install the `uvloop` asyncio policy, if available.
+    This is done only once, even if the function is called multiple times.
+    &#34;&#34;&#34;
+    global _uvloop_init_done
+
+    if _uvloop_init_done:
+        return
+
+    try:
+        import uvloop
+    except ImportError:
+        pass
+    else:
+        uvloop.install()
+
+    _uvloop_init_done = True</code></pre>
 </details>
 </section>
 <section>
@@ -937,7 +1101,7 @@ class App(Generic[ReturnType], DOMNode):
 </dd>
 <dt id="textual.app.App"><code class="flex name class">
 <span>class <span class="ident">App</span></span>
-<span>(</span><span>driver_class: Type[Driver] | None = None, log: str = '', log_verbosity: int = 1, title: str = 'Textual Application', css_file: str | None = None, css: str | None = None, watch_css: bool = True)</span>
+<span>(</span><span>driver_class: Type[Driver] | None = None, log: str = '', log_verbosity: int = 1, title: str = 'Textual Application', css_file: str | None = None, watch_css: bool = True)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The base class for Textual Applications</p>
@@ -952,7 +1116,6 @@ class App(Generic[ReturnType], DOMNode):
 <dt><strong><code>title</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>Default title of the application. Defaults to "Textual Application".</dd>
 <dt>css_file (str | None, optional): Path to CSS or <code>None</code> for no CSS file. Defaults to None.</dt>
-<dt>css (str | None, optional): CSS code to parse, or <code>None</code> for no literal CSS. Defaults to None.</dt>
 <dt><strong><code>watch_css</code></strong> :&ensp;<code>bool</code>, optional</dt>
 <dd>Watch CSS for changes. Defaults to True.</dd>
 </dl></div>
@@ -963,7 +1126,9 @@ class App(Generic[ReturnType], DOMNode):
 <pre><code class="python">class App(Generic[ReturnType], DOMNode):
     &#34;&#34;&#34;The base class for Textual Applications&#34;&#34;&#34;
 
-    css = &#34;&#34;
+    CSS = &#34;&#34;&#34;
+
+    &#34;&#34;&#34;
 
     def __init__(
         self,
@@ -972,7 +1137,6 @@ class App(Generic[ReturnType], DOMNode):
         log_verbosity: int = 1,
         title: str = &#34;Textual Application&#34;,
         css_file: str | None = None,
-        css: str | None = None,
         watch_css: bool = True,
     ):
         &#34;&#34;&#34;Textual application base class
@@ -983,9 +1147,13 @@ class App(Generic[ReturnType], DOMNode):
             log_verbosity (int, optional): Log verbosity from 0-3. Defaults to 1.
             title (str, optional): Default title of the application. Defaults to &#34;Textual Application&#34;.
             css_file (str | None, optional): Path to CSS or ``None`` for no CSS file. Defaults to None.
-            css (str | None, optional): CSS code to parse, or ``None`` for no literal CSS. Defaults to None.
             watch_css (bool, optional): Watch CSS for changes. Defaults to True.
         &#34;&#34;&#34;
+        # N.B. This must be done *before* we call the parent constructor, because MessagePump&#39;s
+        # constructor instantiates a `asyncio.PriorityQueue` and in Python versions older than 3.10
+        # this will create some first references to an asyncio loop.
+        _init_uvloop()
+
         self.console = Console(
             file=sys.__stdout__, markup=False, highlight=False, emoji=False
         )
@@ -1036,16 +1204,12 @@ class App(Generic[ReturnType], DOMNode):
             if (watch_css and css_file)
             else None
         )
-        if css is not None:
-            self.css = css
 
         self.features: frozenset[FeatureFlag] = parse_features(os.getenv(&#34;TEXTUAL&#34;, &#34;&#34;))
-
         self.registry: set[MessagePump] = set()
-
         self.devtools = DevtoolsClient()
-
         self._return_value: ReturnType | None = None
+        self._focus_timer: Timer | None = None
 
         super().__init__()
 
@@ -1072,6 +1236,105 @@ class App(Generic[ReturnType], DOMNode):
         &#34;&#34;&#34;
         self._return_value = result
         self.close_messages_no_wait()
+
+    @property
+    def focus_chain(self) -&gt; list[Widget]:
+        &#34;&#34;&#34;Get widgets that may receive focus, in focus order.&#34;&#34;&#34;
+        widgets: list[Widget] = []
+        add_widget = widgets.append
+        root = self.screen
+        stack: list[Iterator[Widget]] = [iter(root.focusable_children)]
+        pop = stack.pop
+        push = stack.append
+
+        while stack:
+            node = next(stack[-1], None)
+            if node is None:
+                pop()
+            else:
+                if node.is_container and node.can_focus:
+                    push(iter(node.focusable_children))
+                else:
+                    if node.can_focus:
+                        add_widget(node)
+
+        return widgets
+
+    def _set_active(self) -&gt; None:
+        &#34;&#34;&#34;Set this app to be the currently active app.&#34;&#34;&#34;
+        active_app.set(self)
+
+    def _move_focus(self, direction: int = 0) -&gt; Widget | None:
+        &#34;&#34;&#34;Move the focus in the given direction.
+
+        Args:
+            direction (int, optional): 1 to move forward, -1 to move backward, or
+                0 to highlight the current focus.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        if self._focus_timer:
+            # Cancel the timer that clears the show focus class
+            # We will be creating a new timer to extend the time until the focus is hidden
+            self._focus_timer.stop_no_wait()
+        focusable_widgets = self.focus_chain
+
+        if not focusable_widgets:
+            # Nothing focusable, so nothing to do
+            return self.focused
+        if self.focused is None:
+            # Nothing currently focused, so focus the first one
+            self.set_focus(focusable_widgets[0])
+        else:
+            try:
+                # Find the index of the currently focused widget
+                current_index = focusable_widgets.index(self.focused)
+            except ValueError:
+                # Focused widget was removed in the interim, start again
+                self.set_focus(focusable_widgets[0])
+            else:
+                # Only move the focus if we are currently showing the focus
+                if direction and self.has_class(&#34;-show-focus&#34;):
+                    current_index = (current_index + direction) % len(focusable_widgets)
+                    self.set_focus(focusable_widgets[current_index])
+
+        self._focus_timer = self.set_timer(2, self.hide_focus)
+        self.add_class(&#34;-show-focus&#34;)
+        return self.focused
+
+    def show_focus(self) -&gt; Widget | None:
+        &#34;&#34;&#34;Highlight the currently focused widget.
+
+        Returns:
+            Widget | None: Focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        return self._move_focus(0)
+
+    def focus_next(self) -&gt; Widget | None:
+        &#34;&#34;&#34;Focus the next widget.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        return self._move_focus(1)
+
+    def focus_previous(self) -&gt; Widget | None:
+        &#34;&#34;&#34;Focus the previous widget.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        return self._move_focus(-1)
+
+    def hide_focus(self) -&gt; None:
+        &#34;&#34;&#34;Hide the focus.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+
+        &#34;&#34;&#34;
+        self.remove_class(&#34;-show-focus&#34;)
 
     def compose(self) -&gt; ComposeResult:
         &#34;&#34;&#34;Yield child widgets for a container.&#34;&#34;&#34;
@@ -1196,25 +1459,19 @@ class App(Generic[ReturnType], DOMNode):
             keys, action, description, show=show, key_display=key_display
         )
 
-    def run(self, loop: AbstractEventLoop | None = None) -&gt; ReturnType | None:
+    def run(self) -&gt; ReturnType | None:
+        &#34;&#34;&#34;The entry point to run a Textual app.&#34;&#34;&#34;
+
         async def run_app() -&gt; None:
             await self.process_messages()
 
-        if loop:
-            asyncio.set_event_loop(loop)
-        else:
-            try:
-                import uvloop
-            except ImportError:
-                pass
-            else:
-                asyncio.set_event_loop(uvloop.new_event_loop())
-
-        event_loop = asyncio.get_event_loop()
-        try:
+        if _ASYNCIO_GET_EVENT_LOOP_IS_DEPRECATED:
+            # N.B. This doesn&#39;t work with Python&lt;3.10, as we end up with 2 event loops:
             asyncio.run(run_app())
-        finally:
-            event_loop.close()
+        else:
+            # However, this works with Python&lt;3.10:
+            event_loop = asyncio.get_event_loop()
+            event_loop.run_until_complete(run_app())
 
         return self._return_value
 
@@ -1278,33 +1535,52 @@ class App(Generic[ReturnType], DOMNode):
         self.register(self.screen, *anon_widgets, **widgets)
         self.screen.refresh()
 
-    async def push_screen(self, screen: Screen) -&gt; Screen:
-        self._screen_stack.append(screen)
-        return screen
+    def push_screen(self, screen: Screen | None = None) -&gt; Screen:
+        &#34;&#34;&#34;Push a new screen on the screen stack.
 
-    async def set_focus(self, widget: Widget | None) -&gt; None:
+        Args:
+            screen (Screen | None, optional): A new Screen instance or None to create
+                one internally. Defaults to None.
+
+        Returns:
+            Screen: Newly active screen.
+        &#34;&#34;&#34;
+        new_screen = Screen() if screen is None else screen
+        self._screen_stack.append(new_screen)
+        return new_screen
+
+    def set_focus(self, widget: Widget | None) -&gt; None:
         &#34;&#34;&#34;Focus (or unfocus) a widget. A focused widget will receive key events first.
 
         Args:
             widget (Widget): [description]
         &#34;&#34;&#34;
+        self.log(&#34;set_focus&#34;, widget=widget)
         if widget == self.focused:
             # Widget is already focused
             return
 
         if widget is None:
+            # No focus, so blur currently focused widget if it exists
             if self.focused is not None:
-                focused = self.focused
+                self.focused.post_message_no_wait(events.Blur(self))
                 self.focused = None
-                await focused.post_message(events.Blur(self))
         elif widget.can_focus:
-            if self.focused is not None:
-                await self.focused.post_message(events.Blur(self))
-            if widget is not None and self.focused != widget:
+            if self.focused != widget:
+                if self.focused is not None:
+                    # Blur currently focused widget
+                    self.focused.post_message_no_wait(events.Blur(self))
+                # Change focus
                 self.focused = widget
-                await widget.post_message(events.Focus(self))
+                # Send focus event
+                widget.post_message_no_wait(events.Focus(self))
 
-    async def set_mouse_over(self, widget: Widget | None) -&gt; None:
+    async def _set_mouse_over(self, widget: Widget | None) -&gt; None:
+        &#34;&#34;&#34;Called when the mouse is over another widget.
+
+        Args:
+            widget (Widget | None): Widget under mouse, or None for no widgets.
+        &#34;&#34;&#34;
         if widget is None:
             if self.mouse_over is not None:
                 try:
@@ -1344,6 +1620,10 @@ class App(Generic[ReturnType], DOMNode):
             *renderables (RenderableType, optional): Rich renderables to display on exit.
         &#34;&#34;&#34;
 
+        assert all(
+            is_renderable(renderable) for renderable in renderables
+        ), &#34;Can only call panic with strings or Rich renderables&#34;
+
         prerendered = [
             Segments(self.console.render(renderable, self.console.options))
             for renderable in renderables
@@ -1382,9 +1662,10 @@ class App(Generic[ReturnType], DOMNode):
         self._exit_renderables.clear()
 
     async def process_messages(self) -&gt; None:
-        active_app.set(self)
+        self._set_active()
         log(&#34;---&#34;)
         log(f&#34;driver={self.driver_class}&#34;)
+        log(f&#34;asyncio running loop={asyncio.get_running_loop()!r}&#34;)
 
         if self.devtools_enabled:
             try:
@@ -1395,9 +1676,9 @@ class App(Generic[ReturnType], DOMNode):
         try:
             if self.css_file is not None:
                 self.stylesheet.read(self.css_file)
-            if self.css is not None:
+            if self.CSS is not None:
                 self.stylesheet.add_source(
-                    self.css, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
+                    self.CSS, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
                 )
         except Exception as error:
             self.on_exception(error)
@@ -1628,7 +1909,7 @@ class App(Generic[ReturnType], DOMNode):
         if isinstance(event, events.Mount):
             screen = Screen()
             self.register(self, screen)
-            await self.push_screen(screen)
+            self.push_screen(screen)
             await super().on_event(event)
 
         elif isinstance(event, events.InputEvent) and not event.is_forwarded:
@@ -1669,12 +1950,18 @@ class App(Generic[ReturnType], DOMNode):
             action_target = default_namespace or self
             action_name = target
 
-        log(&#34;ACTION&#34;, action_target, action_name)
+        log(&#34;action&#34;, action)
         await self.dispatch_action(action_target, action_name, params)
 
     async def dispatch_action(
         self, namespace: object, action_name: str, params: Any
     ) -&gt; None:
+        log(
+            &#34;dispatch_action&#34;,
+            namespace=namespace,
+            action_name=action_name,
+            params=params,
+        )
         _rich_traceback_guard = True
         method_name = f&#34;action_{action_name}&#34;
         method = getattr(namespace, method_name, None)
@@ -1722,7 +2009,12 @@ class App(Generic[ReturnType], DOMNode):
         self.app.refresh()
 
     async def on_key(self, event: events.Key) -&gt; None:
-        await self.press(event.key)
+        if event.key == &#34;tab&#34;:
+            self.focus_next()
+        elif event.key == &#34;shift+tab&#34;:
+            self.focus_previous()
+        else:
+            await self.press(event.key)
 
     async def on_shutdown_request(self, event: events.ShutdownRequest) -&gt; None:
         log(&#34;shutdown request&#34;)
@@ -1763,7 +2055,7 @@ class App(Generic[ReturnType], DOMNode):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.app.App.css"><code class="name">var <span class="ident">css</span></code></dt>
+<dt id="textual.app.App.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1828,6 +2120,37 @@ def debug(self) -&gt; bool:
 def devtools_enabled(self) -&gt; bool:
     &#34;&#34;&#34;Check if devtools are enabled.&#34;&#34;&#34;
     return &#34;devtools&#34; in self.features</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.focus_chain"><code class="name">var <span class="ident">focus_chain</span> : list[Widget]</code></dt>
+<dd>
+<div class="desc"><p>Get widgets that may receive focus, in focus order.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def focus_chain(self) -&gt; list[Widget]:
+    &#34;&#34;&#34;Get widgets that may receive focus, in focus order.&#34;&#34;&#34;
+    widgets: list[Widget] = []
+    add_widget = widgets.append
+    root = self.screen
+    stack: list[Iterator[Widget]] = [iter(root.focusable_children)]
+    pop = stack.pop
+    push = stack.append
+
+    while stack:
+        node = next(stack[-1], None)
+        if node is None:
+            pop()
+        else:
+            if node.is_container and node.can_focus:
+                push(iter(node.focusable_children))
+            else:
+                if node.can_focus:
+                    add_widget(node)
+
+    return widgets</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
@@ -1902,7 +2225,7 @@ def size(self) -&gt; Size:
         action_target = default_namespace or self
         action_name = target
 
-    log(&#34;ACTION&#34;, action_target, action_name)
+    log(&#34;action&#34;, action)
     await self.dispatch_action(action_target, action_name, params)</code></pre>
 </details>
 </dd>
@@ -2180,6 +2503,12 @@ def size(self) -&gt; Size:
 <pre><code class="python">async def dispatch_action(
     self, namespace: object, action_name: str, params: Any
 ) -&gt; None:
+    log(
+        &#34;dispatch_action&#34;,
+        namespace=namespace,
+        action_name=action_name,
+        params=params,
+    )
     _rich_traceback_guard = True
     method_name = f&#34;action_{action_name}&#34;
     method = getattr(namespace, method_name, None)
@@ -2226,6 +2555,46 @@ def size(self) -&gt; Size:
         Segments(self.console.render(traceback, self.console.options))
     )
     self.close_messages_no_wait()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.focus_next"><code class="name flex">
+<span>def <span class="ident">focus_next</span></span>(<span>self) ‑> Widget | None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Focus the next widget.</p>
+<h2 id="returns">Returns</h2>
+<p>Widget | None: Newly focused widget, or None for no focus.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def focus_next(self) -&gt; Widget | None:
+    &#34;&#34;&#34;Focus the next widget.
+
+    Returns:
+        Widget | None: Newly focused widget, or None for no focus.
+    &#34;&#34;&#34;
+    return self._move_focus(1)</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.focus_previous"><code class="name flex">
+<span>def <span class="ident">focus_previous</span></span>(<span>self) ‑> Widget | None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Focus the previous widget.</p>
+<h2 id="returns">Returns</h2>
+<p>Widget | None: Newly focused widget, or None for no focus.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def focus_previous(self) -&gt; Widget | None:
+    &#34;&#34;&#34;Focus the previous widget.
+
+    Returns:
+        Widget | None: Newly focused widget, or None for no focus.
+    &#34;&#34;&#34;
+    return self._move_focus(-1)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.get_child"><code class="name flex">
@@ -2397,6 +2766,27 @@ with the given ID.</p>
     self.app.refresh()</code></pre>
 </details>
 </dd>
+<dt id="textual.app.App.hide_focus"><code class="name flex">
+<span>def <span class="ident">hide_focus</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Hide the focus.</p>
+<h2 id="returns">Returns</h2>
+<p>Widget | None: Newly focused widget, or None for no focus.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def hide_focus(self) -&gt; None:
+    &#34;&#34;&#34;Hide the focus.
+
+    Returns:
+        Widget | None: Newly focused widget, or None for no focus.
+
+    &#34;&#34;&#34;
+    self.remove_class(&#34;-show-focus&#34;)</code></pre>
+</details>
+</dd>
 <dt id="textual.app.App.is_mounted"><code class="name flex">
 <span>def <span class="ident">is_mounted</span></span>(<span>self, widget: Widget) ‑> bool</span>
 </code></dt>
@@ -2540,7 +2930,7 @@ the log message sent to the devtools server.</p></div>
     if isinstance(event, events.Mount):
         screen = Screen()
         self.register(self, screen)
-        await self.push_screen(screen)
+        self.push_screen(screen)
         await super().on_event(event)
 
     elif isinstance(event, events.InputEvent) and not event.is_forwarded:
@@ -2616,7 +3006,12 @@ the log message sent to the devtools server.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">async def on_key(self, event: events.Key) -&gt; None:
-    await self.press(event.key)</code></pre>
+    if event.key == &#34;tab&#34;:
+        self.focus_next()
+    elif event.key == &#34;shift+tab&#34;:
+        self.focus_previous()
+    else:
+        await self.press(event.key)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.on_mount"><code class="name flex">
@@ -2683,6 +3078,10 @@ the log message sent to the devtools server.</p></div>
         *renderables (RenderableType, optional): Rich renderables to display on exit.
     &#34;&#34;&#34;
 
+    assert all(
+        is_renderable(renderable) for renderable in renderables
+    ), &#34;Can only call panic with strings or Rich renderables&#34;
+
     prerendered = [
         Segments(self.console.render(renderable, self.console.options))
         for renderable in renderables
@@ -2739,9 +3138,10 @@ the log message sent to the devtools server.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">async def process_messages(self) -&gt; None:
-    active_app.set(self)
+    self._set_active()
     log(&#34;---&#34;)
     log(f&#34;driver={self.driver_class}&#34;)
+    log(f&#34;asyncio running loop={asyncio.get_running_loop()!r}&#34;)
 
     if self.devtools_enabled:
         try:
@@ -2752,9 +3152,9 @@ the log message sent to the devtools server.</p></div>
     try:
         if self.css_file is not None:
             self.stylesheet.read(self.css_file)
-        if self.css is not None:
+        if self.CSS is not None:
             self.stylesheet.add_source(
-                self.css, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
+                self.CSS, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
             )
     except Exception as error:
         self.on_exception(error)
@@ -2807,17 +3207,35 @@ the log message sent to the devtools server.</p></div>
 </details>
 </dd>
 <dt id="textual.app.App.push_screen"><code class="name flex">
-<span>async def <span class="ident">push_screen</span></span>(<span>self, screen: Screen) ‑> <a title="textual.screen.Screen" href="screen.html#textual.screen.Screen">Screen</a></span>
+<span>def <span class="ident">push_screen</span></span>(<span>self, screen: Screen | None = None) ‑> Screen</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Push a new screen on the screen stack.</p>
+<h2 id="args">Args</h2>
+<p>screen (Screen | None, optional): A new Screen instance or None to create
+one internally. Defaults to None.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Screen</code></dt>
+<dd>Newly active screen.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def push_screen(self, screen: Screen) -&gt; Screen:
-    self._screen_stack.append(screen)
-    return screen</code></pre>
+<pre><code class="python">def push_screen(self, screen: Screen | None = None) -&gt; Screen:
+    &#34;&#34;&#34;Push a new screen on the screen stack.
+
+    Args:
+        screen (Screen | None, optional): A new Screen instance or None to create
+            one internally. Defaults to None.
+
+    Returns:
+        Screen: Newly active screen.
+    &#34;&#34;&#34;
+    new_screen = Screen() if screen is None else screen
+    self._screen_stack.append(new_screen)
+    return new_screen</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.query"><code class="name flex">
@@ -2982,39 +3400,33 @@ the log message sent to the devtools server.</p></div>
 </details>
 </dd>
 <dt id="textual.app.App.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>self, loop: AbstractEventLoop | None = None) ‑> ReturnType | None</span>
+<span>def <span class="ident">run</span></span>(<span>self) ‑> ReturnType | None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The entry point to run a Textual app.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def run(self, loop: AbstractEventLoop | None = None) -&gt; ReturnType | None:
+<pre><code class="python">def run(self) -&gt; ReturnType | None:
+    &#34;&#34;&#34;The entry point to run a Textual app.&#34;&#34;&#34;
+
     async def run_app() -&gt; None:
         await self.process_messages()
 
-    if loop:
-        asyncio.set_event_loop(loop)
-    else:
-        try:
-            import uvloop
-        except ImportError:
-            pass
-        else:
-            asyncio.set_event_loop(uvloop.new_event_loop())
-
-    event_loop = asyncio.get_event_loop()
-    try:
+    if _ASYNCIO_GET_EVENT_LOOP_IS_DEPRECATED:
+        # N.B. This doesn&#39;t work with Python&lt;3.10, as we end up with 2 event loops:
         asyncio.run(run_app())
-    finally:
-        event_loop.close()
+    else:
+        # However, this works with Python&lt;3.10:
+        event_loop = asyncio.get_event_loop()
+        event_loop.run_until_complete(run_app())
 
     return self._return_value</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.set_focus"><code class="name flex">
-<span>async def <span class="ident">set_focus</span></span>(<span>self, widget: Widget | None) ‑> None</span>
+<span>def <span class="ident">set_focus</span></span>(<span>self, widget: Widget | None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Focus (or unfocus) a widget. A focused widget will receive key events first.</p>
@@ -3027,54 +3439,51 @@ the log message sent to the devtools server.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def set_focus(self, widget: Widget | None) -&gt; None:
+<pre><code class="python">def set_focus(self, widget: Widget | None) -&gt; None:
     &#34;&#34;&#34;Focus (or unfocus) a widget. A focused widget will receive key events first.
 
     Args:
         widget (Widget): [description]
     &#34;&#34;&#34;
+    self.log(&#34;set_focus&#34;, widget=widget)
     if widget == self.focused:
         # Widget is already focused
         return
 
     if widget is None:
+        # No focus, so blur currently focused widget if it exists
         if self.focused is not None:
-            focused = self.focused
+            self.focused.post_message_no_wait(events.Blur(self))
             self.focused = None
-            await focused.post_message(events.Blur(self))
     elif widget.can_focus:
-        if self.focused is not None:
-            await self.focused.post_message(events.Blur(self))
-        if widget is not None and self.focused != widget:
+        if self.focused != widget:
+            if self.focused is not None:
+                # Blur currently focused widget
+                self.focused.post_message_no_wait(events.Blur(self))
+            # Change focus
             self.focused = widget
-            await widget.post_message(events.Focus(self))</code></pre>
+            # Send focus event
+            widget.post_message_no_wait(events.Focus(self))</code></pre>
 </details>
 </dd>
-<dt id="textual.app.App.set_mouse_over"><code class="name flex">
-<span>async def <span class="ident">set_mouse_over</span></span>(<span>self, widget: Widget | None) ‑> None</span>
+<dt id="textual.app.App.show_focus"><code class="name flex">
+<span>def <span class="ident">show_focus</span></span>(<span>self) ‑> Widget | None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Highlight the currently focused widget.</p>
+<h2 id="returns">Returns</h2>
+<p>Widget | None: Focused widget, or None for no focus.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def set_mouse_over(self, widget: Widget | None) -&gt; None:
-    if widget is None:
-        if self.mouse_over is not None:
-            try:
-                await self.mouse_over.post_message(events.Leave(self))
-            finally:
-                self.mouse_over = None
-    else:
-        if self.mouse_over != widget:
-            try:
-                if self.mouse_over is not None:
-                    await self.mouse_over.forward_event(events.Leave(self))
-                if widget is not None:
-                    await widget.forward_event(events.Enter(self))
-            finally:
-                self.mouse_over = widget</code></pre>
+<pre><code class="python">def show_focus(self) -&gt; Widget | None:
+    &#34;&#34;&#34;Highlight the currently focused widget.
+
+    Returns:
+        Widget | None: Focused widget, or None for no focus.
+    &#34;&#34;&#34;
+    return self._move_focus(0)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.shutdown"><code class="name flex">
@@ -3178,7 +3587,9 @@ the log message sent to the devtools server.</p></div>
 <li><code><a title="textual.dom.DOMNode.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
+<li><code><a title="textual.dom.DOMNode.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.dom.DOMNode.focusable_children" href="dom.html#textual.dom.DOMNode.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_pseudo_classes" href="dom.html#textual.dom.DOMNode.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
@@ -3287,6 +3698,7 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.app.App" href="#textual.app.App">App</a></code></h4>
 <ul class="">
+<li><code><a title="textual.app.App.CSS" href="#textual.app.App.CSS">CSS</a></code></li>
 <li><code><a title="textual.app.App.action" href="#textual.app.App.action">action</a></code></li>
 <li><code><a title="textual.app.App.action_add_class_" href="#textual.app.App.action_add_class_">action_add_class_</a></code></li>
 <li><code><a title="textual.app.App.action_bang" href="#textual.app.App.action_bang">action_bang</a></code></li>
@@ -3303,13 +3715,15 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.app.App.capture_mouse" href="#textual.app.App.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.app.App.close_all" href="#textual.app.App.close_all">close_all</a></code></li>
 <li><code><a title="textual.app.App.compose" href="#textual.app.App.compose">compose</a></code></li>
-<li><code><a title="textual.app.App.css" href="#textual.app.App.css">css</a></code></li>
 <li><code><a title="textual.app.App.dark" href="#textual.app.App.dark">dark</a></code></li>
 <li><code><a title="textual.app.App.debug" href="#textual.app.App.debug">debug</a></code></li>
 <li><code><a title="textual.app.App.devtools_enabled" href="#textual.app.App.devtools_enabled">devtools_enabled</a></code></li>
 <li><code><a title="textual.app.App.dispatch_action" href="#textual.app.App.dispatch_action">dispatch_action</a></code></li>
 <li><code><a title="textual.app.App.exit" href="#textual.app.App.exit">exit</a></code></li>
 <li><code><a title="textual.app.App.fatal_error" href="#textual.app.App.fatal_error">fatal_error</a></code></li>
+<li><code><a title="textual.app.App.focus_chain" href="#textual.app.App.focus_chain">focus_chain</a></code></li>
+<li><code><a title="textual.app.App.focus_next" href="#textual.app.App.focus_next">focus_next</a></code></li>
+<li><code><a title="textual.app.App.focus_previous" href="#textual.app.App.focus_previous">focus_previous</a></code></li>
 <li><code><a title="textual.app.App.get_child" href="#textual.app.App.get_child">get_child</a></code></li>
 <li><code><a title="textual.app.App.get_css_variables" href="#textual.app.App.get_css_variables">get_css_variables</a></code></li>
 <li><code><a title="textual.app.App.get_driver_class" href="#textual.app.App.get_driver_class">get_driver_class</a></code></li>
@@ -3317,6 +3731,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.app.App.handle_layout" href="#textual.app.App.handle_layout">handle_layout</a></code></li>
 <li><code><a title="textual.app.App.handle_styles_updated" href="#textual.app.App.handle_styles_updated">handle_styles_updated</a></code></li>
 <li><code><a title="textual.app.App.handle_update" href="#textual.app.App.handle_update">handle_update</a></code></li>
+<li><code><a title="textual.app.App.hide_focus" href="#textual.app.App.hide_focus">hide_focus</a></code></li>
 <li><code><a title="textual.app.App.is_mounted" href="#textual.app.App.is_mounted">is_mounted</a></code></li>
 <li><code><a title="textual.app.App.log" href="#textual.app.App.log">log</a></code></li>
 <li><code><a title="textual.app.App.measure" href="#textual.app.App.measure">measure</a></code></li>
@@ -3340,7 +3755,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.app.App.render" href="#textual.app.App.render">render</a></code></li>
 <li><code><a title="textual.app.App.run" href="#textual.app.App.run">run</a></code></li>
 <li><code><a title="textual.app.App.set_focus" href="#textual.app.App.set_focus">set_focus</a></code></li>
-<li><code><a title="textual.app.App.set_mouse_over" href="#textual.app.App.set_mouse_over">set_mouse_over</a></code></li>
+<li><code><a title="textual.app.App.show_focus" href="#textual.app.App.show_focus">show_focus</a></code></li>
 <li><code><a title="textual.app.App.shutdown" href="#textual.app.App.shutdown">shutdown</a></code></li>
 <li><code><a title="textual.app.App.size" href="#textual.app.App.size">size</a></code></li>
 <li><code><a title="textual.app.App.start_widget" href="#textual.app.App.start_widget">start_widget</a></code></li>

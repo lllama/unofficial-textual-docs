@@ -61,6 +61,7 @@ from . import messages
 from ._layout import Layout
 from .reactive import Reactive, watch
 from .renderables.opacity import Opacity
+from .renderables.tint import Tint
 
 
 if TYPE_CHECKING:
@@ -494,6 +495,8 @@ class Widget(DOMNode):
                 outline=True,
             )
 
+        if styles.tint.a != 0:
+            renderable = Tint(renderable, styles.tint)
         if styles.opacity != 1.0:
             renderable = Opacity(renderable, opacity=styles.opacity)
 
@@ -554,7 +557,7 @@ class Widget(DOMNode):
         Returns:
             bool: True if this widget is a container.
         &#34;&#34;&#34;
-        return self.styles.layout is not None
+        return self.styles.layout is not None or bool(self.children)
 
     def watch_mouse_over(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
@@ -693,9 +696,9 @@ class Widget(DOMNode):
         elif self._dirty_regions:
             self.emit_no_wait(messages.Update(self, self))
 
-    async def focus(self) -&gt; None:
+    def focus(self) -&gt; None:
         &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
-        await self.app.set_focus(self)
+        self.app.set_focus(self)
 
     async def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
@@ -740,6 +743,12 @@ class Widget(DOMNode):
 
     def on_enter(self) -&gt; None:
         self.mouse_over = True
+
+    def on_focus(self, event: events.Focus) -&gt; None:
+        self.has_focus = True
+
+    def on_blur(self, event: events.Blur) -&gt; None:
+        self.has_focus = False
 
     def on_mouse_scroll_down(self, event) -&gt; None:
         if self.is_container:
@@ -1304,6 +1313,8 @@ def cursor_line(self) -&gt; int | None:
                 outline=True,
             )
 
+        if styles.tint.a != 0:
+            renderable = Tint(renderable, styles.tint)
         if styles.opacity != 1.0:
             renderable = Opacity(renderable, opacity=styles.opacity)
 
@@ -1364,7 +1375,7 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             bool: True if this widget is a container.
         &#34;&#34;&#34;
-        return self.styles.layout is not None
+        return self.styles.layout is not None or bool(self.children)
 
     def watch_mouse_over(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
@@ -1503,9 +1514,9 @@ def cursor_line(self) -&gt; int | None:
         elif self._dirty_regions:
             self.emit_no_wait(messages.Update(self, self))
 
-    async def focus(self) -&gt; None:
+    def focus(self) -&gt; None:
         &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
-        await self.app.set_focus(self)
+        self.app.set_focus(self)
 
     async def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
@@ -1550,6 +1561,12 @@ def cursor_line(self) -&gt; int | None:
 
     def on_enter(self) -&gt; None:
         self.mouse_over = True
+
+    def on_focus(self, event: events.Focus) -&gt; None:
+        self.has_focus = True
+
+    def on_blur(self, event: events.Blur) -&gt; None:
+        self.has_focus = False
 
     def on_mouse_scroll_down(self, event) -&gt; None:
         if self.is_container:
@@ -1789,7 +1806,7 @@ def is_container(self) -&gt; bool:
     Returns:
         bool: True if this widget is a container.
     &#34;&#34;&#34;
-    return self.styles.layout is not None</code></pre>
+    return self.styles.layout is not None or bool(self.children)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.is_transparent"><code class="name">var <span class="ident">is_transparent</span> : bool</code></dt>
@@ -2120,7 +2137,7 @@ def virtual_size(self) -&gt; Size:
 </details>
 </dd>
 <dt id="textual.widget.Widget.focus"><code class="name flex">
-<span>async def <span class="ident">focus</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">focus</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Give input focus to this widget.</p></div>
@@ -2128,9 +2145,9 @@ def virtual_size(self) -&gt; Size:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def focus(self) -&gt; None:
+<pre><code class="python">def focus(self) -&gt; None:
     &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
-    await self.app.set_focus(self)</code></pre>
+    self.app.set_focus(self)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.forward_event"><code class="name flex">
@@ -2503,6 +2520,19 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
     self.screen.refresh()</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.on_blur"><code class="name flex">
+<span>def <span class="ident">on_blur</span></span>(<span>self, event: events.Blur) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_blur(self, event: events.Blur) -&gt; None:
+    self.has_focus = False</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.on_click"><code class="name flex">
 <span>async def <span class="ident">on_click</span></span>(<span>self, event: events.Click) ‑> None</span>
 </code></dt>
@@ -2527,6 +2557,19 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 </summary>
 <pre><code class="python">def on_enter(self) -&gt; None:
     self.mouse_over = True</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_focus"><code class="name flex">
+<span>def <span class="ident">on_focus</span></span>(<span>self, event: events.Focus) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_focus(self, event: events.Focus) -&gt; None:
+    self.has_focus = True</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_idle"><code class="name flex">
@@ -2851,6 +2894,8 @@ next idle event. Only one refresh will be done even if this method is called mul
             outline=True,
         )
 
+    if styles.tint.a != 0:
+        renderable = Tint(renderable, styles.tint)
     if styles.opacity != 1.0:
         renderable = Opacity(renderable, opacity=styles.opacity)
 
@@ -3247,7 +3292,9 @@ next idle event. Only one refresh will be done even if this method is called mul
 <li><code><a title="textual.dom.DOMNode.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
+<li><code><a title="textual.dom.DOMNode.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.dom.DOMNode.focusable_children" href="dom.html#textual.dom.DOMNode.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
@@ -3384,8 +3431,10 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_blur" href="#textual.widget.Widget.on_blur">on_blur</a></code></li>
 <li><code><a title="textual.widget.Widget.on_click" href="#textual.widget.Widget.on_click">on_click</a></code></li>
 <li><code><a title="textual.widget.Widget.on_enter" href="#textual.widget.Widget.on_enter">on_enter</a></code></li>
+<li><code><a title="textual.widget.Widget.on_focus" href="#textual.widget.Widget.on_focus">on_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.on_idle" href="#textual.widget.Widget.on_idle">on_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.on_key" href="#textual.widget.Widget.on_key">on_key</a></code></li>
 <li><code><a title="textual.widget.Widget.on_leave" href="#textual.widget.Widget.on_leave">on_leave</a></code></li>
