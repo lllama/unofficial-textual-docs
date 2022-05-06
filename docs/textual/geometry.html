@@ -405,8 +405,11 @@ class Region(NamedTuple):
         &#34;&#34;&#34;
         x1, y1, x2, y2 = self.corners
         ox, oy, ox2, oy2 = other.corners
-        return (x2 &gt;= ox &gt;= x1 and y2 &gt;= oy &gt;= y1) and (
-            x2 &gt;= ox2 &gt;= x1 and y2 &gt;= oy2 &gt;= y1
+        return (
+            (x2 &gt;= ox &gt;= x1)
+            and (y2 &gt;= oy &gt;= y1)
+            and (x2 &gt;= ox2 &gt;= x1)
+            and (y2 &gt;= oy2 &gt;= y1)
         )
 
     def translate(self, x: int = 0, y: int = 0) -&gt; Region:
@@ -1175,8 +1178,11 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;
         x1, y1, x2, y2 = self.corners
         ox, oy, ox2, oy2 = other.corners
-        return (x2 &gt;= ox &gt;= x1 and y2 &gt;= oy &gt;= y1) and (
-            x2 &gt;= ox2 &gt;= x1 and y2 &gt;= oy2 &gt;= y1
+        return (
+            (x2 &gt;= ox &gt;= x1)
+            and (y2 &gt;= oy &gt;= y1)
+            and (x2 &gt;= ox2 &gt;= x1)
+            and (y2 &gt;= oy2 &gt;= y1)
         )
 
     def translate(self, x: int = 0, y: int = 0) -&gt; Region:
@@ -1802,8 +1808,11 @@ def y_range(self) -&gt; range:
     &#34;&#34;&#34;
     x1, y1, x2, y2 = self.corners
     ox, oy, ox2, oy2 = other.corners
-    return (x2 &gt;= ox &gt;= x1 and y2 &gt;= oy &gt;= y1) and (
-        x2 &gt;= ox2 &gt;= x1 and y2 &gt;= oy2 &gt;= y1
+    return (
+        (x2 &gt;= ox &gt;= x1)
+        and (y2 &gt;= oy &gt;= y1)
+        and (x2 &gt;= ox2 &gt;= x1)
+        and (y2 &gt;= oy2 &gt;= y1)
     )</code></pre>
 </details>
 </dd>

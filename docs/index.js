@@ -251,6 +251,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widgets.Button.can_focus_children",
+"url":5,
+"doc":""
+},
+{
 "ref":"textual.widgets.Button.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
@@ -262,6 +267,11 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Button.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.Button.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -316,6 +326,18 @@ INDEX=[
 "ref":"textual.widgets.Button.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.widgets.Button.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.widgets.Button.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -468,7 +490,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.widgets.Button.css_path",
+"ref":"textual.widgets.Button.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -691,12 +713,22 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widgets.DirectoryTree.can_focus_children",
+"url":5,
+"doc":""
+},
+{
 "ref":"textual.widgets.DirectoryTree.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.DirectoryTree.auto_height",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.DirectoryTree.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -751,6 +783,18 @@ INDEX=[
 "ref":"textual.widgets.DirectoryTree.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.widgets.DirectoryTree.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.widgets.DirectoryTree.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -909,7 +953,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.widgets.DirectoryTree.css_path",
+"ref":"textual.widgets.DirectoryTree.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -1173,6 +1217,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widgets.Footer.can_focus_children",
+"url":5,
+"doc":""
+},
+{
 "ref":"textual.widgets.Footer.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
@@ -1184,6 +1233,11 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Footer.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.Footer.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -1238,6 +1292,18 @@ INDEX=[
 "ref":"textual.widgets.Footer.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.widgets.Footer.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.widgets.Footer.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -1390,7 +1456,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.widgets.Footer.css_path",
+"ref":"textual.widgets.Footer.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -1620,6 +1686,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widgets.Header.can_focus_children",
+"url":5,
+"doc":""
+},
+{
 "ref":"textual.widgets.Header.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
@@ -1631,6 +1702,11 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Header.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.Header.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -1685,6 +1761,18 @@ INDEX=[
 "ref":"textual.widgets.Header.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.widgets.Header.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.widgets.Header.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -1837,7 +1925,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.widgets.Header.css_path",
+"ref":"textual.widgets.Header.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -2052,12 +2140,22 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widgets.Placeholder.can_focus_children",
+"url":5,
+"doc":""
+},
+{
 "ref":"textual.widgets.Placeholder.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.Placeholder.auto_height",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.Placeholder.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -2107,6 +2205,18 @@ INDEX=[
 "ref":"textual.widgets.Placeholder.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.widgets.Placeholder.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.widgets.Placeholder.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -2259,7 +2369,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.widgets.Placeholder.css_path",
+"ref":"textual.widgets.Placeholder.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -2441,6 +2551,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widgets.Static.can_focus_children",
+"url":5,
+"doc":""
+},
+{
 "ref":"textual.widgets.Static.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
@@ -2452,6 +2567,11 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.Static.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.Static.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -2506,6 +2626,18 @@ INDEX=[
 "ref":"textual.widgets.Static.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.widgets.Static.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.widgets.Static.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -2658,7 +2790,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.widgets.Static.css_path",
+"ref":"textual.widgets.Static.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -2991,6 +3123,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widgets.TreeControl.can_focus_children",
+"url":5,
+"doc":""
+},
+{
 "ref":"textual.widgets.TreeControl.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
@@ -3002,6 +3139,11 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.TreeControl.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.TreeControl.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -3056,6 +3198,18 @@ INDEX=[
 "ref":"textual.widgets.TreeControl.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.widgets.TreeControl.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.widgets.TreeControl.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -3208,7 +3362,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.widgets.TreeControl.css_path",
+"ref":"textual.widgets.TreeControl.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -3531,6 +3685,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widgets.tabs.Tabs.can_focus_children",
+"url":10,
+"doc":""
+},
+{
 "ref":"textual.widgets.tabs.Tabs.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
@@ -3542,6 +3701,11 @@ INDEX=[
 },
 {
 "ref":"textual.widgets.tabs.Tabs.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.tabs.Tabs.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -3596,6 +3760,18 @@ INDEX=[
 "ref":"textual.widgets.tabs.Tabs.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.widgets.tabs.Tabs.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.widgets.tabs.Tabs.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -3748,7 +3924,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.widgets.tabs.Tabs.css_path",
+"ref":"textual.widgets.tabs.Tabs.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -6413,6 +6589,124 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.DescendantFocus",
+"url":22,
+"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+},
+{
+"ref":"textual.events.DescendantFocus.sender",
+"url":22,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.DescendantFocus.bubble",
+"url":22,
+"doc":""
+},
+{
+"ref":"textual.events.DescendantFocus.verbosity",
+"url":22,
+"doc":""
+},
+{
+"ref":"textual.events.DescendantFocus.system",
+"url":22,
+"doc":""
+},
+{
+"ref":"textual.events.DescendantFocus.set_forwarded",
+"url":9,
+"doc":"Mark this event as being forwarded.",
+"func":1
+},
+{
+"ref":"textual.events.DescendantFocus.can_replace",
+"url":9,
+"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
+"func":1
+},
+{
+"ref":"textual.events.DescendantFocus.prevent_default",
+"url":9,
+"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.DescendantFocus.stop",
+"url":9,
+"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.DescendantFocus.name",
+"url":9,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.DescendantFocus.time",
+"url":9,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.DescendantBlur",
+"url":22,
+"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+},
+{
+"ref":"textual.events.DescendantBlur.sender",
+"url":22,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.DescendantBlur.bubble",
+"url":22,
+"doc":""
+},
+{
+"ref":"textual.events.DescendantBlur.verbosity",
+"url":22,
+"doc":""
+},
+{
+"ref":"textual.events.DescendantBlur.system",
+"url":22,
+"doc":""
+},
+{
+"ref":"textual.events.DescendantBlur.set_forwarded",
+"url":9,
+"doc":"Mark this event as being forwarded.",
+"func":1
+},
+{
+"ref":"textual.events.DescendantBlur.can_replace",
+"url":9,
+"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
+"func":1
+},
+{
+"ref":"textual.events.DescendantBlur.prevent_default",
+"url":9,
+"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.DescendantBlur.stop",
+"url":9,
+"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.DescendantBlur.name",
+"url":9,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.DescendantBlur.time",
+"url":9,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
 "ref":"textual.message",
 "url":9,
 "doc":""
@@ -6502,6 +6796,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.layout.Vertical.can_focus_children",
+"url":23,
+"doc":""
+},
+{
 "ref":"textual.layout.Vertical.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
@@ -6513,6 +6812,11 @@ INDEX=[
 },
 {
 "ref":"textual.layout.Vertical.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -6567,6 +6871,18 @@ INDEX=[
 "ref":"textual.layout.Vertical.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -6725,7 +7041,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.layout.Vertical.css_path",
+"ref":"textual.layout.Vertical.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -6900,6 +7216,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.layout.Horizontal.can_focus_children",
+"url":23,
+"doc":""
+},
+{
 "ref":"textual.layout.Horizontal.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
@@ -6911,6 +7232,11 @@ INDEX=[
 },
 {
 "ref":"textual.layout.Horizontal.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -6965,6 +7291,18 @@ INDEX=[
 "ref":"textual.layout.Horizontal.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -7123,7 +7461,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.layout.Horizontal.css_path",
+"ref":"textual.layout.Horizontal.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -8013,6 +8351,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.screen.Screen.can_focus_children",
+"url":28,
+"doc":""
+},
+{
 "ref":"textual.screen.Screen.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
@@ -8024,6 +8367,11 @@ INDEX=[
 },
 {
 "ref":"textual.screen.Screen.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.screen.Screen.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -8078,6 +8426,18 @@ INDEX=[
 "ref":"textual.screen.Screen.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -8224,7 +8584,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.screen.Screen.css_path",
+"ref":"textual.screen.Screen.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -8861,6 +9221,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.scrollbar.ScrollBar.can_focus_children",
+"url":29,
+"doc":""
+},
+{
 "ref":"textual.scrollbar.ScrollBar.auto_width",
 "url":6,
 "doc":"Reactive descriptor."
@@ -8872,6 +9237,11 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollBar.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -8921,6 +9291,18 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.get_box_model",
 "url":6,
 "doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.get_content_width",
+"url":6,
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.get_content_height",
+"url":6,
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -9073,7 +9455,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.css_path",
+"ref":"textual.scrollbar.ScrollBar.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -10071,7 +10453,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.dom.DOMNode.css_path",
+"ref":"textual.dom.DOMNode.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -11208,7 +11590,7 @@ INDEX=[
 {
 "ref":"textual.app.App",
 "url":48,
-"doc":"The base class for Textual Applications Textual application base class Args: driver_class (Type[Driver] | None, optional): Driver class or  None to auto-detect. Defaults to None. log (str, optional): Path to log file, or  to disable. Defaults to  . log_verbosity (int, optional): Log verbosity from 0-3. Defaults to 1. title (str, optional): Default title of the application. Defaults to \"Textual Application\". css_file (str | None, optional): Path to CSS or  None for no CSS file. Defaults to None. watch_css (bool, optional): Watch CSS for changes. Defaults to True."
+"doc":"The base class for Textual Applications Textual application base class Args: driver_class (Type[Driver] | None, optional): Driver class or  None to auto-detect. Defaults to None. log_path (str | PurePath, optional): Path to log file, or  to disable. Defaults to  . log_verbosity (int, optional): Log verbosity from 0-3. Defaults to 1. title (str, optional): Default title of the application. Defaults to \"Textual Application\". css_path (str | PurePath | None, optional): Path to CSS or  None for no CSS file. Defaults to None. watch_css (bool, optional): Watch CSS for changes. Defaults to False."
 },
 {
 "ref":"textual.app.App.CSS",
@@ -11638,7 +12020,7 @@ INDEX=[
 "doc":"Get a set of all pseudo classes"
 },
 {
-"ref":"textual.app.App.css_path",
+"ref":"textual.app.App.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
@@ -12035,13 +12417,13 @@ INDEX=[
 {
 "ref":"textual.css.stylesheet.Stylesheet.read",
 "url":53,
-"doc":"Read Textual CSS file. Args: filename (str): filename of CSS. Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
+"doc":"Read Textual CSS file. Args: filename (str | PurePath): filename of CSS. Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.add_source",
 "url":53,
-"doc":"Parse CSS from a string. Args: css (str): String with CSS source. path (str, optional): The path of the source if a file, or some other identifier. Defaults to  . Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
+"doc":"Parse CSS from a string. Args: css (str): String with CSS source. path (str | PurePath, optional): The path of the source if a file, or some other identifier. Defaults to None. Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
 "func":1
 },
 {
@@ -13904,6 +14286,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widget.Widget.can_focus_children",
+"url":6,
+"doc":""
+},
+{
 "ref":"textual.widget.Widget.CSS",
 "url":6,
 "doc":""
@@ -13920,6 +14307,11 @@ INDEX=[
 },
 {
 "ref":"textual.widget.Widget.has_focus",
+"url":6,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widget.Widget.descendant_has_focus",
 "url":6,
 "doc":"Reactive descriptor."
 },
@@ -13985,13 +14377,13 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.get_content_width",
 "url":6,
-"doc":"",
+"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.get_content_height",
 "url":6,
-"doc":"",
+"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -14358,6 +14750,18 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.on_descendant_focus",
+"url":6,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.on_descendant_blur",
+"url":6,
+"doc":"",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.on_mouse_scroll_down",
 "url":6,
 "doc":"",
@@ -14483,7 +14887,7 @@ INDEX=[
 "doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
-"ref":"textual.widget.Widget.css_path",
+"ref":"textual.widget.Widget.css_path_nodes",
 "url":7,
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },

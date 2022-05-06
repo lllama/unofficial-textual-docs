@@ -93,6 +93,7 @@ class RenderCache(NamedTuple):
 class Widget(DOMNode):
 
     can_focus: bool = False
+    can_focus_children: bool = True
 
     CSS = &#34;&#34;&#34;
     &#34;&#34;&#34;
@@ -125,6 +126,7 @@ class Widget(DOMNode):
     auto_width = Reactive(True)
     auto_height = Reactive(True)
     has_focus = Reactive(False)
+    descendant_has_focus = Reactive(False)
     mouse_over = Reactive(False)
     scroll_x = Reactive(0.0, repaint=False)
     scroll_y = Reactive(0.0, repaint=False)
@@ -172,14 +174,40 @@ class Widget(DOMNode):
         )
         return box_model
 
-    def get_content_width(self, container_size: Size, parent_size: Size) -&gt; int:
+    def get_content_width(self, container_size: Size, viewport_size: Size) -&gt; int:
+        &#34;&#34;&#34;Gets the width of the content area.
+
+        Args:
+            container_size (Size): Size of the container (immediate parent) widget.
+            viewport_size (Size): Size of the viewport.
+
+        Returns:
+            int: The optimal width of the content.
+        &#34;&#34;&#34;
         console = self.app.console
         renderable = self.render()
         measurement = Measurement.get(console, console.options, renderable)
         return measurement.maximum
 
-    def get_content_height(self, container_size: Size, parent_size: Size) -&gt; int:
-        return container_size.height
+    def get_content_height(
+        self, container_size: Size, viewport_size: Size, width: int
+    ) -&gt; int:
+        &#34;&#34;&#34;Gets the height (number of lines) in the content area.
+
+        Args:
+            container_size (Size): Size of the container (immediate parent) widget.
+            viewport_size (Size): Size of the viewport.
+            width (int): Width of renderable.
+
+        Returns:
+            int: The height of the content.
+        &#34;&#34;&#34;
+        renderable = self.render()
+        options = self.console.options.update_width(width)
+        segments = self.console.render(renderable, options)
+        # Cheaper than counting the lines returned from render_lines!
+        height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
+        return height
 
     async def watch_scroll_x(self, new_value: float) -&gt; None:
         self.horizontal_scrollbar.position = int(new_value)
@@ -375,9 +403,12 @@ class Widget(DOMNode):
             x=self.scroll_target_x + self.container_size.width, animate=animate
         )
 
-    def __init_subclass__(cls, can_focus: bool = True) -&gt; None:
+    def __init_subclass__(
+        cls, can_focus: bool = True, can_focus_children: bool = True
+    ) -&gt; None:
         super().__init_subclass__()
         cls.can_focus = can_focus
+        cls.can_focus_children = can_focus_children
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;id&#34;, self.id, None
@@ -448,6 +479,8 @@ class Widget(DOMNode):
             yield &#34;hover&#34;
         if self.has_focus:
             yield &#34;focus&#34;
+        if self.descendant_has_focus:
+            yield &#34;focus-within&#34;
 
     def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
         watch(self, attribute_name, callback)
@@ -745,10 +778,18 @@ class Widget(DOMNode):
         self.mouse_over = True
 
     def on_focus(self, event: events.Focus) -&gt; None:
+        self.emit_no_wait(events.DescendantFocus(self))
         self.has_focus = True
 
     def on_blur(self, event: events.Blur) -&gt; None:
+        self.emit_no_wait(events.DescendantBlur(self))
         self.has_focus = False
+
+    def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
+        self.descendant_has_focus = True
+
+    def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
+        self.descendant_has_focus = False
 
     def on_mouse_scroll_down(self, event) -&gt; None:
         if self.is_container:
@@ -911,6 +952,7 @@ def cursor_line(self) -&gt; int | None:
 <pre><code class="python">class Widget(DOMNode):
 
     can_focus: bool = False
+    can_focus_children: bool = True
 
     CSS = &#34;&#34;&#34;
     &#34;&#34;&#34;
@@ -943,6 +985,7 @@ def cursor_line(self) -&gt; int | None:
     auto_width = Reactive(True)
     auto_height = Reactive(True)
     has_focus = Reactive(False)
+    descendant_has_focus = Reactive(False)
     mouse_over = Reactive(False)
     scroll_x = Reactive(0.0, repaint=False)
     scroll_y = Reactive(0.0, repaint=False)
@@ -990,14 +1033,40 @@ def cursor_line(self) -&gt; int | None:
         )
         return box_model
 
-    def get_content_width(self, container_size: Size, parent_size: Size) -&gt; int:
+    def get_content_width(self, container_size: Size, viewport_size: Size) -&gt; int:
+        &#34;&#34;&#34;Gets the width of the content area.
+
+        Args:
+            container_size (Size): Size of the container (immediate parent) widget.
+            viewport_size (Size): Size of the viewport.
+
+        Returns:
+            int: The optimal width of the content.
+        &#34;&#34;&#34;
         console = self.app.console
         renderable = self.render()
         measurement = Measurement.get(console, console.options, renderable)
         return measurement.maximum
 
-    def get_content_height(self, container_size: Size, parent_size: Size) -&gt; int:
-        return container_size.height
+    def get_content_height(
+        self, container_size: Size, viewport_size: Size, width: int
+    ) -&gt; int:
+        &#34;&#34;&#34;Gets the height (number of lines) in the content area.
+
+        Args:
+            container_size (Size): Size of the container (immediate parent) widget.
+            viewport_size (Size): Size of the viewport.
+            width (int): Width of renderable.
+
+        Returns:
+            int: The height of the content.
+        &#34;&#34;&#34;
+        renderable = self.render()
+        options = self.console.options.update_width(width)
+        segments = self.console.render(renderable, options)
+        # Cheaper than counting the lines returned from render_lines!
+        height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
+        return height
 
     async def watch_scroll_x(self, new_value: float) -&gt; None:
         self.horizontal_scrollbar.position = int(new_value)
@@ -1193,9 +1262,12 @@ def cursor_line(self) -&gt; int | None:
             x=self.scroll_target_x + self.container_size.width, animate=animate
         )
 
-    def __init_subclass__(cls, can_focus: bool = True) -&gt; None:
+    def __init_subclass__(
+        cls, can_focus: bool = True, can_focus_children: bool = True
+    ) -&gt; None:
         super().__init_subclass__()
         cls.can_focus = can_focus
+        cls.can_focus_children = can_focus_children
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;id&#34;, self.id, None
@@ -1266,6 +1338,8 @@ def cursor_line(self) -&gt; int | None:
             yield &#34;hover&#34;
         if self.has_focus:
             yield &#34;focus&#34;
+        if self.descendant_has_focus:
+            yield &#34;focus-within&#34;
 
     def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
         watch(self, attribute_name, callback)
@@ -1563,10 +1637,18 @@ def cursor_line(self) -&gt; int | None:
         self.mouse_over = True
 
     def on_focus(self, event: events.Focus) -&gt; None:
+        self.emit_no_wait(events.DescendantFocus(self))
         self.has_focus = True
 
     def on_blur(self, event: events.Blur) -&gt; None:
+        self.emit_no_wait(events.DescendantBlur(self))
         self.has_focus = False
+
+    def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
+        self.descendant_has_focus = True
+
+    def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
+        self.descendant_has_focus = False
 
     def on_mouse_scroll_down(self, event) -&gt; None:
         if self.is_container:
@@ -1680,6 +1762,10 @@ def cursor_line(self) -&gt; int | None:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.widget.Widget.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
@@ -1743,6 +1829,17 @@ def console(self) -&gt; Console:
 <pre><code class="python">@property
 def container_size(self) -&gt; Size:
     return self._container_size</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.descendant_has_focus"><code class="name">var <span class="ident">descendant_has_focus</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.has_focus"><code class="name">var <span class="ident">has_focus</span> : ReactiveType</code></dt>
@@ -2206,28 +2303,80 @@ def virtual_size(self) -&gt; Size:
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_content_height"><code class="name flex">
-<span>def <span class="ident">get_content_height</span></span>(<span>self, container_size: Size, parent_size: Size) ‑> int</span>
+<span>def <span class="ident">get_content_height</span></span>(<span>self, container_size: Size, viewport_size: Size, width: int) ‑> int</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Gets the height (number of lines) in the content area.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>container_size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>Size of the container (immediate parent) widget.</dd>
+<dt><strong><code>viewport_size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>Size of the viewport.</dd>
+<dt><strong><code>width</code></strong> :&ensp;<code>int</code></dt>
+<dd>Width of renderable.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The height of the content.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_content_height(self, container_size: Size, parent_size: Size) -&gt; int:
-    return container_size.height</code></pre>
+<pre><code class="python">def get_content_height(
+    self, container_size: Size, viewport_size: Size, width: int
+) -&gt; int:
+    &#34;&#34;&#34;Gets the height (number of lines) in the content area.
+
+    Args:
+        container_size (Size): Size of the container (immediate parent) widget.
+        viewport_size (Size): Size of the viewport.
+        width (int): Width of renderable.
+
+    Returns:
+        int: The height of the content.
+    &#34;&#34;&#34;
+    renderable = self.render()
+    options = self.console.options.update_width(width)
+    segments = self.console.render(renderable, options)
+    # Cheaper than counting the lines returned from render_lines!
+    height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
+    return height</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_content_width"><code class="name flex">
-<span>def <span class="ident">get_content_width</span></span>(<span>self, container_size: Size, parent_size: Size) ‑> int</span>
+<span>def <span class="ident">get_content_width</span></span>(<span>self, container_size: Size, viewport_size: Size) ‑> int</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Gets the width of the content area.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>container_size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>Size of the container (immediate parent) widget.</dd>
+<dt><strong><code>viewport_size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>Size of the viewport.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The optimal width of the content.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_content_width(self, container_size: Size, parent_size: Size) -&gt; int:
+<pre><code class="python">def get_content_width(self, container_size: Size, viewport_size: Size) -&gt; int:
+    &#34;&#34;&#34;Gets the width of the content area.
+
+    Args:
+        container_size (Size): Size of the container (immediate parent) widget.
+        viewport_size (Size): Size of the viewport.
+
+    Returns:
+        int: The optimal width of the content.
+    &#34;&#34;&#34;
     console = self.app.console
     renderable = self.render()
     measurement = Measurement.get(console, console.options, renderable)
@@ -2248,7 +2397,9 @@ def virtual_size(self) -&gt; Size:
     if self.mouse_over:
         yield &#34;hover&#34;
     if self.has_focus:
-        yield &#34;focus&#34;</code></pre>
+        yield &#34;focus&#34;
+    if self.descendant_has_focus:
+        yield &#34;focus-within&#34;</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_render_lines"><code class="name flex">
@@ -2530,6 +2681,7 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def on_blur(self, event: events.Blur) -&gt; None:
+    self.emit_no_wait(events.DescendantBlur(self))
     self.has_focus = False</code></pre>
 </details>
 </dd>
@@ -2544,6 +2696,32 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 </summary>
 <pre><code class="python">async def on_click(self, event: events.Click) -&gt; None:
     await self.broker_event(&#34;click&#34;, event)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_descendant_blur"><code class="name flex">
+<span>def <span class="ident">on_descendant_blur</span></span>(<span>self, event: events.DescendantBlur) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
+    self.descendant_has_focus = False</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_descendant_focus"><code class="name flex">
+<span>def <span class="ident">on_descendant_focus</span></span>(<span>self, event: events.DescendantFocus) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
+    self.descendant_has_focus = True</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_enter"><code class="name flex">
@@ -2569,6 +2747,7 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def on_focus(self, event: events.Focus) -&gt; None:
+    self.emit_no_wait(events.DescendantFocus(self))
     self.has_focus = True</code></pre>
 </details>
 </dd>
@@ -3287,7 +3466,7 @@ next idle event. Only one refresh will be done even if this method is called mul
 <li><code><a title="textual.dom.DOMNode.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
-<li><code><a title="textual.dom.DOMNode.css_path" href="dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.dom.DOMNode.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_type" href="dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.dom.DOMNode.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
@@ -3396,11 +3575,13 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.auto_width" href="#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.broker_event" href="#textual.widget.Widget.broker_event">broker_event</a></code></li>
 <li><code><a title="textual.widget.Widget.can_focus" href="#textual.widget.Widget.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus_children" href="#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_layout" href="#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.compose" href="#textual.widget.Widget.compose">compose</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.container_size" href="#textual.widget.Widget.container_size">container_size</a></code></li>
+<li><code><a title="textual.widget.Widget.descendant_has_focus" href="#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.forward_event" href="#textual.widget.Widget.forward_event">forward_event</a></code></li>
 <li><code><a title="textual.widget.Widget.get_box_model" href="#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
@@ -3433,6 +3614,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.mouse_over" href="#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_blur" href="#textual.widget.Widget.on_blur">on_blur</a></code></li>
 <li><code><a title="textual.widget.Widget.on_click" href="#textual.widget.Widget.on_click">on_click</a></code></li>
+<li><code><a title="textual.widget.Widget.on_descendant_blur" href="#textual.widget.Widget.on_descendant_blur">on_descendant_blur</a></code></li>
+<li><code><a title="textual.widget.Widget.on_descendant_focus" href="#textual.widget.Widget.on_descendant_focus">on_descendant_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.on_enter" href="#textual.widget.Widget.on_enter">on_enter</a></code></li>
 <li><code><a title="textual.widget.Widget.on_focus" href="#textual.widget.Widget.on_focus">on_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.on_idle" href="#textual.widget.Widget.on_idle">on_idle</a></code></li>

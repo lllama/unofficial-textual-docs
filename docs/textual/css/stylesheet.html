@@ -31,7 +31,7 @@
 import os
 from collections import defaultdict
 from operator import itemgetter
-from pathlib import Path
+from pathlib import Path, PurePath
 from typing import cast, Iterable
 
 import rich.repr
@@ -177,13 +177,13 @@ class Stylesheet:
         &#34;&#34;&#34;
         self.variables = variables
 
-    def _parse_rules(self, css: str, path: str) -&gt; list[RuleSet]:
+    def _parse_rules(self, css: str, path: str | PurePath) -&gt; list[RuleSet]:
         &#34;&#34;&#34;Parse CSS and return rules.
 
 
         Args:
             css (str): String containing Textual CSS.
-            path (str): Path to CSS or unique identifier
+            path (str | PurePath): Path to CSS or unique identifier
 
         Raises:
             StylesheetError: If the CSS is invalid.
@@ -199,11 +199,11 @@ class Stylesheet:
             raise StylesheetError(f&#34;failed to parse css; {error}&#34;)
         return rules
 
-    def read(self, filename: str) -&gt; None:
+    def read(self, filename: str | PurePath) -&gt; None:
         &#34;&#34;&#34;Read Textual CSS file.
 
         Args:
-            filename (str): filename of CSS.
+            filename (str | PurePath): filename of CSS.
 
         Raises:
             StylesheetError: If the CSS could not be read.
@@ -216,15 +216,16 @@ class Stylesheet:
             path = os.path.abspath(filename)
         except Exception as error:
             raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
-        self.source[path] = css
+        self.source[str(path)] = css
         self._require_parse = True
 
-    def add_source(self, css: str, path: str | None = None) -&gt; None:
+    def add_source(self, css: str, path: str | PurePath | None = None) -&gt; None:
         &#34;&#34;&#34;Parse CSS from a string.
 
         Args:
             css (str): String with CSS source.
-            path (str, optional): The path of the source if a file, or some other identifier. Defaults to &#34;&#34;.
+            path (str | PurePath, optional): The path of the source if a file, or some other identifier.
+                Defaults to None.
 
         Raises:
             StylesheetError: If the CSS could not be read.
@@ -233,6 +234,8 @@ class Stylesheet:
 
         if path is None:
             path = str(hash(css))
+        elif isinstance(path, PurePath):
+            path = str(css)
         if path in self.source and self.source[path] == css:
             # Path already in source, and CSS is identical
             return
@@ -543,13 +546,13 @@ if __name__ == &#34;__main__&#34;:
         &#34;&#34;&#34;
         self.variables = variables
 
-    def _parse_rules(self, css: str, path: str) -&gt; list[RuleSet]:
+    def _parse_rules(self, css: str, path: str | PurePath) -&gt; list[RuleSet]:
         &#34;&#34;&#34;Parse CSS and return rules.
 
 
         Args:
             css (str): String containing Textual CSS.
-            path (str): Path to CSS or unique identifier
+            path (str | PurePath): Path to CSS or unique identifier
 
         Raises:
             StylesheetError: If the CSS is invalid.
@@ -565,11 +568,11 @@ if __name__ == &#34;__main__&#34;:
             raise StylesheetError(f&#34;failed to parse css; {error}&#34;)
         return rules
 
-    def read(self, filename: str) -&gt; None:
+    def read(self, filename: str | PurePath) -&gt; None:
         &#34;&#34;&#34;Read Textual CSS file.
 
         Args:
-            filename (str): filename of CSS.
+            filename (str | PurePath): filename of CSS.
 
         Raises:
             StylesheetError: If the CSS could not be read.
@@ -582,15 +585,16 @@ if __name__ == &#34;__main__&#34;:
             path = os.path.abspath(filename)
         except Exception as error:
             raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
-        self.source[path] = css
+        self.source[str(path)] = css
         self._require_parse = True
 
-    def add_source(self, css: str, path: str | None = None) -&gt; None:
+    def add_source(self, css: str, path: str | PurePath | None = None) -&gt; None:
         &#34;&#34;&#34;Parse CSS from a string.
 
         Args:
             css (str): String with CSS source.
-            path (str, optional): The path of the source if a file, or some other identifier. Defaults to &#34;&#34;.
+            path (str | PurePath, optional): The path of the source if a file, or some other identifier.
+                Defaults to None.
 
         Raises:
             StylesheetError: If the CSS could not be read.
@@ -599,6 +603,8 @@ if __name__ == &#34;__main__&#34;:
 
         if path is None:
             path = str(hash(css))
+        elif isinstance(path, PurePath):
+            path = str(css)
         if path in self.source and self.source[path] == css:
             # Path already in source, and CSS is identical
             return
@@ -885,7 +891,7 @@ def rules(self) -&gt; list[RuleSet]:
 <h3>Methods</h3>
 <dl>
 <dt id="textual.css.stylesheet.Stylesheet.add_source"><code class="name flex">
-<span>def <span class="ident">add_source</span></span>(<span>self, css: str, path: str | None = None) ‑> None</span>
+<span>def <span class="ident">add_source</span></span>(<span>self, css: str, path: str | PurePath | None = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse CSS from a string.</p>
@@ -893,9 +899,9 @@ def rules(self) -&gt; list[RuleSet]:
 <dl>
 <dt><strong><code>css</code></strong> :&ensp;<code>str</code></dt>
 <dd>String with CSS source.</dd>
-<dt><strong><code>path</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>The path of the source if a file, or some other identifier. Defaults to "".</dd>
 </dl>
+<p>path (str | PurePath, optional): The path of the source if a file, or some other identifier.
+Defaults to None.</p>
 <h2 id="raises">Raises</h2>
 <dl>
 <dt><code>StylesheetError</code></dt>
@@ -907,12 +913,13 @@ def rules(self) -&gt; list[RuleSet]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_source(self, css: str, path: str | None = None) -&gt; None:
+<pre><code class="python">def add_source(self, css: str, path: str | PurePath | None = None) -&gt; None:
     &#34;&#34;&#34;Parse CSS from a string.
 
     Args:
         css (str): String with CSS source.
-        path (str, optional): The path of the source if a file, or some other identifier. Defaults to &#34;&#34;.
+        path (str | PurePath, optional): The path of the source if a file, or some other identifier.
+            Defaults to None.
 
     Raises:
         StylesheetError: If the CSS could not be read.
@@ -921,6 +928,8 @@ def rules(self) -&gt; list[RuleSet]:
 
     if path is None:
         path = str(hash(css))
+    elif isinstance(path, PurePath):
+        path = str(css)
     if path in self.source and self.source[path] == css:
         # Path already in source, and CSS is identical
         return
@@ -1029,15 +1038,12 @@ rule will be applied.</dd>
 </details>
 </dd>
 <dt id="textual.css.stylesheet.Stylesheet.read"><code class="name flex">
-<span>def <span class="ident">read</span></span>(<span>self, filename: str) ‑> None</span>
+<span>def <span class="ident">read</span></span>(<span>self, filename: str | PurePath) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Read Textual CSS file.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>filename</code></strong> :&ensp;<code>str</code></dt>
-<dd>filename of CSS.</dd>
-</dl>
+<p>filename (str | PurePath): filename of CSS.</p>
 <h2 id="raises">Raises</h2>
 <dl>
 <dt><code>StylesheetError</code></dt>
@@ -1049,11 +1055,11 @@ rule will be applied.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def read(self, filename: str) -&gt; None:
+<pre><code class="python">def read(self, filename: str | PurePath) -&gt; None:
     &#34;&#34;&#34;Read Textual CSS file.
 
     Args:
-        filename (str): filename of CSS.
+        filename (str | PurePath): filename of CSS.
 
     Raises:
         StylesheetError: If the CSS could not be read.
@@ -1066,7 +1072,7 @@ rule will be applied.</dd>
         path = os.path.abspath(filename)
     except Exception as error:
         raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
-    self.source[path] = css
+    self.source[str(path)] = css
     self._require_parse = True</code></pre>
 </details>
 </dd>

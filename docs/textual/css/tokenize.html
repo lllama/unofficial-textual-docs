@@ -29,6 +29,7 @@
 <pre><code class="python">from __future__ import annotations
 
 import re
+from pathlib import PurePath
 from typing import Iterable
 
 from textual.css.tokenizer import Expect, Tokenizer, Token
@@ -164,7 +165,7 @@ class TokenizerState:
         &#34;declaration_set_end&#34;: expect_root_scope,
     }
 
-    def __call__(self, code: str, path: str) -&gt; Iterable[Token]:
+    def __call__(self, code: str, path: str | PurePath) -&gt; Iterable[Token]:
         tokenizer = Tokenizer(code, path=path)
         expect = self.EXPECT
         get_token = tokenizer.get_token
@@ -369,7 +370,7 @@ the value of that variable.</dd>
         &#34;declaration_set_end&#34;: expect_root_scope,
     }
 
-    def __call__(self, code: str, path: str) -&gt; Iterable[Token]:
+    def __call__(self, code: str, path: str | PurePath) -&gt; Iterable[Token]:
         tokenizer = Tokenizer(code, path=path)
         expect = self.EXPECT
         get_token = tokenizer.get_token

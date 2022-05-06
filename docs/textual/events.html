@@ -420,6 +420,14 @@ class Focus(Event, bubble=False):
 
 
 class Blur(Event, bubble=False):
+    pass
+
+
+class DescendantFocus(Event, bubble=True):
+    pass
+
+
+class DescendantBlur(Event, bubble=True):
     pass</code></pre>
 </details>
 </section>
@@ -699,6 +707,112 @@ class Blur(Event, bubble=False):
 </li>
 </ul>
 </dd>
+<dt id="textual.events.DescendantBlur"><code class="flex name class">
+<span>class <span class="ident">DescendantBlur</span></span>
+<span>(</span><span>sender: MessageTarget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for a message.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DescendantBlur(Event, bubble=True):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.events.Event" href="#textual.events.Event">Event</a></li>
+<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.events.DescendantBlur.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.DescendantBlur.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.DescendantBlur.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.events.DescendantFocus"><code class="flex name class">
+<span>class <span class="ident">DescendantFocus</span></span>
+<span>(</span><span>sender: MessageTarget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for a message.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DescendantFocus(Event, bubble=True):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.events.Event" href="#textual.events.Event">Event</a></li>
+<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.events.DescendantFocus.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.DescendantFocus.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.DescendantFocus.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="textual.events.DoubleClick"><code class="flex name class">
 <span>class <span class="ident">DoubleClick</span></span>
 <span>(</span><span>sender: MessageTarget, x: int, y: int, delta_x: int, delta_y: int, button: int, shift: bool, meta: bool, ctrl: bool, screen_x: int | None = None, screen_y: int | None = None, style: Style | None = None)</span>
@@ -871,6 +985,8 @@ class Blur(Event, bubble=False):
 <li><a title="textual.events.Action" href="#textual.events.Action">Action</a></li>
 <li><a title="textual.events.Blur" href="#textual.events.Blur">Blur</a></li>
 <li><a title="textual.events.Callback" href="#textual.events.Callback">Callback</a></li>
+<li><a title="textual.events.DescendantBlur" href="#textual.events.DescendantBlur">DescendantBlur</a></li>
+<li><a title="textual.events.DescendantFocus" href="#textual.events.DescendantFocus">DescendantFocus</a></li>
 <li><a title="textual.events.Enter" href="#textual.events.Enter">Enter</a></li>
 <li><a title="textual.events.Focus" href="#textual.events.Focus">Focus</a></li>
 <li><a title="textual.events.Hide" href="#textual.events.Hide">Hide</a></li>
@@ -2776,6 +2892,22 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Click.bubble" href="#textual.events.Click.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Click.system" href="#textual.events.Click.system">system</a></code></li>
 <li><code><a title="textual.events.Click.verbosity" href="#textual.events.Click.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.events.DescendantBlur" href="#textual.events.DescendantBlur">DescendantBlur</a></code></h4>
+<ul class="">
+<li><code><a title="textual.events.DescendantBlur.bubble" href="#textual.events.DescendantBlur.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.DescendantBlur.system" href="#textual.events.DescendantBlur.system">system</a></code></li>
+<li><code><a title="textual.events.DescendantBlur.verbosity" href="#textual.events.DescendantBlur.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.events.DescendantFocus" href="#textual.events.DescendantFocus">DescendantFocus</a></code></h4>
+<ul class="">
+<li><code><a title="textual.events.DescendantFocus.bubble" href="#textual.events.DescendantFocus.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.DescendantFocus.system" href="#textual.events.DescendantFocus.system">system</a></code></li>
+<li><code><a title="textual.events.DescendantFocus.verbosity" href="#textual.events.DescendantFocus.verbosity">verbosity</a></code></li>
 </ul>
 </li>
 <li>

@@ -35,6 +35,7 @@ import platform
 import sys
 import warnings
 from contextlib import redirect_stdout
+from pathlib import PurePath
 from time import perf_counter
 from typing import (
     Any,
@@ -133,21 +134,21 @@ class App(Generic[ReturnType], DOMNode):
     def __init__(
         self,
         driver_class: Type[Driver] | None = None,
-        log: str = &#34;&#34;,
+        log_path: str | PurePath = &#34;&#34;,
         log_verbosity: int = 1,
         title: str = &#34;Textual Application&#34;,
-        css_file: str | None = None,
-        watch_css: bool = True,
+        css_path: str | PurePath | None = None,
+        watch_css: bool = False,
     ):
         &#34;&#34;&#34;Textual application base class
 
         Args:
             driver_class (Type[Driver] | None, optional): Driver class or ``None`` to auto-detect. Defaults to None.
-            log (str, optional): Path to log file, or &#34;&#34; to disable. Defaults to &#34;&#34;.
+            log_path (str | PurePath, optional): Path to log file, or &#34;&#34; to disable. Defaults to &#34;&#34;.
             log_verbosity (int, optional): Log verbosity from 0-3. Defaults to 1.
             title (str, optional): Default title of the application. Defaults to &#34;Textual Application&#34;.
-            css_file (str | None, optional): Path to CSS or ``None`` for no CSS file. Defaults to None.
-            watch_css (bool, optional): Watch CSS for changes. Defaults to True.
+            css_path (str | PurePath | None, optional): Path to CSS or ``None`` for no CSS file. Defaults to None.
+            watch_css (bool, optional): Watch CSS for changes. Defaults to False.
         &#34;&#34;&#34;
         # N.B. This must be done *before* we call the parent constructor, because MessagePump&#39;s
         # constructor instantiates a `asyncio.PriorityQueue` and in Python versions older than 3.10
@@ -178,8 +179,8 @@ class App(Generic[ReturnType], DOMNode):
 
         self._log_console: Console | None = None
         self._log_file: TextIO | None = None
-        if log:
-            self._log_file = open(log, &#34;wt&#34;)
+        if log_path:
+            self._log_file = open(log_path, &#34;wt&#34;)
             self._log_console = Console(
                 file=self._log_file,
                 markup=False,
@@ -198,18 +199,20 @@ class App(Generic[ReturnType], DOMNode):
         self.stylesheet = Stylesheet(variables=self.get_css_variables())
         self._require_styles_update = False
 
-        self.css_file = css_file
-        self.css_monitor = (
-            FileMonitor(css_file, self._on_css_change)
-            if (watch_css and css_file)
-            else None
-        )
+        self.css_path = css_path
 
         self.features: frozenset[FeatureFlag] = parse_features(os.getenv(&#34;TEXTUAL&#34;, &#34;&#34;))
+
         self.registry: set[MessagePump] = set()
         self.devtools = DevtoolsClient()
         self._return_value: ReturnType | None = None
         self._focus_timer: Timer | None = None
+
+        self.css_monitor = (
+            FileMonitor(css_path, self._on_css_change)
+            if ((watch_css or self.debug) and css_path)
+            else None
+        )
 
         super().__init__()
 
@@ -252,7 +255,7 @@ class App(Generic[ReturnType], DOMNode):
             if node is None:
                 pop()
             else:
-                if node.is_container and node.can_focus:
+                if node.is_container and node.can_focus_children:
                     push(iter(node.focusable_children))
                 else:
                     if node.can_focus:
@@ -477,13 +480,13 @@ class App(Generic[ReturnType], DOMNode):
 
     async def _on_css_change(self) -&gt; None:
         &#34;&#34;&#34;Called when the CSS changes (if watch_css is True).&#34;&#34;&#34;
-        if self.css_file is not None:
+        if self.css_path is not None:
 
             try:
                 time = perf_counter()
-                self.stylesheet.read(self.css_file)
+                self.stylesheet.read(self.css_path)
                 elapsed = (perf_counter() - time) * 1000
-                self.log(f&#34;loaded {self.css_file} in {elapsed:.0f}ms&#34;)
+                self.log(f&#34;loaded {self.css_path} in {elapsed:.0f}ms&#34;)
             except Exception as error:
                 # TODO: Catch specific exceptions
                 self.console.bell()
@@ -564,16 +567,19 @@ class App(Generic[ReturnType], DOMNode):
             # No focus, so blur currently focused widget if it exists
             if self.focused is not None:
                 self.focused.post_message_no_wait(events.Blur(self))
+                self.focused.emit_no_wait(events.DescendantBlur(self))
                 self.focused = None
         elif widget.can_focus:
             if self.focused != widget:
                 if self.focused is not None:
                     # Blur currently focused widget
                     self.focused.post_message_no_wait(events.Blur(self))
+                    self.focused.emit_no_wait(events.DescendantBlur(self))
                 # Change focus
                 self.focused = widget
                 # Send focus event
                 widget.post_message_no_wait(events.Focus(self))
+                widget.emit_no_wait(events.DescendantFocus(self))
 
     async def _set_mouse_over(self, widget: Widget | None) -&gt; None:
         &#34;&#34;&#34;Called when the mouse is over another widget.
@@ -663,9 +669,6 @@ class App(Generic[ReturnType], DOMNode):
 
     async def process_messages(self) -&gt; None:
         self._set_active()
-        log(&#34;---&#34;)
-        log(f&#34;driver={self.driver_class}&#34;)
-        log(f&#34;asyncio running loop={asyncio.get_running_loop()!r}&#34;)
 
         if self.devtools_enabled:
             try:
@@ -673,9 +676,15 @@ class App(Generic[ReturnType], DOMNode):
                 self.log(f&#34;Connected to devtools ({self.devtools.url})&#34;)
             except DevtoolsConnectionError:
                 self.log(f&#34;Couldn&#39;t connect to devtools ({self.devtools.url})&#34;)
+
+        self.log(&#34;---&#34;)
+        self.log(driver=self.driver_class)
+        self.log(loop=asyncio.get_running_loop())
+        self.log(features=self.features)
+
         try:
-            if self.css_file is not None:
-                self.stylesheet.read(self.css_file)
+            if self.css_path is not None:
+                self.stylesheet.read(self.css_path)
             if self.CSS is not None:
                 self.stylesheet.add_source(
                     self.CSS, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
@@ -693,8 +702,6 @@ class App(Generic[ReturnType], DOMNode):
         try:
             load_event = events.Load(sender=self)
             await self.dispatch_message(load_event)
-            # Wait for the load event to be processed, so we don&#39;t go in to application mode beforehand
-            # await load_event.wait()
 
             driver = self._driver = self.driver_class(self.console, self)
             driver.start_application_mode()
@@ -1101,7 +1108,7 @@ def _init_uvloop() -&gt; None:
 </dd>
 <dt id="textual.app.App"><code class="flex name class">
 <span>class <span class="ident">App</span></span>
-<span>(</span><span>driver_class: Type[Driver] | None = None, log: str = '', log_verbosity: int = 1, title: str = 'Textual Application', css_file: str | None = None, watch_css: bool = True)</span>
+<span>(</span><span>driver_class: Type[Driver] | None = None, log_path: str | PurePath = '', log_verbosity: int = 1, title: str = 'Textual Application', css_path: str | PurePath | None = None, watch_css: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The base class for Textual Applications</p>
@@ -1109,15 +1116,14 @@ def _init_uvloop() -&gt; None:
 <h2 id="args">Args</h2>
 <dl>
 <dt>driver_class (Type[Driver] | None, optional): Driver class or <code>None</code> to auto-detect. Defaults to None.</dt>
-<dt><strong><code>log</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>Path to log file, or "" to disable. Defaults to "".</dd>
+<dt>log_path (str | PurePath, optional): Path to log file, or "" to disable. Defaults to "".</dt>
 <dt><strong><code>log_verbosity</code></strong> :&ensp;<code>int</code>, optional</dt>
 <dd>Log verbosity from 0-3. Defaults to 1.</dd>
 <dt><strong><code>title</code></strong> :&ensp;<code>str</code>, optional</dt>
 <dd>Default title of the application. Defaults to "Textual Application".</dd>
-<dt>css_file (str | None, optional): Path to CSS or <code>None</code> for no CSS file. Defaults to None.</dt>
+<dt>css_path (str | PurePath | None, optional): Path to CSS or <code>None</code> for no CSS file. Defaults to None.</dt>
 <dt><strong><code>watch_css</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Watch CSS for changes. Defaults to True.</dd>
+<dd>Watch CSS for changes. Defaults to False.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1133,21 +1139,21 @@ def _init_uvloop() -&gt; None:
     def __init__(
         self,
         driver_class: Type[Driver] | None = None,
-        log: str = &#34;&#34;,
+        log_path: str | PurePath = &#34;&#34;,
         log_verbosity: int = 1,
         title: str = &#34;Textual Application&#34;,
-        css_file: str | None = None,
-        watch_css: bool = True,
+        css_path: str | PurePath | None = None,
+        watch_css: bool = False,
     ):
         &#34;&#34;&#34;Textual application base class
 
         Args:
             driver_class (Type[Driver] | None, optional): Driver class or ``None`` to auto-detect. Defaults to None.
-            log (str, optional): Path to log file, or &#34;&#34; to disable. Defaults to &#34;&#34;.
+            log_path (str | PurePath, optional): Path to log file, or &#34;&#34; to disable. Defaults to &#34;&#34;.
             log_verbosity (int, optional): Log verbosity from 0-3. Defaults to 1.
             title (str, optional): Default title of the application. Defaults to &#34;Textual Application&#34;.
-            css_file (str | None, optional): Path to CSS or ``None`` for no CSS file. Defaults to None.
-            watch_css (bool, optional): Watch CSS for changes. Defaults to True.
+            css_path (str | PurePath | None, optional): Path to CSS or ``None`` for no CSS file. Defaults to None.
+            watch_css (bool, optional): Watch CSS for changes. Defaults to False.
         &#34;&#34;&#34;
         # N.B. This must be done *before* we call the parent constructor, because MessagePump&#39;s
         # constructor instantiates a `asyncio.PriorityQueue` and in Python versions older than 3.10
@@ -1178,8 +1184,8 @@ def _init_uvloop() -&gt; None:
 
         self._log_console: Console | None = None
         self._log_file: TextIO | None = None
-        if log:
-            self._log_file = open(log, &#34;wt&#34;)
+        if log_path:
+            self._log_file = open(log_path, &#34;wt&#34;)
             self._log_console = Console(
                 file=self._log_file,
                 markup=False,
@@ -1198,18 +1204,20 @@ def _init_uvloop() -&gt; None:
         self.stylesheet = Stylesheet(variables=self.get_css_variables())
         self._require_styles_update = False
 
-        self.css_file = css_file
-        self.css_monitor = (
-            FileMonitor(css_file, self._on_css_change)
-            if (watch_css and css_file)
-            else None
-        )
+        self.css_path = css_path
 
         self.features: frozenset[FeatureFlag] = parse_features(os.getenv(&#34;TEXTUAL&#34;, &#34;&#34;))
+
         self.registry: set[MessagePump] = set()
         self.devtools = DevtoolsClient()
         self._return_value: ReturnType | None = None
         self._focus_timer: Timer | None = None
+
+        self.css_monitor = (
+            FileMonitor(css_path, self._on_css_change)
+            if ((watch_css or self.debug) and css_path)
+            else None
+        )
 
         super().__init__()
 
@@ -1252,7 +1260,7 @@ def _init_uvloop() -&gt; None:
             if node is None:
                 pop()
             else:
-                if node.is_container and node.can_focus:
+                if node.is_container and node.can_focus_children:
                     push(iter(node.focusable_children))
                 else:
                     if node.can_focus:
@@ -1477,13 +1485,13 @@ def _init_uvloop() -&gt; None:
 
     async def _on_css_change(self) -&gt; None:
         &#34;&#34;&#34;Called when the CSS changes (if watch_css is True).&#34;&#34;&#34;
-        if self.css_file is not None:
+        if self.css_path is not None:
 
             try:
                 time = perf_counter()
-                self.stylesheet.read(self.css_file)
+                self.stylesheet.read(self.css_path)
                 elapsed = (perf_counter() - time) * 1000
-                self.log(f&#34;loaded {self.css_file} in {elapsed:.0f}ms&#34;)
+                self.log(f&#34;loaded {self.css_path} in {elapsed:.0f}ms&#34;)
             except Exception as error:
                 # TODO: Catch specific exceptions
                 self.console.bell()
@@ -1564,16 +1572,19 @@ def _init_uvloop() -&gt; None:
             # No focus, so blur currently focused widget if it exists
             if self.focused is not None:
                 self.focused.post_message_no_wait(events.Blur(self))
+                self.focused.emit_no_wait(events.DescendantBlur(self))
                 self.focused = None
         elif widget.can_focus:
             if self.focused != widget:
                 if self.focused is not None:
                     # Blur currently focused widget
                     self.focused.post_message_no_wait(events.Blur(self))
+                    self.focused.emit_no_wait(events.DescendantBlur(self))
                 # Change focus
                 self.focused = widget
                 # Send focus event
                 widget.post_message_no_wait(events.Focus(self))
+                widget.emit_no_wait(events.DescendantFocus(self))
 
     async def _set_mouse_over(self, widget: Widget | None) -&gt; None:
         &#34;&#34;&#34;Called when the mouse is over another widget.
@@ -1663,9 +1674,6 @@ def _init_uvloop() -&gt; None:
 
     async def process_messages(self) -&gt; None:
         self._set_active()
-        log(&#34;---&#34;)
-        log(f&#34;driver={self.driver_class}&#34;)
-        log(f&#34;asyncio running loop={asyncio.get_running_loop()!r}&#34;)
 
         if self.devtools_enabled:
             try:
@@ -1673,9 +1681,15 @@ def _init_uvloop() -&gt; None:
                 self.log(f&#34;Connected to devtools ({self.devtools.url})&#34;)
             except DevtoolsConnectionError:
                 self.log(f&#34;Couldn&#39;t connect to devtools ({self.devtools.url})&#34;)
+
+        self.log(&#34;---&#34;)
+        self.log(driver=self.driver_class)
+        self.log(loop=asyncio.get_running_loop())
+        self.log(features=self.features)
+
         try:
-            if self.css_file is not None:
-                self.stylesheet.read(self.css_file)
+            if self.css_path is not None:
+                self.stylesheet.read(self.css_path)
             if self.CSS is not None:
                 self.stylesheet.add_source(
                     self.CSS, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
@@ -1693,8 +1707,6 @@ def _init_uvloop() -&gt; None:
         try:
             load_event = events.Load(sender=self)
             await self.dispatch_message(load_event)
-            # Wait for the load event to be processed, so we don&#39;t go in to application mode beforehand
-            # await load_event.wait()
 
             driver = self._driver = self.driver_class(self.console, self)
             driver.start_application_mode()
@@ -2144,7 +2156,7 @@ def focus_chain(self) -&gt; list[Widget]:
         if node is None:
             pop()
         else:
-            if node.is_container and node.can_focus:
+            if node.is_container and node.can_focus_children:
                 push(iter(node.focusable_children))
             else:
                 if node.can_focus:
@@ -3139,9 +3151,6 @@ the log message sent to the devtools server.</p></div>
 </summary>
 <pre><code class="python">async def process_messages(self) -&gt; None:
     self._set_active()
-    log(&#34;---&#34;)
-    log(f&#34;driver={self.driver_class}&#34;)
-    log(f&#34;asyncio running loop={asyncio.get_running_loop()!r}&#34;)
 
     if self.devtools_enabled:
         try:
@@ -3149,9 +3158,15 @@ the log message sent to the devtools server.</p></div>
             self.log(f&#34;Connected to devtools ({self.devtools.url})&#34;)
         except DevtoolsConnectionError:
             self.log(f&#34;Couldn&#39;t connect to devtools ({self.devtools.url})&#34;)
+
+    self.log(&#34;---&#34;)
+    self.log(driver=self.driver_class)
+    self.log(loop=asyncio.get_running_loop())
+    self.log(features=self.features)
+
     try:
-        if self.css_file is not None:
-            self.stylesheet.read(self.css_file)
+        if self.css_path is not None:
+            self.stylesheet.read(self.css_path)
         if self.CSS is not None:
             self.stylesheet.add_source(
                 self.CSS, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
@@ -3169,8 +3184,6 @@ the log message sent to the devtools server.</p></div>
     try:
         load_event = events.Load(sender=self)
         await self.dispatch_message(load_event)
-        # Wait for the load event to be processed, so we don&#39;t go in to application mode beforehand
-        # await load_event.wait()
 
         driver = self._driver = self.driver_class(self.console, self)
         driver.start_application_mode()
@@ -3454,16 +3467,19 @@ one internally. Defaults to None.</p>
         # No focus, so blur currently focused widget if it exists
         if self.focused is not None:
             self.focused.post_message_no_wait(events.Blur(self))
+            self.focused.emit_no_wait(events.DescendantBlur(self))
             self.focused = None
     elif widget.can_focus:
         if self.focused != widget:
             if self.focused is not None:
                 # Blur currently focused widget
                 self.focused.post_message_no_wait(events.Blur(self))
+                self.focused.emit_no_wait(events.DescendantBlur(self))
             # Change focus
             self.focused = widget
             # Send focus event
-            widget.post_message_no_wait(events.Focus(self))</code></pre>
+            widget.post_message_no_wait(events.Focus(self))
+            widget.emit_no_wait(events.DescendantFocus(self))</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.show_focus"><code class="name flex">
@@ -3582,7 +3598,7 @@ one internally. Defaults to None.</p>
 <li><code><a title="textual.dom.DOMNode.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
-<li><code><a title="textual.dom.DOMNode.css_path" href="dom.html#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.dom.DOMNode.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_type" href="dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.dom.DOMNode.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>

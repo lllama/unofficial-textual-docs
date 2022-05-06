@@ -35,6 +35,7 @@ import base64
 import json
 import pickle
 from json import JSONDecodeError
+from time import time
 from typing import cast
 
 from aiohttp import WSMessage, WSMsgType
@@ -186,6 +187,7 @@ class ClientHandler:
         &#34;&#34;&#34;Consume messages from the incoming (client -&gt; server) Queue, and print
         the corresponding renderables to the console for each message.
         &#34;&#34;&#34;
+        last_message_time: float | None = None
         while True:
             message_json = await self.incoming_queue.get()
             if message_json is None:
@@ -200,6 +202,13 @@ class ClientHandler:
                 encoded_segments = message_json[&#34;payload&#34;][&#34;encoded_segments&#34;]
                 decoded_segments = base64.b64decode(encoded_segments)
                 segments = pickle.loads(decoded_segments)
+                message_time = time()
+                if (
+                    last_message_time is not None
+                    and message_time - last_message_time &gt; 1
+                ):
+                    # Print a rule if it has been longer than a second since the last message
+                    self.service.console.rule(&#34;&#34;)
                 self.service.console.print(
                     DevConsoleLog(
                         segments=segments,
@@ -208,6 +217,7 @@ class ClientHandler:
                         unix_timestamp=timestamp,
                     )
                 )
+                last_message_time = message_time
             elif type == &#34;client_spillover&#34;:
                 spillover = int(message_json[&#34;payload&#34;][&#34;spillover&#34;])
                 info_renderable = DevConsoleNotice(
@@ -363,6 +373,7 @@ for the handling of this client.</dd>
         &#34;&#34;&#34;Consume messages from the incoming (client -&gt; server) Queue, and print
         the corresponding renderables to the console for each message.
         &#34;&#34;&#34;
+        last_message_time: float | None = None
         while True:
             message_json = await self.incoming_queue.get()
             if message_json is None:
@@ -377,6 +388,13 @@ for the handling of this client.</dd>
                 encoded_segments = message_json[&#34;payload&#34;][&#34;encoded_segments&#34;]
                 decoded_segments = base64.b64decode(encoded_segments)
                 segments = pickle.loads(decoded_segments)
+                message_time = time()
+                if (
+                    last_message_time is not None
+                    and message_time - last_message_time &gt; 1
+                ):
+                    # Print a rule if it has been longer than a second since the last message
+                    self.service.console.rule(&#34;&#34;)
                 self.service.console.print(
                     DevConsoleLog(
                         segments=segments,
@@ -385,6 +403,7 @@ for the handling of this client.</dd>
                         unix_timestamp=timestamp,
                     )
                 )
+                last_message_time = message_time
             elif type == &#34;client_spillover&#34;:
                 spillover = int(message_json[&#34;payload&#34;][&#34;spillover&#34;])
                 info_renderable = DevConsoleNotice(

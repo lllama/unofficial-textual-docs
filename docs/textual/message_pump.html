@@ -274,7 +274,9 @@ class MessagePump:
                 if self._message_queue.empty():
                     if not self._closed:
                         event = events.Idle(self)
-                        for method in self._get_dispatch_methods(&#34;on_idle&#34;, event):
+                        for _cls, method in self._get_dispatch_methods(
+                            &#34;on_idle&#34;, event
+                        ):
                             await invoke(method, event)
 
         log(&#34;CLOSED&#34;, self)
@@ -292,18 +294,25 @@ class MessagePump:
 
     def _get_dispatch_methods(
         self, method_name: str, message: Message
-    ) -&gt; Iterable[Callable[[Message], Awaitable]]:
+    ) -&gt; Iterable[tuple[type, Callable[[Message], Awaitable]]]:
         for cls in self.__class__.__mro__:
             if message._no_default_action:
                 break
             method = cls.__dict__.get(method_name, None)
             if method is not None:
-                yield method.__get__(self, cls)
+                yield cls, method.__get__(self, cls)
 
     async def on_event(self, event: events.Event) -&gt; None:
         _rich_traceback_guard = True
-        for method in self._get_dispatch_methods(f&#34;on_{event.name}&#34;, event):
-            log(event, &#34;&gt;&gt;&gt;&#34;, self, verbosity=event.verbosity)
+
+        for cls, method in self._get_dispatch_methods(f&#34;on_{event.name}&#34;, event):
+            log(
+                event,
+                &#34;&gt;&gt;&gt;&#34;,
+                self,
+                f&#34;method=&lt;{cls.__name__}.{method.__func__.__name__}&gt;&#34;,
+                verbosity=event.verbosity,
+            )
             await invoke(method, event)
 
         if event.bubble and self._parent and not event._stop_propagation:
@@ -695,7 +704,9 @@ class MessagePump:
                 if self._message_queue.empty():
                     if not self._closed:
                         event = events.Idle(self)
-                        for method in self._get_dispatch_methods(&#34;on_idle&#34;, event):
+                        for _cls, method in self._get_dispatch_methods(
+                            &#34;on_idle&#34;, event
+                        ):
                             await invoke(method, event)
 
         log(&#34;CLOSED&#34;, self)
@@ -713,18 +724,25 @@ class MessagePump:
 
     def _get_dispatch_methods(
         self, method_name: str, message: Message
-    ) -&gt; Iterable[Callable[[Message], Awaitable]]:
+    ) -&gt; Iterable[tuple[type, Callable[[Message], Awaitable]]]:
         for cls in self.__class__.__mro__:
             if message._no_default_action:
                 break
             method = cls.__dict__.get(method_name, None)
             if method is not None:
-                yield method.__get__(self, cls)
+                yield cls, method.__get__(self, cls)
 
     async def on_event(self, event: events.Event) -&gt; None:
         _rich_traceback_guard = True
-        for method in self._get_dispatch_methods(f&#34;on_{event.name}&#34;, event):
-            log(event, &#34;&gt;&gt;&gt;&#34;, self, verbosity=event.verbosity)
+
+        for cls, method in self._get_dispatch_methods(f&#34;on_{event.name}&#34;, event):
+            log(
+                event,
+                &#34;&gt;&gt;&gt;&#34;,
+                self,
+                f&#34;method=&lt;{cls.__name__}.{method.__func__.__name__}&gt;&#34;,
+                verbosity=event.verbosity,
+            )
             await invoke(method, event)
 
         if event.bubble and self._parent and not event._stop_propagation:
@@ -1187,8 +1205,15 @@ def task(self) -&gt; Task:
 </summary>
 <pre><code class="python">async def on_event(self, event: events.Event) -&gt; None:
     _rich_traceback_guard = True
-    for method in self._get_dispatch_methods(f&#34;on_{event.name}&#34;, event):
-        log(event, &#34;&gt;&gt;&gt;&#34;, self, verbosity=event.verbosity)
+
+    for cls, method in self._get_dispatch_methods(f&#34;on_{event.name}&#34;, event):
+        log(
+            event,
+            &#34;&gt;&gt;&gt;&#34;,
+            self,
+            f&#34;method=&lt;{cls.__name__}.{method.__func__.__name__}&gt;&#34;,
+            verbosity=event.verbosity,
+        )
         await invoke(method, event)
 
     if event.bubble and self._parent and not event._stop_propagation:

@@ -29,6 +29,7 @@
 <pre><code class="python">from __future__ import annotations
 
 import re
+from pathlib import PurePath
 from typing import NamedTuple
 
 from rich.console import Group, RenderableType
@@ -176,8 +177,8 @@ class Token(NamedTuple):
 
 
 class Tokenizer:
-    def __init__(self, text: str, path: str = &#34;&#34;) -&gt; None:
-        self.path = path
+    def __init__(self, text: str, path: str | PurePath = &#34;&#34;) -&gt; None:
+        self.path = str(path)
         self.code = text
         self.lines = text.splitlines(keepends=True)
         self.line_no = 0
@@ -584,7 +585,7 @@ to is used.</p></div>
 </dd>
 <dt id="textual.css.tokenizer.Tokenizer"><code class="flex name class">
 <span>class <span class="ident">Tokenizer</span></span>
-<span>(</span><span>text: str, path: str = '')</span>
+<span>(</span><span>text: str, path: str | PurePath = '')</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -593,8 +594,8 @@ to is used.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Tokenizer:
-    def __init__(self, text: str, path: str = &#34;&#34;) -&gt; None:
-        self.path = path
+    def __init__(self, text: str, path: str | PurePath = &#34;&#34;) -&gt; None:
+        self.path = str(path)
         self.code = text
         self.lines = text.splitlines(keepends=True)
         self.line_no = 0

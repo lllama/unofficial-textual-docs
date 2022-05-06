@@ -195,7 +195,7 @@ class DOMNode(MessagePump):
         return self.__class__.__name__.lower()
 
     @property
-    def css_path(self) -&gt; list[DOMNode]:
+    def css_path_nodes(self) -&gt; list[DOMNode]:
         &#34;&#34;&#34;A list of nodes from the root to this node, forming a &#34;path&#34;.
 
         Returns:
@@ -674,7 +674,7 @@ class DOMNode(MessagePump):
         return self.__class__.__name__.lower()
 
     @property
-    def css_path(self) -&gt; list[DOMNode]:
+    def css_path_nodes(self) -&gt; list[DOMNode]:
         &#34;&#34;&#34;A list of nodes from the root to this node, forming a &#34;path&#34;.
 
         Returns:
@@ -1088,7 +1088,7 @@ def css_identifier_styled(self) -&gt; Text:
     return tokens</code></pre>
 </details>
 </dd>
-<dt id="textual.dom.DOMNode.css_path"><code class="name">var <span class="ident">css_path</span> : list[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>]</code></dt>
+<dt id="textual.dom.DOMNode.css_path_nodes"><code class="name">var <span class="ident">css_path_nodes</span> : list[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>]</code></dt>
 <dd>
 <div class="desc"><p>A list of nodes from the root to this node, forming a "path".</p>
 <h2 id="returns">Returns</h2>
@@ -1101,7 +1101,7 @@ def css_identifier_styled(self) -&gt; Text:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def css_path(self) -&gt; list[DOMNode]:
+def css_path_nodes(self) -&gt; list[DOMNode]:
     &#34;&#34;&#34;A list of nodes from the root to this node, forming a &#34;path&#34;.
 
     Returns:
@@ -1902,7 +1902,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.classes" href="#textual.dom.DOMNode.classes">classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
-<li><code><a title="textual.dom.DOMNode.css_path" href="#textual.dom.DOMNode.css_path">css_path</a></code></li>
+<li><code><a title="textual.dom.DOMNode.css_path_nodes" href="#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_type" href="#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.dom.DOMNode.displayed_children" href="#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
