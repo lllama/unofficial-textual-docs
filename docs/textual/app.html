@@ -48,6 +48,11 @@ from typing import (
     TYPE_CHECKING,
 )
 
+if sys.version_info &gt;= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal  # pragma: no cover
+
 import rich
 import rich.repr
 from rich.console import Console, RenderableType
@@ -136,6 +141,10 @@ class App(Generic[ReturnType], DOMNode):
         driver_class: Type[Driver] | None = None,
         log_path: str | PurePath = &#34;&#34;,
         log_verbosity: int = 1,
+        # TODO: make this Literal a proper type in Rich, so we re-use it?
+        log_color_system: Literal[
+            &#34;auto&#34;, &#34;standard&#34;, &#34;256&#34;, &#34;truecolor&#34;, &#34;windows&#34;
+        ] = &#34;auto&#34;,
         title: str = &#34;Textual Application&#34;,
         css_path: str | PurePath | None = None,
         watch_css: bool = False,
@@ -183,6 +192,7 @@ class App(Generic[ReturnType], DOMNode):
             self._log_file = open(log_path, &#34;wt&#34;)
             self._log_console = Console(
                 file=self._log_file,
+                color_system=log_color_system,
                 markup=False,
                 emoji=False,
                 highlight=False,
@@ -522,6 +532,9 @@ class App(Generic[ReturnType], DOMNode):
 
         Returns:
             DOMNode: The first child of this node with the specified ID.
+
+        Raises:
+            NoMatchingNodesError: if no children could be found for this ID
         &#34;&#34;&#34;
         return self.screen.get_child(id)
 
@@ -1108,7 +1121,7 @@ def _init_uvloop() -&gt; None:
 </dd>
 <dt id="textual.app.App"><code class="flex name class">
 <span>class <span class="ident">App</span></span>
-<span>(</span><span>driver_class: Type[Driver] | None = None, log_path: str | PurePath = '', log_verbosity: int = 1, title: str = 'Textual Application', css_path: str | PurePath | None = None, watch_css: bool = False)</span>
+<span>(</span><span>driver_class: Type[Driver] | None = None, log_path: str | PurePath = '', log_verbosity: int = 1, log_color_system: "Literal[('auto', 'standard', '256', 'truecolor', 'windows')]" = 'auto', title: str = 'Textual Application', css_path: str | PurePath | None = None, watch_css: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The base class for Textual Applications</p>
@@ -1141,6 +1154,10 @@ def _init_uvloop() -&gt; None:
         driver_class: Type[Driver] | None = None,
         log_path: str | PurePath = &#34;&#34;,
         log_verbosity: int = 1,
+        # TODO: make this Literal a proper type in Rich, so we re-use it?
+        log_color_system: Literal[
+            &#34;auto&#34;, &#34;standard&#34;, &#34;256&#34;, &#34;truecolor&#34;, &#34;windows&#34;
+        ] = &#34;auto&#34;,
         title: str = &#34;Textual Application&#34;,
         css_path: str | PurePath | None = None,
         watch_css: bool = False,
@@ -1188,6 +1205,7 @@ def _init_uvloop() -&gt; None:
             self._log_file = open(log_path, &#34;wt&#34;)
             self._log_console = Console(
                 file=self._log_file,
+                color_system=log_color_system,
                 markup=False,
                 emoji=False,
                 highlight=False,
@@ -1527,6 +1545,9 @@ def _init_uvloop() -&gt; None:
 
         Returns:
             DOMNode: The first child of this node with the specified ID.
+
+        Raises:
+            NoMatchingNodesError: if no children could be found for this ID
         &#34;&#34;&#34;
         return self.screen.get_child(id)
 
@@ -2625,6 +2646,11 @@ with the given ID.</p>
 <dl>
 <dt><code>DOMNode</code></dt>
 <dd>The first child of this node with the specified ID.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NoMatchingNodesError</code></dt>
+<dd>if no children could be found for this ID</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -2640,6 +2666,9 @@ with the given ID.</p>
 
     Returns:
         DOMNode: The first child of this node with the specified ID.
+
+    Raises:
+        NoMatchingNodesError: if no children could be found for this ID
     &#34;&#34;&#34;
     return self.screen.get_child(id)</code></pre>
 </details>

@@ -269,7 +269,13 @@ class StylesBase(ABC):
         Returns:
             Spacing: Space around widget.
         &#34;&#34;&#34;
-        spacing = Spacing() + self.padding + self.border.spacing
+        spacing = self.padding + self.border.spacing
+        return spacing
+
+    @property
+    def content_gutter(self) -&gt; Spacing:
+        &#34;&#34;&#34;The spacing that surrounds the content area of the widget.&#34;&#34;&#34;
+        spacing = self.padding + self.border.spacing + self.margin
         return spacing
 
     @abstractmethod
@@ -1067,6 +1073,7 @@ def inline(self) -&gt; Styles:
 <li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_gutter" href="#textual.css.styles.StylesBase.content_gutter">content_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
@@ -1930,6 +1937,7 @@ def css_lines(self) -&gt; list[str]:
 <li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_gutter" href="#textual.css.styles.StylesBase.content_gutter">content_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
@@ -2086,7 +2094,13 @@ def css_lines(self) -&gt; list[str]:
         Returns:
             Spacing: Space around widget.
         &#34;&#34;&#34;
-        spacing = Spacing() + self.padding + self.border.spacing
+        spacing = self.padding + self.border.spacing
+        return spacing
+
+    @property
+    def content_gutter(self) -&gt; Spacing:
+        &#34;&#34;&#34;The spacing that surrounds the content area of the widget.&#34;&#34;&#34;
+        spacing = self.padding + self.border.spacing + self.margin
         return spacing
 
     @abstractmethod
@@ -2632,6 +2646,20 @@ value belongs in the set of valid values.</p></div>
     return obj.get_rule(self.name, self._default)</code></pre>
 </details>
 </dd>
+<dt id="textual.css.styles.StylesBase.content_gutter"><code class="name">var <span class="ident">content_gutter</span> : <a title="textual.geometry.Spacing" href="../geometry.html#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd>
+<div class="desc"><p>The spacing that surrounds the content area of the widget.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def content_gutter(self) -&gt; Spacing:
+    &#34;&#34;&#34;The spacing that surrounds the content area of the widget.&#34;&#34;&#34;
+    spacing = self.padding + self.border.spacing + self.margin
+    return spacing</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.StylesBase.display"><code class="name">var <span class="ident">display</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
@@ -2722,7 +2750,7 @@ def gutter(self) -&gt; Spacing:
     Returns:
         Spacing: Space around widget.
     &#34;&#34;&#34;
-    spacing = Spacing() + self.padding + self.border.spacing
+    spacing = self.padding + self.border.spacing
     return spacing</code></pre>
 </details>
 </dd>
@@ -3942,6 +3970,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_gutter" href="#textual.css.styles.StylesBase.content_gutter">content_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>

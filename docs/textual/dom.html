@@ -425,6 +425,9 @@ class DOMNode(MessagePump):
 
         Returns:
             DOMNode: The first child of this node with the ID.
+
+        Raises:
+            NoMatchingNodesError: if no children could be found for this ID
         &#34;&#34;&#34;
         for child in self.children:
             if child.id == id:
@@ -904,6 +907,9 @@ class DOMNode(MessagePump):
 
         Returns:
             DOMNode: The first child of this node with the ID.
+
+        Raises:
+            NoMatchingNodesError: if no children could be found for this ID
         &#34;&#34;&#34;
         for child in self.children:
             if child.id == id:
@@ -1482,6 +1488,11 @@ def visible(self) -&gt; bool:
 <dl>
 <dt><code><a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a></code></dt>
 <dd>The first child of this node with the ID.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NoMatchingNodesError</code></dt>
+<dd>if no children could be found for this ID</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1495,6 +1506,9 @@ def visible(self) -&gt; bool:
 
     Returns:
         DOMNode: The first child of this node with the ID.
+
+    Raises:
+        NoMatchingNodesError: if no children could be found for this ID
     &#34;&#34;&#34;
     for child in self.children:
         if child.id == id:

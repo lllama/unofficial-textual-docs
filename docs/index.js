@@ -364,7 +364,19 @@ INDEX=[
 {
 "ref":"textual.widgets.Button.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.Button.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.Button.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -378,6 +390,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.widgets.Button.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.widgets.Button.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.widgets.Button.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.widgets.Button.is_transparent",
@@ -545,7 +572,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Button.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -821,7 +848,19 @@ INDEX=[
 {
 "ref":"textual.widgets.DirectoryTree.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.DirectoryTree.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.DirectoryTree.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -835,6 +874,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.widgets.DirectoryTree.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.widgets.DirectoryTree.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.widgets.DirectoryTree.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.widgets.DirectoryTree.is_transparent",
@@ -1008,7 +1062,7 @@ INDEX=[
 {
 "ref":"textual.widgets.DirectoryTree.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -1330,7 +1384,19 @@ INDEX=[
 {
 "ref":"textual.widgets.Footer.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.Footer.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.Footer.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -1344,6 +1410,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.widgets.Footer.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.widgets.Footer.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.widgets.Footer.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.widgets.Footer.is_transparent",
@@ -1511,7 +1592,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Footer.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -1799,7 +1880,19 @@ INDEX=[
 {
 "ref":"textual.widgets.Header.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.Header.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.Header.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -1813,6 +1906,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.widgets.Header.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.widgets.Header.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.widgets.Header.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.widgets.Header.is_transparent",
@@ -1980,7 +2088,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Header.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -2243,7 +2351,19 @@ INDEX=[
 {
 "ref":"textual.widgets.Placeholder.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.Placeholder.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.Placeholder.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -2257,6 +2377,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.widgets.Placeholder.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.widgets.Placeholder.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.widgets.Placeholder.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.widgets.Placeholder.is_transparent",
@@ -2424,7 +2559,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Placeholder.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -2664,7 +2799,19 @@ INDEX=[
 {
 "ref":"textual.widgets.Static.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.Static.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.Static.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -2678,6 +2825,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.widgets.Static.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.widgets.Static.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.widgets.Static.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.widgets.Static.is_transparent",
@@ -2845,7 +3007,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Static.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -3236,7 +3398,19 @@ INDEX=[
 {
 "ref":"textual.widgets.TreeControl.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.TreeControl.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.TreeControl.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -3250,6 +3424,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.widgets.TreeControl.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.widgets.TreeControl.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.widgets.TreeControl.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.widgets.TreeControl.is_transparent",
@@ -3417,7 +3606,7 @@ INDEX=[
 {
 "ref":"textual.widgets.TreeControl.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -3798,7 +3987,19 @@ INDEX=[
 {
 "ref":"textual.widgets.tabs.Tabs.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.tabs.Tabs.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widgets.tabs.Tabs.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -3812,6 +4013,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.widgets.tabs.Tabs.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.widgets.tabs.Tabs.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.widgets.tabs.Tabs.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.widgets.tabs.Tabs.is_transparent",
@@ -3979,7 +4195,7 @@ INDEX=[
 {
 "ref":"textual.widgets.tabs.Tabs.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -6909,7 +7125,19 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -6923,6 +7151,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.layout.Vertical.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.layout.Vertical.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.layout.Vertical.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.layout.Vertical.is_transparent",
@@ -7096,7 +7339,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -7329,7 +7572,19 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -7343,6 +7598,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.layout.Horizontal.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.layout.Horizontal.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.layout.Horizontal.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.layout.Horizontal.is_transparent",
@@ -7516,7 +7786,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -8304,7 +8574,7 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.screen.Screen.get_widget_region",
+"ref":"textual.screen.Screen.find_widget",
 "url":28,
 "doc":"Get the screen region of a Widget. Args: widget (Widget): A Widget within the composition. Returns: Region: Region relative to screen.",
 "func":1
@@ -8464,7 +8734,19 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -8478,6 +8760,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.screen.Screen.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.screen.Screen.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.screen.Screen.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.screen.Screen.is_transparent",
@@ -8639,7 +8936,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -9329,7 +9626,19 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -9343,6 +9652,21 @@ INDEX=[
 "url":6,
 "doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
 "func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.region",
+"url":6,
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.is_transparent",
@@ -9510,7 +9834,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -9762,6 +10086,21 @@ INDEX=[
 "doc":"Get the start point of the region."
 },
 {
+"ref":"textual.geometry.Region.bottom_left",
+"url":30,
+"doc":"Bottom left offset of the region."
+},
+{
+"ref":"textual.geometry.Region.top_right",
+"url":30,
+"doc":"Top right offset of the region."
+},
+{
+"ref":"textual.geometry.Region.bottom_right",
+"url":30,
+"doc":"Bottom right of the region."
+},
+{
 "ref":"textual.geometry.Region.size",
 "url":30,
 "doc":"Get the size of the region."
@@ -9774,17 +10113,17 @@ INDEX=[
 {
 "ref":"textual.geometry.Region.x_range",
 "url":30,
-"doc":"A range object for X coordinates"
+"doc":"A range object for X coordinates."
 },
 {
 "ref":"textual.geometry.Region.y_range",
 "url":30,
-"doc":"A range object for Y coordinates"
+"doc":"A range object for Y coordinates."
 },
 {
 "ref":"textual.geometry.Region.reset_origin",
 "url":30,
-"doc":"An region of the same size at the origin."
+"doc":"An region of the same size at (0, 0)."
 },
 {
 "ref":"textual.geometry.Region.expand",
@@ -10531,7 +10870,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -11739,7 +12078,7 @@ INDEX=[
 {
 "ref":"textual.app.App.get_child",
 "url":48,
-"doc":"Shorthand for self.screen.get_child(id: str) Returns the first child (immediate descendent) of this DOMNode with the given ID. Args: id (str): The ID of the node to search for. Returns: DOMNode: The first child of this node with the specified ID.",
+"doc":"Shorthand for self.screen.get_child(id: str) Returns the first child (immediate descendent) of this DOMNode with the given ID. Args: id (str): The ID of the node to search for. Returns: DOMNode: The first child of this node with the specified ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {
@@ -13448,6 +13787,11 @@ INDEX=[
 "doc":"Get space around widget. Returns: Spacing: Space around widget."
 },
 {
+"ref":"textual.css.styles.StylesBase.content_gutter",
+"url":64,
+"doc":"The spacing that surrounds the content area of the widget."
+},
+{
 "ref":"textual.css.styles.StylesBase.has_rule",
 "url":64,
 "doc":"Check if a rule is set on this Styles object. Args: rule (str): Rule name. Returns: bool:  True if the rules is present, otherwise  False .",
@@ -13859,6 +14203,11 @@ INDEX=[
 "doc":"Get space around widget. Returns: Spacing: Space around widget."
 },
 {
+"ref":"textual.css.styles.Styles.content_gutter",
+"url":64,
+"doc":"The spacing that surrounds the content area of the widget."
+},
+{
 "ref":"textual.css.styles.Styles.get_render_rules",
 "url":64,
 "doc":"Get rules map with defaults.",
@@ -14193,6 +14542,11 @@ INDEX=[
 "doc":"Get space around widget. Returns: Spacing: Space around widget."
 },
 {
+"ref":"textual.css.styles.RenderStyles.content_gutter",
+"url":64,
+"doc":"The spacing that surrounds the content area of the widget."
+},
+{
 "ref":"textual.css.styles.RenderStyles.get_render_rules",
 "url":64,
 "doc":"Get rules map with defaults.",
@@ -14456,7 +14810,13 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.scroll_to",
 "url":6,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: scroll_x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. scroll_y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.scroll_relative",
+"url":6,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
@@ -14520,6 +14880,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.scroll_to_widget",
+"url":6,
+"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.get_pseudo_classes",
 "url":6,
 "doc":"Pseudo classes for a widget",
@@ -14548,6 +14914,16 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widget.Widget.content_region",
+"url":6,
+"doc":"A region relative to the Widget origin that contains the content."
+},
+{
+"ref":"textual.widget.Widget.content_offset",
+"url":6,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
 "ref":"textual.widget.Widget.virtual_size",
 "url":6,
 "doc":""
@@ -14555,7 +14931,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.region",
 "url":6,
-"doc":""
+"doc":"The region occupied by this widget, relative to the Screen."
 },
 {
 "ref":"textual.widget.Widget.scroll_offset",
@@ -14942,7 +15318,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.get_child",
 "url":7,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID.",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
 "func":1
 },
 {

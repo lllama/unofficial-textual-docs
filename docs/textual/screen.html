@@ -36,7 +36,7 @@ from rich.style import Style
 from . import events, messages, errors
 
 from .geometry import Offset, Region
-from ._compositor import Compositor
+from ._compositor import Compositor, MapGeometry
 from .reactive import Reactive
 from .widget import Widget
 
@@ -48,8 +48,8 @@ class Screen(Widget):
     CSS = &#34;&#34;&#34;
     
     Screen {
-        layout: dock;
-        docks: _default=top;
+        layout: vertical;
+        overflow-y: auto;
         background: $surface;
         color: $text-surface;
     }
@@ -104,7 +104,7 @@ class Screen(Widget):
         &#34;&#34;&#34;
         return self._compositor.get_style_at(x, y)
 
-    def get_widget_region(self, widget: Widget) -&gt; Region:
+    def find_widget(self, widget: Widget) -&gt; MapGeometry:
         &#34;&#34;&#34;Get the screen region of a Widget.
 
         Args:
@@ -113,7 +113,7 @@ class Screen(Widget):
         Returns:
             Region: Region relative to screen.
         &#34;&#34;&#34;
-        return self._compositor.get_widget_region(widget)
+        return self._compositor.find_widget(widget)
 
     def on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
@@ -184,7 +184,7 @@ class Screen(Widget):
         try:
             if self.app.mouse_captured:
                 widget = self.app.mouse_captured
-                region = self.get_widget_region(widget)
+                region = self.find_widget(widget).region
             else:
                 widget, region = self.get_widget_at(event.x, event.y)
         except errors.NoWidget:
@@ -223,7 +223,7 @@ class Screen(Widget):
             try:
                 if self.app.mouse_captured:
                     widget = self.app.mouse_captured
-                    region = self.get_widget_region(widget)
+                    region = self.find_widget(widget).region
                 else:
                     widget, region = self.get_widget_at(event.x, event.y)
             except errors.NoWidget:
@@ -278,8 +278,8 @@ class Screen(Widget):
     CSS = &#34;&#34;&#34;
     
     Screen {
-        layout: dock;
-        docks: _default=top;
+        layout: vertical;
+        overflow-y: auto;
         background: $surface;
         color: $text-surface;
     }
@@ -334,7 +334,7 @@ class Screen(Widget):
         &#34;&#34;&#34;
         return self._compositor.get_style_at(x, y)
 
-    def get_widget_region(self, widget: Widget) -&gt; Region:
+    def find_widget(self, widget: Widget) -&gt; MapGeometry:
         &#34;&#34;&#34;Get the screen region of a Widget.
 
         Args:
@@ -343,7 +343,7 @@ class Screen(Widget):
         Returns:
             Region: Region relative to screen.
         &#34;&#34;&#34;
-        return self._compositor.get_widget_region(widget)
+        return self._compositor.find_widget(widget)
 
     def on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
@@ -414,7 +414,7 @@ class Screen(Widget):
         try:
             if self.app.mouse_captured:
                 widget = self.app.mouse_captured
-                region = self.get_widget_region(widget)
+                region = self.find_widget(widget).region
             else:
                 widget, region = self.get_widget_at(event.x, event.y)
         except errors.NoWidget:
@@ -453,7 +453,7 @@ class Screen(Widget):
             try:
                 if self.app.mouse_captured:
                     widget = self.app.mouse_captured
-                    region = self.get_widget_region(widget)
+                    region = self.find_widget(widget).region
                 else:
                     widget, region = self.get_widget_at(event.x, event.y)
             except errors.NoWidget:
@@ -523,6 +523,37 @@ class Screen(Widget):
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="textual.screen.Screen.find_widget"><code class="name flex">
+<span>def <span class="ident">find_widget</span></span>(<span>self, widget: Widget) ‑> textual._compositor.MapGeometry</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the screen region of a Widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>widget</code></strong> :&ensp;<code>Widget</code></dt>
+<dd>A Widget within the composition.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Region</code></dt>
+<dd>Region relative to screen.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def find_widget(self, widget: Widget) -&gt; MapGeometry:
+    &#34;&#34;&#34;Get the screen region of a Widget.
+
+    Args:
+        widget (Widget): A Widget within the composition.
+
+    Returns:
+        Region: Region relative to screen.
+    &#34;&#34;&#34;
+    return self._compositor.find_widget(widget)</code></pre>
+</details>
+</dd>
 <dt id="textual.screen.Screen.forward_event"><code class="name flex">
 <span>async def <span class="ident">forward_event</span></span>(<span>self, event: events.Event) ‑> None</span>
 </code></dt>
@@ -547,7 +578,7 @@ class Screen(Widget):
         try:
             if self.app.mouse_captured:
                 widget = self.app.mouse_captured
-                region = self.get_widget_region(widget)
+                region = self.find_widget(widget).region
             else:
                 widget, region = self.get_widget_at(event.x, event.y)
         except errors.NoWidget:
@@ -676,37 +707,6 @@ class Screen(Widget):
     return self._compositor.get_widget_at(x, y)</code></pre>
 </details>
 </dd>
-<dt id="textual.screen.Screen.get_widget_region"><code class="name flex">
-<span>def <span class="ident">get_widget_region</span></span>(<span>self, widget: Widget) ‑> <a title="textual.geometry.Region" href="geometry.html#textual.geometry.Region">Region</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Get the screen region of a Widget.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>widget</code></strong> :&ensp;<code>Widget</code></dt>
-<dd>A Widget within the composition.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Region</code></dt>
-<dd>Region relative to screen.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_widget_region(self, widget: Widget) -&gt; Region:
-    &#34;&#34;&#34;Get the screen region of a Widget.
-
-    Args:
-        widget (Widget): A Widget within the composition.
-
-    Returns:
-        Region: Region relative to screen.
-    &#34;&#34;&#34;
-    return self._compositor.get_widget_region(widget)</code></pre>
-</details>
-</dd>
 <dt id="textual.screen.Screen.handle_layout"><code class="name flex">
 <span>async def <span class="ident">handle_layout</span></span>(<span>self, message: messages.Layout) ‑> None</span>
 </code></dt>
@@ -832,6 +832,8 @@ class Screen(Widget):
 <li><code><a title="textual.widget.Widget.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.compose" href="widget.html#textual.widget.Widget.compose">compose</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.widget.Widget.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
+<li><code><a title="textual.widget.Widget.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
@@ -867,15 +869,18 @@ class Screen(Widget):
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.widget.Widget.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.widget.Widget.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.rich_text_style" href="dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_relative" href="widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_y" href="widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to_widget" href="widget.html#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
@@ -962,11 +967,11 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.screen.Screen.can_focus" href="#textual.screen.Screen.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.screen.Screen.can_focus_children" href="#textual.screen.Screen.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.screen.Screen.dark" href="#textual.screen.Screen.dark">dark</a></code></li>
+<li><code><a title="textual.screen.Screen.find_widget" href="#textual.screen.Screen.find_widget">find_widget</a></code></li>
 <li><code><a title="textual.screen.Screen.forward_event" href="#textual.screen.Screen.forward_event">forward_event</a></code></li>
 <li><code><a title="textual.screen.Screen.get_offset" href="#textual.screen.Screen.get_offset">get_offset</a></code></li>
 <li><code><a title="textual.screen.Screen.get_style_at" href="#textual.screen.Screen.get_style_at">get_style_at</a></code></li>
 <li><code><a title="textual.screen.Screen.get_widget_at" href="#textual.screen.Screen.get_widget_at">get_widget_at</a></code></li>
-<li><code><a title="textual.screen.Screen.get_widget_region" href="#textual.screen.Screen.get_widget_region">get_widget_region</a></code></li>
 <li><code><a title="textual.screen.Screen.handle_layout" href="#textual.screen.Screen.handle_layout">handle_layout</a></code></li>
 <li><code><a title="textual.screen.Screen.handle_update" href="#textual.screen.Screen.handle_update">handle_update</a></code></li>
 <li><code><a title="textual.screen.Screen.on_resize" href="#textual.screen.Screen.on_resize">on_resize</a></code></li>

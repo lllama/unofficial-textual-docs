@@ -423,11 +423,11 @@ class Blur(Event, bubble=False):
     pass
 
 
-class DescendantFocus(Event, bubble=True):
+class DescendantFocus(Event, verbosity=2, bubble=True):
     pass
 
 
-class DescendantBlur(Event, bubble=True):
+class DescendantBlur(Event, verbosity=2, bubble=True):
     pass</code></pre>
 </details>
 </section>
@@ -722,7 +722,7 @@ class DescendantBlur(Event, bubble=True):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DescendantBlur(Event, bubble=True):
+<pre><code class="python">class DescendantBlur(Event, verbosity=2, bubble=True):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -775,7 +775,7 @@ class DescendantBlur(Event, bubble=True):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DescendantFocus(Event, bubble=True):
+<pre><code class="python">class DescendantFocus(Event, verbosity=2, bubble=True):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
