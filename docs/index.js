@@ -230,7 +230,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Button.render",
 "url":5,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -944,7 +944,7 @@ INDEX=[
 {
 "ref":"textual.widgets.DirectoryTree.render",
 "url":6,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -1262,7 +1262,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Footer.render",
 "url":5,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -1746,7 +1746,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Header.render",
 "url":5,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -2208,14 +2208,9 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
-"ref":"textual.widgets.Placeholder.style",
-"url":5,
-"doc":"Reactive descriptor."
-},
-{
 "ref":"textual.widgets.Placeholder.render",
 "url":5,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -2671,7 +2666,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Static.render",
 "url":5,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -3222,7 +3217,7 @@ INDEX=[
 {
 "ref":"textual.widgets.TreeControl.render",
 "url":5,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -3865,7 +3860,7 @@ INDEX=[
 {
 "ref":"textual.widgets.tabs.Tabs.render",
 "url":10,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -7221,7 +7216,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.render",
 "url":6,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -7668,7 +7663,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.render",
 "url":6,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -7980,7 +7975,7 @@ INDEX=[
 {
 "ref":"textual.color.ColorParseError",
 "url":25,
-"doc":"A color failed to parse"
+"doc":"A color failed to parse Creates a new ColorParseError Args: message (str): the error message suggested_color (str | None): a close color we can suggest. Defaults to None."
 },
 {
 "ref":"textual.color.Color",
@@ -8552,7 +8547,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.render",
 "url":28,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -9443,7 +9438,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.render",
 "url":29,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -15026,7 +15021,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.render",
 "url":6,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {

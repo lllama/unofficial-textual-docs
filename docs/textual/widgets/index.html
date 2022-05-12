@@ -83,7 +83,7 @@ __all__ = [
 <dl>
 <dt id="textual.widgets.Button"><code class="flex name class">
 <span>class <span class="ident">Button</span></span>
-<span>(</span><span>label: RenderableType | None = None, disabled: bool = False, *, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
+<span>(</span><span>label: TextType | None = None, disabled: bool = False, *, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A simple clickable button.</p></div>
@@ -95,7 +95,7 @@ __all__ = [
     &#34;&#34;&#34;A simple clickable button.&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-    
+
     Button {
         width: auto;
         height: 3;
@@ -103,8 +103,8 @@ __all__ = [
         background: $primary;
         color: $text-primary;
         content-align: center middle;
-        border: tall $primary-lighten-3;                
-        
+        border: tall $primary-lighten-3;
+
         margin: 1 0;
         text-style: bold;
     }
@@ -112,13 +112,13 @@ __all__ = [
     Button:hover {
         background:$primary-darken-2;
         color: $text-primary-darken-2;
-        border: tall $primary-lighten-1;        
+        border: tall $primary-lighten-1;
     }
 
     App.-show-focus Button:focus {
-        tint: $accent 20%;        
+        tint: $accent 20%;
     }
-    
+
     &#34;&#34;&#34;
 
     class Pressed(Message, bubble=True):
@@ -128,7 +128,7 @@ __all__ = [
 
     def __init__(
         self,
-        label: RenderableType | None = None,
+        label: TextType | None = None,
         disabled: bool = False,
         *,
         name: str | None = None,
@@ -137,7 +137,11 @@ __all__ = [
     ):
         super().__init__(name=name, id=id, classes=classes)
 
-        self.label = self.css_identifier_styled if label is None else label
+        if label is None:
+            label = self.css_identifier_styled
+
+        self.label: Text = label
+
         self.disabled = disabled
         if disabled:
             self.add_class(&#34;-disabled&#34;)
@@ -150,8 +154,10 @@ __all__ = [
             return Text.from_markup(label)
         return label
 
-    def render(self) -&gt; RenderableType:
-        return self.label
+    def render(self, style: Style) -&gt; RenderableType:
+        label = self.label.copy()
+        label.stylize(style)
+        return label
 
     async def on_click(self, event: events.Click) -&gt; None:
         event.stop()
@@ -834,7 +840,7 @@ def render_tree_label(
             text.append_text(key_text)
         return text
 
-    def render(self) -&gt; RenderableType:
+    def render(self, style: Style) -&gt; RenderableType:
         if self._key_text is None:
             self._key_text = self.make_key_text()
         return self._key_text</code></pre>
@@ -1078,7 +1084,7 @@ def render_tree_label(
     def get_clock(self) -&gt; str:
         return datetime.now().time().strftime(&#34;%X&#34;)
 
-    def render(self) -&gt; RenderableType:
+    def render(self, style: Style) -&gt; RenderableType:
         header_table = Table.grid(padding=(0, 1), expand=True)
         header_table.style = self.style
         header_table.add_column(justify=&#34;left&#34;, ratio=0, width=8)
@@ -1357,22 +1363,23 @@ def full_title(self) -&gt; str:
 
     has_focus: Reactive[bool] = Reactive(False)
     mouse_over: Reactive[bool] = Reactive(False)
-    style: Reactive[str] = Reactive(&#34;&#34;)
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield from super().__rich_repr__()
         yield &#34;has_focus&#34;, self.has_focus, False
         yield &#34;mouse_over&#34;, self.mouse_over, False
 
-    def render(self) -&gt; RenderableType:
+    def render(self, style: Style) -&gt; RenderableType:
+        # Apply colours only inside render_styled
+        # Pass the full RICH style object into `render` - not the `Styles`
         return Panel(
             Align.center(
-                Pretty(self, no_wrap=True, overflow=&#34;ellipsis&#34;), vertical=&#34;middle&#34;
+                Pretty(self, no_wrap=True, overflow=&#34;ellipsis&#34;),
+                vertical=&#34;middle&#34;,
             ),
             title=self.__class__.__name__,
             border_style=&#34;green&#34; if self.mouse_over else &#34;blue&#34;,
             box=box.HEAVY if self.has_focus else box.ROUNDED,
-            style=self.style,
         )
 
     async def on_focus(self, event: events.Focus) -&gt; None:
@@ -1402,20 +1409,6 @@ def full_title(self) -&gt; str:
 <dt id="textual.widgets.Placeholder.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-</dl>
-<h3>Instance variables</h3>
-<dl>
-<dt id="textual.widgets.Placeholder.style"><code class="name">var <span class="ident">style</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[str]</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1585,7 +1578,7 @@ def full_title(self) -&gt; str:
         self.style = style
         self.padding = padding
 
-    def render(self) -&gt; RenderableType:
+    def render(self, style: Style) -&gt; RenderableType:
         renderable = self.renderable
         if self.padding:
             renderable = Padding(renderable, self.padding)
@@ -1882,7 +1875,7 @@ return default</p></div>
                     push(iter(node.children))
         return None
 
-    def render(self) -&gt; RenderableType:
+    def render(self, style: Style) -&gt; RenderableType:
         return self._tree
 
     def render_node(self, node: TreeNode[NodeDataType]) -&gt; RenderableType:
@@ -2857,7 +2850,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widgets.Placeholder.on_enter" href="#textual.widgets.Placeholder.on_enter">on_enter</a></code></li>
 <li><code><a title="textual.widgets.Placeholder.on_focus" href="#textual.widgets.Placeholder.on_focus">on_focus</a></code></li>
 <li><code><a title="textual.widgets.Placeholder.on_leave" href="#textual.widgets.Placeholder.on_leave">on_leave</a></code></li>
-<li><code><a title="textual.widgets.Placeholder.style" href="#textual.widgets.Placeholder.style">style</a></code></li>
 </ul>
 </li>
 <li>

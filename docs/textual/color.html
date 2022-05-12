@@ -57,7 +57,7 @@ from rich.color import Color as RichColor
 from rich.style import Style
 from rich.text import Text
 
-
+from textual.suggestions import get_suggestion
 from ._color_constants import COLOR_NAME_TO_RGB
 from .geometry import clamp
 
@@ -110,6 +110,17 @@ split_pairs4: Callable[[str], tuple[str, str, str, str]] = itemgetter(
 
 class ColorParseError(Exception):
     &#34;&#34;&#34;A color failed to parse&#34;&#34;&#34;
+
+    def __init__(self, message: str, suggested_color: str | None = None):
+        &#34;&#34;&#34;
+        Creates a new ColorParseError
+
+        Args:
+            message (str): the error message
+            suggested_color (str | None): a close color we can suggest. Defaults to None.
+        &#34;&#34;&#34;
+        super().__init__(message)
+        self.suggested_color = suggested_color
 
 
 @rich.repr.auto
@@ -305,7 +316,14 @@ class Color(NamedTuple):
             return cls(*color_from_name)
         color_match = RE_COLOR.match(color_text)
         if color_match is None:
-            raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
+            error_message = f&#34;failed to parse {color_text!r} as a color&#34;
+            suggested_color = None
+            if not color_text.startswith(&#34;#&#34;) and not color_text.startswith(&#34;rgb&#34;):
+                # Seems like we tried to use a color name: let&#39;s try to find one that is close enough:
+                suggested_color = get_suggestion(color_text, COLOR_NAME_TO_RGB.keys())
+                if suggested_color:
+                    error_message += f&#34;; did you mean &#39;{suggested_color}&#39;?&#34;
+            raise ColorParseError(error_message, suggested_color)
         (
             rgb_hex_triple,
             rgb_hex_quad,
@@ -804,7 +822,14 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
             return cls(*color_from_name)
         color_match = RE_COLOR.match(color_text)
         if color_match is None:
-            raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
+            error_message = f&#34;failed to parse {color_text!r} as a color&#34;
+            suggested_color = None
+            if not color_text.startswith(&#34;#&#34;) and not color_text.startswith(&#34;rgb&#34;):
+                # Seems like we tried to use a color name: let&#39;s try to find one that is close enough:
+                suggested_color = get_suggestion(color_text, COLOR_NAME_TO_RGB.keys())
+                if suggested_color:
+                    error_message += f&#34;; did you mean &#39;{suggested_color}&#39;?&#34;
+            raise ColorParseError(error_message, suggested_color)
         (
             rgb_hex_triple,
             rgb_hex_quad,
@@ -1011,7 +1036,14 @@ def parse(cls, color_text: str | Color) -&gt; Color:
         return cls(*color_from_name)
     color_match = RE_COLOR.match(color_text)
     if color_match is None:
-        raise ColorParseError(f&#34;failed to parse {color_text!r} as a color&#34;)
+        error_message = f&#34;failed to parse {color_text!r} as a color&#34;
+        suggested_color = None
+        if not color_text.startswith(&#34;#&#34;) and not color_text.startswith(&#34;rgb&#34;):
+            # Seems like we tried to use a color name: let&#39;s try to find one that is close enough:
+            suggested_color = get_suggestion(color_text, COLOR_NAME_TO_RGB.keys())
+            if suggested_color:
+                error_message += f&#34;; did you mean &#39;{suggested_color}&#39;?&#34;
+        raise ColorParseError(error_message, suggested_color)
     (
         rgb_hex_triple,
         rgb_hex_quad,
@@ -1494,16 +1526,34 @@ def style(self) -&gt; Style:
 </dd>
 <dt id="textual.color.ColorParseError"><code class="flex name class">
 <span>class <span class="ident">ColorParseError</span></span>
-<span>(</span><span>*args, **kwargs)</span>
+<span>(</span><span>message: str, suggested_color: str | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A color failed to parse</p></div>
+<div class="desc"><p>A color failed to parse</p>
+<p>Creates a new ColorParseError</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>message</code></strong> :&ensp;<code>str</code></dt>
+<dd>the error message</dd>
+</dl>
+<p>suggested_color (str | None): a close color we can suggest. Defaults to None.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ColorParseError(Exception):
-    &#34;&#34;&#34;A color failed to parse&#34;&#34;&#34;</code></pre>
+    &#34;&#34;&#34;A color failed to parse&#34;&#34;&#34;
+
+    def __init__(self, message: str, suggested_color: str | None = None):
+        &#34;&#34;&#34;
+        Creates a new ColorParseError
+
+        Args:
+            message (str): the error message
+            suggested_color (str | None): a close color we can suggest. Defaults to None.
+        &#34;&#34;&#34;
+        super().__init__(message)
+        self.suggested_color = suggested_color</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

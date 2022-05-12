@@ -358,7 +358,7 @@ class Tabs(Widget):
         &#34;&#34;&#34;
         return next((i for i, tab in enumerate(self.tabs) if tab.name == tab_name), 0)
 
-    def render(self) -&gt; RenderableType:
+    def render(self, style: Style) -&gt; RenderableType:
         return TabsRenderable(
             self.tabs,
             tab_padding=self.tab_padding,
@@ -628,7 +628,7 @@ that character.</dd>
         &#34;&#34;&#34;
         return next((i for i, tab in enumerate(self.tabs) if tab.name == tab_name), 0)
 
-    def render(self) -&gt; RenderableType:
+    def render(self, style: Style) -&gt; RenderableType:
         return TabsRenderable(
             self.tabs,
             tab_padding=self.tab_padding,

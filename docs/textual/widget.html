@@ -54,6 +54,7 @@ from .box_model import BoxModel, get_box_model
 from .color import Color
 from ._context import active_app
 from ._types import Lines
+from .css.styles import Styles
 from .dom import DOMNode
 from .geometry import clamp, Offset, Region, Size
 from .layouts.vertical import VerticalLayout
@@ -187,7 +188,7 @@ class Widget(DOMNode):
             int: The optimal width of the content.
         &#34;&#34;&#34;
         console = self.app.console
-        renderable = self.render()
+        renderable = self.render(self.styles.rich_style)
         measurement = Measurement.get(console, console.options, renderable)
         return measurement.maximum
 
@@ -204,7 +205,7 @@ class Widget(DOMNode):
         Returns:
             int: The height of the content.
         &#34;&#34;&#34;
-        renderable = self.render()
+        renderable = self.render(self.styles.rich_style)
         options = self.console.options.update_width(width)
         segments = self.console.render(renderable, options)
         # Cheaper than counting the lines returned from render_lines!
@@ -473,13 +474,22 @@ class Widget(DOMNode):
         # We can either scroll so the widget is at the top of the container, or so that
         # it is at the bottom. We want to pick which has the shortest distance
         top_delta = widget_region.origin - container_region.origin
+
         bottom_delta = widget_region.origin - (
             container_region.origin
             + Offset(0, container_region.height - widget_region.height)
         )
 
-        delta_x = min(top_delta.x, bottom_delta.x, key=abs)
-        delta_y = min(top_delta.y, bottom_delta.y, key=abs)
+        if widget_region.width &gt; container_region.width:
+            delta_x = top_delta.x
+        else:
+            delta_x = min(top_delta.x, bottom_delta.x, key=abs)
+
+        if widget_region.height &gt; container_region.height:
+            delta_y = top_delta.y
+        else:
+            delta_y = min(top_delta.y, bottom_delta.y, key=abs)
+
         return self.scroll_relative(
             delta_x or None, delta_y or None, animate=animate, duration=0.2
         )
@@ -572,8 +582,7 @@ class Widget(DOMNode):
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
-
-        renderable = self.render()
+        renderable = self.render(self.styles.rich_style)
 
         styles = self.styles
         parent_styles = self.parent.styles
@@ -586,11 +595,12 @@ class Widget(DOMNode):
             horizontal, vertical = content_align
             renderable = Align(renderable, horizontal, vertical=vertical)
 
+        renderable = Padding(renderable, styles.padding)
+
         renderable_text_style = parent_text_style + text_style
         if renderable_text_style:
-            renderable = Styled(renderable, renderable_text_style)
-
-        renderable = Padding(renderable, styles.padding, style=renderable_text_style)
+            style = Style.from_color(text_style.color, text_style.bgcolor)
+            renderable = Styled(renderable, style)
 
         if styles.border:
             renderable = Border(
@@ -792,8 +802,11 @@ class Widget(DOMNode):
             self.set_dirty()
         self.check_idle()
 
-    def render(self) -&gt; RenderableType:
+    def render(self, style: Style) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
+
+        Args:
+            style (Styles): The Styles object for this Widget.
 
         Returns:
             RenderableType: Any renderable
@@ -1147,7 +1160,7 @@ def cursor_line(self) -&gt; int | None:
             int: The optimal width of the content.
         &#34;&#34;&#34;
         console = self.app.console
-        renderable = self.render()
+        renderable = self.render(self.styles.rich_style)
         measurement = Measurement.get(console, console.options, renderable)
         return measurement.maximum
 
@@ -1164,7 +1177,7 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             int: The height of the content.
         &#34;&#34;&#34;
-        renderable = self.render()
+        renderable = self.render(self.styles.rich_style)
         options = self.console.options.update_width(width)
         segments = self.console.render(renderable, options)
         # Cheaper than counting the lines returned from render_lines!
@@ -1433,13 +1446,22 @@ def cursor_line(self) -&gt; int | None:
         # We can either scroll so the widget is at the top of the container, or so that
         # it is at the bottom. We want to pick which has the shortest distance
         top_delta = widget_region.origin - container_region.origin
+
         bottom_delta = widget_region.origin - (
             container_region.origin
             + Offset(0, container_region.height - widget_region.height)
         )
 
-        delta_x = min(top_delta.x, bottom_delta.x, key=abs)
-        delta_y = min(top_delta.y, bottom_delta.y, key=abs)
+        if widget_region.width &gt; container_region.width:
+            delta_x = top_delta.x
+        else:
+            delta_x = min(top_delta.x, bottom_delta.x, key=abs)
+
+        if widget_region.height &gt; container_region.height:
+            delta_y = top_delta.y
+        else:
+            delta_y = min(top_delta.y, bottom_delta.y, key=abs)
+
         return self.scroll_relative(
             delta_x or None, delta_y or None, animate=animate, duration=0.2
         )
@@ -1532,8 +1554,7 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
-
-        renderable = self.render()
+        renderable = self.render(self.styles.rich_style)
 
         styles = self.styles
         parent_styles = self.parent.styles
@@ -1546,11 +1567,12 @@ def cursor_line(self) -&gt; int | None:
             horizontal, vertical = content_align
             renderable = Align(renderable, horizontal, vertical=vertical)
 
+        renderable = Padding(renderable, styles.padding)
+
         renderable_text_style = parent_text_style + text_style
         if renderable_text_style:
-            renderable = Styled(renderable, renderable_text_style)
-
-        renderable = Padding(renderable, styles.padding, style=renderable_text_style)
+            style = Style.from_color(text_style.color, text_style.bgcolor)
+            renderable = Styled(renderable, style)
 
         if styles.border:
             renderable = Border(
@@ -1752,8 +1774,11 @@ def cursor_line(self) -&gt; int | None:
             self.set_dirty()
         self.check_idle()
 
-    def render(self) -&gt; RenderableType:
+    def render(self, style: Style) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
+
+        Args:
+            style (Styles): The Styles object for this Widget.
 
         Returns:
             RenderableType: Any renderable
@@ -2576,7 +2601,7 @@ def virtual_size(self) -&gt; Size:
     Returns:
         int: The height of the content.
     &#34;&#34;&#34;
-    renderable = self.render()
+    renderable = self.render(self.styles.rich_style)
     options = self.console.options.update_width(width)
     segments = self.console.render(renderable, options)
     # Cheaper than counting the lines returned from render_lines!
@@ -2616,7 +2641,7 @@ def virtual_size(self) -&gt; Size:
         int: The optimal width of the content.
     &#34;&#34;&#34;
     console = self.app.console
-    renderable = self.render()
+    renderable = self.render(self.styles.rich_style)
     measurement = Measurement.get(console, console.options, renderable)
     return measurement.maximum</code></pre>
 </details>
@@ -3228,10 +3253,15 @@ next idle event. Only one refresh will be done even if this method is called mul
 </details>
 </dd>
 <dt id="textual.widget.Widget.render"><code class="name flex">
-<span>def <span class="ident">render</span></span>(<span>self) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
+<span>def <span class="ident">render</span></span>(<span>self, style: Style) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get renderable for widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>style</code></strong> :&ensp;<code>Styles</code></dt>
+<dd>The Styles object for this Widget.</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>RenderableType</code></dt>
@@ -3241,8 +3271,11 @@ next idle event. Only one refresh will be done even if this method is called mul
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def render(self) -&gt; RenderableType:
+<pre><code class="python">def render(self, style: Style) -&gt; RenderableType:
     &#34;&#34;&#34;Get renderable for widget.
+
+    Args:
+        style (Styles): The Styles object for this Widget.
 
     Returns:
         RenderableType: Any renderable
@@ -3276,8 +3309,7 @@ next idle event. Only one refresh will be done even if this method is called mul
     Returns:
         RenderableType: A new renderable.
     &#34;&#34;&#34;
-
-    renderable = self.render()
+    renderable = self.render(self.styles.rich_style)
 
     styles = self.styles
     parent_styles = self.parent.styles
@@ -3290,11 +3322,12 @@ next idle event. Only one refresh will be done even if this method is called mul
         horizontal, vertical = content_align
         renderable = Align(renderable, horizontal, vertical=vertical)
 
+    renderable = Padding(renderable, styles.padding)
+
     renderable_text_style = parent_text_style + text_style
     if renderable_text_style:
-        renderable = Styled(renderable, renderable_text_style)
-
-    renderable = Padding(renderable, styles.padding, style=renderable_text_style)
+        style = Style.from_color(text_style.color, text_style.bgcolor)
+        renderable = Styled(renderable, style)
 
     if styles.border:
         renderable = Border(
@@ -3626,13 +3659,22 @@ next idle event. Only one refresh will be done even if this method is called mul
     # We can either scroll so the widget is at the top of the container, or so that
     # it is at the bottom. We want to pick which has the shortest distance
     top_delta = widget_region.origin - container_region.origin
+
     bottom_delta = widget_region.origin - (
         container_region.origin
         + Offset(0, container_region.height - widget_region.height)
     )
 
-    delta_x = min(top_delta.x, bottom_delta.x, key=abs)
-    delta_y = min(top_delta.y, bottom_delta.y, key=abs)
+    if widget_region.width &gt; container_region.width:
+        delta_x = top_delta.x
+    else:
+        delta_x = min(top_delta.x, bottom_delta.x, key=abs)
+
+    if widget_region.height &gt; container_region.height:
+        delta_y = top_delta.y
+    else:
+        delta_y = min(top_delta.y, bottom_delta.y, key=abs)
+
     return self.scroll_relative(
         delta_x or None, delta_y or None, animate=animate, duration=0.2
     )</code></pre>
