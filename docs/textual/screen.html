@@ -61,7 +61,7 @@ class Screen(Widget):
     def __init__(self, name: str | None = None, id: str | None = None) -&gt; None:
         super().__init__(name=name, id=id)
         self._compositor = Compositor()
-        self._dirty_widgets: list[Widget] = []
+        self._dirty_widgets: set[Widget] = set()
 
     def watch_dark(self, dark: bool) -&gt; None:
         pass
@@ -118,19 +118,27 @@ class Screen(Widget):
     def on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
         if self._dirty_widgets:
-            for widget in self._dirty_widgets:
-                # Repaint widgets
-                # TODO: Combine these in to a single update.
-                display_update = self._compositor.update_widget(self.console, widget)
-                if display_update is not None:
-                    self.app.display(display_update)
-            # Reset dirty list
+            self._update_timer.resume()
+
+    def _on_update(self) -&gt; None:
+        &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
+
+        # Render widgets together
+        if self._dirty_widgets:
+            self.log(dirty=self._dirty_widgets)
+            display_update = self._compositor.update_widgets(self._dirty_widgets)
+            if display_update is not None:
+                self.app.display(display_update)
             self._dirty_widgets.clear()
+        self._update_timer.pause()
 
     def refresh_layout(self) -&gt; None:
         &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
         if not self.size:
             return
+        # This paint the entire screen, so replaces the batched dirty widgets
+        self._update_timer.pause()
+        self._dirty_widgets.clear()
         try:
             hidden, shown, resized = self._compositor.reflow(self, self.size)
 
@@ -161,18 +169,20 @@ class Screen(Widget):
             self.app.on_exception(error)
             return
         self.app.refresh()
-        self._dirty_widgets.clear()
 
     async def handle_update(self, message: messages.Update) -&gt; None:
         message.stop()
         widget = message.widget
         assert isinstance(widget, Widget)
-        self._dirty_widgets.append(widget)
+        self._dirty_widgets.add(widget)
         self.check_idle()
 
     async def handle_layout(self, message: messages.Layout) -&gt; None:
         message.stop()
         self.refresh_layout()
+
+    def on_mount(self, event: events.Mount) -&gt; None:
+        self._update_timer = self.set_interval(1 / 20, self._on_update, pause=True)
 
     async def on_resize(self, event: events.Resize) -&gt; None:
         self.size_updated(event.size, event.virtual_size, event.container_size)
@@ -180,7 +190,6 @@ class Screen(Widget):
         event.stop()
 
     async def _on_mouse_move(self, event: events.MouseMove) -&gt; None:
-
         try:
             if self.app.mouse_captured:
                 widget = self.app.mouse_captured
@@ -291,7 +300,7 @@ class Screen(Widget):
     def __init__(self, name: str | None = None, id: str | None = None) -&gt; None:
         super().__init__(name=name, id=id)
         self._compositor = Compositor()
-        self._dirty_widgets: list[Widget] = []
+        self._dirty_widgets: set[Widget] = set()
 
     def watch_dark(self, dark: bool) -&gt; None:
         pass
@@ -348,19 +357,27 @@ class Screen(Widget):
     def on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
         if self._dirty_widgets:
-            for widget in self._dirty_widgets:
-                # Repaint widgets
-                # TODO: Combine these in to a single update.
-                display_update = self._compositor.update_widget(self.console, widget)
-                if display_update is not None:
-                    self.app.display(display_update)
-            # Reset dirty list
+            self._update_timer.resume()
+
+    def _on_update(self) -&gt; None:
+        &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
+
+        # Render widgets together
+        if self._dirty_widgets:
+            self.log(dirty=self._dirty_widgets)
+            display_update = self._compositor.update_widgets(self._dirty_widgets)
+            if display_update is not None:
+                self.app.display(display_update)
             self._dirty_widgets.clear()
+        self._update_timer.pause()
 
     def refresh_layout(self) -&gt; None:
         &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
         if not self.size:
             return
+        # This paint the entire screen, so replaces the batched dirty widgets
+        self._update_timer.pause()
+        self._dirty_widgets.clear()
         try:
             hidden, shown, resized = self._compositor.reflow(self, self.size)
 
@@ -391,18 +408,20 @@ class Screen(Widget):
             self.app.on_exception(error)
             return
         self.app.refresh()
-        self._dirty_widgets.clear()
 
     async def handle_update(self, message: messages.Update) -&gt; None:
         message.stop()
         widget = message.widget
         assert isinstance(widget, Widget)
-        self._dirty_widgets.append(widget)
+        self._dirty_widgets.add(widget)
         self.check_idle()
 
     async def handle_layout(self, message: messages.Layout) -&gt; None:
         message.stop()
         self.refresh_layout()
+
+    def on_mount(self, event: events.Mount) -&gt; None:
+        self._update_timer = self.set_interval(1 / 20, self._on_update, pause=True)
 
     async def on_resize(self, event: events.Resize) -&gt; None:
         self.size_updated(event.size, event.virtual_size, event.container_size)
@@ -410,7 +429,6 @@ class Screen(Widget):
         event.stop()
 
     async def _on_mouse_move(self, event: events.MouseMove) -&gt; None:
-
         try:
             if self.app.mouse_captured:
                 widget = self.app.mouse_captured
@@ -734,8 +752,21 @@ class Screen(Widget):
     message.stop()
     widget = message.widget
     assert isinstance(widget, Widget)
-    self._dirty_widgets.append(widget)
+    self._dirty_widgets.add(widget)
     self.check_idle()</code></pre>
+</details>
+</dd>
+<dt id="textual.screen.Screen.on_mount"><code class="name flex">
+<span>def <span class="ident">on_mount</span></span>(<span>self, event: events.Mount) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_mount(self, event: events.Mount) -&gt; None:
+    self._update_timer = self.set_interval(1 / 20, self._on_update, pause=True)</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.on_resize"><code class="name flex">
@@ -766,6 +797,9 @@ class Screen(Widget):
     &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
     if not self.size:
         return
+    # This paint the entire screen, so replaces the batched dirty widgets
+    self._update_timer.pause()
+    self._dirty_widgets.clear()
     try:
         hidden, shown, resized = self._compositor.reflow(self, self.size)
 
@@ -795,8 +829,7 @@ class Screen(Widget):
     except Exception as error:
         self.app.on_exception(error)
         return
-    self.app.refresh()
-    self._dirty_widgets.clear()</code></pre>
+    self.app.refresh()</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.watch_dark"><code class="name flex">
@@ -974,6 +1007,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.screen.Screen.get_widget_at" href="#textual.screen.Screen.get_widget_at">get_widget_at</a></code></li>
 <li><code><a title="textual.screen.Screen.handle_layout" href="#textual.screen.Screen.handle_layout">handle_layout</a></code></li>
 <li><code><a title="textual.screen.Screen.handle_update" href="#textual.screen.Screen.handle_update">handle_update</a></code></li>
+<li><code><a title="textual.screen.Screen.on_mount" href="#textual.screen.Screen.on_mount">on_mount</a></code></li>
 <li><code><a title="textual.screen.Screen.on_resize" href="#textual.screen.Screen.on_resize">on_resize</a></code></li>
 <li><code><a title="textual.screen.Screen.refresh_layout" href="#textual.screen.Screen.refresh_layout">refresh_layout</a></code></li>
 <li><code><a title="textual.screen.Screen.watch_dark" href="#textual.screen.Screen.watch_dark">watch_dark</a></code></li>

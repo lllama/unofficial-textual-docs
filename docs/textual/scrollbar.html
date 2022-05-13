@@ -255,9 +255,6 @@ class ScrollBar(Widget):
             style=scrollbar_style,
         )
 
-    async def on_event(self, event) -&gt; None:
-        await super().on_event(event)
-
     async def on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
 
@@ -380,9 +377,6 @@ if __name__ == &#34;__main__&#34;:
             vertical=self.vertical,
             style=scrollbar_style,
         )
-
-    async def on_event(self, event) -&gt; None:
-        await super().on_event(event)
 
     async def on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
@@ -564,19 +558,6 @@ if __name__ == &#34;__main__&#34;:
 </summary>
 <pre><code class="python">async def on_enter(self, event: events.Enter) -&gt; None:
     self.mouse_over = True</code></pre>
-</details>
-</dd>
-<dt id="textual.scrollbar.ScrollBar.on_event"><code class="name flex">
-<span>async def <span class="ident">on_event</span></span>(<span>self, event) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_event(self, event) -&gt; None:
-    await super().on_event(event)</code></pre>
 </details>
 </dd>
 <dt id="textual.scrollbar.ScrollBar.on_leave"><code class="name flex">
@@ -1393,7 +1374,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scrollbar.ScrollBar.can_focus_children" href="#textual.scrollbar.ScrollBar.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.grabbed" href="#textual.scrollbar.ScrollBar.grabbed">grabbed</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_enter" href="#textual.scrollbar.ScrollBar.on_enter">on_enter</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollBar.on_event" href="#textual.scrollbar.ScrollBar.on_event">on_event</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_leave" href="#textual.scrollbar.ScrollBar.on_leave">on_leave</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_mouse_capture" href="#textual.scrollbar.ScrollBar.on_mouse_capture">on_mouse_capture</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_mouse_move" href="#textual.scrollbar.ScrollBar.on_mouse_move">on_mouse_move</a></code></li>

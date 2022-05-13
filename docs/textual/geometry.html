@@ -35,7 +35,7 @@ Functions and classes to manage terminal geometry (anything involving coordinate
 
 from __future__ import annotations
 
-from typing import Any, cast, NamedTuple, Tuple, Union, TypeVar
+from typing import Any, cast, Iterable, NamedTuple, Tuple, Union, TypeVar
 
 SpacingDimensions = Union[int, Tuple[int], Tuple[int, int], Tuple[int, int, int, int]]
 
@@ -209,6 +209,24 @@ class Region(NamedTuple):
     y: int = 0
     width: int = 0
     height: int = 0
+
+    @classmethod
+    def from_union(cls, regions: list[Region]) -&gt; Region:
+        &#34;&#34;&#34;Create a Region from the union of other regions.
+
+        Args:
+            regions (Iterable[Region]): One or more regions.
+
+        Returns:
+            Region: A Region that encloses all other regions.
+        &#34;&#34;&#34;
+        if not regions:
+            raise ValueError(&#34;At least one region expected&#34;)
+        min_x = min([region.x for region in regions])
+        max_x = max([x + width for x, _y, width, _height in regions])
+        min_y = min([region.y for region in regions])
+        max_y = max([y + height for _x, y, _width, height in regions])
+        return cls(min_x, min_y, max_x - min_x, max_y - min_y)
 
     @classmethod
     def from_corners(cls, x1: int, y1: int, x2: int, y2: int) -&gt; Region:
@@ -1002,6 +1020,24 @@ def is_origin(self) -&gt; bool:
     height: int = 0
 
     @classmethod
+    def from_union(cls, regions: list[Region]) -&gt; Region:
+        &#34;&#34;&#34;Create a Region from the union of other regions.
+
+        Args:
+            regions (Iterable[Region]): One or more regions.
+
+        Returns:
+            Region: A Region that encloses all other regions.
+        &#34;&#34;&#34;
+        if not regions:
+            raise ValueError(&#34;At least one region expected&#34;)
+        min_x = min([region.x for region in regions])
+        max_x = max([x + width for x, _y, width, _height in regions])
+        min_y = min([region.y for region in regions])
+        max_y = max([y + height for _x, y, _width, height in regions])
+        return cls(min_x, min_y, max_x - min_x, max_y - min_y)
+
+    @classmethod
     def from_corners(cls, x1: int, y1: int, x2: int, y2: int) -&gt; Region:
         &#34;&#34;&#34;Construct a Region form the top left and bottom right corners.
 
@@ -1498,6 +1534,44 @@ def from_origin(cls, origin: tuple[int, int], size: tuple[int, int]) -&gt; Regio
     x, y = origin
     width, height = size
     return cls(x, y, width, height)</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.from_union"><code class="name flex">
+<span>def <span class="ident">from_union</span></span>(<span>regions: list[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a Region from the union of other regions.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>regions</code></strong> :&ensp;<code>Iterable[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]</code></dt>
+<dd>One or more regions.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>A Region that encloses all other regions.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_union(cls, regions: list[Region]) -&gt; Region:
+    &#34;&#34;&#34;Create a Region from the union of other regions.
+
+    Args:
+        regions (Iterable[Region]): One or more regions.
+
+    Returns:
+        Region: A Region that encloses all other regions.
+    &#34;&#34;&#34;
+    if not regions:
+        raise ValueError(&#34;At least one region expected&#34;)
+    min_x = min([region.x for region in regions])
+    max_x = max([x + width for x, _y, width, _height in regions])
+    min_y = min([region.y for region in regions])
+    max_y = max([y + height for _x, y, _width, height in regions])
+    return cls(min_x, min_y, max_x - min_x, max_y - min_y)</code></pre>
 </details>
 </dd>
 </dl>
@@ -2981,6 +3055,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Region.expand" href="#textual.geometry.Region.expand">expand</a></code></li>
 <li><code><a title="textual.geometry.Region.from_corners" href="#textual.geometry.Region.from_corners">from_corners</a></code></li>
 <li><code><a title="textual.geometry.Region.from_origin" href="#textual.geometry.Region.from_origin">from_origin</a></code></li>
+<li><code><a title="textual.geometry.Region.from_union" href="#textual.geometry.Region.from_union">from_union</a></code></li>
 <li><code><a title="textual.geometry.Region.height" href="#textual.geometry.Region.height">height</a></code></li>
 <li><code><a title="textual.geometry.Region.intersection" href="#textual.geometry.Region.intersection">intersection</a></code></li>
 <li><code><a title="textual.geometry.Region.origin" href="#textual.geometry.Region.origin">origin</a></code></li>

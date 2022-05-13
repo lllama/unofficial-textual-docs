@@ -1553,7 +1553,7 @@ def full_title(self) -&gt; str:
 </dd>
 <dt id="textual.widgets.Static"><code class="flex name class">
 <span>class <span class="ident">Static</span></span>
-<span>(</span><span>renderable: RenderableType, *, name: str | None = None, id: str | None = None, classes: str | None = None, style: StyleType = '', padding: PaddingDimensions = 0)</span>
+<span>(</span><span>renderable: RenderableType, *, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
@@ -1570,23 +1570,16 @@ def full_title(self) -&gt; str:
         name: str | None = None,
         id: str | None = None,
         classes: str | None = None,
-        style: StyleType = &#34;&#34;,
-        padding: PaddingDimensions = 0,
     ) -&gt; None:
         super().__init__(name=name, id=id, classes=classes)
         self.renderable = renderable
-        self.style = style
-        self.padding = padding
 
     def render(self, style: Style) -&gt; RenderableType:
-        renderable = self.renderable
-        if self.padding:
-            renderable = Padding(renderable, self.padding)
-        return Styled(renderable, self.style)
+        return self.renderable
 
-    async def update(self, renderable: RenderableType) -&gt; None:
+    def update(self, renderable: RenderableType) -&gt; None:
         self.renderable = renderable
-        self.refresh()</code></pre>
+        self.refresh(layout=True)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1608,7 +1601,7 @@ def full_title(self) -&gt; str:
 <h3>Methods</h3>
 <dl>
 <dt id="textual.widgets.Static.update"><code class="name flex">
-<span>async def <span class="ident">update</span></span>(<span>self, renderable: RenderableType) ‑> None</span>
+<span>def <span class="ident">update</span></span>(<span>self, renderable: RenderableType) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1616,9 +1609,9 @@ def full_title(self) -&gt; str:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def update(self, renderable: RenderableType) -&gt; None:
+<pre><code class="python">def update(self, renderable: RenderableType) -&gt; None:
     self.renderable = renderable
-    self.refresh()</code></pre>
+    self.refresh(layout=True)</code></pre>
 </details>
 </dd>
 </dl>

@@ -671,6 +671,7 @@ class App(Generic[ReturnType], DOMNode):
 
     def fatal_error(self) -&gt; None:
         &#34;&#34;&#34;Exits the app after an unhandled exception.&#34;&#34;&#34;
+        self.console.bell()
         traceback = Traceback(
             show_locals=True, width=None, locals_max_length=5, suppress=[rich]
         )
@@ -973,14 +974,14 @@ class App(Generic[ReturnType], DOMNode):
             action_target = default_namespace or self
             action_name = target
 
-        log(&#34;action&#34;, action)
+        log(&#34;&lt;action&gt;&#34;, action)
         await self.dispatch_action(action_target, action_name, params)
 
     async def dispatch_action(
         self, namespace: object, action_name: str, params: Any
     ) -&gt; None:
         log(
-            &#34;dispatch_action&#34;,
+            &#34;&lt;action&gt;&#34;,
             namespace=namespace,
             action_name=action_name,
             params=params,
@@ -1686,6 +1687,7 @@ def _init_uvloop() -&gt; None:
 
     def fatal_error(self) -&gt; None:
         &#34;&#34;&#34;Exits the app after an unhandled exception.&#34;&#34;&#34;
+        self.console.bell()
         traceback = Traceback(
             show_locals=True, width=None, locals_max_length=5, suppress=[rich]
         )
@@ -1988,14 +1990,14 @@ def _init_uvloop() -&gt; None:
             action_target = default_namespace or self
             action_name = target
 
-        log(&#34;action&#34;, action)
+        log(&#34;&lt;action&gt;&#34;, action)
         await self.dispatch_action(action_target, action_name, params)
 
     async def dispatch_action(
         self, namespace: object, action_name: str, params: Any
     ) -&gt; None:
         log(
-            &#34;dispatch_action&#34;,
+            &#34;&lt;action&gt;&#34;,
             namespace=namespace,
             action_name=action_name,
             params=params,
@@ -2263,7 +2265,7 @@ def size(self) -&gt; Size:
         action_target = default_namespace or self
         action_name = target
 
-    log(&#34;action&#34;, action)
+    log(&#34;&lt;action&gt;&#34;, action)
     await self.dispatch_action(action_target, action_name, params)</code></pre>
 </details>
 </dd>
@@ -2542,7 +2544,7 @@ def size(self) -&gt; Size:
     self, namespace: object, action_name: str, params: Any
 ) -&gt; None:
     log(
-        &#34;dispatch_action&#34;,
+        &#34;&lt;action&gt;&#34;,
         namespace=namespace,
         action_name=action_name,
         params=params,
@@ -2586,6 +2588,7 @@ def size(self) -&gt; Size:
 </summary>
 <pre><code class="python">def fatal_error(self) -&gt; None:
     &#34;&#34;&#34;Exits the app after an unhandled exception.&#34;&#34;&#34;
+    self.console.bell()
     traceback = Traceback(
         show_locals=True, width=None, locals_max_length=5, suppress=[rich]
     )

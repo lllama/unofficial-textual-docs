@@ -177,8 +177,11 @@ class MessagePump:
         callback: TimerCallback = None,
         *,
         name: str | None = None,
+        pause: bool = False,
     ) -&gt; Timer:
-        timer = Timer(self, delay, self, name=name, callback=callback, repeat=0)
+        timer = Timer(
+            self, delay, self, name=name, callback=callback, repeat=0, pause=pause
+        )
         self._child_tasks.add(timer.start())
         return timer
 
@@ -189,9 +192,16 @@ class MessagePump:
         *,
         name: str | None = None,
         repeat: int = 0,
+        pause: bool = False,
     ):
         timer = Timer(
-            self, interval, self, name=name, callback=callback, repeat=repeat or None
+            self,
+            interval,
+            self,
+            name=name,
+            callback=callback,
+            repeat=repeat or None,
+            pause=pause,
         )
         self._child_tasks.add(timer.start())
         return timer
@@ -607,8 +617,11 @@ class MessagePump:
         callback: TimerCallback = None,
         *,
         name: str | None = None,
+        pause: bool = False,
     ) -&gt; Timer:
-        timer = Timer(self, delay, self, name=name, callback=callback, repeat=0)
+        timer = Timer(
+            self, delay, self, name=name, callback=callback, repeat=0, pause=pause
+        )
         self._child_tasks.add(timer.start())
         return timer
 
@@ -619,9 +632,16 @@ class MessagePump:
         *,
         name: str | None = None,
         repeat: int = 0,
+        pause: bool = False,
     ):
         timer = Timer(
-            self, interval, self, name=name, callback=callback, repeat=repeat or None
+            self,
+            interval,
+            self,
+            name=name,
+            callback=callback,
+            repeat=repeat or None,
+            pause=pause,
         )
         self._child_tasks.add(timer.start())
         return timer
@@ -1436,7 +1456,7 @@ timer messages to skip the queue, so that they can be more regular.</p>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.set_interval"><code class="name flex">
-<span>def <span class="ident">set_interval</span></span>(<span>self, interval: float, callback: TimerCallback | None = None, *, name: str | None = None, repeat: int = 0)</span>
+<span>def <span class="ident">set_interval</span></span>(<span>self, interval: float, callback: TimerCallback | None = None, *, name: str | None = None, repeat: int = 0, pause: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1451,9 +1471,16 @@ timer messages to skip the queue, so that they can be more regular.</p>
     *,
     name: str | None = None,
     repeat: int = 0,
+    pause: bool = False,
 ):
     timer = Timer(
-        self, interval, self, name=name, callback=callback, repeat=repeat or None
+        self,
+        interval,
+        self,
+        name=name,
+        callback=callback,
+        repeat=repeat or None,
+        pause=pause,
     )
     self._child_tasks.add(timer.start())
     return timer</code></pre>
@@ -1473,7 +1500,7 @@ timer messages to skip the queue, so that they can be more regular.</p>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.set_timer"><code class="name flex">
-<span>def <span class="ident">set_timer</span></span>(<span>self, delay: float, callback: TimerCallback = None, *, name: str | None = None) ‑> Timer</span>
+<span>def <span class="ident">set_timer</span></span>(<span>self, delay: float, callback: TimerCallback = None, *, name: str | None = None, pause: bool = False) ‑> Timer</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1487,8 +1514,11 @@ timer messages to skip the queue, so that they can be more regular.</p>
     callback: TimerCallback = None,
     *,
     name: str | None = None,
+    pause: bool = False,
 ) -&gt; Timer:
-    timer = Timer(self, delay, self, name=name, callback=callback, repeat=0)
+    timer = Timer(
+        self, delay, self, name=name, callback=callback, repeat=0, pause=pause
+    )
     self._child_tasks.add(timer.start())
     return timer</code></pre>
 </details>
