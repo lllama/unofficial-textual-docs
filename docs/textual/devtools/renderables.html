@@ -29,7 +29,7 @@
 <pre><code class="python">from __future__ import annotations
 
 import sys
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Iterable
 
@@ -100,19 +100,13 @@ class DevConsoleLog:
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -&gt; RenderResult:
-        local_time = (
-            datetime.fromtimestamp(self.unix_timestamp)
-            .replace(tzinfo=timezone.utc)
-            .astimezone(tz=datetime.now().astimezone().tzinfo)
-        )
-        timezone_name = local_time.tzname()
+        local_time = datetime.fromtimestamp(self.unix_timestamp)
         table = Table.grid(expand=True)
-        table.add_column()
-        table.add_column()
+
         file_link = escape(f&#34;file://{Path(self.path).absolute()}&#34;)
         file_and_line = escape(f&#34;{Path(self.path).name}:{self.line_number}&#34;)
         table.add_row(
-            f&#34;[dim]{local_time.time()} {timezone_name}&#34;,
+            f&#34;[dim]{local_time.time()}&#34;,
             Align.right(
                 Text(f&#34;{file_and_line}&#34;, style=Style(dim=True, link=file_link))
             ),
@@ -230,19 +224,13 @@ class DevConsoleNotice:
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -&gt; RenderResult:
-        local_time = (
-            datetime.fromtimestamp(self.unix_timestamp)
-            .replace(tzinfo=timezone.utc)
-            .astimezone(tz=datetime.now().astimezone().tzinfo)
-        )
-        timezone_name = local_time.tzname()
+        local_time = datetime.fromtimestamp(self.unix_timestamp)
         table = Table.grid(expand=True)
-        table.add_column()
-        table.add_column()
+
         file_link = escape(f&#34;file://{Path(self.path).absolute()}&#34;)
         file_and_line = escape(f&#34;{Path(self.path).name}:{self.line_number}&#34;)
         table.add_row(
-            f&#34;[dim]{local_time.time()} {timezone_name}&#34;,
+            f&#34;[dim]{local_time.time()}&#34;,
             Align.right(
                 Text(f&#34;{file_and_line}&#34;, style=Style(dim=True, link=file_link))
             ),
