@@ -11221,12 +11221,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.app.App.hide_focus",
-"url":36,
-"doc":"Hide the focus. Returns: Widget | None: Newly focused widget, or None for no focus.",
-"func":1
-},
-{
 "ref":"textual.app.App.compose",
 "url":36,
 "doc":"Yield child widgets for a container.",
