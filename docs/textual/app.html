@@ -29,7 +29,9 @@
 <pre><code class="python">from __future__ import annotations
 
 import asyncio
+from datetime import datetime
 import inspect
+import io
 import os
 import platform
 import sys
@@ -438,6 +440,49 @@ class App(Generic[ReturnType], DOMNode):
                     )
         except Exception:
             pass
+
+    def action_screenshot(self, path: str | None = None) -&gt; None:
+        &#34;&#34;&#34;Action to save a screenshot.&#34;&#34;&#34;
+        self.save_screenshot(path)
+
+    def export_screenshot(self) -&gt; str:
+        &#34;&#34;&#34;Export a SVG screenshot of the current screen.
+
+        Args:
+            path (str | None, optional): Path of the SVG to save, or None to
+                generate a path automatically. Defaults to None.
+        &#34;&#34;&#34;
+
+        console = Console(
+            width=self.console.width,
+            height=self.console.height,
+            file=io.StringIO(),
+            force_terminal=True,
+            color_system=&#34;truecolor&#34;,
+            record=True,
+        )
+        console.print(self.screen._compositor)
+        return console.export_svg(title=self.title)
+
+    def save_screenshot(self, path: str | None = None) -&gt; str:
+        &#34;&#34;&#34;Save a screenshot of the current screen.
+
+        Args:
+            path (str | None, optional): Path to SVG to save or None to pick
+                a filename automatically. Defaults to None.
+
+        Returns:
+            str: Filename of screenshot.
+        &#34;&#34;&#34;
+        if path is None:
+            svg_path = f&#34;{self.title.lower()}_{datetime.now().isoformat()}.svg&#34;
+            svg_path = svg_path.replace(&#34;/&#34;, &#34;_&#34;).replace(&#34;\\&#34;, &#34;_&#34;)
+        else:
+            svg_path = path
+        screenshot_svg = self.export_screenshot()
+        with open(svg_path, &#34;w&#34;) as svg_file:
+            svg_file.write(screenshot_svg)
+        return svg_path
 
     def bind(
         self,
@@ -1439,6 +1484,49 @@ def _init_uvloop() -&gt; None:
         except Exception:
             pass
 
+    def action_screenshot(self, path: str | None = None) -&gt; None:
+        &#34;&#34;&#34;Action to save a screenshot.&#34;&#34;&#34;
+        self.save_screenshot(path)
+
+    def export_screenshot(self) -&gt; str:
+        &#34;&#34;&#34;Export a SVG screenshot of the current screen.
+
+        Args:
+            path (str | None, optional): Path of the SVG to save, or None to
+                generate a path automatically. Defaults to None.
+        &#34;&#34;&#34;
+
+        console = Console(
+            width=self.console.width,
+            height=self.console.height,
+            file=io.StringIO(),
+            force_terminal=True,
+            color_system=&#34;truecolor&#34;,
+            record=True,
+        )
+        console.print(self.screen._compositor)
+        return console.export_svg(title=self.title)
+
+    def save_screenshot(self, path: str | None = None) -&gt; str:
+        &#34;&#34;&#34;Save a screenshot of the current screen.
+
+        Args:
+            path (str | None, optional): Path to SVG to save or None to pick
+                a filename automatically. Defaults to None.
+
+        Returns:
+            str: Filename of screenshot.
+        &#34;&#34;&#34;
+        if path is None:
+            svg_path = f&#34;{self.title.lower()}_{datetime.now().isoformat()}.svg&#34;
+            svg_path = svg_path.replace(&#34;/&#34;, &#34;_&#34;).replace(&#34;\\&#34;, &#34;_&#34;)
+        else:
+            svg_path = path
+        screenshot_svg = self.export_screenshot()
+        with open(svg_path, &#34;w&#34;) as svg_file:
+            svg_file.write(screenshot_svg)
+        return svg_path
+
     def bind(
         self,
         keys: str,
@@ -2315,6 +2403,20 @@ def size(self) -&gt; Size:
     self.screen.query(selector).remove_class(class_name)</code></pre>
 </details>
 </dd>
+<dt id="textual.app.App.action_screenshot"><code class="name flex">
+<span>def <span class="ident">action_screenshot</span></span>(<span>self, path: str | None = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Action to save a screenshot.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def action_screenshot(self, path: str | None = None) -&gt; None:
+    &#34;&#34;&#34;Action to save a screenshot.&#34;&#34;&#34;
+    self.save_screenshot(path)</code></pre>
+</details>
+</dd>
 <dt id="textual.app.App.action_toggle_class"><code class="name flex">
 <span>async def <span class="ident">action_toggle_class</span></span>(<span>self, selector: str, class_name: str) ‑> None</span>
 </code></dt>
@@ -2543,6 +2645,38 @@ def size(self) -&gt; Size:
     &#34;&#34;&#34;
     self._return_value = result
     self.close_messages_no_wait()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.export_screenshot"><code class="name flex">
+<span>def <span class="ident">export_screenshot</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Export a SVG screenshot of the current screen.</p>
+<h2 id="args">Args</h2>
+<p>path (str | None, optional): Path of the SVG to save, or None to
+generate a path automatically. Defaults to None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def export_screenshot(self) -&gt; str:
+    &#34;&#34;&#34;Export a SVG screenshot of the current screen.
+
+    Args:
+        path (str | None, optional): Path of the SVG to save, or None to
+            generate a path automatically. Defaults to None.
+    &#34;&#34;&#34;
+
+    console = Console(
+        width=self.console.width,
+        height=self.console.height,
+        file=io.StringIO(),
+        force_terminal=True,
+        color_system=&#34;truecolor&#34;,
+        record=True,
+    )
+    console.print(self.screen._compositor)
+    return console.export_svg(title=self.title)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.fatal_error"><code class="name flex">
@@ -3421,6 +3555,44 @@ one internally. Defaults to None.</p>
     return self._return_value</code></pre>
 </details>
 </dd>
+<dt id="textual.app.App.save_screenshot"><code class="name flex">
+<span>def <span class="ident">save_screenshot</span></span>(<span>self, path: str | None = None) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Save a screenshot of the current screen.</p>
+<h2 id="args">Args</h2>
+<p>path (str | None, optional): Path to SVG to save or None to pick
+a filename automatically. Defaults to None.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>Filename of screenshot.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def save_screenshot(self, path: str | None = None) -&gt; str:
+    &#34;&#34;&#34;Save a screenshot of the current screen.
+
+    Args:
+        path (str | None, optional): Path to SVG to save or None to pick
+            a filename automatically. Defaults to None.
+
+    Returns:
+        str: Filename of screenshot.
+    &#34;&#34;&#34;
+    if path is None:
+        svg_path = f&#34;{self.title.lower()}_{datetime.now().isoformat()}.svg&#34;
+        svg_path = svg_path.replace(&#34;/&#34;, &#34;_&#34;).replace(&#34;\\&#34;, &#34;_&#34;)
+    else:
+        svg_path = path
+    screenshot_svg = self.export_screenshot()
+    with open(svg_path, &#34;w&#34;) as svg_file:
+        svg_file.write(screenshot_svg)
+    return svg_path</code></pre>
+</details>
+</dd>
 <dt id="textual.app.App.set_focus"><code class="name flex">
 <span>def <span class="ident">set_focus</span></span>(<span>self, widget: Widget | None) ‑> None</span>
 </code></dt>
@@ -3705,6 +3877,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.app.App.action_press" href="#textual.app.App.action_press">action_press</a></code></li>
 <li><code><a title="textual.app.App.action_quit" href="#textual.app.App.action_quit">action_quit</a></code></li>
 <li><code><a title="textual.app.App.action_remove_class_" href="#textual.app.App.action_remove_class_">action_remove_class_</a></code></li>
+<li><code><a title="textual.app.App.action_screenshot" href="#textual.app.App.action_screenshot">action_screenshot</a></code></li>
 <li><code><a title="textual.app.App.action_toggle_class" href="#textual.app.App.action_toggle_class">action_toggle_class</a></code></li>
 <li><code><a title="textual.app.App.animator" href="#textual.app.App.animator">animator</a></code></li>
 <li><code><a title="textual.app.App.background" href="#textual.app.App.background">background</a></code></li>
@@ -3719,6 +3892,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.app.App.devtools_enabled" href="#textual.app.App.devtools_enabled">devtools_enabled</a></code></li>
 <li><code><a title="textual.app.App.dispatch_action" href="#textual.app.App.dispatch_action">dispatch_action</a></code></li>
 <li><code><a title="textual.app.App.exit" href="#textual.app.App.exit">exit</a></code></li>
+<li><code><a title="textual.app.App.export_screenshot" href="#textual.app.App.export_screenshot">export_screenshot</a></code></li>
 <li><code><a title="textual.app.App.fatal_error" href="#textual.app.App.fatal_error">fatal_error</a></code></li>
 <li><code><a title="textual.app.App.focus_chain" href="#textual.app.App.focus_chain">focus_chain</a></code></li>
 <li><code><a title="textual.app.App.focus_next" href="#textual.app.App.focus_next">focus_next</a></code></li>
@@ -3752,6 +3926,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.app.App.remove" href="#textual.app.App.remove">remove</a></code></li>
 <li><code><a title="textual.app.App.render" href="#textual.app.App.render">render</a></code></li>
 <li><code><a title="textual.app.App.run" href="#textual.app.App.run">run</a></code></li>
+<li><code><a title="textual.app.App.save_screenshot" href="#textual.app.App.save_screenshot">save_screenshot</a></code></li>
 <li><code><a title="textual.app.App.set_focus" href="#textual.app.App.set_focus">set_focus</a></code></li>
 <li><code><a title="textual.app.App.show_focus" href="#textual.app.App.show_focus">show_focus</a></code></li>
 <li><code><a title="textual.app.App.shutdown" href="#textual.app.App.shutdown">shutdown</a></code></li>

@@ -11271,6 +11271,24 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.app.App.action_screenshot",
+"url":36,
+"doc":"Action to save a screenshot.",
+"func":1
+},
+{
+"ref":"textual.app.App.export_screenshot",
+"url":36,
+"doc":"Export a SVG screenshot of the current screen. Args: path (str | None, optional): Path of the SVG to save, or None to generate a path automatically. Defaults to None.",
+"func":1
+},
+{
+"ref":"textual.app.App.save_screenshot",
+"url":36,
+"doc":"Save a screenshot of the current screen. Args: path (str | None, optional): Path to SVG to save or None to pick a filename automatically. Defaults to None. Returns: str: Filename of screenshot.",
+"func":1
+},
+{
 "ref":"textual.app.App.bind",
 "url":36,
 "doc":"Bind a key to an action. Args: keys (str): A comma separated list of keys, i.e. action (str): Action to bind to. description (str, optional): Short description of action. Defaults to  . show (bool, optional): Show key in UI. Defaults to True. key_display (str, optional): Replacement text for key, or None to use default. Defaults to None.",
