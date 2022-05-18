@@ -132,8 +132,8 @@ class Widget(DOMNode):
     has_focus = Reactive(False)
     descendant_has_focus = Reactive(False)
     mouse_over = Reactive(False)
-    scroll_x = Reactive(0.0, repaint=False)
-    scroll_y = Reactive(0.0, repaint=False)
+    scroll_x = Reactive(0.0, repaint=False, layout=True)
+    scroll_y = Reactive(0.0, repaint=False, layout=True)
     scroll_target_x = Reactive(0.0, repaint=False)
     scroll_target_y = Reactive(0.0, repaint=False)
     show_vertical_scrollbar = Reactive(False, layout=True)
@@ -459,15 +459,12 @@ class Widget(DOMNode):
         Returns:
             bool: True if the scroll position changed, otherwise False.
         &#34;&#34;&#34;
-        screen = self.screen
+
         try:
-            widget_geometry = screen.find_widget(widget)
-            container_geometry = screen.find_widget(self)
+            widget_region = widget.content_region
+            container_region = self.content_region
         except errors.NoWidget:
             return False
-
-        widget_region = widget.content_region + widget_geometry.region.origin
-        container_region = self.content_region + container_geometry.region.origin
 
         if widget_region in container_region:
             # Widget is visible, nothing to do
@@ -523,6 +520,9 @@ class Widget(DOMNode):
             Region: The widget region minus scrollbars.
         &#34;&#34;&#34;
         show_vertical_scrollbar, show_horizontal_scrollbar = self.scrollbars_enabled
+        if self.styles.scrollbar_gutter == &#34;stable&#34;:
+            # Let&#39;s _always_ reserve some space, whether the scrollbar is actually displayed or not:
+            show_vertical_scrollbar = True
         if show_horizontal_scrollbar and show_vertical_scrollbar:
             (region, _, _, _) = region.split(-1, -1)
         elif show_vertical_scrollbar:
@@ -638,10 +638,8 @@ class Widget(DOMNode):
 
     @property
     def content_region(self) -&gt; Region:
-        &#34;&#34;&#34;A region relative to the Widget origin that contains the content.&#34;&#34;&#34;
-        x, y = self.styles.content_gutter.top_left
-        width, height = self._container_size
-        return Region(x, y, width, height)
+        &#34;&#34;&#34;Gets an absolute region containing the content (minus padding and border).&#34;&#34;&#34;
+        return self.region.shrink(self.styles.content_gutter)
 
     @property
     def content_offset(self) -&gt; Offset:
@@ -1104,8 +1102,8 @@ def cursor_line(self) -&gt; int | None:
     has_focus = Reactive(False)
     descendant_has_focus = Reactive(False)
     mouse_over = Reactive(False)
-    scroll_x = Reactive(0.0, repaint=False)
-    scroll_y = Reactive(0.0, repaint=False)
+    scroll_x = Reactive(0.0, repaint=False, layout=True)
+    scroll_y = Reactive(0.0, repaint=False, layout=True)
     scroll_target_x = Reactive(0.0, repaint=False)
     scroll_target_y = Reactive(0.0, repaint=False)
     show_vertical_scrollbar = Reactive(False, layout=True)
@@ -1431,15 +1429,12 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             bool: True if the scroll position changed, otherwise False.
         &#34;&#34;&#34;
-        screen = self.screen
+
         try:
-            widget_geometry = screen.find_widget(widget)
-            container_geometry = screen.find_widget(self)
+            widget_region = widget.content_region
+            container_region = self.content_region
         except errors.NoWidget:
             return False
-
-        widget_region = widget.content_region + widget_geometry.region.origin
-        container_region = self.content_region + container_geometry.region.origin
 
         if widget_region in container_region:
             # Widget is visible, nothing to do
@@ -1495,6 +1490,9 @@ def cursor_line(self) -&gt; int | None:
             Region: The widget region minus scrollbars.
         &#34;&#34;&#34;
         show_vertical_scrollbar, show_horizontal_scrollbar = self.scrollbars_enabled
+        if self.styles.scrollbar_gutter == &#34;stable&#34;:
+            # Let&#39;s _always_ reserve some space, whether the scrollbar is actually displayed or not:
+            show_vertical_scrollbar = True
         if show_horizontal_scrollbar and show_vertical_scrollbar:
             (region, _, _, _) = region.split(-1, -1)
         elif show_vertical_scrollbar:
@@ -1610,10 +1608,8 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def content_region(self) -&gt; Region:
-        &#34;&#34;&#34;A region relative to the Widget origin that contains the content.&#34;&#34;&#34;
-        x, y = self.styles.content_gutter.top_left
-        width, height = self._container_size
-        return Region(x, y, width, height)
+        &#34;&#34;&#34;Gets an absolute region containing the content (minus padding and border).&#34;&#34;&#34;
+        return self.region.shrink(self.styles.content_gutter)
 
     @property
     def content_offset(self) -&gt; Offset:
@@ -2075,17 +2071,15 @@ def content_offset(self) -&gt; Offset:
 </dd>
 <dt id="textual.widget.Widget.content_region"><code class="name">var <span class="ident">content_region</span> : <a title="textual.geometry.Region" href="geometry.html#textual.geometry.Region">Region</a></code></dt>
 <dd>
-<div class="desc"><p>A region relative to the Widget origin that contains the content.</p></div>
+<div class="desc"><p>Gets an absolute region containing the content (minus padding and border).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def content_region(self) -&gt; Region:
-    &#34;&#34;&#34;A region relative to the Widget origin that contains the content.&#34;&#34;&#34;
-    x, y = self.styles.content_gutter.top_left
-    width, height = self._container_size
-    return Region(x, y, width, height)</code></pre>
+    &#34;&#34;&#34;Gets an absolute region containing the content (minus padding and border).&#34;&#34;&#34;
+    return self.region.shrink(self.styles.content_gutter)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.descendant_has_focus"><code class="name">var <span class="ident">descendant_has_focus</span> : ReactiveType</code></dt>
@@ -3639,15 +3633,12 @@ next idle event. Only one refresh will be done even if this method is called mul
     Returns:
         bool: True if the scroll position changed, otherwise False.
     &#34;&#34;&#34;
-    screen = self.screen
+
     try:
-        widget_geometry = screen.find_widget(widget)
-        container_geometry = screen.find_widget(self)
+        widget_region = widget.content_region
+        container_region = self.content_region
     except errors.NoWidget:
         return False
-
-    widget_region = widget.content_region + widget_geometry.region.origin
-    container_region = self.content_region + container_geometry.region.origin
 
     if widget_region in container_region:
         # Widget is visible, nothing to do

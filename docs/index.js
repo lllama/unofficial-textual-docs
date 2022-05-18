@@ -249,7 +249,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.layout.Vertical.content_offset",
@@ -696,7 +696,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.layout.Horizontal.content_offset",
@@ -4844,7 +4844,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Button.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.widgets.Button.content_offset",
@@ -5328,7 +5328,7 @@ INDEX=[
 {
 "ref":"textual.widgets.DirectoryTree.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.widgets.DirectoryTree.content_offset",
@@ -5864,7 +5864,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Footer.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.widgets.Footer.content_offset",
@@ -6360,7 +6360,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Header.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.widgets.Header.content_offset",
@@ -6826,7 +6826,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Placeholder.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.widgets.Placeholder.content_offset",
@@ -7274,7 +7274,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Static.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.widgets.Static.content_offset",
@@ -7873,7 +7873,7 @@ INDEX=[
 {
 "ref":"textual.widgets.TreeControl.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.widgets.TreeControl.content_offset",
@@ -8462,7 +8462,7 @@ INDEX=[
 {
 "ref":"textual.widgets.tabs.Tabs.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.widgets.tabs.Tabs.content_offset",
@@ -9880,6 +9880,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.css.styles.RulesMap.scrollbar_gutter",
+"url":29,
+"doc":""
+},
+{
 "ref":"textual.css.styles.RulesMap.align_horizontal",
 "url":29,
 "doc":""
@@ -10138,6 +10143,11 @@ INDEX=[
 "ref":"textual.css.styles.StylesBase.scrollbar_background_active",
 "url":29,
 "doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.StylesBase.scrollbar_gutter",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.align_horizontal",
@@ -10556,6 +10566,11 @@ INDEX=[
 "doc":"Descriptor for getting and setting color properties."
 },
 {
+"ref":"textual.css.styles.Styles.scrollbar_gutter",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
 "ref":"textual.css.styles.Styles.align_horizontal",
 "url":29,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
@@ -10893,6 +10908,11 @@ INDEX=[
 "ref":"textual.css.styles.RenderStyles.scrollbar_background_active",
 "url":29,
 "doc":"Descriptor for getting and setting color properties."
+},
+{
+"ref":"textual.css.styles.RenderStyles.scrollbar_gutter",
+"url":29,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.align_horizontal",
@@ -12468,7 +12488,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.screen.Screen.content_offset",
@@ -13369,7 +13389,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.content_offset",
@@ -14307,7 +14327,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.content_region",
 "url":2,
-"doc":"A region relative to the Widget origin that contains the content."
+"doc":"Gets an absolute region containing the content (minus padding and border)."
 },
 {
 "ref":"textual.widget.Widget.content_offset",

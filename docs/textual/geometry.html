@@ -35,7 +35,7 @@ Functions and classes to manage terminal geometry (anything involving coordinate
 
 from __future__ import annotations
 
-from typing import Any, cast, Iterable, NamedTuple, Tuple, Union, TypeVar
+from typing import Any, cast, NamedTuple, Sequence, Tuple, Union, TypeVar
 
 SpacingDimensions = Union[int, Tuple[int], Tuple[int, int], Tuple[int, int, int, int]]
 
@@ -211,7 +211,7 @@ class Region(NamedTuple):
     height: int = 0
 
     @classmethod
-    def from_union(cls, regions: list[Region]) -&gt; Region:
+    def from_union(cls, regions: Sequence[Region]) -&gt; Region:
         &#34;&#34;&#34;Create a Region from the union of other regions.
 
         Args:
@@ -1020,7 +1020,7 @@ def is_origin(self) -&gt; bool:
     height: int = 0
 
     @classmethod
-    def from_union(cls, regions: list[Region]) -&gt; Region:
+    def from_union(cls, regions: Sequence[Region]) -&gt; Region:
         &#34;&#34;&#34;Create a Region from the union of other regions.
 
         Args:
@@ -1537,7 +1537,7 @@ def from_origin(cls, origin: tuple[int, int], size: tuple[int, int]) -&gt; Regio
 </details>
 </dd>
 <dt id="textual.geometry.Region.from_union"><code class="name flex">
-<span>def <span class="ident">from_union</span></span>(<span>regions: list[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
+<span>def <span class="ident">from_union</span></span>(<span>regions: Sequence[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create a Region from the union of other regions.</p>
@@ -1556,7 +1556,7 @@ def from_origin(cls, origin: tuple[int, int], size: tuple[int, int]) -&gt; Regio
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_union(cls, regions: list[Region]) -&gt; Region:
+def from_union(cls, regions: Sequence[Region]) -&gt; Region:
     &#34;&#34;&#34;Create a Region from the union of other regions.
 
     Args:

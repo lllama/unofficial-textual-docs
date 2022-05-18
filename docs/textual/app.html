@@ -58,10 +58,8 @@ else:
 import rich
 import rich.repr
 from rich.console import Console, RenderableType
-from rich.control import Control
 from rich.measure import Measurement
 from rich.protocol import is_renderable
-from rich.screen import Screen as ScreenRenderable
 from rich.segment import Segments
 from rich.style import Style
 from rich.traceback import Traceback
@@ -144,7 +142,6 @@ class App(Generic[ReturnType], DOMNode):
         driver_class: Type[Driver] | None = None,
         log_path: str | PurePath = &#34;&#34;,
         log_verbosity: int = 1,
-        # TODO: make this Literal a proper type in Rich, so we re-use it?
         log_color_system: Literal[
             &#34;auto&#34;, &#34;standard&#34;, &#34;256&#34;, &#34;truecolor&#34;, &#34;windows&#34;
         ] = &#34;auto&#34;,
@@ -582,7 +579,6 @@ class App(Generic[ReturnType], DOMNode):
 
     def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
         self.register(self.screen, *anon_widgets, **widgets)
-        self.screen.refresh()
 
     def push_screen(self, screen: Screen | None = None) -&gt; Screen:
         &#34;&#34;&#34;Push a new screen on the screen stack.
@@ -787,7 +783,6 @@ class App(Generic[ReturnType], DOMNode):
         widgets = list(self.compose())
         if widgets:
             self.mount(*widgets)
-            self.screen.refresh()
 
     async def on_idle(self) -&gt; None:
         &#34;&#34;&#34;Perform actions when there are no messages in the queue.&#34;&#34;&#34;
@@ -873,13 +868,7 @@ class App(Generic[ReturnType], DOMNode):
             try:
                 if self._sync_available:
                     console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
-                console.print(
-                    ScreenRenderable(
-                        Control.home(),
-                        self.screen._compositor,
-                        Control.home(),
-                    )
-                )
+                console.print(self.screen._compositor)
                 if self._sync_available:
                     console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
                 console.file.flush()
@@ -903,10 +892,15 @@ class App(Generic[ReturnType], DOMNode):
             return
         if not self._closed:
             console = self.console
+            if self._sync_available:
+                console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
             try:
                 console.print(renderable)
             except Exception as error:
                 self.on_exception(error)
+            if self._sync_available:
+                console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
+            console.file.flush()
 
     def measure(self, renderable: RenderableType, max_width=100_000) -&gt; int:
         &#34;&#34;&#34;Get the optimal width for a widget or renderable.
@@ -1187,7 +1181,6 @@ def _init_uvloop() -&gt; None:
         driver_class: Type[Driver] | None = None,
         log_path: str | PurePath = &#34;&#34;,
         log_verbosity: int = 1,
-        # TODO: make this Literal a proper type in Rich, so we re-use it?
         log_color_system: Literal[
             &#34;auto&#34;, &#34;standard&#34;, &#34;256&#34;, &#34;truecolor&#34;, &#34;windows&#34;
         ] = &#34;auto&#34;,
@@ -1625,7 +1618,6 @@ def _init_uvloop() -&gt; None:
 
     def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
         self.register(self.screen, *anon_widgets, **widgets)
-        self.screen.refresh()
 
     def push_screen(self, screen: Screen | None = None) -&gt; Screen:
         &#34;&#34;&#34;Push a new screen on the screen stack.
@@ -1830,7 +1822,6 @@ def _init_uvloop() -&gt; None:
         widgets = list(self.compose())
         if widgets:
             self.mount(*widgets)
-            self.screen.refresh()
 
     async def on_idle(self) -&gt; None:
         &#34;&#34;&#34;Perform actions when there are no messages in the queue.&#34;&#34;&#34;
@@ -1916,13 +1907,7 @@ def _init_uvloop() -&gt; None:
             try:
                 if self._sync_available:
                     console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
-                console.print(
-                    ScreenRenderable(
-                        Control.home(),
-                        self.screen._compositor,
-                        Control.home(),
-                    )
-                )
+                console.print(self.screen._compositor)
                 if self._sync_available:
                     console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
                 console.file.flush()
@@ -1946,10 +1931,15 @@ def _init_uvloop() -&gt; None:
             return
         if not self._closed:
             console = self.console
+            if self._sync_available:
+                console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
             try:
                 console.print(renderable)
             except Exception as error:
                 self.on_exception(error)
+            if self._sync_available:
+                console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
+            console.file.flush()
 
     def measure(self, renderable: RenderableType, max_width=100_000) -&gt; int:
         &#34;&#34;&#34;Get the optimal width for a widget or renderable.
@@ -3041,8 +3031,7 @@ the log message sent to the devtools server.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
-    self.register(self.screen, *anon_widgets, **widgets)
-    self.screen.refresh()</code></pre>
+    self.register(self.screen, *anon_widgets, **widgets)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.on_event"><code class="name flex">
@@ -3156,8 +3145,7 @@ the log message sent to the devtools server.</p></div>
 <pre><code class="python">def on_mount(self) -&gt; None:
     widgets = list(self.compose())
     if widgets:
-        self.mount(*widgets)
-        self.screen.refresh()</code></pre>
+        self.mount(*widgets)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.on_resize"><code class="name flex">
@@ -3419,13 +3407,7 @@ one internally. Defaults to None.</p>
         try:
             if self._sync_available:
                 console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
-            console.print(
-                ScreenRenderable(
-                    Control.home(),
-                    self.screen._compositor,
-                    Control.home(),
-                )
-            )
+            console.print(self.screen._compositor)
             if self._sync_available:
                 console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
             console.file.flush()
