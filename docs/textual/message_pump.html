@@ -226,13 +226,14 @@ class MessagePump:
             return
 
         self._closing = True
-
         await self._message_queue.put(MessagePriority(None))
-
         for task in self._child_tasks:
             task.cancel()
             await task
         self._child_tasks.clear()
+        if self._task is not None:
+            # Ensure everything is closed before returning
+            await self._task
 
     def start_messages(self) -&gt; None:
         self._task = asyncio.create_task(self.process_messages())
@@ -666,13 +667,14 @@ class MessagePump:
             return
 
         self._closing = True
-
         await self._message_queue.put(MessagePriority(None))
-
         for task in self._child_tasks:
             task.cancel()
             await task
         self._child_tasks.clear()
+        if self._task is not None:
+            # Ensure everything is closed before returning
+            await self._task
 
     def start_messages(self) -&gt; None:
         self._task = asyncio.create_task(self.process_messages())
@@ -1020,13 +1022,14 @@ def task(self) -&gt; Task:
         return
 
     self._closing = True
-
     await self._message_queue.put(MessagePriority(None))
-
     for task in self._child_tasks:
         task.cancel()
         await task
-    self._child_tasks.clear()</code></pre>
+    self._child_tasks.clear()
+    if self._task is not None:
+        # Ensure everything is closed before returning
+        await self._task</code></pre>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.close_messages_no_wait"><code class="name flex">

@@ -37,7 +37,7 @@ from . import log
 from .geometry import Offset, Size
 from .message import Message
 from ._types import MessageTarget
-from .keys import Keys, KEY_BINDINGS
+from .keys import Keys, KEY_VALUES
 
 MouseEventT = TypeVar(&#34;MouseEventT&#34;, bound=&#34;MouseEvent&#34;)
 
@@ -236,7 +236,7 @@ class Key(InputEvent):
         Returns:
             bool: True if the key is printable. False otherwise.
         &#34;&#34;&#34;
-        return self.key not in KEY_BINDINGS
+        return self.key not in KEY_VALUES
 
 
 @rich.repr.auto
@@ -1320,7 +1320,7 @@ through the usual message queue.</p>
         Returns:
             bool: True if the key is printable. False otherwise.
         &#34;&#34;&#34;
-        return self.key not in KEY_BINDINGS</code></pre>
+        return self.key not in KEY_VALUES</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1366,7 +1366,7 @@ def is_printable(self) -&gt; bool:
     Returns:
         bool: True if the key is printable. False otherwise.
     &#34;&#34;&#34;
-    return self.key not in KEY_BINDINGS</code></pre>
+    return self.key not in KEY_VALUES</code></pre>
 </details>
 </dd>
 <dt id="textual.events.Key.key"><code class="name">var <span class="ident">key</span></code></dt>

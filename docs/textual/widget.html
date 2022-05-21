@@ -51,10 +51,8 @@ from . import events
 from ._animator import BoundAnimator
 from ._border import Border
 from .box_model import BoxModel, get_box_model
-from .color import Color
 from ._context import active_app
 from ._types import Lines
-from .css.styles import Styles
 from .dom import DOMNode
 from .geometry import clamp, Offset, Region, Size
 from .layouts.vertical import VerticalLayout
@@ -94,11 +92,11 @@ class RenderCache(NamedTuple):
 @rich.repr.auto
 class Widget(DOMNode):
 
-    can_focus: bool = False
-    can_focus_children: bool = True
-
     CSS = &#34;&#34;&#34;
     &#34;&#34;&#34;
+
+    can_focus: bool = False
+    can_focus_children: bool = True
 
     def __init__(
         self,
@@ -124,6 +122,11 @@ class Widget(DOMNode):
         self._render_cache = RenderCache(Size(0, 0), [])
         self._dirty_regions: list[Region] = []
 
+        # Cache the auto content dimensions
+        # TODO: add mechanism to explicitly clear this
+        self._content_width_cache: tuple[object, int] = (None, 0)
+        self._content_height_cache: tuple[object, int] = (None, 0)
+
         super().__init__(name=name, id=id, classes=classes)
         self.add_children(*children)
 
@@ -138,6 +141,26 @@ class Widget(DOMNode):
     scroll_target_y = Reactive(0.0, repaint=False)
     show_vertical_scrollbar = Reactive(False, layout=True)
     show_horizontal_scrollbar = Reactive(False, layout=True)
+
+    def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
+
+        Args:
+            value (bool): Show horizontal scrollbar flag.
+        &#34;&#34;&#34;
+        if not value:
+            # reset the scroll position if the scrollbar is hidden.
+            self.scroll_to(0, 0, animate=False)
+
+    def watch_show_vertical_scrollbar(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Watch function for show_vertical_scrollbar attribute.
+
+        Args:
+            value (bool): Show vertical scrollbar flag.
+        &#34;&#34;&#34;
+        if not value:
+            # reset the scroll position if the scrollbar is hidden.
+            self.scroll_to(0, 0, animate=False)
 
     def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
         self.app.register(self, *anon_widgets, **widgets)
@@ -178,39 +201,66 @@ class Widget(DOMNode):
         )
         return box_model
 
-    def get_content_width(self, container_size: Size, viewport_size: Size) -&gt; int:
+    def get_content_width(self, container: Size, viewport: Size) -&gt; int:
         &#34;&#34;&#34;Gets the width of the content area.
 
         Args:
-            container_size (Size): Size of the container (immediate parent) widget.
-            viewport_size (Size): Size of the viewport.
+            container (Size): Size of the container (immediate parent) widget.
+            viewport (Size): Size of the viewport.
 
         Returns:
             int: The optimal width of the content.
         &#34;&#34;&#34;
+        if self.is_container:
+            return self.layout.get_content_width(self, container, viewport)
+
+        cache_key = container.width
+        if self._content_width_cache[0] == cache_key:
+            return self._content_width_cache[1]
+
         console = self.app.console
         renderable = self.render(self.styles.rich_style)
-        measurement = Measurement.get(console, console.options, renderable)
-        return measurement.maximum
+        measurement = Measurement.get(
+            console,
+            console.options.update_width(container.width),
+            renderable,
+        )
+        width = measurement.maximum
+        self._content_width_cache = (cache_key, width)
+        return width
 
-    def get_content_height(
-        self, container_size: Size, viewport_size: Size, width: int
-    ) -&gt; int:
+    def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
         &#34;&#34;&#34;Gets the height (number of lines) in the content area.
 
         Args:
-            container_size (Size): Size of the container (immediate parent) widget.
-            viewport_size (Size): Size of the viewport.
+            container (Size): Size of the container (immediate parent) widget.
+            viewport (Size): Size of the viewport.
             width (int): Width of renderable.
 
         Returns:
             int: The height of the content.
         &#34;&#34;&#34;
-        renderable = self.render(self.styles.rich_style)
-        options = self.console.options.update_width(width)
-        segments = self.console.render(renderable, options)
-        # Cheaper than counting the lines returned from render_lines!
-        height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
+        if self.is_container:
+            assert self.layout is not None
+            height = self.layout.get_content_height(
+                self,
+                container,
+                viewport,
+                width,
+            )
+        else:
+            cache_key = width
+
+            if self._content_height_cache[0] == cache_key:
+                return self._content_height_cache[1]
+
+            renderable = self.render(self.styles.rich_style)
+            options = self.console.options.update_width(width).update(highlight=False)
+            segments = self.console.render(renderable, options)
+            # Cheaper than counting the lines returned from render_lines!
+            height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
+            self._content_height_cache = (cache_key, height)
+
         return height
 
     async def watch_scroll_x(self, new_value: float) -&gt; None:
@@ -584,32 +634,28 @@ class Widget(DOMNode):
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
-        renderable = self.render(self.styles.rich_style)
+        renderable = self.render(self.text_style)
 
+        (base_background, base_color), (background, color) = self.colors
         styles = self.styles
-        parent_styles = self.parent.styles
-
-        parent_text_style = self.parent.rich_text_style
-        text_style = styles.rich_style
 
         content_align = (styles.content_align_horizontal, styles.content_align_vertical)
         if content_align != (&#34;left&#34;, &#34;top&#34;):
             horizontal, vertical = content_align
             renderable = Align(renderable, horizontal, vertical=vertical)
 
-        renderable = Padding(renderable, styles.padding)
-
-        renderable_text_style = parent_text_style + text_style
-        if renderable_text_style:
-            style = Style.from_color(text_style.color, text_style.bgcolor)
-            renderable = Styled(renderable, style)
+        renderable = Padding(
+            renderable,
+            styles.padding,
+            style=Style.from_color(color.rich_color, background.rich_color),
+        )
 
         if styles.border:
             renderable = Border(
                 renderable,
                 styles.border,
-                inner_color=styles.background,
-                outer_color=Color.from_rich_color(parent_text_style.bgcolor),
+                inner_color=background,
+                outer_color=base_background,
             )
 
         if styles.outline:
@@ -617,7 +663,7 @@ class Widget(DOMNode):
                 renderable,
                 styles.outline,
                 inner_color=styles.background,
-                outer_color=parent_styles.background,
+                outer_color=base_background,
                 outline=True,
             )
 
@@ -685,13 +731,9 @@ class Widget(DOMNode):
         return self._animate
 
     @property
-    def layout(self) -&gt; Layout | None:
-        return self.styles.layout or (
-            # If we have children we _should_ return a layout, otherwise they won&#39;t be displayed:
-            self._default_layout
-            if self.children
-            else None
-        )
+    def layout(self) -&gt; Layout:
+        &#34;&#34;&#34;Get the layout object if set in styles, or a default layout.&#34;&#34;&#34;
+        return self.styles.layout or self._default_layout
 
     @property
     def is_container(self) -&gt; bool:
@@ -732,6 +774,8 @@ class Widget(DOMNode):
                     self.horizontal_scrollbar.window_virtual_size = virtual_size.width
                     self.horizontal_scrollbar.window_size = width
 
+                self.scroll_x = self.validate_scroll_x(self.scroll_x)
+                self.scroll_y = self.validate_scroll_y(self.scroll_y)
                 self.refresh(layout=True)
                 self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
             else:
@@ -774,9 +818,6 @@ class Widget(DOMNode):
         &#34;&#34;&#34;Check if a layout has been requested.&#34;&#34;&#34;
         return self._layout_required
 
-    def _reset_check_layout(self) -&gt; None:
-        self._layout_required = False
-
     def get_style_at(self, x: int, y: int) -&gt; Style:
         offset_x, offset_y = self.screen.get_offset(self)
         return self.screen.get_style_at(x + offset_x, y + offset_y)
@@ -801,6 +842,8 @@ class Widget(DOMNode):
         if layout:
             self._layout_required = True
         if repaint:
+            self._content_width_cache = (None, 0)
+            self._content_height_cache = (None, 0)
             self.set_dirty()
             self._repaint_required = True
         self.check_idle()
@@ -834,7 +877,7 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
 
         if self.check_layout():
-            self._reset_check_layout()
+            self._layout_required = False
             self.screen.post_message_no_wait(messages.Layout(self))
         elif self._repaint_required:
             self.emit_no_wait(messages.Update(self, self))
@@ -880,7 +923,7 @@ class Widget(DOMNode):
         widgets = list(self.compose())
         if widgets:
             self.mount(*widgets)
-            self.screen.refresh()
+            self.screen.refresh(repaint=False, layout=True)
 
     def on_leave(self) -&gt; None:
         self.mouse_over = False
@@ -891,10 +934,12 @@ class Widget(DOMNode):
     def on_focus(self, event: events.Focus) -&gt; None:
         self.emit_no_wait(events.DescendantFocus(self))
         self.has_focus = True
+        self.refresh()
 
     def on_blur(self, event: events.Blur) -&gt; None:
         self.emit_no_wait(events.DescendantBlur(self))
         self.has_focus = False
+        self.refresh()
 
     def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
         self.descendant_has_focus = True
@@ -906,13 +951,13 @@ class Widget(DOMNode):
 
     def on_mouse_scroll_down(self, event) -&gt; None:
         if self.is_container:
-            self.scroll_down(animate=False)
-            event.stop()
+            if self.scroll_down(animate=False):
+                event.stop()
 
     def on_mouse_scroll_up(self, event) -&gt; None:
         if self.is_container:
-            self.scroll_up(animate=False)
-            event.stop()
+            if self.scroll_up(animate=False):
+                event.stop()
 
     def handle_scroll_to(self, message: ScrollTo) -&gt; None:
         if self.is_container:
@@ -1064,11 +1109,11 @@ def cursor_line(self) -&gt; int | None:
 </summary>
 <pre><code class="python">class Widget(DOMNode):
 
-    can_focus: bool = False
-    can_focus_children: bool = True
-
     CSS = &#34;&#34;&#34;
     &#34;&#34;&#34;
+
+    can_focus: bool = False
+    can_focus_children: bool = True
 
     def __init__(
         self,
@@ -1094,6 +1139,11 @@ def cursor_line(self) -&gt; int | None:
         self._render_cache = RenderCache(Size(0, 0), [])
         self._dirty_regions: list[Region] = []
 
+        # Cache the auto content dimensions
+        # TODO: add mechanism to explicitly clear this
+        self._content_width_cache: tuple[object, int] = (None, 0)
+        self._content_height_cache: tuple[object, int] = (None, 0)
+
         super().__init__(name=name, id=id, classes=classes)
         self.add_children(*children)
 
@@ -1108,6 +1158,26 @@ def cursor_line(self) -&gt; int | None:
     scroll_target_y = Reactive(0.0, repaint=False)
     show_vertical_scrollbar = Reactive(False, layout=True)
     show_horizontal_scrollbar = Reactive(False, layout=True)
+
+    def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
+
+        Args:
+            value (bool): Show horizontal scrollbar flag.
+        &#34;&#34;&#34;
+        if not value:
+            # reset the scroll position if the scrollbar is hidden.
+            self.scroll_to(0, 0, animate=False)
+
+    def watch_show_vertical_scrollbar(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Watch function for show_vertical_scrollbar attribute.
+
+        Args:
+            value (bool): Show vertical scrollbar flag.
+        &#34;&#34;&#34;
+        if not value:
+            # reset the scroll position if the scrollbar is hidden.
+            self.scroll_to(0, 0, animate=False)
 
     def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
         self.app.register(self, *anon_widgets, **widgets)
@@ -1148,39 +1218,66 @@ def cursor_line(self) -&gt; int | None:
         )
         return box_model
 
-    def get_content_width(self, container_size: Size, viewport_size: Size) -&gt; int:
+    def get_content_width(self, container: Size, viewport: Size) -&gt; int:
         &#34;&#34;&#34;Gets the width of the content area.
 
         Args:
-            container_size (Size): Size of the container (immediate parent) widget.
-            viewport_size (Size): Size of the viewport.
+            container (Size): Size of the container (immediate parent) widget.
+            viewport (Size): Size of the viewport.
 
         Returns:
             int: The optimal width of the content.
         &#34;&#34;&#34;
+        if self.is_container:
+            return self.layout.get_content_width(self, container, viewport)
+
+        cache_key = container.width
+        if self._content_width_cache[0] == cache_key:
+            return self._content_width_cache[1]
+
         console = self.app.console
         renderable = self.render(self.styles.rich_style)
-        measurement = Measurement.get(console, console.options, renderable)
-        return measurement.maximum
+        measurement = Measurement.get(
+            console,
+            console.options.update_width(container.width),
+            renderable,
+        )
+        width = measurement.maximum
+        self._content_width_cache = (cache_key, width)
+        return width
 
-    def get_content_height(
-        self, container_size: Size, viewport_size: Size, width: int
-    ) -&gt; int:
+    def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
         &#34;&#34;&#34;Gets the height (number of lines) in the content area.
 
         Args:
-            container_size (Size): Size of the container (immediate parent) widget.
-            viewport_size (Size): Size of the viewport.
+            container (Size): Size of the container (immediate parent) widget.
+            viewport (Size): Size of the viewport.
             width (int): Width of renderable.
 
         Returns:
             int: The height of the content.
         &#34;&#34;&#34;
-        renderable = self.render(self.styles.rich_style)
-        options = self.console.options.update_width(width)
-        segments = self.console.render(renderable, options)
-        # Cheaper than counting the lines returned from render_lines!
-        height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
+        if self.is_container:
+            assert self.layout is not None
+            height = self.layout.get_content_height(
+                self,
+                container,
+                viewport,
+                width,
+            )
+        else:
+            cache_key = width
+
+            if self._content_height_cache[0] == cache_key:
+                return self._content_height_cache[1]
+
+            renderable = self.render(self.styles.rich_style)
+            options = self.console.options.update_width(width).update(highlight=False)
+            segments = self.console.render(renderable, options)
+            # Cheaper than counting the lines returned from render_lines!
+            height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
+            self._content_height_cache = (cache_key, height)
+
         return height
 
     async def watch_scroll_x(self, new_value: float) -&gt; None:
@@ -1554,32 +1651,28 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
-        renderable = self.render(self.styles.rich_style)
+        renderable = self.render(self.text_style)
 
+        (base_background, base_color), (background, color) = self.colors
         styles = self.styles
-        parent_styles = self.parent.styles
-
-        parent_text_style = self.parent.rich_text_style
-        text_style = styles.rich_style
 
         content_align = (styles.content_align_horizontal, styles.content_align_vertical)
         if content_align != (&#34;left&#34;, &#34;top&#34;):
             horizontal, vertical = content_align
             renderable = Align(renderable, horizontal, vertical=vertical)
 
-        renderable = Padding(renderable, styles.padding)
-
-        renderable_text_style = parent_text_style + text_style
-        if renderable_text_style:
-            style = Style.from_color(text_style.color, text_style.bgcolor)
-            renderable = Styled(renderable, style)
+        renderable = Padding(
+            renderable,
+            styles.padding,
+            style=Style.from_color(color.rich_color, background.rich_color),
+        )
 
         if styles.border:
             renderable = Border(
                 renderable,
                 styles.border,
-                inner_color=styles.background,
-                outer_color=Color.from_rich_color(parent_text_style.bgcolor),
+                inner_color=background,
+                outer_color=base_background,
             )
 
         if styles.outline:
@@ -1587,7 +1680,7 @@ def cursor_line(self) -&gt; int | None:
                 renderable,
                 styles.outline,
                 inner_color=styles.background,
-                outer_color=parent_styles.background,
+                outer_color=base_background,
                 outline=True,
             )
 
@@ -1655,13 +1748,9 @@ def cursor_line(self) -&gt; int | None:
         return self._animate
 
     @property
-    def layout(self) -&gt; Layout | None:
-        return self.styles.layout or (
-            # If we have children we _should_ return a layout, otherwise they won&#39;t be displayed:
-            self._default_layout
-            if self.children
-            else None
-        )
+    def layout(self) -&gt; Layout:
+        &#34;&#34;&#34;Get the layout object if set in styles, or a default layout.&#34;&#34;&#34;
+        return self.styles.layout or self._default_layout
 
     @property
     def is_container(self) -&gt; bool:
@@ -1702,6 +1791,8 @@ def cursor_line(self) -&gt; int | None:
                     self.horizontal_scrollbar.window_virtual_size = virtual_size.width
                     self.horizontal_scrollbar.window_size = width
 
+                self.scroll_x = self.validate_scroll_x(self.scroll_x)
+                self.scroll_y = self.validate_scroll_y(self.scroll_y)
                 self.refresh(layout=True)
                 self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
             else:
@@ -1744,9 +1835,6 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;Check if a layout has been requested.&#34;&#34;&#34;
         return self._layout_required
 
-    def _reset_check_layout(self) -&gt; None:
-        self._layout_required = False
-
     def get_style_at(self, x: int, y: int) -&gt; Style:
         offset_x, offset_y = self.screen.get_offset(self)
         return self.screen.get_style_at(x + offset_x, y + offset_y)
@@ -1771,6 +1859,8 @@ def cursor_line(self) -&gt; int | None:
         if layout:
             self._layout_required = True
         if repaint:
+            self._content_width_cache = (None, 0)
+            self._content_height_cache = (None, 0)
             self.set_dirty()
             self._repaint_required = True
         self.check_idle()
@@ -1804,7 +1894,7 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
 
         if self.check_layout():
-            self._reset_check_layout()
+            self._layout_required = False
             self.screen.post_message_no_wait(messages.Layout(self))
         elif self._repaint_required:
             self.emit_no_wait(messages.Update(self, self))
@@ -1850,7 +1940,7 @@ def cursor_line(self) -&gt; int | None:
         widgets = list(self.compose())
         if widgets:
             self.mount(*widgets)
-            self.screen.refresh()
+            self.screen.refresh(repaint=False, layout=True)
 
     def on_leave(self) -&gt; None:
         self.mouse_over = False
@@ -1861,10 +1951,12 @@ def cursor_line(self) -&gt; int | None:
     def on_focus(self, event: events.Focus) -&gt; None:
         self.emit_no_wait(events.DescendantFocus(self))
         self.has_focus = True
+        self.refresh()
 
     def on_blur(self, event: events.Blur) -&gt; None:
         self.emit_no_wait(events.DescendantBlur(self))
         self.has_focus = False
+        self.refresh()
 
     def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
         self.descendant_has_focus = True
@@ -1876,13 +1968,13 @@ def cursor_line(self) -&gt; int | None:
 
     def on_mouse_scroll_down(self, event) -&gt; None:
         if self.is_container:
-            self.scroll_down(animate=False)
-            event.stop()
+            if self.scroll_down(animate=False):
+                event.stop()
 
     def on_mouse_scroll_up(self, event) -&gt; None:
         if self.is_container:
-            self.scroll_up(animate=False)
-            event.stop()
+            if self.scroll_up(animate=False):
+                event.stop()
 
     def handle_scroll_to(self, message: ScrollTo) -&gt; None:
         if self.is_container:
@@ -2181,21 +2273,17 @@ def is_transparent(self) -&gt; bool:
     return self.is_container and self.styles.background.is_transparent</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.layout"><code class="name">var <span class="ident">layout</span> : Layout | None</code></dt>
+<dt id="textual.widget.Widget.layout"><code class="name">var <span class="ident">layout</span> : textual._layout.Layout</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Get the layout object if set in styles, or a default layout.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def layout(self) -&gt; Layout | None:
-    return self.styles.layout or (
-        # If we have children we _should_ return a layout, otherwise they won&#39;t be displayed:
-        self._default_layout
-        if self.children
-        else None
-    )</code></pre>
+def layout(self) -&gt; Layout:
+    &#34;&#34;&#34;Get the layout object if set in styles, or a default layout.&#34;&#34;&#34;
+    return self.styles.layout or self._default_layout</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.max_scroll_x"><code class="name">var <span class="ident">max_scroll_x</span> : float</code></dt>
@@ -2562,15 +2650,15 @@ def virtual_size(self) -&gt; Size:
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_content_height"><code class="name flex">
-<span>def <span class="ident">get_content_height</span></span>(<span>self, container_size: Size, viewport_size: Size, width: int) ‑> int</span>
+<span>def <span class="ident">get_content_height</span></span>(<span>self, container: Size, viewport: Size, width: int) ‑> int</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Gets the height (number of lines) in the content area.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>container_size</code></strong> :&ensp;<code>Size</code></dt>
+<dt><strong><code>container</code></strong> :&ensp;<code>Size</code></dt>
 <dd>Size of the container (immediate parent) widget.</dd>
-<dt><strong><code>viewport_size</code></strong> :&ensp;<code>Size</code></dt>
+<dt><strong><code>viewport</code></strong> :&ensp;<code>Size</code></dt>
 <dd>Size of the viewport.</dd>
 <dt><strong><code>width</code></strong> :&ensp;<code>int</code></dt>
 <dd>Width of renderable.</dd>
@@ -2584,37 +2672,51 @@ def virtual_size(self) -&gt; Size:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_content_height(
-    self, container_size: Size, viewport_size: Size, width: int
-) -&gt; int:
+<pre><code class="python">def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
     &#34;&#34;&#34;Gets the height (number of lines) in the content area.
 
     Args:
-        container_size (Size): Size of the container (immediate parent) widget.
-        viewport_size (Size): Size of the viewport.
+        container (Size): Size of the container (immediate parent) widget.
+        viewport (Size): Size of the viewport.
         width (int): Width of renderable.
 
     Returns:
         int: The height of the content.
     &#34;&#34;&#34;
-    renderable = self.render(self.styles.rich_style)
-    options = self.console.options.update_width(width)
-    segments = self.console.render(renderable, options)
-    # Cheaper than counting the lines returned from render_lines!
-    height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
+    if self.is_container:
+        assert self.layout is not None
+        height = self.layout.get_content_height(
+            self,
+            container,
+            viewport,
+            width,
+        )
+    else:
+        cache_key = width
+
+        if self._content_height_cache[0] == cache_key:
+            return self._content_height_cache[1]
+
+        renderable = self.render(self.styles.rich_style)
+        options = self.console.options.update_width(width).update(highlight=False)
+        segments = self.console.render(renderable, options)
+        # Cheaper than counting the lines returned from render_lines!
+        height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
+        self._content_height_cache = (cache_key, height)
+
     return height</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_content_width"><code class="name flex">
-<span>def <span class="ident">get_content_width</span></span>(<span>self, container_size: Size, viewport_size: Size) ‑> int</span>
+<span>def <span class="ident">get_content_width</span></span>(<span>self, container: Size, viewport: Size) ‑> int</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Gets the width of the content area.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>container_size</code></strong> :&ensp;<code>Size</code></dt>
+<dt><strong><code>container</code></strong> :&ensp;<code>Size</code></dt>
 <dd>Size of the container (immediate parent) widget.</dd>
-<dt><strong><code>viewport_size</code></strong> :&ensp;<code>Size</code></dt>
+<dt><strong><code>viewport</code></strong> :&ensp;<code>Size</code></dt>
 <dd>Size of the viewport.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -2626,20 +2728,33 @@ def virtual_size(self) -&gt; Size:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_content_width(self, container_size: Size, viewport_size: Size) -&gt; int:
+<pre><code class="python">def get_content_width(self, container: Size, viewport: Size) -&gt; int:
     &#34;&#34;&#34;Gets the width of the content area.
 
     Args:
-        container_size (Size): Size of the container (immediate parent) widget.
-        viewport_size (Size): Size of the viewport.
+        container (Size): Size of the container (immediate parent) widget.
+        viewport (Size): Size of the viewport.
 
     Returns:
         int: The optimal width of the content.
     &#34;&#34;&#34;
+    if self.is_container:
+        return self.layout.get_content_width(self, container, viewport)
+
+    cache_key = container.width
+    if self._content_width_cache[0] == cache_key:
+        return self._content_width_cache[1]
+
     console = self.app.console
     renderable = self.render(self.styles.rich_style)
-    measurement = Measurement.get(console, console.options, renderable)
-    return measurement.maximum</code></pre>
+    measurement = Measurement.get(
+        console,
+        console.options.update_width(container.width),
+        renderable,
+    )
+    width = measurement.maximum
+    self._content_width_cache = (cache_key, width)
+    return width</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_pseudo_classes"><code class="name flex">
@@ -2943,7 +3058,8 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 </summary>
 <pre><code class="python">def on_blur(self, event: events.Blur) -&gt; None:
     self.emit_no_wait(events.DescendantBlur(self))
-    self.has_focus = False</code></pre>
+    self.has_focus = False
+    self.refresh()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_click"><code class="name flex">
@@ -3011,7 +3127,8 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 </summary>
 <pre><code class="python">def on_focus(self, event: events.Focus) -&gt; None:
     self.emit_no_wait(events.DescendantFocus(self))
-    self.has_focus = True</code></pre>
+    self.has_focus = True
+    self.refresh()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_idle"><code class="name flex">
@@ -3036,7 +3153,7 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
     &#34;&#34;&#34;
 
     if self.check_layout():
-        self._reset_check_layout()
+        self._layout_required = False
         self.screen.post_message_no_wait(messages.Layout(self))
     elif self._repaint_required:
         self.emit_no_wait(messages.Update(self, self))
@@ -3082,7 +3199,7 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
     widgets = list(self.compose())
     if widgets:
         self.mount(*widgets)
-        self.screen.refresh()</code></pre>
+        self.screen.refresh(repaint=False, layout=True)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_mouse_down"><code class="name flex">
@@ -3109,8 +3226,8 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 </summary>
 <pre><code class="python">def on_mouse_scroll_down(self, event) -&gt; None:
     if self.is_container:
-        self.scroll_down(animate=False)
-        event.stop()</code></pre>
+        if self.scroll_down(animate=False):
+            event.stop()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_mouse_scroll_up"><code class="name flex">
@@ -3124,8 +3241,8 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 </summary>
 <pre><code class="python">def on_mouse_scroll_up(self, event) -&gt; None:
     if self.is_container:
-        self.scroll_up(animate=False)
-        event.stop()</code></pre>
+        if self.scroll_up(animate=False):
+            event.stop()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_mouse_up"><code class="name flex">
@@ -3229,6 +3346,8 @@ next idle event. Only one refresh will be done even if this method is called mul
     if layout:
         self._layout_required = True
     if repaint:
+        self._content_width_cache = (None, 0)
+        self._content_height_cache = (None, 0)
         self.set_dirty()
         self._repaint_required = True
     self.check_idle()</code></pre>
@@ -3303,32 +3422,28 @@ next idle event. Only one refresh will be done even if this method is called mul
     Returns:
         RenderableType: A new renderable.
     &#34;&#34;&#34;
-    renderable = self.render(self.styles.rich_style)
+    renderable = self.render(self.text_style)
 
+    (base_background, base_color), (background, color) = self.colors
     styles = self.styles
-    parent_styles = self.parent.styles
-
-    parent_text_style = self.parent.rich_text_style
-    text_style = styles.rich_style
 
     content_align = (styles.content_align_horizontal, styles.content_align_vertical)
     if content_align != (&#34;left&#34;, &#34;top&#34;):
         horizontal, vertical = content_align
         renderable = Align(renderable, horizontal, vertical=vertical)
 
-    renderable = Padding(renderable, styles.padding)
-
-    renderable_text_style = parent_text_style + text_style
-    if renderable_text_style:
-        style = Style.from_color(text_style.color, text_style.bgcolor)
-        renderable = Styled(renderable, style)
+    renderable = Padding(
+        renderable,
+        styles.padding,
+        style=Style.from_color(color.rich_color, background.rich_color),
+    )
 
     if styles.border:
         renderable = Border(
             renderable,
             styles.border,
-            inner_color=styles.background,
-            outer_color=Color.from_rich_color(parent_text_style.bgcolor),
+            inner_color=background,
+            outer_color=base_background,
         )
 
     if styles.outline:
@@ -3336,7 +3451,7 @@ next idle event. Only one refresh will be done even if this method is called mul
             renderable,
             styles.outline,
             inner_color=styles.background,
-            outer_color=parent_styles.background,
+            outer_color=base_background,
             outline=True,
         )
 
@@ -3725,6 +3840,8 @@ next idle event. Only one refresh will be done even if this method is called mul
                 self.horizontal_scrollbar.window_virtual_size = virtual_size.width
                 self.horizontal_scrollbar.window_size = width
 
+            self.scroll_x = self.validate_scroll_x(self.scroll_x)
+            self.scroll_y = self.validate_scroll_y(self.scroll_y)
             self.refresh(layout=True)
             self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
         else:
@@ -3850,6 +3967,56 @@ next idle event. Only one refresh will be done even if this method is called mul
     self.vertical_scrollbar.position = int(new_value)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.watch_show_horizontal_scrollbar"><code class="name flex">
+<span>def <span class="ident">watch_show_horizontal_scrollbar</span></span>(<span>self, value: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Watch function for show_horizontal_scrollbar attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Show horizontal scrollbar flag.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
+    &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
+
+    Args:
+        value (bool): Show horizontal scrollbar flag.
+    &#34;&#34;&#34;
+    if not value:
+        # reset the scroll position if the scrollbar is hidden.
+        self.scroll_to(0, 0, animate=False)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.watch_show_vertical_scrollbar"><code class="name flex">
+<span>def <span class="ident">watch_show_vertical_scrollbar</span></span>(<span>self, value: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Watch function for show_vertical_scrollbar attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Show vertical scrollbar flag.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_show_vertical_scrollbar(self, value: bool) -&gt; None:
+    &#34;&#34;&#34;Watch function for show_vertical_scrollbar attribute.
+
+    Args:
+        value (bool): Show vertical scrollbar flag.
+    &#34;&#34;&#34;
+    if not value:
+        # reset the scroll position if the scrollbar is hidden.
+        self.scroll_to(0, 0, animate=False)</code></pre>
+</details>
+</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -3864,6 +4031,7 @@ next idle event. Only one refresh will be done even if this method is called mul
 <li><code><a title="textual.dom.DOMNode.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.dom.DOMNode.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
+<li><code><a title="textual.dom.DOMNode.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
@@ -3885,9 +4053,9 @@ next idle event. Only one refresh will be done even if this method is called mul
 <li><code><a title="textual.dom.DOMNode.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.dom.DOMNode.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
-<li><code><a title="textual.dom.DOMNode.rich_text_style" href="dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.dom.DOMNode.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
 <li><code><a title="textual.dom.DOMNode.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
@@ -4071,6 +4239,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_scroll_x" href="#textual.widget.Widget.watch_scroll_x">watch_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_scroll_y" href="#textual.widget.Widget.watch_scroll_y">watch_scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
 </ul>
 </li>
 </ul>

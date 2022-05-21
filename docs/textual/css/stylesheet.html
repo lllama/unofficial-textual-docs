@@ -169,6 +169,16 @@ class Stylesheet:
     def css(self) -&gt; str:
         return &#34;\n\n&#34;.join(rule_set.css for rule_set in self.rules)
 
+    def copy(self) -&gt; Stylesheet:
+        &#34;&#34;&#34;Create a copy of this stylesheet.
+
+        Returns:
+            Stylesheet: New stylesheet.
+        &#34;&#34;&#34;
+        stylesheet = Stylesheet(variables=self.variables.copy())
+        stylesheet.source = self.source.copy()
+        return stylesheet
+
     def set_variables(self, variables: dict[str, str]) -&gt; None:
         &#34;&#34;&#34;Set CSS variables.
 
@@ -537,6 +547,16 @@ if __name__ == &#34;__main__&#34;:
     @property
     def css(self) -&gt; str:
         return &#34;\n\n&#34;.join(rule_set.css for rule_set in self.rules)
+
+    def copy(self) -&gt; Stylesheet:
+        &#34;&#34;&#34;Create a copy of this stylesheet.
+
+        Returns:
+            Stylesheet: New stylesheet.
+        &#34;&#34;&#34;
+        stylesheet = Stylesheet(variables=self.variables.copy())
+        stylesheet.source = self.source.copy()
+        return stylesheet
 
     def set_variables(self, variables: dict[str, str]) -&gt; None:
         &#34;&#34;&#34;Set CSS variables.
@@ -1005,6 +1025,31 @@ rule will be applied.</dd>
     self.replace_rules(node, node_rules, animate=animate)</code></pre>
 </details>
 </dd>
+<dt id="textual.css.stylesheet.Stylesheet.copy"><code class="name flex">
+<span>def <span class="ident">copy</span></span>(<span>self) ‑> <a title="textual.css.stylesheet.Stylesheet" href="#textual.css.stylesheet.Stylesheet">Stylesheet</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a copy of this stylesheet.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.css.stylesheet.Stylesheet" href="#textual.css.stylesheet.Stylesheet">Stylesheet</a></code></dt>
+<dd>New stylesheet.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def copy(self) -&gt; Stylesheet:
+    &#34;&#34;&#34;Create a copy of this stylesheet.
+
+    Returns:
+        Stylesheet: New stylesheet.
+    &#34;&#34;&#34;
+    stylesheet = Stylesheet(variables=self.variables.copy())
+    stylesheet.source = self.source.copy()
+    return stylesheet</code></pre>
+</details>
+</dd>
 <dt id="textual.css.stylesheet.Stylesheet.parse"><code class="name flex">
 <span>def <span class="ident">parse</span></span>(<span>self) ‑> None</span>
 </code></dt>
@@ -1349,6 +1394,7 @@ setTimeout(() => input.focus(), 100);
 <ul class="two-column">
 <li><code><a title="textual.css.stylesheet.Stylesheet.add_source" href="#textual.css.stylesheet.Stylesheet.add_source">add_source</a></code></li>
 <li><code><a title="textual.css.stylesheet.Stylesheet.apply" href="#textual.css.stylesheet.Stylesheet.apply">apply</a></code></li>
+<li><code><a title="textual.css.stylesheet.Stylesheet.copy" href="#textual.css.stylesheet.Stylesheet.copy">copy</a></code></li>
 <li><code><a title="textual.css.stylesheet.Stylesheet.css" href="#textual.css.stylesheet.Stylesheet.css">css</a></code></li>
 <li><code><a title="textual.css.stylesheet.Stylesheet.parse" href="#textual.css.stylesheet.Stylesheet.parse">parse</a></code></li>
 <li><code><a title="textual.css.stylesheet.Stylesheet.read" href="#textual.css.stylesheet.Stylesheet.read">read</a></code></li>

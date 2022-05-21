@@ -119,17 +119,20 @@ class Screen(Widget):
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
         if self._dirty_widgets:
             self._update_timer.resume()
+        if self._layout_required:
+            self._refresh_layout()
+            self._layout_required = False
 
     def _on_update(self) -&gt; None:
         &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
         # Render widgets together
         if self._dirty_widgets:
             self._compositor.update_widgets(self._dirty_widgets)
-            self.app.display(self._compositor.render())
+            self.app._display(self._compositor.render())
             self._dirty_widgets.clear()
         self._update_timer.pause()
 
-    def refresh_layout(self) -&gt; None:
+    def _refresh_layout(self) -&gt; None:
         &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
         if not self.size:
             return
@@ -168,7 +171,7 @@ class Screen(Widget):
 
         display_update = self._compositor.render()
         if display_update is not None:
-            self.app.display(display_update)
+            self.app._display(display_update)
 
     async def handle_update(self, message: messages.Update) -&gt; None:
         message.stop()
@@ -179,14 +182,15 @@ class Screen(Widget):
 
     async def handle_layout(self, message: messages.Layout) -&gt; None:
         message.stop()
-        self.refresh_layout()
+        self._layout_required = True
+        self.check_idle()
 
     def on_mount(self, event: events.Mount) -&gt; None:
         self._update_timer = self.set_interval(1 / 20, self._on_update, pause=True)
 
     async def on_resize(self, event: events.Resize) -&gt; None:
         self.size_updated(event.size, event.virtual_size, event.container_size)
-        self.refresh_layout()
+        self._refresh_layout()
         event.stop()
 
     async def _on_mouse_move(self, event: events.MouseMove) -&gt; None:
@@ -358,17 +362,20 @@ class Screen(Widget):
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
         if self._dirty_widgets:
             self._update_timer.resume()
+        if self._layout_required:
+            self._refresh_layout()
+            self._layout_required = False
 
     def _on_update(self) -&gt; None:
         &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
         # Render widgets together
         if self._dirty_widgets:
             self._compositor.update_widgets(self._dirty_widgets)
-            self.app.display(self._compositor.render())
+            self.app._display(self._compositor.render())
             self._dirty_widgets.clear()
         self._update_timer.pause()
 
-    def refresh_layout(self) -&gt; None:
+    def _refresh_layout(self) -&gt; None:
         &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
         if not self.size:
             return
@@ -407,7 +414,7 @@ class Screen(Widget):
 
         display_update = self._compositor.render()
         if display_update is not None:
-            self.app.display(display_update)
+            self.app._display(display_update)
 
     async def handle_update(self, message: messages.Update) -&gt; None:
         message.stop()
@@ -418,14 +425,15 @@ class Screen(Widget):
 
     async def handle_layout(self, message: messages.Layout) -&gt; None:
         message.stop()
-        self.refresh_layout()
+        self._layout_required = True
+        self.check_idle()
 
     def on_mount(self, event: events.Mount) -&gt; None:
         self._update_timer = self.set_interval(1 / 20, self._on_update, pause=True)
 
     async def on_resize(self, event: events.Resize) -&gt; None:
         self.size_updated(event.size, event.virtual_size, event.container_size)
-        self.refresh_layout()
+        self._refresh_layout()
         event.stop()
 
     async def _on_mouse_move(self, event: events.MouseMove) -&gt; None:
@@ -736,7 +744,8 @@ class Screen(Widget):
 </summary>
 <pre><code class="python">async def handle_layout(self, message: messages.Layout) -&gt; None:
     message.stop()
-    self.refresh_layout()</code></pre>
+    self._layout_required = True
+    self.check_idle()</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.handle_update"><code class="name flex">
@@ -780,59 +789,8 @@ class Screen(Widget):
 </summary>
 <pre><code class="python">async def on_resize(self, event: events.Resize) -&gt; None:
     self.size_updated(event.size, event.virtual_size, event.container_size)
-    self.refresh_layout()
+    self._refresh_layout()
     event.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.screen.Screen.refresh_layout"><code class="name flex">
-<span>def <span class="ident">refresh_layout</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Refresh the layout (can change size and positions of widgets).</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def refresh_layout(self) -&gt; None:
-    &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
-    if not self.size:
-        return
-    # This paint the entire screen, so replaces the batched dirty widgets
-    self._compositor.update_widgets(self._dirty_widgets)
-    self._update_timer.pause()
-    try:
-        hidden, shown, resized = self._compositor.reflow(self, self.size)
-
-        Hide = events.Hide
-        Show = events.Show
-        for widget in hidden:
-            widget.post_message_no_wait(Hide(self))
-        for widget in shown:
-            widget.post_message_no_wait(Show(self))
-
-        send_resize = shown | resized
-
-        for (
-            widget,
-            _region,
-            unclipped_region,
-            virtual_size,
-            container_size,
-        ) in self._compositor:
-            widget.size_updated(unclipped_region.size, virtual_size, container_size)
-            if widget in send_resize:
-                widget.post_message_no_wait(
-                    events.Resize(
-                        self, unclipped_region.size, virtual_size, container_size
-                    )
-                )
-    except Exception as error:
-        self.app.on_exception(error)
-        return
-
-    display_update = self._compositor.render()
-    if display_update is not None:
-        self.app.display(display_update)</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.watch_dark"><code class="name flex">
@@ -866,6 +824,7 @@ class Screen(Widget):
 <li><code><a title="textual.widget.Widget.check_layout" href="widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
+<li><code><a title="textual.widget.Widget.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
 <li><code><a title="textual.widget.Widget.compose" href="widget.html#textual.widget.Widget.compose">compose</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="widget.html#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
@@ -896,6 +855,7 @@ class Screen(Widget):
 <li><code><a title="textual.widget.Widget.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
 <li><code><a title="textual.widget.Widget.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
 <li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.widget.Widget.layout" href="widget.html#textual.widget.Widget.layout">layout</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
@@ -910,7 +870,6 @@ class Screen(Widget):
 <li><code><a title="textual.widget.Widget.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.rich_text_style" href="dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
@@ -924,12 +883,15 @@ class Screen(Widget):
 <li><code><a title="textual.widget.Widget.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
 <li><code><a title="textual.widget.Widget.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
 <li><code><a title="textual.widget.Widget.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
 <li><code><a title="textual.widget.Widget.vertical_scrollbar" href="widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1012,7 +974,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.screen.Screen.handle_update" href="#textual.screen.Screen.handle_update">handle_update</a></code></li>
 <li><code><a title="textual.screen.Screen.on_mount" href="#textual.screen.Screen.on_mount">on_mount</a></code></li>
 <li><code><a title="textual.screen.Screen.on_resize" href="#textual.screen.Screen.on_resize">on_resize</a></code></li>
-<li><code><a title="textual.screen.Screen.refresh_layout" href="#textual.screen.Screen.refresh_layout">refresh_layout</a></code></li>
 <li><code><a title="textual.screen.Screen.watch_dark" href="#textual.screen.Screen.watch_dark">watch_dark</a></code></li>
 </ul>
 </li>

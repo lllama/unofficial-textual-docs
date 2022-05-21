@@ -30,8 +30,8 @@
 
 from typing import cast, TYPE_CHECKING
 
-from ..geometry import Offset, Region, Size
-from .._layout import Layout, WidgetPlacement
+from ..geometry import Region, Size
+from .._layout import ArrangeResult, Layout, WidgetPlacement
 
 if TYPE_CHECKING:
     from ..widget import Widget
@@ -42,14 +42,11 @@ class VerticalLayout(Layout):
 
     name = &#34;vertical&#34;
 
-    def arrange(
-        self, parent: Widget, size: Size, scroll: Offset
-    ) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
+    def arrange(self, parent: Widget, size: Size) -&gt; ArrangeResult:
 
         placements: list[WidgetPlacement] = []
         add_placement = placements.append
 
-        max_width = max_height = 0
         parent_size = parent.size
 
         box_models = [
@@ -73,11 +70,8 @@ class VerticalLayout(Layout):
             region = Region(offset_x, y, content_width, content_height)
             add_placement(WidgetPlacement(region, widget, 0))
             y += region.height + margin
-            max_height = y
 
-        max_height += margins[-1] if margins else 0
-
-        total_region = Region(0, 0, max_width, max_height)
+        total_region = Region(0, 0, size.width, y)
         add_placement(WidgetPlacement(total_region, None, 0))
 
         return placements, set(displayed_children)</code></pre>
@@ -106,14 +100,11 @@ class VerticalLayout(Layout):
 
     name = &#34;vertical&#34;
 
-    def arrange(
-        self, parent: Widget, size: Size, scroll: Offset
-    ) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
+    def arrange(self, parent: Widget, size: Size) -&gt; ArrangeResult:
 
         placements: list[WidgetPlacement] = []
         add_placement = placements.append
 
-        max_width = max_height = 0
         parent_size = parent.size
 
         box_models = [
@@ -137,11 +128,8 @@ class VerticalLayout(Layout):
             region = Region(offset_x, y, content_width, content_height)
             add_placement(WidgetPlacement(region, widget, 0))
             y += region.height + margin
-            max_height = y
 
-        max_height += margins[-1] if margins else 0
-
-        total_region = Region(0, 0, max_width, max_height)
+        total_region = Region(0, 0, size.width, y)
         add_placement(WidgetPlacement(total_region, None, 0))
 
         return placements, set(displayed_children)</code></pre>
@@ -161,7 +149,7 @@ class VerticalLayout(Layout):
 <h3>Methods</h3>
 <dl>
 <dt id="textual.layouts.vertical.VerticalLayout.arrange"><code class="name flex">
-<span>def <span class="ident">arrange</span></span>(<span>self, parent: Widget, size: Size, scroll: Offset) ‑> tuple[list[WidgetPlacement], set[Widget]]</span>
+<span>def <span class="ident">arrange</span></span>(<span>self, parent: Widget, size: Size) ‑> ArrangeResult</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate a layout map that defines where on the screen the widgets will be drawn.</p>
@@ -171,8 +159,6 @@ class VerticalLayout(Layout):
 <dd>Parent widget.</dd>
 <dt><strong><code>size</code></strong> :&ensp;<code>Size</code></dt>
 <dd>Size of container.</dd>
-<dt><strong><code>scroll</code></strong> :&ensp;<code>Offset</code></dt>
-<dd>Offset to apply to the Widget placements.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -183,14 +169,11 @@ class VerticalLayout(Layout):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def arrange(
-    self, parent: Widget, size: Size, scroll: Offset
-) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
+<pre><code class="python">def arrange(self, parent: Widget, size: Size) -&gt; ArrangeResult:
 
     placements: list[WidgetPlacement] = []
     add_placement = placements.append
 
-    max_width = max_height = 0
     parent_size = parent.size
 
     box_models = [
@@ -214,11 +197,8 @@ class VerticalLayout(Layout):
         region = Region(offset_x, y, content_width, content_height)
         add_placement(WidgetPlacement(region, widget, 0))
         y += region.height + margin
-        max_height = y
 
-    max_height += margins[-1] if margins else 0
-
-    total_region = Region(0, 0, max_width, max_height)
+    total_region = Region(0, 0, size.width, y)
     add_placement(WidgetPlacement(total_region, None, 0))
 
     return placements, set(displayed_children)</code></pre>

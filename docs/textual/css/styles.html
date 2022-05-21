@@ -273,7 +273,7 @@ class StylesBase(ABC):
         &#34;&#34;&#34;Get space around widget.
 
         Returns:
-            Spacing: Space around widget.
+            Spacing: Space around widget content.
         &#34;&#34;&#34;
         spacing = self.padding + self.border.spacing
         return spacing
@@ -2114,7 +2114,7 @@ def css_lines(self) -&gt; list[str]:
         &#34;&#34;&#34;Get space around widget.
 
         Returns:
-            Spacing: Space around widget.
+            Spacing: Space around widget content.
         &#34;&#34;&#34;
         spacing = self.padding + self.border.spacing
         return spacing
@@ -2759,7 +2759,7 @@ is used to define docks and their location on screen.</p></div>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Spacing</code></dt>
-<dd>Space around widget.</dd>
+<dd>Space around widget content.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -2770,7 +2770,7 @@ def gutter(self) -&gt; Spacing:
     &#34;&#34;&#34;Get space around widget.
 
     Returns:
-        Spacing: Space around widget.
+        Spacing: Space around widget content.
     &#34;&#34;&#34;
     spacing = self.padding + self.border.spacing
     return spacing</code></pre>
@@ -2784,7 +2784,7 @@ def gutter(self) -&gt; Spacing:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(
-    self, obj: StylesBase, objtype: type[Styles] | None = None
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
 ) -&gt; Scalar | None:
     &#34;&#34;&#34;Get the scalar property
 
@@ -2882,7 +2882,7 @@ def gutter(self) -&gt; Spacing:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(
-    self, obj: StylesBase, objtype: type[Styles] | None = None
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
 ) -&gt; Scalar | None:
     &#34;&#34;&#34;Get the scalar property
 
@@ -2905,7 +2905,7 @@ def gutter(self) -&gt; Spacing:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(
-    self, obj: StylesBase, objtype: type[Styles] | None = None
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
 ) -&gt; Scalar | None:
     &#34;&#34;&#34;Get the scalar property
 
@@ -2928,7 +2928,7 @@ def gutter(self) -&gt; Spacing:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(
-    self, obj: StylesBase, objtype: type[Styles] | None = None
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
 ) -&gt; Scalar | None:
     &#34;&#34;&#34;Get the scalar property
 
@@ -2951,7 +2951,7 @@ def gutter(self) -&gt; Spacing:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(
-    self, obj: StylesBase, objtype: type[Styles] | None = None
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
 ) -&gt; Scalar | None:
     &#34;&#34;&#34;Get the scalar property
 
@@ -3484,7 +3484,7 @@ value belongs in the set of valid values.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(
-    self, obj: StylesBase, objtype: type[Styles] | None = None
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
 ) -&gt; Scalar | None:
     &#34;&#34;&#34;Get the scalar property
 

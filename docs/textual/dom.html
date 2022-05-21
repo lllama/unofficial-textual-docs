@@ -298,7 +298,7 @@ class DOMNode(MessagePump):
         return tree
 
     @property
-    def rich_text_style(self) -&gt; Style:
+    def text_style(self) -&gt; Style:
         &#34;&#34;&#34;Get the text style object.
 
         A widget&#39;s style is influenced by its parent. For instance if a widgets background has an alpha,
@@ -311,19 +311,30 @@ class DOMNode(MessagePump):
 
         # TODO: Feels like there may be opportunity for caching here.
 
-        background = Color(0, 0, 0, 0)
-        color = Color(255, 255, 255, 0)
         style = Style()
+        for node in reversed(self.ancestors):
+            style += node.styles.text_style
+
+        return style
+
+    @property
+    def colors(self) -&gt; tuple[tuple[Color, Color], tuple[Color, Color]]:
+        &#34;&#34;&#34;Gets the Widgets foreground and background colors, and its parent&#39;s colors.
+
+        Returns:
+            tuple[tuple[Color, Color], tuple[Color, Color]]: Base colors and widget colors
+        &#34;&#34;&#34;
+        base_background = background = Color(0, 0, 0, 0)
+        base_color = color = Color(255, 255, 255, 0)
         for node in reversed(self.ancestors):
             styles = node.styles
             if styles.has_rule(&#34;background&#34;):
+                base_background = background
                 background += styles.background
             if styles.has_rule(&#34;color&#34;):
-                color = styles.color
-            style += styles.text_style
-
-        style = Style(bgcolor=background.rich_color, color=color.rich_color) + style
-        return style
+                base_color = color
+                color += styles.color
+        return (base_background, base_color), (background, color)
 
     @property
     def ancestors(self) -&gt; list[DOMNode]:
@@ -780,7 +791,7 @@ class DOMNode(MessagePump):
         return tree
 
     @property
-    def rich_text_style(self) -&gt; Style:
+    def text_style(self) -&gt; Style:
         &#34;&#34;&#34;Get the text style object.
 
         A widget&#39;s style is influenced by its parent. For instance if a widgets background has an alpha,
@@ -793,19 +804,30 @@ class DOMNode(MessagePump):
 
         # TODO: Feels like there may be opportunity for caching here.
 
-        background = Color(0, 0, 0, 0)
-        color = Color(255, 255, 255, 0)
         style = Style()
+        for node in reversed(self.ancestors):
+            style += node.styles.text_style
+
+        return style
+
+    @property
+    def colors(self) -&gt; tuple[tuple[Color, Color], tuple[Color, Color]]:
+        &#34;&#34;&#34;Gets the Widgets foreground and background colors, and its parent&#39;s colors.
+
+        Returns:
+            tuple[tuple[Color, Color], tuple[Color, Color]]: Base colors and widget colors
+        &#34;&#34;&#34;
+        base_background = background = Color(0, 0, 0, 0)
+        base_color = color = Color(255, 255, 255, 0)
         for node in reversed(self.ancestors):
             styles = node.styles
             if styles.has_rule(&#34;background&#34;):
+                base_background = background
                 background += styles.background
             if styles.has_rule(&#34;color&#34;):
-                color = styles.color
-            style += styles.text_style
-
-        style = Style(bgcolor=background.rich_color, color=color.rich_color) + style
-        return style
+                base_color = color
+                color += styles.color
+        return (base_background, base_color), (background, color)
 
     @property
     def ancestors(self) -&gt; list[DOMNode]:
@@ -1057,6 +1079,38 @@ def classes(self) -&gt; frozenset[str]:
     return frozenset(self._classes)</code></pre>
 </details>
 </dd>
+<dt id="textual.dom.DOMNode.colors"><code class="name">var <span class="ident">colors</span> : tuple[tuple[Color, Color], tuple[Color, Color]]</code></dt>
+<dd>
+<div class="desc"><p>Gets the Widgets foreground and background colors, and its parent's colors.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[tuple[Color, Color], tuple[Color, Color]]</code></dt>
+<dd>Base colors and widget colors</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def colors(self) -&gt; tuple[tuple[Color, Color], tuple[Color, Color]]:
+    &#34;&#34;&#34;Gets the Widgets foreground and background colors, and its parent&#39;s colors.
+
+    Returns:
+        tuple[tuple[Color, Color], tuple[Color, Color]]: Base colors and widget colors
+    &#34;&#34;&#34;
+    base_background = background = Color(0, 0, 0, 0)
+    base_color = color = Color(255, 255, 255, 0)
+    for node in reversed(self.ancestors):
+        styles = node.styles
+        if styles.has_rule(&#34;background&#34;):
+            base_background = background
+            background += styles.background
+        if styles.has_rule(&#34;color&#34;):
+            base_color = color
+            color += styles.color
+    return (base_background, base_color), (background, color)</code></pre>
+</details>
+</dd>
 <dt id="textual.dom.DOMNode.css_identifier"><code class="name">var <span class="ident">css_identifier</span> : str</code></dt>
 <dd>
 <div class="desc"><p>A CSS selector that identifies this DOM node.</p></div>
@@ -1254,50 +1308,6 @@ def pseudo_classes(self) -&gt; frozenset[str]:
     return pseudo_classes</code></pre>
 </details>
 </dd>
-<dt id="textual.dom.DOMNode.rich_text_style"><code class="name">var <span class="ident">rich_text_style</span> : rich.style.Style</code></dt>
-<dd>
-<div class="desc"><p>Get the text style object.</p>
-<p>A widget's style is influenced by its parent. For instance if a widgets background has an alpha,
-then its parent's background color will show through. Additionally, widgets will inherit their
-parent's text style (i.e. bold, italic etc).</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Style</code></dt>
-<dd>Rich Style object.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def rich_text_style(self) -&gt; Style:
-    &#34;&#34;&#34;Get the text style object.
-
-    A widget&#39;s style is influenced by its parent. For instance if a widgets background has an alpha,
-    then its parent&#39;s background color will show through. Additionally, widgets will inherit their
-    parent&#39;s text style (i.e. bold, italic etc).
-
-    Returns:
-        Style: Rich Style object.
-    &#34;&#34;&#34;
-
-    # TODO: Feels like there may be opportunity for caching here.
-
-    background = Color(0, 0, 0, 0)
-    color = Color(255, 255, 255, 0)
-    style = Style()
-    for node in reversed(self.ancestors):
-        styles = node.styles
-        if styles.has_rule(&#34;background&#34;):
-            background += styles.background
-        if styles.has_rule(&#34;color&#34;):
-            color = styles.color
-        style += styles.text_style
-
-    style = Style(bgcolor=background.rich_color, color=color.rich_color) + style
-    return style</code></pre>
-</details>
-</dd>
 <dt id="textual.dom.DOMNode.screen"><code class="name">var <span class="ident">screen</span> : Screen</code></dt>
 <dd>
 <div class="desc"><p>Get the screen that this node is contained within. Note that this may not be the currently active screen within the app.</p></div>
@@ -1317,6 +1327,42 @@ def screen(self) -&gt; &#34;Screen&#34;:
         node = node._parent
     assert isinstance(node, Screen)
     return node</code></pre>
+</details>
+</dd>
+<dt id="textual.dom.DOMNode.text_style"><code class="name">var <span class="ident">text_style</span> : rich.style.Style</code></dt>
+<dd>
+<div class="desc"><p>Get the text style object.</p>
+<p>A widget's style is influenced by its parent. For instance if a widgets background has an alpha,
+then its parent's background color will show through. Additionally, widgets will inherit their
+parent's text style (i.e. bold, italic etc).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Style</code></dt>
+<dd>Rich Style object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def text_style(self) -&gt; Style:
+    &#34;&#34;&#34;Get the text style object.
+
+    A widget&#39;s style is influenced by its parent. For instance if a widgets background has an alpha,
+    then its parent&#39;s background color will show through. Additionally, widgets will inherit their
+    parent&#39;s text style (i.e. bold, italic etc).
+
+    Returns:
+        Style: Rich Style object.
+    &#34;&#34;&#34;
+
+    # TODO: Feels like there may be opportunity for caching here.
+
+    style = Style()
+    for node in reversed(self.ancestors):
+        style += node.styles.text_style
+
+    return style</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.tree"><code class="name">var <span class="ident">tree</span> : rich.tree.Tree</code></dt>
@@ -1914,6 +1960,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.add_class" href="#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.ancestors" href="#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.classes" href="#textual.dom.DOMNode.classes">classes</a></code></li>
+<li><code><a title="textual.dom.DOMNode.colors" href="#textual.dom.DOMNode.colors">colors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_path_nodes" href="#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
@@ -1935,9 +1982,9 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.refresh" href="#textual.dom.DOMNode.refresh">refresh</a></code></li>
 <li><code><a title="textual.dom.DOMNode.remove_class" href="#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.reset_styles" href="#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
-<li><code><a title="textual.dom.DOMNode.rich_text_style" href="#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.screen" href="#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_styles" href="#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.dom.DOMNode.text_style" href="#textual.dom.DOMNode.text_style">text_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.toggle_class" href="#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.tree" href="#textual.dom.DOMNode.tree">tree</a></code></li>
 <li><code><a title="textual.dom.DOMNode.visible" href="#textual.dom.DOMNode.visible">visible</a></code></li>

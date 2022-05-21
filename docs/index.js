@@ -212,6 +212,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.layout.Vertical.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.layout.Vertical.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -232,13 +244,13 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -316,6 +328,11 @@ INDEX=[
 "ref":"textual.layout.Vertical.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.layout.Vertical.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.layout.Vertical.is_container",
@@ -439,9 +456,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.layout.Vertical.rich_text_style",
+"ref":"textual.layout.Vertical.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.layout.Vertical.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.layout.Vertical.ancestors",
@@ -659,6 +681,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.layout.Horizontal.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -679,13 +713,13 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -763,6 +797,11 @@ INDEX=[
 "ref":"textual.layout.Horizontal.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.layout.Horizontal.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.layout.Horizontal.is_container",
@@ -886,9 +925,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.layout.Horizontal.rich_text_style",
+"ref":"textual.layout.Horizontal.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.layout.Horizontal.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.layout.Horizontal.ancestors",
@@ -1127,9 +1171,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.dom.DOMNode.rich_text_style",
+"ref":"textual.dom.DOMNode.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.dom.DOMNode.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.dom.DOMNode.ancestors",
@@ -2329,26 +2378,6 @@ INDEX=[
 },
 {
 "ref":"textual.keys.Keys.ShiftControlEnd",
-"url":17,
-"doc":""
-},
-{
-"ref":"textual.keys.Binding",
-"url":17,
-"doc":"Binding(action: str, description: str, show: bool = False)"
-},
-{
-"ref":"textual.keys.Binding.action",
-"url":17,
-"doc":""
-},
-{
-"ref":"textual.keys.Binding.description",
-"url":17,
-"doc":""
-},
-{
-"ref":"textual.keys.Binding.show",
 "url":17,
 "doc":""
 },
@@ -4643,17 +4672,17 @@ INDEX=[
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
+"ref":"textual.widget.Widget.CSS",
+"url":5,
+"doc":""
+},
+{
 "ref":"textual.widget.Widget.can_focus",
 "url":5,
 "doc":""
 },
 {
 "ref":"textual.widget.Widget.can_focus_children",
-"url":5,
-"doc":""
-},
-{
-"ref":"textual.widget.Widget.CSS",
 "url":5,
 "doc":""
 },
@@ -4713,6 +4742,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widget.Widget.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.mount",
 "url":5,
 "doc":"",
@@ -4739,13 +4780,13 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -4964,7 +5005,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.layout",
 "url":5,
-"doc":""
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widget.Widget.is_container",
@@ -5286,9 +5327,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widget.Widget.rich_text_style",
+"ref":"textual.widget.Widget.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widget.Widget.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widget.Widget.ancestors",
@@ -5957,6 +6003,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -5977,13 +6035,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -6061,6 +6119,11 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.is_container",
@@ -6178,9 +6241,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.rich_text_style",
+"ref":"textual.scrollbar.ScrollBar.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.scrollbar.ScrollBar.ancestors",
@@ -6703,12 +6771,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.app.App.display",
-"url":22,
-"doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise.",
-"func":1
-},
-{
 "ref":"textual.app.App.measure",
 "url":22,
 "doc":"Get the optimal width for a widget or renderable. Args: renderable (RenderableType): A renderable (including Widget) max_width ([type], optional): Maximum width. Defaults to 100_000. Returns: int: Number of cells required to render.",
@@ -6871,14 +6933,24 @@ INDEX=[
 "doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
 },
 {
+"ref":"textual.app.App.display",
+"url":6,
+"doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
+},
+{
 "ref":"textual.app.App.tree",
 "url":6,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.app.App.rich_text_style",
+"ref":"textual.app.App.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.app.App.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.app.App.ancestors",
@@ -7146,6 +7218,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.Button.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.Button.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.Button.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -7166,13 +7250,13 @@ INDEX=[
 {
 "ref":"textual.widgets.Button.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.Button.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -7250,6 +7334,11 @@ INDEX=[
 "ref":"textual.widgets.Button.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.Button.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.Button.is_container",
@@ -7367,9 +7456,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.Button.rich_text_style",
+"ref":"textual.widgets.Button.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.Button.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.Button.ancestors",
@@ -7630,6 +7724,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.DirectoryTree.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.DirectoryTree.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.DirectoryTree.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -7650,13 +7756,13 @@ INDEX=[
 {
 "ref":"textual.widgets.DirectoryTree.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -7734,6 +7840,11 @@ INDEX=[
 "ref":"textual.widgets.DirectoryTree.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.DirectoryTree.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.DirectoryTree.is_container",
@@ -7857,9 +7968,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.DirectoryTree.rich_text_style",
+"ref":"textual.widgets.DirectoryTree.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.DirectoryTree.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.DirectoryTree.ancestors",
@@ -8166,6 +8282,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.Footer.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.Footer.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.Footer.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -8186,13 +8314,13 @@ INDEX=[
 {
 "ref":"textual.widgets.Footer.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.Footer.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -8270,6 +8398,11 @@ INDEX=[
 "ref":"textual.widgets.Footer.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.Footer.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.Footer.is_container",
@@ -8387,9 +8520,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.Footer.rich_text_style",
+"ref":"textual.widgets.Footer.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.Footer.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.Footer.ancestors",
@@ -8662,6 +8800,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.Header.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.Header.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.Header.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -8682,13 +8832,13 @@ INDEX=[
 {
 "ref":"textual.widgets.Header.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.Header.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -8766,6 +8916,11 @@ INDEX=[
 "ref":"textual.widgets.Header.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.Header.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.Header.is_container",
@@ -8883,9 +9038,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.Header.rich_text_style",
+"ref":"textual.widgets.Header.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.Header.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.Header.ancestors",
@@ -9128,6 +9288,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.Placeholder.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.Placeholder.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.Placeholder.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -9148,13 +9320,13 @@ INDEX=[
 {
 "ref":"textual.widgets.Placeholder.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.Placeholder.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -9232,6 +9404,11 @@ INDEX=[
 "ref":"textual.widgets.Placeholder.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.Placeholder.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.Placeholder.is_container",
@@ -9349,9 +9526,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.Placeholder.rich_text_style",
+"ref":"textual.widgets.Placeholder.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.Placeholder.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.Placeholder.ancestors",
@@ -9576,6 +9758,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.Static.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.Static.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.Static.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -9596,13 +9790,13 @@ INDEX=[
 {
 "ref":"textual.widgets.Static.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.Static.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -9680,6 +9874,11 @@ INDEX=[
 "ref":"textual.widgets.Static.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.Static.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.Static.is_container",
@@ -9797,9 +9996,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.Static.rich_text_style",
+"ref":"textual.widgets.Static.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.Static.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.Static.ancestors",
@@ -10175,6 +10379,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.TreeControl.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.TreeControl.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.TreeControl.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -10195,13 +10411,13 @@ INDEX=[
 {
 "ref":"textual.widgets.TreeControl.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.TreeControl.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -10279,6 +10495,11 @@ INDEX=[
 "ref":"textual.widgets.TreeControl.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.TreeControl.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.TreeControl.is_container",
@@ -10396,9 +10617,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.TreeControl.rich_text_style",
+"ref":"textual.widgets.TreeControl.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.TreeControl.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.TreeControl.ancestors",
@@ -10706,6 +10932,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.text_input.TextWidgetBase.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.text_input.TextWidgetBase.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.text_input.TextWidgetBase.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -10726,13 +10964,13 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -10810,6 +11048,11 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextWidgetBase.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.text_input.TextWidgetBase.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.is_container",
@@ -10933,9 +11176,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.text_input.TextWidgetBase.rich_text_style",
+"ref":"textual.widgets.text_input.TextWidgetBase.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.text_input.TextWidgetBase.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.ancestors",
@@ -11191,6 +11439,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.text_input.TextInput.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.text_input.TextInput.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.text_input.TextInput.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -11211,13 +11471,13 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextInput.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.text_input.TextInput.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -11295,6 +11555,11 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextInput.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.text_input.TextInput.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.text_input.TextInput.is_container",
@@ -11412,9 +11677,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.text_input.TextInput.rich_text_style",
+"ref":"textual.widgets.text_input.TextInput.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.text_input.TextInput.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.text_input.TextInput.ancestors",
@@ -11638,6 +11908,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.text_input.TextArea.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.text_input.TextArea.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.text_input.TextArea.on_register",
 "url":5,
 "doc":"Called when the instance is registered. Args: app (App): App instance.",
@@ -11652,13 +11934,13 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextArea.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.text_input.TextArea.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -11736,6 +12018,11 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextArea.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.text_input.TextArea.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.text_input.TextArea.is_container",
@@ -11859,9 +12146,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.text_input.TextArea.rich_text_style",
+"ref":"textual.widgets.text_input.TextArea.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.text_input.TextArea.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.text_input.TextArea.ancestors",
@@ -12027,7 +12319,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextAreaChild.get_content_height",
 "url":25,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -12113,6 +12405,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.text_input.TextAreaChild.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.text_input.TextAreaChild.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.text_input.TextAreaChild.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -12133,7 +12437,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextAreaChild.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
@@ -12211,6 +12515,11 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextAreaChild.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.text_input.TextAreaChild.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.text_input.TextAreaChild.is_container",
@@ -12328,9 +12637,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.text_input.TextAreaChild.rich_text_style",
+"ref":"textual.widgets.text_input.TextAreaChild.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.text_input.TextAreaChild.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.text_input.TextAreaChild.ancestors",
@@ -12622,6 +12936,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widgets.tabs.Tabs.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.widgets.tabs.Tabs.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.widgets.tabs.Tabs.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -12642,13 +12968,13 @@ INDEX=[
 {
 "ref":"textual.widgets.tabs.Tabs.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -12726,6 +13052,11 @@ INDEX=[
 "ref":"textual.widgets.tabs.Tabs.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.widgets.tabs.Tabs.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.widgets.tabs.Tabs.is_container",
@@ -12843,9 +13174,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.widgets.tabs.Tabs.rich_text_style",
+"ref":"textual.widgets.tabs.Tabs.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.widgets.tabs.Tabs.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.widgets.tabs.Tabs.ancestors",
@@ -13531,13 +13867,13 @@ INDEX=[
 {
 "ref":"textual.geometry.Region.intersection",
 "url":28,
-"doc":"Get that covers both regions. Args: region (Region): A region that overlaps this region. Returns: Region: A new region that fits within  region .",
+"doc":"Get the overlapping portion of the two regions. Args: region (Region): A region that overlaps this region. Returns: Region: A new region that covers when the two regions overlap.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.union",
 "url":28,
-"doc":"Get a new region that contains both regions. Args: region (Region): [description] Returns: Region: [description]",
+"doc":"Get a new region that contains both regions. Args: region (Region): Another region. Returns: Region: An optimally sized region to cover both regions.",
 "func":1
 },
 {
@@ -13862,12 +14198,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.screen.Screen.refresh_layout",
-"url":31,
-"doc":"Refresh the layout (can change size and positions of widgets).",
-"func":1
-},
-{
 "ref":"textual.screen.Screen.handle_update",
 "url":31,
 "doc":"",
@@ -13963,6 +14293,18 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.screen.Screen.watch_show_horizontal_scrollbar",
+"url":5,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.watch_show_vertical_scrollbar",
+"url":5,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.compose",
 "url":5,
 "doc":"Yield child widgets for a container.",
@@ -13983,13 +14325,13 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.get_content_width",
 "url":5,
-"doc":"Gets the width of the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_content_height",
 "url":5,
-"doc":"Gets the height (number of lines) in the content area. Args: container_size (Size): Size of the container (immediate parent) widget. viewport_size (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -14067,6 +14409,11 @@ INDEX=[
 "ref":"textual.screen.Screen.console",
 "url":5,
 "doc":"Get the current console."
+},
+{
+"ref":"textual.screen.Screen.layout",
+"url":5,
+"doc":"Get the layout object if set in styles, or a default layout."
 },
 {
 "ref":"textual.screen.Screen.is_container",
@@ -14178,9 +14525,14 @@ INDEX=[
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
 },
 {
-"ref":"textual.screen.Screen.rich_text_style",
+"ref":"textual.screen.Screen.text_style",
 "url":6,
 "doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.screen.Screen.colors",
+"url":6,
+"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
 },
 {
 "ref":"textual.screen.Screen.ancestors",
@@ -14876,7 +15228,7 @@ INDEX=[
 {
 "ref":"textual.css.styles.StylesBase.gutter",
 "url":34,
-"doc":"Get space around widget. Returns: Spacing: Space around widget."
+"doc":"Get space around widget. Returns: Spacing: Space around widget content."
 },
 {
 "ref":"textual.css.styles.StylesBase.content_gutter",
@@ -15297,7 +15649,7 @@ INDEX=[
 {
 "ref":"textual.css.styles.Styles.gutter",
 "url":34,
-"doc":"Get space around widget. Returns: Spacing: Space around widget."
+"doc":"Get space around widget. Returns: Spacing: Space around widget content."
 },
 {
 "ref":"textual.css.styles.Styles.content_gutter",
@@ -15641,7 +15993,7 @@ INDEX=[
 {
 "ref":"textual.css.styles.RenderStyles.gutter",
 "url":34,
-"doc":"Get space around widget. Returns: Spacing: Space around widget."
+"doc":"Get space around widget. Returns: Spacing: Space around widget content."
 },
 {
 "ref":"textual.css.styles.RenderStyles.content_gutter",
@@ -15902,6 +16254,12 @@ INDEX=[
 "ref":"textual.css.stylesheet.Stylesheet.css",
 "url":41,
 "doc":""
+},
+{
+"ref":"textual.css.stylesheet.Stylesheet.copy",
+"url":41,
+"doc":"Create a copy of this stylesheet. Returns: Stylesheet: New stylesheet.",
+"func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.set_variables",
@@ -17023,7 +17381,7 @@ INDEX=[
 {
 "ref":"textual.layouts.horizontal.HorizontalLayout.arrange",
 "url":61,
-"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. scroll (Offset): Offset to apply to the Widget placements. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
+"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 },
 {
@@ -17204,7 +17562,7 @@ INDEX=[
 {
 "ref":"textual.layouts.vertical.VerticalLayout.arrange",
 "url":63,
-"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. scroll (Offset): Offset to apply to the Widget placements. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
+"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 },
 {
@@ -17215,7 +17573,7 @@ INDEX=[
 {
 "ref":"textual.layouts.dock.DockOptions",
 "url":64,
-"doc":"DockOptions(size: 'int | None' = None, fraction: 'int' = 1, min_size: 'int' = 1)"
+"doc":"DockOptions(size: 'int | None' = None, fraction: 'int | None' = 1, min_size: 'int' = 1)"
 },
 {
 "ref":"textual.layouts.dock.DockOptions.size",
@@ -17271,7 +17629,7 @@ INDEX=[
 {
 "ref":"textual.layouts.dock.DockLayout.arrange",
 "url":64,
-"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. scroll (Offset): Offset to apply to the Widget placements. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
+"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 },
 {

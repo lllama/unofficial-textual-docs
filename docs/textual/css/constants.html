@@ -26,7 +26,9 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import sys
+<pre><code class="python">from __future__ import annotations
+import sys
+import typing
 
 if sys.version_info &gt;= (3, 8):
     from typing import Final
@@ -35,12 +37,16 @@ else:
 
 from ..geometry import Spacing
 
+if typing.TYPE_CHECKING:
+    from .types import EdgeType
+
 VALID_VISIBILITY: Final = {&#34;visible&#34;, &#34;hidden&#34;}
 VALID_DISPLAY: Final = {&#34;block&#34;, &#34;none&#34;}
-VALID_BORDER: Final = {
+VALID_BORDER: Final[set[EdgeType]] = {
     &#34;none&#34;,
     &#34;hidden&#34;,
     &#34;round&#34;,
+    &#34;blank&#34;,
     &#34;solid&#34;,
     &#34;double&#34;,
     &#34;dashed&#34;,

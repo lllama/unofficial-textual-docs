@@ -513,13 +513,13 @@ class Region(NamedTuple):
         )
 
     def intersection(self, region: Region) -&gt; Region:
-        &#34;&#34;&#34;Get that covers both regions.
+        &#34;&#34;&#34;Get the overlapping portion of the two regions.
 
         Args:
             region (Region): A region that overlaps this region.
 
         Returns:
-            Region: A new region that fits within ``region``.
+            Region: A new region that covers when the two regions overlap.
         &#34;&#34;&#34;
         # Unrolled because this method is used a lot
         x1, y1, w1, h1 = self
@@ -540,10 +540,10 @@ class Region(NamedTuple):
         &#34;&#34;&#34;Get a new region that contains both regions.
 
         Args:
-            region (Region): [description]
+            region (Region): Another region.
 
         Returns:
-            Region: [description]
+            Region: An optimally sized region to cover both regions.
         &#34;&#34;&#34;
         x1, y1, x2, y2 = self.corners
         ox1, oy1, ox2, oy2 = region.corners
@@ -1322,13 +1322,13 @@ def is_origin(self) -&gt; bool:
         )
 
     def intersection(self, region: Region) -&gt; Region:
-        &#34;&#34;&#34;Get that covers both regions.
+        &#34;&#34;&#34;Get the overlapping portion of the two regions.
 
         Args:
             region (Region): A region that overlaps this region.
 
         Returns:
-            Region: A new region that fits within ``region``.
+            Region: A new region that covers when the two regions overlap.
         &#34;&#34;&#34;
         # Unrolled because this method is used a lot
         x1, y1, w1, h1 = self
@@ -1349,10 +1349,10 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;Get a new region that contains both regions.
 
         Args:
-            region (Region): [description]
+            region (Region): Another region.
 
         Returns:
-            Region: [description]
+            Region: An optimally sized region to cover both regions.
         &#34;&#34;&#34;
         x1, y1, x2, y2 = self.corners
         ox1, oy1, ox2, oy2 = region.corners
@@ -2010,7 +2010,7 @@ def y_range(self) -&gt; range:
 <span>def <span class="ident">intersection</span></span>(<span>self, region: <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get that covers both regions.</p>
+<div class="desc"><p>Get the overlapping portion of the two regions.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>region</code></strong> :&ensp;<code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
@@ -2019,20 +2019,20 @@ def y_range(self) -&gt; range:
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
-<dd>A new region that fits within <code>region</code>.</dd>
+<dd>A new region that covers when the two regions overlap.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def intersection(self, region: Region) -&gt; Region:
-    &#34;&#34;&#34;Get that covers both regions.
+    &#34;&#34;&#34;Get the overlapping portion of the two regions.
 
     Args:
         region (Region): A region that overlaps this region.
 
     Returns:
-        Region: A new region that fits within ``region``.
+        Region: A new region that covers when the two regions overlap.
     &#34;&#34;&#34;
     # Unrolled because this method is used a lot
     x1, y1, w1, h1 = self
@@ -2351,12 +2351,12 @@ it is taken from the right edge.</dd>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>region</code></strong> :&ensp;<code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
-<dd>[description]</dd>
+<dd>Another region.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
-<dd>[description]</dd>
+<dd>An optimally sized region to cover both regions.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -2366,10 +2366,10 @@ it is taken from the right edge.</dd>
     &#34;&#34;&#34;Get a new region that contains both regions.
 
     Args:
-        region (Region): [description]
+        region (Region): Another region.
 
     Returns:
-        Region: [description]
+        Region: An optimally sized region to cover both regions.
     &#34;&#34;&#34;
     x1, y1, x2, y2 = self.corners
     ox1, oy1, ox2, oy2 = region.corners

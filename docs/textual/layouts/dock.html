@@ -37,7 +37,7 @@ from typing import Iterable, TYPE_CHECKING, NamedTuple, Sequence
 from .._layout_resolve import layout_resolve
 from ..css.types import Edge
 from ..geometry import Offset, Region, Size
-from .._layout import Layout, WidgetPlacement
+from .._layout import ArrangeResult, Layout, WidgetPlacement
 from ..widget import Widget
 
 if sys.version_info &gt;= (3, 8):
@@ -54,8 +54,12 @@ DockEdge = Literal[&#34;top&#34;, &#34;right&#34;, &#34;bottom&#34;, &#34;left&#
 @dataclass
 class DockOptions:
     size: int | None = None
-    fraction: int = 1
+    fraction: int | None = 1
     min_size: int = 1
+
+    def __post_init__(self) -&gt; None:
+        if self.size is None and self.fraction is None:
+            self.fraction = 1
 
 
 class Dock(NamedTuple):
@@ -87,9 +91,7 @@ class DockLayout(Layout):
             append_dock(Dock(edge, groups[name], z))
         return docks
 
-    def arrange(
-        self, parent: Widget, size: Size, scroll: Offset
-    ) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
+    def arrange(self, parent: Widget, size: Size) -&gt; ArrangeResult:
 
         width, height = size
         layout_region = Region(0, 0, width, height)
@@ -101,6 +103,7 @@ class DockLayout(Layout):
             styles = widget.styles
             has_rule = styles.has_rule
 
+            # TODO: This was written pre resolve_dimension, we should update this to use available units
             return (
                 DockOptions(
                     styles.width.cells if has_rule(&#34;width&#34;) else None,
@@ -285,9 +288,7 @@ class DockLayout(Layout):
             append_dock(Dock(edge, groups[name], z))
         return docks
 
-    def arrange(
-        self, parent: Widget, size: Size, scroll: Offset
-    ) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
+    def arrange(self, parent: Widget, size: Size) -&gt; ArrangeResult:
 
         width, height = size
         layout_region = Region(0, 0, width, height)
@@ -299,6 +300,7 @@ class DockLayout(Layout):
             styles = widget.styles
             has_rule = styles.has_rule
 
+            # TODO: This was written pre resolve_dimension, we should update this to use available units
             return (
                 DockOptions(
                     styles.width.cells if has_rule(&#34;width&#34;) else None,
@@ -421,7 +423,7 @@ class DockLayout(Layout):
 <h3>Methods</h3>
 <dl>
 <dt id="textual.layouts.dock.DockLayout.arrange"><code class="name flex">
-<span>def <span class="ident">arrange</span></span>(<span>self, parent: Widget, size: Size, scroll: Offset) ‑> tuple[list[WidgetPlacement], set[Widget]]</span>
+<span>def <span class="ident">arrange</span></span>(<span>self, parent: Widget, size: Size) ‑> tuple[list[WidgetPlacement], set[Widget]]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate a layout map that defines where on the screen the widgets will be drawn.</p>
@@ -431,8 +433,6 @@ class DockLayout(Layout):
 <dd>Parent widget.</dd>
 <dt><strong><code>size</code></strong> :&ensp;<code>Size</code></dt>
 <dd>Size of container.</dd>
-<dt><strong><code>scroll</code></strong> :&ensp;<code>Offset</code></dt>
-<dd>Offset to apply to the Widget placements.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -443,9 +443,7 @@ class DockLayout(Layout):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def arrange(
-    self, parent: Widget, size: Size, scroll: Offset
-) -&gt; tuple[list[WidgetPlacement], set[Widget]]:
+<pre><code class="python">def arrange(self, parent: Widget, size: Size) -&gt; ArrangeResult:
 
     width, height = size
     layout_region = Region(0, 0, width, height)
@@ -457,6 +455,7 @@ class DockLayout(Layout):
         styles = widget.styles
         has_rule = styles.has_rule
 
+        # TODO: This was written pre resolve_dimension, we should update this to use available units
         return (
             DockOptions(
                 styles.width.cells if has_rule(&#34;width&#34;) else None,
@@ -590,22 +589,26 @@ class DockLayout(Layout):
 </dd>
 <dt id="textual.layouts.dock.DockOptions"><code class="flex name class">
 <span>class <span class="ident">DockOptions</span></span>
-<span>(</span><span>size: int | None = None, fraction: int = 1, min_size: int = 1)</span>
+<span>(</span><span>size: int | None = None, fraction: int | None = 1, min_size: int = 1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>DockOptions(size: 'int | None' = None, fraction: 'int' = 1, min_size: 'int' = 1)</p></div>
+<div class="desc"><p>DockOptions(size: 'int | None' = None, fraction: 'int | None' = 1, min_size: 'int' = 1)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class DockOptions:
     size: int | None = None
-    fraction: int = 1
-    min_size: int = 1</code></pre>
+    fraction: int | None = 1
+    min_size: int = 1
+
+    def __post_init__(self) -&gt; None:
+        if self.size is None and self.fraction is None:
+            self.fraction = 1</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.layouts.dock.DockOptions.fraction"><code class="name">var <span class="ident">fraction</span> : int</code></dt>
+<dt id="textual.layouts.dock.DockOptions.fraction"><code class="name">var <span class="ident">fraction</span> : int | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>

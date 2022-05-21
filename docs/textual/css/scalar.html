@@ -110,7 +110,9 @@ class Scalar(NamedTuple):
     percent_unit: Unit
 
     def __str__(self) -&gt; str:
-        value, _unit, _ = self
+        value, unit, _ = self
+        if unit == Unit.AUTO:
+            return &#34;auto&#34;
         return f&#34;{int(value) if value.is_integer() else value}{self.symbol}&#34;
 
     @property
@@ -304,7 +306,9 @@ if __name__ == &#34;__main__&#34;:
     percent_unit: Unit
 
     def __str__(self) -&gt; str:
-        value, _unit, _ = self
+        value, unit, _ = self
+        if unit == Unit.AUTO:
+            return &#34;auto&#34;
         return f&#34;{int(value) if value.is_integer() else value}{self.symbol}&#34;
 
     @property

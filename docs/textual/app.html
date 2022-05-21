@@ -426,7 +426,7 @@ class App(Generic[ReturnType], DOMNode):
                 output = &#34; &#34;.join(str(arg) for arg in objects)
                 if kwargs:
                     key_values = &#34; &#34;.join(
-                        f&#34;{key}={value}&#34; for key, value in kwargs.items()
+                        f&#34;{key}={value!r}&#34; for key, value in kwargs.items()
                     )
                     output = f&#34;{output} {key_values}&#34; if output else key_values
                 if self._log_console is not None:
@@ -435,8 +435,8 @@ class App(Generic[ReturnType], DOMNode):
                     self.devtools.log(
                         DevtoolsLog(output, caller=_textual_calling_frame)
                     )
-        except Exception:
-            pass
+        except Exception as error:
+            self.on_exception(error)
 
     def action_screenshot(self, path: str | None = None) -&gt; None:
         &#34;&#34;&#34;Action to save a screenshot.&#34;&#34;&#34;
@@ -524,14 +524,17 @@ class App(Generic[ReturnType], DOMNode):
 
             try:
                 time = perf_counter()
-                self.stylesheet.read(self.css_path)
+                stylesheet = self.stylesheet.copy()
+                stylesheet.read(self.css_path)
+                stylesheet.parse()
                 elapsed = (perf_counter() - time) * 1000
-                self.log(f&#34;loaded {self.css_path} in {elapsed:.0f}ms&#34;)
+                self.log(f&#34;&lt;stylesheet&gt; loaded {self.css_path!r} in {elapsed:.0f} ms&#34;)
             except Exception as error:
                 # TODO: Catch specific exceptions
-                self.console.bell()
+                self.bell()
                 self.log(error)
             else:
+                self.stylesheet = stylesheet
                 self.reset_styles()
                 self.stylesheet.update(self)
                 self.screen.refresh(layout=True)
@@ -696,7 +699,7 @@ class App(Generic[ReturnType], DOMNode):
 
     def fatal_error(self) -&gt; None:
         &#34;&#34;&#34;Exits the app after an unhandled exception.&#34;&#34;&#34;
-        self.console.bell()
+        self.bell()
         traceback = Traceback(
             show_locals=True, width=None, locals_max_length=5, suppress=[rich]
         )
@@ -768,8 +771,7 @@ class App(Generic[ReturnType], DOMNode):
             self.on_exception(error)
         finally:
             self._running = False
-            if self._exit_renderables:
-                self._print_error_renderables()
+            self._print_error_renderables()
             if self.devtools.is_connected:
                 await self._disconnect_devtools()
                 if self._log_console is not None:
@@ -778,6 +780,7 @@ class App(Generic[ReturnType], DOMNode):
                     )
             if self._log_file is not None:
                 self._log_file.close()
+                self._log_console = None
 
     def on_mount(self) -&gt; None:
         widgets = list(self.compose())
@@ -861,19 +864,7 @@ class App(Generic[ReturnType], DOMNode):
         await self.close_messages()
 
     def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
-        if not self._running:
-            return
-        if not self._closed:
-            console = self.console
-            try:
-                if self._sync_available:
-                    console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
-                console.print(self.screen._compositor)
-                if self._sync_available:
-                    console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
-                console.file.flush()
-            except Exception as error:
-                self.on_exception(error)
+        self._display(self.screen._compositor)
 
     def refresh_css(self, animate: bool = True) -&gt; None:
         &#34;&#34;&#34;Refresh CSS.
@@ -887,10 +878,13 @@ class App(Generic[ReturnType], DOMNode):
         stylesheet.update(self.app, animate=animate)
         self.refresh(layout=True)
 
-    def display(self, renderable: RenderableType) -&gt; None:
-        if not self._running:
-            return
-        if not self._closed:
+    def _display(self, renderable: RenderableType) -&gt; None:
+        &#34;&#34;&#34;Display a renderable within a sync.
+
+        Args:
+            renderable (RenderableType): A Rich renderable.
+        &#34;&#34;&#34;
+        if self._running and not self._closed:
             console = self.console
             if self._sync_available:
                 console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
@@ -1465,7 +1459,7 @@ def _init_uvloop() -&gt; None:
                 output = &#34; &#34;.join(str(arg) for arg in objects)
                 if kwargs:
                     key_values = &#34; &#34;.join(
-                        f&#34;{key}={value}&#34; for key, value in kwargs.items()
+                        f&#34;{key}={value!r}&#34; for key, value in kwargs.items()
                     )
                     output = f&#34;{output} {key_values}&#34; if output else key_values
                 if self._log_console is not None:
@@ -1474,8 +1468,8 @@ def _init_uvloop() -&gt; None:
                     self.devtools.log(
                         DevtoolsLog(output, caller=_textual_calling_frame)
                     )
-        except Exception:
-            pass
+        except Exception as error:
+            self.on_exception(error)
 
     def action_screenshot(self, path: str | None = None) -&gt; None:
         &#34;&#34;&#34;Action to save a screenshot.&#34;&#34;&#34;
@@ -1563,14 +1557,17 @@ def _init_uvloop() -&gt; None:
 
             try:
                 time = perf_counter()
-                self.stylesheet.read(self.css_path)
+                stylesheet = self.stylesheet.copy()
+                stylesheet.read(self.css_path)
+                stylesheet.parse()
                 elapsed = (perf_counter() - time) * 1000
-                self.log(f&#34;loaded {self.css_path} in {elapsed:.0f}ms&#34;)
+                self.log(f&#34;&lt;stylesheet&gt; loaded {self.css_path!r} in {elapsed:.0f} ms&#34;)
             except Exception as error:
                 # TODO: Catch specific exceptions
-                self.console.bell()
+                self.bell()
                 self.log(error)
             else:
+                self.stylesheet = stylesheet
                 self.reset_styles()
                 self.stylesheet.update(self)
                 self.screen.refresh(layout=True)
@@ -1735,7 +1732,7 @@ def _init_uvloop() -&gt; None:
 
     def fatal_error(self) -&gt; None:
         &#34;&#34;&#34;Exits the app after an unhandled exception.&#34;&#34;&#34;
-        self.console.bell()
+        self.bell()
         traceback = Traceback(
             show_locals=True, width=None, locals_max_length=5, suppress=[rich]
         )
@@ -1807,8 +1804,7 @@ def _init_uvloop() -&gt; None:
             self.on_exception(error)
         finally:
             self._running = False
-            if self._exit_renderables:
-                self._print_error_renderables()
+            self._print_error_renderables()
             if self.devtools.is_connected:
                 await self._disconnect_devtools()
                 if self._log_console is not None:
@@ -1817,6 +1813,7 @@ def _init_uvloop() -&gt; None:
                     )
             if self._log_file is not None:
                 self._log_file.close()
+                self._log_console = None
 
     def on_mount(self) -&gt; None:
         widgets = list(self.compose())
@@ -1900,19 +1897,7 @@ def _init_uvloop() -&gt; None:
         await self.close_messages()
 
     def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
-        if not self._running:
-            return
-        if not self._closed:
-            console = self.console
-            try:
-                if self._sync_available:
-                    console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
-                console.print(self.screen._compositor)
-                if self._sync_available:
-                    console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
-                console.file.flush()
-            except Exception as error:
-                self.on_exception(error)
+        self._display(self.screen._compositor)
 
     def refresh_css(self, animate: bool = True) -&gt; None:
         &#34;&#34;&#34;Refresh CSS.
@@ -1926,10 +1911,13 @@ def _init_uvloop() -&gt; None:
         stylesheet.update(self.app, animate=animate)
         self.refresh(layout=True)
 
-    def display(self, renderable: RenderableType) -&gt; None:
-        if not self._running:
-            return
-        if not self._closed:
+    def _display(self, renderable: RenderableType) -&gt; None:
+        &#34;&#34;&#34;Display a renderable within a sync.
+
+        Args:
+            renderable (RenderableType): A Rich renderable.
+        &#34;&#34;&#34;
+        if self._running and not self._closed:
             console = self.console
             if self._sync_available:
                 console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
@@ -2680,7 +2668,7 @@ generate a path automatically. Defaults to None.</p></div>
 </summary>
 <pre><code class="python">def fatal_error(self) -&gt; None:
     &#34;&#34;&#34;Exits the app after an unhandled exception.&#34;&#34;&#34;
-    self.console.bell()
+    self.bell()
     traceback = Traceback(
         show_locals=True, width=None, locals_max_length=5, suppress=[rich]
     )
@@ -2971,7 +2959,7 @@ the log message sent to the devtools server.</p></div>
             output = &#34; &#34;.join(str(arg) for arg in objects)
             if kwargs:
                 key_values = &#34; &#34;.join(
-                    f&#34;{key}={value}&#34; for key, value in kwargs.items()
+                    f&#34;{key}={value!r}&#34; for key, value in kwargs.items()
                 )
                 output = f&#34;{output} {key_values}&#34; if output else key_values
             if self._log_console is not None:
@@ -2980,8 +2968,8 @@ the log message sent to the devtools server.</p></div>
                 self.devtools.log(
                     DevtoolsLog(output, caller=_textual_calling_frame)
                 )
-    except Exception:
-        pass</code></pre>
+    except Exception as error:
+        self.on_exception(error)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.measure"><code class="name flex">
@@ -3313,8 +3301,7 @@ the log message sent to the devtools server.</p></div>
         self.on_exception(error)
     finally:
         self._running = False
-        if self._exit_renderables:
-            self._print_error_renderables()
+        self._print_error_renderables()
         if self.devtools.is_connected:
             await self._disconnect_devtools()
             if self._log_console is not None:
@@ -3322,7 +3309,8 @@ the log message sent to the devtools server.</p></div>
                     f&#34;Disconnected from devtools ({self.devtools.url})&#34;
                 )
         if self._log_file is not None:
-            self._log_file.close()</code></pre>
+            self._log_file.close()
+            self._log_console = None</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.push_screen"><code class="name flex">
@@ -3400,19 +3388,7 @@ one internally. Defaults to None.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
-    if not self._running:
-        return
-    if not self._closed:
-        console = self.console
-        try:
-            if self._sync_available:
-                console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
-            console.print(self.screen._compositor)
-            if self._sync_available:
-                console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
-            console.file.flush()
-        except Exception as error:
-            self.on_exception(error)</code></pre>
+    self._display(self.screen._compositor)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.refresh_css"><code class="name flex">
@@ -3733,6 +3709,7 @@ a filename automatically. Defaults to None.</p>
 <li><code><a title="textual.dom.DOMNode.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.dom.DOMNode.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
+<li><code><a title="textual.dom.DOMNode.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
@@ -3754,9 +3731,9 @@ a filename automatically. Defaults to None.</p>
 <li><code><a title="textual.dom.DOMNode.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
-<li><code><a title="textual.dom.DOMNode.rich_text_style" href="dom.html#textual.dom.DOMNode.rich_text_style">rich_text_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.dom.DOMNode.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
 <li><code><a title="textual.dom.DOMNode.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
