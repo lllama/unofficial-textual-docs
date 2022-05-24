@@ -212,7 +212,10 @@ class Widget(DOMNode):
             int: The optimal width of the content.
         &#34;&#34;&#34;
         if self.is_container:
-            return self.layout.get_content_width(self, container, viewport)
+            return (
+                self.layout.get_content_width(self, container, viewport)
+                + self.scrollbar_width
+            )
 
         cache_key = container.width
         if self._content_width_cache[0] == cache_key:
@@ -242,11 +245,14 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
         if self.is_container:
             assert self.layout is not None
-            height = self.layout.get_content_height(
-                self,
-                container,
-                viewport,
-                width,
+            height = (
+                self.layout.get_content_height(
+                    self,
+                    container,
+                    viewport,
+                    width,
+                )
+                + self.scrollbar_height
             )
         else:
             cache_key = width
@@ -283,11 +289,21 @@ class Widget(DOMNode):
 
     @property
     def max_scroll_x(self) -&gt; float:
-        return max(0, self.virtual_size.width - self.container_size.width)
+        &#34;&#34;&#34;The maximum value of `scroll_x`.&#34;&#34;&#34;
+        return max(
+            0,
+            self.virtual_size.width - self.container_size.width + self.scrollbar_width,
+        )
 
     @property
     def max_scroll_y(self) -&gt; float:
-        return max(0, self.virtual_size.height - self.container_size.height)
+        &#34;&#34;&#34;The maximum value of `scroll_y`.&#34;&#34;&#34;
+        return max(
+            0,
+            self.virtual_size.height
+            - self.container_size.height
+            + self.scrollbar_height,
+        )
 
     @property
     def vertical_scrollbar(self) -&gt; ScrollBar:
@@ -363,11 +379,26 @@ class Widget(DOMNode):
             tuple[bool, bool]: A tuple of (&lt;vertical scrollbar enabled&gt;, &lt;horizontal scrollbar enabled&gt;)
 
         &#34;&#34;&#34;
-        if self.layout is None:
+        if not self.is_container:
             return False, False
 
         enabled = self.show_vertical_scrollbar, self.show_horizontal_scrollbar
         return enabled
+
+    @property
+    def scrollbar_dimensions(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Get the size of any scrollbars on the widget&#34;&#34;&#34;
+        return (int(self.show_horizontal_scrollbar), int(self.show_vertical_scrollbar))
+
+    @property
+    def scrollbar_width(self) -&gt; int:
+        &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
+        return int(self.show_vertical_scrollbar)
+
+    @property
+    def scrollbar_height(self) -&gt; int:
+        &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
+        return int(self.show_horizontal_scrollbar)
 
     def set_dirty(self) -&gt; None:
         &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-render).&#34;&#34;&#34;
@@ -394,7 +425,6 @@ class Widget(DOMNode):
             bool: True if the scroll position changed, otherwise False.
         &#34;&#34;&#34;
         scrolled_x = scrolled_y = False
-
         if animate:
             # TODO: configure animation speed
             if x is not None:
@@ -943,8 +973,6 @@ class Widget(DOMNode):
 
     def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
         self.descendant_has_focus = True
-        if self.is_container and isinstance(event.sender, Widget):
-            self.scroll_to_widget(event.sender, animate=True)
 
     def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
         self.descendant_has_focus = False
@@ -1229,7 +1257,10 @@ def cursor_line(self) -&gt; int | None:
             int: The optimal width of the content.
         &#34;&#34;&#34;
         if self.is_container:
-            return self.layout.get_content_width(self, container, viewport)
+            return (
+                self.layout.get_content_width(self, container, viewport)
+                + self.scrollbar_width
+            )
 
         cache_key = container.width
         if self._content_width_cache[0] == cache_key:
@@ -1259,11 +1290,14 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
         if self.is_container:
             assert self.layout is not None
-            height = self.layout.get_content_height(
-                self,
-                container,
-                viewport,
-                width,
+            height = (
+                self.layout.get_content_height(
+                    self,
+                    container,
+                    viewport,
+                    width,
+                )
+                + self.scrollbar_height
             )
         else:
             cache_key = width
@@ -1300,11 +1334,21 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def max_scroll_x(self) -&gt; float:
-        return max(0, self.virtual_size.width - self.container_size.width)
+        &#34;&#34;&#34;The maximum value of `scroll_x`.&#34;&#34;&#34;
+        return max(
+            0,
+            self.virtual_size.width - self.container_size.width + self.scrollbar_width,
+        )
 
     @property
     def max_scroll_y(self) -&gt; float:
-        return max(0, self.virtual_size.height - self.container_size.height)
+        &#34;&#34;&#34;The maximum value of `scroll_y`.&#34;&#34;&#34;
+        return max(
+            0,
+            self.virtual_size.height
+            - self.container_size.height
+            + self.scrollbar_height,
+        )
 
     @property
     def vertical_scrollbar(self) -&gt; ScrollBar:
@@ -1380,11 +1424,26 @@ def cursor_line(self) -&gt; int | None:
             tuple[bool, bool]: A tuple of (&lt;vertical scrollbar enabled&gt;, &lt;horizontal scrollbar enabled&gt;)
 
         &#34;&#34;&#34;
-        if self.layout is None:
+        if not self.is_container:
             return False, False
 
         enabled = self.show_vertical_scrollbar, self.show_horizontal_scrollbar
         return enabled
+
+    @property
+    def scrollbar_dimensions(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Get the size of any scrollbars on the widget&#34;&#34;&#34;
+        return (int(self.show_horizontal_scrollbar), int(self.show_vertical_scrollbar))
+
+    @property
+    def scrollbar_width(self) -&gt; int:
+        &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
+        return int(self.show_vertical_scrollbar)
+
+    @property
+    def scrollbar_height(self) -&gt; int:
+        &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
+        return int(self.show_horizontal_scrollbar)
 
     def set_dirty(self) -&gt; None:
         &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-render).&#34;&#34;&#34;
@@ -1411,7 +1470,6 @@ def cursor_line(self) -&gt; int | None:
             bool: True if the scroll position changed, otherwise False.
         &#34;&#34;&#34;
         scrolled_x = scrolled_y = False
-
         if animate:
             # TODO: configure animation speed
             if x is not None:
@@ -1960,8 +2018,6 @@ def cursor_line(self) -&gt; int | None:
 
     def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
         self.descendant_has_focus = True
-        if self.is_container and isinstance(event.sender, Widget):
-            self.scroll_to_widget(event.sender, animate=True)
 
     def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
         self.descendant_has_focus = False
@@ -2288,26 +2344,36 @@ def layout(self) -&gt; Layout:
 </dd>
 <dt id="textual.widget.Widget.max_scroll_x"><code class="name">var <span class="ident">max_scroll_x</span> : float</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The maximum value of <code>scroll_x</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def max_scroll_x(self) -&gt; float:
-    return max(0, self.virtual_size.width - self.container_size.width)</code></pre>
+    &#34;&#34;&#34;The maximum value of `scroll_x`.&#34;&#34;&#34;
+    return max(
+        0,
+        self.virtual_size.width - self.container_size.width + self.scrollbar_width,
+    )</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.max_scroll_y"><code class="name">var <span class="ident">max_scroll_y</span> : float</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The maximum value of <code>scroll_y</code>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def max_scroll_y(self) -&gt; float:
-    return max(0, self.virtual_size.height - self.container_size.height)</code></pre>
+    &#34;&#34;&#34;The maximum value of `scroll_y`.&#34;&#34;&#34;
+    return max(
+        0,
+        self.virtual_size.height
+        - self.container_size.height
+        + self.scrollbar_height,
+    )</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.mouse_over"><code class="name">var <span class="ident">mouse_over</span> : ReactiveType</code></dt>
@@ -2393,6 +2459,45 @@ def scroll_offset(self) -&gt; Offset:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.scrollbar_dimensions"><code class="name">var <span class="ident">scrollbar_dimensions</span> : tuple[int, int]</code></dt>
+<dd>
+<div class="desc"><p>Get the size of any scrollbars on the widget</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def scrollbar_dimensions(self) -&gt; tuple[int, int]:
+    &#34;&#34;&#34;Get the size of any scrollbars on the widget&#34;&#34;&#34;
+    return (int(self.show_horizontal_scrollbar), int(self.show_vertical_scrollbar))</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scrollbar_height"><code class="name">var <span class="ident">scrollbar_height</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Get the height used by the <em>horizontal</em> scrollbar.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def scrollbar_height(self) -&gt; int:
+    &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
+    return int(self.show_horizontal_scrollbar)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scrollbar_width"><code class="name">var <span class="ident">scrollbar_width</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Get the width used by the <em>vertical</em> scrollbar.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def scrollbar_width(self) -&gt; int:
+    &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
+    return int(self.show_vertical_scrollbar)</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.scrollbars_enabled"><code class="name">var <span class="ident">scrollbars_enabled</span> : tuple[bool, bool]</code></dt>
 <dd>
 <div class="desc"><p>A tuple of booleans that indicate if scrollbars are enabled.</p>
@@ -2413,7 +2518,7 @@ def scrollbars_enabled(self) -&gt; tuple[bool, bool]:
         tuple[bool, bool]: A tuple of (&lt;vertical scrollbar enabled&gt;, &lt;horizontal scrollbar enabled&gt;)
 
     &#34;&#34;&#34;
-    if self.layout is None:
+    if not self.is_container:
         return False, False
 
     enabled = self.show_vertical_scrollbar, self.show_horizontal_scrollbar
@@ -2685,11 +2790,14 @@ def virtual_size(self) -&gt; Size:
     &#34;&#34;&#34;
     if self.is_container:
         assert self.layout is not None
-        height = self.layout.get_content_height(
-            self,
-            container,
-            viewport,
-            width,
+        height = (
+            self.layout.get_content_height(
+                self,
+                container,
+                viewport,
+                width,
+            )
+            + self.scrollbar_height
         )
     else:
         cache_key = width
@@ -2739,7 +2847,10 @@ def virtual_size(self) -&gt; Size:
         int: The optimal width of the content.
     &#34;&#34;&#34;
     if self.is_container:
-        return self.layout.get_content_width(self, container, viewport)
+        return (
+            self.layout.get_content_width(self, container, viewport)
+            + self.scrollbar_width
+        )
 
     cache_key = container.width
     if self._content_width_cache[0] == cache_key:
@@ -3098,9 +3209,7 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
-    self.descendant_has_focus = True
-    if self.is_container and isinstance(event.sender, Widget):
-        self.scroll_to_widget(event.sender, animate=True)</code></pre>
+    self.descendant_has_focus = True</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_enter"><code class="name flex">
@@ -3678,7 +3787,6 @@ next idle event. Only one refresh will be done even if this method is called mul
         bool: True if the scroll position changed, otherwise False.
     &#34;&#34;&#34;
     scrolled_x = scrolled_y = False
-
     if animate:
         # TODO: configure animation speed
         if x is not None:
@@ -4222,6 +4330,9 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.scroll_up" href="#textual.widget.Widget.scroll_up">scroll_up</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_x" href="#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_height" href="#textual.widget.Widget.scrollbar_height">scrollbar_height</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_width" href="#textual.widget.Widget.scrollbar_width">scrollbar_width</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.set_dirty" href="#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>

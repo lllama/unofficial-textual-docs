@@ -254,6 +254,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Vertical.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.layout.Vertical.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.layout.Vertical.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -267,6 +277,21 @@ INDEX=[
 "ref":"textual.layout.Vertical.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.layout.Vertical.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.layout.Vertical.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.layout.Vertical.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.layout.Vertical.set_dirty",
@@ -549,7 +574,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.layout.Vertical.disable_messages",
@@ -723,6 +748,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Horizontal.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.layout.Horizontal.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.layout.Horizontal.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -736,6 +771,21 @@ INDEX=[
 "ref":"textual.layout.Horizontal.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.layout.Horizontal.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.layout.Horizontal.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.layout.Horizontal.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.layout.Horizontal.set_dirty",
@@ -1018,7 +1068,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.layout.Horizontal.disable_messages",
@@ -1288,7 +1338,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.dom.DOMNode.disable_messages",
@@ -4828,12 +4878,12 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.max_scroll_x",
 "url":5,
-"doc":""
+"doc":"The maximum value of  scroll_x ."
 },
 {
 "ref":"textual.widget.Widget.max_scroll_y",
 "url":5,
-"doc":""
+"doc":"The maximum value of  scroll_y ."
 },
 {
 "ref":"textual.widget.Widget.vertical_scrollbar",
@@ -4849,6 +4899,21 @@ INDEX=[
 "ref":"textual.widget.Widget.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widget.Widget.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widget.Widget.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widget.Widget.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widget.Widget.set_dirty",
@@ -5420,7 +5485,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widget.Widget.disable_messages",
@@ -6045,6 +6110,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.scrollbar.ScrollBar.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -6058,6 +6133,21 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.scrollbar.ScrollBar.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.scrollbar.ScrollBar.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.set_dirty",
@@ -6334,7 +6424,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.scrollbar.ScrollBar.disable_messages",
@@ -7030,7 +7120,7 @@ INDEX=[
 {
 "ref":"textual.app.App.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.app.App.disable_messages",
@@ -7260,6 +7350,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Button.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.Button.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.Button.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -7273,6 +7373,21 @@ INDEX=[
 "ref":"textual.widgets.Button.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.Button.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.Button.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.Button.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.Button.set_dirty",
@@ -7549,7 +7664,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Button.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.Button.disable_messages",
@@ -7766,6 +7881,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.DirectoryTree.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.DirectoryTree.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.DirectoryTree.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -7779,6 +7904,21 @@ INDEX=[
 "ref":"textual.widgets.DirectoryTree.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.DirectoryTree.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.DirectoryTree.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.DirectoryTree.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.DirectoryTree.set_dirty",
@@ -8061,7 +8201,7 @@ INDEX=[
 {
 "ref":"textual.widgets.DirectoryTree.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.DirectoryTree.disable_messages",
@@ -8324,6 +8464,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Footer.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.Footer.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.Footer.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -8337,6 +8487,21 @@ INDEX=[
 "ref":"textual.widgets.Footer.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.Footer.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.Footer.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.Footer.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.Footer.set_dirty",
@@ -8613,7 +8778,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Footer.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.Footer.disable_messages",
@@ -8842,6 +9007,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Header.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.Header.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.Header.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -8855,6 +9030,21 @@ INDEX=[
 "ref":"textual.widgets.Header.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.Header.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.Header.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.Header.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.Header.set_dirty",
@@ -9131,7 +9321,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Header.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.Header.disable_messages",
@@ -9330,6 +9520,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Placeholder.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.Placeholder.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.Placeholder.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -9343,6 +9543,21 @@ INDEX=[
 "ref":"textual.widgets.Placeholder.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.Placeholder.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.Placeholder.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.Placeholder.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.Placeholder.set_dirty",
@@ -9619,7 +9834,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Placeholder.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.Placeholder.disable_messages",
@@ -9800,6 +10015,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Static.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.Static.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.Static.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -9813,6 +10038,21 @@ INDEX=[
 "ref":"textual.widgets.Static.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.Static.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.Static.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.Static.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.Static.set_dirty",
@@ -10089,7 +10329,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Static.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.Static.disable_messages",
@@ -10421,6 +10661,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.TreeControl.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.TreeControl.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.TreeControl.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -10434,6 +10684,21 @@ INDEX=[
 "ref":"textual.widgets.TreeControl.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.TreeControl.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.TreeControl.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.TreeControl.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.TreeControl.set_dirty",
@@ -10710,7 +10975,7 @@ INDEX=[
 {
 "ref":"textual.widgets.TreeControl.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.TreeControl.disable_messages",
@@ -10974,6 +11239,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.text_input.TextWidgetBase.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.text_input.TextWidgetBase.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.text_input.TextWidgetBase.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -10987,6 +11262,21 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextWidgetBase.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.text_input.TextWidgetBase.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.text_input.TextWidgetBase.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.text_input.TextWidgetBase.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.set_dirty",
@@ -11269,7 +11559,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.disable_messages",
@@ -11481,6 +11771,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.text_input.TextInput.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.text_input.TextInput.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.text_input.TextInput.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -11494,6 +11794,21 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextInput.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.text_input.TextInput.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.text_input.TextInput.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.text_input.TextInput.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.text_input.TextInput.set_dirty",
@@ -11770,7 +12085,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextInput.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.text_input.TextInput.disable_messages",
@@ -11944,6 +12259,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.text_input.TextArea.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.text_input.TextArea.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.text_input.TextArea.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -11957,6 +12282,21 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextArea.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.text_input.TextArea.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.text_input.TextArea.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.text_input.TextArea.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.text_input.TextArea.set_dirty",
@@ -12239,7 +12579,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextArea.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.text_input.TextArea.disable_messages",
@@ -12441,6 +12781,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.text_input.TextAreaChild.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.text_input.TextAreaChild.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.text_input.TextAreaChild.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -12454,6 +12804,21 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextAreaChild.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.text_input.TextAreaChild.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.text_input.TextAreaChild.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.text_input.TextAreaChild.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.text_input.TextAreaChild.set_dirty",
@@ -12730,7 +13095,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextAreaChild.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.text_input.TextAreaChild.disable_messages",
@@ -12978,6 +13343,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.tabs.Tabs.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.widgets.tabs.Tabs.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.widgets.tabs.Tabs.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -12991,6 +13366,21 @@ INDEX=[
 "ref":"textual.widgets.tabs.Tabs.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.widgets.tabs.Tabs.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.widgets.tabs.Tabs.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.widgets.tabs.Tabs.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.widgets.tabs.Tabs.set_dirty",
@@ -13267,7 +13657,7 @@ INDEX=[
 {
 "ref":"textual.widgets.tabs.Tabs.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.widgets.tabs.Tabs.disable_messages",
@@ -14335,6 +14725,16 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.max_scroll_x",
+"url":5,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.screen.Screen.max_scroll_y",
+"url":5,
+"doc":"The maximum value of  scroll_y ."
+},
+{
 "ref":"textual.screen.Screen.vertical_scrollbar",
 "url":5,
 "doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
@@ -14348,6 +14748,21 @@ INDEX=[
 "ref":"textual.screen.Screen.scrollbars_enabled",
 "url":5,
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.screen.Screen.scrollbar_dimensions",
+"url":5,
+"doc":"Get the size of any scrollbars on the widget"
+},
+{
+"ref":"textual.screen.Screen.scrollbar_width",
+"url":5,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.screen.Screen.scrollbar_height",
+"url":5,
+"doc":"Get the height used by the  horizontal scrollbar."
 },
 {
 "ref":"textual.screen.Screen.set_dirty",
@@ -14618,7 +15033,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.screen.Screen.disable_messages",
@@ -16828,7 +17243,7 @@ INDEX=[
 {
 "ref":"textual.message_pump.MessagePump.app",
 "url":7,
-"doc":"Get the current app."
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
 "ref":"textual.message_pump.MessagePump.is_parent_active",

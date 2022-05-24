@@ -40,7 +40,7 @@ from . import events
 from . import log
 from ._timer import Timer, TimerCallback
 from ._callback import invoke
-from ._context import active_app
+from ._context import active_app, NoActiveAppError
 from .message import Message
 from . import messages
 
@@ -102,8 +102,16 @@ class MessagePump:
 
     @property
     def app(self) -&gt; &#34;App&#34;:
-        &#34;&#34;&#34;Get the current app.&#34;&#34;&#34;
-        return active_app.get()
+        &#34;&#34;&#34;
+        Get the current app.
+
+        Raises:
+            NoActiveAppError: if no active app could be found for the current asyncio context
+        &#34;&#34;&#34;
+        try:
+            return active_app.get()
+        except LookupError:
+            raise NoActiveAppError()
 
     @property
     def is_parent_active(self):
@@ -180,7 +188,13 @@ class MessagePump:
         pause: bool = False,
     ) -&gt; Timer:
         timer = Timer(
-            self, delay, self, name=name, callback=callback, repeat=0, pause=pause
+            self,
+            delay,
+            self,
+            name=name or f&#34;set_timer#{Timer._timer_count}&#34;,
+            callback=callback,
+            repeat=0,
+            pause=pause,
         )
         self._child_tasks.add(timer.start())
         return timer
@@ -198,7 +212,7 @@ class MessagePump:
             self,
             interval,
             self,
-            name=name,
+            name=name or f&#34;set_interval#{Timer._timer_count}&#34;,
             callback=callback,
             repeat=repeat or None,
             pause=pause,
@@ -543,8 +557,16 @@ class MessagePump:
 
     @property
     def app(self) -&gt; &#34;App&#34;:
-        &#34;&#34;&#34;Get the current app.&#34;&#34;&#34;
-        return active_app.get()
+        &#34;&#34;&#34;
+        Get the current app.
+
+        Raises:
+            NoActiveAppError: if no active app could be found for the current asyncio context
+        &#34;&#34;&#34;
+        try:
+            return active_app.get()
+        except LookupError:
+            raise NoActiveAppError()
 
     @property
     def is_parent_active(self):
@@ -621,7 +643,13 @@ class MessagePump:
         pause: bool = False,
     ) -&gt; Timer:
         timer = Timer(
-            self, delay, self, name=name, callback=callback, repeat=0, pause=pause
+            self,
+            delay,
+            self,
+            name=name or f&#34;set_timer#{Timer._timer_count}&#34;,
+            callback=callback,
+            repeat=0,
+            pause=pause,
         )
         self._child_tasks.add(timer.start())
         return timer
@@ -639,7 +667,7 @@ class MessagePump:
             self,
             interval,
             self,
-            name=name,
+            name=name or f&#34;set_interval#{Timer._timer_count}&#34;,
             callback=callback,
             repeat=repeat or None,
             pause=pause,
@@ -891,15 +919,28 @@ class MessagePump:
 <dl>
 <dt id="textual.message_pump.MessagePump.app"><code class="name">var <span class="ident">app</span> : App</code></dt>
 <dd>
-<div class="desc"><p>Get the current app.</p></div>
+<div class="desc"><p>Get the current app.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NoActiveAppError</code></dt>
+<dd>if no active app could be found for the current asyncio context</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def app(self) -&gt; &#34;App&#34;:
-    &#34;&#34;&#34;Get the current app.&#34;&#34;&#34;
-    return active_app.get()</code></pre>
+    &#34;&#34;&#34;
+    Get the current app.
+
+    Raises:
+        NoActiveAppError: if no active app could be found for the current asyncio context
+    &#34;&#34;&#34;
+    try:
+        return active_app.get()
+    except LookupError:
+        raise NoActiveAppError()</code></pre>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.has_parent"><code class="name">var <span class="ident">has_parent</span> : bool</code></dt>
@@ -1480,7 +1521,7 @@ timer messages to skip the queue, so that they can be more regular.</p>
         self,
         interval,
         self,
-        name=name,
+        name=name or f&#34;set_interval#{Timer._timer_count}&#34;,
         callback=callback,
         repeat=repeat or None,
         pause=pause,
@@ -1520,7 +1561,13 @@ timer messages to skip the queue, so that they can be more regular.</p>
     pause: bool = False,
 ) -&gt; Timer:
     timer = Timer(
-        self, delay, self, name=name, callback=callback, repeat=0, pause=pause
+        self,
+        delay,
+        self,
+        name=name or f&#34;set_timer#{Timer._timer_count}&#34;,
+        callback=callback,
+        repeat=0,
+        pause=pause,
     )
     self._child_tasks.add(timer.start())
     return timer</code></pre>
