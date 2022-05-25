@@ -427,6 +427,8 @@ class Widget(DOMNode):
         scrolled_x = scrolled_y = False
         if animate:
             # TODO: configure animation speed
+            if duration is None and speed is None:
+                speed = 50
             if x is not None:
                 self.scroll_target_x = x
                 if x != self.scroll_x:
@@ -1472,6 +1474,8 @@ def cursor_line(self) -&gt; int | None:
         scrolled_x = scrolled_y = False
         if animate:
             # TODO: configure animation speed
+            if duration is None and speed is None:
+                speed = 50
             if x is not None:
                 self.scroll_target_x = x
                 if x != self.scroll_x:
@@ -3789,6 +3793,8 @@ next idle event. Only one refresh will be done even if this method is called mul
     scrolled_x = scrolled_y = False
     if animate:
         # TODO: configure animation speed
+        if duration is None and speed is None:
+            speed = 50
         if x is not None:
             self.scroll_target_x = x
             if x != self.scroll_x:

@@ -137,6 +137,8 @@ class App(Generic[ReturnType], DOMNode):
 
     &#34;&#34;&#34;
 
+    CSS_PATH: str | None = None
+
     def __init__(
         self,
         driver_class: Type[Driver] | None = None,
@@ -164,8 +166,13 @@ class App(Generic[ReturnType], DOMNode):
         # this will create some first references to an asyncio loop.
         _init_uvloop()
 
+        self.features: frozenset[FeatureFlag] = parse_features(os.getenv(&#34;TEXTUAL&#34;, &#34;&#34;))
+
         self.console = Console(
-            file=sys.__stdout__, markup=False, highlight=False, emoji=False
+            file=(open(os.devnull, &#34;wt&#34;) if self.is_headless else sys.__stdout__),
+            markup=True,
+            highlight=False,
+            emoji=False,
         )
         self.error_console = Console(markup=False, stderr=True)
         self.driver_class = driver_class or self.get_driver_class()
@@ -211,10 +218,7 @@ class App(Generic[ReturnType], DOMNode):
 
         self.stylesheet = Stylesheet(variables=self.get_css_variables())
         self._require_styles_update = False
-
-        self.css_path = css_path
-
-        self.features: frozenset[FeatureFlag] = parse_features(os.getenv(&#34;TEXTUAL&#34;, &#34;&#34;))
+        self.css_path = css_path or self.CSS_PATH
 
         self.registry: set[MessagePump] = set()
         self.devtools = DevtoolsClient()
@@ -227,6 +231,10 @@ class App(Generic[ReturnType], DOMNode):
         )
 
         super().__init__()
+
+    def __init_subclass__(cls, css_path: str | None = None) -&gt; None:
+        super().__init_subclass__()
+        cls.CSS_PATH = css_path
 
     title: Reactive[str] = Reactive(&#34;Textual&#34;)
     sub_title: Reactive[str] = Reactive(&#34;&#34;)
@@ -242,6 +250,11 @@ class App(Generic[ReturnType], DOMNode):
     def debug(self) -&gt; bool:
         &#34;&#34;&#34;Check if debug mode is enabled.&#34;&#34;&#34;
         return &#34;debug&#34; in self.features
+
+    @property
+    def is_headless(self) -&gt; bool:
+        &#34;&#34;&#34;Check if the app is running in &#39;headless&#39; mode.&#34;&#34;&#34;
+        return &#34;headless&#34; in self.features
 
     def exit(self, result: ReturnType | None = None) -&gt; None:
         &#34;&#34;&#34;Exit the app, and return the supplied result.
@@ -458,7 +471,7 @@ class App(Generic[ReturnType], DOMNode):
             color_system=&#34;truecolor&#34;,
             record=True,
         )
-        console.print(self.screen._compositor)
+        console.print(self.screen._compositor.render(full=True))
         return console.export_svg(title=self.title)
 
     def save_screenshot(self, path: str | None = None) -&gt; str:
@@ -471,6 +484,7 @@ class App(Generic[ReturnType], DOMNode):
         Returns:
             str: Filename of screenshot.
         &#34;&#34;&#34;
+        self.bell()
         if path is None:
             svg_path = f&#34;{self.title.lower()}_{datetime.now().isoformat()}.svg&#34;
             svg_path = svg_path.replace(&#34;/&#34;, &#34;_&#34;).replace(&#34;\\&#34;, &#34;_&#34;)
@@ -755,13 +769,12 @@ class App(Generic[ReturnType], DOMNode):
                 mount_event = events.Mount(sender=self)
                 await self.dispatch_message(mount_event)
 
-                # TODO: don&#39;t override `self.console` here
-                self.console = Console(file=sys.__stdout__)
                 self.title = self._title
                 self.refresh()
                 await self.animator.start()
 
                 with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
+                    await self._ready()
                     await super().process_messages()
                     await self.animator.stop()
                     await self.close_all()
@@ -781,6 +794,28 @@ class App(Generic[ReturnType], DOMNode):
             if self._log_file is not None:
                 self._log_file.close()
                 self._log_console = None
+
+    async def _ready(self) -&gt; None:
+        &#34;&#34;&#34;Called immediately prior to processing messages.
+
+        May be used as a hook for any operations that should run first.
+
+        &#34;&#34;&#34;
+        try:
+            screenshot_timer = float(os.environ.get(&#34;TEXTUAL_SCREENSHOT&#34;, &#34;0&#34;))
+        except ValueError:
+            return
+
+        if not screenshot_timer:
+            return
+
+        async def on_screenshot():
+            &#34;&#34;&#34;Used by docs plugin.&#34;&#34;&#34;
+            svg = self.export_screenshot()
+            self._screenshot = svg  # type: ignore
+            await self.shutdown()
+
+        self.set_timer(screenshot_timer, on_screenshot)
 
     def on_mount(self) -&gt; None:
         widgets = list(self.compose())
@@ -884,7 +919,7 @@ class App(Generic[ReturnType], DOMNode):
         Args:
             renderable (RenderableType): A Rich renderable.
         &#34;&#34;&#34;
-        if self._running and not self._closed:
+        if self._running and not self._closed and not self.is_headless:
             console = self.console
             if self._sync_available:
                 console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
@@ -1170,6 +1205,8 @@ def _init_uvloop() -&gt; None:
 
     &#34;&#34;&#34;
 
+    CSS_PATH: str | None = None
+
     def __init__(
         self,
         driver_class: Type[Driver] | None = None,
@@ -1197,8 +1234,13 @@ def _init_uvloop() -&gt; None:
         # this will create some first references to an asyncio loop.
         _init_uvloop()
 
+        self.features: frozenset[FeatureFlag] = parse_features(os.getenv(&#34;TEXTUAL&#34;, &#34;&#34;))
+
         self.console = Console(
-            file=sys.__stdout__, markup=False, highlight=False, emoji=False
+            file=(open(os.devnull, &#34;wt&#34;) if self.is_headless else sys.__stdout__),
+            markup=True,
+            highlight=False,
+            emoji=False,
         )
         self.error_console = Console(markup=False, stderr=True)
         self.driver_class = driver_class or self.get_driver_class()
@@ -1244,10 +1286,7 @@ def _init_uvloop() -&gt; None:
 
         self.stylesheet = Stylesheet(variables=self.get_css_variables())
         self._require_styles_update = False
-
-        self.css_path = css_path
-
-        self.features: frozenset[FeatureFlag] = parse_features(os.getenv(&#34;TEXTUAL&#34;, &#34;&#34;))
+        self.css_path = css_path or self.CSS_PATH
 
         self.registry: set[MessagePump] = set()
         self.devtools = DevtoolsClient()
@@ -1260,6 +1299,10 @@ def _init_uvloop() -&gt; None:
         )
 
         super().__init__()
+
+    def __init_subclass__(cls, css_path: str | None = None) -&gt; None:
+        super().__init_subclass__()
+        cls.CSS_PATH = css_path
 
     title: Reactive[str] = Reactive(&#34;Textual&#34;)
     sub_title: Reactive[str] = Reactive(&#34;&#34;)
@@ -1275,6 +1318,11 @@ def _init_uvloop() -&gt; None:
     def debug(self) -&gt; bool:
         &#34;&#34;&#34;Check if debug mode is enabled.&#34;&#34;&#34;
         return &#34;debug&#34; in self.features
+
+    @property
+    def is_headless(self) -&gt; bool:
+        &#34;&#34;&#34;Check if the app is running in &#39;headless&#39; mode.&#34;&#34;&#34;
+        return &#34;headless&#34; in self.features
 
     def exit(self, result: ReturnType | None = None) -&gt; None:
         &#34;&#34;&#34;Exit the app, and return the supplied result.
@@ -1491,7 +1539,7 @@ def _init_uvloop() -&gt; None:
             color_system=&#34;truecolor&#34;,
             record=True,
         )
-        console.print(self.screen._compositor)
+        console.print(self.screen._compositor.render(full=True))
         return console.export_svg(title=self.title)
 
     def save_screenshot(self, path: str | None = None) -&gt; str:
@@ -1504,6 +1552,7 @@ def _init_uvloop() -&gt; None:
         Returns:
             str: Filename of screenshot.
         &#34;&#34;&#34;
+        self.bell()
         if path is None:
             svg_path = f&#34;{self.title.lower()}_{datetime.now().isoformat()}.svg&#34;
             svg_path = svg_path.replace(&#34;/&#34;, &#34;_&#34;).replace(&#34;\\&#34;, &#34;_&#34;)
@@ -1788,13 +1837,12 @@ def _init_uvloop() -&gt; None:
                 mount_event = events.Mount(sender=self)
                 await self.dispatch_message(mount_event)
 
-                # TODO: don&#39;t override `self.console` here
-                self.console = Console(file=sys.__stdout__)
                 self.title = self._title
                 self.refresh()
                 await self.animator.start()
 
                 with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
+                    await self._ready()
                     await super().process_messages()
                     await self.animator.stop()
                     await self.close_all()
@@ -1814,6 +1862,28 @@ def _init_uvloop() -&gt; None:
             if self._log_file is not None:
                 self._log_file.close()
                 self._log_console = None
+
+    async def _ready(self) -&gt; None:
+        &#34;&#34;&#34;Called immediately prior to processing messages.
+
+        May be used as a hook for any operations that should run first.
+
+        &#34;&#34;&#34;
+        try:
+            screenshot_timer = float(os.environ.get(&#34;TEXTUAL_SCREENSHOT&#34;, &#34;0&#34;))
+        except ValueError:
+            return
+
+        if not screenshot_timer:
+            return
+
+        async def on_screenshot():
+            &#34;&#34;&#34;Used by docs plugin.&#34;&#34;&#34;
+            svg = self.export_screenshot()
+            self._screenshot = svg  # type: ignore
+            await self.shutdown()
+
+        self.set_timer(screenshot_timer, on_screenshot)
 
     def on_mount(self) -&gt; None:
         widgets = list(self.compose())
@@ -1917,7 +1987,7 @@ def _init_uvloop() -&gt; None:
         Args:
             renderable (RenderableType): A Rich renderable.
         &#34;&#34;&#34;
-        if self._running and not self._closed:
+        if self._running and not self._closed and not self.is_headless:
             console = self.console
             if self._sync_available:
                 console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
@@ -2133,6 +2203,10 @@ def _init_uvloop() -&gt; None:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.app.App.CSS_PATH"><code class="name">var <span class="ident">CSS_PATH</span> : str | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
@@ -2148,7 +2222,7 @@ def animator(self) -&gt; Animator:
     return self._animator</code></pre>
 </details>
 </dd>
-<dt id="textual.app.App.background"><code class="name">var <span class="ident">background</span> : <a title="textual.reactive.Reactive" href="reactive.html#textual.reactive.Reactive">Reactive</a>[str]</code></dt>
+<dt id="textual.app.App.background"><code class="name">var <span class="ident">background</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -2227,6 +2301,19 @@ def focus_chain(self) -&gt; list[Widget]:
     return widgets</code></pre>
 </details>
 </dd>
+<dt id="textual.app.App.is_headless"><code class="name">var <span class="ident">is_headless</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Check if the app is running in 'headless' mode.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_headless(self) -&gt; bool:
+    &#34;&#34;&#34;Check if the app is running in &#39;headless&#39; mode.&#34;&#34;&#34;
+    return &#34;headless&#34; in self.features</code></pre>
+</details>
+</dd>
 <dt id="textual.app.App.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
 <dd>
 <div class="desc"></div>
@@ -2239,7 +2326,7 @@ def size(self) -&gt; Size:
     return Size(*self.console.size)</code></pre>
 </details>
 </dd>
-<dt id="textual.app.App.sub_title"><code class="name">var <span class="ident">sub_title</span> : <a title="textual.reactive.Reactive" href="reactive.html#textual.reactive.Reactive">Reactive</a>[str]</code></dt>
+<dt id="textual.app.App.sub_title"><code class="name">var <span class="ident">sub_title</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -2250,7 +2337,7 @@ def size(self) -&gt; Size:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.app.App.title"><code class="name">var <span class="ident">title</span> : <a title="textual.reactive.Reactive" href="reactive.html#textual.reactive.Reactive">Reactive</a>[str]</code></dt>
+<dt id="textual.app.App.title"><code class="name">var <span class="ident">title</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -2653,7 +2740,7 @@ generate a path automatically. Defaults to None.</p></div>
         color_system=&#34;truecolor&#34;,
         record=True,
     )
-    console.print(self.screen._compositor)
+    console.print(self.screen._compositor.render(full=True))
     return console.export_svg(title=self.title)</code></pre>
 </details>
 </dd>
@@ -3285,13 +3372,12 @@ the log message sent to the devtools server.</p></div>
             mount_event = events.Mount(sender=self)
             await self.dispatch_message(mount_event)
 
-            # TODO: don&#39;t override `self.console` here
-            self.console = Console(file=sys.__stdout__)
             self.title = self._title
             self.refresh()
             await self.animator.start()
 
             with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
+                await self._ready()
                 await super().process_messages()
                 await self.animator.stop()
                 await self.close_all()
@@ -3540,6 +3626,7 @@ a filename automatically. Defaults to None.</p>
     Returns:
         str: Filename of screenshot.
     &#34;&#34;&#34;
+    self.bell()
     if path is None:
         svg_path = f&#34;{self.title.lower()}_{datetime.now().isoformat()}.svg&#34;
         svg_path = svg_path.replace(&#34;/&#34;, &#34;_&#34;).replace(&#34;\\&#34;, &#34;_&#34;)
@@ -3829,6 +3916,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.app.App" href="#textual.app.App">App</a></code></h4>
 <ul class="">
 <li><code><a title="textual.app.App.CSS" href="#textual.app.App.CSS">CSS</a></code></li>
+<li><code><a title="textual.app.App.CSS_PATH" href="#textual.app.App.CSS_PATH">CSS_PATH</a></code></li>
 <li><code><a title="textual.app.App.action" href="#textual.app.App.action">action</a></code></li>
 <li><code><a title="textual.app.App.action_add_class_" href="#textual.app.App.action_add_class_">action_add_class_</a></code></li>
 <li><code><a title="textual.app.App.action_bang" href="#textual.app.App.action_bang">action_bang</a></code></li>
@@ -3863,6 +3951,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.app.App.handle_layout" href="#textual.app.App.handle_layout">handle_layout</a></code></li>
 <li><code><a title="textual.app.App.handle_styles_updated" href="#textual.app.App.handle_styles_updated">handle_styles_updated</a></code></li>
 <li><code><a title="textual.app.App.handle_update" href="#textual.app.App.handle_update">handle_update</a></code></li>
+<li><code><a title="textual.app.App.is_headless" href="#textual.app.App.is_headless">is_headless</a></code></li>
 <li><code><a title="textual.app.App.is_mounted" href="#textual.app.App.is_mounted">is_mounted</a></code></li>
 <li><code><a title="textual.app.App.log" href="#textual.app.App.log">log</a></code></li>
 <li><code><a title="textual.app.App.measure" href="#textual.app.App.measure">measure</a></code></li>

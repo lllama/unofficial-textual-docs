@@ -1411,6 +1411,17 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.cli.cli.AppFail",
+"url":9,
+"doc":"Common base class for all non-exit exceptions."
+},
+{
+"ref":"textual.cli.cli.import_app",
+"url":9,
+"doc":"Import an app from it's import name. Args: import_name (str): A name to import, such as  foo.bar Raises: AppFail: If the app could not be found for any reason. Returns: App: A Textual application",
+"func":1
+},
+{
 "ref":"textual.file_monitor",
 "url":10,
 "doc":""
@@ -6590,6 +6601,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.app.App.CSS_PATH",
+"url":22,
+"doc":""
+},
+{
 "ref":"textual.app.App.title",
 "url":22,
 "doc":"Reactive descriptor."
@@ -6618,6 +6634,11 @@ INDEX=[
 "ref":"textual.app.App.debug",
 "url":22,
 "doc":"Check if debug mode is enabled."
+},
+{
+"ref":"textual.app.App.is_headless",
+"url":22,
+"doc":"Check if the app is running in 'headless' mode."
 },
 {
 "ref":"textual.app.App.exit",
@@ -7190,7 +7211,7 @@ INDEX=[
 {
 "ref":"textual.features.parse_features",
 "url":23,
-"doc":"Parse features env var Args: features (str): Comma seprated feature flags Returns: frozenset[FeatureFlag]: A frozen set of known features.",
+"doc":"Parse features env var Args: features (str): Comma separated feature flags Returns: frozenset[FeatureFlag]: A frozen set of known features.",
 "func":1
 },
 {

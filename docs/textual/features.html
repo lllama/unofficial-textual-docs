@@ -37,16 +37,16 @@ if sys.version_info &gt;= (3, 8):
 else:
     from typing_extensions import Final, Literal
 
-FEATURES: Final = {&#34;devtools&#34;, &#34;debug&#34;}
+FEATURES: Final = {&#34;devtools&#34;, &#34;debug&#34;, &#34;headless&#34;}
 
-FeatureFlag = Literal[&#34;devtools&#34;, &#34;debug&#34;]
+FeatureFlag = Literal[&#34;devtools&#34;, &#34;debug&#34;, &#34;headless&#34;]
 
 
 def parse_features(features: str) -&gt; frozenset[FeatureFlag]:
     &#34;&#34;&#34;Parse features env var
 
     Args:
-        features (str): Comma seprated feature flags
+        features (str): Comma separated feature flags
 
     Returns:
         frozenset[FeatureFlag]: A frozen set of known features.
@@ -77,7 +77,7 @@ def parse_features(features: str) -&gt; frozenset[FeatureFlag]:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>features</code></strong> :&ensp;<code>str</code></dt>
-<dd>Comma seprated feature flags</dd>
+<dd>Comma separated feature flags</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -92,7 +92,7 @@ def parse_features(features: str) -&gt; frozenset[FeatureFlag]:
     &#34;&#34;&#34;Parse features env var
 
     Args:
-        features (str): Comma seprated feature flags
+        features (str): Comma separated feature flags
 
     Returns:
         frozenset[FeatureFlag]: A frozen set of known features.

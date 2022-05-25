@@ -26,10 +26,18 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">import click
+<pre><code class="python">from __future__ import annotations
+
+from typing import cast, TYPE_CHECKING
+
 from importlib_metadata import version
 
+import click
+
 from textual.devtools.server import _run_devtools
+
+if TYPE_CHECKING:
+    from textual.app import App
 
 
 @click.group()
@@ -40,7 +48,143 @@ def run():
 
 @run.command(help=&#34;Run the Textual Devtools console&#34;)
 def console():
-    _run_devtools()</code></pre>
+    _run_devtools()
+
+
+class AppFail(Exception):
+    pass
+
+
+def import_app(import_name: str) -&gt; App:
+    &#34;&#34;&#34;Import an app from it&#39;s import name.
+
+    Args:
+        import_name (str): A name to import, such as `foo.bar`
+
+    Raises:
+        AppFail: If the app could not be found for any reason.
+
+    Returns:
+        App: A Textual application
+    &#34;&#34;&#34;
+
+    import inspect
+    import importlib
+    import sys
+
+    from textual.app import App
+
+    lib, _colon, name = import_name.partition(&#34;:&#34;)
+
+    if lib.endswith(&#34;.py&#34;):
+        # We&#39;re assuming the user wants to load a .py file
+        try:
+            with open(lib) as python_file:
+                py_code = python_file.read()
+        except Exception as error:
+            raise AppFail(str(error))
+
+        global_vars: dict[str, object] = {}
+        exec(py_code, global_vars)
+
+        if name:
+            # User has given a name, use that
+            try:
+                app = global_vars[name]
+            except KeyError:
+                raise AppFail(f&#34;App {name!r} not found in {lib!r}&#34;)
+        else:
+            # User has not given a name
+            if &#34;app&#34; in global_vars:
+                # App exists, lets use that
+                try:
+                    app = global_vars[&#34;app&#34;]
+                except KeyError:
+                    raise AppFail(f&#34;App {name!r} not found in {lib!r}&#34;)
+            else:
+                # Find a App class or instance that is *not* the base class
+                apps = [
+                    value
+                    for key, value in global_vars.items()
+                    if (
+                        isinstance(value, App)
+                        or (inspect.isclass(value) and issubclass(value, App))
+                        and value is not App
+                    )
+                ]
+                if not apps:
+                    raise AppFail(
+                        f&#39;Unable to find app in {lib!r}, try specifying app with &#34;foo.py:app&#34;&#39;
+                    )
+                if len(apps) &gt; 1:
+                    raise AppFail(
+                        f&#39;Multiple apps found {lib!r}, try specifying app with &#34;foo.py:app&#34;&#39;
+                    )
+                app = apps[0]
+
+    else:
+        # Assuming the user wants to import the file
+        sys.path.append(&#34;&#34;)
+        try:
+            module = importlib.import_module(lib)
+        except ImportError as error:
+            raise AppFail(str(error))
+
+        try:
+            app = getattr(module, name or &#34;app&#34;)
+        except AttributeError:
+            raise AppFail(f&#34;Unable to find {name!r} in {module!r}&#34;)
+
+    if inspect.isclass(app) and issubclass(app, App):
+        app = app()
+
+    return cast(App, app)
+
+
+@run.command(&#34;run&#34;)
+@click.argument(&#34;import_name&#34;, metavar=&#34;FILE or FILE:APP&#34;)
+@click.option(&#34;--dev&#34;, &#34;dev&#34;, help=&#34;Enable development mode&#34;, is_flag=True)
+def run_app(import_name: str, dev: bool) -&gt; None:
+    &#34;&#34;&#34;Run a Textual app.
+
+    The code to run may be given as a path (ending with .py) or as a Python
+    import, which will load the code and run an app called &#34;app&#34;. You may optionally
+    add a colon plus the class or class instance you want to run.
+
+    Here are some examples:
+
+    textual run foo.py
+
+    textual run foo.py:MyApp
+
+    textual run module.foo
+
+    textual run module.foo:MyApp
+
+    &#34;&#34;&#34;
+
+    import os
+    import sys
+
+    from textual.features import parse_features
+
+    features = set(parse_features(os.environ.get(&#34;TEXTUAL&#34;, &#34;&#34;)))
+    if dev:
+        features.add(&#34;debug&#34;)
+        features.add(&#34;devtools&#34;)
+
+    os.environ[&#34;TEXTUAL&#34;] = &#34;,&#34;.join(sorted(features))
+
+    try:
+        app = import_app(import_name)
+    except AppFail as error:
+        from rich.console import Console
+
+        console = Console(stderr=True)
+        console.print(str(error))
+        sys.exit(1)
+
+    app.run()</code></pre>
 </details>
 </section>
 <section>
@@ -48,8 +192,143 @@ def console():
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="textual.cli.cli.import_app"><code class="name flex">
+<span>def <span class="ident">import_app</span></span>(<span>import_name: str) ‑> App</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Import an app from it's import name.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>import_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>A name to import, such as <code>foo.bar</code></dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code><a title="textual.cli.cli.AppFail" href="#textual.cli.cli.AppFail">AppFail</a></code></dt>
+<dd>If the app could not be found for any reason.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>App</code></dt>
+<dd>A Textual application</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def import_app(import_name: str) -&gt; App:
+    &#34;&#34;&#34;Import an app from it&#39;s import name.
+
+    Args:
+        import_name (str): A name to import, such as `foo.bar`
+
+    Raises:
+        AppFail: If the app could not be found for any reason.
+
+    Returns:
+        App: A Textual application
+    &#34;&#34;&#34;
+
+    import inspect
+    import importlib
+    import sys
+
+    from textual.app import App
+
+    lib, _colon, name = import_name.partition(&#34;:&#34;)
+
+    if lib.endswith(&#34;.py&#34;):
+        # We&#39;re assuming the user wants to load a .py file
+        try:
+            with open(lib) as python_file:
+                py_code = python_file.read()
+        except Exception as error:
+            raise AppFail(str(error))
+
+        global_vars: dict[str, object] = {}
+        exec(py_code, global_vars)
+
+        if name:
+            # User has given a name, use that
+            try:
+                app = global_vars[name]
+            except KeyError:
+                raise AppFail(f&#34;App {name!r} not found in {lib!r}&#34;)
+        else:
+            # User has not given a name
+            if &#34;app&#34; in global_vars:
+                # App exists, lets use that
+                try:
+                    app = global_vars[&#34;app&#34;]
+                except KeyError:
+                    raise AppFail(f&#34;App {name!r} not found in {lib!r}&#34;)
+            else:
+                # Find a App class or instance that is *not* the base class
+                apps = [
+                    value
+                    for key, value in global_vars.items()
+                    if (
+                        isinstance(value, App)
+                        or (inspect.isclass(value) and issubclass(value, App))
+                        and value is not App
+                    )
+                ]
+                if not apps:
+                    raise AppFail(
+                        f&#39;Unable to find app in {lib!r}, try specifying app with &#34;foo.py:app&#34;&#39;
+                    )
+                if len(apps) &gt; 1:
+                    raise AppFail(
+                        f&#39;Multiple apps found {lib!r}, try specifying app with &#34;foo.py:app&#34;&#39;
+                    )
+                app = apps[0]
+
+    else:
+        # Assuming the user wants to import the file
+        sys.path.append(&#34;&#34;)
+        try:
+            module = importlib.import_module(lib)
+        except ImportError as error:
+            raise AppFail(str(error))
+
+        try:
+            app = getattr(module, name or &#34;app&#34;)
+        except AttributeError:
+            raise AppFail(f&#34;Unable to find {name!r} in {module!r}&#34;)
+
+    if inspect.isclass(app) and issubclass(app, App):
+        app = app()
+
+    return cast(App, app)</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="textual.cli.cli.AppFail"><code class="flex name class">
+<span>class <span class="ident">AppFail</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AppFail(Exception):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -107,6 +386,18 @@ setTimeout(() => input.focus(), 100);
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="textual.cli" href="index.html">textual.cli</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="textual.cli.cli.import_app" href="#textual.cli.cli.import_app">import_app</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="textual.cli.cli.AppFail" href="#textual.cli.cli.AppFail">AppFail</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>
