@@ -85,7 +85,14 @@ class Prompt(Message, system=True):
     &#34;&#34;&#34;Used to &#39;wake up&#39; an event loop.&#34;&#34;&#34;
 
     def can_replace(self, message: Message) -&gt; bool:
-        return isinstance(message, StylesUpdated)</code></pre>
+        return isinstance(message, StylesUpdated)
+
+
+class TerminalSupportsSynchronizedOutput(Message):
+    &#34;&#34;&#34;
+    Used to make the App aware that the terminal emulator supports synchronised output.
+    @link https://gist.github.com/christianparpart/d8a62cc1ab659194337d73e399004036
+    &#34;&#34;&#34;</code></pre>
 </details>
 </section>
 <section>
@@ -315,6 +322,62 @@ class Prompt(Message, system=True):
 </li>
 </ul>
 </dd>
+<dt id="textual.messages.TerminalSupportsSynchronizedOutput"><code class="flex name class">
+<span>class <span class="ident">TerminalSupportsSynchronizedOutput</span></span>
+<span>(</span><span>sender: MessageTarget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Used to make the App aware that the terminal emulator supports synchronised output.
+@link <a href="https://gist.github.com/christianparpart/d8a62cc1ab659194337d73e399004036">https://gist.github.com/christianparpart/d8a62cc1ab659194337d73e399004036</a></p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TerminalSupportsSynchronizedOutput(Message):
+    &#34;&#34;&#34;
+    Used to make the App aware that the terminal emulator supports synchronised output.
+    @link https://gist.github.com/christianparpart/d8a62cc1ab659194337d73e399004036
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.messages.TerminalSupportsSynchronizedOutput.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.TerminalSupportsSynchronizedOutput.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.TerminalSupportsSynchronizedOutput.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="textual.messages.Update"><code class="flex name class">
 <span>class <span class="ident">Update</span></span>
 <span>(</span><span>sender: MessagePump, widget: Widget)</span>
@@ -474,6 +537,14 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.messages.StylesUpdated.bubble" href="#textual.messages.StylesUpdated.bubble">bubble</a></code></li>
 <li><code><a title="textual.messages.StylesUpdated.system" href="#textual.messages.StylesUpdated.system">system</a></code></li>
 <li><code><a title="textual.messages.StylesUpdated.verbosity" href="#textual.messages.StylesUpdated.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.messages.TerminalSupportsSynchronizedOutput" href="#textual.messages.TerminalSupportsSynchronizedOutput">TerminalSupportsSynchronizedOutput</a></code></h4>
+<ul class="">
+<li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.bubble" href="#textual.messages.TerminalSupportsSynchronizedOutput.bubble">bubble</a></code></li>
+<li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.system" href="#textual.messages.TerminalSupportsSynchronizedOutput.system">system</a></code></li>
+<li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.verbosity" href="#textual.messages.TerminalSupportsSynchronizedOutput.verbosity">verbosity</a></code></li>
 </ul>
 </li>
 <li>

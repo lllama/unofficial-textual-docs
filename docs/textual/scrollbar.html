@@ -216,8 +216,11 @@ class ScrollBarRender:
 
 @rich.repr.auto
 class ScrollBar(Widget):
-    def __init__(self, vertical: bool = True, name: str | None = None) -&gt; None:
+    def __init__(
+        self, vertical: bool = True, name: str | None = None, *, thickness: int = 1
+    ) -&gt; None:
         self.vertical = vertical
+        self.thickness = thickness
         self.grabbed_position: float = 0
         super().__init__(name=name)
 
@@ -232,6 +235,8 @@ class ScrollBar(Widget):
         yield &#34;window_virtual_size&#34;, self.window_virtual_size
         yield &#34;window_size&#34;, self.window_size
         yield &#34;position&#34;, self.position
+        if self.thickness &gt; 1:
+            yield &#34;thickness&#34;, self.thickness
 
     def render(self, style: Style) -&gt; RenderableType:
         styles = self.parent.styles
@@ -251,6 +256,7 @@ class ScrollBar(Widget):
             virtual_size=self.window_virtual_size,
             window_size=self.window_size,
             position=self.position,
+            thickness=self.thickness,
             vertical=self.vertical,
             style=scrollbar_style,
         )
@@ -311,11 +317,15 @@ if __name__ == &#34;__main__&#34;:
     from rich.console import Console
 
     console = Console()
-    bar = ScrollBarRender()
 
-    console.print(
-        ScrollBarRender(position=15.3, window_size=100, thickness=5, vertical=True)
-    )</code></pre>
+    thickness = 2
+    console.print(f&#34;Bars thickness: {thickness}&#34;)
+
+    console.print(&#34;Vertical bar:&#34;)
+    console.print(ScrollBarRender.render_bar(thickness=thickness))
+
+    console.print(&#34;Horizontal bar:&#34;)
+    console.print(ScrollBarRender.render_bar(vertical=False, thickness=thickness))</code></pre>
 </details>
 </section>
 <section>
@@ -329,7 +339,7 @@ if __name__ == &#34;__main__&#34;:
 <dl>
 <dt id="textual.scrollbar.ScrollBar"><code class="flex name class">
 <span>class <span class="ident">ScrollBar</span></span>
-<span>(</span><span>vertical: bool = True, name: str | None = None)</span>
+<span>(</span><span>vertical: bool = True, name: str | None = None, *, thickness: int = 1)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
@@ -339,8 +349,11 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ScrollBar(Widget):
-    def __init__(self, vertical: bool = True, name: str | None = None) -&gt; None:
+    def __init__(
+        self, vertical: bool = True, name: str | None = None, *, thickness: int = 1
+    ) -&gt; None:
         self.vertical = vertical
+        self.thickness = thickness
         self.grabbed_position: float = 0
         super().__init__(name=name)
 
@@ -355,6 +368,8 @@ if __name__ == &#34;__main__&#34;:
         yield &#34;window_virtual_size&#34;, self.window_virtual_size
         yield &#34;window_size&#34;, self.window_size
         yield &#34;position&#34;, self.position
+        if self.thickness &gt; 1:
+            yield &#34;thickness&#34;, self.thickness
 
     def render(self, style: Style) -&gt; RenderableType:
         styles = self.parent.styles
@@ -374,6 +389,7 @@ if __name__ == &#34;__main__&#34;:
             virtual_size=self.window_virtual_size,
             window_size=self.window_size,
             position=self.position,
+            thickness=self.thickness,
             vertical=self.vertical,
             style=scrollbar_style,
         )

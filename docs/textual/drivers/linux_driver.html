@@ -158,6 +158,11 @@ class LinuxDriver(Driver):
         self._key_thread = Thread(target=self.run_input_thread, args=(loop,))
         send_size_event()
         self._key_thread.start()
+        self._request_terminal_sync_mode_support()
+
+    def _request_terminal_sync_mode_support(self):
+        self.console.file.write(&#34;\033[?2026$p&#34;)
+        self.console.file.flush()
 
     @classmethod
     def _patch_lflag(cls, attrs: int) -&gt; int:
@@ -249,7 +254,6 @@ class LinuxDriver(Driver):
 
 
 if __name__ == &#34;__main__&#34;:
-    from time import sleep
     from rich.console import Console
     from .. import events
 
@@ -387,6 +391,11 @@ if __name__ == &#34;__main__&#34;:
         self._key_thread = Thread(target=self.run_input_thread, args=(loop,))
         send_size_event()
         self._key_thread.start()
+        self._request_terminal_sync_mode_support()
+
+    def _request_terminal_sync_mode_support(self):
+        self.console.file.write(&#34;\033[?2026$p&#34;)
+        self.console.file.flush()
 
     @classmethod
     def _patch_lflag(cls, attrs: int) -&gt; int:
@@ -582,7 +591,8 @@ if __name__ == &#34;__main__&#34;:
     self.console.file.flush()
     self._key_thread = Thread(target=self.run_input_thread, args=(loop,))
     send_size_event()
-    self._key_thread.start()</code></pre>
+    self._key_thread.start()
+    self._request_terminal_sync_mode_support()</code></pre>
 </details>
 </dd>
 <dt id="textual.drivers.linux_driver.LinuxDriver.stop_application_mode"><code class="name flex">

@@ -50,6 +50,8 @@ from typing import (
     TYPE_CHECKING,
 )
 
+from ._ansi_sequences import TERMINAL_MODES_ANSI_SEQUENCES
+
 if sys.version_info &gt;= (3, 8):
     from typing import Literal
 else:
@@ -72,7 +74,6 @@ from ._animator import Animator
 from ._callback import invoke
 from ._context import active_app
 from ._event_broker import extract_handler_actions, NoHandler
-from ._timer import Timer
 from .binding import Bindings, NoBinding
 from .css.stylesheet import Stylesheet
 from .design import ColorSystem
@@ -178,9 +179,7 @@ class App(Generic[ReturnType], DOMNode):
         self.driver_class = driver_class or self.get_driver_class()
         self._title = title
         self._screen_stack: list[Screen] = []
-        self._sync_available = (
-            os.environ.get(&#34;TERM_PROGRAM&#34;, &#34;&#34;) != &#34;Apple_Terminal&#34; and not WINDOWS
-        )
+        self._sync_available = False
 
         self.focused: Widget | None = None
         self.mouse_over: Widget | None = None
@@ -921,14 +920,12 @@ class App(Generic[ReturnType], DOMNode):
         &#34;&#34;&#34;
         if self._running and not self._closed and not self.is_headless:
             console = self.console
-            if self._sync_available:
-                console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
+            self._begin_update()
             try:
                 console.print(renderable)
             except Exception as error:
                 self.on_exception(error)
-            if self._sync_available:
-                console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
+            self._end_update()
             console.file.flush()
 
     def measure(self, renderable: RenderableType, max_width=100_000) -&gt; int:
@@ -1002,6 +999,7 @@ class App(Generic[ReturnType], DOMNode):
             else:
                 # Forward the event to the view
                 await self.screen.forward_event(event)
+
         else:
             await super().on_event(event)
 
@@ -1122,6 +1120,20 @@ class App(Generic[ReturnType], DOMNode):
 
     async def handle_styles_updated(self, message: messages.StylesUpdated) -&gt; None:
         self.stylesheet.update(self, animate=True)
+
+    def handle_terminal_supports_synchronized_output(
+        self, message: messages.TerminalSupportsSynchronizedOutput
+    ) -&gt; None:
+        log(&#34;SynchronizedOutput mode is supported by this terminal&#34;)
+        self._sync_available = True
+
+    def _begin_update(self) -&gt; None:
+        if self._sync_available:
+            self.console.file.write(TERMINAL_MODES_ANSI_SEQUENCES[&#34;sync_start&#34;])
+
+    def _end_update(self) -&gt; None:
+        if self._sync_available:
+            self.console.file.write(TERMINAL_MODES_ANSI_SEQUENCES[&#34;sync_stop&#34;])
 
 
 _uvloop_init_done: bool = False
@@ -1246,9 +1258,7 @@ def _init_uvloop() -&gt; None:
         self.driver_class = driver_class or self.get_driver_class()
         self._title = title
         self._screen_stack: list[Screen] = []
-        self._sync_available = (
-            os.environ.get(&#34;TERM_PROGRAM&#34;, &#34;&#34;) != &#34;Apple_Terminal&#34; and not WINDOWS
-        )
+        self._sync_available = False
 
         self.focused: Widget | None = None
         self.mouse_over: Widget | None = None
@@ -1989,14 +1999,12 @@ def _init_uvloop() -&gt; None:
         &#34;&#34;&#34;
         if self._running and not self._closed and not self.is_headless:
             console = self.console
-            if self._sync_available:
-                console.file.write(&#34;\x1bP=1s\x1b\\&#34;)
+            self._begin_update()
             try:
                 console.print(renderable)
             except Exception as error:
                 self.on_exception(error)
-            if self._sync_available:
-                console.file.write(&#34;\x1bP=2s\x1b\\&#34;)
+            self._end_update()
             console.file.flush()
 
     def measure(self, renderable: RenderableType, max_width=100_000) -&gt; int:
@@ -2070,6 +2078,7 @@ def _init_uvloop() -&gt; None:
             else:
                 # Forward the event to the view
                 await self.screen.forward_event(event)
+
         else:
             await super().on_event(event)
 
@@ -2189,7 +2198,21 @@ def _init_uvloop() -&gt; None:
         self.screen.query(selector).toggle_class(class_name)
 
     async def handle_styles_updated(self, message: messages.StylesUpdated) -&gt; None:
-        self.stylesheet.update(self, animate=True)</code></pre>
+        self.stylesheet.update(self, animate=True)
+
+    def handle_terminal_supports_synchronized_output(
+        self, message: messages.TerminalSupportsSynchronizedOutput
+    ) -&gt; None:
+        log(&#34;SynchronizedOutput mode is supported by this terminal&#34;)
+        self._sync_available = True
+
+    def _begin_update(self) -&gt; None:
+        if self._sync_available:
+            self.console.file.write(TERMINAL_MODES_ANSI_SEQUENCES[&#34;sync_start&#34;])
+
+    def _end_update(self) -&gt; None:
+        if self._sync_available:
+            self.console.file.write(TERMINAL_MODES_ANSI_SEQUENCES[&#34;sync_stop&#34;])</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2968,6 +2991,22 @@ with the given ID.</p>
     self.stylesheet.update(self, animate=True)</code></pre>
 </details>
 </dd>
+<dt id="textual.app.App.handle_terminal_supports_synchronized_output"><code class="name flex">
+<span>def <span class="ident">handle_terminal_supports_synchronized_output</span></span>(<span>self, message: messages.TerminalSupportsSynchronizedOutput) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_terminal_supports_synchronized_output(
+    self, message: messages.TerminalSupportsSynchronizedOutput
+) -&gt; None:
+    log(&#34;SynchronizedOutput mode is supported by this terminal&#34;)
+    self._sync_available = True</code></pre>
+</details>
+</dd>
 <dt id="textual.app.App.handle_update"><code class="name flex">
 <span>async def <span class="ident">handle_update</span></span>(<span>self, message: messages.Update) ‑> None</span>
 </code></dt>
@@ -3141,6 +3180,7 @@ the log message sent to the devtools server.</p></div>
         else:
             # Forward the event to the view
             await self.screen.forward_event(event)
+
     else:
         await super().on_event(event)</code></pre>
 </details>
@@ -3950,6 +3990,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.app.App.get_widget_at" href="#textual.app.App.get_widget_at">get_widget_at</a></code></li>
 <li><code><a title="textual.app.App.handle_layout" href="#textual.app.App.handle_layout">handle_layout</a></code></li>
 <li><code><a title="textual.app.App.handle_styles_updated" href="#textual.app.App.handle_styles_updated">handle_styles_updated</a></code></li>
+<li><code><a title="textual.app.App.handle_terminal_supports_synchronized_output" href="#textual.app.App.handle_terminal_supports_synchronized_output">handle_terminal_supports_synchronized_output</a></code></li>
 <li><code><a title="textual.app.App.handle_update" href="#textual.app.App.handle_update">handle_update</a></code></li>
 <li><code><a title="textual.app.App.is_headless" href="#textual.app.App.is_headless">is_headless</a></code></li>
 <li><code><a title="textual.app.App.is_mounted" href="#textual.app.App.is_mounted">is_mounted</a></code></li>

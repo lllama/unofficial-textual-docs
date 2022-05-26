@@ -7008,6 +7008,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.app.App.handle_terminal_supports_synchronized_output",
+"url":22,
+"doc":"",
+"func":1
+},
+{
 "ref":"textual.app.App.on_register",
 "url":6,
 "doc":"Called when the widget is registered Args: app (App): Parent application.",
@@ -11142,6 +11148,16 @@ INDEX=[
 "doc":"Set of keybinds which will not be propagated to parent widgets"
 },
 {
+"ref":"textual.widgets.text_input.TextWidgetBase.cursor_blink_enabled",
+"url":25,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.text_input.TextWidgetBase.cursor_blink_period",
+"url":25,
+"doc":"Reactive descriptor."
+},
+{
 "ref":"textual.widgets.text_input.TextWidgetBase.on_key",
 "url":25,
 "doc":"",
@@ -11639,7 +11655,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextInput",
 "url":25,
-"doc":"Base class for Widgets which support text input"
+"doc":"Widget for inputting text Args: placeholder (str): The text that will be displayed when there's no content in the TextInput. Defaults to an empty string. initial (str): The initial value. Defaults to an empty string. autocompleter (Callable str], str | None): Function which returns autocomplete suggestion which will be displayed within the widget any time the content changes. The autocomplete suggestion will be displayed as dim text similar to suggestion text in the zsh or fish shells."
 },
 {
 "ref":"textual.widgets.text_input.TextInput.STOP_PROPAGATE",
@@ -11660,6 +11676,12 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextInput.on_resize",
 "url":25,
 "doc":"",
+"func":1
+},
+{
+"ref":"textual.widgets.text_input.TextInput.on_click",
+"url":25,
+"doc":"When the user clicks on the text input, the cursor moves to the character that was clicked on. Double-width characters makes this more difficult.",
 "func":1
 },
 {
@@ -11688,6 +11710,16 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextInput.can_focus_children",
 "url":25,
 "doc":""
+},
+{
+"ref":"textual.widgets.text_input.TextInput.cursor_blink_enabled",
+"url":25,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.text_input.TextInput.cursor_blink_period",
+"url":25,
+"doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.text_input.TextInput.Changed",
@@ -12704,6 +12736,16 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextAreaChild.can_focus_children",
 "url":25,
 "doc":""
+},
+{
+"ref":"textual.widgets.text_input.TextAreaChild.cursor_blink_enabled",
+"url":25,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.widgets.text_input.TextAreaChild.cursor_blink_period",
+"url":25,
+"doc":"Reactive descriptor."
 },
 {
 "ref":"textual.widgets.text_input.TextAreaChild.Changed",
@@ -14031,6 +14073,65 @@ INDEX=[
 },
 {
 "ref":"textual.messages.Prompt.time",
+"url":19,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput",
+"url":27,
+"doc":"Used to make the App aware that the terminal emulator supports synchronised output. @link https: gist.github.com/christianparpart/d8a62cc1ab659194337d73e399004036 Args: sender (MessageTarget): The sender of the message / event."
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.sender",
+"url":27,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.bubble",
+"url":27,
+"doc":""
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.verbosity",
+"url":27,
+"doc":""
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.system",
+"url":27,
+"doc":""
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.set_forwarded",
+"url":19,
+"doc":"Mark this event as being forwarded.",
+"func":1
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.can_replace",
+"url":19,
+"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
+"func":1
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.prevent_default",
+"url":19,
+"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.stop",
+"url":19,
+"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.name",
+"url":19,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.time",
 "url":19,
 "doc":"Return an attribute of instance, which is of type owner."
 },
@@ -15377,6 +15478,16 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.css.styles.RulesMap.scrollbar_size_vertical",
+"url":34,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.scrollbar_size_horizontal",
+"url":34,
+"doc":""
+},
+{
 "ref":"textual.css.styles.RulesMap.align_horizontal",
 "url":34,
 "doc":""
@@ -15640,6 +15751,16 @@ INDEX=[
 "ref":"textual.css.styles.StylesBase.scrollbar_gutter",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.scrollbar_size_vertical",
+"url":34,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.StylesBase.scrollbar_size_horizontal",
+"url":34,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.align_horizontal",
@@ -16063,6 +16184,16 @@ INDEX=[
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
+"ref":"textual.css.styles.Styles.scrollbar_size_vertical",
+"url":34,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.Styles.scrollbar_size_horizontal",
+"url":34,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
 "ref":"textual.css.styles.Styles.align_horizontal",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
@@ -16405,6 +16536,16 @@ INDEX=[
 "ref":"textual.css.styles.RenderStyles.scrollbar_gutter",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.scrollbar_size_vertical",
+"url":34,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+},
+{
+"ref":"textual.css.styles.RenderStyles.scrollbar_size_horizontal",
+"url":34,
+"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.align_horizontal",

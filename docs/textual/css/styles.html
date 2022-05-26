@@ -157,6 +157,9 @@ class RulesMap(TypedDict, total=False):
 
     scrollbar_gutter: ScrollbarGutter
 
+    scrollbar_size_vertical: int
+    scrollbar_size_horizontal: int
+
     align_horizontal: AlignHorizontal
     align_vertical: AlignVertical
 
@@ -255,6 +258,13 @@ class StylesBase(ABC):
     scrollbar_background_active = ColorProperty(&#34;black&#34;)
 
     scrollbar_gutter = StringEnumProperty(VALID_SCROLLBAR_GUTTER, &#34;auto&#34;)
+
+    scrollbar_size_vertical = ScalarProperty(
+        units={Unit.CELLS}, percent_unit=Unit.WIDTH, allow_auto=False
+    )
+    scrollbar_size_horizontal = ScalarProperty(
+        units={Unit.CELLS}, percent_unit=Unit.HEIGHT, allow_auto=False
+    )
 
     align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
@@ -692,6 +702,20 @@ class Styles(StylesBase):
             append_declaration(&#34;overflow-y&#34;, self.overflow_y)
         if has_rule(&#34;scrollbar-gutter&#34;):
             append_declaration(&#34;scrollbar-gutter&#34;, self.scrollbar_gutter)
+        if has_rule(&#34;scrollbar-size&#34;):
+            append_declaration(
+                &#34;scrollbar-size&#34;,
+                f&#34;{self.scrollbar_size_horizontal} {self.scrollbar_size_vertical}&#34;,
+            )
+        else:
+            if has_rule(&#34;scrollbar-size-horizontal&#34;):
+                append_declaration(
+                    &#34;scrollbar-size-horizontal&#34;, str(self.scrollbar_size_horizontal)
+                )
+            if has_rule(&#34;scrollbar-size-vertical&#34;):
+                append_declaration(
+                    &#34;scrollbar-size-vertical&#34;, str(self.scrollbar_size_vertical)
+                )
 
         if has_rule(&#34;box-sizing&#34;):
             append_declaration(&#34;box-sizing&#34;, self.box_sizing)
@@ -1120,6 +1144,8 @@ def inline(self) -&gt; Styles:
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_gutter" href="#textual.css.styles.StylesBase.scrollbar_gutter">scrollbar_gutter</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_size_horizontal" href="#textual.css.styles.StylesBase.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_size_vertical" href="#textual.css.styles.StylesBase.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
@@ -1204,6 +1230,9 @@ def inline(self) -&gt; Styles:
     scrollbar_background_active: Color
 
     scrollbar_gutter: ScrollbarGutter
+
+    scrollbar_size_vertical: int
+    scrollbar_size_horizontal: int
 
     align_horizontal: AlignHorizontal
     align_vertical: AlignVertical
@@ -1370,6 +1399,14 @@ def inline(self) -&gt; Styles:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.styles.RulesMap.scrollbar_gutter"><code class="name">var <span class="ident">scrollbar_gutter</span> : ScrollbarGutter</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.scrollbar_size_horizontal"><code class="name">var <span class="ident">scrollbar_size_horizontal</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.scrollbar_size_vertical"><code class="name">var <span class="ident">scrollbar_size_vertical</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1647,6 +1684,20 @@ def inline(self) -&gt; Styles:
             append_declaration(&#34;overflow-y&#34;, self.overflow_y)
         if has_rule(&#34;scrollbar-gutter&#34;):
             append_declaration(&#34;scrollbar-gutter&#34;, self.scrollbar_gutter)
+        if has_rule(&#34;scrollbar-size&#34;):
+            append_declaration(
+                &#34;scrollbar-size&#34;,
+                f&#34;{self.scrollbar_size_horizontal} {self.scrollbar_size_vertical}&#34;,
+            )
+        else:
+            if has_rule(&#34;scrollbar-size-horizontal&#34;):
+                append_declaration(
+                    &#34;scrollbar-size-horizontal&#34;, str(self.scrollbar_size_horizontal)
+                )
+            if has_rule(&#34;scrollbar-size-vertical&#34;):
+                append_declaration(
+                    &#34;scrollbar-size-vertical&#34;, str(self.scrollbar_size_vertical)
+                )
 
         if has_rule(&#34;box-sizing&#34;):
             append_declaration(&#34;box-sizing&#34;, self.box_sizing)
@@ -1800,6 +1851,20 @@ def css_lines(self) -&gt; list[str]:
         append_declaration(&#34;overflow-y&#34;, self.overflow_y)
     if has_rule(&#34;scrollbar-gutter&#34;):
         append_declaration(&#34;scrollbar-gutter&#34;, self.scrollbar_gutter)
+    if has_rule(&#34;scrollbar-size&#34;):
+        append_declaration(
+            &#34;scrollbar-size&#34;,
+            f&#34;{self.scrollbar_size_horizontal} {self.scrollbar_size_vertical}&#34;,
+        )
+    else:
+        if has_rule(&#34;scrollbar-size-horizontal&#34;):
+            append_declaration(
+                &#34;scrollbar-size-horizontal&#34;, str(self.scrollbar_size_horizontal)
+            )
+        if has_rule(&#34;scrollbar-size-vertical&#34;):
+            append_declaration(
+                &#34;scrollbar-size-vertical&#34;, str(self.scrollbar_size_vertical)
+            )
 
     if has_rule(&#34;box-sizing&#34;):
         append_declaration(&#34;box-sizing&#34;, self.box_sizing)
@@ -1997,6 +2062,8 @@ def css_lines(self) -&gt; list[str]:
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_gutter" href="#textual.css.styles.StylesBase.scrollbar_gutter">scrollbar_gutter</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_size_horizontal" href="#textual.css.styles.StylesBase.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_size_vertical" href="#textual.css.styles.StylesBase.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
@@ -2096,6 +2163,13 @@ def css_lines(self) -&gt; list[str]:
     scrollbar_background_active = ColorProperty(&#34;black&#34;)
 
     scrollbar_gutter = StringEnumProperty(VALID_SCROLLBAR_GUTTER, &#34;auto&#34;)
+
+    scrollbar_size_vertical = ScalarProperty(
+        units={Unit.CELLS}, percent_unit=Unit.WIDTH, allow_auto=False
+    )
+    scrollbar_size_horizontal = ScalarProperty(
+        units={Unit.CELLS}, percent_unit=Unit.HEIGHT, allow_auto=False
+    )
 
     align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
@@ -3387,6 +3461,52 @@ value belongs in the set of valid values.</p></div>
     return obj.get_rule(self.name, self._default)</code></pre>
 </details>
 </dd>
+<dt id="textual.css.styles.StylesBase.scrollbar_size_horizontal"><code class="name">var <span class="ident">scrollbar_size_horizontal</span> : Scalar | None</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. "50vh".</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Scalar | None:
+    &#34;&#34;&#34;Get the scalar property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        The Scalar object or ``None`` if it&#39;s not set.
+    &#34;&#34;&#34;
+    value = obj.get_rule(self.name)
+    return value</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.scrollbar_size_vertical"><code class="name">var <span class="ident">scrollbar_size_vertical</span> : Scalar | None</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. "50vh".</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Scalar | None:
+    &#34;&#34;&#34;Get the scalar property
+
+    Args:
+        obj (Styles): The ``Styles`` object
+        objtype (type[Styles]): The ``Styles`` class
+
+    Returns:
+        The Scalar object or ``None`` if it&#39;s not set.
+    &#34;&#34;&#34;
+    value = obj.get_rule(self.name)
+    return value</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.StylesBase.text_style"><code class="name">var <span class="ident">text_style</span> : Style</code></dt>
 <dd>
 <div class="desc"><p>Descriptor for getting and set style flag properties (e.g. <code>bold italic underline</code>).</p></div>
@@ -3976,6 +4096,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_color_active" href="#textual.css.styles.RulesMap.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_color_hover" href="#textual.css.styles.RulesMap.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_gutter" href="#textual.css.styles.RulesMap.scrollbar_gutter">scrollbar_gutter</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.scrollbar_size_horizontal" href="#textual.css.styles.RulesMap.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.scrollbar_size_vertical" href="#textual.css.styles.RulesMap.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.text_style" href="#textual.css.styles.RulesMap.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.tint" href="#textual.css.styles.RulesMap.tint">tint</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.transitions" href="#textual.css.styles.RulesMap.transitions">transitions</a></code></li>
@@ -4057,6 +4179,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_gutter" href="#textual.css.styles.StylesBase.scrollbar_gutter">scrollbar_gutter</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_size_horizontal" href="#textual.css.styles.StylesBase.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_size_vertical" href="#textual.css.styles.StylesBase.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
