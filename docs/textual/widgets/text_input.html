@@ -28,7 +28,6 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-import time
 from typing import Callable
 
 from rich.cells import cell_len
@@ -163,7 +162,7 @@ class TextInput(TextWidgetBase, can_focus=True):
         super().__init__(name=name, id=id, classes=classes)
         self.placeholder = placeholder
         self._editor = TextEditorBackend(initial, 0)
-        self.visible_range: tuple[int, int] | None = None
+        self.visible_range: tuple[int, int] = (0, 0)
         self.autocompleter = autocompleter
         self._suggestion_suffix = &#34;&#34;
 
@@ -249,7 +248,7 @@ class TextInput(TextWidgetBase, can_focus=True):
 
         self.refresh()
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         # First render: Cursor at start of text, visible range goes from cursor to content region width
         if not self.visible_range:
             self.visible_range = (self._editor.cursor_index, self.content_region.width)
@@ -310,18 +309,6 @@ class TextInput(TextWidgetBase, can_focus=True):
             if visible_content_to_cursor_cell_len + key_cell_len &gt;= available_width:
                 self.visible_range = start + key_cell_len, end + key_cell_len
             self._update_suggestion(event)
-        elif (
-            key == &#34;ctrl+x&#34;
-        ):  # TODO: This allows us to query and print the text input state
-            self.log(start=start)
-            self.log(end=end)
-            self.log(visible_content=visible_content)
-            self.log(visible_content_cell_len=visible_content_cell_len)
-            self.log(
-                visible_content_to_cursor_cell_len=visible_content_to_cursor_cell_len
-            )
-            self.log(available_width=available_width)
-            self.log(cursor_index=self._editor.cursor_index)
         elif key == &#34;enter&#34; and self._editor.content:
             self.post_message_no_wait(TextInput.Submitted(self, self._editor.content))
         elif key == &#34;right&#34;:
@@ -441,7 +428,7 @@ class TextAreaChild(TextWidgetBase, can_focus=True):
     CSS = &#34;TextAreaChild { height: auto; background: $primary-darken-1; }&#34;
     STOP_PROPAGATE = {&#34;tab&#34;, &#34;shift+tab&#34;}
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         # We only show the cursor if the widget has focus
         show_cursor = self.has_focus
         display_text = Text(self._editor.content, no_wrap=True)
@@ -585,6 +572,7 @@ class TextAreaChild(TextWidgetBase, can_focus=True):
 <li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
@@ -630,7 +618,7 @@ class TextAreaChild(TextWidgetBase, can_focus=True):
     CSS = &#34;TextAreaChild { height: auto; background: $primary-darken-1; }&#34;
     STOP_PROPAGATE = {&#34;tab&#34;, &#34;shift+tab&#34;}
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         # We only show the cursor if the widget has focus
         show_cursor = self.has_focus
         display_text = Text(self._editor.content, no_wrap=True)
@@ -787,6 +775,7 @@ class TextAreaChild(TextWidgetBase, can_focus=True):
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widgets.text_input.TextWidgetBase.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
@@ -872,7 +861,7 @@ suggestion will be displayed as dim text similar to suggestion text in the zsh o
         super().__init__(name=name, id=id, classes=classes)
         self.placeholder = placeholder
         self._editor = TextEditorBackend(initial, 0)
-        self.visible_range: tuple[int, int] | None = None
+        self.visible_range: tuple[int, int] = (0, 0)
         self.autocompleter = autocompleter
         self._suggestion_suffix = &#34;&#34;
 
@@ -958,7 +947,7 @@ suggestion will be displayed as dim text similar to suggestion text in the zsh o
 
         self.refresh()
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         # First render: Cursor at start of text, visible range goes from cursor to content region width
         if not self.visible_range:
             self.visible_range = (self._editor.cursor_index, self.content_region.width)
@@ -1019,18 +1008,6 @@ suggestion will be displayed as dim text similar to suggestion text in the zsh o
             if visible_content_to_cursor_cell_len + key_cell_len &gt;= available_width:
                 self.visible_range = start + key_cell_len, end + key_cell_len
             self._update_suggestion(event)
-        elif (
-            key == &#34;ctrl+x&#34;
-        ):  # TODO: This allows us to query and print the text input state
-            self.log(start=start)
-            self.log(end=end)
-            self.log(visible_content=visible_content)
-            self.log(visible_content_cell_len=visible_content_cell_len)
-            self.log(
-                visible_content_to_cursor_cell_len=visible_content_to_cursor_cell_len
-            )
-            self.log(available_width=available_width)
-            self.log(cursor_index=self._editor.cursor_index)
         elif key == &#34;enter&#34; and self._editor.content:
             self.post_message_no_wait(TextInput.Submitted(self, self._editor.content))
         elif key == &#34;right&#34;:
@@ -1269,18 +1246,6 @@ difficult.</p></div>
         if visible_content_to_cursor_cell_len + key_cell_len &gt;= available_width:
             self.visible_range = start + key_cell_len, end + key_cell_len
         self._update_suggestion(event)
-    elif (
-        key == &#34;ctrl+x&#34;
-    ):  # TODO: This allows us to query and print the text input state
-        self.log(start=start)
-        self.log(end=end)
-        self.log(visible_content=visible_content)
-        self.log(visible_content_cell_len=visible_content_cell_len)
-        self.log(
-            visible_content_to_cursor_cell_len=visible_content_to_cursor_cell_len
-        )
-        self.log(available_width=available_width)
-        self.log(cursor_index=self._editor.cursor_index)
     elif key == &#34;enter&#34; and self._editor.content:
         self.post_message_no_wait(TextInput.Submitted(self, self._editor.content))
     elif key == &#34;right&#34;:
@@ -1430,6 +1395,7 @@ difficult.</p></div>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widgets.text_input.TextWidgetBase.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widgets.text_input.TextWidgetBase.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
@@ -1707,6 +1673,7 @@ difficult.</p></div>
 <li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>

@@ -42,6 +42,7 @@ from .._animator import Animation, EasingFunction
 from ..color import Color
 from ..geometry import Spacing
 from ._style_properties import (
+    AlignProperty,
     BorderProperty,
     BoxProperty,
     ColorProperty,
@@ -268,9 +269,11 @@ class StylesBase(ABC):
 
     align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
+    align = AlignProperty()
 
     content_align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     content_align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
+    content_align = AlignProperty()
 
     def __eq__(self, styles: object) -&gt; bool:
         &#34;&#34;&#34;Check that Styles contains the same rules.&#34;&#34;&#34;
@@ -569,7 +572,8 @@ class Styles(StylesBase):
     ) -&gt; Animation | None:
         from ..widget import Widget
 
-        assert isinstance(self.node, Widget)
+        # node = self.node
+        # assert isinstance(self.node, Widget)
         if isinstance(value, ScalarOffset):
             return ScalarAnimation(
                 self.node,
@@ -1091,6 +1095,7 @@ def inline(self) -&gt; Styles:
 <ul class="hlist">
 <li><code><b><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></b></code>:
 <ul class="hlist">
+<li><code><a title="textual.css.styles.StylesBase.align" href="#textual.css.styles.StylesBase.align">align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
@@ -1103,6 +1108,7 @@ def inline(self) -&gt; Styles:
 <li><code><a title="textual.css.styles.StylesBase.border_top" href="#textual.css.styles.StylesBase.border_top">border_top</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.box_sizing" href="#textual.css.styles.StylesBase.box_sizing">box_sizing</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_align" href="#textual.css.styles.StylesBase.content_align">content_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_gutter" href="#textual.css.styles.StylesBase.content_gutter">content_gutter</a></code></li>
@@ -1551,7 +1557,8 @@ def inline(self) -&gt; Styles:
     ) -&gt; Animation | None:
         from ..widget import Widget
 
-        assert isinstance(self.node, Widget)
+        # node = self.node
+        # assert isinstance(self.node, Widget)
         if isinstance(value, ScalarOffset):
             return ScalarAnimation(
                 self.node,
@@ -2007,6 +2014,7 @@ def css_lines(self) -&gt; list[str]:
 <ul class="hlist">
 <li><code><b><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></b></code>:
 <ul class="hlist">
+<li><code><a title="textual.css.styles.StylesBase.align" href="#textual.css.styles.StylesBase.align">align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
@@ -2019,6 +2027,7 @@ def css_lines(self) -&gt; list[str]:
 <li><code><a title="textual.css.styles.StylesBase.border_top" href="#textual.css.styles.StylesBase.border_top">border_top</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.box_sizing" href="#textual.css.styles.StylesBase.box_sizing">box_sizing</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_align" href="#textual.css.styles.StylesBase.content_align">content_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_gutter" href="#textual.css.styles.StylesBase.content_gutter">content_gutter</a></code></li>
@@ -2173,9 +2182,11 @@ def css_lines(self) -&gt; list[str]:
 
     align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
+    align = AlignProperty()
 
     content_align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     content_align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
+    content_align = AlignProperty()
 
     def __eq__(self, styles: object) -&gt; bool:
         &#34;&#34;&#34;Check that Styles contains the same rules.&#34;&#34;&#34;
@@ -2458,6 +2469,21 @@ def parse(cls, css: str, path: str, *, node: DOMNode = None) -&gt; Styles:
 </dl>
 <h3>Instance variables</h3>
 <dl>
+<dt id="textual.css.styles.StylesBase.align"><code class="name">var <span class="ident">align</span> : tuple[AlignHorizontal, AlignVertical]</code></dt>
+<dd>
+<div class="desc"><p>Combines the horizontal and vertical alignment properties in to a single property.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, type: type[StylesBase]
+) -&gt; tuple[AlignHorizontal, AlignVertical]:
+    horizontal = getattr(obj, self.horizontal)
+    vertical = getattr(obj, self.vertical)
+    return (horizontal, vertical)</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.StylesBase.align_horizontal"><code class="name">var <span class="ident">align_horizontal</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
@@ -2698,6 +2724,21 @@ value belongs in the set of valid values.</p></div>
         Color: The Color
     &#34;&#34;&#34;
     return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.content_align"><code class="name">var <span class="ident">content_align</span> : tuple[AlignHorizontal, AlignVertical]</code></dt>
+<dd>
+<div class="desc"><p>Combines the horizontal and vertical alignment properties in to a single property.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, type: type[StylesBase]
+) -&gt; tuple[AlignHorizontal, AlignVertical]:
+    horizontal = getattr(obj, self.horizontal)
+    vertical = getattr(obj, self.vertical)
+    return (horizontal, vertical)</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.content_align_horizontal"><code class="name">var <span class="ident">content_align_horizontal</span> : str</code></dt>
@@ -4121,6 +4162,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></code></h4>
 <ul class="">
 <li><code><a title="textual.css.styles.StylesBase.ANIMATABLE" href="#textual.css.styles.StylesBase.ANIMATABLE">ANIMATABLE</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align" href="#textual.css.styles.StylesBase.align">align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
@@ -4134,6 +4176,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.box_sizing" href="#textual.css.styles.StylesBase.box_sizing">box_sizing</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.clear_rule" href="#textual.css.styles.StylesBase.clear_rule">clear_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.content_align" href="#textual.css.styles.StylesBase.content_align">content_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_gutter" href="#textual.css.styles.StylesBase.content_gutter">content_gutter</a></code></li>

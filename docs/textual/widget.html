@@ -60,6 +60,7 @@ from .message import Message
 from . import messages
 from ._layout import Layout
 from .reactive import Reactive, watch
+from .renderables.blank import Blank
 from .renderables.opacity import Opacity
 from .renderables.tint import Tint
 
@@ -223,7 +224,7 @@ class Widget(DOMNode):
             return self._content_width_cache[1]
 
         console = self.app.console
-        renderable = self.render(self.styles.rich_style)
+        renderable = self.render()
         measurement = Measurement.get(
             console,
             console.options.update_width(container.width),
@@ -261,7 +262,7 @@ class Widget(DOMNode):
             if self._content_height_cache[0] == cache_key:
                 return self._content_height_cache[1]
 
-            renderable = self.render(self.styles.rich_style)
+            renderable = self.render()
             options = self.console.options.update_width(width).update(highlight=False)
             segments = self.console.render(renderable, options)
             # Cheaper than counting the lines returned from render_lines!
@@ -712,10 +713,11 @@ class Widget(DOMNode):
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
-        renderable = self.render(self.text_style)
 
         (base_background, base_color), (background, color) = self.colors
         styles = self.styles
+
+        renderable = self.render()
 
         content_align = (styles.content_align_horizontal, styles.content_align_vertical)
         if content_align != (&#34;left&#34;, &#34;top&#34;):
@@ -841,7 +843,6 @@ class Widget(DOMNode):
             self._size = size
             self._virtual_size = virtual_size
             self._container_size = container_size
-
             if self.is_container:
                 self._refresh_scrollbars()
                 width, height = self.container_size
@@ -926,7 +927,7 @@ class Widget(DOMNode):
             self._repaint_required = True
         self.check_idle()
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
 
         Args:
@@ -1021,9 +1022,21 @@ class Widget(DOMNode):
 
     def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
         self.descendant_has_focus = True
+        if &#34;focus-within&#34; in self.pseudo_classes:
+            sender = event.sender
+            for child in self.walk_children(False):
+                child.refresh()
+                if child is sender:
+                    break
 
     def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
         self.descendant_has_focus = False
+        if &#34;focus-within&#34; in self.pseudo_classes:
+            sender = event.sender
+            for child in self.walk_children(False):
+                child.refresh()
+                if child is sender:
+                    break
 
     def on_mouse_scroll_down(self, event) -&gt; None:
         if self.is_container:
@@ -1316,7 +1329,7 @@ def cursor_line(self) -&gt; int | None:
             return self._content_width_cache[1]
 
         console = self.app.console
-        renderable = self.render(self.styles.rich_style)
+        renderable = self.render()
         measurement = Measurement.get(
             console,
             console.options.update_width(container.width),
@@ -1354,7 +1367,7 @@ def cursor_line(self) -&gt; int | None:
             if self._content_height_cache[0] == cache_key:
                 return self._content_height_cache[1]
 
-            renderable = self.render(self.styles.rich_style)
+            renderable = self.render()
             options = self.console.options.update_width(width).update(highlight=False)
             segments = self.console.render(renderable, options)
             # Cheaper than counting the lines returned from render_lines!
@@ -1805,10 +1818,11 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
-        renderable = self.render(self.text_style)
 
         (base_background, base_color), (background, color) = self.colors
         styles = self.styles
+
+        renderable = self.render()
 
         content_align = (styles.content_align_horizontal, styles.content_align_vertical)
         if content_align != (&#34;left&#34;, &#34;top&#34;):
@@ -1934,7 +1948,6 @@ def cursor_line(self) -&gt; int | None:
             self._size = size
             self._virtual_size = virtual_size
             self._container_size = container_size
-
             if self.is_container:
                 self._refresh_scrollbars()
                 width, height = self.container_size
@@ -2019,7 +2032,7 @@ def cursor_line(self) -&gt; int | None:
             self._repaint_required = True
         self.check_idle()
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
 
         Args:
@@ -2114,9 +2127,21 @@ def cursor_line(self) -&gt; int | None:
 
     def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
         self.descendant_has_focus = True
+        if &#34;focus-within&#34; in self.pseudo_classes:
+            sender = event.sender
+            for child in self.walk_children(False):
+                child.refresh()
+                if child is sender:
+                    break
 
     def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
         self.descendant_has_focus = False
+        if &#34;focus-within&#34; in self.pseudo_classes:
+            sender = event.sender
+            for child in self.walk_children(False):
+                child.refresh()
+                if child is sender:
+                    break
 
     def on_mouse_scroll_down(self, event) -&gt; None:
         if self.is_container:
@@ -2906,7 +2931,7 @@ def virtual_size(self) -&gt; Size:
         if self._content_height_cache[0] == cache_key:
             return self._content_height_cache[1]
 
-        renderable = self.render(self.styles.rich_style)
+        renderable = self.render()
         options = self.console.options.update_width(width).update(highlight=False)
         segments = self.console.render(renderable, options)
         # Cheaper than counting the lines returned from render_lines!
@@ -2959,7 +2984,7 @@ def virtual_size(self) -&gt; Size:
         return self._content_width_cache[1]
 
     console = self.app.console
-    renderable = self.render(self.styles.rich_style)
+    renderable = self.render()
     measurement = Measurement.get(
         console,
         console.options.update_width(container.width),
@@ -3298,7 +3323,13 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
-    self.descendant_has_focus = False</code></pre>
+    self.descendant_has_focus = False
+    if &#34;focus-within&#34; in self.pseudo_classes:
+        sender = event.sender
+        for child in self.walk_children(False):
+            child.refresh()
+            if child is sender:
+                break</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_descendant_focus"><code class="name flex">
@@ -3311,7 +3342,13 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
-    self.descendant_has_focus = True</code></pre>
+    self.descendant_has_focus = True
+    if &#34;focus-within&#34; in self.pseudo_classes:
+        sender = event.sender
+        for child in self.walk_children(False):
+            child.refresh()
+            if child is sender:
+                break</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_enter"><code class="name flex">
@@ -3583,7 +3620,7 @@ next idle event. Only one refresh will be done even if this method is called mul
 </details>
 </dd>
 <dt id="textual.widget.Widget.render"><code class="name flex">
-<span>def <span class="ident">render</span></span>(<span>self, style: Style) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
+<span>def <span class="ident">render</span></span>(<span>self) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get renderable for widget.</p>
@@ -3601,7 +3638,7 @@ next idle event. Only one refresh will be done even if this method is called mul
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def render(self, style: Style) -&gt; RenderableType:
+<pre><code class="python">def render(self) -&gt; RenderableType:
     &#34;&#34;&#34;Get renderable for widget.
 
     Args:
@@ -3633,10 +3670,11 @@ next idle event. Only one refresh will be done even if this method is called mul
     Returns:
         RenderableType: A new renderable.
     &#34;&#34;&#34;
-    renderable = self.render(self.text_style)
 
     (base_background, base_color), (background, color) = self.colors
     styles = self.styles
+
+    renderable = self.render()
 
     content_align = (styles.content_align_horizontal, styles.content_align_vertical)
     if content_align != (&#34;left&#34;, &#34;top&#34;):
@@ -4041,7 +4079,6 @@ next idle event. Only one refresh will be done even if this method is called mul
         self._size = size
         self._virtual_size = virtual_size
         self._container_size = container_size
-
         if self.is_container:
             self._refresh_scrollbars()
             width, height = self.container_size
@@ -4265,6 +4302,7 @@ next idle event. Only one refresh will be done even if this method is called mul
 <li><code><a title="textual.dom.DOMNode.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.dom.DOMNode.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
+<li><code><a title="textual.dom.DOMNode.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>

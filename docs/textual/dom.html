@@ -371,6 +371,7 @@ class DOMNode(MessagePump):
         return ()
 
     def reset_styles(self) -&gt; None:
+        &#34;&#34;&#34;Reset styles back to their initial state&#34;&#34;&#34;
         from .widget import Widget
 
         for node in self.walk_children():
@@ -864,6 +865,7 @@ class DOMNode(MessagePump):
         return ()
 
     def reset_styles(self) -&gt; None:
+        &#34;&#34;&#34;Reset styles back to their initial state&#34;&#34;&#34;
         from .widget import Widget
 
         for node in self.walk_children():
@@ -1746,12 +1748,13 @@ def visible(self) -&gt; bool:
 <span>def <span class="ident">reset_styles</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Reset styles back to their initial state</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def reset_styles(self) -&gt; None:
+    &#34;&#34;&#34;Reset styles back to their initial state&#34;&#34;&#34;
     from .widget import Widget
 
     for node in self.walk_children():

@@ -65,8 +65,7 @@ URLS=[
 "textual/layouts/vertical.html",
 "textual/layouts/dock.html",
 "textual/draw.html",
-"textual/design.html",
-"textual/blank.html"
+"textual/design.html"
 ];
 INDEX=[
 {
@@ -504,6 +503,12 @@ INDEX=[
 "ref":"textual.layout.Vertical.focusable_children",
 "url":6,
 "doc":"Get the children which may be focused."
+},
+{
+"ref":"textual.layout.Vertical.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
 },
 {
 "ref":"textual.layout.Vertical.add_child",
@@ -1000,6 +1005,12 @@ INDEX=[
 "doc":"Get the children which may be focused."
 },
 {
+"ref":"textual.layout.Horizontal.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.add_child",
 "url":6,
 "doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
@@ -1254,7 +1265,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.reset_styles",
 "url":6,
-"doc":"",
+"doc":"Reset styles back to their initial state",
 "func":1
 },
 {
@@ -2927,7 +2938,7 @@ INDEX=[
 {
 "ref":"textual.events.Resize",
 "url":18,
-"doc":"Sent when the app or widget has been resized. Args: sender (MessageTarget): Event sender. width (int): New width in terminal cells. height (int): New height in terminal cells."
+"doc":"Sent when the app or widget has been resized. Args: sender (MessageTarget): The sender of the event (the Screen). size (Size): The new size of the Widget. virtual_size (Size): The virtual size (scrollable size) of the Widget. container_size (Size | None, optional): The size of the Widget's container widget. Defaults to None."
 },
 {
 "ref":"textual.events.Resize.can_replace",
@@ -5428,6 +5439,12 @@ INDEX=[
 "doc":"Get the children which may be focused."
 },
 {
+"ref":"textual.widget.Widget.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.add_child",
 "url":6,
 "doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
@@ -6367,6 +6384,12 @@ INDEX=[
 "doc":"Get the children which may be focused."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.add_child",
 "url":6,
 "doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
@@ -6612,11 +6635,6 @@ INDEX=[
 },
 {
 "ref":"textual.app.App.sub_title",
-"url":22,
-"doc":"Reactive descriptor."
-},
-{
-"ref":"textual.app.App.background",
 "url":22,
 "doc":"Reactive descriptor."
 },
@@ -6984,6 +7002,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.app.App.action_focus",
+"url":22,
+"doc":"",
+"func":1
+},
+{
 "ref":"textual.app.App.action_add_class_",
 "url":22,
 "doc":"",
@@ -7088,6 +7112,12 @@ INDEX=[
 "ref":"textual.app.App.get_pseudo_classes",
 "url":6,
 "doc":"Get any pseudo classes applicable to this Node, e.g. hover, focus. Returns: Iterable[str]: Iterable of strings, such as a generator.",
+"func":1
+},
+{
+"ref":"textual.app.App.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
 "func":1
 },
 {
@@ -7621,6 +7651,12 @@ INDEX=[
 "ref":"textual.widgets.Button.focusable_children",
 "url":6,
 "doc":"Get the children which may be focused."
+},
+{
+"ref":"textual.widgets.Button.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
 },
 {
 "ref":"textual.widgets.Button.add_child",
@@ -8158,6 +8194,12 @@ INDEX=[
 "ref":"textual.widgets.DirectoryTree.focusable_children",
 "url":6,
 "doc":"Get the children which may be focused."
+},
+{
+"ref":"textual.widgets.DirectoryTree.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
 },
 {
 "ref":"textual.widgets.DirectoryTree.add_child",
@@ -8737,6 +8779,12 @@ INDEX=[
 "doc":"Get the children which may be focused."
 },
 {
+"ref":"textual.widgets.Footer.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
 "ref":"textual.widgets.Footer.add_child",
 "url":6,
 "doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
@@ -9280,6 +9328,12 @@ INDEX=[
 "doc":"Get the children which may be focused."
 },
 {
+"ref":"textual.widgets.Header.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
 "ref":"textual.widgets.Header.add_child",
 "url":6,
 "doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
@@ -9793,6 +9847,12 @@ INDEX=[
 "doc":"Get the children which may be focused."
 },
 {
+"ref":"textual.widgets.Placeholder.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
 "ref":"textual.widgets.Placeholder.add_child",
 "url":6,
 "doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
@@ -10286,6 +10346,12 @@ INDEX=[
 "ref":"textual.widgets.Static.focusable_children",
 "url":6,
 "doc":"Get the children which may be focused."
+},
+{
+"ref":"textual.widgets.Static.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
 },
 {
 "ref":"textual.widgets.Static.add_child",
@@ -10934,6 +11000,12 @@ INDEX=[
 "doc":"Get the children which may be focused."
 },
 {
+"ref":"textual.widgets.TreeControl.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
 "ref":"textual.widgets.TreeControl.add_child",
 "url":6,
 "doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
@@ -11528,6 +11600,12 @@ INDEX=[
 "doc":"Get the children which may be focused."
 },
 {
+"ref":"textual.widgets.text_input.TextWidgetBase.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
 "ref":"textual.widgets.text_input.TextWidgetBase.add_child",
 "url":6,
 "doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
@@ -12070,6 +12148,12 @@ INDEX=[
 "doc":"Get the children which may be focused."
 },
 {
+"ref":"textual.widgets.text_input.TextInput.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
 "ref":"textual.widgets.text_input.TextInput.add_child",
 "url":6,
 "doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
@@ -12562,6 +12646,12 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextArea.focusable_children",
 "url":6,
 "doc":"Get the children which may be focused."
+},
+{
+"ref":"textual.widgets.text_input.TextArea.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
 },
 {
 "ref":"textual.widgets.text_input.TextArea.add_child",
@@ -13088,6 +13178,12 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextAreaChild.focusable_children",
 "url":6,
 "doc":"Get the children which may be focused."
+},
+{
+"ref":"textual.widgets.text_input.TextAreaChild.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
 },
 {
 "ref":"textual.widgets.text_input.TextAreaChild.add_child",
@@ -13650,6 +13746,12 @@ INDEX=[
 "ref":"textual.widgets.tabs.Tabs.focusable_children",
 "url":6,
 "doc":"Get the children which may be focused."
+},
+{
+"ref":"textual.widgets.tabs.Tabs.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
 },
 {
 "ref":"textual.widgets.tabs.Tabs.add_child",
@@ -14668,6 +14770,11 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.screen.Screen.is_transparent",
+"url":31,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
+},
+{
 "ref":"textual.screen.Screen.watch_dark",
 "url":31,
 "doc":"",
@@ -14938,11 +15045,6 @@ INDEX=[
 "doc":"The region occupied by this widget, relative to the Screen."
 },
 {
-"ref":"textual.screen.Screen.is_transparent",
-"url":5,
-"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
-},
-{
 "ref":"textual.screen.Screen.console",
 "url":5,
 "doc":"Get the current console."
@@ -15085,6 +15187,12 @@ INDEX=[
 "ref":"textual.screen.Screen.focusable_children",
 "url":6,
 "doc":"Get the children which may be focused."
+},
+{
+"ref":"textual.screen.Screen.reset_styles",
+"url":6,
+"doc":"Reset styles back to their initial state",
+"func":1
 },
 {
 "ref":"textual.screen.Screen.add_child",
@@ -15773,6 +15881,11 @@ INDEX=[
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
+"ref":"textual.css.styles.StylesBase.align",
+"url":34,
+"doc":"Combines the horizontal and vertical alignment properties in to a single property."
+},
+{
 "ref":"textual.css.styles.StylesBase.content_align_horizontal",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
@@ -15781,6 +15894,11 @@ INDEX=[
 "ref":"textual.css.styles.StylesBase.content_align_vertical",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.StylesBase.content_align",
+"url":34,
+"doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
 "ref":"textual.css.styles.StylesBase.gutter",
@@ -16204,6 +16322,11 @@ INDEX=[
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
+"ref":"textual.css.styles.Styles.align",
+"url":34,
+"doc":"Combines the horizontal and vertical alignment properties in to a single property."
+},
+{
 "ref":"textual.css.styles.Styles.content_align_horizontal",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
@@ -16212,6 +16335,11 @@ INDEX=[
 "ref":"textual.css.styles.Styles.content_align_vertical",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.Styles.content_align",
+"url":34,
+"doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
 "ref":"textual.css.styles.Styles.gutter",
@@ -16558,6 +16686,11 @@ INDEX=[
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
+"ref":"textual.css.styles.RenderStyles.align",
+"url":34,
+"doc":"Combines the horizontal and vertical alignment properties in to a single property."
+},
+{
 "ref":"textual.css.styles.RenderStyles.content_align_horizontal",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
@@ -16566,6 +16699,11 @@ INDEX=[
 "ref":"textual.css.styles.RenderStyles.content_align_vertical",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
+"ref":"textual.css.styles.RenderStyles.content_align",
+"url":34,
+"doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
 "ref":"textual.css.styles.RenderStyles.gutter",
@@ -18339,15 +18477,5 @@ INDEX=[
 "url":66,
 "doc":"Generate a mapping of color name on to a CSS color. Args: dark (bool, optional): Enable dark mode. Defaults to False. luminosity_spread (float, optional): Amount of luminosity to subtract and add to generate shades. Defaults to 0.2. text_alpha (float, optional): Alpha value for text. Defaults to 0.9. Returns: dict[str, str]: A mapping of color name on to a CSS-style encoded color",
 "func":1
-},
-{
-"ref":"textual.blank",
-"url":67,
-"doc":""
-},
-{
-"ref":"textual.blank.Blank",
-"url":67,
-"doc":"Render an empty rectangle. Args: style (StyleType): Style to apply to the box. width (int, optional): Width of the box in number of cells. Will expand to fit parent if  None . height (int, optional): Height of the box in number of cells. Will expand to fit parent if  None ."
 }
 ]

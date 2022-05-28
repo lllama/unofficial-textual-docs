@@ -157,7 +157,7 @@ __all__ = [
             return Text.from_markup(label)
         return label
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         label = self.label.copy()
         label.stylize(style)
         return label
@@ -323,6 +323,7 @@ __all__ = [
 <li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
@@ -720,6 +721,7 @@ def render_tree_label(
 <li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
@@ -861,7 +863,7 @@ def render_tree_label(
             text.append_text(key_text)
         return text
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         if self._key_text is None:
             self._key_text = self.make_key_text()
         return self._key_text</code></pre>
@@ -1041,6 +1043,7 @@ def render_tree_label(
 <li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
@@ -1114,7 +1117,7 @@ def render_tree_label(
     def get_clock(self) -&gt; str:
         return datetime.now().time().strftime(&#34;%X&#34;)
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         header_table = Table.grid(padding=(0, 1), expand=True)
         header_table.style = self.style
         header_table.add_column(justify=&#34;left&#34;, ratio=0, width=8)
@@ -1358,6 +1361,7 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
@@ -1421,7 +1425,7 @@ def full_title(self) -&gt; str:
         yield &#34;has_focus&#34;, self.has_focus, False
         yield &#34;mouse_over&#34;, self.mouse_over, False
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         # Apply colours only inside render_styled
         # Pass the full RICH style object into `render` - not the `Styles`
         return Panel(
@@ -1583,6 +1587,7 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
@@ -1614,7 +1619,7 @@ def full_title(self) -&gt; str:
 </dd>
 <dt id="textual.widgets.Static"><code class="flex name class">
 <span>class <span class="ident">Static</span></span>
-<span>(</span><span>renderable: RenderableType, *, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
+<span>(</span><span>renderable: RenderableType = '', *, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
@@ -1626,7 +1631,7 @@ def full_title(self) -&gt; str:
 <pre><code class="python">class Static(Widget):
     def __init__(
         self,
-        renderable: RenderableType,
+        renderable: RenderableType = &#34;&#34;,
         *,
         name: str | None = None,
         id: str | None = None,
@@ -1635,7 +1640,7 @@ def full_title(self) -&gt; str:
         super().__init__(name=name, id=id, classes=classes)
         self.renderable = renderable
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         return self.renderable
 
     def update(self, renderable: RenderableType) -&gt; None:
@@ -1741,6 +1746,7 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
@@ -1938,7 +1944,7 @@ return default</p></div>
                     push(iter(node.children))
         return None
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         return self._tree
 
     def render_node(self, node: TreeNode[NodeDataType]) -&gt; RenderableType:
@@ -2373,6 +2379,7 @@ return default</p></div>
 <li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>

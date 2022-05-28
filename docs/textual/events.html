@@ -126,10 +126,12 @@ class Resize(Event, verbosity=2, bubble=False):
         container_size: Size | None = None,
     ) -&gt; None:
         &#34;&#34;&#34;
+
         Args:
-            sender (MessageTarget): Event sender.
-            width (int): New width in terminal cells.
-            height (int): New height in terminal cells.
+            sender (MessageTarget): The sender of the event (the Screen).
+            size (Size): The new size of the Widget.
+            virtual_size (Size): The virtual size (scrollable size) of the Widget.
+            container_size (Size | None, optional): The size of the Widget&#39;s container widget. Defaults to None.
         &#34;&#34;&#34;
         self.size = size
         self.virtual_size = virtual_size
@@ -2465,12 +2467,13 @@ def style(self) -&gt; Style:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>Event sender.</dd>
-<dt><strong><code>width</code></strong> :&ensp;<code>int</code></dt>
-<dd>New width in terminal cells.</dd>
-<dt><strong><code>height</code></strong> :&ensp;<code>int</code></dt>
-<dd>New height in terminal cells.</dd>
-</dl></div>
+<dd>The sender of the event (the Screen).</dd>
+<dt><strong><code>size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>The new size of the Widget.</dd>
+<dt><strong><code>virtual_size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>The virtual size (scrollable size) of the Widget.</dd>
+</dl>
+<p>container_size (Size | None, optional): The size of the Widget's container widget. Defaults to None.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2489,10 +2492,12 @@ def style(self) -&gt; Style:
         container_size: Size | None = None,
     ) -&gt; None:
         &#34;&#34;&#34;
+
         Args:
-            sender (MessageTarget): Event sender.
-            width (int): New width in terminal cells.
-            height (int): New height in terminal cells.
+            sender (MessageTarget): The sender of the event (the Screen).
+            size (Size): The new size of the Widget.
+            virtual_size (Size): The virtual size (scrollable size) of the Widget.
+            container_size (Size | None, optional): The size of the Widget&#39;s container widget. Defaults to None.
         &#34;&#34;&#34;
         self.size = size
         self.virtual_size = virtual_size

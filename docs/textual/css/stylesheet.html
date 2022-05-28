@@ -43,6 +43,7 @@ from rich.style import Style
 from rich.syntax import Syntax
 from rich.text import Text
 
+from textual.widget import Widget
 from .errors import StylesheetError
 from .match import _check_selectors
 from .model import RuleSet
@@ -332,6 +333,8 @@ class Stylesheet:
             },
         )
         self.replace_rules(node, node_rules, animate=animate)
+        if isinstance(node, Widget):
+            node._refresh_scrollbars()
 
     @classmethod
     def replace_rules(
@@ -711,6 +714,8 @@ if __name__ == &#34;__main__&#34;:
             },
         )
         self.replace_rules(node, node_rules, animate=animate)
+        if isinstance(node, Widget):
+            node._refresh_scrollbars()
 
     @classmethod
     def replace_rules(
@@ -1018,7 +1023,9 @@ rule will be applied.</dd>
             for name, specificity_rules in rule_attributes.items()
         },
     )
-    self.replace_rules(node, node_rules, animate=animate)</code></pre>
+    self.replace_rules(node, node_rules, animate=animate)
+    if isinstance(node, Widget):
+        node._refresh_scrollbars()</code></pre>
 </details>
 </dd>
 <dt id="textual.css.stylesheet.Stylesheet.copy"><code class="name flex">

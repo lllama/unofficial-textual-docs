@@ -50,7 +50,7 @@ from typing import (
     TYPE_CHECKING,
 )
 
-from ._ansi_sequences import TERMINAL_MODES_ANSI_SEQUENCES
+from ._ansi_sequences import SYNC_START, SYNC_END
 
 if sys.version_info &gt;= (3, 8):
     from typing import Literal
@@ -62,8 +62,7 @@ import rich.repr
 from rich.console import Console, RenderableType
 from rich.measure import Measurement
 from rich.protocol import is_renderable
-from rich.segment import Segments
-from rich.style import Style
+from rich.segment import Segments, SegmentLines
 from rich.traceback import Traceback
 
 from . import actions
@@ -76,6 +75,7 @@ from ._context import active_app
 from ._event_broker import extract_handler_actions, NoHandler
 from .binding import Bindings, NoBinding
 from .css.stylesheet import Stylesheet
+from .css.query import NoMatchingNodesError
 from .design import ColorSystem
 from .devtools.client import DevtoolsClient, DevtoolsConnectionError, DevtoolsLog
 from .devtools.redirect_output import StdoutRedirector
@@ -87,6 +87,7 @@ from .geometry import Offset, Region, Size
 from .layouts.dock import Dock
 from .message_pump import MessagePump
 from .reactive import Reactive
+from .renderables.blank import Blank
 from .screen import Screen
 from .widget import Widget
 
@@ -135,7 +136,6 @@ class App(Generic[ReturnType], DOMNode):
     &#34;&#34;&#34;The base class for Textual Applications&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-
     &#34;&#34;&#34;
 
     CSS_PATH: str | None = None
@@ -237,7 +237,6 @@ class App(Generic[ReturnType], DOMNode):
 
     title: Reactive[str] = Reactive(&#34;Textual&#34;)
     sub_title: Reactive[str] = Reactive(&#34;&#34;)
-    background: Reactive[str] = Reactive(&#34;black&#34;)
     dark = Reactive(False)
 
     @property
@@ -470,7 +469,8 @@ class App(Generic[ReturnType], DOMNode):
             color_system=&#34;truecolor&#34;,
             record=True,
         )
-        console.print(self.screen._compositor.render(full=True))
+        screen_render = self.screen._compositor.render(full=True)
+        console.print(screen_render)
         return console.export_svg(title=self.title)
 
     def save_screenshot(self, path: str | None = None) -&gt; str:
@@ -552,8 +552,8 @@ class App(Generic[ReturnType], DOMNode):
                 self.stylesheet.update(self)
                 self.screen.refresh(layout=True)
 
-    def render(self, styles: Style) -&gt; RenderableType:
-        return &#34;&#34;
+    def render(self) -&gt; RenderableType:
+        return Blank()
 
     def query(self, selector: str | None = None) -&gt; DOMQuery:
         &#34;&#34;&#34;Get a DOM query in the current screen.
@@ -764,21 +764,21 @@ class App(Generic[ReturnType], DOMNode):
 
             driver = self._driver = self.driver_class(self.console, self)
             driver.start_application_mode()
-            try:
-                mount_event = events.Mount(sender=self)
-                await self.dispatch_message(mount_event)
+            with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
+                try:
+                    mount_event = events.Mount(sender=self)
+                    await self.dispatch_message(mount_event)
 
-                self.title = self._title
-                self.refresh()
-                await self.animator.start()
-
-                with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
+                    self.title = self._title
+                    self.stylesheet.update(self)
+                    self.refresh()
+                    await self.animator.start()
                     await self._ready()
                     await super().process_messages()
                     await self.animator.stop()
                     await self.close_all()
-            finally:
-                driver.stop_application_mode()
+                finally:
+                    driver.stop_application_mode()
         except Exception as error:
             self.on_exception(error)
         finally:
@@ -898,7 +898,11 @@ class App(Generic[ReturnType], DOMNode):
         await self.close_messages()
 
     def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
-        self._display(self.screen._compositor)
+        self.screen.refresh(repaint=repaint, layout=layout)
+
+    def _paint(self):
+        &#34;&#34;&#34;Perform a &#34;paint&#34; (draw the screen).&#34;&#34;&#34;
+        self._display(self.screen._compositor.render())
 
     def refresh_css(self, animate: bool = True) -&gt; None:
         &#34;&#34;&#34;Refresh CSS.
@@ -922,10 +926,12 @@ class App(Generic[ReturnType], DOMNode):
             console = self.console
             self._begin_update()
             try:
-                console.print(renderable)
-            except Exception as error:
-                self.on_exception(error)
-            self._end_update()
+                try:
+                    console.print(renderable)
+                except Exception as error:
+                    self.on_exception(error)
+            finally:
+                self._end_update()
             console.file.flush()
 
     def measure(self, renderable: RenderableType, max_width=100_000) -&gt; int:
@@ -1024,7 +1030,6 @@ class App(Generic[ReturnType], DOMNode):
             action_target = default_namespace or self
             action_name = target
 
-        log(&#34;&lt;action&gt;&#34;, action)
         await self.dispatch_action(action_target, action_name, params)
 
     async def dispatch_action(
@@ -1039,6 +1044,8 @@ class App(Generic[ReturnType], DOMNode):
         _rich_traceback_guard = True
         method_name = f&#34;action_{action_name}&#34;
         method = getattr(namespace, method_name, None)
+        if method is None:
+            log(f&#34;&lt;action&gt; {action_name!r} has no target&#34;)
         if callable(method):
             await invoke(method, *params)
 
@@ -1076,11 +1083,11 @@ class App(Generic[ReturnType], DOMNode):
 
     async def handle_update(self, message: messages.Update) -&gt; None:
         message.stop()
-        self.app.refresh()
+        self._paint()
 
     async def handle_layout(self, message: messages.Layout) -&gt; None:
         message.stop()
-        self.app.refresh()
+        self._paint()
 
     async def on_key(self, event: events.Key) -&gt; None:
         if event.key == &#34;tab&#34;:
@@ -1095,6 +1102,9 @@ class App(Generic[ReturnType], DOMNode):
         await self.close_messages()
 
     async def on_resize(self, event: events.Resize) -&gt; None:
+        event.stop()
+        self.screen._screen_resized(event.size)
+
         await self.screen.post_message(event)
 
     async def action_press(self, key: str) -&gt; None:
@@ -1108,6 +1118,15 @@ class App(Generic[ReturnType], DOMNode):
 
     async def action_bell(self) -&gt; None:
         self.bell()
+
+    async def action_focus(self, widget_id: str) -&gt; None:
+        try:
+            node = self.query(f&#34;#{widget_id}&#34;).first()
+        except NoMatchingNodesError:
+            pass
+        else:
+            if isinstance(node, Widget):
+                self.set_focus(node)
 
     async def action_add_class_(self, selector: str, class_name: str) -&gt; None:
         self.screen.query(selector).add_class(class_name)
@@ -1124,16 +1143,16 @@ class App(Generic[ReturnType], DOMNode):
     def handle_terminal_supports_synchronized_output(
         self, message: messages.TerminalSupportsSynchronizedOutput
     ) -&gt; None:
-        log(&#34;SynchronizedOutput mode is supported by this terminal&#34;)
+        log(&#34;[b green]SynchronizedOutput mode is supported&#34;)
         self._sync_available = True
 
     def _begin_update(self) -&gt; None:
         if self._sync_available:
-            self.console.file.write(TERMINAL_MODES_ANSI_SEQUENCES[&#34;sync_start&#34;])
+            self.console.file.write(SYNC_START)
 
     def _end_update(self) -&gt; None:
         if self._sync_available:
-            self.console.file.write(TERMINAL_MODES_ANSI_SEQUENCES[&#34;sync_stop&#34;])
+            self.console.file.write(SYNC_END)
 
 
 _uvloop_init_done: bool = False
@@ -1214,7 +1233,6 @@ def _init_uvloop() -&gt; None:
     &#34;&#34;&#34;The base class for Textual Applications&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-
     &#34;&#34;&#34;
 
     CSS_PATH: str | None = None
@@ -1316,7 +1334,6 @@ def _init_uvloop() -&gt; None:
 
     title: Reactive[str] = Reactive(&#34;Textual&#34;)
     sub_title: Reactive[str] = Reactive(&#34;&#34;)
-    background: Reactive[str] = Reactive(&#34;black&#34;)
     dark = Reactive(False)
 
     @property
@@ -1549,7 +1566,8 @@ def _init_uvloop() -&gt; None:
             color_system=&#34;truecolor&#34;,
             record=True,
         )
-        console.print(self.screen._compositor.render(full=True))
+        screen_render = self.screen._compositor.render(full=True)
+        console.print(screen_render)
         return console.export_svg(title=self.title)
 
     def save_screenshot(self, path: str | None = None) -&gt; str:
@@ -1631,8 +1649,8 @@ def _init_uvloop() -&gt; None:
                 self.stylesheet.update(self)
                 self.screen.refresh(layout=True)
 
-    def render(self, styles: Style) -&gt; RenderableType:
-        return &#34;&#34;
+    def render(self) -&gt; RenderableType:
+        return Blank()
 
     def query(self, selector: str | None = None) -&gt; DOMQuery:
         &#34;&#34;&#34;Get a DOM query in the current screen.
@@ -1843,21 +1861,21 @@ def _init_uvloop() -&gt; None:
 
             driver = self._driver = self.driver_class(self.console, self)
             driver.start_application_mode()
-            try:
-                mount_event = events.Mount(sender=self)
-                await self.dispatch_message(mount_event)
+            with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
+                try:
+                    mount_event = events.Mount(sender=self)
+                    await self.dispatch_message(mount_event)
 
-                self.title = self._title
-                self.refresh()
-                await self.animator.start()
-
-                with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
+                    self.title = self._title
+                    self.stylesheet.update(self)
+                    self.refresh()
+                    await self.animator.start()
                     await self._ready()
                     await super().process_messages()
                     await self.animator.stop()
                     await self.close_all()
-            finally:
-                driver.stop_application_mode()
+                finally:
+                    driver.stop_application_mode()
         except Exception as error:
             self.on_exception(error)
         finally:
@@ -1977,7 +1995,11 @@ def _init_uvloop() -&gt; None:
         await self.close_messages()
 
     def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
-        self._display(self.screen._compositor)
+        self.screen.refresh(repaint=repaint, layout=layout)
+
+    def _paint(self):
+        &#34;&#34;&#34;Perform a &#34;paint&#34; (draw the screen).&#34;&#34;&#34;
+        self._display(self.screen._compositor.render())
 
     def refresh_css(self, animate: bool = True) -&gt; None:
         &#34;&#34;&#34;Refresh CSS.
@@ -2001,10 +2023,12 @@ def _init_uvloop() -&gt; None:
             console = self.console
             self._begin_update()
             try:
-                console.print(renderable)
-            except Exception as error:
-                self.on_exception(error)
-            self._end_update()
+                try:
+                    console.print(renderable)
+                except Exception as error:
+                    self.on_exception(error)
+            finally:
+                self._end_update()
             console.file.flush()
 
     def measure(self, renderable: RenderableType, max_width=100_000) -&gt; int:
@@ -2103,7 +2127,6 @@ def _init_uvloop() -&gt; None:
             action_target = default_namespace or self
             action_name = target
 
-        log(&#34;&lt;action&gt;&#34;, action)
         await self.dispatch_action(action_target, action_name, params)
 
     async def dispatch_action(
@@ -2118,6 +2141,8 @@ def _init_uvloop() -&gt; None:
         _rich_traceback_guard = True
         method_name = f&#34;action_{action_name}&#34;
         method = getattr(namespace, method_name, None)
+        if method is None:
+            log(f&#34;&lt;action&gt; {action_name!r} has no target&#34;)
         if callable(method):
             await invoke(method, *params)
 
@@ -2155,11 +2180,11 @@ def _init_uvloop() -&gt; None:
 
     async def handle_update(self, message: messages.Update) -&gt; None:
         message.stop()
-        self.app.refresh()
+        self._paint()
 
     async def handle_layout(self, message: messages.Layout) -&gt; None:
         message.stop()
-        self.app.refresh()
+        self._paint()
 
     async def on_key(self, event: events.Key) -&gt; None:
         if event.key == &#34;tab&#34;:
@@ -2174,6 +2199,9 @@ def _init_uvloop() -&gt; None:
         await self.close_messages()
 
     async def on_resize(self, event: events.Resize) -&gt; None:
+        event.stop()
+        self.screen._screen_resized(event.size)
+
         await self.screen.post_message(event)
 
     async def action_press(self, key: str) -&gt; None:
@@ -2187,6 +2215,15 @@ def _init_uvloop() -&gt; None:
 
     async def action_bell(self) -&gt; None:
         self.bell()
+
+    async def action_focus(self, widget_id: str) -&gt; None:
+        try:
+            node = self.query(f&#34;#{widget_id}&#34;).first()
+        except NoMatchingNodesError:
+            pass
+        else:
+            if isinstance(node, Widget):
+                self.set_focus(node)
 
     async def action_add_class_(self, selector: str, class_name: str) -&gt; None:
         self.screen.query(selector).add_class(class_name)
@@ -2203,16 +2240,16 @@ def _init_uvloop() -&gt; None:
     def handle_terminal_supports_synchronized_output(
         self, message: messages.TerminalSupportsSynchronizedOutput
     ) -&gt; None:
-        log(&#34;SynchronizedOutput mode is supported by this terminal&#34;)
+        log(&#34;[b green]SynchronizedOutput mode is supported&#34;)
         self._sync_available = True
 
     def _begin_update(self) -&gt; None:
         if self._sync_available:
-            self.console.file.write(TERMINAL_MODES_ANSI_SEQUENCES[&#34;sync_start&#34;])
+            self.console.file.write(SYNC_START)
 
     def _end_update(self) -&gt; None:
         if self._sync_available:
-            self.console.file.write(TERMINAL_MODES_ANSI_SEQUENCES[&#34;sync_stop&#34;])</code></pre>
+            self.console.file.write(SYNC_END)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2243,17 +2280,6 @@ def _init_uvloop() -&gt; None:
 <pre><code class="python">@property
 def animator(self) -&gt; Animator:
     return self._animator</code></pre>
-</details>
-</dd>
-<dt id="textual.app.App.background"><code class="name">var <span class="ident">background</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.dark"><code class="name">var <span class="ident">dark</span> : ReactiveType</code></dt>
@@ -2409,7 +2435,6 @@ def size(self) -&gt; Size:
         action_target = default_namespace or self
         action_name = target
 
-    log(&#34;&lt;action&gt;&#34;, action)
     await self.dispatch_action(action_target, action_name, params)</code></pre>
 </details>
 </dd>
@@ -2450,6 +2475,25 @@ def size(self) -&gt; Size:
 </summary>
 <pre><code class="python">async def action_bell(self) -&gt; None:
     self.bell()</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.action_focus"><code class="name flex">
+<span>async def <span class="ident">action_focus</span></span>(<span>self, widget_id: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def action_focus(self, widget_id: str) -&gt; None:
+    try:
+        node = self.query(f&#34;#{widget_id}&#34;).first()
+    except NoMatchingNodesError:
+        pass
+    else:
+        if isinstance(node, Widget):
+            self.set_focus(node)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.action_press"><code class="name flex">
@@ -2710,6 +2754,8 @@ def size(self) -&gt; Size:
     _rich_traceback_guard = True
     method_name = f&#34;action_{action_name}&#34;
     method = getattr(namespace, method_name, None)
+    if method is None:
+        log(f&#34;&lt;action&gt; {action_name!r} has no target&#34;)
     if callable(method):
         await invoke(method, *params)</code></pre>
 </details>
@@ -2763,7 +2809,8 @@ generate a path automatically. Defaults to None.</p></div>
         color_system=&#34;truecolor&#34;,
         record=True,
     )
-    console.print(self.screen._compositor.render(full=True))
+    screen_render = self.screen._compositor.render(full=True)
+    console.print(screen_render)
     return console.export_svg(title=self.title)</code></pre>
 </details>
 </dd>
@@ -2975,7 +3022,7 @@ with the given ID.</p>
 </summary>
 <pre><code class="python">async def handle_layout(self, message: messages.Layout) -&gt; None:
     message.stop()
-    self.app.refresh()</code></pre>
+    self._paint()</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.handle_styles_updated"><code class="name flex">
@@ -3003,7 +3050,7 @@ with the given ID.</p>
 <pre><code class="python">def handle_terminal_supports_synchronized_output(
     self, message: messages.TerminalSupportsSynchronizedOutput
 ) -&gt; None:
-    log(&#34;SynchronizedOutput mode is supported by this terminal&#34;)
+    log(&#34;[b green]SynchronizedOutput mode is supported&#34;)
     self._sync_available = True</code></pre>
 </details>
 </dd>
@@ -3018,7 +3065,7 @@ with the given ID.</p>
 </summary>
 <pre><code class="python">async def handle_update(self, message: messages.Update) -&gt; None:
     message.stop()
-    self.app.refresh()</code></pre>
+    self._paint()</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.is_mounted"><code class="name flex">
@@ -3273,6 +3320,9 @@ the log message sent to the devtools server.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">async def on_resize(self, event: events.Resize) -&gt; None:
+    event.stop()
+    self.screen._screen_resized(event.size)
+
     await self.screen.post_message(event)</code></pre>
 </details>
 </dd>
@@ -3408,21 +3458,21 @@ the log message sent to the devtools server.</p></div>
 
         driver = self._driver = self.driver_class(self.console, self)
         driver.start_application_mode()
-        try:
-            mount_event = events.Mount(sender=self)
-            await self.dispatch_message(mount_event)
+        with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
+            try:
+                mount_event = events.Mount(sender=self)
+                await self.dispatch_message(mount_event)
 
-            self.title = self._title
-            self.refresh()
-            await self.animator.start()
-
-            with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
+                self.title = self._title
+                self.stylesheet.update(self)
+                self.refresh()
+                await self.animator.start()
                 await self._ready()
                 await super().process_messages()
                 await self.animator.stop()
                 await self.close_all()
-        finally:
-            driver.stop_application_mode()
+            finally:
+                driver.stop_application_mode()
     except Exception as error:
         self.on_exception(error)
     finally:
@@ -3514,7 +3564,7 @@ one internally. Defaults to None.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
-    self._display(self.screen._compositor)</code></pre>
+    self.screen.refresh(repaint=repaint, layout=layout)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.refresh_css"><code class="name flex">
@@ -3601,7 +3651,7 @@ one internally. Defaults to None.</p>
 </details>
 </dd>
 <dt id="textual.app.App.render"><code class="name flex">
-<span>def <span class="ident">render</span></span>(<span>self, styles: Style) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
+<span>def <span class="ident">render</span></span>(<span>self) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3609,8 +3659,8 @@ one internally. Defaults to None.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def render(self, styles: Style) -&gt; RenderableType:
-    return &#34;&#34;</code></pre>
+<pre><code class="python">def render(self) -&gt; RenderableType:
+    return Blank()</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.run"><code class="name flex">
@@ -3858,6 +3908,7 @@ a filename automatically. Defaults to None.</p>
 <li><code><a title="textual.dom.DOMNode.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
+<li><code><a title="textual.dom.DOMNode.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
@@ -3961,13 +4012,13 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.app.App.action_add_class_" href="#textual.app.App.action_add_class_">action_add_class_</a></code></li>
 <li><code><a title="textual.app.App.action_bang" href="#textual.app.App.action_bang">action_bang</a></code></li>
 <li><code><a title="textual.app.App.action_bell" href="#textual.app.App.action_bell">action_bell</a></code></li>
+<li><code><a title="textual.app.App.action_focus" href="#textual.app.App.action_focus">action_focus</a></code></li>
 <li><code><a title="textual.app.App.action_press" href="#textual.app.App.action_press">action_press</a></code></li>
 <li><code><a title="textual.app.App.action_quit" href="#textual.app.App.action_quit">action_quit</a></code></li>
 <li><code><a title="textual.app.App.action_remove_class_" href="#textual.app.App.action_remove_class_">action_remove_class_</a></code></li>
 <li><code><a title="textual.app.App.action_screenshot" href="#textual.app.App.action_screenshot">action_screenshot</a></code></li>
 <li><code><a title="textual.app.App.action_toggle_class" href="#textual.app.App.action_toggle_class">action_toggle_class</a></code></li>
 <li><code><a title="textual.app.App.animator" href="#textual.app.App.animator">animator</a></code></li>
-<li><code><a title="textual.app.App.background" href="#textual.app.App.background">background</a></code></li>
 <li><code><a title="textual.app.App.bell" href="#textual.app.App.bell">bell</a></code></li>
 <li><code><a title="textual.app.App.bind" href="#textual.app.App.bind">bind</a></code></li>
 <li><code><a title="textual.app.App.broker_event" href="#textual.app.App.broker_event">broker_event</a></code></li>

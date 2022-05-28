@@ -358,7 +358,7 @@ class Tabs(Widget):
         &#34;&#34;&#34;
         return next((i for i, tab in enumerate(self.tabs) if tab.name == tab_name), 0)
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         return TabsRenderable(
             self.tabs,
             tab_padding=self.tab_padding,
@@ -628,7 +628,7 @@ that character.</dd>
         &#34;&#34;&#34;
         return next((i for i, tab in enumerate(self.tabs) if tab.name == tab_name), 0)
 
-    def render(self, style: Style) -&gt; RenderableType:
+    def render(self) -&gt; RenderableType:
         return TabsRenderable(
             self.tabs,
             tab_padding=self.tab_padding,
@@ -935,6 +935,7 @@ to cycle through tabs with labels beginning with that character.</p>
 <li><code><a title="textual.widget.Widget.remove_class" href="../dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="../widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="../widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_styles" href="../dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="../dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_relative" href="../widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="../widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
