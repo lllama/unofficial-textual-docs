@@ -28,6 +28,7 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
+from fractions import Fraction
 from typing import (
     Any,
     Awaitable,
@@ -183,7 +184,9 @@ class Widget(DOMNode):
             self.CSS, f&#34;{__file__}:&lt;{self.__class__.__name__}&gt;&#34;
         )
 
-    def get_box_model(self, container: Size, viewport: Size) -&gt; BoxModel:
+    def get_box_model(
+        self, container: Size, viewport: Size, fraction_unit: Fraction
+    ) -&gt; BoxModel:
         &#34;&#34;&#34;Process the box model for this widget.
 
         Args:
@@ -197,6 +200,7 @@ class Widget(DOMNode):
             self.styles,
             container,
             viewport,
+            fraction_unit,
             self.get_content_width,
             self.get_content_height,
         )
@@ -1288,7 +1292,9 @@ def cursor_line(self) -&gt; int | None:
             self.CSS, f&#34;{__file__}:&lt;{self.__class__.__name__}&gt;&#34;
         )
 
-    def get_box_model(self, container: Size, viewport: Size) -&gt; BoxModel:
+    def get_box_model(
+        self, container: Size, viewport: Size, fraction_unit: Fraction
+    ) -&gt; BoxModel:
         &#34;&#34;&#34;Process the box model for this widget.
 
         Args:
@@ -1302,6 +1308,7 @@ def cursor_line(self) -&gt; int | None:
             self.styles,
             container,
             viewport,
+            fraction_unit,
             self.get_content_width,
             self.get_content_height,
         )
@@ -2840,7 +2847,7 @@ def virtual_size(self) -&gt; Size:
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_box_model"><code class="name flex">
-<span>def <span class="ident">get_box_model</span></span>(<span>self, container: Size, viewport: Size) ‑> <a title="textual.box_model.BoxModel" href="box_model.html#textual.box_model.BoxModel">BoxModel</a></span>
+<span>def <span class="ident">get_box_model</span></span>(<span>self, container: Size, viewport: Size, fraction_unit: Fraction) ‑> <a title="textual.box_model.BoxModel" href="box_model.html#textual.box_model.BoxModel">BoxModel</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Process the box model for this widget.</p>
@@ -2860,7 +2867,9 @@ def virtual_size(self) -&gt; Size:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_box_model(self, container: Size, viewport: Size) -&gt; BoxModel:
+<pre><code class="python">def get_box_model(
+    self, container: Size, viewport: Size, fraction_unit: Fraction
+) -&gt; BoxModel:
     &#34;&#34;&#34;Process the box model for this widget.
 
     Args:
@@ -2874,6 +2883,7 @@ def virtual_size(self) -&gt; Size:
         self.styles,
         container,
         viewport,
+        fraction_unit,
         self.get_content_width,
         self.get_content_height,
     )

@@ -224,8 +224,8 @@ class App(Generic[ReturnType], DOMNode):
         self._return_value: ReturnType | None = None
 
         self.css_monitor = (
-            FileMonitor(css_path, self._on_css_change)
-            if ((watch_css or self.debug) and css_path)
+            FileMonitor(self.css_path, self._on_css_change)
+            if ((watch_css or self.debug) and self.css_path)
             else None
         )
 
@@ -755,7 +755,7 @@ class App(Generic[ReturnType], DOMNode):
 
         if self.css_monitor:
             self.set_interval(0.5, self.css_monitor, name=&#34;css monitor&#34;)
-            self.log(&#34;started&#34;, self.css_monitor)
+            self.log(&#34;[b green]STARTED[/]&#34;, self.css_monitor)
 
         self._running = True
         try:
@@ -1321,8 +1321,8 @@ def _init_uvloop() -&gt; None:
         self._return_value: ReturnType | None = None
 
         self.css_monitor = (
-            FileMonitor(css_path, self._on_css_change)
-            if ((watch_css or self.debug) and css_path)
+            FileMonitor(self.css_path, self._on_css_change)
+            if ((watch_css or self.debug) and self.css_path)
             else None
         )
 
@@ -1852,7 +1852,7 @@ def _init_uvloop() -&gt; None:
 
         if self.css_monitor:
             self.set_interval(0.5, self.css_monitor, name=&#34;css monitor&#34;)
-            self.log(&#34;started&#34;, self.css_monitor)
+            self.log(&#34;[b green]STARTED[/]&#34;, self.css_monitor)
 
         self._running = True
         try:
@@ -3449,7 +3449,7 @@ the log message sent to the devtools server.</p></div>
 
     if self.css_monitor:
         self.set_interval(0.5, self.css_monitor, name=&#34;css monitor&#34;)
-        self.log(&#34;started&#34;, self.css_monitor)
+        self.log(&#34;[b green]STARTED[/]&#34;, self.css_monitor)
 
     self._running = True
     try:

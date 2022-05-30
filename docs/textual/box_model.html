@@ -28,6 +28,7 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
+from fractions import Fraction
 from typing import Callable, NamedTuple
 
 from .css.styles import StylesBase
@@ -37,7 +38,9 @@ from .geometry import Size, Spacing
 class BoxModel(NamedTuple):
     &#34;&#34;&#34;The result of `get_box_model`.&#34;&#34;&#34;
 
-    size: Size  # Content + padding + border
+    # Content + padding + border
+    width: Fraction
+    height: Fraction
     margin: Spacing  # Additional margin
 
 
@@ -45,6 +48,7 @@ def get_box_model(
     styles: StylesBase,
     container: Size,
     viewport: Size,
+    fraction_unit: Fraction,
     get_content_width: Callable[[Size, Size], int],
     get_content_height: Callable[[Size, Size, int], int],
 ) -&gt; BoxModel:
@@ -60,7 +64,9 @@ def get_box_model(
     Returns:
         BoxModel: A tuple with the size of the content area and margin.
     &#34;&#34;&#34;
-    content_width, content_height = container
+    _content_width, _content_height = container
+    content_width = Fraction(_content_width)
+    content_height = Fraction(_content_height)
     is_border_box = styles.box_sizing == &#34;border-box&#34;
     gutter = styles.gutter
     margin = styles.margin
@@ -75,59 +81,70 @@ def get_box_model(
 
     if styles.width is None:
         # No width specified, fill available space
-        content_width = content_container.width - margin.width
+        content_width = Fraction(content_container.width - margin.width)
     elif is_auto_width:
         # When width is auto, we want enough space to always fit the content
-        content_width = get_content_width(
-            content_container - styles.margin.totals, viewport
+        content_width = Fraction(
+            get_content_width(content_container - styles.margin.totals, viewport)
         )
     else:
         # An explicit width
-        content_width = styles.width.resolve_dimension(sizing_container, viewport)
+        content_width = styles.width.resolve_dimension(
+            sizing_container, viewport, fraction_unit
+        )
         if is_border_box:
             content_width -= gutter.width
 
     if styles.min_width is not None:
         # Restrict to minimum width, if set
-        min_width = styles.min_width.resolve_dimension(content_container, viewport)
+        min_width = styles.min_width.resolve_dimension(
+            content_container, viewport, fraction_unit
+        )
         content_width = max(content_width, min_width)
 
     if styles.max_width is not None:
         # Restrict to maximum width, if set
-        max_width = styles.max_width.resolve_dimension(content_container, viewport)
+        max_width = styles.max_width.resolve_dimension(
+            content_container, viewport, fraction_unit
+        )
         content_width = min(content_width, max_width)
 
-    content_width = max(1, content_width)
+    content_width = max(Fraction(1), content_width)
 
     if styles.height is None:
         # No height specified, fill the available space
-        content_height = content_container.height - margin.height
+        content_height = Fraction(content_container.height - margin.height)
     elif is_auto_height:
         # Calculate dimensions based on content
-        content_height = get_content_height(content_container, viewport, content_width)
+        content_height = Fraction(
+            get_content_height(content_container, viewport, int(content_width))
+        )
     else:
         # Explicit height set
-        content_height = styles.height.resolve_dimension(sizing_container, viewport)
+        content_height = styles.height.resolve_dimension(
+            sizing_container, viewport, fraction_unit
+        )
         if is_border_box:
             content_height -= gutter.height
 
     if styles.min_height is not None:
         # Restrict to minimum height, if set
-        min_height = styles.min_height.resolve_dimension(content_container, viewport)
+        min_height = styles.min_height.resolve_dimension(
+            content_container, viewport, fraction_unit
+        )
         content_height = max(content_height, min_height)
 
     if styles.max_height is not None:
         # Restrict maximum height, if set
-        max_height = styles.max_height.resolve_dimension(content_container, viewport)
+        max_height = styles.max_height.resolve_dimension(
+            content_container, viewport, fraction_unit
+        )
         content_height = min(content_height, max_height)
 
-    content_height = max(1, content_height)
-
-    # Get box dimensions by adding gutter
-
-    size = Size(content_width, content_height) + gutter.totals
-
-    model = BoxModel(size, margin)
+    content_height = max(Fraction(1), content_height)
+    model = BoxModel(
+        content_width + gutter.width, content_height + gutter.height, margin
+    )
     return model</code></pre>
 </details>
 </section>
@@ -139,7 +156,7 @@ def get_box_model(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="textual.box_model.get_box_model"><code class="name flex">
-<span>def <span class="ident">get_box_model</span></span>(<span>styles: StylesBase, container: Size, viewport: Size, get_content_width: Callable[[Size, Size], int], get_content_height: Callable[[Size, Size, int], int]) ‑> <a title="textual.box_model.BoxModel" href="#textual.box_model.BoxModel">BoxModel</a></span>
+<span>def <span class="ident">get_box_model</span></span>(<span>styles: StylesBase, container: Size, viewport: Size, fraction_unit: Fraction, get_content_width: Callable[[Size, Size], int], get_content_height: Callable[[Size, Size, int], int]) ‑> <a title="textual.box_model.BoxModel" href="#textual.box_model.BoxModel">BoxModel</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Resolve the box model for this Styles.</p>
@@ -169,6 +186,7 @@ def get_box_model(
     styles: StylesBase,
     container: Size,
     viewport: Size,
+    fraction_unit: Fraction,
     get_content_width: Callable[[Size, Size], int],
     get_content_height: Callable[[Size, Size, int], int],
 ) -&gt; BoxModel:
@@ -184,7 +202,9 @@ def get_box_model(
     Returns:
         BoxModel: A tuple with the size of the content area and margin.
     &#34;&#34;&#34;
-    content_width, content_height = container
+    _content_width, _content_height = container
+    content_width = Fraction(_content_width)
+    content_height = Fraction(_content_height)
     is_border_box = styles.box_sizing == &#34;border-box&#34;
     gutter = styles.gutter
     margin = styles.margin
@@ -199,59 +219,70 @@ def get_box_model(
 
     if styles.width is None:
         # No width specified, fill available space
-        content_width = content_container.width - margin.width
+        content_width = Fraction(content_container.width - margin.width)
     elif is_auto_width:
         # When width is auto, we want enough space to always fit the content
-        content_width = get_content_width(
-            content_container - styles.margin.totals, viewport
+        content_width = Fraction(
+            get_content_width(content_container - styles.margin.totals, viewport)
         )
     else:
         # An explicit width
-        content_width = styles.width.resolve_dimension(sizing_container, viewport)
+        content_width = styles.width.resolve_dimension(
+            sizing_container, viewport, fraction_unit
+        )
         if is_border_box:
             content_width -= gutter.width
 
     if styles.min_width is not None:
         # Restrict to minimum width, if set
-        min_width = styles.min_width.resolve_dimension(content_container, viewport)
+        min_width = styles.min_width.resolve_dimension(
+            content_container, viewport, fraction_unit
+        )
         content_width = max(content_width, min_width)
 
     if styles.max_width is not None:
         # Restrict to maximum width, if set
-        max_width = styles.max_width.resolve_dimension(content_container, viewport)
+        max_width = styles.max_width.resolve_dimension(
+            content_container, viewport, fraction_unit
+        )
         content_width = min(content_width, max_width)
 
-    content_width = max(1, content_width)
+    content_width = max(Fraction(1), content_width)
 
     if styles.height is None:
         # No height specified, fill the available space
-        content_height = content_container.height - margin.height
+        content_height = Fraction(content_container.height - margin.height)
     elif is_auto_height:
         # Calculate dimensions based on content
-        content_height = get_content_height(content_container, viewport, content_width)
+        content_height = Fraction(
+            get_content_height(content_container, viewport, int(content_width))
+        )
     else:
         # Explicit height set
-        content_height = styles.height.resolve_dimension(sizing_container, viewport)
+        content_height = styles.height.resolve_dimension(
+            sizing_container, viewport, fraction_unit
+        )
         if is_border_box:
             content_height -= gutter.height
 
     if styles.min_height is not None:
         # Restrict to minimum height, if set
-        min_height = styles.min_height.resolve_dimension(content_container, viewport)
+        min_height = styles.min_height.resolve_dimension(
+            content_container, viewport, fraction_unit
+        )
         content_height = max(content_height, min_height)
 
     if styles.max_height is not None:
         # Restrict maximum height, if set
-        max_height = styles.max_height.resolve_dimension(content_container, viewport)
+        max_height = styles.max_height.resolve_dimension(
+            content_container, viewport, fraction_unit
+        )
         content_height = min(content_height, max_height)
 
-    content_height = max(1, content_height)
-
-    # Get box dimensions by adding gutter
-
-    size = Size(content_width, content_height) + gutter.totals
-
-    model = BoxModel(size, margin)
+    content_height = max(Fraction(1), content_height)
+    model = BoxModel(
+        content_width + gutter.width, content_height + gutter.height, margin
+    )
     return model</code></pre>
 </details>
 </dd>
@@ -262,7 +293,7 @@ def get_box_model(
 <dl>
 <dt id="textual.box_model.BoxModel"><code class="flex name class">
 <span>class <span class="ident">BoxModel</span></span>
-<span>(</span><span>size: Size, margin: Spacing)</span>
+<span>(</span><span>width: Fraction, height: Fraction, margin: Spacing)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>The result of <code><a title="textual.box_model.get_box_model" href="#textual.box_model.get_box_model">get_box_model()</a></code>.</p></div>
@@ -273,7 +304,9 @@ def get_box_model(
 <pre><code class="python">class BoxModel(NamedTuple):
     &#34;&#34;&#34;The result of `get_box_model`.&#34;&#34;&#34;
 
-    size: Size  # Content + padding + border
+    # Content + padding + border
+    width: Fraction
+    height: Fraction
     margin: Spacing  # Additional margin</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -282,11 +315,15 @@ def get_box_model(
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.box_model.BoxModel.margin"><code class="name">var <span class="ident">margin</span> : <a title="textual.geometry.Spacing" href="geometry.html#textual.geometry.Spacing">Spacing</a></code></dt>
+<dt id="textual.box_model.BoxModel.height"><code class="name">var <span class="ident">height</span> : fractions.Fraction</code></dt>
 <dd>
 <div class="desc"><p>Alias for field number 1</p></div>
 </dd>
-<dt id="textual.box_model.BoxModel.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
+<dt id="textual.box_model.BoxModel.margin"><code class="name">var <span class="ident">margin</span> : <a title="textual.geometry.Spacing" href="geometry.html#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
+</dd>
+<dt id="textual.box_model.BoxModel.width"><code class="name">var <span class="ident">width</span> : fractions.Fraction</code></dt>
 <dd>
 <div class="desc"><p>Alias for field number 0</p></div>
 </dd>
@@ -362,8 +399,9 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.box_model.BoxModel" href="#textual.box_model.BoxModel">BoxModel</a></code></h4>
 <ul class="">
+<li><code><a title="textual.box_model.BoxModel.height" href="#textual.box_model.BoxModel.height">height</a></code></li>
 <li><code><a title="textual.box_model.BoxModel.margin" href="#textual.box_model.BoxModel.margin">margin</a></code></li>
-<li><code><a title="textual.box_model.BoxModel.size" href="#textual.box_model.BoxModel.size">size</a></code></li>
+<li><code><a title="textual.box_model.BoxModel.width" href="#textual.box_model.BoxModel.width">width</a></code></li>
 </ul>
 </li>
 </ul>

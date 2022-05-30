@@ -525,7 +525,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -1025,7 +1025,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -1289,7 +1289,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -5459,7 +5459,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -6404,7 +6404,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -7135,7 +7135,7 @@ INDEX=[
 {
 "ref":"textual.app.App.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -7673,7 +7673,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Button.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -8216,7 +8216,7 @@ INDEX=[
 {
 "ref":"textual.widgets.DirectoryTree.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -8799,7 +8799,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Footer.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -9348,7 +9348,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Header.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -9867,7 +9867,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Placeholder.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -10368,7 +10368,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Static.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -11020,7 +11020,7 @@ INDEX=[
 {
 "ref":"textual.widgets.TreeControl.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -11620,7 +11620,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -12168,7 +12168,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextInput.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -12668,7 +12668,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextArea.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -13200,7 +13200,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextAreaChild.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -13768,7 +13768,7 @@ INDEX=[
 {
 "ref":"textual.widgets.tabs.Tabs.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -14694,14 +14694,19 @@ INDEX=[
 "doc":"The result of  get_box_model ."
 },
 {
-"ref":"textual.box_model.BoxModel.size",
+"ref":"textual.box_model.BoxModel.width",
 "url":30,
 "doc":"Alias for field number 0"
 },
 {
-"ref":"textual.box_model.BoxModel.margin",
+"ref":"textual.box_model.BoxModel.height",
 "url":30,
 "doc":"Alias for field number 1"
+},
+{
+"ref":"textual.box_model.BoxModel.margin",
+"url":30,
+"doc":"Alias for field number 2"
 },
 {
 "ref":"textual.box_model.get_box_model",
@@ -15209,7 +15214,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.walk_children",
 "url":6,
-"doc":"Generate all descendents of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
 "func":1
 },
 {
@@ -17219,7 +17224,7 @@ INDEX=[
 {
 "ref":"textual.css.scalar.Unit",
 "url":43,
-"doc":"An enumeration."
+"doc":"Enumeration of the various units inherited from CSS."
 },
 {
 "ref":"textual.css.scalar.Unit.CELLS",
@@ -17290,27 +17295,32 @@ INDEX=[
 {
 "ref":"textual.css.scalar.Scalar.is_percent",
 "url":43,
-"doc":""
+"doc":"Check if the Scalar is a percentage unit."
+},
+{
+"ref":"textual.css.scalar.Scalar.is_fraction",
+"url":43,
+"doc":"Check if the unit is a fraction."
 },
 {
 "ref":"textual.css.scalar.Scalar.cells",
 "url":43,
-"doc":""
+"doc":"Check if the unit is explicit cells."
 },
 {
 "ref":"textual.css.scalar.Scalar.fraction",
 "url":43,
-"doc":""
+"doc":"Get the fraction value, or None if not a value."
 },
 {
 "ref":"textual.css.scalar.Scalar.symbol",
 "url":43,
-"doc":""
+"doc":"Get the symbol of this unit."
 },
 {
 "ref":"textual.css.scalar.Scalar.is_auto",
 "url":43,
-"doc":""
+"doc":"Check if this is an auto unit."
 },
 {
 "ref":"textual.css.scalar.Scalar.from_number",
@@ -17339,7 +17349,7 @@ INDEX=[
 {
 "ref":"textual.css.scalar.ScalarOffset",
 "url":43,
-"doc":"ScalarOffset(x, y)"
+"doc":"An Offset with two scalars, used to animate between to Scalars."
 },
 {
 "ref":"textual.css.scalar.ScalarOffset.x",
