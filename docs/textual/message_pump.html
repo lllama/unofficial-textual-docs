@@ -302,7 +302,11 @@ class MessagePump:
                         for _cls, method in self._get_dispatch_methods(
                             &#34;on_idle&#34;, event
                         ):
-                            await invoke(method, event)
+                            try:
+                                await invoke(method, event)
+                            except Exception as error:
+                                self.app.on_exception(error)
+                                break
 
         log(&#34;CLOSED&#34;, self)
 
@@ -757,7 +761,11 @@ class MessagePump:
                         for _cls, method in self._get_dispatch_methods(
                             &#34;on_idle&#34;, event
                         ):
-                            await invoke(method, event)
+                            try:
+                                await invoke(method, event)
+                            except Exception as error:
+                                self.app.on_exception(error)
+                                break
 
         log(&#34;CLOSED&#34;, self)
 

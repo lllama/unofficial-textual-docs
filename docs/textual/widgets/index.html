@@ -159,7 +159,7 @@ __all__ = [
 
     def render(self) -&gt; RenderableType:
         label = self.label.copy()
-        label.stylize(style)
+        label.stylize(self.text_style)
         return label
 
     async def on_click(self, event: events.Click) -&gt; None:
@@ -272,7 +272,6 @@ __all__ = [
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages_no_wait" href="../message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.colors" href="../dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
@@ -333,8 +332,8 @@ __all__ = [
 <li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="../widget.html#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_height" href="../widget.html#textual.widget.Widget.scrollbar_height">scrollbar_height</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_width" href="../widget.html#textual.widget.Widget.scrollbar_width">scrollbar_width</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="../widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="../widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
@@ -670,7 +669,6 @@ def render_tree_label(
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages_no_wait" href="../message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.colors" href="../dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
@@ -731,8 +729,8 @@ def render_tree_label(
 <li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="../widget.html#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_height" href="../widget.html#textual.widget.Widget.scrollbar_height">scrollbar_height</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_width" href="../widget.html#textual.widget.Widget.scrollbar_width">scrollbar_width</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="../widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="../widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
@@ -992,7 +990,6 @@ def render_tree_label(
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages_no_wait" href="../message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.colors" href="../dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
@@ -1053,8 +1050,8 @@ def render_tree_label(
 <li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="../widget.html#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_height" href="../widget.html#textual.widget.Widget.scrollbar_height">scrollbar_height</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_width" href="../widget.html#textual.widget.Widget.scrollbar_width">scrollbar_width</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="../widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="../widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
@@ -1310,7 +1307,6 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages_no_wait" href="../message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.colors" href="../dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
@@ -1371,8 +1367,8 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="../widget.html#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_height" href="../widget.html#textual.widget.Widget.scrollbar_height">scrollbar_height</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_width" href="../widget.html#textual.widget.Widget.scrollbar_width">scrollbar_width</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="../widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="../widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
@@ -1536,7 +1532,6 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages_no_wait" href="../message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.colors" href="../dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
@@ -1597,8 +1592,8 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="../widget.html#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_height" href="../widget.html#textual.widget.Widget.scrollbar_height">scrollbar_height</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_width" href="../widget.html#textual.widget.Widget.scrollbar_width">scrollbar_width</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="../widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="../widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
@@ -1695,7 +1690,6 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages_no_wait" href="../message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.colors" href="../dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
@@ -1756,8 +1750,8 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="../widget.html#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_height" href="../widget.html#textual.widget.Widget.scrollbar_height">scrollbar_height</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_width" href="../widget.html#textual.widget.Widget.scrollbar_width">scrollbar_width</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="../widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="../widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
@@ -2328,7 +2322,6 @@ return default</p></div>
 <li><code><a title="textual.widget.Widget.call_later" href="../message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="../widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="../message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.check_layout" href="../widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="../message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages_no_wait" href="../message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.colors" href="../dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
@@ -2389,8 +2382,8 @@ return default</p></div>
 <li><code><a title="textual.widget.Widget.scroll_x" href="../widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="../widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="../widget.html#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_height" href="../widget.html#textual.widget.Widget.scrollbar_height">scrollbar_height</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_width" href="../widget.html#textual.widget.Widget.scrollbar_width">scrollbar_width</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="../widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="../widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="../widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.set_dirty" href="../widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="../dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>

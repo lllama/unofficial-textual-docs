@@ -62,7 +62,7 @@ class Update(Message, verbosity=3):
 @rich.repr.auto
 class Layout(Message, verbosity=3):
     def can_replace(self, message: Message) -&gt; bool:
-        return isinstance(message, (Layout, Update))
+        return isinstance(message, Layout)
 
 
 @rich.repr.auto
@@ -175,7 +175,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 </summary>
 <pre><code class="python">class Layout(Message, verbosity=3):
     def can_replace(self, message: Message) -&gt; bool:
-        return isinstance(message, (Layout, Update))</code></pre>
+        return isinstance(message, Layout)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

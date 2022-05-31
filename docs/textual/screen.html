@@ -41,6 +41,7 @@ from .geometry import Offset, Region, Size
 from ._compositor import Compositor, MapGeometry
 from .reactive import Reactive
 from .renderables.blank import Blank
+from ._timer import Timer
 from .widget import Widget
 
 if sys.version_info &gt;= (3, 8):
@@ -69,10 +70,20 @@ class Screen(Widget):
         super().__init__(name=name, id=id)
         self._compositor = Compositor()
         self._dirty_widgets: set[Widget] = set()
+        self._update_timer: Timer | None = None
 
     @property
     def is_transparent(self) -&gt; bool:
         return False
+
+    @property
+    def update_timer(self) -&gt; Timer:
+        &#34;&#34;&#34;Timer used to perform updates.&#34;&#34;&#34;
+        if self._update_timer is None:
+            self._update_timer = self.set_interval(
+                UPDATE_PERIOD, self._on_update, name=&#34;screen_update&#34;, pause=True
+            )
+        return self._update_timer
 
     def watch_dark(self, dark: bool) -&gt; None:
         pass
@@ -128,20 +139,24 @@ class Screen(Widget):
 
     def on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
-        if self._dirty_widgets:
-            self._update_timer.resume()
+        event.prevent_default()
+
         if self._layout_required:
             self._refresh_layout()
             self._layout_required = False
+            self._dirty_widgets.clear()
+        elif self._dirty_widgets:
+            self.update_timer.resume()
 
     def _on_update(self) -&gt; None:
         &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
         # Render widgets together
+
         if self._dirty_widgets:
             self._compositor.update_widgets(self._dirty_widgets)
             self.app._display(self._compositor.render())
             self._dirty_widgets.clear()
-        self._update_timer.pause()
+        self.update_timer.pause()
 
     def _refresh_layout(self, size: Size | None = None, full: bool = False) -&gt; None:
         &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
@@ -150,7 +165,7 @@ class Screen(Widget):
             return
 
         self._compositor.update_widgets(self._dirty_widgets)
-        self._update_timer.pause()
+        self.update_timer.pause()
         try:
             hidden, shown, resized = self._compositor.reflow(self, size)
 
@@ -181,13 +196,13 @@ class Screen(Widget):
         except Exception as error:
             self.app.on_exception(error)
             return
-
         display_update = self._compositor.render(full=full)
         if display_update is not None:
             self.app._display(display_update)
 
     async def handle_update(self, message: messages.Update) -&gt; None:
         message.stop()
+        message.prevent_default()
         widget = message.widget
         assert isinstance(widget, Widget)
         self._dirty_widgets.add(widget)
@@ -195,13 +210,9 @@ class Screen(Widget):
 
     async def handle_layout(self, message: messages.Layout) -&gt; None:
         message.stop()
+        message.prevent_default()
         self._layout_required = True
         self.check_idle()
-
-    def on_mount(self, event: events.Mount) -&gt; None:
-        self._update_timer = self.set_interval(
-            UPDATE_PERIOD, self._on_update, name=&#34;screen_update&#34;, pause=True
-        )
 
     def _screen_resized(self, size: Size):
         &#34;&#34;&#34;Called by App when the screen is resized.&#34;&#34;&#34;
@@ -318,10 +329,20 @@ class Screen(Widget):
         super().__init__(name=name, id=id)
         self._compositor = Compositor()
         self._dirty_widgets: set[Widget] = set()
+        self._update_timer: Timer | None = None
 
     @property
     def is_transparent(self) -&gt; bool:
         return False
+
+    @property
+    def update_timer(self) -&gt; Timer:
+        &#34;&#34;&#34;Timer used to perform updates.&#34;&#34;&#34;
+        if self._update_timer is None:
+            self._update_timer = self.set_interval(
+                UPDATE_PERIOD, self._on_update, name=&#34;screen_update&#34;, pause=True
+            )
+        return self._update_timer
 
     def watch_dark(self, dark: bool) -&gt; None:
         pass
@@ -377,20 +398,24 @@ class Screen(Widget):
 
     def on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
-        if self._dirty_widgets:
-            self._update_timer.resume()
+        event.prevent_default()
+
         if self._layout_required:
             self._refresh_layout()
             self._layout_required = False
+            self._dirty_widgets.clear()
+        elif self._dirty_widgets:
+            self.update_timer.resume()
 
     def _on_update(self) -&gt; None:
         &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
         # Render widgets together
+
         if self._dirty_widgets:
             self._compositor.update_widgets(self._dirty_widgets)
             self.app._display(self._compositor.render())
             self._dirty_widgets.clear()
-        self._update_timer.pause()
+        self.update_timer.pause()
 
     def _refresh_layout(self, size: Size | None = None, full: bool = False) -&gt; None:
         &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
@@ -399,7 +424,7 @@ class Screen(Widget):
             return
 
         self._compositor.update_widgets(self._dirty_widgets)
-        self._update_timer.pause()
+        self.update_timer.pause()
         try:
             hidden, shown, resized = self._compositor.reflow(self, size)
 
@@ -430,13 +455,13 @@ class Screen(Widget):
         except Exception as error:
             self.app.on_exception(error)
             return
-
         display_update = self._compositor.render(full=full)
         if display_update is not None:
             self.app._display(display_update)
 
     async def handle_update(self, message: messages.Update) -&gt; None:
         message.stop()
+        message.prevent_default()
         widget = message.widget
         assert isinstance(widget, Widget)
         self._dirty_widgets.add(widget)
@@ -444,13 +469,9 @@ class Screen(Widget):
 
     async def handle_layout(self, message: messages.Layout) -&gt; None:
         message.stop()
+        message.prevent_default()
         self._layout_required = True
         self.check_idle()
-
-    def on_mount(self, event: events.Mount) -&gt; None:
-        self._update_timer = self.set_interval(
-            UPDATE_PERIOD, self._on_update, name=&#34;screen_update&#34;, pause=True
-        )
 
     def _screen_resized(self, size: Size):
         &#34;&#34;&#34;Called by App when the screen is resized.&#34;&#34;&#34;
@@ -567,6 +588,23 @@ class Screen(Widget):
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
     return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.screen.Screen.update_timer"><code class="name">var <span class="ident">update_timer</span> : textual._timer.Timer</code></dt>
+<dd>
+<div class="desc"><p>Timer used to perform updates.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def update_timer(self) -&gt; Timer:
+    &#34;&#34;&#34;Timer used to perform updates.&#34;&#34;&#34;
+    if self._update_timer is None:
+        self._update_timer = self.set_interval(
+            UPDATE_PERIOD, self._on_update, name=&#34;screen_update&#34;, pause=True
+        )
+    return self._update_timer</code></pre>
 </details>
 </dd>
 </dl>
@@ -767,6 +805,7 @@ class Screen(Widget):
 </summary>
 <pre><code class="python">async def handle_layout(self, message: messages.Layout) -&gt; None:
     message.stop()
+    message.prevent_default()
     self._layout_required = True
     self.check_idle()</code></pre>
 </details>
@@ -782,25 +821,11 @@ class Screen(Widget):
 </summary>
 <pre><code class="python">async def handle_update(self, message: messages.Update) -&gt; None:
     message.stop()
+    message.prevent_default()
     widget = message.widget
     assert isinstance(widget, Widget)
     self._dirty_widgets.add(widget)
     self.check_idle()</code></pre>
-</details>
-</dd>
-<dt id="textual.screen.Screen.on_mount"><code class="name flex">
-<span>def <span class="ident">on_mount</span></span>(<span>self, event: events.Mount) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_mount(self, event: events.Mount) -&gt; None:
-    self._update_timer = self.set_interval(
-        UPDATE_PERIOD, self._on_update, name=&#34;screen_update&#34;, pause=True
-    )</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.on_resize"><code class="name flex">
@@ -844,7 +869,6 @@ class Screen(Widget):
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.check_layout" href="widget.html#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
@@ -905,8 +929,8 @@ class Screen(Widget):
 <li><code><a title="textual.widget.Widget.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="widget.html#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_height" href="widget.html#textual.widget.Widget.scrollbar_height">scrollbar_height</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_width" href="widget.html#textual.widget.Widget.scrollbar_width">scrollbar_width</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.set_dirty" href="widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
@@ -1001,8 +1025,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.screen.Screen.get_widget_at" href="#textual.screen.Screen.get_widget_at">get_widget_at</a></code></li>
 <li><code><a title="textual.screen.Screen.handle_layout" href="#textual.screen.Screen.handle_layout">handle_layout</a></code></li>
 <li><code><a title="textual.screen.Screen.handle_update" href="#textual.screen.Screen.handle_update">handle_update</a></code></li>
-<li><code><a title="textual.screen.Screen.on_mount" href="#textual.screen.Screen.on_mount">on_mount</a></code></li>
 <li><code><a title="textual.screen.Screen.on_resize" href="#textual.screen.Screen.on_resize">on_resize</a></code></li>
+<li><code><a title="textual.screen.Screen.update_timer" href="#textual.screen.Screen.update_timer">update_timer</a></code></li>
 <li><code><a title="textual.screen.Screen.watch_dark" href="#textual.screen.Screen.watch_dark">watch_dark</a></code></li>
 </ul>
 </li>

@@ -51,10 +51,12 @@ from . import errors
 from . import events
 from ._animator import BoundAnimator
 from ._border import Border
+from ._profile import timer
 from .box_model import BoxModel, get_box_model
 from ._context import active_app
 from ._types import Lines
 from .dom import DOMNode
+from ._layout import ArrangeResult
 from .geometry import clamp, Offset, Region, Size
 from .layouts.vertical import VerticalLayout
 from .message import Message
@@ -129,6 +131,9 @@ class Widget(DOMNode):
         self._content_width_cache: tuple[object, int] = (None, 0)
         self._content_height_cache: tuple[object, int] = (None, 0)
 
+        self._arrangement: ArrangeResult | None = None
+        self._arrangement_cache_key: tuple[int, Size] = (-1, Size())
+
         super().__init__(name=name, id=id, classes=classes)
         self.add_children(*children)
 
@@ -143,6 +148,28 @@ class Widget(DOMNode):
     scroll_target_y = Reactive(0.0, repaint=False)
     show_vertical_scrollbar = Reactive(False, layout=True)
     show_horizontal_scrollbar = Reactive(False, layout=True)
+
+    def _arrange(self, size: Size) -&gt; ArrangeResult:
+        &#34;&#34;&#34;Arrange children.
+
+        Args:
+            size (Size): Size of container.
+
+        Returns:
+            ArrangeResult: Widget locations.
+        &#34;&#34;&#34;
+        arrange_cache_key = (self.children._updates, size)
+        if (
+            self._arrangement is not None
+            and arrange_cache_key == self._arrangement_cache_key
+        ):
+            return self._arrangement
+        self._arrangement = self.layout.arrange(self, size)
+        self._arrangement_cache_key = (self.children._updates, size)
+        return self._arrangement
+
+    def _clear_arrangement_cache(self) -&gt; None:
+        self._arrangement = None
 
     def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
@@ -220,7 +247,7 @@ class Widget(DOMNode):
             assert self.layout is not None
             return (
                 self.layout.get_content_width(self, container, viewport)
-                + self.scrollbar_width
+                + self.scrollbar_size_vertical
             )
 
         cache_key = container.width
@@ -258,7 +285,7 @@ class Widget(DOMNode):
                     viewport,
                     width,
                 )
-                + self.scrollbar_height
+                + self.scrollbar_size_horizontal
             )
         else:
             cache_key = width
@@ -298,7 +325,9 @@ class Widget(DOMNode):
         &#34;&#34;&#34;The maximum value of `scroll_x`.&#34;&#34;&#34;
         return max(
             0,
-            self.virtual_size.width - self.container_size.width + self.scrollbar_width,
+            self.virtual_size.width
+            - self.container_size.width
+            + self.scrollbar_size_vertical,
         )
 
     @property
@@ -308,7 +337,7 @@ class Widget(DOMNode):
             0,
             self.virtual_size.height
             - self.container_size.height
-            + self.scrollbar_height,
+            + self.scrollbar_size_horizontal,
         )
 
     @property
@@ -322,9 +351,8 @@ class Widget(DOMNode):
 
         if self._vertical_scrollbar is not None:
             return self._vertical_scrollbar
-        vertical_scrollbar_thickness = self._get_scrollbar_thickness_vertical()
         self._vertical_scrollbar = scroll_bar = ScrollBar(
-            vertical=True, name=&#34;vertical&#34;, thickness=vertical_scrollbar_thickness
+            vertical=True, name=&#34;vertical&#34;, thickness=self.scrollbar_size_vertical
         )
         self.app.start_widget(self, scroll_bar)
         return scroll_bar
@@ -340,9 +368,8 @@ class Widget(DOMNode):
 
         if self._horizontal_scrollbar is not None:
             return self._horizontal_scrollbar
-        horizontal_scrollbar_thickness = self._get_scrollbar_thickness_horizontal()
         self._horizontal_scrollbar = scroll_bar = ScrollBar(
-            vertical=False, name=&#34;horizontal&#34;, thickness=horizontal_scrollbar_thickness
+            vertical=False, name=&#34;horizontal&#34;, thickness=self.scrollbar_size_horizontal
         )
 
         self.app.start_widget(self, scroll_bar)
@@ -396,20 +423,23 @@ class Widget(DOMNode):
     @property
     def scrollbar_dimensions(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Get the size of any scrollbars on the widget&#34;&#34;&#34;
+        return (self.scrollbar_size_horizontal, self.scrollbar_size_vertical)
+
+    @property
+    def scrollbar_size_vertical(self) -&gt; int:
+        &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
         return (
-            self._get_scrollbar_thickness_horizontal(),
-            self._get_scrollbar_thickness_vertical(),
+            self.styles.scrollbar_size_vertical if self.show_vertical_scrollbar else 0
         )
 
     @property
-    def scrollbar_width(self) -&gt; int:
-        &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
-        return self._get_scrollbar_thickness_vertical()
-
-    @property
-    def scrollbar_height(self) -&gt; int:
+    def scrollbar_size_horizontal(self) -&gt; int:
         &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
-        return self._get_scrollbar_thickness_horizontal()
+        return (
+            self.styles.scrollbar_size_horizontal
+            if self.show_horizontal_scrollbar
+            else 0
+        )
 
     def set_dirty(self) -&gt; None:
         &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-render).&#34;&#34;&#34;
@@ -614,17 +644,13 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
         show_vertical_scrollbar, show_horizontal_scrollbar = self.scrollbars_enabled
 
-        horizontal_scrollbar_thickness = self._get_scrollbar_thickness_horizontal()
-        vertical_scrollbar_thickness = self._get_scrollbar_thickness_vertical()
+        horizontal_scrollbar_thickness = self.scrollbar_size_horizontal
+        vertical_scrollbar_thickness = self.scrollbar_size_vertical
 
         if self.styles.scrollbar_gutter == &#34;stable&#34;:
             # Let&#39;s _always_ reserve some space, whether the scrollbar is actually displayed or not:
             show_vertical_scrollbar = True
-            vertical_scrollbar_thickness = (
-                int(self.styles.scrollbar_size_vertical.value)
-                if self.styles.scrollbar_size_vertical is not None
-                else 1
-            )
+            vertical_scrollbar_thickness = self.styles.scrollbar_size_vertical
 
         if show_horizontal_scrollbar and show_vertical_scrollbar:
             (region, _, _, _) = region.split(
@@ -640,19 +666,17 @@ class Widget(DOMNode):
         &#34;&#34;&#34;Arrange the &#39;chrome&#39; widgets (typically scrollbars) for a layout element.
 
         Args:
-            size (Size): _description_
+            size (Size): Size of the containing region.
 
         Returns:
-            Iterable[tuple[Widget, Region]]: _description_
+            Iterable[tuple[Widget, Region]]: Tuples of scrollbar Widget and region.
 
-        Yields:
-            Iterator[Iterable[tuple[Widget, Region]]]: _description_
         &#34;&#34;&#34;
         region = size.region
         show_vertical_scrollbar, show_horizontal_scrollbar = self.scrollbars_enabled
 
-        horizontal_scrollbar_thickness = self._get_scrollbar_thickness_horizontal()
-        vertical_scrollbar_thickness = self._get_scrollbar_thickness_vertical()
+        scrollbar_size_horizontal = self.scrollbar_size_horizontal
+        scrollbar_size_vertical = self.scrollbar_size_vertical
         if show_horizontal_scrollbar and show_vertical_scrollbar:
             (
                 _,
@@ -660,44 +684,21 @@ class Widget(DOMNode):
                 horizontal_scrollbar_region,
                 _,
             ) = region.split(
-                -vertical_scrollbar_thickness, -horizontal_scrollbar_thickness
+                -scrollbar_size_vertical,
+                -scrollbar_size_horizontal,
             )
             if vertical_scrollbar_region:
                 yield self.vertical_scrollbar, vertical_scrollbar_region
             if horizontal_scrollbar_region:
                 yield self.horizontal_scrollbar, horizontal_scrollbar_region
         elif show_vertical_scrollbar:
-            _, scrollbar_region = region.split_vertical(-vertical_scrollbar_thickness)
+            _, scrollbar_region = region.split_vertical(-scrollbar_size_vertical)
             if scrollbar_region:
                 yield self.vertical_scrollbar, scrollbar_region
         elif show_horizontal_scrollbar:
-            _, scrollbar_region = region.split_horizontal(
-                -horizontal_scrollbar_thickness
-            )
+            _, scrollbar_region = region.split_horizontal(-scrollbar_size_horizontal)
             if scrollbar_region:
                 yield self.horizontal_scrollbar, scrollbar_region
-
-    def _get_scrollbar_thickness_horizontal(self) -&gt; int:
-        &#34;&#34;&#34;Get the thickness of the horizontal scrollbar
-
-        Returns:
-            int: the thickness of the horizontal scrollbar (can be zero if CSS rules prevent horizontal scrolling)
-        &#34;&#34;&#34;
-        scrollbar_size = 1 if self.show_horizontal_scrollbar else 0
-        if scrollbar_size and self.styles.scrollbar_size_horizontal is not None:
-            scrollbar_size = int(self.styles.scrollbar_size_horizontal.value)
-        return scrollbar_size
-
-    def _get_scrollbar_thickness_vertical(self) -&gt; int:
-        &#34;&#34;&#34;Get the thickness of the vertical scrollbar
-
-        Returns:
-            int: the thickness of the vertical scrollbar (can be zero if CSS rules prevent vertical scrolling)
-        &#34;&#34;&#34;
-        scrollbar_size = 1 if self.show_vertical_scrollbar else 0
-        if scrollbar_size and self.styles.scrollbar_size_vertical is not None:
-            scrollbar_size = int(self.styles.scrollbar_size_vertical.value)
-        return scrollbar_size
 
     def get_pseudo_classes(self) -&gt; Iterable[str]:
         &#34;&#34;&#34;Pseudo classes for a widget&#34;&#34;&#34;
@@ -889,17 +890,8 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
         if self._dirty_regions:
             self._render_lines()
-            if self.is_container:
-                if self.show_horizontal_scrollbar:
-                    self.horizontal_scrollbar.refresh()
-                if self.show_vertical_scrollbar:
-                    self.vertical_scrollbar.refresh()
         lines = self._render_cache.lines[start:end]
         return lines
-
-    def check_layout(self) -&gt; bool:
-        &#34;&#34;&#34;Check if a layout has been requested.&#34;&#34;&#34;
-        return self._layout_required
 
     def get_style_at(self, x: int, y: int) -&gt; Style:
         offset_x, offset_y = self.screen.get_offset(self)
@@ -924,6 +916,7 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
         if layout:
             self._layout_required = True
+            self._clear_arrangement_cache()
         if repaint:
             self._content_width_cache = (None, 0)
             self._content_height_cache = (None, 0)
@@ -959,11 +952,11 @@ class Widget(DOMNode):
             event (events.Idle): Idle event.
         &#34;&#34;&#34;
 
-        if self.check_layout():
-            self._layout_required = False
+        if self._repaint_required:
+            self.screen.post_message_no_wait(messages.Update(self, self))
+        if self._layout_required:
             self.screen.post_message_no_wait(messages.Layout(self))
-        elif self._repaint_required:
-            self.emit_no_wait(messages.Update(self, self))
+        self._layout_required = False
         self._repaint_required = False
 
     def focus(self) -&gt; None:
@@ -1237,6 +1230,9 @@ def cursor_line(self) -&gt; int | None:
         self._content_width_cache: tuple[object, int] = (None, 0)
         self._content_height_cache: tuple[object, int] = (None, 0)
 
+        self._arrangement: ArrangeResult | None = None
+        self._arrangement_cache_key: tuple[int, Size] = (-1, Size())
+
         super().__init__(name=name, id=id, classes=classes)
         self.add_children(*children)
 
@@ -1251,6 +1247,28 @@ def cursor_line(self) -&gt; int | None:
     scroll_target_y = Reactive(0.0, repaint=False)
     show_vertical_scrollbar = Reactive(False, layout=True)
     show_horizontal_scrollbar = Reactive(False, layout=True)
+
+    def _arrange(self, size: Size) -&gt; ArrangeResult:
+        &#34;&#34;&#34;Arrange children.
+
+        Args:
+            size (Size): Size of container.
+
+        Returns:
+            ArrangeResult: Widget locations.
+        &#34;&#34;&#34;
+        arrange_cache_key = (self.children._updates, size)
+        if (
+            self._arrangement is not None
+            and arrange_cache_key == self._arrangement_cache_key
+        ):
+            return self._arrangement
+        self._arrangement = self.layout.arrange(self, size)
+        self._arrangement_cache_key = (self.children._updates, size)
+        return self._arrangement
+
+    def _clear_arrangement_cache(self) -&gt; None:
+        self._arrangement = None
 
     def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
@@ -1328,7 +1346,7 @@ def cursor_line(self) -&gt; int | None:
             assert self.layout is not None
             return (
                 self.layout.get_content_width(self, container, viewport)
-                + self.scrollbar_width
+                + self.scrollbar_size_vertical
             )
 
         cache_key = container.width
@@ -1366,7 +1384,7 @@ def cursor_line(self) -&gt; int | None:
                     viewport,
                     width,
                 )
-                + self.scrollbar_height
+                + self.scrollbar_size_horizontal
             )
         else:
             cache_key = width
@@ -1406,7 +1424,9 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;The maximum value of `scroll_x`.&#34;&#34;&#34;
         return max(
             0,
-            self.virtual_size.width - self.container_size.width + self.scrollbar_width,
+            self.virtual_size.width
+            - self.container_size.width
+            + self.scrollbar_size_vertical,
         )
 
     @property
@@ -1416,7 +1436,7 @@ def cursor_line(self) -&gt; int | None:
             0,
             self.virtual_size.height
             - self.container_size.height
-            + self.scrollbar_height,
+            + self.scrollbar_size_horizontal,
         )
 
     @property
@@ -1430,9 +1450,8 @@ def cursor_line(self) -&gt; int | None:
 
         if self._vertical_scrollbar is not None:
             return self._vertical_scrollbar
-        vertical_scrollbar_thickness = self._get_scrollbar_thickness_vertical()
         self._vertical_scrollbar = scroll_bar = ScrollBar(
-            vertical=True, name=&#34;vertical&#34;, thickness=vertical_scrollbar_thickness
+            vertical=True, name=&#34;vertical&#34;, thickness=self.scrollbar_size_vertical
         )
         self.app.start_widget(self, scroll_bar)
         return scroll_bar
@@ -1448,9 +1467,8 @@ def cursor_line(self) -&gt; int | None:
 
         if self._horizontal_scrollbar is not None:
             return self._horizontal_scrollbar
-        horizontal_scrollbar_thickness = self._get_scrollbar_thickness_horizontal()
         self._horizontal_scrollbar = scroll_bar = ScrollBar(
-            vertical=False, name=&#34;horizontal&#34;, thickness=horizontal_scrollbar_thickness
+            vertical=False, name=&#34;horizontal&#34;, thickness=self.scrollbar_size_horizontal
         )
 
         self.app.start_widget(self, scroll_bar)
@@ -1504,20 +1522,23 @@ def cursor_line(self) -&gt; int | None:
     @property
     def scrollbar_dimensions(self) -&gt; tuple[int, int]:
         &#34;&#34;&#34;Get the size of any scrollbars on the widget&#34;&#34;&#34;
+        return (self.scrollbar_size_horizontal, self.scrollbar_size_vertical)
+
+    @property
+    def scrollbar_size_vertical(self) -&gt; int:
+        &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
         return (
-            self._get_scrollbar_thickness_horizontal(),
-            self._get_scrollbar_thickness_vertical(),
+            self.styles.scrollbar_size_vertical if self.show_vertical_scrollbar else 0
         )
 
     @property
-    def scrollbar_width(self) -&gt; int:
-        &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
-        return self._get_scrollbar_thickness_vertical()
-
-    @property
-    def scrollbar_height(self) -&gt; int:
+    def scrollbar_size_horizontal(self) -&gt; int:
         &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
-        return self._get_scrollbar_thickness_horizontal()
+        return (
+            self.styles.scrollbar_size_horizontal
+            if self.show_horizontal_scrollbar
+            else 0
+        )
 
     def set_dirty(self) -&gt; None:
         &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-render).&#34;&#34;&#34;
@@ -1722,17 +1743,13 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
         show_vertical_scrollbar, show_horizontal_scrollbar = self.scrollbars_enabled
 
-        horizontal_scrollbar_thickness = self._get_scrollbar_thickness_horizontal()
-        vertical_scrollbar_thickness = self._get_scrollbar_thickness_vertical()
+        horizontal_scrollbar_thickness = self.scrollbar_size_horizontal
+        vertical_scrollbar_thickness = self.scrollbar_size_vertical
 
         if self.styles.scrollbar_gutter == &#34;stable&#34;:
             # Let&#39;s _always_ reserve some space, whether the scrollbar is actually displayed or not:
             show_vertical_scrollbar = True
-            vertical_scrollbar_thickness = (
-                int(self.styles.scrollbar_size_vertical.value)
-                if self.styles.scrollbar_size_vertical is not None
-                else 1
-            )
+            vertical_scrollbar_thickness = self.styles.scrollbar_size_vertical
 
         if show_horizontal_scrollbar and show_vertical_scrollbar:
             (region, _, _, _) = region.split(
@@ -1748,19 +1765,17 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;Arrange the &#39;chrome&#39; widgets (typically scrollbars) for a layout element.
 
         Args:
-            size (Size): _description_
+            size (Size): Size of the containing region.
 
         Returns:
-            Iterable[tuple[Widget, Region]]: _description_
+            Iterable[tuple[Widget, Region]]: Tuples of scrollbar Widget and region.
 
-        Yields:
-            Iterator[Iterable[tuple[Widget, Region]]]: _description_
         &#34;&#34;&#34;
         region = size.region
         show_vertical_scrollbar, show_horizontal_scrollbar = self.scrollbars_enabled
 
-        horizontal_scrollbar_thickness = self._get_scrollbar_thickness_horizontal()
-        vertical_scrollbar_thickness = self._get_scrollbar_thickness_vertical()
+        scrollbar_size_horizontal = self.scrollbar_size_horizontal
+        scrollbar_size_vertical = self.scrollbar_size_vertical
         if show_horizontal_scrollbar and show_vertical_scrollbar:
             (
                 _,
@@ -1768,44 +1783,21 @@ def cursor_line(self) -&gt; int | None:
                 horizontal_scrollbar_region,
                 _,
             ) = region.split(
-                -vertical_scrollbar_thickness, -horizontal_scrollbar_thickness
+                -scrollbar_size_vertical,
+                -scrollbar_size_horizontal,
             )
             if vertical_scrollbar_region:
                 yield self.vertical_scrollbar, vertical_scrollbar_region
             if horizontal_scrollbar_region:
                 yield self.horizontal_scrollbar, horizontal_scrollbar_region
         elif show_vertical_scrollbar:
-            _, scrollbar_region = region.split_vertical(-vertical_scrollbar_thickness)
+            _, scrollbar_region = region.split_vertical(-scrollbar_size_vertical)
             if scrollbar_region:
                 yield self.vertical_scrollbar, scrollbar_region
         elif show_horizontal_scrollbar:
-            _, scrollbar_region = region.split_horizontal(
-                -horizontal_scrollbar_thickness
-            )
+            _, scrollbar_region = region.split_horizontal(-scrollbar_size_horizontal)
             if scrollbar_region:
                 yield self.horizontal_scrollbar, scrollbar_region
-
-    def _get_scrollbar_thickness_horizontal(self) -&gt; int:
-        &#34;&#34;&#34;Get the thickness of the horizontal scrollbar
-
-        Returns:
-            int: the thickness of the horizontal scrollbar (can be zero if CSS rules prevent horizontal scrolling)
-        &#34;&#34;&#34;
-        scrollbar_size = 1 if self.show_horizontal_scrollbar else 0
-        if scrollbar_size and self.styles.scrollbar_size_horizontal is not None:
-            scrollbar_size = int(self.styles.scrollbar_size_horizontal.value)
-        return scrollbar_size
-
-    def _get_scrollbar_thickness_vertical(self) -&gt; int:
-        &#34;&#34;&#34;Get the thickness of the vertical scrollbar
-
-        Returns:
-            int: the thickness of the vertical scrollbar (can be zero if CSS rules prevent vertical scrolling)
-        &#34;&#34;&#34;
-        scrollbar_size = 1 if self.show_vertical_scrollbar else 0
-        if scrollbar_size and self.styles.scrollbar_size_vertical is not None:
-            scrollbar_size = int(self.styles.scrollbar_size_vertical.value)
-        return scrollbar_size
 
     def get_pseudo_classes(self) -&gt; Iterable[str]:
         &#34;&#34;&#34;Pseudo classes for a widget&#34;&#34;&#34;
@@ -1997,17 +1989,8 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
         if self._dirty_regions:
             self._render_lines()
-            if self.is_container:
-                if self.show_horizontal_scrollbar:
-                    self.horizontal_scrollbar.refresh()
-                if self.show_vertical_scrollbar:
-                    self.vertical_scrollbar.refresh()
         lines = self._render_cache.lines[start:end]
         return lines
-
-    def check_layout(self) -&gt; bool:
-        &#34;&#34;&#34;Check if a layout has been requested.&#34;&#34;&#34;
-        return self._layout_required
 
     def get_style_at(self, x: int, y: int) -&gt; Style:
         offset_x, offset_y = self.screen.get_offset(self)
@@ -2032,6 +2015,7 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
         if layout:
             self._layout_required = True
+            self._clear_arrangement_cache()
         if repaint:
             self._content_width_cache = (None, 0)
             self._content_height_cache = (None, 0)
@@ -2067,11 +2051,11 @@ def cursor_line(self) -&gt; int | None:
             event (events.Idle): Idle event.
         &#34;&#34;&#34;
 
-        if self.check_layout():
-            self._layout_required = False
+        if self._repaint_required:
+            self.screen.post_message_no_wait(messages.Update(self, self))
+        if self._layout_required:
             self.screen.post_message_no_wait(messages.Layout(self))
-        elif self._repaint_required:
-            self.emit_no_wait(messages.Update(self, self))
+        self._layout_required = False
         self._repaint_required = False
 
     def focus(self) -&gt; None:
@@ -2405,9 +2389,8 @@ def horizontal_scrollbar(self) -&gt; ScrollBar:
 
     if self._horizontal_scrollbar is not None:
         return self._horizontal_scrollbar
-    horizontal_scrollbar_thickness = self._get_scrollbar_thickness_horizontal()
     self._horizontal_scrollbar = scroll_bar = ScrollBar(
-        vertical=False, name=&#34;horizontal&#34;, thickness=horizontal_scrollbar_thickness
+        vertical=False, name=&#34;horizontal&#34;, thickness=self.scrollbar_size_horizontal
     )
 
     self.app.start_widget(self, scroll_bar)
@@ -2483,7 +2466,9 @@ def max_scroll_x(self) -&gt; float:
     &#34;&#34;&#34;The maximum value of `scroll_x`.&#34;&#34;&#34;
     return max(
         0,
-        self.virtual_size.width - self.container_size.width + self.scrollbar_width,
+        self.virtual_size.width
+        - self.container_size.width
+        + self.scrollbar_size_vertical,
     )</code></pre>
 </details>
 </dd>
@@ -2501,7 +2486,7 @@ def max_scroll_y(self) -&gt; float:
         0,
         self.virtual_size.height
         - self.container_size.height
-        + self.scrollbar_height,
+        + self.scrollbar_size_horizontal,
     )</code></pre>
 </details>
 </dd>
@@ -2598,13 +2583,10 @@ def scroll_offset(self) -&gt; Offset:
 <pre><code class="python">@property
 def scrollbar_dimensions(self) -&gt; tuple[int, int]:
     &#34;&#34;&#34;Get the size of any scrollbars on the widget&#34;&#34;&#34;
-    return (
-        self._get_scrollbar_thickness_horizontal(),
-        self._get_scrollbar_thickness_vertical(),
-    )</code></pre>
+    return (self.scrollbar_size_horizontal, self.scrollbar_size_vertical)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.scrollbar_height"><code class="name">var <span class="ident">scrollbar_height</span> : int</code></dt>
+<dt id="textual.widget.Widget.scrollbar_size_horizontal"><code class="name">var <span class="ident">scrollbar_size_horizontal</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Get the height used by the <em>horizontal</em> scrollbar.</p></div>
 <details class="source">
@@ -2612,12 +2594,16 @@ def scrollbar_dimensions(self) -&gt; tuple[int, int]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def scrollbar_height(self) -&gt; int:
+def scrollbar_size_horizontal(self) -&gt; int:
     &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
-    return self._get_scrollbar_thickness_horizontal()</code></pre>
+    return (
+        self.styles.scrollbar_size_horizontal
+        if self.show_horizontal_scrollbar
+        else 0
+    )</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.scrollbar_width"><code class="name">var <span class="ident">scrollbar_width</span> : int</code></dt>
+<dt id="textual.widget.Widget.scrollbar_size_vertical"><code class="name">var <span class="ident">scrollbar_size_vertical</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Get the width used by the <em>vertical</em> scrollbar.</p></div>
 <details class="source">
@@ -2625,9 +2611,11 @@ def scrollbar_height(self) -&gt; int:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def scrollbar_width(self) -&gt; int:
+def scrollbar_size_vertical(self) -&gt; int:
     &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
-    return self._get_scrollbar_thickness_vertical()</code></pre>
+    return (
+        self.styles.scrollbar_size_vertical if self.show_vertical_scrollbar else 0
+    )</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scrollbars_enabled"><code class="name">var <span class="ident">scrollbars_enabled</span> : tuple[bool, bool]</code></dt>
@@ -2714,9 +2702,8 @@ def vertical_scrollbar(self) -&gt; ScrollBar:
 
     if self._vertical_scrollbar is not None:
         return self._vertical_scrollbar
-    vertical_scrollbar_thickness = self._get_scrollbar_thickness_vertical()
     self._vertical_scrollbar = scroll_bar = ScrollBar(
-        vertical=True, name=&#34;vertical&#34;, thickness=vertical_scrollbar_thickness
+        vertical=True, name=&#34;vertical&#34;, thickness=self.scrollbar_size_vertical
     )
     self.app.start_widget(self, scroll_bar)
     return scroll_bar</code></pre>
@@ -2787,20 +2774,6 @@ def virtual_size(self) -&gt; Size:
         capture (bool, optional): True to capture or False to release. Defaults to True.
     &#34;&#34;&#34;
     await self.app.capture_mouse(self if capture else None)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.check_layout"><code class="name flex">
-<span>def <span class="ident">check_layout</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Check if a layout has been requested.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def check_layout(self) -&gt; bool:
-    &#34;&#34;&#34;Check if a layout has been requested.&#34;&#34;&#34;
-    return self._layout_required</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.compose"><code class="name flex">
@@ -2933,7 +2906,7 @@ def virtual_size(self) -&gt; Size:
                 viewport,
                 width,
             )
-            + self.scrollbar_height
+            + self.scrollbar_size_horizontal
         )
     else:
         cache_key = width
@@ -2986,7 +2959,7 @@ def virtual_size(self) -&gt; Size:
         assert self.layout is not None
         return (
             self.layout.get_content_width(self, container, viewport)
-            + self.scrollbar_width
+            + self.scrollbar_size_vertical
         )
 
     cache_key = container.width
@@ -3055,11 +3028,6 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
     &#34;&#34;&#34;
     if self._dirty_regions:
         self._render_lines()
-        if self.is_container:
-            if self.show_horizontal_scrollbar:
-                self.horizontal_scrollbar.refresh()
-            if self.show_vertical_scrollbar:
-                self.vertical_scrollbar.refresh()
     lines = self._render_cache.lines[start:end]
     return lines</code></pre>
 </details>
@@ -3410,11 +3378,11 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
         event (events.Idle): Idle event.
     &#34;&#34;&#34;
 
-    if self.check_layout():
-        self._layout_required = False
+    if self._repaint_required:
+        self.screen.post_message_no_wait(messages.Update(self, self))
+    if self._layout_required:
         self.screen.post_message_no_wait(messages.Layout(self))
-    elif self._repaint_required:
-        self.emit_no_wait(messages.Update(self, self))
+    self._layout_required = False
     self._repaint_required = False</code></pre>
 </details>
 </dd>
@@ -3603,6 +3571,7 @@ next idle event. Only one refresh will be done even if this method is called mul
     &#34;&#34;&#34;
     if layout:
         self._layout_required = True
+        self._clear_arrangement_cache()
     if repaint:
         self._content_width_cache = (None, 0)
         self._content_height_cache = (None, 0)
@@ -4405,7 +4374,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.can_focus" href="#textual.widget.Widget.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.can_focus_children" href="#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
-<li><code><a title="textual.widget.Widget.check_layout" href="#textual.widget.Widget.check_layout">check_layout</a></code></li>
 <li><code><a title="textual.widget.Widget.compose" href="#textual.widget.Widget.compose">compose</a></code></li>
 <li><code><a title="textual.widget.Widget.console" href="#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.container_size" href="#textual.widget.Widget.container_size">container_size</a></code></li>
@@ -4483,8 +4451,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.scroll_x" href="#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_height" href="#textual.widget.Widget.scrollbar_height">scrollbar_height</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_width" href="#textual.widget.Widget.scrollbar_width">scrollbar_width</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.set_dirty" href="#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>

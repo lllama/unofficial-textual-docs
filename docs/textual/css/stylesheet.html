@@ -408,6 +408,11 @@ class Stylesheet:
         apply = self.apply
         for node in root.walk_children():
             apply(node, animate=animate)
+            if isinstance(node, Widget):
+                if node.show_vertical_scrollbar:
+                    apply(node.vertical_scrollbar)
+                if node.show_horizontal_scrollbar:
+                    apply(node.horizontal_scrollbar)
 
 
 if __name__ == &#34;__main__&#34;:
@@ -788,7 +793,12 @@ if __name__ == &#34;__main__&#34;:
         &#34;&#34;&#34;Update a node and its children.&#34;&#34;&#34;
         apply = self.apply
         for node in root.walk_children():
-            apply(node, animate=animate)</code></pre>
+            apply(node, animate=animate)
+            if isinstance(node, Widget):
+                if node.show_vertical_scrollbar:
+                    apply(node.vertical_scrollbar)
+                if node.show_horizontal_scrollbar:
+                    apply(node.horizontal_scrollbar)</code></pre>
 </details>
 <h3>Static methods</h3>
 <dl>
@@ -1193,7 +1203,12 @@ rule will be applied.</dd>
     &#34;&#34;&#34;Update a node and its children.&#34;&#34;&#34;
     apply = self.apply
     for node in root.walk_children():
-        apply(node, animate=animate)</code></pre>
+        apply(node, animate=animate)
+        if isinstance(node, Widget):
+            if node.show_vertical_scrollbar:
+                apply(node.vertical_scrollbar)
+            if node.show_horizontal_scrollbar:
+                apply(node.horizontal_scrollbar)</code></pre>
 </details>
 </dd>
 </dl>

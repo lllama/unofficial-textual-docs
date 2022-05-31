@@ -48,6 +48,7 @@ from ._style_properties import (
     ColorProperty,
     DockProperty,
     DocksProperty,
+    IntegerProperty,
     LayoutProperty,
     NameListProperty,
     NameProperty,
@@ -260,12 +261,8 @@ class StylesBase(ABC):
 
     scrollbar_gutter = StringEnumProperty(VALID_SCROLLBAR_GUTTER, &#34;auto&#34;)
 
-    scrollbar_size_vertical = ScalarProperty(
-        units={Unit.CELLS}, percent_unit=Unit.WIDTH, allow_auto=False
-    )
-    scrollbar_size_horizontal = ScalarProperty(
-        units={Unit.CELLS}, percent_unit=Unit.HEIGHT, allow_auto=False
-    )
+    scrollbar_size_vertical = IntegerProperty(default=1, layout=True)
+    scrollbar_size_horizontal = IntegerProperty(default=1, layout=True)
 
     align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
@@ -1150,8 +1147,6 @@ def inline(self) -&gt; Styles:
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_gutter" href="#textual.css.styles.StylesBase.scrollbar_gutter">scrollbar_gutter</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.scrollbar_size_horizontal" href="#textual.css.styles.StylesBase.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.scrollbar_size_vertical" href="#textual.css.styles.StylesBase.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
@@ -2071,8 +2066,6 @@ def css_lines(self) -&gt; list[str]:
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_gutter" href="#textual.css.styles.StylesBase.scrollbar_gutter">scrollbar_gutter</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.scrollbar_size_horizontal" href="#textual.css.styles.StylesBase.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.scrollbar_size_vertical" href="#textual.css.styles.StylesBase.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
@@ -2173,12 +2166,8 @@ def css_lines(self) -&gt; list[str]:
 
     scrollbar_gutter = StringEnumProperty(VALID_SCROLLBAR_GUTTER, &#34;auto&#34;)
 
-    scrollbar_size_vertical = ScalarProperty(
-        units={Unit.CELLS}, percent_unit=Unit.WIDTH, allow_auto=False
-    )
-    scrollbar_size_horizontal = ScalarProperty(
-        units={Unit.CELLS}, percent_unit=Unit.HEIGHT, allow_auto=False
-    )
+    scrollbar_size_vertical = IntegerProperty(default=1, layout=True)
+    scrollbar_size_horizontal = IntegerProperty(default=1, layout=True)
 
     align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
@@ -3502,50 +3491,30 @@ value belongs in the set of valid values.</p></div>
     return obj.get_rule(self.name, self._default)</code></pre>
 </details>
 </dd>
-<dt id="textual.css.styles.StylesBase.scrollbar_size_horizontal"><code class="name">var <span class="ident">scrollbar_size_horizontal</span> : Scalar | None</code></dt>
+<dt id="textual.css.styles.StylesBase.scrollbar_size_horizontal"><code class="name">var <span class="ident">scrollbar_size_horizontal</span> : PropertyGetType</code></dt>
 <dd>
-<div class="desc"><p>Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. "50vh".</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(
     self, obj: StylesBase, objtype: type[StylesBase] | None = None
-) -&gt; Scalar | None:
-    &#34;&#34;&#34;Get the scalar property
-
-    Args:
-        obj (Styles): The ``Styles`` object
-        objtype (type[Styles]): The ``Styles`` class
-
-    Returns:
-        The Scalar object or ``None`` if it&#39;s not set.
-    &#34;&#34;&#34;
-    value = obj.get_rule(self.name)
-    return value</code></pre>
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
 </details>
 </dd>
-<dt id="textual.css.styles.StylesBase.scrollbar_size_vertical"><code class="name">var <span class="ident">scrollbar_size_vertical</span> : Scalar | None</code></dt>
+<dt id="textual.css.styles.StylesBase.scrollbar_size_vertical"><code class="name">var <span class="ident">scrollbar_size_vertical</span> : PropertyGetType</code></dt>
 <dd>
-<div class="desc"><p>Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. "50vh".</p></div>
+<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(
     self, obj: StylesBase, objtype: type[StylesBase] | None = None
-) -&gt; Scalar | None:
-    &#34;&#34;&#34;Get the scalar property
-
-    Args:
-        obj (Styles): The ``Styles`` object
-        objtype (type[Styles]): The ``Styles`` class
-
-    Returns:
-        The Scalar object or ``None`` if it&#39;s not set.
-    &#34;&#34;&#34;
-    value = obj.get_rule(self.name)
-    return value</code></pre>
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.text_style"><code class="name">var <span class="ident">text_style</span> : Style</code></dt>

@@ -283,12 +283,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.layout.Vertical.scrollbar_width",
+"ref":"textual.layout.Vertical.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.layout.Vertical.scrollbar_height",
+"ref":"textual.layout.Vertical.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -379,12 +379,6 @@ INDEX=[
 "ref":"textual.layout.Vertical.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -783,12 +777,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.layout.Horizontal.scrollbar_width",
+"ref":"textual.layout.Horizontal.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.layout.Horizontal.scrollbar_height",
+"ref":"textual.layout.Horizontal.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -879,12 +873,6 @@ INDEX=[
 "ref":"textual.layout.Horizontal.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -4928,12 +4916,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widget.Widget.scrollbar_width",
+"ref":"textual.widget.Widget.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widget.Widget.scrollbar_height",
+"ref":"textual.widget.Widget.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -5127,12 +5115,6 @@ INDEX=[
 "ref":"textual.widget.Widget.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -6168,12 +6150,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.scrollbar.ScrollBar.scrollbar_width",
+"ref":"textual.scrollbar.ScrollBar.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.scrollbar_height",
+"ref":"textual.scrollbar.ScrollBar.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -6264,12 +6246,6 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBar.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -7437,12 +7413,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.Button.scrollbar_width",
+"ref":"textual.widgets.Button.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.Button.scrollbar_height",
+"ref":"textual.widgets.Button.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -7533,12 +7509,6 @@ INDEX=[
 "ref":"textual.widgets.Button.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.Button.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -7974,12 +7944,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.DirectoryTree.scrollbar_width",
+"ref":"textual.widgets.DirectoryTree.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.DirectoryTree.scrollbar_height",
+"ref":"textual.widgets.DirectoryTree.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -8070,12 +8040,6 @@ INDEX=[
 "ref":"textual.widgets.DirectoryTree.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.DirectoryTree.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -8563,12 +8527,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.Footer.scrollbar_width",
+"ref":"textual.widgets.Footer.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.Footer.scrollbar_height",
+"ref":"textual.widgets.Footer.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -8659,12 +8623,6 @@ INDEX=[
 "ref":"textual.widgets.Footer.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.Footer.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -9112,12 +9070,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.Header.scrollbar_width",
+"ref":"textual.widgets.Header.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.Header.scrollbar_height",
+"ref":"textual.widgets.Header.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -9208,12 +9166,6 @@ INDEX=[
 "ref":"textual.widgets.Header.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.Header.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -9631,12 +9583,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.Placeholder.scrollbar_width",
+"ref":"textual.widgets.Placeholder.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.Placeholder.scrollbar_height",
+"ref":"textual.widgets.Placeholder.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -9727,12 +9679,6 @@ INDEX=[
 "ref":"textual.widgets.Placeholder.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.Placeholder.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -10132,12 +10078,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.Static.scrollbar_width",
+"ref":"textual.widgets.Static.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.Static.scrollbar_height",
+"ref":"textual.widgets.Static.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -10228,12 +10174,6 @@ INDEX=[
 "ref":"textual.widgets.Static.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.Static.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -10784,12 +10724,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.TreeControl.scrollbar_width",
+"ref":"textual.widgets.TreeControl.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.TreeControl.scrollbar_height",
+"ref":"textual.widgets.TreeControl.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -10880,12 +10820,6 @@ INDEX=[
 "ref":"textual.widgets.TreeControl.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.TreeControl.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -11378,12 +11312,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.text_input.TextWidgetBase.scrollbar_width",
+"ref":"textual.widgets.text_input.TextWidgetBase.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.text_input.TextWidgetBase.scrollbar_height",
+"ref":"textual.widgets.text_input.TextWidgetBase.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -11474,12 +11408,6 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextWidgetBase.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.text_input.TextWidgetBase.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -11932,12 +11860,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.text_input.TextInput.scrollbar_width",
+"ref":"textual.widgets.text_input.TextInput.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.text_input.TextInput.scrollbar_height",
+"ref":"textual.widgets.text_input.TextInput.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -12028,12 +11956,6 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextInput.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.text_input.TextInput.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -12426,12 +12348,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.text_input.TextArea.scrollbar_width",
+"ref":"textual.widgets.text_input.TextArea.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.text_input.TextArea.scrollbar_height",
+"ref":"textual.widgets.text_input.TextArea.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -12522,12 +12444,6 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextArea.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.text_input.TextArea.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -12964,12 +12880,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.text_input.TextAreaChild.scrollbar_width",
+"ref":"textual.widgets.text_input.TextAreaChild.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.text_input.TextAreaChild.scrollbar_height",
+"ref":"textual.widgets.text_input.TextAreaChild.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -13060,12 +12976,6 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextAreaChild.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.text_input.TextAreaChild.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -13532,12 +13442,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.widgets.tabs.Tabs.scrollbar_width",
+"ref":"textual.widgets.tabs.Tabs.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.widgets.tabs.Tabs.scrollbar_height",
+"ref":"textual.widgets.tabs.Tabs.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -13628,12 +13538,6 @@ INDEX=[
 "ref":"textual.widgets.tabs.Tabs.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.widgets.tabs.Tabs.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -14566,7 +14470,7 @@ INDEX=[
 {
 "ref":"textual.geometry.Spacing.unpack",
 "url":28,
-"doc":"Unpack padding specified in CSS style.",
+"doc":"Unpack padding specified in CSS style. Args: pad (SpacingDimensions): An integer, or tuple of 1, 2, or 4 integers. Raises: ValueError: If  pad is an invalid value. Returns: Spacing: New Spacing object.",
 "func":1
 },
 {
@@ -14780,6 +14684,11 @@ INDEX=[
 "doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
 },
 {
+"ref":"textual.screen.Screen.update_timer",
+"url":31,
+"doc":"Timer used to perform updates."
+},
+{
 "ref":"textual.screen.Screen.watch_dark",
 "url":31,
 "doc":"",
@@ -14829,12 +14738,6 @@ INDEX=[
 },
 {
 "ref":"textual.screen.Screen.handle_layout",
-"url":31,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.on_mount",
 "url":31,
 "doc":"",
 "func":1
@@ -14989,12 +14892,12 @@ INDEX=[
 "doc":"Get the size of any scrollbars on the widget"
 },
 {
-"ref":"textual.screen.Screen.scrollbar_width",
+"ref":"textual.screen.Screen.scrollbar_size_vertical",
 "url":5,
 "doc":"Get the width used by the  vertical scrollbar."
 },
 {
-"ref":"textual.screen.Screen.scrollbar_height",
+"ref":"textual.screen.Screen.scrollbar_size_horizontal",
 "url":5,
 "doc":"Get the height used by the  horizontal scrollbar."
 },
@@ -15080,12 +14983,6 @@ INDEX=[
 "ref":"textual.screen.Screen.get_render_lines",
 "url":5,
 "doc":"Get segment lines to render the widget. Args: start (int | None, optional): line start index, or None for first line. Defaults to None. end (int | None, optional): line end index, or None for last line. Defaults to None. Returns: Lines: A list of lists of segments.",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.check_layout",
-"url":5,
-"doc":"Check if a layout has been requested.",
 "func":1
 },
 {
@@ -15868,12 +15765,12 @@ INDEX=[
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_size_vertical",
 "url":34,
-"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+"doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_size_horizontal",
 "url":34,
-"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
+"doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.align_horizontal",
@@ -16307,16 +16204,6 @@ INDEX=[
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
-"ref":"textual.css.styles.Styles.scrollbar_size_vertical",
-"url":34,
-"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
-},
-{
-"ref":"textual.css.styles.Styles.scrollbar_size_horizontal",
-"url":34,
-"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
-},
-{
 "ref":"textual.css.styles.Styles.align_horizontal",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
@@ -16669,16 +16556,6 @@ INDEX=[
 "ref":"textual.css.styles.RenderStyles.scrollbar_gutter",
 "url":34,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
-},
-{
-"ref":"textual.css.styles.RenderStyles.scrollbar_size_vertical",
-"url":34,
-"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
-},
-{
-"ref":"textual.css.styles.RenderStyles.scrollbar_size_horizontal",
-"url":34,
-"doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.align_horizontal",

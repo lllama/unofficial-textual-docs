@@ -916,12 +916,14 @@ class App(Generic[ReturnType], DOMNode):
         stylesheet.update(self.app, animate=animate)
         self.refresh(layout=True)
 
-    def _display(self, renderable: RenderableType) -&gt; None:
+    def _display(self, renderable: RenderableType | None) -&gt; None:
         &#34;&#34;&#34;Display a renderable within a sync.
 
         Args:
             renderable (RenderableType): A Rich renderable.
         &#34;&#34;&#34;
+        if renderable is None:
+            return
         if self._running and not self._closed and not self.is_headless:
             console = self.console
             self._begin_update()
@@ -2013,12 +2015,14 @@ def _init_uvloop() -&gt; None:
         stylesheet.update(self.app, animate=animate)
         self.refresh(layout=True)
 
-    def _display(self, renderable: RenderableType) -&gt; None:
+    def _display(self, renderable: RenderableType | None) -&gt; None:
         &#34;&#34;&#34;Display a renderable within a sync.
 
         Args:
             renderable (RenderableType): A Rich renderable.
         &#34;&#34;&#34;
+        if renderable is None:
+            return
         if self._running and not self._closed and not self.is_headless:
             console = self.console
             self._begin_update()

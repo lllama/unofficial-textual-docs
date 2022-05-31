@@ -694,7 +694,17 @@ class Spacing(NamedTuple):
 
     @classmethod
     def unpack(cls, pad: SpacingDimensions) -&gt; Spacing:
-        &#34;&#34;&#34;Unpack padding specified in CSS style.&#34;&#34;&#34;
+        &#34;&#34;&#34;Unpack padding specified in CSS style.
+
+        Args:
+            pad (SpacingDimensions): An integer, or tuple of 1, 2, or 4 integers.
+
+        Raises:
+            ValueError: If `pad` is an invalid value.
+
+        Returns:
+            Spacing: New Spacing object.
+        &#34;&#34;&#34;
         if isinstance(pad, int):
             return cls(pad, pad, pad, pad)
         pad_len = len(pad)
@@ -2650,7 +2660,17 @@ def region(self) -&gt; Region:
 
     @classmethod
     def unpack(cls, pad: SpacingDimensions) -&gt; Spacing:
-        &#34;&#34;&#34;Unpack padding specified in CSS style.&#34;&#34;&#34;
+        &#34;&#34;&#34;Unpack padding specified in CSS style.
+
+        Args:
+            pad (SpacingDimensions): An integer, or tuple of 1, 2, or 4 integers.
+
+        Raises:
+            ValueError: If `pad` is an invalid value.
+
+        Returns:
+            Spacing: New Spacing object.
+        &#34;&#34;&#34;
         if isinstance(pad, int):
             return cls(pad, pad, pad, pad)
         pad_len = len(pad)
@@ -2799,14 +2819,39 @@ def horizontal(cls, amount: int) -&gt; Spacing:
 <span>def <span class="ident">unpack</span></span>(<span>pad: SpacingDimensions) ‑> <a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Unpack padding specified in CSS style.</p></div>
+<div class="desc"><p>Unpack padding specified in CSS style.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>pad</code></strong> :&ensp;<code>SpacingDimensions</code></dt>
+<dd>An integer, or tuple of 1, 2, or 4 integers.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>ValueError</code></dt>
+<dd>If <code>pad</code> is an invalid value.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd>New Spacing object.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def unpack(cls, pad: SpacingDimensions) -&gt; Spacing:
-    &#34;&#34;&#34;Unpack padding specified in CSS style.&#34;&#34;&#34;
+    &#34;&#34;&#34;Unpack padding specified in CSS style.
+
+    Args:
+        pad (SpacingDimensions): An integer, or tuple of 1, 2, or 4 integers.
+
+    Raises:
+        ValueError: If `pad` is an invalid value.
+
+    Returns:
+        Spacing: New Spacing object.
+    &#34;&#34;&#34;
     if isinstance(pad, int):
         return cls(pad, pad, pad, pad)
     pad_len = len(pad)
