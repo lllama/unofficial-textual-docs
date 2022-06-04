@@ -216,6 +216,8 @@ class ColorSystem:
         COLORS = [
             (&#34;primary&#34;, primary),
             (&#34;secondary&#34;, secondary),
+            (&#34;primary-background&#34;, primary),
+            (&#34;secondary-background&#34;, secondary),
             (&#34;background&#34;, background),
             (&#34;panel&#34;, panel),
             (&#34;surface&#34;, surface),
@@ -227,7 +229,7 @@ class ColorSystem:
         ]
 
         # Colors names that have a dark variant
-        DARK_SHADES = {&#34;primary&#34;, &#34;secondary&#34;}
+        DARK_SHADES = {&#34;primary-background&#34;, &#34;secondary-background&#34;}
 
         for name, color in COLORS:
             is_dark_shade = dark and name in DARK_SHADES
@@ -484,6 +486,8 @@ Secondary is a second theme color</p></div>
         COLORS = [
             (&#34;primary&#34;, primary),
             (&#34;secondary&#34;, secondary),
+            (&#34;primary-background&#34;, primary),
+            (&#34;secondary-background&#34;, secondary),
             (&#34;background&#34;, background),
             (&#34;panel&#34;, panel),
             (&#34;surface&#34;, surface),
@@ -495,7 +499,7 @@ Secondary is a second theme color</p></div>
         ]
 
         # Colors names that have a dark variant
-        DARK_SHADES = {&#34;primary&#34;, &#34;secondary&#34;}
+        DARK_SHADES = {&#34;primary-background&#34;, &#34;secondary-background&#34;}
 
         for name, color in COLORS:
             is_dark_shade = dark and name in DARK_SHADES
@@ -868,6 +872,8 @@ shades. Defaults to 0.2.</dd>
     COLORS = [
         (&#34;primary&#34;, primary),
         (&#34;secondary&#34;, secondary),
+        (&#34;primary-background&#34;, primary),
+        (&#34;secondary-background&#34;, secondary),
         (&#34;background&#34;, background),
         (&#34;panel&#34;, panel),
         (&#34;surface&#34;, surface),
@@ -879,7 +885,7 @@ shades. Defaults to 0.2.</dd>
     ]
 
     # Colors names that have a dark variant
-    DARK_SHADES = {&#34;primary&#34;, &#34;secondary&#34;}
+    DARK_SHADES = {&#34;primary-background&#34;, &#34;secondary-background&#34;}
 
     for name, color in COLORS:
         is_dark_shade = dark and name in DARK_SHADES

@@ -75,6 +75,7 @@ from ._context import active_app
 from ._event_broker import extract_handler_actions, NoHandler
 from .binding import Bindings, NoBinding
 from .css.stylesheet import Stylesheet
+from .css.styles import RenderStyles
 from .css.query import NoMatchingNodesError
 from .design import ColorSystem
 from .devtools.client import DevtoolsClient, DevtoolsConnectionError, DevtoolsLog
@@ -88,6 +89,8 @@ from .layouts.dock import Dock
 from .message_pump import MessagePump
 from .reactive import Reactive
 from .renderables.blank import Blank
+from ._profile import timer
+
 from .screen import Screen
 from .widget import Widget
 
@@ -136,6 +139,10 @@ class App(Generic[ReturnType], DOMNode):
     &#34;&#34;&#34;The base class for Textual Applications&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
+    App {     
+        background: $surface;
+        color: $text-surface;        
+    }
     &#34;&#34;&#34;
 
     CSS_PATH: str | None = None
@@ -167,6 +174,7 @@ class App(Generic[ReturnType], DOMNode):
         # this will create some first references to an asyncio loop.
         _init_uvloop()
 
+        super().__init__()
         self.features: frozenset[FeatureFlag] = parse_features(os.getenv(&#34;TEXTUAL&#34;, &#34;&#34;))
 
         self.console = Console(
@@ -229,10 +237,10 @@ class App(Generic[ReturnType], DOMNode):
             else None
         )
 
-        super().__init__()
-
-    def __init_subclass__(cls, css_path: str | None = None) -&gt; None:
-        super().__init_subclass__()
+    def __init_subclass__(
+        cls, css_path: str | None = None, inherit_css: bool = True
+    ) -&gt; None:
+        super().__init_subclass__(inherit_css=inherit_css)
         cls.CSS_PATH = css_path
 
     title: Reactive[str] = Reactive(&#34;Textual&#34;)
@@ -363,7 +371,15 @@ class App(Generic[ReturnType], DOMNode):
 
     def watch_dark(self, dark: bool) -&gt; None:
         &#34;&#34;&#34;Watches the dark bool.&#34;&#34;&#34;
+
         self.screen.dark = dark
+        if dark:
+            self.add_class(&#34;-dark-mode&#34;)
+            self.remove_class(&#34;-light-mode&#34;)
+        else:
+            self.remove_class(&#34;-dark-mode&#34;)
+            self.add_class(&#34;-light-mode&#34;)
+
         self.refresh_css()
 
     def get_driver_class(self) -&gt; Type[Driver]:
@@ -387,6 +403,18 @@ class App(Generic[ReturnType], DOMNode):
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;title&#34;, self.title
+        yield &#34;id&#34;, self.id, None
+        if self.name:
+            yield &#34;name&#34;, self.name
+        if self.classes:
+            yield &#34;classes&#34;, set(self.classes)
+        pseudo_classes = self.pseudo_classes
+        if pseudo_classes:
+            yield &#34;pseudo_classes&#34;, set(pseudo_classes)
+
+    @property
+    def is_transparent(self) -&gt; bool:
+        return True
 
     @property
     def animator(self) -&gt; Animator:
@@ -395,10 +423,6 @@ class App(Generic[ReturnType], DOMNode):
     @property
     def screen(self) -&gt; Screen:
         return self._screen_stack[-1]
-
-    @property
-    def css_type(self) -&gt; str:
-        return &#34;app&#34;
 
     @property
     def size(self) -&gt; Size:
@@ -744,10 +768,8 @@ class App(Generic[ReturnType], DOMNode):
         try:
             if self.css_path is not None:
                 self.stylesheet.read(self.css_path)
-            if self.CSS is not None:
-                self.stylesheet.add_source(
-                    self.CSS, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
-                )
+            for path, css in self.css:
+                self.stylesheet.add_source(css, path=path)
         except Exception as error:
             self.on_exception(error)
             self._print_error_renderables()
@@ -764,8 +786,8 @@ class App(Generic[ReturnType], DOMNode):
 
             driver = self._driver = self.driver_class(self.console, self)
             driver.start_application_mode()
-            with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
-                try:
+            try:
+                with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
                     mount_event = events.Mount(sender=self)
                     await self.dispatch_message(mount_event)
 
@@ -777,8 +799,8 @@ class App(Generic[ReturnType], DOMNode):
                     await super().process_messages()
                     await self.animator.stop()
                     await self.close_all()
-                finally:
-                    driver.stop_application_mode()
+            finally:
+                driver.stop_application_mode()
         except Exception as error:
             self.on_exception(error)
         finally:
@@ -899,6 +921,7 @@ class App(Generic[ReturnType], DOMNode):
 
     def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
         self.screen.refresh(repaint=repaint, layout=layout)
+        self.check_idle()
 
     def _paint(self):
         &#34;&#34;&#34;Perform a &#34;paint&#34; (draw the screen).&#34;&#34;&#34;
@@ -914,7 +937,7 @@ class App(Generic[ReturnType], DOMNode):
         stylesheet.set_variables(self.get_css_variables())
         stylesheet.reparse()
         stylesheet.update(self.app, animate=animate)
-        self.refresh(layout=True)
+        self.screen._refresh_layout(self.size, full=True)
 
     def _display(self, renderable: RenderableType | None) -&gt; None:
         &#34;&#34;&#34;Display a renderable within a sync.
@@ -1235,6 +1258,10 @@ def _init_uvloop() -&gt; None:
     &#34;&#34;&#34;The base class for Textual Applications&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
+    App {     
+        background: $surface;
+        color: $text-surface;        
+    }
     &#34;&#34;&#34;
 
     CSS_PATH: str | None = None
@@ -1266,6 +1293,7 @@ def _init_uvloop() -&gt; None:
         # this will create some first references to an asyncio loop.
         _init_uvloop()
 
+        super().__init__()
         self.features: frozenset[FeatureFlag] = parse_features(os.getenv(&#34;TEXTUAL&#34;, &#34;&#34;))
 
         self.console = Console(
@@ -1328,10 +1356,10 @@ def _init_uvloop() -&gt; None:
             else None
         )
 
-        super().__init__()
-
-    def __init_subclass__(cls, css_path: str | None = None) -&gt; None:
-        super().__init_subclass__()
+    def __init_subclass__(
+        cls, css_path: str | None = None, inherit_css: bool = True
+    ) -&gt; None:
+        super().__init_subclass__(inherit_css=inherit_css)
         cls.CSS_PATH = css_path
 
     title: Reactive[str] = Reactive(&#34;Textual&#34;)
@@ -1462,7 +1490,15 @@ def _init_uvloop() -&gt; None:
 
     def watch_dark(self, dark: bool) -&gt; None:
         &#34;&#34;&#34;Watches the dark bool.&#34;&#34;&#34;
+
         self.screen.dark = dark
+        if dark:
+            self.add_class(&#34;-dark-mode&#34;)
+            self.remove_class(&#34;-light-mode&#34;)
+        else:
+            self.remove_class(&#34;-dark-mode&#34;)
+            self.add_class(&#34;-light-mode&#34;)
+
         self.refresh_css()
 
     def get_driver_class(self) -&gt; Type[Driver]:
@@ -1486,6 +1522,18 @@ def _init_uvloop() -&gt; None:
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;title&#34;, self.title
+        yield &#34;id&#34;, self.id, None
+        if self.name:
+            yield &#34;name&#34;, self.name
+        if self.classes:
+            yield &#34;classes&#34;, set(self.classes)
+        pseudo_classes = self.pseudo_classes
+        if pseudo_classes:
+            yield &#34;pseudo_classes&#34;, set(pseudo_classes)
+
+    @property
+    def is_transparent(self) -&gt; bool:
+        return True
 
     @property
     def animator(self) -&gt; Animator:
@@ -1494,10 +1542,6 @@ def _init_uvloop() -&gt; None:
     @property
     def screen(self) -&gt; Screen:
         return self._screen_stack[-1]
-
-    @property
-    def css_type(self) -&gt; str:
-        return &#34;app&#34;
 
     @property
     def size(self) -&gt; Size:
@@ -1843,10 +1887,8 @@ def _init_uvloop() -&gt; None:
         try:
             if self.css_path is not None:
                 self.stylesheet.read(self.css_path)
-            if self.CSS is not None:
-                self.stylesheet.add_source(
-                    self.CSS, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
-                )
+            for path, css in self.css:
+                self.stylesheet.add_source(css, path=path)
         except Exception as error:
             self.on_exception(error)
             self._print_error_renderables()
@@ -1863,8 +1905,8 @@ def _init_uvloop() -&gt; None:
 
             driver = self._driver = self.driver_class(self.console, self)
             driver.start_application_mode()
-            with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
-                try:
+            try:
+                with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
                     mount_event = events.Mount(sender=self)
                     await self.dispatch_message(mount_event)
 
@@ -1876,8 +1918,8 @@ def _init_uvloop() -&gt; None:
                     await super().process_messages()
                     await self.animator.stop()
                     await self.close_all()
-                finally:
-                    driver.stop_application_mode()
+            finally:
+                driver.stop_application_mode()
         except Exception as error:
             self.on_exception(error)
         finally:
@@ -1998,6 +2040,7 @@ def _init_uvloop() -&gt; None:
 
     def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
         self.screen.refresh(repaint=repaint, layout=layout)
+        self.check_idle()
 
     def _paint(self):
         &#34;&#34;&#34;Perform a &#34;paint&#34; (draw the screen).&#34;&#34;&#34;
@@ -2013,7 +2056,7 @@ def _init_uvloop() -&gt; None:
         stylesheet.set_variables(self.get_css_variables())
         stylesheet.reparse()
         stylesheet.update(self.app, animate=animate)
-        self.refresh(layout=True)
+        self.screen._refresh_layout(self.size, full=True)
 
     def _display(self, renderable: RenderableType | None) -&gt; None:
         &#34;&#34;&#34;Display a renderable within a sync.
@@ -2365,6 +2408,18 @@ def focus_chain(self) -&gt; list[Widget]:
 def is_headless(self) -&gt; bool:
     &#34;&#34;&#34;Check if the app is running in &#39;headless&#39; mode.&#34;&#34;&#34;
     return &#34;headless&#34; in self.features</code></pre>
+</details>
+</dd>
+<dt id="textual.app.App.is_transparent"><code class="name">var <span class="ident">is_transparent</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_transparent(self) -&gt; bool:
+    return True</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
@@ -3442,10 +3497,8 @@ the log message sent to the devtools server.</p></div>
     try:
         if self.css_path is not None:
             self.stylesheet.read(self.css_path)
-        if self.CSS is not None:
-            self.stylesheet.add_source(
-                self.CSS, path=f&#34;&lt;{self.__class__.__name__}&gt;&#34;
-            )
+        for path, css in self.css:
+            self.stylesheet.add_source(css, path=path)
     except Exception as error:
         self.on_exception(error)
         self._print_error_renderables()
@@ -3462,8 +3515,8 @@ the log message sent to the devtools server.</p></div>
 
         driver = self._driver = self.driver_class(self.console, self)
         driver.start_application_mode()
-        with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
-            try:
+        try:
+            with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
                 mount_event = events.Mount(sender=self)
                 await self.dispatch_message(mount_event)
 
@@ -3475,8 +3528,8 @@ the log message sent to the devtools server.</p></div>
                 await super().process_messages()
                 await self.animator.stop()
                 await self.close_all()
-            finally:
-                driver.stop_application_mode()
+        finally:
+            driver.stop_application_mode()
     except Exception as error:
         self.on_exception(error)
     finally:
@@ -3568,7 +3621,8 @@ one internally. Defaults to None.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; None:
-    self.screen.refresh(repaint=repaint, layout=layout)</code></pre>
+    self.screen.refresh(repaint=repaint, layout=layout)
+    self.check_idle()</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.refresh_css"><code class="name flex">
@@ -3595,7 +3649,7 @@ one internally. Defaults to None.</p>
     stylesheet.set_variables(self.get_css_variables())
     stylesheet.reparse()
     stylesheet.update(self.app, animate=animate)
-    self.refresh(layout=True)</code></pre>
+    self.screen._refresh_layout(self.size, full=True)</code></pre>
 </details>
 </dd>
 <dt id="textual.app.App.register"><code class="name flex">
@@ -3872,7 +3926,15 @@ a filename automatically. Defaults to None.</p>
 </summary>
 <pre><code class="python">def watch_dark(self, dark: bool) -&gt; None:
     &#34;&#34;&#34;Watches the dark bool.&#34;&#34;&#34;
+
     self.screen.dark = dark
+    if dark:
+        self.add_class(&#34;-dark-mode&#34;)
+        self.remove_class(&#34;-light-mode&#34;)
+    else:
+        self.remove_class(&#34;-dark-mode&#34;)
+        self.add_class(&#34;-light-mode&#34;)
+
     self.refresh_css()</code></pre>
 </details>
 </dd>
@@ -3891,10 +3953,10 @@ a filename automatically. Defaults to None.</p>
 <li><code><a title="textual.dom.DOMNode.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.dom.DOMNode.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
+<li><code><a title="textual.dom.DOMNode.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.dom.DOMNode.css_type" href="dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.dom.DOMNode.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
@@ -4049,6 +4111,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.app.App.handle_update" href="#textual.app.App.handle_update">handle_update</a></code></li>
 <li><code><a title="textual.app.App.is_headless" href="#textual.app.App.is_headless">is_headless</a></code></li>
 <li><code><a title="textual.app.App.is_mounted" href="#textual.app.App.is_mounted">is_mounted</a></code></li>
+<li><code><a title="textual.app.App.is_transparent" href="#textual.app.App.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.app.App.log" href="#textual.app.App.log">log</a></code></li>
 <li><code><a title="textual.app.App.measure" href="#textual.app.App.measure">measure</a></code></li>
 <li><code><a title="textual.app.App.mount" href="#textual.app.App.mount">mount</a></code></li>

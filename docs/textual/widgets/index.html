@@ -100,17 +100,30 @@ __all__ = [
 
     CSS = &#34;&#34;&#34;
 
+
     Button {
         width: auto;
         height: 3;
-        padding: 0 2;
         background: $primary;
         color: $text-primary;
         content-align: center middle;
         border: tall $primary-lighten-3;
+        
         margin: 1 0;
+        align: center middle;
         text-style: bold;
     }
+
+    .-dark-mode Button {
+        border: tall white $primary-lighten-2;
+        color: $primary-lighten-2;
+        background: $background;
+    }
+
+    .-dark-mode Button:hover {
+        background: $surface;
+    }
+
 
     Button:hover {
         background:$primary-darken-2;
@@ -187,18 +200,18 @@ __all__ = [
 <dd>
 <div class="desc"><p>Base class for a message.</p></div>
 </dd>
-<dt id="textual.widgets.Button.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
+<dt id="textual.widgets.Button.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.widgets.Button.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
+<dt id="textual.widgets.Button.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.widgets.Button.label"><code class="name">var <span class="ident">label</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[typing.Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]]</code></dt>
+<dt id="textual.widgets.Button.label"><code class="name">var <span class="ident">label</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -279,10 +292,10 @@ __all__ = [
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="../widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="../widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.widget.Widget.css" href="../dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="../dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="../widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
@@ -676,10 +689,10 @@ def render_tree_label(
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="../widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="../widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.widget.Widget.css" href="../dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="../dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="../widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
@@ -997,10 +1010,10 @@ def render_tree_label(
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="../widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="../widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.widget.Widget.css" href="../dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="../dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="../widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
@@ -1150,18 +1163,18 @@ def render_tree_label(
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.widgets.Header.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
+<dt id="textual.widgets.Header.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.widgets.Header.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
+<dt id="textual.widgets.Header.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.widgets.Header.clock"><code class="name">var <span class="ident">clock</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[bool]</code></dt>
+<dt id="textual.widgets.Header.clock"><code class="name">var <span class="ident">clock</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -1184,7 +1197,7 @@ def full_title(self) -&gt; str:
     return f&#34;{self.title} - {self.sub_title}&#34; if self.sub_title else self.title</code></pre>
 </details>
 </dd>
-<dt id="textual.widgets.Header.style"><code class="name">var <span class="ident">style</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[typing.Union[str, Style]]</code></dt>
+<dt id="textual.widgets.Header.style"><code class="name">var <span class="ident">style</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -1195,7 +1208,7 @@ def full_title(self) -&gt; str:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.widgets.Header.sub_title"><code class="name">var <span class="ident">sub_title</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[str]</code></dt>
+<dt id="textual.widgets.Header.sub_title"><code class="name">var <span class="ident">sub_title</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -1206,7 +1219,7 @@ def full_title(self) -&gt; str:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.widgets.Header.tall"><code class="name">var <span class="ident">tall</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[bool]</code></dt>
+<dt id="textual.widgets.Header.tall"><code class="name">var <span class="ident">tall</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -1217,7 +1230,7 @@ def full_title(self) -&gt; str:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.widgets.Header.title"><code class="name">var <span class="ident">title</span> : <a title="textual.reactive.Reactive" href="../reactive.html#textual.reactive.Reactive">Reactive</a>[str]</code></dt>
+<dt id="textual.widgets.Header.title"><code class="name">var <span class="ident">title</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p></div>
 <details class="source">
@@ -1314,10 +1327,10 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="../widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="../widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.widget.Widget.css" href="../dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="../dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="../widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
@@ -1454,11 +1467,11 @@ def full_title(self) -&gt; str:
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.widgets.Placeholder.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
+<dt id="textual.widgets.Placeholder.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.widgets.Placeholder.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
+<dt id="textual.widgets.Placeholder.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1539,10 +1552,10 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="../widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="../widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.widget.Widget.css" href="../dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="../dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="../widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
@@ -1697,10 +1710,10 @@ def full_title(self) -&gt; str:
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="../widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="../widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.widget.Widget.css" href="../dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="../dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="../widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
@@ -2329,10 +2342,10 @@ return default</p></div>
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="../widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="../widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.widget.Widget.css" href="../dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="../dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="../widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>

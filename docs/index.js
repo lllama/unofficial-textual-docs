@@ -2398,6 +2398,11 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.app.App.is_transparent",
+"url":18,
+"doc":""
+},
+{
 "ref":"textual.app.App.animator",
 "url":18,
 "doc":""
@@ -2406,11 +2411,6 @@ INDEX=[
 "ref":"textual.app.App.screen",
 "url":18,
 "doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
-},
-{
-"ref":"textual.app.App.css_type",
-"url":18,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.app.App.size",
@@ -2730,9 +2730,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.app.App.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.app.App.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.app.App.id",
@@ -4100,7 +4105,7 @@ INDEX=[
 {
 "ref":"textual.geometry.Region.corners",
 "url":28,
-"doc":"Get the maxima and minima of region. Returns: tuple[int, int, int, int]: A tuple of ( ,  ,  ,  )"
+"doc":"Get the maxima and minima of region. Returns: tuple[int, int, int, int]: A tuple of  ( ,  ,  ,  ) "
 },
 {
 "ref":"textual.geometry.Region.x_range",
@@ -4180,19 +4185,19 @@ INDEX=[
 {
 "ref":"textual.geometry.Region.split",
 "url":28,
-"doc":"Split a region in to 4 from given x and y offsets (cuts). cut_x \u2193 \u250c    \u2510\u250c \u2500\u2510 \u2502  \u2502 \u2502 0  1 \u2502 \u2502  \u2502 cut_y \u2192 \u2514    \u2518\u2514 \u2500\u2518 \u250c    \u2510\u250c \u2500\u2510 \u2502 2  3 \u2502 \u2514    \u2518\u2514 \u2500\u2518 Args: cut_x (int): Offset from self.x where the cut should be made. If negative, the cut is taken from the right edge. cut_y (int): Offset from self.y where the cut should be made. If negative, the cut is taken from the lower edge. Returns: tuple[Region, Region, Region, Region]: Four new regions which add up to the original (self).",
+"doc":"Split a region in to 4 from given x and y offsets (cuts).   cut_x \u2193 \u250c    \u2510\u250c \u2500\u2510 \u2502  \u2502 \u2502 0  1 \u2502 \u2502  \u2502 cut_y \u2192 \u2514    \u2518\u2514 \u2500\u2518 \u250c    \u2510\u250c \u2500\u2510 \u2502 2  3 \u2502 \u2514    \u2518\u2514 \u2500\u2518   Args: cut_x (int): Offset from self.x where the cut should be made. If negative, the cut is taken from the right edge. cut_y (int): Offset from self.y where the cut should be made. If negative, the cut is taken from the lower edge. Returns: tuple[Region, Region, Region, Region]: Four new regions which add up to the original (self).",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.split_vertical",
 "url":28,
-"doc":"Split a region in to two, from a given x offset. cut \u2193 \u250c    \u2510\u250c \u2500\u2510 \u2502 0  1 \u2502 \u2502  \u2502 \u2514    \u2518\u2514 \u2500\u2518 Args: cut (int): An offset from self.x where the cut should be made. If cut is negative, it is taken from the right edge. Returns: tuple[Region, Region]: Two regions, which add up to the original (self).",
+"doc":"Split a region in to two, from a given x offset.   cut \u2193 \u250c    \u2510\u250c \u2500\u2510 \u2502 0  1 \u2502 \u2502  \u2502 \u2514    \u2518\u2514 \u2500\u2518   Args: cut (int): An offset from self.x where the cut should be made. If cut is negative, it is taken from the right edge. Returns: tuple[Region, Region]: Two regions, which add up to the original (self).",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.split_horizontal",
 "url":28,
-"doc":"Split a region in to two, from a given x offset. \u250c    \u2500\u2510 \u2502 0 \u2502 \u2502 \u2502 cut \u2192 \u2514    \u2500\u2518 \u250c    \u2500\u2510 \u2502 1 \u2502 \u2514    \u2500\u2518 Args: cut (int): An offset from self.x where the cut should be made. May be negative, for the offset to start from the right edge. Returns: tuple[Region, Region]: Two regions, which add up to the original (self).",
+"doc":"Split a region in to two, from a given x offset.   \u250c    \u2500\u2510 \u2502 0 \u2502 \u2502 \u2502 cut \u2192 \u2514    \u2500\u2518 \u250c    \u2500\u2510 \u2502 1 \u2502 \u2514    \u2500\u2518   Args: cut (int): An offset from self.x where the cut should be made. May be negative, for the offset to start from the right edge. Returns: tuple[Region, Region]: Two regions, which add up to the original (self).",
 "func":1
 },
 {
@@ -4662,11 +4667,6 @@ INDEX=[
 "ref":"textual.widget.Widget",
 "url":31,
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
-},
-{
-"ref":"textual.widget.Widget.CSS",
-"url":31,
-"doc":""
 },
 {
 "ref":"textual.widget.Widget.can_focus",
@@ -5278,9 +5278,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widget.Widget.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widget.Widget.screen",
@@ -5306,11 +5311,6 @@ INDEX=[
 "ref":"textual.widget.Widget.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widget.Widget.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widget.Widget.css_path_nodes",
@@ -5622,12 +5622,7 @@ INDEX=[
 "doc":"A node in a hierarchy of things forming the UI. Nodes are mountable and may be styled with CSS."
 },
 {
-"ref":"textual.dom.DOMNode.DEFAULT_STYLES",
-"url":19,
-"doc":""
-},
-{
-"ref":"textual.dom.DOMNode.INLINE_STYLES",
+"ref":"textual.dom.DOMNode.CSS",
 "url":19,
 "doc":""
 },
@@ -5638,9 +5633,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.dom.DOMNode.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.dom.DOMNode.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.dom.DOMNode.screen",
@@ -5676,11 +5676,6 @@ INDEX=[
 "ref":"textual.dom.DOMNode.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.dom.DOMNode.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.dom.DOMNode.css_path_nodes",
@@ -6267,9 +6262,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Vertical.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.layout.Vertical.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.layout.Vertical.screen",
@@ -6295,11 +6295,6 @@ INDEX=[
 "ref":"textual.layout.Vertical.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.layout.Vertical.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.layout.Vertical.css_path_nodes",
@@ -6761,9 +6756,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Horizontal.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.layout.Horizontal.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.layout.Horizontal.screen",
@@ -6789,11 +6789,6 @@ INDEX=[
 "ref":"textual.layout.Horizontal.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.layout.Horizontal.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.layout.Horizontal.css_path_nodes",
@@ -7887,9 +7882,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.screen.Screen.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.screen.Screen.screen",
@@ -7915,11 +7915,6 @@ INDEX=[
 "ref":"textual.screen.Screen.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.screen.Screen.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.screen.Screen.css_path_nodes",
@@ -8843,9 +8838,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.scrollbar.ScrollBar.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.screen",
@@ -8871,11 +8871,6 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.scrollbar.ScrollBar.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.css_path_nodes",
@@ -11889,9 +11884,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Button.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.Button.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.Button.screen",
@@ -11917,11 +11917,6 @@ INDEX=[
 "ref":"textual.widgets.Button.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.Button.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.Button.css_path_nodes",
@@ -12426,9 +12421,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.DirectoryTree.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.DirectoryTree.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.DirectoryTree.screen",
@@ -12454,11 +12454,6 @@ INDEX=[
 "ref":"textual.widgets.DirectoryTree.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.DirectoryTree.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.DirectoryTree.css_path_nodes",
@@ -13003,9 +12998,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Footer.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.Footer.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.Footer.screen",
@@ -13031,11 +13031,6 @@ INDEX=[
 "ref":"textual.widgets.Footer.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.Footer.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.Footer.css_path_nodes",
@@ -13546,9 +13541,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Header.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.Header.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.Header.screen",
@@ -13574,11 +13574,6 @@ INDEX=[
 "ref":"textual.widgets.Header.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.Header.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.Header.css_path_nodes",
@@ -14059,9 +14054,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Placeholder.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.Placeholder.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.Placeholder.screen",
@@ -14087,11 +14087,6 @@ INDEX=[
 "ref":"textual.widgets.Placeholder.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.Placeholder.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.Placeholder.css_path_nodes",
@@ -14554,9 +14549,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.Static.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.Static.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.Static.screen",
@@ -14582,11 +14582,6 @@ INDEX=[
 "ref":"textual.widgets.Static.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.Static.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.Static.css_path_nodes",
@@ -15200,9 +15195,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.TreeControl.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.TreeControl.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.TreeControl.screen",
@@ -15228,11 +15228,6 @@ INDEX=[
 "ref":"textual.widgets.TreeControl.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.TreeControl.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.TreeControl.css_path_nodes",
@@ -15503,11 +15498,6 @@ INDEX=[
 "ref":"textual.widgets.tabs.Tabs",
 "url":52,
 "doc":"Widget which displays a set of horizontal tabs. Args: tabs (list[Tab]): A list of Tab objects defining the tabs which should be rendered. active_tab (str, optional): The name of the tab that should be active on first render. active_tab_style (StyleType): Style to apply to the label of the active tab. active_bar_style (StyleType): Style to apply to the underline of the active tab. inactive_tab_style (StyleType): Style to apply to the label of inactive tabs. inactive_bar_style (StyleType): Style to apply to the underline of inactive tabs. inactive_text_opacity (float): Opacity of the text labels of inactive tabs. animation_duration (float): The duration of the tab change animation, in seconds. animation_function (str): The easing function to use for the tab change animation. tab_padding (int, optional): The padding at the side of each tab. If None, tabs will automatically be padded such that they fit the available horizontal space. search_by_first_character (bool): If True, entering a character on your keyboard will activate the next tab (in left-to-right order) with a label starting with that character."
-},
-{
-"ref":"textual.widgets.tabs.Tabs.DEFAULT_STYLES",
-"url":52,
-"doc":""
 },
 {
 "ref":"textual.widgets.tabs.Tabs.on_key",
@@ -15836,9 +15826,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.tabs.Tabs.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.tabs.Tabs.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.tabs.Tabs.screen",
@@ -15864,11 +15859,6 @@ INDEX=[
 "ref":"textual.widgets.tabs.Tabs.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.tabs.Tabs.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.tabs.Tabs.css_path_nodes",
@@ -16356,9 +16346,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.text_input.TextWidgetBase.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.text_input.TextWidgetBase.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.screen",
@@ -16384,11 +16379,6 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextWidgetBase.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.text_input.TextWidgetBase.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.css_path_nodes",
@@ -16898,9 +16888,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.text_input.TextInput.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.text_input.TextInput.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.text_input.TextInput.screen",
@@ -16926,11 +16921,6 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextInput.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.text_input.TextInput.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.text_input.TextInput.css_path_nodes",
@@ -17392,9 +17382,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.text_input.TextArea.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.text_input.TextArea.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.text_input.TextArea.screen",
@@ -17420,11 +17415,6 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextArea.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.text_input.TextArea.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.text_input.TextArea.css_path_nodes",
@@ -17918,9 +17908,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.text_input.TextAreaChild.css",
+"url":19,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
 "ref":"textual.widgets.text_input.TextAreaChild.parent",
 "url":19,
-"doc":"Get the parent node. Returns: DOMNode: The node which is the direct parent of this node."
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
 },
 {
 "ref":"textual.widgets.text_input.TextAreaChild.screen",
@@ -17946,11 +17941,6 @@ INDEX=[
 "ref":"textual.widgets.text_input.TextAreaChild.pseudo_classes",
 "url":19,
 "doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.widgets.text_input.TextAreaChild.css_type",
-"url":19,
-"doc":"Gets the CSS type, used by the CSS. Returns: str: A type used in CSS (lower cased class name)."
 },
 {
 "ref":"textual.widgets.text_input.TextAreaChild.css_path_nodes",

@@ -28,7 +28,8 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from typing import Iterable, Iterator, TYPE_CHECKING
+from inspect import getfile
+from typing import ClassVar, Iterable, Iterator, Type, TYPE_CHECKING
 
 import rich.repr
 from rich.highlighter import ReprHighlighter
@@ -66,8 +67,13 @@ class DOMNode(MessagePump):
 
     &#34;&#34;&#34;
 
-    DEFAULT_STYLES = &#34;&#34;
-    INLINE_STYLES = &#34;&#34;
+    # Custom CSS
+    CSS: ClassVar[str] = &#34;&#34;
+
+    # True if this node inherits the CSS from the base class.
+    _inherit_css: ClassVar[bool] = True
+    # List of names of base class (lower cased) that inherit CSS
+    _css_type_names: ClassVar[frozenset[str]] = frozenset()
 
     def __init__(
         self,
@@ -81,13 +87,50 @@ class DOMNode(MessagePump):
         self._classes: set[str] = set() if classes is None else set(classes.split())
         self.children = NodeList()
         self._css_styles: Styles = Styles(self)
-        self._inline_styles: Styles = Styles.parse(
-            self.INLINE_STYLES, repr(self), node=self
-        )
+        self._inline_styles: Styles = Styles(self)
         self.styles = RenderStyles(self, self._css_styles, self._inline_styles)
         self._default_styles = Styles()
         self._default_rules = self._default_styles.extract_rules((0, 0, 0))
         super().__init__()
+
+    def __init_subclass__(cls, inherit_css: bool = True) -&gt; None:
+        super().__init_subclass__()
+        cls._inherit_css = inherit_css
+        css_type_names: set[str] = set()
+        for base in cls._css_bases(cls):
+            css_type_names.add(base.__name__.lower())
+        cls._css_type_names = frozenset(css_type_names)
+
+    @property
+    def _node_bases(self) -&gt; Iterator[Type[DOMNode]]:
+        &#34;&#34;&#34;Get the DOMNode bases classes (including self.__class__)
+
+        Returns:
+            Iterator[Type[DOMNode]]: An iterable of DOMNode classes.
+        &#34;&#34;&#34;
+        return self._css_bases(self.__class__)
+
+    @classmethod
+    def _css_bases(cls, base: Type[DOMNode]) -&gt; Iterator[Type[DOMNode]]:
+        &#34;&#34;&#34;Get the DOMNode base classes, which inherit CSS.
+
+        Args:
+            base (Type[DOMNode]): A DOMNode class
+
+        Returns:
+            Iterator[Type[DOMNode]]: An iterable of DOMNode classes.
+        &#34;&#34;&#34;
+        _class = base
+        while True:
+            yield _class
+            if not _class._inherit_css:
+                break
+            for _base in _class.__bases__:
+                if issubclass(_base, DOMNode):
+                    _class = _base
+                    break
+            else:
+                break
 
     def on_register(self, app: App) -&gt; None:
         &#34;&#34;&#34;Called when the widget is registered
@@ -103,11 +146,36 @@ class DOMNode(MessagePump):
             yield &#34;classes&#34;, &#34; &#34;.join(self._classes)
 
     @property
+    def css(self) -&gt; list[tuple[str, str]]:
+        &#34;&#34;&#34;Gets the CSS for this class and inherited from bases.
+
+        Returns:
+            list[tuple[str, str]]: a list of tuples containing (PATH, SOURCE) for this
+                and inherited from base classes.
+        &#34;&#34;&#34;
+
+        css_stack: list[tuple[str, str]] = []
+
+        def get_path(base: Type[DOMNode]) -&gt; str:
+            &#34;&#34;&#34;Get a path to the DOM Node&#34;&#34;&#34;
+            try:
+                return f&#34;{getfile(base)}:{base.__name__}&#34;
+            except TypeError:
+                return f&#34;{base.__name__}&#34;
+
+        for base in self._node_bases:
+            css = base.CSS.strip()
+            if css:
+                css_stack.append((get_path(base), css))
+
+        return css_stack
+
+    @property
     def parent(self) -&gt; DOMNode | None:
         &#34;&#34;&#34;Get the parent node.
 
         Returns:
-            DOMNode: The node which is the direct parent of this node.
+            DOMNode | None: The node which is the direct parent of this node.
         &#34;&#34;&#34;
         return self._parent
 
@@ -187,15 +255,6 @@ class DOMNode(MessagePump):
         return pseudo_classes
 
     @property
-    def css_type(self) -&gt; str:
-        &#34;&#34;&#34;Gets the CSS type, used by the CSS.
-
-        Returns:
-            str: A type used in CSS (lower cased class name).
-        &#34;&#34;&#34;
-        return self.__class__.__name__.lower()
-
-    @property
     def css_path_nodes(self) -&gt; list[DOMNode]:
         &#34;&#34;&#34;A list of nodes from the root to this node, forming a &#34;path&#34;.
 
@@ -266,20 +325,29 @@ class DOMNode(MessagePump):
         from rich.console import Group
         from rich.panel import Panel
 
-        highlighter = ReprHighlighter()
-        tree = Tree(highlighter(repr(self)))
+        from .widget import Widget
 
-        def add_children(tree, node):
-            for child in node.children:
+        def render_info(node: DOMNode) -&gt; Columns:
+            if isinstance(node, Widget):
                 info = Columns(
                     [
-                        Pretty(child),
-                        highlighter(f&#34;region={child.region!r}&#34;),
+                        Pretty(node),
+                        highlighter(f&#34;region={node.region!r}&#34;),
                         highlighter(
-                            f&#34;virtual_size={child.virtual_size!r}&#34;,
+                            f&#34;virtual_size={node.virtual_size!r}&#34;,
                         ),
                     ]
                 )
+            else:
+                info = Columns([Pretty(node)])
+            return info
+
+        highlighter = ReprHighlighter()
+        tree = Tree(render_info(self))
+
+        def add_children(tree, node):
+            for child in node.children:
+                info = render_info(child)
                 css = child.styles.css
                 if css:
                     info = Group(
@@ -492,7 +560,6 @@ class DOMNode(MessagePump):
         self._classes.update(class_names)
         try:
             self.app.stylesheet.update(self.app, animate=True)
-            self.refresh()
         except NoActiveAppError:
             pass
 
@@ -506,7 +573,6 @@ class DOMNode(MessagePump):
         self._classes.difference_update(class_names)
         try:
             self.app.stylesheet.update(self.app, animate=True)
-            self.refresh()
         except NoActiveAppError:
             pass
 
@@ -520,7 +586,6 @@ class DOMNode(MessagePump):
         self._classes.symmetric_difference_update(class_names)
         try:
             self.app.stylesheet.update(self.app, animate=True)
-            self.refresh()
         except NoActiveAppError:
             pass
 
@@ -560,8 +625,13 @@ class DOMNode(MessagePump):
 
     &#34;&#34;&#34;
 
-    DEFAULT_STYLES = &#34;&#34;
-    INLINE_STYLES = &#34;&#34;
+    # Custom CSS
+    CSS: ClassVar[str] = &#34;&#34;
+
+    # True if this node inherits the CSS from the base class.
+    _inherit_css: ClassVar[bool] = True
+    # List of names of base class (lower cased) that inherit CSS
+    _css_type_names: ClassVar[frozenset[str]] = frozenset()
 
     def __init__(
         self,
@@ -575,13 +645,50 @@ class DOMNode(MessagePump):
         self._classes: set[str] = set() if classes is None else set(classes.split())
         self.children = NodeList()
         self._css_styles: Styles = Styles(self)
-        self._inline_styles: Styles = Styles.parse(
-            self.INLINE_STYLES, repr(self), node=self
-        )
+        self._inline_styles: Styles = Styles(self)
         self.styles = RenderStyles(self, self._css_styles, self._inline_styles)
         self._default_styles = Styles()
         self._default_rules = self._default_styles.extract_rules((0, 0, 0))
         super().__init__()
+
+    def __init_subclass__(cls, inherit_css: bool = True) -&gt; None:
+        super().__init_subclass__()
+        cls._inherit_css = inherit_css
+        css_type_names: set[str] = set()
+        for base in cls._css_bases(cls):
+            css_type_names.add(base.__name__.lower())
+        cls._css_type_names = frozenset(css_type_names)
+
+    @property
+    def _node_bases(self) -&gt; Iterator[Type[DOMNode]]:
+        &#34;&#34;&#34;Get the DOMNode bases classes (including self.__class__)
+
+        Returns:
+            Iterator[Type[DOMNode]]: An iterable of DOMNode classes.
+        &#34;&#34;&#34;
+        return self._css_bases(self.__class__)
+
+    @classmethod
+    def _css_bases(cls, base: Type[DOMNode]) -&gt; Iterator[Type[DOMNode]]:
+        &#34;&#34;&#34;Get the DOMNode base classes, which inherit CSS.
+
+        Args:
+            base (Type[DOMNode]): A DOMNode class
+
+        Returns:
+            Iterator[Type[DOMNode]]: An iterable of DOMNode classes.
+        &#34;&#34;&#34;
+        _class = base
+        while True:
+            yield _class
+            if not _class._inherit_css:
+                break
+            for _base in _class.__bases__:
+                if issubclass(_base, DOMNode):
+                    _class = _base
+                    break
+            else:
+                break
 
     def on_register(self, app: App) -&gt; None:
         &#34;&#34;&#34;Called when the widget is registered
@@ -597,11 +704,36 @@ class DOMNode(MessagePump):
             yield &#34;classes&#34;, &#34; &#34;.join(self._classes)
 
     @property
+    def css(self) -&gt; list[tuple[str, str]]:
+        &#34;&#34;&#34;Gets the CSS for this class and inherited from bases.
+
+        Returns:
+            list[tuple[str, str]]: a list of tuples containing (PATH, SOURCE) for this
+                and inherited from base classes.
+        &#34;&#34;&#34;
+
+        css_stack: list[tuple[str, str]] = []
+
+        def get_path(base: Type[DOMNode]) -&gt; str:
+            &#34;&#34;&#34;Get a path to the DOM Node&#34;&#34;&#34;
+            try:
+                return f&#34;{getfile(base)}:{base.__name__}&#34;
+            except TypeError:
+                return f&#34;{base.__name__}&#34;
+
+        for base in self._node_bases:
+            css = base.CSS.strip()
+            if css:
+                css_stack.append((get_path(base), css))
+
+        return css_stack
+
+    @property
     def parent(self) -&gt; DOMNode | None:
         &#34;&#34;&#34;Get the parent node.
 
         Returns:
-            DOMNode: The node which is the direct parent of this node.
+            DOMNode | None: The node which is the direct parent of this node.
         &#34;&#34;&#34;
         return self._parent
 
@@ -681,15 +813,6 @@ class DOMNode(MessagePump):
         return pseudo_classes
 
     @property
-    def css_type(self) -&gt; str:
-        &#34;&#34;&#34;Gets the CSS type, used by the CSS.
-
-        Returns:
-            str: A type used in CSS (lower cased class name).
-        &#34;&#34;&#34;
-        return self.__class__.__name__.lower()
-
-    @property
     def css_path_nodes(self) -&gt; list[DOMNode]:
         &#34;&#34;&#34;A list of nodes from the root to this node, forming a &#34;path&#34;.
 
@@ -760,20 +883,29 @@ class DOMNode(MessagePump):
         from rich.console import Group
         from rich.panel import Panel
 
-        highlighter = ReprHighlighter()
-        tree = Tree(highlighter(repr(self)))
+        from .widget import Widget
 
-        def add_children(tree, node):
-            for child in node.children:
+        def render_info(node: DOMNode) -&gt; Columns:
+            if isinstance(node, Widget):
                 info = Columns(
                     [
-                        Pretty(child),
-                        highlighter(f&#34;region={child.region!r}&#34;),
+                        Pretty(node),
+                        highlighter(f&#34;region={node.region!r}&#34;),
                         highlighter(
-                            f&#34;virtual_size={child.virtual_size!r}&#34;,
+                            f&#34;virtual_size={node.virtual_size!r}&#34;,
                         ),
                     ]
                 )
+            else:
+                info = Columns([Pretty(node)])
+            return info
+
+        highlighter = ReprHighlighter()
+        tree = Tree(render_info(self))
+
+        def add_children(tree, node):
+            for child in node.children:
+                info = render_info(child)
                 css = child.styles.css
                 if css:
                     info = Group(
@@ -986,7 +1118,6 @@ class DOMNode(MessagePump):
         self._classes.update(class_names)
         try:
             self.app.stylesheet.update(self.app, animate=True)
-            self.refresh()
         except NoActiveAppError:
             pass
 
@@ -1000,7 +1131,6 @@ class DOMNode(MessagePump):
         self._classes.difference_update(class_names)
         try:
             self.app.stylesheet.update(self.app, animate=True)
-            self.refresh()
         except NoActiveAppError:
             pass
 
@@ -1014,7 +1144,6 @@ class DOMNode(MessagePump):
         self._classes.symmetric_difference_update(class_names)
         try:
             self.app.stylesheet.update(self.app, animate=True)
-            self.refresh()
         except NoActiveAppError:
             pass
 
@@ -1037,11 +1166,7 @@ class DOMNode(MessagePump):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.dom.DOMNode.DEFAULT_STYLES"><code class="name">var <span class="ident">DEFAULT_STYLES</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.dom.DOMNode.INLINE_STYLES"><code class="name">var <span class="ident">INLINE_STYLES</span></code></dt>
+<dt id="textual.dom.DOMNode.CSS"><code class="name">var <span class="ident">CSS</span> : ClassVar[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1114,6 +1239,45 @@ def colors(self) -&gt; tuple[tuple[Color, Color], tuple[Color, Color]]:
     return (base_background, base_color), (background, color)</code></pre>
 </details>
 </dd>
+<dt id="textual.dom.DOMNode.css"><code class="name">var <span class="ident">css</span> : list[tuple[str, str]]</code></dt>
+<dd>
+<div class="desc"><p>Gets the CSS for this class and inherited from bases.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list[tuple[str, str]]</code></dt>
+<dd>a list of tuples containing (PATH, SOURCE) for this
+and inherited from base classes.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def css(self) -&gt; list[tuple[str, str]]:
+    &#34;&#34;&#34;Gets the CSS for this class and inherited from bases.
+
+    Returns:
+        list[tuple[str, str]]: a list of tuples containing (PATH, SOURCE) for this
+            and inherited from base classes.
+    &#34;&#34;&#34;
+
+    css_stack: list[tuple[str, str]] = []
+
+    def get_path(base: Type[DOMNode]) -&gt; str:
+        &#34;&#34;&#34;Get a path to the DOM Node&#34;&#34;&#34;
+        try:
+            return f&#34;{getfile(base)}:{base.__name__}&#34;
+        except TypeError:
+            return f&#34;{base.__name__}&#34;
+
+    for base in self._node_bases:
+        css = base.CSS.strip()
+        if css:
+            css_stack.append((get_path(base), css))
+
+    return css_stack</code></pre>
+</details>
+</dd>
 <dt id="textual.dom.DOMNode.css_identifier"><code class="name">var <span class="ident">css_identifier</span> : str</code></dt>
 <dd>
 <div class="desc"><p>A CSS selector that identifies this DOM node.</p></div>
@@ -1178,28 +1342,6 @@ def css_path_nodes(self) -&gt; list[DOMNode]:
         node = node._parent
         append(node)
     return result[::-1]</code></pre>
-</details>
-</dd>
-<dt id="textual.dom.DOMNode.css_type"><code class="name">var <span class="ident">css_type</span> : str</code></dt>
-<dd>
-<div class="desc"><p>Gets the CSS type, used by the CSS.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>str</code></dt>
-<dd>A type used in CSS (lower cased class name).</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def css_type(self) -&gt; str:
-    &#34;&#34;&#34;Gets the CSS type, used by the CSS.
-
-    Returns:
-        str: A type used in CSS (lower cased class name).
-    &#34;&#34;&#34;
-    return self.__class__.__name__.lower()</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.display"><code class="name">var <span class="ident">display</span> : bool</code></dt>
@@ -1279,10 +1421,7 @@ def name(self) -&gt; str | None:
 <dd>
 <div class="desc"><p>Get the parent node.</p>
 <h2 id="returns">Returns</h2>
-<dl>
-<dt><code><a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a></code></dt>
-<dd>The node which is the direct parent of this node.</dd>
-</dl></div>
+<p>DOMNode | None: The node which is the direct parent of this node.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1292,7 +1431,7 @@ def parent(self) -&gt; DOMNode | None:
     &#34;&#34;&#34;Get the parent node.
 
     Returns:
-        DOMNode: The node which is the direct parent of this node.
+        DOMNode | None: The node which is the direct parent of this node.
     &#34;&#34;&#34;
     return self._parent</code></pre>
 </details>
@@ -1391,20 +1530,29 @@ def tree(self) -&gt; Tree:
     from rich.console import Group
     from rich.panel import Panel
 
-    highlighter = ReprHighlighter()
-    tree = Tree(highlighter(repr(self)))
+    from .widget import Widget
 
-    def add_children(tree, node):
-        for child in node.children:
+    def render_info(node: DOMNode) -&gt; Columns:
+        if isinstance(node, Widget):
             info = Columns(
                 [
-                    Pretty(child),
-                    highlighter(f&#34;region={child.region!r}&#34;),
+                    Pretty(node),
+                    highlighter(f&#34;region={node.region!r}&#34;),
                     highlighter(
-                        f&#34;virtual_size={child.virtual_size!r}&#34;,
+                        f&#34;virtual_size={node.virtual_size!r}&#34;,
                     ),
                 ]
             )
+        else:
+            info = Columns([Pretty(node)])
+        return info
+
+    highlighter = ReprHighlighter()
+    tree = Tree(render_info(self))
+
+    def add_children(tree, node):
+        for child in node.children:
+            info = render_info(child)
             css = child.styles.css
             if css:
                 info = Group(
@@ -1518,7 +1666,6 @@ def visible(self) -&gt; bool:
     self._classes.update(class_names)
     try:
         self.app.stylesheet.update(self.app, animate=True)
-        self.refresh()
     except NoActiveAppError:
         pass</code></pre>
 </details>
@@ -1739,7 +1886,6 @@ def visible(self) -&gt; bool:
     self._classes.difference_update(class_names)
     try:
         self.app.stylesheet.update(self.app, animate=True)
-        self.refresh()
     except NoActiveAppError:
         pass</code></pre>
 </details>
@@ -1809,7 +1955,6 @@ def visible(self) -&gt; bool:
     self._classes.symmetric_difference_update(class_names)
     try:
         self.app.stylesheet.update(self.app, animate=True)
-        self.refresh()
     except NoActiveAppError:
         pass</code></pre>
 </details>
@@ -1957,18 +2102,17 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a></code></h4>
 <ul class="">
-<li><code><a title="textual.dom.DOMNode.DEFAULT_STYLES" href="#textual.dom.DOMNode.DEFAULT_STYLES">DEFAULT_STYLES</a></code></li>
-<li><code><a title="textual.dom.DOMNode.INLINE_STYLES" href="#textual.dom.DOMNode.INLINE_STYLES">INLINE_STYLES</a></code></li>
+<li><code><a title="textual.dom.DOMNode.CSS" href="#textual.dom.DOMNode.CSS">CSS</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_child" href="#textual.dom.DOMNode.add_child">add_child</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_children" href="#textual.dom.DOMNode.add_children">add_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_class" href="#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.ancestors" href="#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.classes" href="#textual.dom.DOMNode.classes">classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.colors" href="#textual.dom.DOMNode.colors">colors</a></code></li>
+<li><code><a title="textual.dom.DOMNode.css" href="#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_path_nodes" href="#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.dom.DOMNode.css_type" href="#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.dom.DOMNode.displayed_children" href="#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.focusable_children" href="#textual.dom.DOMNode.focusable_children">focusable_children</a></code></li>

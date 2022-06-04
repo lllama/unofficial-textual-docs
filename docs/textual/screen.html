@@ -58,7 +58,7 @@ class Screen(Widget):
     &#34;&#34;&#34;A widget for the root of the app.&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-    Screen {
+    Screen {             
         layout: vertical;
         overflow-y: auto;
     }
@@ -140,20 +140,19 @@ class Screen(Widget):
     def on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
         event.prevent_default()
-
         if self._layout_required:
             self._refresh_layout()
             self._layout_required = False
             self._dirty_widgets.clear()
-        elif self._dirty_widgets:
+        elif self._dirty_widgets or self._dirty_regions:
             self.update_timer.resume()
 
     def _on_update(self) -&gt; None:
         &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
         # Render widgets together
-
-        if self._dirty_widgets:
+        if self._dirty_widgets or self._dirty_regions:
             self._compositor.update_widgets(self._dirty_widgets)
+            self._compositor.add_dirty_regions(self._dirty_regions)
             self.app._display(self._compositor.render())
             self._dirty_widgets.clear()
         self.update_timer.pause()
@@ -317,7 +316,7 @@ class Screen(Widget):
     &#34;&#34;&#34;A widget for the root of the app.&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-    Screen {
+    Screen {             
         layout: vertical;
         overflow-y: auto;
     }
@@ -399,20 +398,19 @@ class Screen(Widget):
     def on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
         event.prevent_default()
-
         if self._layout_required:
             self._refresh_layout()
             self._layout_required = False
             self._dirty_widgets.clear()
-        elif self._dirty_widgets:
+        elif self._dirty_widgets or self._dirty_regions:
             self.update_timer.resume()
 
     def _on_update(self) -&gt; None:
         &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
         # Render widgets together
-
-        if self._dirty_widgets:
+        if self._dirty_widgets or self._dirty_regions:
             self._compositor.update_widgets(self._dirty_widgets)
+            self._compositor.add_dirty_regions(self._dirty_regions)
             self.app._display(self._compositor.render())
             self._dirty_widgets.clear()
         self.update_timer.pause()
@@ -876,10 +874,10 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.console" href="widget.html#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.widget.Widget.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.css_type" href="dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>

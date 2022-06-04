@@ -219,8 +219,6 @@ class Tabs(Widget):
             that character.
     &#34;&#34;&#34;
 
-    DEFAULT_STYLES = &#34;height: 2;&#34;
-
     _active_tab_name: Reactive[str | None] = Reactive(&#34;&#34;)
     _bar_offset: Reactive[float] = Reactive(0.0)
 
@@ -489,8 +487,6 @@ that character.</dd>
             that character.
     &#34;&#34;&#34;
 
-    DEFAULT_STYLES = &#34;height: 2;&#34;
-
     _active_tab_name: Reactive[str | None] = Reactive(&#34;&#34;)
     _bar_offset: Reactive[float] = Reactive(0.0)
 
@@ -649,10 +645,6 @@ that character.</dd>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.widgets.tabs.Tabs.DEFAULT_STYLES"><code class="name">var <span class="ident">DEFAULT_STYLES</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="textual.widgets.tabs.Tabs.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
 <dd>
 <div class="desc"></div>
@@ -891,10 +883,10 @@ to cycle through tabs with labels beginning with that character.</p>
 <li><code><a title="textual.widget.Widget.console" href="../widget.html#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="../widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="../widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.widget.Widget.css" href="../dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="../dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="../dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="../dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.css_type" href="../dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="../widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="../message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="../message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
@@ -1036,7 +1028,6 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.widgets.tabs.Tabs" href="#textual.widgets.tabs.Tabs">Tabs</a></code></h4>
 <ul class="">
-<li><code><a title="textual.widgets.tabs.Tabs.DEFAULT_STYLES" href="#textual.widgets.tabs.Tabs.DEFAULT_STYLES">DEFAULT_STYLES</a></code></li>
 <li><code><a title="textual.widgets.tabs.Tabs.action_range_clicked" href="#textual.widgets.tabs.Tabs.action_range_clicked">action_range_clicked</a></code></li>
 <li><code><a title="textual.widgets.tabs.Tabs.activate_next_tab" href="#textual.widgets.tabs.Tabs.activate_next_tab">activate_next_tab</a></code></li>
 <li><code><a title="textual.widgets.tabs.Tabs.activate_previous_tab" href="#textual.widgets.tabs.Tabs.activate_previous_tab">activate_previous_tab</a></code></li>

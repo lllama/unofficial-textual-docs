@@ -332,7 +332,7 @@ class Region(NamedTuple):
         &#34;&#34;&#34;Get the maxima and minima of region.
 
         Returns:
-            tuple[int, int, int, int]: A tuple of (&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)
+            tuple[int, int, int, int]: A tuple of `(&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)`
         &#34;&#34;&#34;
         x, y, width, height = self
         return x, y, x + width, y + height
@@ -556,6 +556,7 @@ class Region(NamedTuple):
     def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Region]:
         &#34;&#34;&#34;Split a region in to 4 from given x and y offsets (cuts).
 
+        ```
                    cut_x ↓
                 ┌────────┐┌───┐
                 │        ││   │
@@ -565,6 +566,7 @@ class Region(NamedTuple):
                 ┌────────┐┌───┐
                 │    2   ││ 3 │
                 └────────┘└───┘
+        ```
 
         Args:
             cut_x (int): Offset from self.x where the cut should be made. If negative, the cut
@@ -593,11 +595,13 @@ class Region(NamedTuple):
     def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
         &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
+        ```
                  cut ↓
             ┌────────┐┌───┐
             │    0   ││ 1 │
             │        ││   │
             └────────┘└───┘
+        ```
 
         Args:
             cut (int): An offset from self.x where the cut should be made. If cut is negative,
@@ -619,6 +623,7 @@ class Region(NamedTuple):
     def split_horizontal(self, cut: int) -&gt; tuple[Region, Region]:
         &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
+        ```
                     ┌─────────┐
                     │    0    │
                     │         │
@@ -626,6 +631,7 @@ class Region(NamedTuple):
                     ┌─────────┐
                     │    1    │
                     └─────────┘
+        ```
 
         Args:
             cut (int): An offset from self.x where the cut should be made. May be negative,
@@ -1151,7 +1157,7 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;Get the maxima and minima of region.
 
         Returns:
-            tuple[int, int, int, int]: A tuple of (&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)
+            tuple[int, int, int, int]: A tuple of `(&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)`
         &#34;&#34;&#34;
         x, y, width, height = self
         return x, y, x + width, y + height
@@ -1375,6 +1381,7 @@ def is_origin(self) -&gt; bool:
     def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Region]:
         &#34;&#34;&#34;Split a region in to 4 from given x and y offsets (cuts).
 
+        ```
                    cut_x ↓
                 ┌────────┐┌───┐
                 │        ││   │
@@ -1384,6 +1391,7 @@ def is_origin(self) -&gt; bool:
                 ┌────────┐┌───┐
                 │    2   ││ 3 │
                 └────────┘└───┘
+        ```
 
         Args:
             cut_x (int): Offset from self.x where the cut should be made. If negative, the cut
@@ -1412,11 +1420,13 @@ def is_origin(self) -&gt; bool:
     def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
         &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
+        ```
                  cut ↓
             ┌────────┐┌───┐
             │    0   ││ 1 │
             │        ││   │
             └────────┘└───┘
+        ```
 
         Args:
             cut (int): An offset from self.x where the cut should be made. If cut is negative,
@@ -1438,6 +1448,7 @@ def is_origin(self) -&gt; bool:
     def split_horizontal(self, cut: int) -&gt; tuple[Region, Region]:
         &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
+        ```
                     ┌─────────┐
                     │    0    │
                     │         │
@@ -1445,6 +1456,7 @@ def is_origin(self) -&gt; bool:
                     ┌─────────┐
                     │    1    │
                     └─────────┘
+        ```
 
         Args:
             cut (int): An offset from self.x where the cut should be made. May be negative,
@@ -1634,7 +1646,7 @@ def bottom_right(self) -&gt; Offset:
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tuple[int, int, int, int]</code></dt>
-<dd>A tuple of (<min x>, <max x>, <min y>, <max y>)</dd>
+<dd>A tuple of <code>(&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)</code></dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1645,7 +1657,7 @@ def corners(self) -&gt; tuple[int, int, int, int]:
     &#34;&#34;&#34;Get the maxima and minima of region.
 
     Returns:
-        tuple[int, int, int, int]: A tuple of (&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)
+        tuple[int, int, int, int]: A tuple of `(&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)`
     &#34;&#34;&#34;
     x, y, width, height = self
     return x, y, x + width, y + height</code></pre>
@@ -2140,18 +2152,16 @@ def y_range(self) -&gt; range:
 </code></dt>
 <dd>
 <div class="desc"><p>Split a region in to 4 from given x and y offsets (cuts).</p>
-<pre><code>       cut_x ↓
-    ┌────────┐┌───┐
-    │        ││   │
-    │    0   ││ 1 │
-    │        ││   │
+<pre><code>           cut_x ↓
+        ┌────────┐┌───┐
+        │        ││   │
+        │    0   ││ 1 │
+        │        ││   │
+cut_y → └────────┘└───┘
+        ┌────────┐┌───┐
+        │    2   ││ 3 │
+        └────────┘└───┘
 </code></pre>
-<p>cut_y → └────────┘└───┘
-┌────────┐┌───┐
-│
-2
-││ 3 │
-└────────┘└───┘</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>cut_x</code></strong> :&ensp;<code>int</code></dt>
@@ -2173,6 +2183,7 @@ is taken from the lower edge.</dd>
 <pre><code class="python">def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Region]:
     &#34;&#34;&#34;Split a region in to 4 from given x and y offsets (cuts).
 
+    ```
                cut_x ↓
             ┌────────┐┌───┐
             │        ││   │
@@ -2182,6 +2193,7 @@ is taken from the lower edge.</dd>
             ┌────────┐┌───┐
             │    2   ││ 3 │
             └────────┘└───┘
+    ```
 
     Args:
         cut_x (int): Offset from self.x where the cut should be made. If negative, the cut
@@ -2213,13 +2225,13 @@ is taken from the lower edge.</dd>
 </code></dt>
 <dd>
 <div class="desc"><p>Split a region in to two, from a given x offset.</p>
-<pre><code>        ┌─────────┐
-        │    0    │
-        │         │
-cut →   └─────────┘
-        ┌─────────┐
-        │    1    │
-        └─────────┘
+<pre><code>            ┌─────────┐
+            │    0    │
+            │         │
+    cut →   └─────────┘
+            ┌─────────┐
+            │    1    │
+            └─────────┘
 </code></pre>
 <h2 id="args">Args</h2>
 <dl>
@@ -2239,6 +2251,7 @@ for the offset to start from the right edge.</dd>
 <pre><code class="python">def split_horizontal(self, cut: int) -&gt; tuple[Region, Region]:
     &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
+    ```
                 ┌─────────┐
                 │    0    │
                 │         │
@@ -2246,6 +2259,7 @@ for the offset to start from the right edge.</dd>
                 ┌─────────┐
                 │    1    │
                 └─────────┘
+    ```
 
     Args:
         cut (int): An offset from self.x where the cut should be made. May be negative,
@@ -2269,11 +2283,11 @@ for the offset to start from the right edge.</dd>
 </code></dt>
 <dd>
 <div class="desc"><p>Split a region in to two, from a given x offset.</p>
-<pre><code>     cut ↓
-┌────────┐┌───┐
-│    0   ││ 1 │
-│        ││   │
-└────────┘└───┘
+<pre><code>         cut ↓
+    ┌────────┐┌───┐
+    │    0   ││ 1 │
+    │        ││   │
+    └────────┘└───┘
 </code></pre>
 <h2 id="args">Args</h2>
 <dl>
@@ -2293,11 +2307,13 @@ it is taken from the right edge.</dd>
 <pre><code class="python">def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
     &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
+    ```
              cut ↓
         ┌────────┐┌───┐
         │    0   ││ 1 │
         │        ││   │
         └────────┘└───┘
+    ```
 
     Args:
         cut (int): An offset from self.x where the cut should be made. If cut is negative,

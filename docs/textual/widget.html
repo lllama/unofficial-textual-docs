@@ -51,7 +51,6 @@ from . import errors
 from . import events
 from ._animator import BoundAnimator
 from ._border import Border
-from ._profile import timer
 from .box_model import BoxModel, get_box_model
 from ._context import active_app
 from ._types import Lines
@@ -63,7 +62,6 @@ from .message import Message
 from . import messages
 from ._layout import Layout
 from .reactive import Reactive, watch
-from .renderables.blank import Blank
 from .renderables.opacity import Opacity
 from .renderables.tint import Tint
 
@@ -95,9 +93,6 @@ class RenderCache(NamedTuple):
 
 @rich.repr.auto
 class Widget(DOMNode):
-
-    CSS = &#34;&#34;&#34;
-    &#34;&#34;&#34;
 
     can_focus: bool = False
     can_focus_children: bool = True
@@ -206,10 +201,9 @@ class Widget(DOMNode):
         Args:
             app (App): App instance.
         &#34;&#34;&#34;
-        # Parser the Widget&#39;s CSS
-        self.app.stylesheet.add_source(
-            self.CSS, f&#34;{__file__}:&lt;{self.__class__.__name__}&gt;&#34;
-        )
+        # Parse the Widget&#39;s CSS
+        for path, css in self.css:
+            self.app.stylesheet.add_source(css, path=path)
 
     def get_box_model(
         self, container: Size, viewport: Size, fraction_unit: Fraction
@@ -564,12 +558,16 @@ class Widget(DOMNode):
 
     def scroll_page_left(self, *, animate: bool = True) -&gt; bool:
         return self.scroll_to(
-            x=self.scroll_target_x - self.container_size.width, animate=animate
+            x=self.scroll_target_x - self.container_size.width,
+            animate=animate,
+            duration=0.3,
         )
 
     def scroll_page_right(self, *, animate: bool = True) -&gt; bool:
         return self.scroll_to(
-            x=self.scroll_target_x + self.container_size.width, animate=animate
+            x=self.scroll_target_x + self.container_size.width,
+            animate=animate,
+            duration=0.3,
         )
 
     def scroll_to_widget(self, widget: Widget, *, animate: bool = True) -&gt; bool:
@@ -617,9 +615,12 @@ class Widget(DOMNode):
         )
 
     def __init_subclass__(
-        cls, can_focus: bool = True, can_focus_children: bool = True
+        cls,
+        can_focus: bool = True,
+        can_focus_children: bool = True,
+        inherit_css: bool = True,
     ) -&gt; None:
-        super().__init_subclass__()
+        super().__init_subclass__(inherit_css=inherit_css)
         cls.can_focus = can_focus
         cls.can_focus_children = can_focus_children
 
@@ -1047,7 +1048,7 @@ class Widget(DOMNode):
 
     def handle_scroll_to(self, message: ScrollTo) -&gt; None:
         if self.is_container:
-            self.scroll_to(message.x, message.y, animate=message.animate)
+            self.scroll_to(message.x, message.y, animate=message.animate, duration=0.1)
             message.stop()
 
     def handle_scroll_up(self, event: ScrollUp) -&gt; None:
@@ -1195,9 +1196,6 @@ def cursor_line(self) -&gt; int | None:
 </summary>
 <pre><code class="python">class Widget(DOMNode):
 
-    CSS = &#34;&#34;&#34;
-    &#34;&#34;&#34;
-
     can_focus: bool = False
     can_focus_children: bool = True
 
@@ -1305,10 +1303,9 @@ def cursor_line(self) -&gt; int | None:
         Args:
             app (App): App instance.
         &#34;&#34;&#34;
-        # Parser the Widget&#39;s CSS
-        self.app.stylesheet.add_source(
-            self.CSS, f&#34;{__file__}:&lt;{self.__class__.__name__}&gt;&#34;
-        )
+        # Parse the Widget&#39;s CSS
+        for path, css in self.css:
+            self.app.stylesheet.add_source(css, path=path)
 
     def get_box_model(
         self, container: Size, viewport: Size, fraction_unit: Fraction
@@ -1663,12 +1660,16 @@ def cursor_line(self) -&gt; int | None:
 
     def scroll_page_left(self, *, animate: bool = True) -&gt; bool:
         return self.scroll_to(
-            x=self.scroll_target_x - self.container_size.width, animate=animate
+            x=self.scroll_target_x - self.container_size.width,
+            animate=animate,
+            duration=0.3,
         )
 
     def scroll_page_right(self, *, animate: bool = True) -&gt; bool:
         return self.scroll_to(
-            x=self.scroll_target_x + self.container_size.width, animate=animate
+            x=self.scroll_target_x + self.container_size.width,
+            animate=animate,
+            duration=0.3,
         )
 
     def scroll_to_widget(self, widget: Widget, *, animate: bool = True) -&gt; bool:
@@ -1716,9 +1717,12 @@ def cursor_line(self) -&gt; int | None:
         )
 
     def __init_subclass__(
-        cls, can_focus: bool = True, can_focus_children: bool = True
+        cls,
+        can_focus: bool = True,
+        can_focus_children: bool = True,
+        inherit_css: bool = True,
     ) -&gt; None:
-        super().__init_subclass__()
+        super().__init_subclass__(inherit_css=inherit_css)
         cls.can_focus = can_focus
         cls.can_focus_children = can_focus_children
 
@@ -2146,7 +2150,7 @@ def cursor_line(self) -&gt; int | None:
 
     def handle_scroll_to(self, message: ScrollTo) -&gt; None:
         if self.is_container:
-            self.scroll_to(message.x, message.y, animate=message.animate)
+            self.scroll_to(message.x, message.y, animate=message.animate, duration=0.1)
             message.stop()
 
     def handle_scroll_up(self, event: ScrollUp) -&gt; None:
@@ -2240,10 +2244,6 @@ def cursor_line(self) -&gt; int | None:
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.widget.Widget.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="textual.widget.Widget.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
@@ -3102,7 +3102,7 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
 </summary>
 <pre><code class="python">def handle_scroll_to(self, message: ScrollTo) -&gt; None:
     if self.is_container:
-        self.scroll_to(message.x, message.y, animate=message.animate)
+        self.scroll_to(message.x, message.y, animate=message.animate, duration=0.1)
         message.stop()</code></pre>
 </details>
 </dd>
@@ -3504,10 +3504,9 @@ end (int | None, optional): line end index, or None for last line. Defaults to N
     Args:
         app (App): App instance.
     &#34;&#34;&#34;
-    # Parser the Widget&#39;s CSS
-    self.app.stylesheet.add_source(
-        self.CSS, f&#34;{__file__}:&lt;{self.__class__.__name__}&gt;&#34;
-    )</code></pre>
+    # Parse the Widget&#39;s CSS
+    for path, css in self.css:
+        self.app.stylesheet.add_source(css, path=path)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_style_change"><code class="name flex">
@@ -3769,7 +3768,9 @@ next idle event. Only one refresh will be done even if this method is called mul
 </summary>
 <pre><code class="python">def scroll_page_left(self, *, animate: bool = True) -&gt; bool:
     return self.scroll_to(
-        x=self.scroll_target_x - self.container_size.width, animate=animate
+        x=self.scroll_target_x - self.container_size.width,
+        animate=animate,
+        duration=0.3,
     )</code></pre>
 </details>
 </dd>
@@ -3784,7 +3785,9 @@ next idle event. Only one refresh will be done even if this method is called mul
 </summary>
 <pre><code class="python">def scroll_page_right(self, *, animate: bool = True) -&gt; bool:
     return self.scroll_to(
-        x=self.scroll_target_x + self.container_size.width, animate=animate
+        x=self.scroll_target_x + self.container_size.width,
+        animate=animate,
+        duration=0.3,
     )</code></pre>
 </details>
 </dd>
@@ -4260,10 +4263,10 @@ next idle event. Only one refresh will be done even if this method is called mul
 <li><code><a title="textual.dom.DOMNode.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.dom.DOMNode.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
+<li><code><a title="textual.dom.DOMNode.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.dom.DOMNode.css_type" href="dom.html#textual.dom.DOMNode.css_type">css_type</a></code></li>
 <li><code><a title="textual.dom.DOMNode.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
@@ -4365,7 +4368,6 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a></code></h4>
 <ul class="">
-<li><code><a title="textual.widget.Widget.CSS" href="#textual.widget.Widget.CSS">CSS</a></code></li>
 <li><code><a title="textual.widget.Widget.action" href="#textual.widget.Widget.action">action</a></code></li>
 <li><code><a title="textual.widget.Widget.animate" href="#textual.widget.Widget.animate">animate</a></code></li>
 <li><code><a title="textual.widget.Widget.auto_height" href="#textual.widget.Widget.auto_height">auto_height</a></code></li>
