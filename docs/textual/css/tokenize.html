@@ -34,11 +34,21 @@ from typing import Iterable
 
 from textual.css.tokenizer import Expect, Tokenizer, Token
 
+PERCENT = r&#34;-?\d+\.?\d*%&#34;
+DECIMAL = r&#34;-?\d+\.?\d*&#34;
+COMMA = r&#34;\s*,\s*&#34;
+OPEN_BRACE = r&#34;\(\s*&#34;
+CLOSE_BRACE = r&#34;\s*\)&#34;
+
+HEX_COLOR = r&#34;\#[0-9a-fA-F]{8}|\#[0-9a-fA-F]{6}|\#[0-9a-fA-F]{4}|\#[0-9a-fA-F]{3}&#34;
+RGB_COLOR = rf&#34;rgb{OPEN_BRACE}{DECIMAL}{COMMA}{DECIMAL}{COMMA}{DECIMAL}{CLOSE_BRACE}|rgba{OPEN_BRACE}{DECIMAL}{COMMA}{DECIMAL}{COMMA}{DECIMAL}{COMMA}{DECIMAL}{CLOSE_BRACE}&#34;
+HSL_COLOR = rf&#34;hsl{OPEN_BRACE}{DECIMAL}{COMMA}{PERCENT}{COMMA}{PERCENT}{CLOSE_BRACE}|hsla{OPEN_BRACE}{DECIMAL}{COMMA}{PERCENT}{COMMA}{PERCENT}{COMMA}{DECIMAL}{CLOSE_BRACE}&#34;
+
 COMMENT_START = r&#34;\/\*&#34;
-SCALAR = r&#34;\-?\d+\.?\d*(?:fr|%|w|h|vw|vh)&#34;
+SCALAR = rf&#34;{DECIMAL}(?:fr|%|w|h|vw|vh)&#34;
 DURATION = r&#34;\d+\.?\d*(?:ms|s)&#34;
 NUMBER = r&#34;\-?\d+\.?\d*&#34;
-COLOR = r&#34;\#[0-9a-fA-F]{8}|\#[0-9a-fA-F]{6}|\#[0-9a-fA-F]{4}|\#[0-9a-fA-F]{3}|rgb\(\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*\)|rgba\(\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*\)&#34;
+COLOR = rf&#34;{HEX_COLOR}|{RGB_COLOR}|{HSL_COLOR}&#34;
 KEY_VALUE = r&#34;[a-zA-Z_-][a-zA-Z0-9_-]*=[0-9a-zA-Z_\-\/]+&#34;
 TOKEN = &#34;[a-zA-Z][a-zA-Z0-9_-]*&#34;
 STRING = r&#34;\&#34;.*?\&#34;&#34;

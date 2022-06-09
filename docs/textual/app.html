@@ -139,9 +139,9 @@ class App(Generic[ReturnType], DOMNode):
     &#34;&#34;&#34;The base class for Textual Applications&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-    App {     
+    App {
         background: $surface;
-        color: $text-surface;        
+        color: $text-surface;
     }
     &#34;&#34;&#34;
 
@@ -786,6 +786,7 @@ class App(Generic[ReturnType], DOMNode):
 
             driver = self._driver = self.driver_class(self.console, self)
             driver.start_application_mode()
+            driver.enable_bracketed_paste()
             try:
                 with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
                     mount_event = events.Mount(sender=self)
@@ -800,6 +801,7 @@ class App(Generic[ReturnType], DOMNode):
                     await self.animator.stop()
                     await self.close_all()
             finally:
+                driver.disable_bracketed_paste()
                 driver.stop_application_mode()
         except Exception as error:
             self.on_exception(error)
@@ -1030,7 +1032,8 @@ class App(Generic[ReturnType], DOMNode):
             else:
                 # Forward the event to the view
                 await self.screen.forward_event(event)
-
+        elif isinstance(event, events.Paste):
+            await self.focused.forward_event(event)
         else:
             await super().on_event(event)
 
@@ -1258,9 +1261,9 @@ def _init_uvloop() -&gt; None:
     &#34;&#34;&#34;The base class for Textual Applications&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-    App {     
+    App {
         background: $surface;
-        color: $text-surface;        
+        color: $text-surface;
     }
     &#34;&#34;&#34;
 
@@ -1905,6 +1908,7 @@ def _init_uvloop() -&gt; None:
 
             driver = self._driver = self.driver_class(self.console, self)
             driver.start_application_mode()
+            driver.enable_bracketed_paste()
             try:
                 with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
                     mount_event = events.Mount(sender=self)
@@ -1919,6 +1923,7 @@ def _init_uvloop() -&gt; None:
                     await self.animator.stop()
                     await self.close_all()
             finally:
+                driver.disable_bracketed_paste()
                 driver.stop_application_mode()
         except Exception as error:
             self.on_exception(error)
@@ -2149,7 +2154,8 @@ def _init_uvloop() -&gt; None:
             else:
                 # Forward the event to the view
                 await self.screen.forward_event(event)
-
+        elif isinstance(event, events.Paste):
+            await self.focused.forward_event(event)
         else:
             await super().on_event(event)
 
@@ -3286,7 +3292,8 @@ the log message sent to the devtools server.</p></div>
         else:
             # Forward the event to the view
             await self.screen.forward_event(event)
-
+    elif isinstance(event, events.Paste):
+        await self.focused.forward_event(event)
     else:
         await super().on_event(event)</code></pre>
 </details>
@@ -3515,6 +3522,7 @@ the log message sent to the devtools server.</p></div>
 
         driver = self._driver = self.driver_class(self.console, self)
         driver.start_application_mode()
+        driver.enable_bracketed_paste()
         try:
             with redirect_stdout(StdoutRedirector(self.devtools, self._log_file)):  # type: ignore
                 mount_event = events.Mount(sender=self)
@@ -3529,6 +3537,7 @@ the log message sent to the devtools server.</p></div>
                 await self.animator.stop()
                 await self.close_all()
         finally:
+            driver.disable_bracketed_paste()
             driver.stop_application_mode()
     except Exception as error:
         self.on_exception(error)

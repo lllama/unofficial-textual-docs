@@ -2088,6 +2088,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.css.scalar.percentage_string_to_float",
+"url":10,
+"doc":"Convert a string percentage e.g. '20%' to a float e.g. 20.0. Args: string (str): The percentage string to convert.",
+"func":1
+},
+{
 "ref":"textual.css.types",
 "url":11,
 "doc":""
@@ -3691,11 +3697,6 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.keys.Keys.BracketedPaste",
-"url":21,
-"doc":""
-},
-{
 "ref":"textual.keys.Keys.Ignore",
 "url":21,
 "doc":""
@@ -4938,7 +4939,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -6151,7 +6152,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -6645,7 +6646,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -6981,6 +6982,18 @@ INDEX=[
 "ref":"textual.driver.Driver.process_event",
 "url":37,
 "doc":"Performs some additional processing of events.",
+"func":1
+},
+{
+"ref":"textual.driver.Driver.enable_bracketed_paste",
+"url":37,
+"doc":"Write the ANSI escape code  ESC[?2004h , which enables bracketed paste mode.",
+"func":1
+},
+{
+"ref":"textual.driver.Driver.disable_bracketed_paste",
+"url":37,
+"doc":"Write the ANSI escape code  ESC[?2004l , which disables bracketed paste mode.",
 "func":1
 },
 {
@@ -7788,7 +7801,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -8733,7 +8746,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -11563,6 +11576,65 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Paste",
+"url":50,
+"doc":"Event containing text that was pasted into the Textual application. This event will only appear when running in a terminal emulator that supports bracketed paste mode. Textual will enable bracketed pastes when an app starts, and disable it when the app shuts down. Args: sender (MessageTarget): The sender of the event, (in this case the app). text: The text that has been pasted"
+},
+{
+"ref":"textual.events.Paste.sender",
+"url":50,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.Paste.bubble",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.events.Paste.verbosity",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.events.Paste.system",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.events.Paste.set_forwarded",
+"url":30,
+"doc":"Mark this event as being forwarded.",
+"func":1
+},
+{
+"ref":"textual.events.Paste.can_replace",
+"url":30,
+"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
+"func":1
+},
+{
+"ref":"textual.events.Paste.prevent_default",
+"url":30,
+"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.Paste.stop",
+"url":30,
+"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.Paste.name",
+"url":30,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.Paste.time",
+"url":30,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
 "ref":"textual.widgets",
 "url":51,
 "doc":""
@@ -11779,7 +11851,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Button.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -12310,7 +12382,7 @@ INDEX=[
 {
 "ref":"textual.widgets.DirectoryTree.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -12893,7 +12965,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Footer.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -13436,7 +13508,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Header.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -13949,7 +14021,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Placeholder.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -14444,7 +14516,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Static.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -15090,7 +15162,7 @@ INDEX=[
 {
 "ref":"textual.widgets.TreeControl.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -15721,7 +15793,7 @@ INDEX=[
 {
 "ref":"textual.widgets.tabs.Tabs.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -16235,7 +16307,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextWidgetBase.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -16584,6 +16656,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widgets.text_input.TextInput.on_paste",
+"url":53,
+"doc":"Handle Paste event by stripping newlines from the text, and inserting the text at the cursor position, sliding the visible window if required.",
+"func":1
+},
+{
 "ref":"textual.widgets.text_input.TextInput.render",
 "url":53,
 "doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
@@ -16783,7 +16861,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextInput.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -17271,7 +17349,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextArea.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -17803,7 +17881,7 @@ INDEX=[
 {
 "ref":"textual.widgets.text_input.TextAreaChild.scroll_to_widget",
 "url":31,
-"doc":"Scroll so that a child widget is in the visible area. Args: widget (Widget): A Widget in the children. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
@@ -18226,6 +18304,18 @@ INDEX=[
 "ref":"textual.drivers.linux_driver.LinuxDriver.process_event",
 "url":37,
 "doc":"Performs some additional processing of events.",
+"func":1
+},
+{
+"ref":"textual.drivers.linux_driver.LinuxDriver.enable_bracketed_paste",
+"url":37,
+"doc":"Write the ANSI escape code  ESC[?2004h , which enables bracketed paste mode.",
+"func":1
+},
+{
+"ref":"textual.drivers.linux_driver.LinuxDriver.disable_bracketed_paste",
+"url":37,
+"doc":"Write the ANSI escape code  ESC[?2004l , which disables bracketed paste mode.",
 "func":1
 },
 {

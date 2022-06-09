@@ -36,7 +36,7 @@ from typing import Iterable, NamedTuple
 
 import rich.repr
 
-from ..geometry import Offset, Size
+from ..geometry import Offset, Size, clamp
 
 
 class ScalarError(Exception):
@@ -354,6 +354,22 @@ class ScalarOffset(NamedTuple):
 
 NULL_SCALAR = ScalarOffset(Scalar.from_number(0), Scalar.from_number(0))
 
+
+def percentage_string_to_float(string: str) -&gt; float:
+    &#34;&#34;&#34;Convert a string percentage e.g. &#39;20%&#39; to a float e.g. 20.0.
+
+    Args:
+        string (str): The percentage string to convert.
+    &#34;&#34;&#34;
+    string = string.strip()
+    if string.endswith(&#34;%&#34;):
+        percentage = string[:-1]
+        float_percentage = clamp(float(percentage) / 100, 0, 1)
+    else:
+        float_percentage = float(string)
+    return float_percentage
+
+
 if __name__ == &#34;__main__&#34;:
     print(Scalar.parse(&#34;3.14fr&#34;))
     s = Scalar.parse(&#34;23&#34;)
@@ -397,6 +413,35 @@ if __name__ == &#34;__main__&#34;:
         list[str]: List of symbols.
     &#34;&#34;&#34;
     return [UNIT_SYMBOL[unit] for unit in units]</code></pre>
+</details>
+</dd>
+<dt id="textual.css.scalar.percentage_string_to_float"><code class="name flex">
+<span>def <span class="ident">percentage_string_to_float</span></span>(<span>string: str) ‑> float</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Convert a string percentage e.g. '20%' to a float e.g. 20.0.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>string</code></strong> :&ensp;<code>str</code></dt>
+<dd>The percentage string to convert.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def percentage_string_to_float(string: str) -&gt; float:
+    &#34;&#34;&#34;Convert a string percentage e.g. &#39;20%&#39; to a float e.g. 20.0.
+
+    Args:
+        string (str): The percentage string to convert.
+    &#34;&#34;&#34;
+    string = string.strip()
+    if string.endswith(&#34;%&#34;):
+        percentage = string[:-1]
+        float_percentage = clamp(float(percentage) / 100, 0, 1)
+    else:
+        float_percentage = float(string)
+    return float_percentage</code></pre>
 </details>
 </dd>
 </dl>
@@ -1068,6 +1113,7 @@ setTimeout(() => input.focus(), 100);
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="textual.css.scalar.get_symbols" href="#textual.css.scalar.get_symbols">get_symbols</a></code></li>
+<li><code><a title="textual.css.scalar.percentage_string_to_float" href="#textual.css.scalar.percentage_string_to_float">percentage_string_to_float</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>

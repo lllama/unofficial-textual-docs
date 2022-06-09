@@ -57,6 +57,8 @@ from rich.color import Color as RichColor
 from rich.style import Style
 from rich.text import Text
 
+from textual.css.scalar import percentage_string_to_float
+from textual.css.tokenize import COMMA, OPEN_BRACE, CLOSE_BRACE, DECIMAL, PERCENT
 from textual.suggestions import get_suggestion
 from ._color_constants import COLOR_NAME_TO_RGB
 from .geometry import clamp
@@ -87,13 +89,15 @@ class Lab(NamedTuple):
 
 
 RE_COLOR = re.compile(
-    r&#34;&#34;&#34;^
-\#([0-9a-fA-F]{3})$|
-\#([0-9a-fA-F]{4})$|
-\#([0-9a-fA-F]{6})$|
-\#([0-9a-fA-F]{8})$|
-rgb\((\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*)\)$|
-rgba\((\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*,\-?\d+\.?\d*)\)$
+    rf&#34;&#34;&#34;^
+\#([0-9a-fA-F]{{3}})$|
+\#([0-9a-fA-F]{{4}})$|
+\#([0-9a-fA-F]{{6}})$|
+\#([0-9a-fA-F]{{8}})$|
+rgb{OPEN_BRACE}({DECIMAL}{COMMA}{DECIMAL}{COMMA}{DECIMAL}){CLOSE_BRACE}$|
+rgba{OPEN_BRACE}({DECIMAL}{COMMA}{DECIMAL}{COMMA}{DECIMAL}{COMMA}{DECIMAL}){CLOSE_BRACE}$|
+hsl{OPEN_BRACE}({DECIMAL}{COMMA}{PERCENT}{COMMA}{PERCENT}){CLOSE_BRACE}$|
+hsla{OPEN_BRACE}({DECIMAL}{COMMA}{PERCENT}{COMMA}{PERCENT}{COMMA}{DECIMAL}){CLOSE_BRACE}$
 &#34;&#34;&#34;,
     re.VERBOSE,
 )
@@ -318,7 +322,7 @@ class Color(NamedTuple):
         if color_match is None:
             error_message = f&#34;failed to parse {color_text!r} as a color&#34;
             suggested_color = None
-            if not color_text.startswith(&#34;#&#34;) and not color_text.startswith(&#34;rgb&#34;):
+            if not color_text.startswith((&#34;#&#34;, &#34;rgb&#34;, &#34;hsl&#34;)):
                 # Seems like we tried to use a color name: let&#39;s try to find one that is close enough:
                 suggested_color = get_suggestion(color_text, COLOR_NAME_TO_RGB.keys())
                 if suggested_color:
@@ -331,6 +335,8 @@ class Color(NamedTuple):
             rgba_hex,
             rgb,
             rgba,
+            hsl,
+            hsla,
         ) = color_match.groups()
 
         if rgb_hex_triple is not None:
@@ -363,6 +369,19 @@ class Color(NamedTuple):
                 clamp(int(float_b), 0, 255),
                 clamp(float_a, 0.0, 1.0),
             )
+        elif hsl is not None:
+            h, s, l = hsl.split(&#34;,&#34;)
+            h = float(h) % 360 / 360
+            s = percentage_string_to_float(s)
+            l = percentage_string_to_float(l)
+            color = Color.from_hls(h, l, s)
+        elif hsla is not None:
+            h, s, l, a = hsla.split(&#34;,&#34;)
+            h = float(h) % 360 / 360
+            s = percentage_string_to_float(s)
+            l = percentage_string_to_float(l)
+            a = clamp(float(a), 0.0, 1.0)
+            color = Color.from_hls(h, l, s).with_alpha(a)
         else:
             raise AssertionError(&#34;Can&#39;t get here if RE_COLOR matches&#34;)
         return color
@@ -824,7 +843,7 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         if color_match is None:
             error_message = f&#34;failed to parse {color_text!r} as a color&#34;
             suggested_color = None
-            if not color_text.startswith(&#34;#&#34;) and not color_text.startswith(&#34;rgb&#34;):
+            if not color_text.startswith((&#34;#&#34;, &#34;rgb&#34;, &#34;hsl&#34;)):
                 # Seems like we tried to use a color name: let&#39;s try to find one that is close enough:
                 suggested_color = get_suggestion(color_text, COLOR_NAME_TO_RGB.keys())
                 if suggested_color:
@@ -837,6 +856,8 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
             rgba_hex,
             rgb,
             rgba,
+            hsl,
+            hsla,
         ) = color_match.groups()
 
         if rgb_hex_triple is not None:
@@ -869,6 +890,19 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
                 clamp(int(float_b), 0, 255),
                 clamp(float_a, 0.0, 1.0),
             )
+        elif hsl is not None:
+            h, s, l = hsl.split(&#34;,&#34;)
+            h = float(h) % 360 / 360
+            s = percentage_string_to_float(s)
+            l = percentage_string_to_float(l)
+            color = Color.from_hls(h, l, s)
+        elif hsla is not None:
+            h, s, l, a = hsla.split(&#34;,&#34;)
+            h = float(h) % 360 / 360
+            s = percentage_string_to_float(s)
+            l = percentage_string_to_float(l)
+            a = clamp(float(a), 0.0, 1.0)
+            color = Color.from_hls(h, l, s).with_alpha(a)
         else:
             raise AssertionError(&#34;Can&#39;t get here if RE_COLOR matches&#34;)
         return color
@@ -1038,7 +1072,7 @@ def parse(cls, color_text: str | Color) -&gt; Color:
     if color_match is None:
         error_message = f&#34;failed to parse {color_text!r} as a color&#34;
         suggested_color = None
-        if not color_text.startswith(&#34;#&#34;) and not color_text.startswith(&#34;rgb&#34;):
+        if not color_text.startswith((&#34;#&#34;, &#34;rgb&#34;, &#34;hsl&#34;)):
             # Seems like we tried to use a color name: let&#39;s try to find one that is close enough:
             suggested_color = get_suggestion(color_text, COLOR_NAME_TO_RGB.keys())
             if suggested_color:
@@ -1051,6 +1085,8 @@ def parse(cls, color_text: str | Color) -&gt; Color:
         rgba_hex,
         rgb,
         rgba,
+        hsl,
+        hsla,
     ) = color_match.groups()
 
     if rgb_hex_triple is not None:
@@ -1083,6 +1119,19 @@ def parse(cls, color_text: str | Color) -&gt; Color:
             clamp(int(float_b), 0, 255),
             clamp(float_a, 0.0, 1.0),
         )
+    elif hsl is not None:
+        h, s, l = hsl.split(&#34;,&#34;)
+        h = float(h) % 360 / 360
+        s = percentage_string_to_float(s)
+        l = percentage_string_to_float(l)
+        color = Color.from_hls(h, l, s)
+    elif hsla is not None:
+        h, s, l, a = hsla.split(&#34;,&#34;)
+        h = float(h) % 360 / 360
+        s = percentage_string_to_float(s)
+        l = percentage_string_to_float(l)
+        a = clamp(float(a), 0.0, 1.0)
+        color = Color.from_hls(h, l, s).with_alpha(a)
     else:
         raise AssertionError(&#34;Can&#39;t get here if RE_COLOR matches&#34;)
     return color</code></pre>
