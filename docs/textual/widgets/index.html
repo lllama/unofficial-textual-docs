@@ -83,10 +83,26 @@ __all__ = [
 <dl>
 <dt id="textual.widgets.Button"><code class="flex name class">
 <span>class <span class="ident">Button</span></span>
-<span>(</span><span>label: TextType | None = None, disabled: bool = False, *, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
+<span>(</span><span>label: TextType | None = None, disabled: bool = False, variant: ButtonVariant = 'default', *, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A simple clickable button.</p></div>
+<div class="desc"><p>A simple clickable button.</p>
+<p>Create a Button widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>label</code></strong> :&ensp;<code>str</code></dt>
+<dd>The text that appears within the button.</dd>
+<dt><strong><code>disabled</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether the button is disabled or not.</dd>
+<dt><strong><code>variant</code></strong> :&ensp;<code>ButtonVariant</code></dt>
+<dd>The variant of the button.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the button.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the button in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes of the button.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -95,42 +111,114 @@ __all__ = [
     &#34;&#34;&#34;A simple clickable button.&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-
-
     Button {
         width: auto;
         height: 3;
+
         background: $primary;
         color: $text-primary;
-        content-align: center middle;
         border: tall $primary-lighten-3;
-        
+
+        content-align: center middle;
         margin: 1 0;
         align: center middle;
         text-style: bold;
     }
 
+    Button:hover {
+        background: $primary-darken-2;
+        color: $text-primary-darken-2;
+        border: tall $primary-lighten-1;
+    }
+
     .-dark-mode Button {
-        border: tall white $primary-lighten-2;
-        color: $primary-lighten-2;
         background: $background;
+        color: $primary-lighten-2;
+        border: tall white $primary-lighten-2;
     }
 
     .-dark-mode Button:hover {
         background: $surface;
     }
 
+    /* Success variant */
+    Button.-success {
+        background: $success;
+        color: $text-success;
+        border: tall $success-lighten-3;
+    }
 
-    Button:hover {
-        background:$primary-darken-2;
-        color: $text-primary-darken-2;
-        border: tall $primary-lighten-1;
+    Button.-success:hover {
+        background: $success-darken-1;
+        color: $text-success-darken-1;
+        border: tall $success-lighten-2;
+    }
+
+    .-dark-mode Button.-success {
+        background: $success;
+        color: $text-success;
+        border: tall $success-lighten-3;
+    }
+
+    .-dark-mode Button.-success:hover {
+        background: $success-darken-1;
+        color: $text-success-darken-1;
+        border: tall $success-lighten-3;
+    }
+
+    /* Warning variant */
+    Button.-warning {
+        background: $warning;
+        color: $text-warning;
+        border: tall $warning-lighten-3;
+    }
+
+    Button.-warning:hover {
+        background: $warning-darken-1;
+        color: $text-warning-darken-1;
+        border: tall $warning-lighten-3;
+    }
+
+    .-dark-mode Button.-warning {
+        background: $warning;
+        color: $text-warning;
+        border: tall $warning-lighten-3;
+    }
+
+    .-dark-mode Button.-warning:hover {
+        background: $warning-darken-1;
+        color: $text-warning-darken-1;
+        border: tall $warning-lighten-3;
+    }
+
+    /* Error variant */
+    Button.-error {
+        background: $error;
+        color: $text-error;
+        border: tall $error-lighten-3;
+    }
+
+    Button.-error:hover {
+        background: $error-darken-1;
+        color: $text-error-darken-1;
+        border: tall $error-lighten-3;
+    }
+
+    .-dark-mode Button.-error {
+        background: $error;
+        color: $text-error;
+        border: tall $error-lighten-3;
+    }
+
+    .-dark-mode Button.-error:hover {
+        background: $error-darken-1;
+        color: $text-error-darken-1;
+        border: tall $error-lighten-3;
     }
 
     App.-show-focus Button:focus {
         tint: $accent 20%;
     }
-
     &#34;&#34;&#34;
 
     class Pressed(Message, bubble=True):
@@ -142,11 +230,22 @@ __all__ = [
         self,
         label: TextType | None = None,
         disabled: bool = False,
+        variant: ButtonVariant = &#34;default&#34;,
         *,
         name: str | None = None,
         id: str | None = None,
         classes: str | None = None,
     ):
+        &#34;&#34;&#34;Create a Button widget.
+
+        Args:
+            label (str): The text that appears within the button.
+            disabled (bool): Whether the button is disabled or not.
+            variant (ButtonVariant): The variant of the button.
+            name: The name of the button.
+            id: The ID of the button in the DOM.
+            classes: The CSS classes of the button.
+        &#34;&#34;&#34;
         super().__init__(name=name, id=id, classes=classes)
 
         if label is None:
@@ -157,6 +256,15 @@ __all__ = [
         self.disabled = disabled
         if disabled:
             self.add_class(&#34;-disabled&#34;)
+
+        if variant in _VALID_BUTTON_VARIANTS:
+            if variant != &#34;default&#34;:
+                self.add_class(f&#34;-{variant}&#34;)
+
+        else:
+            raise InvalidButtonVariant(
+                f&#34;Valid button variants are {friendly_list(_VALID_BUTTON_VARIANTS)}&#34;
+            )
 
     label: Reactive[RenderableType] = Reactive(&#34;&#34;)
 
@@ -178,7 +286,100 @@ __all__ = [
 
     async def on_key(self, event: events.Key) -&gt; None:
         if event.key == &#34;enter&#34; and not self.disabled:
-            await self.emit(Button.Pressed(self))</code></pre>
+            await self.emit(Button.Pressed(self))
+
+    @classmethod
+    def success(
+        cls,
+        label: TextType | None = None,
+        disabled: bool = False,
+        *,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+    ) -&gt; Button:
+        &#34;&#34;&#34;Utility constructor for creating a success Button variant.
+
+        Args:
+            label (str): The text that appears within the button.
+            disabled (bool): Whether the button is disabled or not.
+            name: The name of the button.
+            id: The ID of the button in the DOM.
+            classes: The CSS classes of the button.
+
+        Returns:
+            Button: A Button widget of the &#39;success&#39; variant.
+        &#34;&#34;&#34;
+        return Button(
+            label=label,
+            disabled=disabled,
+            variant=&#34;success&#34;,
+            name=name,
+            id=id,
+            classes=classes,
+        )
+
+    @classmethod
+    def warning(
+        cls,
+        label: TextType | None = None,
+        disabled: bool = False,
+        *,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+    ) -&gt; Button:
+        &#34;&#34;&#34;Utility constructor for creating a warning Button variant.
+
+        Args:
+            label (str): The text that appears within the button.
+            disabled (bool): Whether the button is disabled or not.
+            name: The name of the button.
+            id: The ID of the button in the DOM.
+            classes: The CSS classes of the button.
+
+        Returns:
+            Button: A Button widget of the &#39;warning&#39; variant.
+        &#34;&#34;&#34;
+        return Button(
+            label=label,
+            disabled=disabled,
+            variant=&#34;warning&#34;,
+            name=name,
+            id=id,
+            classes=classes,
+        )
+
+    @classmethod
+    def error(
+        cls,
+        label: TextType | None = None,
+        disabled: bool = False,
+        *,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+    ) -&gt; Button:
+        &#34;&#34;&#34;Utility constructor for creating an error Button variant.
+
+        Args:
+            label (str): The text that appears within the button.
+            disabled (bool): Whether the button is disabled or not.
+            name: The name of the button.
+            id: The ID of the button in the DOM.
+            classes: The CSS classes of the button.
+
+        Returns:
+            Button: A Button widget of the &#39;error&#39; variant.
+        &#34;&#34;&#34;
+        return Button(
+            label=label,
+            disabled=disabled,
+            variant=&#34;error&#34;,
+            name=name,
+            id=id,
+            classes=classes,
+        )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -203,6 +404,186 @@ __all__ = [
 <dt id="textual.widgets.Button.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="textual.widgets.Button.error"><code class="name flex">
+<span>def <span class="ident">error</span></span>(<span>label: TextType | None = None, disabled: bool = False, *, name: str | None = None, id: str | None = None, classes: str | None = None) ‑> <a title="textual.widgets.Button" href="#textual.widgets.Button">Button</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Utility constructor for creating an error Button variant.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>label</code></strong> :&ensp;<code>str</code></dt>
+<dd>The text that appears within the button.</dd>
+<dt><strong><code>disabled</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether the button is disabled or not.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the button.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the button in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes of the button.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.widgets.Button" href="#textual.widgets.Button">Button</a></code></dt>
+<dd>A Button widget of the 'error' variant.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def error(
+    cls,
+    label: TextType | None = None,
+    disabled: bool = False,
+    *,
+    name: str | None = None,
+    id: str | None = None,
+    classes: str | None = None,
+) -&gt; Button:
+    &#34;&#34;&#34;Utility constructor for creating an error Button variant.
+
+    Args:
+        label (str): The text that appears within the button.
+        disabled (bool): Whether the button is disabled or not.
+        name: The name of the button.
+        id: The ID of the button in the DOM.
+        classes: The CSS classes of the button.
+
+    Returns:
+        Button: A Button widget of the &#39;error&#39; variant.
+    &#34;&#34;&#34;
+    return Button(
+        label=label,
+        disabled=disabled,
+        variant=&#34;error&#34;,
+        name=name,
+        id=id,
+        classes=classes,
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Button.success"><code class="name flex">
+<span>def <span class="ident">success</span></span>(<span>label: TextType | None = None, disabled: bool = False, *, name: str | None = None, id: str | None = None, classes: str | None = None) ‑> <a title="textual.widgets.Button" href="#textual.widgets.Button">Button</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Utility constructor for creating a success Button variant.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>label</code></strong> :&ensp;<code>str</code></dt>
+<dd>The text that appears within the button.</dd>
+<dt><strong><code>disabled</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether the button is disabled or not.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the button.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the button in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes of the button.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.widgets.Button" href="#textual.widgets.Button">Button</a></code></dt>
+<dd>A Button widget of the 'success' variant.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def success(
+    cls,
+    label: TextType | None = None,
+    disabled: bool = False,
+    *,
+    name: str | None = None,
+    id: str | None = None,
+    classes: str | None = None,
+) -&gt; Button:
+    &#34;&#34;&#34;Utility constructor for creating a success Button variant.
+
+    Args:
+        label (str): The text that appears within the button.
+        disabled (bool): Whether the button is disabled or not.
+        name: The name of the button.
+        id: The ID of the button in the DOM.
+        classes: The CSS classes of the button.
+
+    Returns:
+        Button: A Button widget of the &#39;success&#39; variant.
+    &#34;&#34;&#34;
+    return Button(
+        label=label,
+        disabled=disabled,
+        variant=&#34;success&#34;,
+        name=name,
+        id=id,
+        classes=classes,
+    )</code></pre>
+</details>
+</dd>
+<dt id="textual.widgets.Button.warning"><code class="name flex">
+<span>def <span class="ident">warning</span></span>(<span>label: TextType | None = None, disabled: bool = False, *, name: str | None = None, id: str | None = None, classes: str | None = None) ‑> <a title="textual.widgets.Button" href="#textual.widgets.Button">Button</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Utility constructor for creating a warning Button variant.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>label</code></strong> :&ensp;<code>str</code></dt>
+<dd>The text that appears within the button.</dd>
+<dt><strong><code>disabled</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Whether the button is disabled or not.</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the button.</dd>
+<dt><strong><code>id</code></strong></dt>
+<dd>The ID of the button in the DOM.</dd>
+<dt><strong><code>classes</code></strong></dt>
+<dd>The CSS classes of the button.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.widgets.Button" href="#textual.widgets.Button">Button</a></code></dt>
+<dd>A Button widget of the 'warning' variant.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def warning(
+    cls,
+    label: TextType | None = None,
+    disabled: bool = False,
+    *,
+    name: str | None = None,
+    id: str | None = None,
+    classes: str | None = None,
+) -&gt; Button:
+    &#34;&#34;&#34;Utility constructor for creating a warning Button variant.
+
+    Args:
+        label (str): The text that appears within the button.
+        disabled (bool): Whether the button is disabled or not.
+        name: The name of the button.
+        id: The ID of the button in the DOM.
+        classes: The CSS classes of the button.
+
+    Returns:
+        Button: A Button widget of the &#39;warning&#39; variant.
+    &#34;&#34;&#34;
+    return Button(
+        label=label,
+        disabled=disabled,
+        variant=&#34;warning&#34;,
+        name=name,
+        id=id,
+        classes=classes,
+    )</code></pre>
+</details>
 </dd>
 </dl>
 <h3>Instance variables</h3>
@@ -2864,10 +3245,13 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widgets.Button.Pressed" href="#textual.widgets.Button.Pressed">Pressed</a></code></li>
 <li><code><a title="textual.widgets.Button.can_focus" href="#textual.widgets.Button.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.widgets.Button.can_focus_children" href="#textual.widgets.Button.can_focus_children">can_focus_children</a></code></li>
+<li><code><a title="textual.widgets.Button.error" href="#textual.widgets.Button.error">error</a></code></li>
 <li><code><a title="textual.widgets.Button.label" href="#textual.widgets.Button.label">label</a></code></li>
 <li><code><a title="textual.widgets.Button.on_click" href="#textual.widgets.Button.on_click">on_click</a></code></li>
 <li><code><a title="textual.widgets.Button.on_key" href="#textual.widgets.Button.on_key">on_key</a></code></li>
+<li><code><a title="textual.widgets.Button.success" href="#textual.widgets.Button.success">success</a></code></li>
 <li><code><a title="textual.widgets.Button.validate_label" href="#textual.widgets.Button.validate_label">validate_label</a></code></li>
+<li><code><a title="textual.widgets.Button.warning" href="#textual.widgets.Button.warning">warning</a></code></li>
 </ul>
 </li>
 <li>

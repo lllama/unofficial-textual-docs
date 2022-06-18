@@ -2965,7 +2965,7 @@ INDEX=[
 {
 "ref":"textual.widgets.Button",
 "url":9,
-"doc":"A simple clickable button."
+"doc":"A simple clickable button. Create a Button widget. Args: label (str): The text that appears within the button. disabled (bool): Whether the button is disabled or not. variant (ButtonVariant): The variant of the button. name: The name of the button. id: The ID of the button in the DOM. classes: The CSS classes of the button."
 },
 {
 "ref":"textual.widgets.Button.CSS",
@@ -3004,6 +3004,24 @@ INDEX=[
 "ref":"textual.widgets.Button.on_key",
 "url":9,
 "doc":"",
+"func":1
+},
+{
+"ref":"textual.widgets.Button.success",
+"url":9,
+"doc":"Utility constructor for creating a success Button variant. Args: label (str): The text that appears within the button. disabled (bool): Whether the button is disabled or not. name: The name of the button. id: The ID of the button in the DOM. classes: The CSS classes of the button. Returns: Button: A Button widget of the 'success' variant.",
+"func":1
+},
+{
+"ref":"textual.widgets.Button.warning",
+"url":9,
+"doc":"Utility constructor for creating a warning Button variant. Args: label (str): The text that appears within the button. disabled (bool): Whether the button is disabled or not. name: The name of the button. id: The ID of the button in the DOM. classes: The CSS classes of the button. Returns: Button: A Button widget of the 'warning' variant.",
+"func":1
+},
+{
+"ref":"textual.widgets.Button.error",
+"url":9,
+"doc":"Utility constructor for creating an error Button variant. Args: label (str): The text that appears within the button. disabled (bool): Whether the button is disabled or not. name: The name of the button. id: The ID of the button in the DOM. classes: The CSS classes of the button. Returns: Button: A Button widget of the 'error' variant.",
 "func":1
 },
 {
