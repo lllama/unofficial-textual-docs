@@ -294,6 +294,14 @@ class StylesBase(ABC):
         spacing = self.padding + self.border.spacing + self.margin
         return spacing
 
+    @property
+    def auto_dimensions(self) -&gt; bool:
+        &#34;&#34;&#34;Check if width or height are set to &#39;auto&#39;.&#34;&#34;&#34;
+        has_rule = self.has_rule
+        return (has_rule(&#34;width&#34;) and self.width.is_auto) or (
+            has_rule(&#34;height&#34;) and self.height.is_auto
+        )
+
     @abstractmethod
     def has_rule(self, rule: str) -&gt; bool:
         &#34;&#34;&#34;Check if a rule is set on this Styles object.
@@ -1097,6 +1105,7 @@ def inline(self) -&gt; Styles:
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border_bottom" href="#textual.css.styles.StylesBase.border_bottom">border_bottom</a></code></li>
@@ -2014,6 +2023,7 @@ def css_lines(self) -&gt; list[str]:
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border_bottom" href="#textual.css.styles.StylesBase.border_bottom">border_bottom</a></code></li>
@@ -2198,6 +2208,14 @@ def css_lines(self) -&gt; list[str]:
         &#34;&#34;&#34;The spacing that surrounds the content area of the widget.&#34;&#34;&#34;
         spacing = self.padding + self.border.spacing + self.margin
         return spacing
+
+    @property
+    def auto_dimensions(self) -&gt; bool:
+        &#34;&#34;&#34;Check if width or height are set to &#39;auto&#39;.&#34;&#34;&#34;
+        has_rule = self.has_rule
+        return (has_rule(&#34;width&#34;) and self.width.is_auto) or (
+            has_rule(&#34;height&#34;) and self.height.is_auto
+        )
 
     @abstractmethod
     def has_rule(self, rule: str) -&gt; bool:
@@ -2513,6 +2531,22 @@ value belongs in the set of valid values.</p></div>
         str: The string property value
     &#34;&#34;&#34;
     return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.auto_dimensions"><code class="name">var <span class="ident">auto_dimensions</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Check if width or height are set to 'auto'.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def auto_dimensions(self) -&gt; bool:
+    &#34;&#34;&#34;Check if width or height are set to &#39;auto&#39;.&#34;&#34;&#34;
+    has_rule = self.has_rule
+    return (has_rule(&#34;width&#34;) and self.width.is_auto) or (
+        has_rule(&#34;height&#34;) and self.height.is_auto
+    )</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.background"><code class="name">var <span class="ident">background</span> : Color</code></dt>
@@ -4136,6 +4170,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border_bottom" href="#textual.css.styles.StylesBase.border_bottom">border_bottom</a></code></li>

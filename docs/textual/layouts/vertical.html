@@ -59,7 +59,7 @@ class VerticalLayout(Layout):
 
         box_models = [
             widget.get_box_model(size, parent_size, fraction_unit)
-            for widget in cast(&#34;list[Widget]&#34;, parent.children)
+            for widget in parent.children
         ]
 
         margins = [
@@ -130,7 +130,7 @@ class VerticalLayout(Layout):
 
         box_models = [
             widget.get_box_model(size, parent_size, fraction_unit)
-            for widget in cast(&#34;list[Widget]&#34;, parent.children)
+            for widget in parent.children
         ]
 
         margins = [
@@ -212,7 +212,7 @@ class VerticalLayout(Layout):
 
     box_models = [
         widget.get_box_model(size, parent_size, fraction_unit)
-        for widget in cast(&#34;list[Widget]&#34;, parent.children)
+        for widget in parent.children
     ]
 
     margins = [

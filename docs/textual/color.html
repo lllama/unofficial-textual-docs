@@ -269,7 +269,6 @@ class Color(NamedTuple):
         r, g, b, _ = self
         return Color(r, g, b, alpha)
 
-    @lru_cache(maxsize=2048)
     def blend(self, destination: Color, factor: float) -&gt; Color:
         &#34;&#34;&#34;Generate a new color between two colors.
 
@@ -386,6 +385,7 @@ class Color(NamedTuple):
             raise AssertionError(&#34;Can&#39;t get here if RE_COLOR matches&#34;)
         return color
 
+    @lru_cache(maxsize=1024)
     def darken(self, amount: float) -&gt; Color:
         &#34;&#34;&#34;Darken the color by a given amount.
 
@@ -410,6 +410,7 @@ class Color(NamedTuple):
         &#34;&#34;&#34;
         return self.darken(-amount).clamped
 
+    @lru_cache(maxsize=1024)
     def get_contrast_text(self, alpha=0.95) -&gt; Color:
         &#34;&#34;&#34;Get a light or dark color that best contrasts this color, for use with text.
 
@@ -790,7 +791,6 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         r, g, b, _ = self
         return Color(r, g, b, alpha)
 
-    @lru_cache(maxsize=2048)
     def blend(self, destination: Color, factor: float) -&gt; Color:
         &#34;&#34;&#34;Generate a new color between two colors.
 
@@ -907,6 +907,7 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
             raise AssertionError(&#34;Can&#39;t get here if RE_COLOR matches&#34;)
         return color
 
+    @lru_cache(maxsize=1024)
     def darken(self, amount: float) -&gt; Color:
         &#34;&#34;&#34;Darken the color by a given amount.
 
@@ -931,6 +932,7 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         &#34;&#34;&#34;
         return self.darken(-amount).clamped
 
+    @lru_cache(maxsize=1024)
     def get_contrast_text(self, alpha=0.95) -&gt; Color:
         &#34;&#34;&#34;Get a light or dark color that best contrasts this color, for use with text.
 
@@ -1338,8 +1340,7 @@ def rich_color(self) -&gt; RichColor:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@lru_cache(maxsize=2048)
-def blend(self, destination: Color, factor: float) -&gt; Color:
+<pre><code class="python">def blend(self, destination: Color, factor: float) -&gt; Color:
     &#34;&#34;&#34;Generate a new color between two colors.
 
     Args:
@@ -1381,7 +1382,8 @@ def blend(self, destination: Color, factor: float) -&gt; Color:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def darken(self, amount: float) -&gt; Color:
+<pre><code class="python">@lru_cache(maxsize=1024)
+def darken(self, amount: float) -&gt; Color:
     &#34;&#34;&#34;Darken the color by a given amount.
 
     Args:
@@ -1415,7 +1417,8 @@ Defaults to 0.95.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_contrast_text(self, alpha=0.95) -&gt; Color:
+<pre><code class="python">@lru_cache(maxsize=1024)
+def get_contrast_text(self, alpha=0.95) -&gt; Color:
     &#34;&#34;&#34;Get a light or dark color that best contrasts this color, for use with text.
 
     Args:

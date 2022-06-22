@@ -85,7 +85,7 @@ class Prompt(Message, system=True):
     &#34;&#34;&#34;Used to &#39;wake up&#39; an event loop.&#34;&#34;&#34;
 
     def can_replace(self, message: Message) -&gt; bool:
-        return isinstance(message, StylesUpdated)
+        return isinstance(message, Prompt)
 
 
 class TerminalSupportsSynchronizedOutput(Message):
@@ -230,7 +230,7 @@ class TerminalSupportsSynchronizedOutput(Message):
     &#34;&#34;&#34;Used to &#39;wake up&#39; an event loop.&#34;&#34;&#34;
 
     def can_replace(self, message: Message) -&gt; bool:
-        return isinstance(message, StylesUpdated)</code></pre>
+        return isinstance(message, Prompt)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

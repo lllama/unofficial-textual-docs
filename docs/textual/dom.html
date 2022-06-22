@@ -51,6 +51,7 @@ from .message_pump import MessagePump
 
 if TYPE_CHECKING:
     from .app import App
+    from .css.styles import StylesBase
     from .css.query import DOMQuery
     from .screen import Screen
 
@@ -69,6 +70,9 @@ class DOMNode(MessagePump):
 
     # Custom CSS
     CSS: ClassVar[str] = &#34;&#34;
+
+    # Virtual DOM nodes
+    COMPONENT_CLASSES: ClassVar[set[str]] = set()
 
     # True if this node inherits the CSS from the base class.
     _inherit_css: ClassVar[bool] = True
@@ -89,8 +93,9 @@ class DOMNode(MessagePump):
         self._css_styles: Styles = Styles(self)
         self._inline_styles: Styles = Styles(self)
         self.styles = RenderStyles(self, self._css_styles, self._inline_styles)
-        self._default_styles = Styles()
-        self._default_rules = self._default_styles.extract_rules((0, 0, 0))
+        # A mapping of class names to Styles set in COMPONENT_CLASSES
+        self.component_styles: dict[str, StylesBase] = {}
+
         super().__init__()
 
     def __init_subclass__(cls, inherit_css: bool = True) -&gt; None:
@@ -383,7 +388,14 @@ class DOMNode(MessagePump):
         style = Style()
         for node in reversed(self.ancestors):
             style += node.styles.text_style
+        return style
 
+    @property
+    def rich_style(self) -&gt; Style:
+        &#34;&#34;&#34;Get a Rich Style object for this DOMNode.&#34;&#34;&#34;
+        (_, _), (background, color) = self.colors
+        style = Style.from_color(color.rich_color, background.rich_color)
+        style += self.text_style
         return style
 
     @property
@@ -408,7 +420,6 @@ class DOMNode(MessagePump):
     @property
     def ancestors(self) -&gt; list[DOMNode]:
         &#34;&#34;&#34;Get a list of Nodes by tracing ancestors all the way back to App.&#34;&#34;&#34;
-
         nodes: list[DOMNode] = [self]
         add_node = nodes.append
         node = self
@@ -447,9 +458,6 @@ class DOMNode(MessagePump):
             if isinstance(node, Widget):
                 node.set_dirty()
                 node._layout_required = True
-
-    def on_style_change(self) -&gt; None:
-        pass
 
     def add_child(self, node: DOMNode) -&gt; None:
         &#34;&#34;&#34;Add a new child node.
@@ -628,6 +636,9 @@ class DOMNode(MessagePump):
     # Custom CSS
     CSS: ClassVar[str] = &#34;&#34;
 
+    # Virtual DOM nodes
+    COMPONENT_CLASSES: ClassVar[set[str]] = set()
+
     # True if this node inherits the CSS from the base class.
     _inherit_css: ClassVar[bool] = True
     # List of names of base class (lower cased) that inherit CSS
@@ -647,8 +658,9 @@ class DOMNode(MessagePump):
         self._css_styles: Styles = Styles(self)
         self._inline_styles: Styles = Styles(self)
         self.styles = RenderStyles(self, self._css_styles, self._inline_styles)
-        self._default_styles = Styles()
-        self._default_rules = self._default_styles.extract_rules((0, 0, 0))
+        # A mapping of class names to Styles set in COMPONENT_CLASSES
+        self.component_styles: dict[str, StylesBase] = {}
+
         super().__init__()
 
     def __init_subclass__(cls, inherit_css: bool = True) -&gt; None:
@@ -941,7 +953,14 @@ class DOMNode(MessagePump):
         style = Style()
         for node in reversed(self.ancestors):
             style += node.styles.text_style
+        return style
 
+    @property
+    def rich_style(self) -&gt; Style:
+        &#34;&#34;&#34;Get a Rich Style object for this DOMNode.&#34;&#34;&#34;
+        (_, _), (background, color) = self.colors
+        style = Style.from_color(color.rich_color, background.rich_color)
+        style += self.text_style
         return style
 
     @property
@@ -966,7 +985,6 @@ class DOMNode(MessagePump):
     @property
     def ancestors(self) -&gt; list[DOMNode]:
         &#34;&#34;&#34;Get a list of Nodes by tracing ancestors all the way back to App.&#34;&#34;&#34;
-
         nodes: list[DOMNode] = [self]
         add_node = nodes.append
         node = self
@@ -1005,9 +1023,6 @@ class DOMNode(MessagePump):
             if isinstance(node, Widget):
                 node.set_dirty()
                 node._layout_required = True
-
-    def on_style_change(self) -&gt; None:
-        pass
 
     def add_child(self, node: DOMNode) -&gt; None:
         &#34;&#34;&#34;Add a new child node.
@@ -1165,6 +1180,10 @@ class DOMNode(MessagePump):
 </ul>
 <h3>Class variables</h3>
 <dl>
+<dt id="textual.dom.DOMNode.COMPONENT_CLASSES"><code class="name">var <span class="ident">COMPONENT_CLASSES</span> : ClassVar[set[str]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.dom.DOMNode.CSS"><code class="name">var <span class="ident">CSS</span> : ClassVar[str]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1182,7 +1201,6 @@ class DOMNode(MessagePump):
 <pre><code class="python">@property
 def ancestors(self) -&gt; list[DOMNode]:
     &#34;&#34;&#34;Get a list of Nodes by tracing ancestors all the way back to App.&#34;&#34;&#34;
-
     nodes: list[DOMNode] = [self]
     add_node = nodes.append
     node = self
@@ -1449,6 +1467,22 @@ def pseudo_classes(self) -&gt; frozenset[str]:
     return pseudo_classes</code></pre>
 </details>
 </dd>
+<dt id="textual.dom.DOMNode.rich_style"><code class="name">var <span class="ident">rich_style</span> : rich.style.Style</code></dt>
+<dd>
+<div class="desc"><p>Get a Rich Style object for this DOMNode.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def rich_style(self) -&gt; Style:
+    &#34;&#34;&#34;Get a Rich Style object for this DOMNode.&#34;&#34;&#34;
+    (_, _), (background, color) = self.colors
+    style = Style.from_color(color.rich_color, background.rich_color)
+    style += self.text_style
+    return style</code></pre>
+</details>
+</dd>
 <dt id="textual.dom.DOMNode.screen"><code class="name">var <span class="ident">screen</span> : Screen</code></dt>
 <dd>
 <div class="desc"><p>Get the screen that this node is contained within. Note that this may not be the currently active screen within the app.</p></div>
@@ -1502,7 +1536,6 @@ def text_style(self) -&gt; Style:
     style = Style()
     for node in reversed(self.ancestors):
         style += node.styles.text_style
-
     return style</code></pre>
 </details>
 </dd>
@@ -1802,19 +1835,6 @@ def visible(self) -&gt; bool:
     &#34;&#34;&#34;</code></pre>
 </details>
 </dd>
-<dt id="textual.dom.DOMNode.on_style_change"><code class="name flex">
-<span>def <span class="ident">on_style_change</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_style_change(self) -&gt; None:
-    pass</code></pre>
-</details>
-</dd>
 <dt id="textual.dom.DOMNode.query"><code class="name flex">
 <span>def <span class="ident">query</span></span>(<span>self, selector: str | None = None) ‑> DOMQuery</span>
 </code></dt>
@@ -2101,6 +2121,7 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a></code></h4>
 <ul class="">
+<li><code><a title="textual.dom.DOMNode.COMPONENT_CLASSES" href="#textual.dom.DOMNode.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
 <li><code><a title="textual.dom.DOMNode.CSS" href="#textual.dom.DOMNode.CSS">CSS</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_child" href="#textual.dom.DOMNode.add_child">add_child</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_children" href="#textual.dom.DOMNode.add_children">add_children</a></code></li>
@@ -2122,13 +2143,13 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.id" href="#textual.dom.DOMNode.id">id</a></code></li>
 <li><code><a title="textual.dom.DOMNode.name" href="#textual.dom.DOMNode.name">name</a></code></li>
 <li><code><a title="textual.dom.DOMNode.on_register" href="#textual.dom.DOMNode.on_register">on_register</a></code></li>
-<li><code><a title="textual.dom.DOMNode.on_style_change" href="#textual.dom.DOMNode.on_style_change">on_style_change</a></code></li>
 <li><code><a title="textual.dom.DOMNode.parent" href="#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.dom.DOMNode.pseudo_classes" href="#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.query" href="#textual.dom.DOMNode.query">query</a></code></li>
 <li><code><a title="textual.dom.DOMNode.refresh" href="#textual.dom.DOMNode.refresh">refresh</a></code></li>
 <li><code><a title="textual.dom.DOMNode.remove_class" href="#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.reset_styles" href="#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
+<li><code><a title="textual.dom.DOMNode.rich_style" href="#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.screen" href="#textual.dom.DOMNode.screen">screen</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_styles" href="#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.text_style" href="#textual.dom.DOMNode.text_style">text_style</a></code></li>

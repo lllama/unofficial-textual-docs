@@ -35,9 +35,18 @@ Functions and classes to manage terminal geometry (anything involving coordinate
 
 from __future__ import annotations
 
-from typing import Any, cast, NamedTuple, Sequence, Tuple, Union, TypeVar
+import sys
+from functools import lru_cache
+from typing import Any, Collection, NamedTuple, Tuple, TypeVar, Union, cast
 
-SpacingDimensions = Union[int, Tuple[int], Tuple[int, int], Tuple[int, int, int, int]]
+if sys.version_info &gt;= (3, 10):
+    from typing import TypeAlias
+else:  # pragma: no cover
+    from typing_extensions import TypeAlias
+
+SpacingDimensions: TypeAlias = Union[
+    int, Tuple[int], Tuple[int, int], Tuple[int, int, int, int]
+]
 
 T = TypeVar(&#34;T&#34;, int, float)
 
@@ -211,11 +220,11 @@ class Region(NamedTuple):
     height: int = 0
 
     @classmethod
-    def from_union(cls, regions: Sequence[Region]) -&gt; Region:
+    def from_union(cls, regions: Collection[Region]) -&gt; Region:
         &#34;&#34;&#34;Create a Region from the union of other regions.
 
         Args:
-            regions (Iterable[Region]): One or more regions.
+            regions (Collection[Region]): One or more regions.
 
         Returns:
             Region: A Region that encloses all other regions.
@@ -269,7 +278,7 @@ class Region(NamedTuple):
         The end value is non inclusive.
 
         Returns:
-            tuple[int, int]: [description]
+            tuple[int, int]: Pair of x coordinates (row numbers).
         &#34;&#34;&#34;
         return (self.x, self.x + self.width)
 
@@ -280,7 +289,7 @@ class Region(NamedTuple):
         The end value is non inclusive.
 
         Returns:
-            tuple[int, int]: [description]
+            tuple[int, int]: Pair of y coordinates (line numbers).
         &#34;&#34;&#34;
         return (self.y, self.y + self.height)
 
@@ -385,6 +394,7 @@ class Region(NamedTuple):
             height + expand_height * 2,
         )
 
+    @lru_cache(maxsize=1024)
     def overlaps(self, other: Region) -&gt; bool:
         &#34;&#34;&#34;Check if another region overlaps this region.
 
@@ -462,6 +472,7 @@ class Region(NamedTuple):
         self_x, self_y, width, height = self
         return Region(self_x + x, self_y + y, width, height)
 
+    @lru_cache(maxsize=4096)
     def __contains__(self, other: Any) -&gt; bool:
         &#34;&#34;&#34;Check if a point is in this region.&#34;&#34;&#34;
         if isinstance(other, Region):
@@ -512,6 +523,7 @@ class Region(NamedTuple):
             height=max(0, height - top - bottom),
         )
 
+    @lru_cache(maxsize=4096)
     def intersection(self, region: Region) -&gt; Region:
         &#34;&#34;&#34;Get the overlapping portion of the two regions.
 
@@ -536,8 +548,9 @@ class Region(NamedTuple):
 
         return Region(rx1, ry1, rx2 - rx1, ry2 - ry1)
 
+    @lru_cache(maxsize=4096)
     def union(self, region: Region) -&gt; Region:
-        &#34;&#34;&#34;Get a new region that contains both regions.
+        &#34;&#34;&#34;Get the smallest region that contains both regions.
 
         Args:
             region (Region): Another region.
@@ -553,6 +566,7 @@ class Region(NamedTuple):
         )
         return union_region
 
+    @lru_cache(maxsize=1024)
     def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Region]:
         &#34;&#34;&#34;Split a region in to 4 from given x and y offsets (cuts).
 
@@ -592,6 +606,7 @@ class Region(NamedTuple):
             _Region(x + cut_x, y + cut_y, width - cut_x, height - cut_y),
         )
 
+    @lru_cache(maxsize=1024)
     def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
         &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
@@ -620,6 +635,7 @@ class Region(NamedTuple):
             Region(x + cut, y, width - cut, height),
         )
 
+    @lru_cache(maxsize=1024)
     def split_horizontal(self, cut: int) -&gt; tuple[Region, Region]:
         &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
@@ -1036,11 +1052,11 @@ def is_origin(self) -&gt; bool:
     height: int = 0
 
     @classmethod
-    def from_union(cls, regions: Sequence[Region]) -&gt; Region:
+    def from_union(cls, regions: Collection[Region]) -&gt; Region:
         &#34;&#34;&#34;Create a Region from the union of other regions.
 
         Args:
-            regions (Iterable[Region]): One or more regions.
+            regions (Collection[Region]): One or more regions.
 
         Returns:
             Region: A Region that encloses all other regions.
@@ -1094,7 +1110,7 @@ def is_origin(self) -&gt; bool:
         The end value is non inclusive.
 
         Returns:
-            tuple[int, int]: [description]
+            tuple[int, int]: Pair of x coordinates (row numbers).
         &#34;&#34;&#34;
         return (self.x, self.x + self.width)
 
@@ -1105,7 +1121,7 @@ def is_origin(self) -&gt; bool:
         The end value is non inclusive.
 
         Returns:
-            tuple[int, int]: [description]
+            tuple[int, int]: Pair of y coordinates (line numbers).
         &#34;&#34;&#34;
         return (self.y, self.y + self.height)
 
@@ -1210,6 +1226,7 @@ def is_origin(self) -&gt; bool:
             height + expand_height * 2,
         )
 
+    @lru_cache(maxsize=1024)
     def overlaps(self, other: Region) -&gt; bool:
         &#34;&#34;&#34;Check if another region overlaps this region.
 
@@ -1287,6 +1304,7 @@ def is_origin(self) -&gt; bool:
         self_x, self_y, width, height = self
         return Region(self_x + x, self_y + y, width, height)
 
+    @lru_cache(maxsize=4096)
     def __contains__(self, other: Any) -&gt; bool:
         &#34;&#34;&#34;Check if a point is in this region.&#34;&#34;&#34;
         if isinstance(other, Region):
@@ -1337,6 +1355,7 @@ def is_origin(self) -&gt; bool:
             height=max(0, height - top - bottom),
         )
 
+    @lru_cache(maxsize=4096)
     def intersection(self, region: Region) -&gt; Region:
         &#34;&#34;&#34;Get the overlapping portion of the two regions.
 
@@ -1361,8 +1380,9 @@ def is_origin(self) -&gt; bool:
 
         return Region(rx1, ry1, rx2 - rx1, ry2 - ry1)
 
+    @lru_cache(maxsize=4096)
     def union(self, region: Region) -&gt; Region:
-        &#34;&#34;&#34;Get a new region that contains both regions.
+        &#34;&#34;&#34;Get the smallest region that contains both regions.
 
         Args:
             region (Region): Another region.
@@ -1378,6 +1398,7 @@ def is_origin(self) -&gt; bool:
         )
         return union_region
 
+    @lru_cache(maxsize=1024)
     def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Region]:
         &#34;&#34;&#34;Split a region in to 4 from given x and y offsets (cuts).
 
@@ -1417,6 +1438,7 @@ def is_origin(self) -&gt; bool:
             _Region(x + cut_x, y + cut_y, width - cut_x, height - cut_y),
         )
 
+    @lru_cache(maxsize=1024)
     def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
         &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
@@ -1445,6 +1467,7 @@ def is_origin(self) -&gt; bool:
             Region(x + cut, y, width - cut, height),
         )
 
+    @lru_cache(maxsize=1024)
     def split_horizontal(self, cut: int) -&gt; tuple[Region, Region]:
         &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
@@ -1559,13 +1582,13 @@ def from_origin(cls, origin: tuple[int, int], size: tuple[int, int]) -&gt; Regio
 </details>
 </dd>
 <dt id="textual.geometry.Region.from_union"><code class="name flex">
-<span>def <span class="ident">from_union</span></span>(<span>regions: Sequence[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
+<span>def <span class="ident">from_union</span></span>(<span>regions: Collection[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create a Region from the union of other regions.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>regions</code></strong> :&ensp;<code>Iterable[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]</code></dt>
+<dt><strong><code>regions</code></strong> :&ensp;<code>Collection[<a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>]</code></dt>
 <dd>One or more regions.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -1578,11 +1601,11 @@ def from_origin(cls, origin: tuple[int, int], size: tuple[int, int]) -&gt; Regio
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_union(cls, regions: Sequence[Region]) -&gt; Region:
+def from_union(cls, regions: Collection[Region]) -&gt; Region:
     &#34;&#34;&#34;Create a Region from the union of other regions.
 
     Args:
-        regions (Iterable[Region]): One or more regions.
+        regions (Collection[Region]): One or more regions.
 
     Returns:
         Region: A Region that encloses all other regions.
@@ -1736,7 +1759,7 @@ def top_right(self) -&gt; Offset:
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tuple[int, int]</code></dt>
-<dd>[description]</dd>
+<dd>Pair of x coordinates (row numbers).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1749,7 +1772,7 @@ def x_extents(self) -&gt; tuple[int, int]:
     The end value is non inclusive.
 
     Returns:
-        tuple[int, int]: [description]
+        tuple[int, int]: Pair of x coordinates (row numbers).
     &#34;&#34;&#34;
     return (self.x, self.x + self.width)</code></pre>
 </details>
@@ -1791,7 +1814,7 @@ def x_range(self) -&gt; range:
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tuple[int, int]</code></dt>
-<dd>[description]</dd>
+<dd>Pair of y coordinates (line numbers).</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1804,7 +1827,7 @@ def y_extents(self) -&gt; tuple[int, int]:
     The end value is non inclusive.
 
     Returns:
-        tuple[int, int]: [description]
+        tuple[int, int]: Pair of y coordinates (line numbers).
     &#34;&#34;&#34;
     return (self.y, self.y + self.height)</code></pre>
 </details>
@@ -2047,7 +2070,8 @@ def y_range(self) -&gt; range:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def intersection(self, region: Region) -&gt; Region:
+<pre><code class="python">@lru_cache(maxsize=4096)
+def intersection(self, region: Region) -&gt; Region:
     &#34;&#34;&#34;Get the overlapping portion of the two regions.
 
     Args:
@@ -2091,7 +2115,8 @@ def y_range(self) -&gt; range:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def overlaps(self, other: Region) -&gt; bool:
+<pre><code class="python">@lru_cache(maxsize=1024)
+def overlaps(self, other: Region) -&gt; bool:
     &#34;&#34;&#34;Check if another region overlaps this region.
 
     Args:
@@ -2180,7 +2205,8 @@ is taken from the lower edge.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Region]:
+<pre><code class="python">@lru_cache(maxsize=1024)
+def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Region]:
     &#34;&#34;&#34;Split a region in to 4 from given x and y offsets (cuts).
 
     ```
@@ -2248,7 +2274,8 @@ for the offset to start from the right edge.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def split_horizontal(self, cut: int) -&gt; tuple[Region, Region]:
+<pre><code class="python">@lru_cache(maxsize=1024)
+def split_horizontal(self, cut: int) -&gt; tuple[Region, Region]:
     &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
     ```
@@ -2304,7 +2331,8 @@ it is taken from the right edge.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
+<pre><code class="python">@lru_cache(maxsize=1024)
+def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
     &#34;&#34;&#34;Split a region in to two, from a given x offset.
 
     ```
@@ -2373,7 +2401,7 @@ it is taken from the right edge.</dd>
 <span>def <span class="ident">union</span></span>(<span>self, region: <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get a new region that contains both regions.</p>
+<div class="desc"><p>Get the smallest region that contains both regions.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>region</code></strong> :&ensp;<code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
@@ -2388,8 +2416,9 @@ it is taken from the right edge.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def union(self, region: Region) -&gt; Region:
-    &#34;&#34;&#34;Get a new region that contains both regions.
+<pre><code class="python">@lru_cache(maxsize=4096)
+def union(self, region: Region) -&gt; Region:
+    &#34;&#34;&#34;Get the smallest region that contains both regions.
 
     Args:
         region (Region): Another region.

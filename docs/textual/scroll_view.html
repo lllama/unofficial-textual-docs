@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.layout API documentation</title>
+<title>textual.scroll_view API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,34 +19,129 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.layout</code></h1>
+<h1 class="title">Module <code>textual.scroll_view</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from .widget import Widget
+<pre><code class="python">from __future__ import annotations
+
+from rich.console import RenderableType
 
 
-class Vertical(Widget):
-    &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;
+from .geometry import Size
+from .widget import Widget
 
-    CSS = &#34;&#34;&#34;
-    Vertical {
-        layout: vertical;       
-    }    
+
+class ScrollView(Widget):
+    &#34;&#34;&#34;
+    A base class for a Widget that handles it&#39;s own scrolling (i.e. doesn&#39;t rely
+    on the compositor to render children).
+
     &#34;&#34;&#34;
 
-
-class Horizontal(Widget):
-    &#34;&#34;&#34;A container widget to align children horizontally.&#34;&#34;&#34;
-
     CSS = &#34;&#34;&#34;
-    Horizontal {
-        layout: horizontal;
+    
+    ScrollView {     
+        overflow-y: auto;
+        overflow-x: auto;        
     }    
-    &#34;&#34;&#34;</code></pre>
+
+    &#34;&#34;&#34;
+
+    def __init__(
+        self, name: str | None = None, id: str | None = None, classes: str | None = None
+    ) -&gt; None:
+        super().__init__(name=name, id=id, classes=classes)
+
+    @property
+    def is_scrollable(self) -&gt; bool:
+        &#34;&#34;&#34;Always scrollable.&#34;&#34;&#34;
+        return True
+
+    @property
+    def is_transparent(self) -&gt; bool:
+        &#34;&#34;&#34;Not transparent, i.e. renders something.&#34;&#34;&#34;
+        return False
+
+    def on_mount(self):
+        self._refresh_scrollbars()
+
+    def get_content_width(self, container: Size, viewport: Size) -&gt; int:
+        &#34;&#34;&#34;Gets the width of the content area.
+
+        Args:
+            container (Size): Size of the container (immediate parent) widget.
+            viewport (Size): Size of the viewport.
+
+        Returns:
+            int: The optimal width of the content.
+        &#34;&#34;&#34;
+        return self.virtual_size.width
+
+    def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
+        &#34;&#34;&#34;Gets the height (number of lines) in the content area.
+
+        Args:
+            container (Size): Size of the container (immediate parent) widget.
+            viewport (Size): Size of the viewport.
+            width (int): Width of renderable.
+
+        Returns:
+            int: The height of the content.
+        &#34;&#34;&#34;
+        return self.virtual_size.height
+
+    def size_updated(
+        self, size: Size, virtual_size: Size, container_size: Size
+    ) -&gt; None:
+        &#34;&#34;&#34;Called when size is updated.
+
+        Args:
+            size (Size): New size.
+            virtual_size (Size): New virtual size.
+            container_size (Size): New container size.
+        &#34;&#34;&#34;
+        virtual_size = self.virtual_size
+        if self._size != size:
+            self._size = size
+            self._container_size = container_size
+
+            self._refresh_scrollbars()
+            width, height = self.container_size
+            if self.show_vertical_scrollbar:
+                self.vertical_scrollbar.window_virtual_size = virtual_size.height
+                self.vertical_scrollbar.window_size = height
+            if self.show_horizontal_scrollbar:
+                self.horizontal_scrollbar.window_virtual_size = virtual_size.width
+                self.horizontal_scrollbar.window_size = width
+
+            self.scroll_x = self.validate_scroll_x(self.scroll_x)
+            self.scroll_y = self.validate_scroll_y(self.scroll_y)
+            self.refresh(layout=False)
+            self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
+
+    def render(self) -&gt; RenderableType:
+        &#34;&#34;&#34;Render the scrollable region (if `render_lines` is not implemented).
+
+        Returns:
+            RenderableType: Renderable object.
+        &#34;&#34;&#34;
+        from rich.panel import Panel
+
+        return Panel(f&#34;{self.scroll_offset} {self.show_vertical_scrollbar}&#34;)
+
+    def watch_scroll_x(self, new_value: float) -&gt; None:
+        &#34;&#34;&#34;Called when horizontal bar is scrolled.&#34;&#34;&#34;
+        self.horizontal_scrollbar.position = int(new_value)
+        self.refresh(layout=False)
+
+    def watch_scroll_y(self, new_value: float) -&gt; None:
+        &#34;&#34;&#34;Called when vertical bar is scrolled.&#34;&#34;&#34;
+        self.vertical_scrollbar.position = int(new_value)
+        self.refresh(layout=False)</code></pre>
 </details>
 </section>
 <section>
@@ -58,24 +153,124 @@ class Horizontal(Widget):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="textual.layout.Horizontal"><code class="flex name class">
-<span>class <span class="ident">Horizontal</span></span>
-<span>(</span><span>*children: Widget, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
+<dt id="textual.scroll_view.ScrollView"><code class="flex name class">
+<span>class <span class="ident">ScrollView</span></span>
+<span>(</span><span>name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A container widget to align children horizontally.</p></div>
+<div class="desc"><p>A base class for a Widget that handles it's own scrolling (i.e. doesn't rely
+on the compositor to render children).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Horizontal(Widget):
-    &#34;&#34;&#34;A container widget to align children horizontally.&#34;&#34;&#34;
+<pre><code class="python">class ScrollView(Widget):
+    &#34;&#34;&#34;
+    A base class for a Widget that handles it&#39;s own scrolling (i.e. doesn&#39;t rely
+    on the compositor to render children).
+
+    &#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-    Horizontal {
-        layout: horizontal;
+    
+    ScrollView {     
+        overflow-y: auto;
+        overflow-x: auto;        
     }    
-    &#34;&#34;&#34;</code></pre>
+
+    &#34;&#34;&#34;
+
+    def __init__(
+        self, name: str | None = None, id: str | None = None, classes: str | None = None
+    ) -&gt; None:
+        super().__init__(name=name, id=id, classes=classes)
+
+    @property
+    def is_scrollable(self) -&gt; bool:
+        &#34;&#34;&#34;Always scrollable.&#34;&#34;&#34;
+        return True
+
+    @property
+    def is_transparent(self) -&gt; bool:
+        &#34;&#34;&#34;Not transparent, i.e. renders something.&#34;&#34;&#34;
+        return False
+
+    def on_mount(self):
+        self._refresh_scrollbars()
+
+    def get_content_width(self, container: Size, viewport: Size) -&gt; int:
+        &#34;&#34;&#34;Gets the width of the content area.
+
+        Args:
+            container (Size): Size of the container (immediate parent) widget.
+            viewport (Size): Size of the viewport.
+
+        Returns:
+            int: The optimal width of the content.
+        &#34;&#34;&#34;
+        return self.virtual_size.width
+
+    def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
+        &#34;&#34;&#34;Gets the height (number of lines) in the content area.
+
+        Args:
+            container (Size): Size of the container (immediate parent) widget.
+            viewport (Size): Size of the viewport.
+            width (int): Width of renderable.
+
+        Returns:
+            int: The height of the content.
+        &#34;&#34;&#34;
+        return self.virtual_size.height
+
+    def size_updated(
+        self, size: Size, virtual_size: Size, container_size: Size
+    ) -&gt; None:
+        &#34;&#34;&#34;Called when size is updated.
+
+        Args:
+            size (Size): New size.
+            virtual_size (Size): New virtual size.
+            container_size (Size): New container size.
+        &#34;&#34;&#34;
+        virtual_size = self.virtual_size
+        if self._size != size:
+            self._size = size
+            self._container_size = container_size
+
+            self._refresh_scrollbars()
+            width, height = self.container_size
+            if self.show_vertical_scrollbar:
+                self.vertical_scrollbar.window_virtual_size = virtual_size.height
+                self.vertical_scrollbar.window_size = height
+            if self.show_horizontal_scrollbar:
+                self.horizontal_scrollbar.window_virtual_size = virtual_size.width
+                self.horizontal_scrollbar.window_size = width
+
+            self.scroll_x = self.validate_scroll_x(self.scroll_x)
+            self.scroll_y = self.validate_scroll_y(self.scroll_y)
+            self.refresh(layout=False)
+            self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
+
+    def render(self) -&gt; RenderableType:
+        &#34;&#34;&#34;Render the scrollable region (if `render_lines` is not implemented).
+
+        Returns:
+            RenderableType: Renderable object.
+        &#34;&#34;&#34;
+        from rich.panel import Panel
+
+        return Panel(f&#34;{self.scroll_offset} {self.show_vertical_scrollbar}&#34;)
+
+    def watch_scroll_x(self, new_value: float) -&gt; None:
+        &#34;&#34;&#34;Called when horizontal bar is scrolled.&#34;&#34;&#34;
+        self.horizontal_scrollbar.position = int(new_value)
+        self.refresh(layout=False)
+
+    def watch_scroll_y(self, new_value: float) -&gt; None:
+        &#34;&#34;&#34;Called when vertical bar is scrolled.&#34;&#34;&#34;
+        self.vertical_scrollbar.position = int(new_value)
+        self.refresh(layout=False)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -85,21 +280,169 @@ class Horizontal(Widget):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.layout.Horizontal.COMPONENT_CLASSES"><code class="name">var <span class="ident">COMPONENT_CLASSES</span> : ClassVar[set[str]]</code></dt>
+<dt id="textual.scroll_view.ScrollView.COMPONENT_CLASSES"><code class="name">var <span class="ident">COMPONENT_CLASSES</span> : ClassVar[set[str]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Horizontal.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dt id="textual.scroll_view.ScrollView.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Horizontal.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
+<dt id="textual.scroll_view.ScrollView.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Horizontal.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
+<dt id="textual.scroll_view.ScrollView.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.scroll_view.ScrollView.is_scrollable"><code class="name">var <span class="ident">is_scrollable</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Always scrollable.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_scrollable(self) -&gt; bool:
+    &#34;&#34;&#34;Always scrollable.&#34;&#34;&#34;
+    return True</code></pre>
+</details>
+</dd>
+<dt id="textual.scroll_view.ScrollView.is_transparent"><code class="name">var <span class="ident">is_transparent</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Not transparent, i.e. renders something.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_transparent(self) -&gt; bool:
+    &#34;&#34;&#34;Not transparent, i.e. renders something.&#34;&#34;&#34;
+    return False</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.scroll_view.ScrollView.on_mount"><code class="name flex">
+<span>def <span class="ident">on_mount</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_mount(self):
+    self._refresh_scrollbars()</code></pre>
+</details>
+</dd>
+<dt id="textual.scroll_view.ScrollView.render"><code class="name flex">
+<span>def <span class="ident">render</span></span>(<span>self) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Render the scrollable region (if <code>render_lines</code> is not implemented).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>RenderableType</code></dt>
+<dd>Renderable object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def render(self) -&gt; RenderableType:
+    &#34;&#34;&#34;Render the scrollable region (if `render_lines` is not implemented).
+
+    Returns:
+        RenderableType: Renderable object.
+    &#34;&#34;&#34;
+    from rich.panel import Panel
+
+    return Panel(f&#34;{self.scroll_offset} {self.show_vertical_scrollbar}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.scroll_view.ScrollView.size_updated"><code class="name flex">
+<span>def <span class="ident">size_updated</span></span>(<span>self, size: Size, virtual_size: Size, container_size: Size) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Called when size is updated.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>New size.</dd>
+<dt><strong><code>virtual_size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>New virtual size.</dd>
+<dt><strong><code>container_size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>New container size.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def size_updated(
+    self, size: Size, virtual_size: Size, container_size: Size
+) -&gt; None:
+    &#34;&#34;&#34;Called when size is updated.
+
+    Args:
+        size (Size): New size.
+        virtual_size (Size): New virtual size.
+        container_size (Size): New container size.
+    &#34;&#34;&#34;
+    virtual_size = self.virtual_size
+    if self._size != size:
+        self._size = size
+        self._container_size = container_size
+
+        self._refresh_scrollbars()
+        width, height = self.container_size
+        if self.show_vertical_scrollbar:
+            self.vertical_scrollbar.window_virtual_size = virtual_size.height
+            self.vertical_scrollbar.window_size = height
+        if self.show_horizontal_scrollbar:
+            self.horizontal_scrollbar.window_virtual_size = virtual_size.width
+            self.horizontal_scrollbar.window_size = width
+
+        self.scroll_x = self.validate_scroll_x(self.scroll_x)
+        self.scroll_y = self.validate_scroll_y(self.scroll_y)
+        self.refresh(layout=False)
+        self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)</code></pre>
+</details>
+</dd>
+<dt id="textual.scroll_view.ScrollView.watch_scroll_x"><code class="name flex">
+<span>def <span class="ident">watch_scroll_x</span></span>(<span>self, new_value: float) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Called when horizontal bar is scrolled.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_scroll_x(self, new_value: float) -&gt; None:
+    &#34;&#34;&#34;Called when horizontal bar is scrolled.&#34;&#34;&#34;
+    self.horizontal_scrollbar.position = int(new_value)
+    self.refresh(layout=False)</code></pre>
+</details>
+</dd>
+<dt id="textual.scroll_view.ScrollView.watch_scroll_y"><code class="name flex">
+<span>def <span class="ident">watch_scroll_y</span></span>(<span>self, new_value: float) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Called when vertical bar is scrolled.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_scroll_y(self, new_value: float) -&gt; None:
+    &#34;&#34;&#34;Called when vertical bar is scrolled.&#34;&#34;&#34;
+    self.vertical_scrollbar.position = int(new_value)
+    self.refresh(layout=False)</code></pre>
+</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -147,8 +490,6 @@ class Horizontal(Widget):
 <li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
 <li><code><a title="textual.widget.Widget.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
-<li><code><a title="textual.widget.Widget.is_scrollable" href="widget.html#textual.widget.Widget.is_scrollable">is_scrollable</a></code></li>
-<li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.widget.Widget.layout" href="widget.html#textual.widget.Widget.layout">layout</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
@@ -164,148 +505,6 @@ class Horizontal(Widget):
 <li><code><a title="textual.widget.Widget.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.widget.Widget.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
-<li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
-<li><code><a title="textual.widget.Widget.render_lines" href="widget.html#textual.widget.Widget.render_lines">render_lines</a></code></li>
-<li><code><a title="textual.widget.Widget.render_styled" href="widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
-<li><code><a title="textual.widget.Widget.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
-<li><code><a title="textual.widget.Widget.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_relative" href="widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_target_x" href="widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_target_y" href="widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_to_widget" href="widget.html#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_dimensions" href="widget.html#textual.widget.Widget.scrollbar_dimensions">scrollbar_dimensions</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
-<li><code><a title="textual.widget.Widget.set_dirty" href="widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
-<li><code><a title="textual.widget.Widget.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
-<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
-<li><code><a title="textual.widget.Widget.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
-<li><code><a title="textual.widget.Widget.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
-<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
-<li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
-<dt id="textual.layout.Vertical"><code class="flex name class">
-<span>class <span class="ident">Vertical</span></span>
-<span>(</span><span>*children: Widget, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>A container widget to align children vertically.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Vertical(Widget):
-    &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;
-
-    CSS = &#34;&#34;&#34;
-    Vertical {
-        layout: vertical;       
-    }    
-    &#34;&#34;&#34;</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="textual.widget.Widget" href="widget.html#textual.widget.Widget">Widget</a></li>
-<li><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></li>
-<li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="textual.layout.Vertical.COMPONENT_CLASSES"><code class="name">var <span class="ident">COMPONENT_CLASSES</span> : ClassVar[set[str]]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.layout.Vertical.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.layout.Vertical.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.layout.Vertical.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="textual.widget.Widget" href="widget.html#textual.widget.Widget">Widget</a></b></code>:
-<ul class="hlist">
-<li><code><a title="textual.widget.Widget.add_child" href="dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
-<li><code><a title="textual.widget.Widget.add_children" href="dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
-<li><code><a title="textual.widget.Widget.add_class" href="dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
-<li><code><a title="textual.widget.Widget.ancestors" href="dom.html#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
-<li><code><a title="textual.widget.Widget.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.auto_height" href="widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
-<li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
-<li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
-<li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
-<li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
-<li><code><a title="textual.widget.Widget.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
-<li><code><a title="textual.widget.Widget.compose" href="widget.html#textual.widget.Widget.compose">compose</a></code></li>
-<li><code><a title="textual.widget.Widget.console" href="widget.html#textual.widget.Widget.console">console</a></code></li>
-<li><code><a title="textual.widget.Widget.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
-<li><code><a title="textual.widget.Widget.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
-<li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
-<li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
-<li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
-<li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
-<li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
-<li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
-<li><code><a title="textual.widget.Widget.focusable_children" href="dom.html#textual.dom.DOMNode.focusable_children">focusable_children</a></code></li>
-<li><code><a title="textual.widget.Widget.get_box_model" href="widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
-<li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
-<li><code><a title="textual.widget.Widget.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
-<li><code><a title="textual.widget.Widget.get_content_width" href="widget.html#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
-<li><code><a title="textual.widget.Widget.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
-<li><code><a title="textual.widget.Widget.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
-<li><code><a title="textual.widget.Widget.has_focus" href="widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
-<li><code><a title="textual.widget.Widget.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
-<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
-<li><code><a title="textual.widget.Widget.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
-<li><code><a title="textual.widget.Widget.is_scrollable" href="widget.html#textual.widget.Widget.is_scrollable">is_scrollable</a></code></li>
-<li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
-<li><code><a title="textual.widget.Widget.layout" href="widget.html#textual.widget.Widget.layout">layout</a></code></li>
-<li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
-<li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
-<li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
-<li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
-<li><code><a title="textual.widget.Widget.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
-<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
-<li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
-<li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
-<li><code><a title="textual.widget.Widget.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
-<li><code><a title="textual.widget.Widget.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
-<li><code><a title="textual.widget.Widget.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
-<li><code><a title="textual.widget.Widget.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
-<li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_lines" href="widget.html#textual.widget.Widget.render_lines">render_lines</a></code></li>
 <li><code><a title="textual.widget.Widget.render_styled" href="widget.html#textual.widget.Widget.render_styled">render_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
@@ -403,21 +602,19 @@ setTimeout(() => input.focus(), 100);
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="textual.layout.Horizontal" href="#textual.layout.Horizontal">Horizontal</a></code></h4>
-<ul class="">
-<li><code><a title="textual.layout.Horizontal.COMPONENT_CLASSES" href="#textual.layout.Horizontal.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.layout.Horizontal.CSS" href="#textual.layout.Horizontal.CSS">CSS</a></code></li>
-<li><code><a title="textual.layout.Horizontal.can_focus" href="#textual.layout.Horizontal.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.layout.Horizontal.can_focus_children" href="#textual.layout.Horizontal.can_focus_children">can_focus_children</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="textual.layout.Vertical" href="#textual.layout.Vertical">Vertical</a></code></h4>
-<ul class="">
-<li><code><a title="textual.layout.Vertical.COMPONENT_CLASSES" href="#textual.layout.Vertical.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.layout.Vertical.CSS" href="#textual.layout.Vertical.CSS">CSS</a></code></li>
-<li><code><a title="textual.layout.Vertical.can_focus" href="#textual.layout.Vertical.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.layout.Vertical.can_focus_children" href="#textual.layout.Vertical.can_focus_children">can_focus_children</a></code></li>
+<h4><code><a title="textual.scroll_view.ScrollView" href="#textual.scroll_view.ScrollView">ScrollView</a></code></h4>
+<ul class="two-column">
+<li><code><a title="textual.scroll_view.ScrollView.COMPONENT_CLASSES" href="#textual.scroll_view.ScrollView.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.CSS" href="#textual.scroll_view.ScrollView.CSS">CSS</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.can_focus" href="#textual.scroll_view.ScrollView.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.can_focus_children" href="#textual.scroll_view.ScrollView.can_focus_children">can_focus_children</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.is_scrollable" href="#textual.scroll_view.ScrollView.is_scrollable">is_scrollable</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.is_transparent" href="#textual.scroll_view.ScrollView.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.on_mount" href="#textual.scroll_view.ScrollView.on_mount">on_mount</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.render" href="#textual.scroll_view.ScrollView.render">render</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.size_updated" href="#textual.scroll_view.ScrollView.size_updated">size_updated</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.watch_scroll_x" href="#textual.scroll_view.ScrollView.watch_scroll_x">watch_scroll_x</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.watch_scroll_y" href="#textual.scroll_view.ScrollView.watch_scroll_y">watch_scroll_y</a></code></li>
 </ul>
 </li>
 </ul>

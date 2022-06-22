@@ -251,6 +251,14 @@ class Scalar(NamedTuple):
 
     @classmethod
     def from_number(cls, value: float) -&gt; Scalar:
+        &#34;&#34;&#34;Create a scalar with cells unit.
+
+        Args:
+            value (float): A number of cells.
+
+        Returns:
+            Scalar: New Scalar.
+        &#34;&#34;&#34;
         return cls(float(value), Unit.CELLS, Unit.WIDTH)
 
     @classmethod
@@ -506,6 +514,14 @@ if __name__ == &#34;__main__&#34;:
 
     @classmethod
     def from_number(cls, value: float) -&gt; Scalar:
+        &#34;&#34;&#34;Create a scalar with cells unit.
+
+        Args:
+            value (float): A number of cells.
+
+        Returns:
+            Scalar: New Scalar.
+        &#34;&#34;&#34;
         return cls(float(value), Unit.CELLS, Unit.WIDTH)
 
     @classmethod
@@ -588,13 +604,31 @@ if __name__ == &#34;__main__&#34;:
 <span>def <span class="ident">from_number</span></span>(<span>value: float) ‑> <a title="textual.css.scalar.Scalar" href="#textual.css.scalar.Scalar">Scalar</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Create a scalar with cells unit.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong> :&ensp;<code>float</code></dt>
+<dd>A number of cells.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.css.scalar.Scalar" href="#textual.css.scalar.Scalar">Scalar</a></code></dt>
+<dd>New Scalar.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
 def from_number(cls, value: float) -&gt; Scalar:
+    &#34;&#34;&#34;Create a scalar with cells unit.
+
+    Args:
+        value (float): A number of cells.
+
+    Returns:
+        Scalar: New Scalar.
+    &#34;&#34;&#34;
     return cls(float(value), Unit.CELLS, Unit.WIDTH)</code></pre>
 </details>
 </dd>
