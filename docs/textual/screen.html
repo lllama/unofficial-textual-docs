@@ -145,15 +145,14 @@ class Screen(Widget):
             self._refresh_layout()
             self._layout_required = False
             self._dirty_widgets.clear()
-        elif self._dirty_widgets or self._dirty_regions:
+        elif self._dirty_widgets:
             self.update_timer.resume()
 
     def _on_update(self) -&gt; None:
         &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
         # Render widgets together
-        if self._dirty_widgets or self._dirty_regions:
+        if self._dirty_widgets:
             self._compositor.update_widgets(self._dirty_widgets)
-            self._compositor.add_dirty_regions(self._dirty_regions)
             self.app._display(self._compositor.render())
             self._dirty_widgets.clear()
         self.update_timer.pause()
@@ -404,15 +403,14 @@ class Screen(Widget):
             self._refresh_layout()
             self._layout_required = False
             self._dirty_widgets.clear()
-        elif self._dirty_widgets or self._dirty_regions:
+        elif self._dirty_widgets:
             self.update_timer.resume()
 
     def _on_update(self) -&gt; None:
         &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
         # Render widgets together
-        if self._dirty_widgets or self._dirty_regions:
+        if self._dirty_widgets:
             self._compositor.update_widgets(self._dirty_widgets)
-            self._compositor.add_dirty_regions(self._dirty_regions)
             self.app._display(self._compositor.render())
             self._dirty_widgets.clear()
         self.update_timer.pause()
@@ -896,6 +894,7 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_width" href="widget.html#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
+<li><code><a title="textual.widget.Widget.get_dirty_regions" href="widget.html#textual.widget.Widget.get_dirty_regions">get_dirty_regions</a></code></li>
 <li><code><a title="textual.widget.Widget.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
 <li><code><a title="textual.widget.Widget.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
@@ -931,6 +930,7 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.scroll_target_x" href="widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_target_y" href="widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_to_region" href="widget.html#textual.widget.Widget.scroll_to_region">scroll_to_region</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_to_widget" href="widget.html#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
@@ -938,7 +938,6 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
-<li><code><a title="textual.widget.Widget.set_dirty" href="widget.html#textual.widget.Widget.set_dirty">set_dirty</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
@@ -952,6 +951,7 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
 </ul>
 </li>
 </ul>

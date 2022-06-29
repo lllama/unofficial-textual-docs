@@ -2676,9 +2676,15 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.geometry.Region.from_origin",
+"ref":"textual.geometry.Region.from_offset",
 "url":20,
-"doc":"Create a region from origin and size. Args: origin (Point): Origin (top left point) size (tuple[int, int]): Dimensions of region. Returns: Region: A region instance.",
+"doc":"Create a region from offset and size. Args: offset (Point): Offset (top left point) size (tuple[int, int]): Dimensions of region. Returns: Region: A region instance.",
+"func":1
+},
+{
+"ref":"textual.geometry.Region.get_scroll_to_visible",
+"url":20,
+"doc":"Calculate the smallest offset required to translate a window so that it contains another region. This method is used to calculate the required offset to scroll something in to view. Args: window_region (Region): The window region. region (Region): The region to move inside the window. Returns: Offset: An offset required to add to region to move it inside window_region.",
 "func":1
 },
 {
@@ -2692,12 +2698,12 @@ INDEX=[
 "doc":"Get the starting and ending x coord. The end value is non inclusive. Returns: tuple[int, int]: Pair of y coordinates (line numbers)."
 },
 {
-"ref":"textual.geometry.Region.x_max",
+"ref":"textual.geometry.Region.right",
 "url":20,
 "doc":"Maximum X value (non inclusive)"
 },
 {
-"ref":"textual.geometry.Region.y_max",
+"ref":"textual.geometry.Region.bottom",
 "url":20,
 "doc":"Maximum Y value (non inclusive)"
 },
@@ -2707,7 +2713,7 @@ INDEX=[
 "doc":"Get the area within the region."
 },
 {
-"ref":"textual.geometry.Region.origin",
+"ref":"textual.geometry.Region.offset",
 "url":20,
 "doc":"Get the start point of the region."
 },
@@ -2734,7 +2740,7 @@ INDEX=[
 {
 "ref":"textual.geometry.Region.corners",
 "url":20,
-"doc":"Get the maxima and minima of region. Returns: tuple[int, int, int, int]: A tuple of  ( ,  ,  ,  ) "
+"doc":"Get the top left and bottom right coordinates as a tuple of integers. Returns: tuple[int, int, int, int]: A tuple of  ( ,  ,  ,  ) "
 },
 {
 "ref":"textual.geometry.Region.x_range",
@@ -2747,9 +2753,21 @@ INDEX=[
 "doc":"A range object for Y coordinates."
 },
 {
-"ref":"textual.geometry.Region.reset_origin",
+"ref":"textual.geometry.Region.reset_offset",
 "url":20,
 "doc":"An region of the same size at (0, 0)."
+},
+{
+"ref":"textual.geometry.Region.at_offset",
+"url":20,
+"doc":"Get a new Region with the same size at a given offset. Args: offset (tuple[int, int]): An offset. Returns: Region: New Region with adjusted offset.",
+"func":1
+},
+{
+"ref":"textual.geometry.Region.crop_size",
+"url":20,
+"doc":"Get a region with the same offset, with a size no larger than  size . Args: size (tuple[int, int]): Maximum width and height (WIDTH, HEIGHT). Returns: Region: New region that could fit within  size .",
+"func":1
 },
 {
 "ref":"textual.geometry.Region.expand",
@@ -2784,7 +2802,7 @@ INDEX=[
 {
 "ref":"textual.geometry.Region.translate",
 "url":20,
-"doc":"Move the origin of the Region. Args: translate_x (int): Value to add to x coordinate. translate_y (int): Value to add to y coordinate. Returns: Region: A new region shifted by x, y",
+"doc":"Move the offset of the Region. Args: translate (tuple[int, int]): Offset to add to region. Returns: Region: A new region shifted by (x, y)",
 "func":1
 },
 {
@@ -3177,9 +3195,9 @@ INDEX=[
 "doc":"Get the height used by the  horizontal scrollbar."
 },
 {
-"ref":"textual.screen.Screen.set_dirty",
+"ref":"textual.screen.Screen.get_dirty_regions",
 "url":23,
-"doc":"Set the Widget as 'dirty' (requiring re-render).",
+"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
 "func":1
 },
 {
@@ -3198,6 +3216,12 @@ INDEX=[
 "ref":"textual.screen.Screen.scroll_to_widget",
 "url":23,
 "doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.scroll_to_region",
+"url":23,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
 "func":1
 },
 {
@@ -3226,6 +3250,11 @@ INDEX=[
 "ref":"textual.screen.Screen.region",
 "url":23,
 "doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.screen.Screen.window_region",
+"url":23,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
 "ref":"textual.screen.Screen.console",
@@ -4745,6 +4774,12 @@ INDEX=[
 "doc":"Not transparent, i.e. renders something."
 },
 {
+"ref":"textual.scroll_view.ScrollView.get_dirty_regions",
+"url":31,
+"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
+"func":1
+},
+{
 "ref":"textual.scroll_view.ScrollView.on_mount",
 "url":31,
 "doc":"",
@@ -4927,12 +4962,6 @@ INDEX=[
 "doc":"Get the height used by the  horizontal scrollbar."
 },
 {
-"ref":"textual.scroll_view.ScrollView.set_dirty",
-"url":23,
-"doc":"Set the Widget as 'dirty' (requiring re-render).",
-"func":1
-},
-{
 "ref":"textual.scroll_view.ScrollView.scroll_to",
 "url":23,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -4948,6 +4977,12 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.scroll_to_widget",
 "url":23,
 "doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.scroll_to_region",
+"url":23,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
 "func":1
 },
 {
@@ -4976,6 +5011,11 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.region",
 "url":23,
 "doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.scroll_view.ScrollView.window_region",
+"url":23,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
 "ref":"textual.scroll_view.ScrollView.console",
@@ -5871,9 +5911,9 @@ INDEX=[
 "doc":"Get the height used by the  horizontal scrollbar."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.set_dirty",
+"ref":"textual.scrollbar.ScrollBar.get_dirty_regions",
 "url":23,
-"doc":"Set the Widget as 'dirty' (requiring re-render).",
+"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
 "func":1
 },
 {
@@ -5892,6 +5932,12 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.scroll_to_widget",
 "url":23,
 "doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.scroll_to_region",
+"url":23,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
 "func":1
 },
 {
@@ -5920,6 +5966,11 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.region",
 "url":23,
 "doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.window_region",
+"url":23,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.is_transparent",
@@ -7444,9 +7495,9 @@ INDEX=[
 "doc":"Get the height used by the  horizontal scrollbar."
 },
 {
-"ref":"textual.layout.Vertical.set_dirty",
+"ref":"textual.layout.Vertical.get_dirty_regions",
 "url":23,
-"doc":"Set the Widget as 'dirty' (requiring re-render).",
+"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
 "func":1
 },
 {
@@ -7465,6 +7516,12 @@ INDEX=[
 "ref":"textual.layout.Vertical.scroll_to_widget",
 "url":23,
 "doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.scroll_to_region",
+"url":23,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
 "func":1
 },
 {
@@ -7493,6 +7550,11 @@ INDEX=[
 "ref":"textual.layout.Vertical.region",
 "url":23,
 "doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.layout.Vertical.window_region",
+"url":23,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
 "ref":"textual.layout.Vertical.is_transparent",
@@ -7958,9 +8020,9 @@ INDEX=[
 "doc":"Get the height used by the  horizontal scrollbar."
 },
 {
-"ref":"textual.layout.Horizontal.set_dirty",
+"ref":"textual.layout.Horizontal.get_dirty_regions",
 "url":23,
-"doc":"Set the Widget as 'dirty' (requiring re-render).",
+"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
 "func":1
 },
 {
@@ -7979,6 +8041,12 @@ INDEX=[
 "ref":"textual.layout.Horizontal.scroll_to_widget",
 "url":23,
 "doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.scroll_to_region",
+"url":23,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
 "func":1
 },
 {
@@ -8007,6 +8075,11 @@ INDEX=[
 "ref":"textual.layout.Horizontal.region",
 "url":23,
 "doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.layout.Horizontal.window_region",
+"url":23,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
 "ref":"textual.layout.Horizontal.is_transparent",
@@ -8742,9 +8815,9 @@ INDEX=[
 "doc":"Get the height used by the  horizontal scrollbar."
 },
 {
-"ref":"textual.widget.Widget.set_dirty",
+"ref":"textual.widget.Widget.get_dirty_regions",
 "url":23,
-"doc":"Set the Widget as 'dirty' (requiring re-render).",
+"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
 "func":1
 },
 {
@@ -8826,6 +8899,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.scroll_to_region",
+"url":23,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.get_pseudo_classes",
 "url":23,
 "doc":"Pseudo classes for a widget",
@@ -8867,6 +8946,11 @@ INDEX=[
 "ref":"textual.widget.Widget.region",
 "url":23,
 "doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.widget.Widget.window_region",
+"url":23,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
 "ref":"textual.widget.Widget.scroll_offset",

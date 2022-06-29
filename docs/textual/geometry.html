@@ -37,6 +37,7 @@ from __future__ import annotations
 
 import sys
 from functools import lru_cache
+from operator import itemgetter, attrgetter
 from typing import Any, Collection, NamedTuple, Tuple, TypeVar, Union, cast
 
 if sys.version_info &gt;= (3, 10):
@@ -106,6 +107,10 @@ class Offset(NamedTuple):
             return Offset(int(x * other), int(y * other))
         return NotImplemented
 
+    def __neg__(self) -&gt; Offset:
+        x, y = self
+        return Offset(-x, -y)
+
     def blend(self, destination: Offset, factor: float) -&gt; Offset:
         &#34;&#34;&#34;Blend (interpolate) to a new point.
 
@@ -118,7 +123,10 @@ class Offset(NamedTuple):
         &#34;&#34;&#34;
         x1, y1 = self
         x2, y2 = destination
-        return Offset(int(x1 + (x2 - x1) * factor), int((y1 + (y2 - y1) * factor)))
+        return Offset(
+            int(x1 + (x2 - x1) * factor),
+            int(y1 + (y2 - y1) * factor),
+        )
 
     def get_distance_to(self, other: Offset) -&gt; float:
         &#34;&#34;&#34;Get the distance to another offset.
@@ -220,7 +228,14 @@ class Region(NamedTuple):
     height: int = 0
 
     @classmethod
-    def from_union(cls, regions: Collection[Region]) -&gt; Region:
+    def from_union(
+        cls,
+        regions: Collection[Region],
+        _get_x=itemgetter(0),
+        _get_y=itemgetter(1),
+        _get_right=attrgetter(&#34;right&#34;),
+        _get_bottom=attrgetter(&#34;bottom&#34;),
+    ) -&gt; Region:
         &#34;&#34;&#34;Create a Region from the union of other regions.
 
         Args:
@@ -231,10 +246,10 @@ class Region(NamedTuple):
         &#34;&#34;&#34;
         if not regions:
             raise ValueError(&#34;At least one region expected&#34;)
-        min_x = min([region.x for region in regions])
-        max_x = max([x + width for x, _y, width, _height in regions])
-        min_y = min([region.y for region in regions])
-        max_y = max([y + height for _x, y, _width, height in regions])
+        min_x = min(regions, key=_get_x).x
+        max_x = max(regions, key=_get_right).right
+        min_y = min(regions, key=_get_y).y
+        max_y = max(regions, key=_get_bottom).bottom
         return cls(min_x, min_y, max_x - min_x, max_y - min_y)
 
     @classmethod
@@ -253,19 +268,67 @@ class Region(NamedTuple):
         return cls(x1, y1, x2 - x1, y2 - y1)
 
     @classmethod
-    def from_origin(cls, origin: tuple[int, int], size: tuple[int, int]) -&gt; Region:
-        &#34;&#34;&#34;Create a region from origin and size.
+    def from_offset(cls, offset: tuple[int, int], size: tuple[int, int]) -&gt; Region:
+        &#34;&#34;&#34;Create a region from offset and size.
 
         Args:
-            origin (Point): Origin (top left point)
+            offset (Point): Offset (top left point)
             size (tuple[int, int]): Dimensions of region.
 
         Returns:
             Region: A region instance.
         &#34;&#34;&#34;
-        x, y = origin
+        x, y = offset
         width, height = size
         return cls(x, y, width, height)
+
+    @classmethod
+    def get_scroll_to_visible(cls, window_region: Region, region: Region) -&gt; Offset:
+        &#34;&#34;&#34;Calculate the smallest offset required to translate a window so that it contains
+        another region.
+
+        This method is used to calculate the required offset to scroll something in to view.
+
+        Args:
+            window_region (Region): The window region.
+            region (Region): The region to move inside the window.
+
+        Returns:
+            Offset: An offset required to add to region to move it inside window_region.
+        &#34;&#34;&#34;
+
+        if region in window_region:
+            # Region is already inside the window, so no need to move it.
+            return Offset(0, 0)
+
+        window_left, window_top, window_right, window_bottom = window_region.corners
+        region = region.crop_size(window_region.size)
+        left, top, right, bottom = region.corners
+        delta_x = delta_y = 0
+
+        if not (
+            (window_right &gt; left &gt;= window_left)
+            and (window_right &gt; right &gt;= window_left)
+        ):
+            # The region does not fit
+            # The window needs to scroll on the X axis to bring region in to view
+            delta_x = min(
+                left - window_left,
+                left - (window_right - region.width),
+                key=abs,
+            )
+
+        if not (
+            (window_bottom &gt; top &gt;= window_top)
+            and (window_bottom &gt; bottom &gt;= window_top)
+        ):
+            # The window needs to scroll on the Y axis to bring region in to view
+            delta_y = min(
+                top - window_top,
+                top - (window_bottom - region.height),
+                key=abs,
+            )
+        return Offset(delta_x, delta_y)
 
     def __bool__(self) -&gt; bool:
         &#34;&#34;&#34;A Region is considered False when it has no area.&#34;&#34;&#34;
@@ -294,12 +357,12 @@ class Region(NamedTuple):
         return (self.y, self.y + self.height)
 
     @property
-    def x_max(self) -&gt; int:
+    def right(self) -&gt; int:
         &#34;&#34;&#34;Maximum X value (non inclusive)&#34;&#34;&#34;
         return self.x + self.width
 
     @property
-    def y_max(self) -&gt; int:
+    def bottom(self) -&gt; int:
         &#34;&#34;&#34;Maximum Y value (non inclusive)&#34;&#34;&#34;
         return self.y + self.height
 
@@ -309,7 +372,7 @@ class Region(NamedTuple):
         return self.width * self.height
 
     @property
-    def origin(self) -&gt; Offset:
+    def offset(self) -&gt; Offset:
         &#34;&#34;&#34;Get the start point of the region.&#34;&#34;&#34;
         return Offset(self.x, self.y)
 
@@ -338,10 +401,10 @@ class Region(NamedTuple):
 
     @property
     def corners(self) -&gt; tuple[int, int, int, int]:
-        &#34;&#34;&#34;Get the maxima and minima of region.
+        &#34;&#34;&#34;Get the top left and bottom right coordinates as a tuple of integers.
 
         Returns:
-            tuple[int, int, int, int]: A tuple of `(&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)`
+            tuple[int, int, int, int]: A tuple of `(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)`
         &#34;&#34;&#34;
         x, y, width, height = self
         return x, y, x + width, y + height
@@ -357,7 +420,7 @@ class Region(NamedTuple):
         return range(self.y, self.y + self.height)
 
     @property
-    def reset_origin(self) -&gt; Region:
+    def reset_offset(self) -&gt; Region:
         &#34;&#34;&#34;An region of the same size at (0, 0).&#34;&#34;&#34;
         _, _, width, height = self
         return Region(0, 0, width, height)
@@ -375,6 +438,32 @@ class Region(NamedTuple):
             x, y, width, height = self
             return Region(x - ox, y - oy, width, height)
         return NotImplemented
+
+    def at_offset(self, offset: tuple[int, int]) -&gt; Region:
+        &#34;&#34;&#34;Get a new Region with the same size at a given offset.
+
+        Args:
+            offset (tuple[int, int]): An offset.
+
+        Returns:
+            Region: New Region with adjusted offset.
+        &#34;&#34;&#34;
+        x, y = offset
+        _x, _y, width, height = self
+        return Region(x, y, width, height)
+
+    def crop_size(self, size: tuple[int, int]) -&gt; Region:
+        &#34;&#34;&#34;Get a region with the same offset, with a size no larger than `size`.
+
+        Args:
+            size (tuple[int, int]): Maximum width and height (WIDTH, HEIGHT).
+
+        Returns:
+            Region: New region that could fit within `size`.
+        &#34;&#34;&#34;
+        x, y, width1, height1 = self
+        width2, height2 = size
+        return Region(x, y, min(width1, width2), min(height1, height2))
 
     def expand(self, size: tuple[int, int]) -&gt; Region:
         &#34;&#34;&#34;Increase the size of the region by adding a border.
@@ -458,19 +547,19 @@ class Region(NamedTuple):
             and (y2 &gt;= oy2 &gt;= y1)
         )
 
-    def translate(self, x: int = 0, y: int = 0) -&gt; Region:
-        &#34;&#34;&#34;Move the origin of the Region.
+    def translate(self, offset: tuple[int, int]) -&gt; Region:
+        &#34;&#34;&#34;Move the offset of the Region.
 
         Args:
-            translate_x (int): Value to add to x coordinate.
-            translate_y (int): Value to add to y coordinate.
+            translate (tuple[int, int]): Offset to add to region.
 
         Returns:
-            Region: A new region shifted by x, y
+            Region: A new region shifted by (x, y)
         &#34;&#34;&#34;
 
         self_x, self_y, width, height = self
-        return Region(self_x + x, self_y + y, width, height)
+        offset_x, offset_y = offset
+        return Region(self_x + offset_x, self_y + offset_y, width, height)
 
     @lru_cache(maxsize=4096)
     def __contains__(self, other: Any) -&gt; bool:
@@ -903,6 +992,10 @@ NULL_OFFSET = Offset(0, 0)</code></pre>
             return Offset(int(x * other), int(y * other))
         return NotImplemented
 
+    def __neg__(self) -&gt; Offset:
+        x, y = self
+        return Offset(-x, -y)
+
     def blend(self, destination: Offset, factor: float) -&gt; Offset:
         &#34;&#34;&#34;Blend (interpolate) to a new point.
 
@@ -915,7 +1008,10 @@ NULL_OFFSET = Offset(0, 0)</code></pre>
         &#34;&#34;&#34;
         x1, y1 = self
         x2, y2 = destination
-        return Offset(int(x1 + (x2 - x1) * factor), int((y1 + (y2 - y1) * factor)))
+        return Offset(
+            int(x1 + (x2 - x1) * factor),
+            int(y1 + (y2 - y1) * factor),
+        )
 
     def get_distance_to(self, other: Offset) -&gt; float:
         &#34;&#34;&#34;Get the distance to another offset.
@@ -994,7 +1090,10 @@ def is_origin(self) -&gt; bool:
     &#34;&#34;&#34;
     x1, y1 = self
     x2, y2 = destination
-    return Offset(int(x1 + (x2 - x1) * factor), int((y1 + (y2 - y1) * factor)))</code></pre>
+    return Offset(
+        int(x1 + (x2 - x1) * factor),
+        int(y1 + (y2 - y1) * factor),
+    )</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Offset.get_distance_to"><code class="name flex">
@@ -1052,7 +1151,14 @@ def is_origin(self) -&gt; bool:
     height: int = 0
 
     @classmethod
-    def from_union(cls, regions: Collection[Region]) -&gt; Region:
+    def from_union(
+        cls,
+        regions: Collection[Region],
+        _get_x=itemgetter(0),
+        _get_y=itemgetter(1),
+        _get_right=attrgetter(&#34;right&#34;),
+        _get_bottom=attrgetter(&#34;bottom&#34;),
+    ) -&gt; Region:
         &#34;&#34;&#34;Create a Region from the union of other regions.
 
         Args:
@@ -1063,10 +1169,10 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;
         if not regions:
             raise ValueError(&#34;At least one region expected&#34;)
-        min_x = min([region.x for region in regions])
-        max_x = max([x + width for x, _y, width, _height in regions])
-        min_y = min([region.y for region in regions])
-        max_y = max([y + height for _x, y, _width, height in regions])
+        min_x = min(regions, key=_get_x).x
+        max_x = max(regions, key=_get_right).right
+        min_y = min(regions, key=_get_y).y
+        max_y = max(regions, key=_get_bottom).bottom
         return cls(min_x, min_y, max_x - min_x, max_y - min_y)
 
     @classmethod
@@ -1085,19 +1191,67 @@ def is_origin(self) -&gt; bool:
         return cls(x1, y1, x2 - x1, y2 - y1)
 
     @classmethod
-    def from_origin(cls, origin: tuple[int, int], size: tuple[int, int]) -&gt; Region:
-        &#34;&#34;&#34;Create a region from origin and size.
+    def from_offset(cls, offset: tuple[int, int], size: tuple[int, int]) -&gt; Region:
+        &#34;&#34;&#34;Create a region from offset and size.
 
         Args:
-            origin (Point): Origin (top left point)
+            offset (Point): Offset (top left point)
             size (tuple[int, int]): Dimensions of region.
 
         Returns:
             Region: A region instance.
         &#34;&#34;&#34;
-        x, y = origin
+        x, y = offset
         width, height = size
         return cls(x, y, width, height)
+
+    @classmethod
+    def get_scroll_to_visible(cls, window_region: Region, region: Region) -&gt; Offset:
+        &#34;&#34;&#34;Calculate the smallest offset required to translate a window so that it contains
+        another region.
+
+        This method is used to calculate the required offset to scroll something in to view.
+
+        Args:
+            window_region (Region): The window region.
+            region (Region): The region to move inside the window.
+
+        Returns:
+            Offset: An offset required to add to region to move it inside window_region.
+        &#34;&#34;&#34;
+
+        if region in window_region:
+            # Region is already inside the window, so no need to move it.
+            return Offset(0, 0)
+
+        window_left, window_top, window_right, window_bottom = window_region.corners
+        region = region.crop_size(window_region.size)
+        left, top, right, bottom = region.corners
+        delta_x = delta_y = 0
+
+        if not (
+            (window_right &gt; left &gt;= window_left)
+            and (window_right &gt; right &gt;= window_left)
+        ):
+            # The region does not fit
+            # The window needs to scroll on the X axis to bring region in to view
+            delta_x = min(
+                left - window_left,
+                left - (window_right - region.width),
+                key=abs,
+            )
+
+        if not (
+            (window_bottom &gt; top &gt;= window_top)
+            and (window_bottom &gt; bottom &gt;= window_top)
+        ):
+            # The window needs to scroll on the Y axis to bring region in to view
+            delta_y = min(
+                top - window_top,
+                top - (window_bottom - region.height),
+                key=abs,
+            )
+        return Offset(delta_x, delta_y)
 
     def __bool__(self) -&gt; bool:
         &#34;&#34;&#34;A Region is considered False when it has no area.&#34;&#34;&#34;
@@ -1126,12 +1280,12 @@ def is_origin(self) -&gt; bool:
         return (self.y, self.y + self.height)
 
     @property
-    def x_max(self) -&gt; int:
+    def right(self) -&gt; int:
         &#34;&#34;&#34;Maximum X value (non inclusive)&#34;&#34;&#34;
         return self.x + self.width
 
     @property
-    def y_max(self) -&gt; int:
+    def bottom(self) -&gt; int:
         &#34;&#34;&#34;Maximum Y value (non inclusive)&#34;&#34;&#34;
         return self.y + self.height
 
@@ -1141,7 +1295,7 @@ def is_origin(self) -&gt; bool:
         return self.width * self.height
 
     @property
-    def origin(self) -&gt; Offset:
+    def offset(self) -&gt; Offset:
         &#34;&#34;&#34;Get the start point of the region.&#34;&#34;&#34;
         return Offset(self.x, self.y)
 
@@ -1170,10 +1324,10 @@ def is_origin(self) -&gt; bool:
 
     @property
     def corners(self) -&gt; tuple[int, int, int, int]:
-        &#34;&#34;&#34;Get the maxima and minima of region.
+        &#34;&#34;&#34;Get the top left and bottom right coordinates as a tuple of integers.
 
         Returns:
-            tuple[int, int, int, int]: A tuple of `(&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)`
+            tuple[int, int, int, int]: A tuple of `(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)`
         &#34;&#34;&#34;
         x, y, width, height = self
         return x, y, x + width, y + height
@@ -1189,7 +1343,7 @@ def is_origin(self) -&gt; bool:
         return range(self.y, self.y + self.height)
 
     @property
-    def reset_origin(self) -&gt; Region:
+    def reset_offset(self) -&gt; Region:
         &#34;&#34;&#34;An region of the same size at (0, 0).&#34;&#34;&#34;
         _, _, width, height = self
         return Region(0, 0, width, height)
@@ -1207,6 +1361,32 @@ def is_origin(self) -&gt; bool:
             x, y, width, height = self
             return Region(x - ox, y - oy, width, height)
         return NotImplemented
+
+    def at_offset(self, offset: tuple[int, int]) -&gt; Region:
+        &#34;&#34;&#34;Get a new Region with the same size at a given offset.
+
+        Args:
+            offset (tuple[int, int]): An offset.
+
+        Returns:
+            Region: New Region with adjusted offset.
+        &#34;&#34;&#34;
+        x, y = offset
+        _x, _y, width, height = self
+        return Region(x, y, width, height)
+
+    def crop_size(self, size: tuple[int, int]) -&gt; Region:
+        &#34;&#34;&#34;Get a region with the same offset, with a size no larger than `size`.
+
+        Args:
+            size (tuple[int, int]): Maximum width and height (WIDTH, HEIGHT).
+
+        Returns:
+            Region: New region that could fit within `size`.
+        &#34;&#34;&#34;
+        x, y, width1, height1 = self
+        width2, height2 = size
+        return Region(x, y, min(width1, width2), min(height1, height2))
 
     def expand(self, size: tuple[int, int]) -&gt; Region:
         &#34;&#34;&#34;Increase the size of the region by adding a border.
@@ -1290,19 +1470,19 @@ def is_origin(self) -&gt; bool:
             and (y2 &gt;= oy2 &gt;= y1)
         )
 
-    def translate(self, x: int = 0, y: int = 0) -&gt; Region:
-        &#34;&#34;&#34;Move the origin of the Region.
+    def translate(self, offset: tuple[int, int]) -&gt; Region:
+        &#34;&#34;&#34;Move the offset of the Region.
 
         Args:
-            translate_x (int): Value to add to x coordinate.
-            translate_y (int): Value to add to y coordinate.
+            translate (tuple[int, int]): Offset to add to region.
 
         Returns:
-            Region: A new region shifted by x, y
+            Region: A new region shifted by (x, y)
         &#34;&#34;&#34;
 
         self_x, self_y, width, height = self
-        return Region(self_x + x, self_y + y, width, height)
+        offset_x, offset_y = offset
+        return Region(self_x + offset_x, self_y + offset_y, width, height)
 
     @lru_cache(maxsize=4096)
     def __contains__(self, other: Any) -&gt; bool:
@@ -1544,15 +1724,15 @@ def from_corners(cls, x1: int, y1: int, x2: int, y2: int) -&gt; Region:
     return cls(x1, y1, x2 - x1, y2 - y1)</code></pre>
 </details>
 </dd>
-<dt id="textual.geometry.Region.from_origin"><code class="name flex">
-<span>def <span class="ident">from_origin</span></span>(<span>origin: tuple[int, int], size: tuple[int, int]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
+<dt id="textual.geometry.Region.from_offset"><code class="name flex">
+<span>def <span class="ident">from_offset</span></span>(<span>offset: tuple[int, int], size: tuple[int, int]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a region from origin and size.</p>
+<div class="desc"><p>Create a region from offset and size.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>origin</code></strong> :&ensp;<code>Point</code></dt>
-<dd>Origin (top left point)</dd>
+<dt><strong><code>offset</code></strong> :&ensp;<code>Point</code></dt>
+<dd>Offset (top left point)</dd>
 <dt><strong><code>size</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
 <dd>Dimensions of region.</dd>
 </dl>
@@ -1566,17 +1746,17 @@ def from_corners(cls, x1: int, y1: int, x2: int, y2: int) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_origin(cls, origin: tuple[int, int], size: tuple[int, int]) -&gt; Region:
-    &#34;&#34;&#34;Create a region from origin and size.
+def from_offset(cls, offset: tuple[int, int], size: tuple[int, int]) -&gt; Region:
+    &#34;&#34;&#34;Create a region from offset and size.
 
     Args:
-        origin (Point): Origin (top left point)
+        offset (Point): Offset (top left point)
         size (tuple[int, int]): Dimensions of region.
 
     Returns:
         Region: A region instance.
     &#34;&#34;&#34;
-    x, y = origin
+    x, y = offset
     width, height = size
     return cls(x, y, width, height)</code></pre>
 </details>
@@ -1601,7 +1781,14 @@ def from_origin(cls, origin: tuple[int, int], size: tuple[int, int]) -&gt; Regio
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_union(cls, regions: Collection[Region]) -&gt; Region:
+def from_union(
+    cls,
+    regions: Collection[Region],
+    _get_x=itemgetter(0),
+    _get_y=itemgetter(1),
+    _get_right=attrgetter(&#34;right&#34;),
+    _get_bottom=attrgetter(&#34;bottom&#34;),
+) -&gt; Region:
     &#34;&#34;&#34;Create a Region from the union of other regions.
 
     Args:
@@ -1612,11 +1799,83 @@ def from_union(cls, regions: Collection[Region]) -&gt; Region:
     &#34;&#34;&#34;
     if not regions:
         raise ValueError(&#34;At least one region expected&#34;)
-    min_x = min([region.x for region in regions])
-    max_x = max([x + width for x, _y, width, _height in regions])
-    min_y = min([region.y for region in regions])
-    max_y = max([y + height for _x, y, _width, height in regions])
+    min_x = min(regions, key=_get_x).x
+    max_x = max(regions, key=_get_right).right
+    min_y = min(regions, key=_get_y).y
+    max_y = max(regions, key=_get_bottom).bottom
     return cls(min_x, min_y, max_x - min_x, max_y - min_y)</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.get_scroll_to_visible"><code class="name flex">
+<span>def <span class="ident">get_scroll_to_visible</span></span>(<span>window_region: <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, region: <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>) ‑> <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Calculate the smallest offset required to translate a window so that it contains
+another region.</p>
+<p>This method is used to calculate the required offset to scroll something in to view.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>window_region</code></strong> :&ensp;<code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>The window region.</dd>
+<dt><strong><code>region</code></strong> :&ensp;<code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>The region to move inside the window.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
+<dd>An offset required to add to region to move it inside window_region.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def get_scroll_to_visible(cls, window_region: Region, region: Region) -&gt; Offset:
+    &#34;&#34;&#34;Calculate the smallest offset required to translate a window so that it contains
+    another region.
+
+    This method is used to calculate the required offset to scroll something in to view.
+
+    Args:
+        window_region (Region): The window region.
+        region (Region): The region to move inside the window.
+
+    Returns:
+        Offset: An offset required to add to region to move it inside window_region.
+    &#34;&#34;&#34;
+
+    if region in window_region:
+        # Region is already inside the window, so no need to move it.
+        return Offset(0, 0)
+
+    window_left, window_top, window_right, window_bottom = window_region.corners
+    region = region.crop_size(window_region.size)
+    left, top, right, bottom = region.corners
+    delta_x = delta_y = 0
+
+    if not (
+        (window_right &gt; left &gt;= window_left)
+        and (window_right &gt; right &gt;= window_left)
+    ):
+        # The region does not fit
+        # The window needs to scroll on the X axis to bring region in to view
+        delta_x = min(
+            left - window_left,
+            left - (window_right - region.width),
+            key=abs,
+        )
+
+    if not (
+        (window_bottom &gt; top &gt;= window_top)
+        and (window_bottom &gt; bottom &gt;= window_top)
+    ):
+        # The window needs to scroll on the Y axis to bring region in to view
+        delta_y = min(
+            top - window_top,
+            top - (window_bottom - region.height),
+            key=abs,
+        )
+    return Offset(delta_x, delta_y)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1633,6 +1892,19 @@ def from_union(cls, regions: Collection[Region]) -&gt; Region:
 def area(self) -&gt; int:
     &#34;&#34;&#34;Get the area within the region.&#34;&#34;&#34;
     return self.width * self.height</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.bottom"><code class="name">var <span class="ident">bottom</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Maximum Y value (non inclusive)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def bottom(self) -&gt; int:
+    &#34;&#34;&#34;Maximum Y value (non inclusive)&#34;&#34;&#34;
+    return self.y + self.height</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.bottom_left"><code class="name">var <span class="ident">bottom_left</span> : <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
@@ -1665,11 +1937,11 @@ def bottom_right(self) -&gt; Offset:
 </dd>
 <dt id="textual.geometry.Region.corners"><code class="name">var <span class="ident">corners</span> : tuple[int, int, int, int]</code></dt>
 <dd>
-<div class="desc"><p>Get the maxima and minima of region.</p>
+<div class="desc"><p>Get the top left and bottom right coordinates as a tuple of integers.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tuple[int, int, int, int]</code></dt>
-<dd>A tuple of <code>(&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)</code></dd>
+<dd>A tuple of <code>(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)</code></dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1677,10 +1949,10 @@ def bottom_right(self) -&gt; Offset:
 </summary>
 <pre><code class="python">@property
 def corners(self) -&gt; tuple[int, int, int, int]:
-    &#34;&#34;&#34;Get the maxima and minima of region.
+    &#34;&#34;&#34;Get the top left and bottom right coordinates as a tuple of integers.
 
     Returns:
-        tuple[int, int, int, int]: A tuple of `(&lt;min x&gt;, &lt;max x&gt;, &lt;min y&gt;, &lt;max y&gt;)`
+        tuple[int, int, int, int]: A tuple of `(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)`
     &#34;&#34;&#34;
     x, y, width, height = self
     return x, y, x + width, y + height</code></pre>
@@ -1690,7 +1962,7 @@ def corners(self) -&gt; tuple[int, int, int, int]:
 <dd>
 <div class="desc"><p>Alias for field number 3</p></div>
 </dd>
-<dt id="textual.geometry.Region.origin"><code class="name">var <span class="ident">origin</span> : <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
+<dt id="textual.geometry.Region.offset"><code class="name">var <span class="ident">offset</span> : <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
 <dd>
 <div class="desc"><p>Get the start point of the region.</p></div>
 <details class="source">
@@ -1698,12 +1970,12 @@ def corners(self) -&gt; tuple[int, int, int, int]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def origin(self) -&gt; Offset:
+def offset(self) -&gt; Offset:
     &#34;&#34;&#34;Get the start point of the region.&#34;&#34;&#34;
     return Offset(self.x, self.y)</code></pre>
 </details>
 </dd>
-<dt id="textual.geometry.Region.reset_origin"><code class="name">var <span class="ident">reset_origin</span> : <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dt id="textual.geometry.Region.reset_offset"><code class="name">var <span class="ident">reset_offset</span> : <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
 <dd>
 <div class="desc"><p>An region of the same size at (0, 0).</p></div>
 <details class="source">
@@ -1711,10 +1983,23 @@ def origin(self) -&gt; Offset:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def reset_origin(self) -&gt; Region:
+def reset_offset(self) -&gt; Region:
     &#34;&#34;&#34;An region of the same size at (0, 0).&#34;&#34;&#34;
     _, _, width, height = self
     return Region(0, 0, width, height)</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.right"><code class="name">var <span class="ident">right</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Maximum X value (non inclusive)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def right(self) -&gt; int:
+    &#34;&#34;&#34;Maximum X value (non inclusive)&#34;&#34;&#34;
+    return self.x + self.width</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="#textual.geometry.Size">Size</a></code></dt>
@@ -1777,19 +2062,6 @@ def x_extents(self) -&gt; tuple[int, int]:
     return (self.x, self.x + self.width)</code></pre>
 </details>
 </dd>
-<dt id="textual.geometry.Region.x_max"><code class="name">var <span class="ident">x_max</span> : int</code></dt>
-<dd>
-<div class="desc"><p>Maximum X value (non inclusive)</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def x_max(self) -&gt; int:
-    &#34;&#34;&#34;Maximum X value (non inclusive)&#34;&#34;&#34;
-    return self.x + self.width</code></pre>
-</details>
-</dd>
 <dt id="textual.geometry.Region.x_range"><code class="name">var <span class="ident">x_range</span> : range</code></dt>
 <dd>
 <div class="desc"><p>A range object for X coordinates.</p></div>
@@ -1832,19 +2104,6 @@ def y_extents(self) -&gt; tuple[int, int]:
     return (self.y, self.y + self.height)</code></pre>
 </details>
 </dd>
-<dt id="textual.geometry.Region.y_max"><code class="name">var <span class="ident">y_max</span> : int</code></dt>
-<dd>
-<div class="desc"><p>Maximum Y value (non inclusive)</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def y_max(self) -&gt; int:
-    &#34;&#34;&#34;Maximum Y value (non inclusive)&#34;&#34;&#34;
-    return self.y + self.height</code></pre>
-</details>
-</dd>
 <dt id="textual.geometry.Region.y_range"><code class="name">var <span class="ident">y_range</span> : range</code></dt>
 <dd>
 <div class="desc"><p>A range object for Y coordinates.</p></div>
@@ -1861,6 +2120,39 @@ def y_range(self) -&gt; range:
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="textual.geometry.Region.at_offset"><code class="name flex">
+<span>def <span class="ident">at_offset</span></span>(<span>self, offset: tuple[int, int]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a new Region with the same size at a given offset.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>offset</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
+<dd>An offset.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>New Region with adjusted offset.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def at_offset(self, offset: tuple[int, int]) -&gt; Region:
+    &#34;&#34;&#34;Get a new Region with the same size at a given offset.
+
+    Args:
+        offset (tuple[int, int]): An offset.
+
+    Returns:
+        Region: New Region with adjusted offset.
+    &#34;&#34;&#34;
+    x, y = offset
+    _x, _y, width, height = self
+    return Region(x, y, width, height)</code></pre>
+</details>
+</dd>
 <dt id="textual.geometry.Region.clip"><code class="name flex">
 <span>def <span class="ident">clip</span></span>(<span>self, width: int, height: int) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
 </code></dt>
@@ -2011,6 +2303,39 @@ def y_range(self) -&gt; range:
         and (x2 &gt;= ox2 &gt;= x1)
         and (y2 &gt;= oy2 &gt;= y1)
     )</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.crop_size"><code class="name flex">
+<span>def <span class="ident">crop_size</span></span>(<span>self, size: tuple[int, int]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a region with the same offset, with a size no larger than <code>size</code>.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>size</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
+<dd>Maximum width and height (WIDTH, HEIGHT).</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>New region that could fit within <code>size</code>.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def crop_size(self, size: tuple[int, int]) -&gt; Region:
+    &#34;&#34;&#34;Get a region with the same offset, with a size no larger than `size`.
+
+    Args:
+        size (tuple[int, int]): Maximum width and height (WIDTH, HEIGHT).
+
+    Returns:
+        Region: New region that could fit within `size`.
+    &#34;&#34;&#34;
+    x, y, width1, height1 = self
+    width2, height2 = size
+    return Region(x, y, min(width1, width2), min(height1, height2))</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.expand"><code class="name flex">
@@ -2362,39 +2687,37 @@ def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
 </details>
 </dd>
 <dt id="textual.geometry.Region.translate"><code class="name flex">
-<span>def <span class="ident">translate</span></span>(<span>self, x: int = 0, y: int = 0) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
+<span>def <span class="ident">translate</span></span>(<span>self, offset: tuple[int, int]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Move the origin of the Region.</p>
+<div class="desc"><p>Move the offset of the Region.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>translate_x</code></strong> :&ensp;<code>int</code></dt>
-<dd>Value to add to x coordinate.</dd>
-<dt><strong><code>translate_y</code></strong> :&ensp;<code>int</code></dt>
-<dd>Value to add to y coordinate.</dd>
+<dt><strong><code>translate</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
+<dd>Offset to add to region.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
-<dd>A new region shifted by x, y</dd>
+<dd>A new region shifted by (x, y)</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def translate(self, x: int = 0, y: int = 0) -&gt; Region:
-    &#34;&#34;&#34;Move the origin of the Region.
+<pre><code class="python">def translate(self, offset: tuple[int, int]) -&gt; Region:
+    &#34;&#34;&#34;Move the offset of the Region.
 
     Args:
-        translate_x (int): Value to add to x coordinate.
-        translate_y (int): Value to add to y coordinate.
+        translate (tuple[int, int]): Offset to add to region.
 
     Returns:
-        Region: A new region shifted by x, y
+        Region: A new region shifted by (x, y)
     &#34;&#34;&#34;
 
     self_x, self_y, width, height = self
-    return Region(self_x + x, self_y + y, width, height)</code></pre>
+    offset_x, offset_y = offset
+    return Region(self_x + offset_x, self_y + offset_y, width, height)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.union"><code class="name flex">
@@ -3133,8 +3456,10 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="textual.geometry.Region.area" href="#textual.geometry.Region.area">area</a></code></li>
+<li><code><a title="textual.geometry.Region.at_offset" href="#textual.geometry.Region.at_offset">at_offset</a></code></li>
+<li><code><a title="textual.geometry.Region.bottom" href="#textual.geometry.Region.bottom">bottom</a></code></li>
 <li><code><a title="textual.geometry.Region.bottom_left" href="#textual.geometry.Region.bottom_left">bottom_left</a></code></li>
 <li><code><a title="textual.geometry.Region.bottom_right" href="#textual.geometry.Region.bottom_right">bottom_right</a></code></li>
 <li><code><a title="textual.geometry.Region.clip" href="#textual.geometry.Region.clip">clip</a></code></li>
@@ -3142,15 +3467,18 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Region.contains_point" href="#textual.geometry.Region.contains_point">contains_point</a></code></li>
 <li><code><a title="textual.geometry.Region.contains_region" href="#textual.geometry.Region.contains_region">contains_region</a></code></li>
 <li><code><a title="textual.geometry.Region.corners" href="#textual.geometry.Region.corners">corners</a></code></li>
+<li><code><a title="textual.geometry.Region.crop_size" href="#textual.geometry.Region.crop_size">crop_size</a></code></li>
 <li><code><a title="textual.geometry.Region.expand" href="#textual.geometry.Region.expand">expand</a></code></li>
 <li><code><a title="textual.geometry.Region.from_corners" href="#textual.geometry.Region.from_corners">from_corners</a></code></li>
-<li><code><a title="textual.geometry.Region.from_origin" href="#textual.geometry.Region.from_origin">from_origin</a></code></li>
+<li><code><a title="textual.geometry.Region.from_offset" href="#textual.geometry.Region.from_offset">from_offset</a></code></li>
 <li><code><a title="textual.geometry.Region.from_union" href="#textual.geometry.Region.from_union">from_union</a></code></li>
+<li><code><a title="textual.geometry.Region.get_scroll_to_visible" href="#textual.geometry.Region.get_scroll_to_visible">get_scroll_to_visible</a></code></li>
 <li><code><a title="textual.geometry.Region.height" href="#textual.geometry.Region.height">height</a></code></li>
 <li><code><a title="textual.geometry.Region.intersection" href="#textual.geometry.Region.intersection">intersection</a></code></li>
-<li><code><a title="textual.geometry.Region.origin" href="#textual.geometry.Region.origin">origin</a></code></li>
+<li><code><a title="textual.geometry.Region.offset" href="#textual.geometry.Region.offset">offset</a></code></li>
 <li><code><a title="textual.geometry.Region.overlaps" href="#textual.geometry.Region.overlaps">overlaps</a></code></li>
-<li><code><a title="textual.geometry.Region.reset_origin" href="#textual.geometry.Region.reset_origin">reset_origin</a></code></li>
+<li><code><a title="textual.geometry.Region.reset_offset" href="#textual.geometry.Region.reset_offset">reset_offset</a></code></li>
+<li><code><a title="textual.geometry.Region.right" href="#textual.geometry.Region.right">right</a></code></li>
 <li><code><a title="textual.geometry.Region.shrink" href="#textual.geometry.Region.shrink">shrink</a></code></li>
 <li><code><a title="textual.geometry.Region.size" href="#textual.geometry.Region.size">size</a></code></li>
 <li><code><a title="textual.geometry.Region.split" href="#textual.geometry.Region.split">split</a></code></li>
@@ -3162,11 +3490,9 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Region.width" href="#textual.geometry.Region.width">width</a></code></li>
 <li><code><a title="textual.geometry.Region.x" href="#textual.geometry.Region.x">x</a></code></li>
 <li><code><a title="textual.geometry.Region.x_extents" href="#textual.geometry.Region.x_extents">x_extents</a></code></li>
-<li><code><a title="textual.geometry.Region.x_max" href="#textual.geometry.Region.x_max">x_max</a></code></li>
 <li><code><a title="textual.geometry.Region.x_range" href="#textual.geometry.Region.x_range">x_range</a></code></li>
 <li><code><a title="textual.geometry.Region.y" href="#textual.geometry.Region.y">y</a></code></li>
 <li><code><a title="textual.geometry.Region.y_extents" href="#textual.geometry.Region.y_extents">y_extents</a></code></li>
-<li><code><a title="textual.geometry.Region.y_max" href="#textual.geometry.Region.y_max">y_max</a></code></li>
 <li><code><a title="textual.geometry.Region.y_range" href="#textual.geometry.Region.y_range">y_range</a></code></li>
 </ul>
 </li>
