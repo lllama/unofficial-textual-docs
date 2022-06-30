@@ -32,7 +32,7 @@ import os
 from collections import defaultdict
 from operator import itemgetter
 from pathlib import Path, PurePath
-from typing import cast, Iterable
+from typing import cast, Iterable, NamedTuple
 
 import rich.repr
 from rich.console import RenderableType, RenderResult, Console, ConsoleOptions
@@ -144,12 +144,26 @@ class StylesheetErrors:
         )
 
 
+class CssSource(NamedTuple):
+    &#34;&#34;&#34;Contains the CSS content and whether or not the CSS comes from user defined stylesheets
+    vs widget-level stylesheets.
+
+    Args:
+        content (str): The CSS as a string.
+        is_defaults (bool): True if the CSS is default (i.e. that defined at the widget level).
+            False if it&#39;s user CSS (which will override the defaults).
+    &#34;&#34;&#34;
+
+    content: str
+    is_defaults: bool
+
+
 @rich.repr.auto(angular=True)
 class Stylesheet:
     def __init__(self, *, variables: dict[str, str] | None = None) -&gt; None:
         self._rules: list[RuleSet] = []
         self.variables = variables or {}
-        self.source: dict[str, str] = {}
+        self.source: dict[str, CssSource] = {}
         self._require_parse = False
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
@@ -185,13 +199,17 @@ class Stylesheet:
         &#34;&#34;&#34;
         self.variables = variables
 
-    def _parse_rules(self, css: str, path: str | PurePath) -&gt; list[RuleSet]:
+    def _parse_rules(
+        self, css: str, path: str | PurePath, is_default_rules: bool = False
+    ) -&gt; list[RuleSet]:
         &#34;&#34;&#34;Parse CSS and return rules.
 
-
         Args:
+            is_default_rules:
             css (str): String containing Textual CSS.
             path (str | PurePath): Path to CSS or unique identifier
+            is_default_rules (bool): True if the rules we&#39;re extracting are
+                default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
 
         Raises:
             StylesheetError: If the CSS is invalid.
@@ -200,11 +218,19 @@ class Stylesheet:
             list[RuleSet]: List of RuleSets.
         &#34;&#34;&#34;
         try:
-            rules = list(parse(css, path, variables=self.variables))
+            rules = list(
+                parse(
+                    css,
+                    path,
+                    variables=self.variables,
+                    is_default_rules=is_default_rules,
+                )
+            )
         except TokenizeError:
             raise
         except Exception as error:
             raise StylesheetError(f&#34;failed to parse css; {error}&#34;)
+
         return rules
 
     def read(self, filename: str | PurePath) -&gt; None:
@@ -224,16 +250,20 @@ class Stylesheet:
             path = os.path.abspath(filename)
         except Exception as error:
             raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
-        self.source[str(path)] = css
+        self.source[str(path)] = CssSource(content=css, is_defaults=False)
         self._require_parse = True
 
-    def add_source(self, css: str, path: str | PurePath | None = None) -&gt; None:
+    def add_source(
+        self, css: str, path: str | PurePath | None = None, is_default_css: bool = False
+    ) -&gt; None:
         &#34;&#34;&#34;Parse CSS from a string.
 
         Args:
             css (str): String with CSS source.
             path (str | PurePath, optional): The path of the source if a file, or some other identifier.
                 Defaults to None.
+            is_default_css (bool): True if the CSS is defined in the Widget, False if the CSS is defined
+                in a user stylesheet.
 
         Raises:
             StylesheetError: If the CSS could not be read.
@@ -244,11 +274,11 @@ class Stylesheet:
             path = str(hash(css))
         elif isinstance(path, PurePath):
             path = str(css)
-        if path in self.source and self.source[path] == css:
+        if path in self.source and self.source[path].content == css:
             # Path already in source, and CSS is identical
             return
 
-        self.source[path] = css
+        self.source[path] = CssSource(content=css, is_defaults=is_default_css)
         self._require_parse = True
 
     def parse(self) -&gt; None:
@@ -259,8 +289,8 @@ class Stylesheet:
         &#34;&#34;&#34;
         rules: list[RuleSet] = []
         add_rules = rules.extend
-        for path, css in self.source.items():
-            css_rules = self._parse_rules(css, path)
+        for path, (css, is_default_rules) in self.source.items():
+            css_rules = self._parse_rules(css, path, is_default_rules=is_default_rules)
             if any(rule.errors for rule in css_rules):
                 error_renderable = StylesheetErrors(css_rules)
                 raise StylesheetParseError(error_renderable)
@@ -278,8 +308,8 @@ class Stylesheet:
         &#34;&#34;&#34;
         # Do this in a fresh Stylesheet so if there are errors we don&#39;t break self.
         stylesheet = Stylesheet(variables=self.variables)
-        for path, css in self.source.items():
-            stylesheet.add_source(css, path)
+        for path, (css, is_defaults) in self.source.items():
+            stylesheet.add_source(css, path, is_default_css=is_defaults)
         stylesheet.parse()
         self._rules = stylesheet.rules
         self.source = stylesheet.source
@@ -314,9 +344,10 @@ class Stylesheet:
 
         # Collect the rules defined in the stylesheet
         for rule in reversed(self.rules):
-            for specificity in _check_rule(rule, node):
+            is_default_rules = rule.is_default_rules
+            for base_specificity in _check_rule(rule, node):
                 for key, rule_specificity, value in rule.styles.extract_rules(
-                    specificity
+                    base_specificity, is_default_rules
                 ):
                     rule_attributes[key].append((rule_specificity, value))
 
@@ -524,6 +555,54 @@ if __name__ == &#34;__main__&#34;:
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="textual.css.stylesheet.CssSource"><code class="flex name class">
+<span>class <span class="ident">CssSource</span></span>
+<span>(</span><span>content: str, is_defaults: bool)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Contains the CSS content and whether or not the CSS comes from user defined stylesheets
+vs widget-level stylesheets.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>content</code></strong> :&ensp;<code>str</code></dt>
+<dd>The CSS as a string.</dd>
+<dt><strong><code>is_defaults</code></strong> :&ensp;<code>bool</code></dt>
+<dd>True if the CSS is default (i.e. that defined at the widget level).
+False if it's user CSS (which will override the defaults).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class CssSource(NamedTuple):
+    &#34;&#34;&#34;Contains the CSS content and whether or not the CSS comes from user defined stylesheets
+    vs widget-level stylesheets.
+
+    Args:
+        content (str): The CSS as a string.
+        is_defaults (bool): True if the CSS is default (i.e. that defined at the widget level).
+            False if it&#39;s user CSS (which will override the defaults).
+    &#34;&#34;&#34;
+
+    content: str
+    is_defaults: bool</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.tuple</li>
+</ul>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.css.stylesheet.CssSource.content"><code class="name">var <span class="ident">content</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 0</p></div>
+</dd>
+<dt id="textual.css.stylesheet.CssSource.is_defaults"><code class="name">var <span class="ident">is_defaults</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+</dl>
+</dd>
 <dt id="textual.css.stylesheet.Stylesheet"><code class="flex name class">
 <span>class <span class="ident">Stylesheet</span></span>
 <span>(</span><span>*, variables: dict[str, str] | None = None)</span>
@@ -538,7 +617,7 @@ if __name__ == &#34;__main__&#34;:
     def __init__(self, *, variables: dict[str, str] | None = None) -&gt; None:
         self._rules: list[RuleSet] = []
         self.variables = variables or {}
-        self.source: dict[str, str] = {}
+        self.source: dict[str, CssSource] = {}
         self._require_parse = False
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
@@ -574,13 +653,17 @@ if __name__ == &#34;__main__&#34;:
         &#34;&#34;&#34;
         self.variables = variables
 
-    def _parse_rules(self, css: str, path: str | PurePath) -&gt; list[RuleSet]:
+    def _parse_rules(
+        self, css: str, path: str | PurePath, is_default_rules: bool = False
+    ) -&gt; list[RuleSet]:
         &#34;&#34;&#34;Parse CSS and return rules.
 
-
         Args:
+            is_default_rules:
             css (str): String containing Textual CSS.
             path (str | PurePath): Path to CSS or unique identifier
+            is_default_rules (bool): True if the rules we&#39;re extracting are
+                default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
 
         Raises:
             StylesheetError: If the CSS is invalid.
@@ -589,11 +672,19 @@ if __name__ == &#34;__main__&#34;:
             list[RuleSet]: List of RuleSets.
         &#34;&#34;&#34;
         try:
-            rules = list(parse(css, path, variables=self.variables))
+            rules = list(
+                parse(
+                    css,
+                    path,
+                    variables=self.variables,
+                    is_default_rules=is_default_rules,
+                )
+            )
         except TokenizeError:
             raise
         except Exception as error:
             raise StylesheetError(f&#34;failed to parse css; {error}&#34;)
+
         return rules
 
     def read(self, filename: str | PurePath) -&gt; None:
@@ -613,16 +704,20 @@ if __name__ == &#34;__main__&#34;:
             path = os.path.abspath(filename)
         except Exception as error:
             raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
-        self.source[str(path)] = css
+        self.source[str(path)] = CssSource(content=css, is_defaults=False)
         self._require_parse = True
 
-    def add_source(self, css: str, path: str | PurePath | None = None) -&gt; None:
+    def add_source(
+        self, css: str, path: str | PurePath | None = None, is_default_css: bool = False
+    ) -&gt; None:
         &#34;&#34;&#34;Parse CSS from a string.
 
         Args:
             css (str): String with CSS source.
             path (str | PurePath, optional): The path of the source if a file, or some other identifier.
                 Defaults to None.
+            is_default_css (bool): True if the CSS is defined in the Widget, False if the CSS is defined
+                in a user stylesheet.
 
         Raises:
             StylesheetError: If the CSS could not be read.
@@ -633,11 +728,11 @@ if __name__ == &#34;__main__&#34;:
             path = str(hash(css))
         elif isinstance(path, PurePath):
             path = str(css)
-        if path in self.source and self.source[path] == css:
+        if path in self.source and self.source[path].content == css:
             # Path already in source, and CSS is identical
             return
 
-        self.source[path] = css
+        self.source[path] = CssSource(content=css, is_defaults=is_default_css)
         self._require_parse = True
 
     def parse(self) -&gt; None:
@@ -648,8 +743,8 @@ if __name__ == &#34;__main__&#34;:
         &#34;&#34;&#34;
         rules: list[RuleSet] = []
         add_rules = rules.extend
-        for path, css in self.source.items():
-            css_rules = self._parse_rules(css, path)
+        for path, (css, is_default_rules) in self.source.items():
+            css_rules = self._parse_rules(css, path, is_default_rules=is_default_rules)
             if any(rule.errors for rule in css_rules):
                 error_renderable = StylesheetErrors(css_rules)
                 raise StylesheetParseError(error_renderable)
@@ -667,8 +762,8 @@ if __name__ == &#34;__main__&#34;:
         &#34;&#34;&#34;
         # Do this in a fresh Stylesheet so if there are errors we don&#39;t break self.
         stylesheet = Stylesheet(variables=self.variables)
-        for path, css in self.source.items():
-            stylesheet.add_source(css, path)
+        for path, (css, is_defaults) in self.source.items():
+            stylesheet.add_source(css, path, is_default_css=is_defaults)
         stylesheet.parse()
         self._rules = stylesheet.rules
         self.source = stylesheet.source
@@ -703,9 +798,10 @@ if __name__ == &#34;__main__&#34;:
 
         # Collect the rules defined in the stylesheet
         for rule in reversed(self.rules):
-            for specificity in _check_rule(rule, node):
+            is_default_rules = rule.is_default_rules
+            for base_specificity in _check_rule(rule, node):
                 for key, rule_specificity, value in rule.styles.extract_rules(
-                    specificity
+                    base_specificity, is_default_rules
                 ):
                     rule_attributes[key].append((rule_specificity, value))
 
@@ -931,7 +1027,7 @@ def rules(self) -&gt; list[RuleSet]:
 <h3>Methods</h3>
 <dl>
 <dt id="textual.css.stylesheet.Stylesheet.add_source"><code class="name flex">
-<span>def <span class="ident">add_source</span></span>(<span>self, css: str, path: str | PurePath | None = None) ‑> None</span>
+<span>def <span class="ident">add_source</span></span>(<span>self, css: str, path: str | PurePath | None = None, is_default_css: bool = False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse CSS from a string.</p>
@@ -939,9 +1035,12 @@ def rules(self) -&gt; list[RuleSet]:
 <dl>
 <dt><strong><code>css</code></strong> :&ensp;<code>str</code></dt>
 <dd>String with CSS source.</dd>
+<dt>path (str | PurePath, optional): The path of the source if a file, or some other identifier.</dt>
+<dt>Defaults to None.</dt>
+<dt><strong><code>is_default_css</code></strong> :&ensp;<code>bool</code></dt>
+<dd>True if the CSS is defined in the Widget, False if the CSS is defined
+in a user stylesheet.</dd>
 </dl>
-<p>path (str | PurePath, optional): The path of the source if a file, or some other identifier.
-Defaults to None.</p>
 <h2 id="raises">Raises</h2>
 <dl>
 <dt><code>StylesheetError</code></dt>
@@ -953,13 +1052,17 @@ Defaults to None.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_source(self, css: str, path: str | PurePath | None = None) -&gt; None:
+<pre><code class="python">def add_source(
+    self, css: str, path: str | PurePath | None = None, is_default_css: bool = False
+) -&gt; None:
     &#34;&#34;&#34;Parse CSS from a string.
 
     Args:
         css (str): String with CSS source.
         path (str | PurePath, optional): The path of the source if a file, or some other identifier.
             Defaults to None.
+        is_default_css (bool): True if the CSS is defined in the Widget, False if the CSS is defined
+            in a user stylesheet.
 
     Raises:
         StylesheetError: If the CSS could not be read.
@@ -970,11 +1073,11 @@ Defaults to None.</p>
         path = str(hash(css))
     elif isinstance(path, PurePath):
         path = str(css)
-    if path in self.source and self.source[path] == css:
+    if path in self.source and self.source[path].content == css:
         # Path already in source, and CSS is identical
         return
 
-    self.source[path] = css
+    self.source[path] = CssSource(content=css, is_defaults=is_default_css)
     self._require_parse = True</code></pre>
 </details>
 </dd>
@@ -1022,9 +1125,10 @@ rule will be applied.</dd>
 
     # Collect the rules defined in the stylesheet
     for rule in reversed(self.rules):
-        for specificity in _check_rule(rule, node):
+        is_default_rules = rule.is_default_rules
+        for base_specificity in _check_rule(rule, node):
             for key, rule_specificity, value in rule.styles.extract_rules(
-                specificity
+                base_specificity, is_default_rules
             ):
                 rule_attributes[key].append((rule_specificity, value))
 
@@ -1095,8 +1199,8 @@ rule will be applied.</dd>
     &#34;&#34;&#34;
     rules: list[RuleSet] = []
     add_rules = rules.extend
-    for path, css in self.source.items():
-        css_rules = self._parse_rules(css, path)
+    for path, (css, is_default_rules) in self.source.items():
+        css_rules = self._parse_rules(css, path, is_default_rules=is_default_rules)
         if any(rule.errors for rule in css_rules):
             error_renderable = StylesheetErrors(css_rules)
             raise StylesheetParseError(error_renderable)
@@ -1140,7 +1244,7 @@ rule will be applied.</dd>
         path = os.path.abspath(filename)
     except Exception as error:
         raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
-    self.source[str(path)] = css
+    self.source[str(path)] = CssSource(content=css, is_defaults=False)
     self._require_parse = True</code></pre>
 </details>
 </dd>
@@ -1170,8 +1274,8 @@ rule will be applied.</dd>
     &#34;&#34;&#34;
     # Do this in a fresh Stylesheet so if there are errors we don&#39;t break self.
     stylesheet = Stylesheet(variables=self.variables)
-    for path, css in self.source.items():
-        stylesheet.add_source(css, path)
+    for path, (css, is_defaults) in self.source.items():
+        stylesheet.add_source(css, path, is_default_css=is_defaults)
     stylesheet.parse()
     self._rules = stylesheet.rules
     self.source = stylesheet.source</code></pre>
@@ -1417,6 +1521,13 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
+<li>
+<h4><code><a title="textual.css.stylesheet.CssSource" href="#textual.css.stylesheet.CssSource">CssSource</a></code></h4>
+<ul class="">
+<li><code><a title="textual.css.stylesheet.CssSource.content" href="#textual.css.stylesheet.CssSource.content">content</a></code></li>
+<li><code><a title="textual.css.stylesheet.CssSource.is_defaults" href="#textual.css.stylesheet.CssSource.is_defaults">is_defaults</a></code></li>
+</ul>
+</li>
 <li>
 <h4><code><a title="textual.css.stylesheet.Stylesheet" href="#textual.css.stylesheet.Stylesheet">Stylesheet</a></code></h4>
 <ul class="two-column">

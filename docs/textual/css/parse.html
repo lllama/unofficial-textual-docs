@@ -35,6 +35,7 @@ from typing import Iterator, Iterable
 from rich import print
 
 from textual.css.errors import UnresolvedVariableError
+from textual.css.types import Specificity3
 from ._styles_builder import StylesBuilder, DeclarationError
 from .model import (
     Declaration,
@@ -48,7 +49,7 @@ from .styles import Styles
 from .tokenize import tokenize, tokenize_declarations, Token, tokenize_values
 from .tokenizer import EOFError, ReferencedBy
 
-SELECTOR_MAP: dict[str, tuple[SelectorType, tuple[int, int, int]]] = {
+SELECTOR_MAP: dict[str, tuple[SelectorType, Specificity3]] = {
     &#34;selector&#34;: (SelectorType.TYPE, (0, 0, 1)),
     &#34;selector_start&#34;: (SelectorType.TYPE, (0, 0, 1)),
     &#34;selector_class&#34;: (SelectorType.CLASS, (0, 1, 0)),
@@ -107,7 +108,9 @@ def parse_selectors(css_selectors: str) -&gt; tuple[SelectorSet, ...]:
     return selector_set
 
 
-def parse_rule_set(tokens: Iterator[Token], token: Token) -&gt; Iterable[RuleSet]:
+def parse_rule_set(
+    tokens: Iterator[Token], token: Token, is_default_rules: bool = False
+) -&gt; Iterable[RuleSet]:
     get_selector = SELECTOR_MAP.get
     combinator: CombinatorType | None = CombinatorType.DESCENDENT
     selectors: list[Selector] = []
@@ -176,7 +179,10 @@ def parse_rule_set(tokens: Iterator[Token], token: Token) -&gt; Iterable[RuleSet
             errors.append((error.token, error.message))
 
     rule_set = RuleSet(
-        list(SelectorSet.from_selectors(rule_selectors)), styles_builder.styles, errors
+        list(SelectorSet.from_selectors(rule_selectors)),
+        styles_builder.styles,
+        errors,
+        is_default_rules=is_default_rules,
     )
     rule_set._post_parse()
     yield rule_set
@@ -334,7 +340,10 @@ def substitute_references(
 
 
 def parse(
-    css: str, path: str | PurePath, variables: dict[str, str] | None = None
+    css: str,
+    path: str | PurePath,
+    variables: dict[str, str] | None = None,
+    is_default_rules: bool = False,
 ) -&gt; Iterable[RuleSet]:
     &#34;&#34;&#34;Parse CSS by tokenizing it, performing variable substitution,
     and generating rule sets from it.
@@ -342,6 +351,9 @@ def parse(
     Args:
         css (str): The input CSS
         path (str): Path to the CSS
+        variables (dict[str, str]): Substitution variables to substitute tokens for.
+        is_default_rules (bool): True if the rules we&#39;re extracting are
+            default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
     &#34;&#34;&#34;
     variable_tokens = tokenize_values(variables or {})
     tokens = iter(substitute_references(tokenize(css, path), variable_tokens))
@@ -350,7 +362,7 @@ def parse(
         if token is None:
             break
         if token.name.startswith(&#34;selector_start&#34;):
-            yield from parse_rule_set(tokens, token)
+            yield from parse_rule_set(tokens, token, is_default_rules=is_default_rules)
 
 
 if __name__ == &#34;__main__&#34;:
@@ -384,7 +396,7 @@ if __name__ == &#34;__main__&#34;:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="textual.css.parse.parse"><code class="name flex">
-<span>def <span class="ident">parse</span></span>(<span>css: str, path: str | PurePath, variables: dict[str, str] | None = None) ‑> Iterable[RuleSet]</span>
+<span>def <span class="ident">parse</span></span>(<span>css: str, path: str | PurePath, variables: dict[str, str] | None = None, is_default_rules: bool = False) ‑> Iterable[RuleSet]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse CSS by tokenizing it, performing variable substitution,
@@ -395,13 +407,21 @@ and generating rule sets from it.</p>
 <dd>The input CSS</dd>
 <dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
 <dd>Path to the CSS</dd>
+<dt><strong><code>variables</code></strong> :&ensp;<code>dict[str, str]</code></dt>
+<dd>Substitution variables to substitute tokens for.</dd>
+<dt><strong><code>is_default_rules</code></strong> :&ensp;<code>bool</code></dt>
+<dd>True if the rules we're extracting are
+default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def parse(
-    css: str, path: str | PurePath, variables: dict[str, str] | None = None
+    css: str,
+    path: str | PurePath,
+    variables: dict[str, str] | None = None,
+    is_default_rules: bool = False,
 ) -&gt; Iterable[RuleSet]:
     &#34;&#34;&#34;Parse CSS by tokenizing it, performing variable substitution,
     and generating rule sets from it.
@@ -409,6 +429,9 @@ and generating rule sets from it.</p>
     Args:
         css (str): The input CSS
         path (str): Path to the CSS
+        variables (dict[str, str]): Substitution variables to substitute tokens for.
+        is_default_rules (bool): True if the rules we&#39;re extracting are
+            default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
     &#34;&#34;&#34;
     variable_tokens = tokenize_values(variables or {})
     tokens = iter(substitute_references(tokenize(css, path), variable_tokens))
@@ -417,7 +440,7 @@ and generating rule sets from it.</p>
         if token is None:
             break
         if token.name.startswith(&#34;selector_start&#34;):
-            yield from parse_rule_set(tokens, token)</code></pre>
+            yield from parse_rule_set(tokens, token, is_default_rules=is_default_rules)</code></pre>
 </details>
 </dd>
 <dt id="textual.css.parse.parse_declarations"><code class="name flex">
@@ -491,7 +514,7 @@ and generating rule sets from it.</p>
 </details>
 </dd>
 <dt id="textual.css.parse.parse_rule_set"><code class="name flex">
-<span>def <span class="ident">parse_rule_set</span></span>(<span>tokens: Iterator[Token], token: Token) ‑> Iterable[<a title="textual.css.model.RuleSet" href="model.html#textual.css.model.RuleSet">RuleSet</a>]</span>
+<span>def <span class="ident">parse_rule_set</span></span>(<span>tokens: Iterator[Token], token: Token, is_default_rules: bool = False) ‑> Iterable[<a title="textual.css.model.RuleSet" href="model.html#textual.css.model.RuleSet">RuleSet</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -499,7 +522,9 @@ and generating rule sets from it.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def parse_rule_set(tokens: Iterator[Token], token: Token) -&gt; Iterable[RuleSet]:
+<pre><code class="python">def parse_rule_set(
+    tokens: Iterator[Token], token: Token, is_default_rules: bool = False
+) -&gt; Iterable[RuleSet]:
     get_selector = SELECTOR_MAP.get
     combinator: CombinatorType | None = CombinatorType.DESCENDENT
     selectors: list[Selector] = []
@@ -568,7 +593,10 @@ and generating rule sets from it.</p>
             errors.append((error.token, error.message))
 
     rule_set = RuleSet(
-        list(SelectorSet.from_selectors(rule_selectors)), styles_builder.styles, errors
+        list(SelectorSet.from_selectors(rule_selectors)),
+        styles_builder.styles,
+        errors,
+        is_default_rules=is_default_rules,
     )
     rule_set._post_parse()
     yield rule_set</code></pre>

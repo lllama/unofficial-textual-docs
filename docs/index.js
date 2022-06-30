@@ -1472,7 +1472,7 @@ INDEX=[
 {
 "ref":"textual.css.styles.Styles.extract_rules",
 "url":10,
-"doc":"Extract rules from Styles object, and apply !important css specificity. Args: specificity (Specificity3): A node specificity. Returns: list[tuple[str, Specificity4, Any ]: A list containing a tuple of  ,   .",
+"doc":"Extract rules from Styles object, and apply !important css specificity as well as higher specificity of user CSS vs widget CSS. Args: specificity (Specificity3): A node specificity. is_default_rules (bool): True if the rules we're extracting are default (i.e. in Widget.CSS) rules. False if they're from user defined CSS. Returns: list[tuple[str, Specificity5, Any ]: A list containing a tuple of  ,   .",
 "func":1
 },
 {
@@ -2176,6 +2176,21 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.css.stylesheet.CssSource",
+"url":12,
+"doc":"Contains the CSS content and whether or not the CSS comes from user defined stylesheets vs widget-level stylesheets. Args: content (str): The CSS as a string. is_defaults (bool): True if the CSS is default (i.e. that defined at the widget level). False if it's user CSS (which will override the defaults)."
+},
+{
+"ref":"textual.css.stylesheet.CssSource.content",
+"url":12,
+"doc":"Alias for field number 0"
+},
+{
+"ref":"textual.css.stylesheet.CssSource.is_defaults",
+"url":12,
+"doc":"Alias for field number 1"
+},
+{
 "ref":"textual.css.stylesheet.Stylesheet",
 "url":12,
 "doc":""
@@ -2211,7 +2226,7 @@ INDEX=[
 {
 "ref":"textual.css.stylesheet.Stylesheet.add_source",
 "url":12,
-"doc":"Parse CSS from a string. Args: css (str): String with CSS source. path (str | PurePath, optional): The path of the source if a file, or some other identifier. Defaults to None. Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
+"doc":"Parse CSS from a string. Args: css (str): String with CSS source. path (str | PurePath, optional): The path of the source if a file, or some other identifier. Defaults to None. is_default_css (bool): True if the CSS is defined in the Widget, False if the CSS is defined in a user stylesheet. Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
 "func":1
 },
 {
@@ -2414,7 +2429,7 @@ INDEX=[
 {
 "ref":"textual.css.model.RuleSet",
 "url":14,
-"doc":"RuleSet(selector_set: 'list[SelectorSet]' =  , styles: 'Styles' =  , errors: 'list[tuple[Token, str ' =  , classes: 'set[str]' =  )"
+"doc":"RuleSet(selector_set: 'list[SelectorSet]' =  , styles: 'Styles' =  , errors: 'list[tuple[Token, str ' =  , classes: 'set[str]' =  , is_default_rules: 'bool' = False)"
 },
 {
 "ref":"textual.css.model.RuleSet.selector_set",
@@ -2433,6 +2448,11 @@ INDEX=[
 },
 {
 "ref":"textual.css.model.RuleSet.classes",
+"url":14,
+"doc":""
+},
+{
+"ref":"textual.css.model.RuleSet.is_default_rules",
 "url":14,
 "doc":""
 },
@@ -2478,7 +2498,7 @@ INDEX=[
 {
 "ref":"textual.css.parse.parse",
 "url":15,
-"doc":"Parse CSS by tokenizing it, performing variable substitution, and generating rule sets from it. Args: css (str): The input CSS path (str): Path to the CSS",
+"doc":"Parse CSS by tokenizing it, performing variable substitution, and generating rule sets from it. Args: css (str): The input CSS path (str): Path to the CSS variables (dict[str, str]): Substitution variables to substitute tokens for. is_default_rules (bool): True if the rules we're extracting are default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.",
 "func":1
 },
 {

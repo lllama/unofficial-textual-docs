@@ -101,12 +101,12 @@ class Widget(DOMNode):
     CSS = &#34;&#34;&#34;
     Widget{
         scrollbar-background: $panel-darken-2;
-        scrollbar-background-hover: $panel-darken-3;        
+        scrollbar-background-hover: $panel-darken-3;
         scrollbar-color: $system;
-        scrollbar-color-active: $secondary-darken-1;                
+        scrollbar-color-active: $secondary-darken-1;
         scrollbar-size-vertical: 2;
         scrollbar-size-horizontal: 1;
-        
+
     }
     &#34;&#34;&#34;
 
@@ -221,7 +221,7 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
         # Parse the Widget&#39;s CSS
         for path, css in self.css:
-            self.app.stylesheet.add_source(css, path=path)
+            self.app.stylesheet.add_source(css, path=path, is_default_css=True)
 
     def get_box_model(
         self, container: Size, viewport: Size, fraction_unit: Fraction
@@ -1329,12 +1329,12 @@ def cursor_line(self) -&gt; int | None:
     CSS = &#34;&#34;&#34;
     Widget{
         scrollbar-background: $panel-darken-2;
-        scrollbar-background-hover: $panel-darken-3;        
+        scrollbar-background-hover: $panel-darken-3;
         scrollbar-color: $system;
-        scrollbar-color-active: $secondary-darken-1;                
+        scrollbar-color-active: $secondary-darken-1;
         scrollbar-size-vertical: 2;
         scrollbar-size-horizontal: 1;
-        
+
     }
     &#34;&#34;&#34;
 
@@ -1449,7 +1449,7 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
         # Parse the Widget&#39;s CSS
         for path, css in self.css:
-            self.app.stylesheet.add_source(css, path=path)
+            self.app.stylesheet.add_source(css, path=path, is_default_css=True)
 
     def get_box_model(
         self, container: Size, viewport: Size, fraction_unit: Fraction
@@ -3793,7 +3793,7 @@ def window_region(self) -&gt; Region:
     &#34;&#34;&#34;
     # Parse the Widget&#39;s CSS
     for path, css in self.css:
-        self.app.stylesheet.add_source(css, path=path)</code></pre>
+        self.app.stylesheet.add_source(css, path=path, is_default_css=True)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.post_message"><code class="name flex">

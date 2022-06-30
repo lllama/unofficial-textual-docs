@@ -84,6 +84,7 @@ from .types import (
     AlignVertical,
     Visibility,
     ScrollbarGutter,
+    Specificity5,
 )
 
 if sys.version_info &gt;= (3, 8):
@@ -539,20 +540,33 @@ class Styles(StylesBase):
         self._rules.update(rules)
 
     def extract_rules(
-        self, specificity: Specificity3
-    ) -&gt; list[tuple[str, Specificity4, Any]]:
-        &#34;&#34;&#34;Extract rules from Styles object, and apply !important css specificity.
+        self,
+        specificity: Specificity3,
+        is_default_rules: bool = False,
+    ) -&gt; list[tuple[str, Specificity5, Any]]:
+        &#34;&#34;&#34;Extract rules from Styles object, and apply !important css specificity as
+        well as higher specificity of user CSS vs widget CSS.
 
         Args:
             specificity (Specificity3): A node specificity.
+            is_default_rules (bool): True if the rules we&#39;re extracting are
+                default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
 
         Returns:
-            list[tuple[str, Specificity4, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
+            list[tuple[str, Specificity5, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
         &#34;&#34;&#34;
         is_important = self.important.__contains__
 
         rules = [
-            (rule_name, (int(is_important(rule_name)), *specificity), rule_value)
+            (
+                rule_name,
+                (
+                    0 if is_default_rules else 1,
+                    1 if is_important(rule_name) else 0,
+                    *specificity,
+                ),
+                rule_value,
+            )
             for rule_name, rule_value in self._rules.items()
         ]
 
@@ -1523,20 +1537,33 @@ def inline(self) -&gt; Styles:
         self._rules.update(rules)
 
     def extract_rules(
-        self, specificity: Specificity3
-    ) -&gt; list[tuple[str, Specificity4, Any]]:
-        &#34;&#34;&#34;Extract rules from Styles object, and apply !important css specificity.
+        self,
+        specificity: Specificity3,
+        is_default_rules: bool = False,
+    ) -&gt; list[tuple[str, Specificity5, Any]]:
+        &#34;&#34;&#34;Extract rules from Styles object, and apply !important css specificity as
+        well as higher specificity of user CSS vs widget CSS.
 
         Args:
             specificity (Specificity3): A node specificity.
+            is_default_rules (bool): True if the rules we&#39;re extracting are
+                default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
 
         Returns:
-            list[tuple[str, Specificity4, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
+            list[tuple[str, Specificity5, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
         &#34;&#34;&#34;
         is_important = self.important.__contains__
 
         rules = [
-            (rule_name, (int(is_important(rule_name)), *specificity), rule_value)
+            (
+                rule_name,
+                (
+                    0 if is_default_rules else 1,
+                    1 if is_important(rule_name) else 0,
+                    *specificity,
+                ),
+                rule_value,
+            )
             for rule_name, rule_value in self._rules.items()
         ]
 
@@ -1974,18 +2001,22 @@ def css_lines(self) -&gt; list[str]:
 </details>
 </dd>
 <dt id="textual.css.styles.Styles.extract_rules"><code class="name flex">
-<span>def <span class="ident">extract_rules</span></span>(<span>self, specificity: Specificity3) ‑> list[tuple[str, Specificity4, Any]]</span>
+<span>def <span class="ident">extract_rules</span></span>(<span>self, specificity: Specificity3, is_default_rules: bool = False) ‑> list[tuple[str, Specificity5, Any]]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Extract rules from Styles object, and apply !important css specificity.</p>
+<div class="desc"><p>Extract rules from Styles object, and apply !important css specificity as
+well as higher specificity of user CSS vs widget CSS.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>specificity</code></strong> :&ensp;<code>Specificity3</code></dt>
 <dd>A node specificity.</dd>
+<dt><strong><code>is_default_rules</code></strong> :&ensp;<code>bool</code></dt>
+<dd>True if the rules we're extracting are
+default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>list[tuple[str, Specificity4, Any]]]</code></dt>
+<dt><code>list[tuple[str, Specificity5, Any]]]</code></dt>
 <dd>A list containing a tuple of <RULE NAME>, <SPECIFICITY> <RULE VALUE>.</dd>
 </dl></div>
 <details class="source">
@@ -1993,20 +2024,33 @@ def css_lines(self) -&gt; list[str]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def extract_rules(
-    self, specificity: Specificity3
-) -&gt; list[tuple[str, Specificity4, Any]]:
-    &#34;&#34;&#34;Extract rules from Styles object, and apply !important css specificity.
+    self,
+    specificity: Specificity3,
+    is_default_rules: bool = False,
+) -&gt; list[tuple[str, Specificity5, Any]]:
+    &#34;&#34;&#34;Extract rules from Styles object, and apply !important css specificity as
+    well as higher specificity of user CSS vs widget CSS.
 
     Args:
         specificity (Specificity3): A node specificity.
+        is_default_rules (bool): True if the rules we&#39;re extracting are
+            default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
 
     Returns:
-        list[tuple[str, Specificity4, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
+        list[tuple[str, Specificity5, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
     &#34;&#34;&#34;
     is_important = self.important.__contains__
 
     rules = [
-        (rule_name, (int(is_important(rule_name)), *specificity), rule_value)
+        (
+            rule_name,
+            (
+                0 if is_default_rules else 1,
+                1 if is_important(rule_name) else 0,
+                *specificity,
+            ),
+            rule_value,
+        )
         for rule_name, rule_value in self._rules.items()
     ]
 
