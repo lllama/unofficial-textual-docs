@@ -27,6 +27,7 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">import functools
+from typing import Iterable
 
 from rich.color import Color
 from rich.console import ConsoleOptions, Console, RenderResult, RenderableType
@@ -36,51 +37,75 @@ from rich.style import Style
 from textual.renderables._blend_colors import blend_colors
 
 
-class Opacity:
-    &#34;&#34;&#34;Wrap a renderable to blend foreground color into the background color.
+@functools.lru_cache(maxsize=1024)
+def _get_blended_style_cached(
+    bg_color: Color, fg_color: Color, opacity: float
+) -&gt; Style:
+    &#34;&#34;&#34;Blend from one color to another.
+
+    Cached because when a UI is static the opacity will be constant.
 
     Args:
-        renderable (RenderableType): The RenderableType to manipulate.
-        opacity (float): The opacity as a float. A value of 1.0 means text is fully visible.
+        bg_color (Color): Background color.
+        fg_color (Color): Foreground color.
+        opacity (float): Opacity.
+
+    Returns:
+        Style: Resulting style.
     &#34;&#34;&#34;
+    return Style.from_color(
+        color=blend_colors(bg_color, fg_color, ratio=opacity),
+        bgcolor=bg_color,
+    )
+
+
+class Opacity:
+    &#34;&#34;&#34;Blend foreground in to background.&#34;&#34;&#34;
 
     def __init__(self, renderable: RenderableType, opacity: float = 1.0) -&gt; None:
+        &#34;&#34;&#34;Wrap a renderable to blend foreground color into the background color.
+
+        Args:
+            renderable (RenderableType): The RenderableType to manipulate.
+            opacity (float): The opacity as a float. A value of 1.0 means text is fully visible.
+        &#34;&#34;&#34;
         self.renderable = renderable
         self.opacity = opacity
+
+    @classmethod
+    def process_segments(
+        cls, segments: Iterable[Segment], opacity: float
+    ) -&gt; Iterable[Segment]:
+        &#34;&#34;&#34;Apply opacity to segments.
+
+        Args:
+            segments (Iterable[Segment]): Incoming segments.
+            opacity (float): Opacity to apply.
+
+        Returns:
+            Iterable[Segment]: Segments with applied opacity.
+
+        &#34;&#34;&#34;
+        _Segment = Segment
+        for segment in segments:
+            text, style, control = segment
+            if not style:
+                yield segment
+                continue
+
+            color = style.color
+            bgcolor = style.bgcolor
+            if color and color.triplet and bgcolor and bgcolor.triplet:
+                color_style = _get_blended_style_cached(bgcolor, color, opacity)
+                yield _Segment(text, style + color_style)
+            else:
+                yield segment
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -&gt; RenderResult:
         segments = console.render(self.renderable, options)
-        opacity = self.opacity
-        for segment in segments:
-            style = segment.style
-            if not style:
-                yield segment
-                continue
-            fg = style.color
-            bg = style.bgcolor
-            if fg and fg.triplet and bg and bg.triplet:
-                color_style = _get_blended_style_cached(
-                    fg_color=fg, bg_color=bg, opacity=opacity
-                )
-                yield Segment(
-                    segment.text,
-                    style + color_style,
-                    segment.control,
-                )
-            else:
-                yield segment
-
-
-@functools.lru_cache(maxsize=1024)
-def _get_blended_style_cached(
-    fg_color: Color, bg_color: Color, opacity: float
-) -&gt; Style:
-    return Style.from_color(
-        color=blend_colors(bg_color, fg_color, ratio=opacity),
-        bgcolor=bg_color,
-    )
+        return self.process_segments(segments, self.opacity)
 
 
 if __name__ == &#34;__main__&#34;:
@@ -134,7 +159,8 @@ if __name__ == &#34;__main__&#34;:
 <span>(</span><span>renderable: Union[rich.console.ConsoleRenderable, rich.console.RichCast, str], opacity: float = 1.0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Wrap a renderable to blend foreground color into the background color.</p>
+<div class="desc"><p>Blend foreground in to background.</p>
+<p>Wrap a renderable to blend foreground color into the background color.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>renderable</code></strong> :&ensp;<code>RenderableType</code></dt>
@@ -147,41 +173,107 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Opacity:
-    &#34;&#34;&#34;Wrap a renderable to blend foreground color into the background color.
-
-    Args:
-        renderable (RenderableType): The RenderableType to manipulate.
-        opacity (float): The opacity as a float. A value of 1.0 means text is fully visible.
-    &#34;&#34;&#34;
+    &#34;&#34;&#34;Blend foreground in to background.&#34;&#34;&#34;
 
     def __init__(self, renderable: RenderableType, opacity: float = 1.0) -&gt; None:
+        &#34;&#34;&#34;Wrap a renderable to blend foreground color into the background color.
+
+        Args:
+            renderable (RenderableType): The RenderableType to manipulate.
+            opacity (float): The opacity as a float. A value of 1.0 means text is fully visible.
+        &#34;&#34;&#34;
         self.renderable = renderable
         self.opacity = opacity
+
+    @classmethod
+    def process_segments(
+        cls, segments: Iterable[Segment], opacity: float
+    ) -&gt; Iterable[Segment]:
+        &#34;&#34;&#34;Apply opacity to segments.
+
+        Args:
+            segments (Iterable[Segment]): Incoming segments.
+            opacity (float): Opacity to apply.
+
+        Returns:
+            Iterable[Segment]: Segments with applied opacity.
+
+        &#34;&#34;&#34;
+        _Segment = Segment
+        for segment in segments:
+            text, style, control = segment
+            if not style:
+                yield segment
+                continue
+
+            color = style.color
+            bgcolor = style.bgcolor
+            if color and color.triplet and bgcolor and bgcolor.triplet:
+                color_style = _get_blended_style_cached(bgcolor, color, opacity)
+                yield _Segment(text, style + color_style)
+            else:
+                yield segment
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -&gt; RenderResult:
         segments = console.render(self.renderable, options)
-        opacity = self.opacity
-        for segment in segments:
-            style = segment.style
-            if not style:
-                yield segment
-                continue
-            fg = style.color
-            bg = style.bgcolor
-            if fg and fg.triplet and bg and bg.triplet:
-                color_style = _get_blended_style_cached(
-                    fg_color=fg, bg_color=bg, opacity=opacity
-                )
-                yield Segment(
-                    segment.text,
-                    style + color_style,
-                    segment.control,
-                )
-            else:
-                yield segment</code></pre>
+        return self.process_segments(segments, self.opacity)</code></pre>
 </details>
+<h3>Static methods</h3>
+<dl>
+<dt id="textual.renderables.opacity.Opacity.process_segments"><code class="name flex">
+<span>def <span class="ident">process_segments</span></span>(<span>segments: Iterable[rich.segment.Segment], opacity: float) ‑> Iterable[rich.segment.Segment]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Apply opacity to segments.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>segments</code></strong> :&ensp;<code>Iterable[Segment]</code></dt>
+<dd>Incoming segments.</dd>
+<dt><strong><code>opacity</code></strong> :&ensp;<code>float</code></dt>
+<dd>Opacity to apply.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Iterable[Segment]</code></dt>
+<dd>Segments with applied opacity.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def process_segments(
+    cls, segments: Iterable[Segment], opacity: float
+) -&gt; Iterable[Segment]:
+    &#34;&#34;&#34;Apply opacity to segments.
+
+    Args:
+        segments (Iterable[Segment]): Incoming segments.
+        opacity (float): Opacity to apply.
+
+    Returns:
+        Iterable[Segment]: Segments with applied opacity.
+
+    &#34;&#34;&#34;
+    _Segment = Segment
+    for segment in segments:
+        text, style, control = segment
+        if not style:
+            yield segment
+            continue
+
+        color = style.color
+        bgcolor = style.bgcolor
+        if color and color.triplet and bgcolor and bgcolor.triplet:
+            color_style = _get_blended_style_cached(bgcolor, color, opacity)
+            yield _Segment(text, style + color_style)
+        else:
+            yield segment</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -247,6 +339,9 @@ setTimeout(() => input.focus(), 100);
 <ul>
 <li>
 <h4><code><a title="textual.renderables.opacity.Opacity" href="#textual.renderables.opacity.Opacity">Opacity</a></code></h4>
+<ul class="">
+<li><code><a title="textual.renderables.opacity.Opacity.process_segments" href="#textual.renderables.opacity.Opacity.process_segments">process_segments</a></code></li>
+</ul>
 </li>
 </ul>
 </li>

@@ -80,7 +80,7 @@ INDEX=[
 {
 "ref":"textual.color",
 "url":1,
-"doc":"Manages Color in Textual. All instances where the developer is presented with a color should use this class. The only exception should be when passing things to a Rich renderable, which will need to use the  rich_color attribute to perform a conversion. I'm not entirely happy with burdening the user with two similar color classes. In a future update we might add a protocol to convert automatically so the dev could use them interchangably."
+"doc":"Manages Color in Textual. All instances where the developer is presented with a color should use this class. The only exception should be when passing things to a Rich renderable, which will need to use the  rich_color attribute to perform a conversion. I'm not entirely happy with burdening the user with two similar color classes. In a future update we might add a protocol to convert automatically so the dev could use them interchangeably."
 },
 {
 "ref":"textual.color.HLS",
@@ -1295,11 +1295,6 @@ INDEX=[
 "doc":"Get space around widget. Returns: Spacing: Space around widget content."
 },
 {
-"ref":"textual.css.styles.StylesBase.content_gutter",
-"url":10,
-"doc":"The spacing that surrounds the content area of the widget."
-},
-{
 "ref":"textual.css.styles.StylesBase.auto_dimensions",
 "url":10,
 "doc":"Check if width or height are set to 'auto'."
@@ -1731,11 +1726,6 @@ INDEX=[
 "doc":"Get space around widget. Returns: Spacing: Space around widget content."
 },
 {
-"ref":"textual.css.styles.Styles.content_gutter",
-"url":10,
-"doc":"The spacing that surrounds the content area of the widget."
-},
-{
 "ref":"textual.css.styles.Styles.auto_dimensions",
 "url":10,
 "doc":"Check if width or height are set to 'auto'."
@@ -2088,11 +2078,6 @@ INDEX=[
 "ref":"textual.css.styles.RenderStyles.gutter",
 "url":10,
 "doc":"Get space around widget. Returns: Spacing: Space around widget content."
-},
-{
-"ref":"textual.css.styles.RenderStyles.content_gutter",
-"url":10,
-"doc":"The spacing that surrounds the content area of the widget."
 },
 {
 "ref":"textual.css.styles.RenderStyles.auto_dimensions",
@@ -2647,6 +2632,11 @@ INDEX=[
 "doc":"Get a region of the same size."
 },
 {
+"ref":"textual.geometry.Size.line_range",
+"url":20,
+"doc":"Get a range covering lines."
+},
+{
 "ref":"textual.geometry.Size.contains",
 "url":20,
 "doc":"Check if a point is in the size. Args: x (int): X coordinate (column) y (int): Y coordinate (row) Returns: bool: True if the point is within the region.",
@@ -2708,14 +2698,14 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.geometry.Region.x_extents",
+"ref":"textual.geometry.Region.column_span",
 "url":20,
-"doc":"Get the starting and ending x coord. The end value is non inclusive. Returns: tuple[int, int]: Pair of x coordinates (row numbers)."
+"doc":"Get the start and end column (x coord). The end value is exclusive. Returns: tuple[int, int]: Pair of x coordinates (column numbers)."
 },
 {
-"ref":"textual.geometry.Region.y_extents",
+"ref":"textual.geometry.Region.line_span",
 "url":20,
-"doc":"Get the starting and ending x coord. The end value is non inclusive. Returns: tuple[int, int]: Pair of y coordinates (line numbers)."
+"doc":"Get the start and end line number (y coord). The end value is exclusive. Returns: tuple[int, int]: Pair of y coordinates (line numbers)."
 },
 {
 "ref":"textual.geometry.Region.right",
@@ -2763,12 +2753,12 @@ INDEX=[
 "doc":"Get the top left and bottom right coordinates as a tuple of integers. Returns: tuple[int, int, int, int]: A tuple of  ( ,  ,  ,  ) "
 },
 {
-"ref":"textual.geometry.Region.x_range",
+"ref":"textual.geometry.Region.column_range",
 "url":20,
 "doc":"A range object for X coordinates."
 },
 {
-"ref":"textual.geometry.Region.y_range",
+"ref":"textual.geometry.Region.line_range",
 "url":20,
 "doc":"A range object for Y coordinates."
 },
@@ -3200,11 +3190,6 @@ INDEX=[
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
 },
 {
-"ref":"textual.screen.Screen.scrollbar_dimensions",
-"url":23,
-"doc":"Get the size of any scrollbars on the widget"
-},
-{
 "ref":"textual.screen.Screen.scrollbar_size_vertical",
 "url":23,
 "doc":"Get the width used by the  vertical scrollbar."
@@ -3213,6 +3198,66 @@ INDEX=[
 "ref":"textual.screen.Screen.scrollbar_size_horizontal",
 "url":23,
 "doc":"Get the height used by the  horizontal scrollbar."
+},
+{
+"ref":"textual.screen.Screen.gutter",
+"url":23,
+"doc":"Spacing for padding / border / scrollbars."
+},
+{
+"ref":"textual.screen.Screen.size",
+"url":23,
+"doc":"The size of the content area."
+},
+{
+"ref":"textual.screen.Screen.outer_size",
+"url":23,
+"doc":"The size of the widget (including padding and border)."
+},
+{
+"ref":"textual.screen.Screen.container_size",
+"url":23,
+"doc":"The size of the container (parent widget)."
+},
+{
+"ref":"textual.screen.Screen.content_region",
+"url":23,
+"doc":"Gets an absolute region containing the content (minus padding and border)."
+},
+{
+"ref":"textual.screen.Screen.content_offset",
+"url":23,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.screen.Screen.region",
+"url":23,
+"doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.screen.Screen.window_region",
+"url":23,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
+},
+{
+"ref":"textual.screen.Screen.console",
+"url":23,
+"doc":"Get the current console."
+},
+{
+"ref":"textual.screen.Screen.layout",
+"url":23,
+"doc":"Get the layout object if set in styles, or a default layout."
+},
+{
+"ref":"textual.screen.Screen.is_container",
+"url":23,
+"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
+},
+{
+"ref":"textual.screen.Screen.is_scrollable",
+"url":23,
+"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
 "ref":"textual.screen.Screen.get_dirty_regions",
@@ -3257,46 +3302,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.screen.Screen.content_region",
-"url":23,
-"doc":"Gets an absolute region containing the content (minus padding and border)."
-},
-{
-"ref":"textual.screen.Screen.content_offset",
-"url":23,
-"doc":"An offset from the Widget origin where the content begins."
-},
-{
-"ref":"textual.screen.Screen.region",
-"url":23,
-"doc":"The region occupied by this widget, relative to the Screen."
-},
-{
-"ref":"textual.screen.Screen.window_region",
-"url":23,
-"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
-},
-{
-"ref":"textual.screen.Screen.console",
-"url":23,
-"doc":"Get the current console."
-},
-{
-"ref":"textual.screen.Screen.layout",
-"url":23,
-"doc":"Get the layout object if set in styles, or a default layout."
-},
-{
-"ref":"textual.screen.Screen.is_container",
-"url":23,
-"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
-},
-{
-"ref":"textual.screen.Screen.is_scrollable",
-"url":23,
-"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
-},
-{
 "ref":"textual.screen.Screen.watch_mouse_over",
 "url":23,
 "doc":"Update from CSS if mouse over state changes.",
@@ -3306,6 +3311,12 @@ INDEX=[
 "ref":"textual.screen.Screen.watch_has_focus",
 "url":23,
 "doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.render_line",
+"url":23,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
 "func":1
 },
 {
@@ -4967,11 +4978,6 @@ INDEX=[
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
 },
 {
-"ref":"textual.scroll_view.ScrollView.scrollbar_dimensions",
-"url":23,
-"doc":"Get the size of any scrollbars on the widget"
-},
-{
 "ref":"textual.scroll_view.ScrollView.scrollbar_size_vertical",
 "url":23,
 "doc":"Get the width used by the  vertical scrollbar."
@@ -4980,6 +4986,61 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.scrollbar_size_horizontal",
 "url":23,
 "doc":"Get the height used by the  horizontal scrollbar."
+},
+{
+"ref":"textual.scroll_view.ScrollView.gutter",
+"url":23,
+"doc":"Spacing for padding / border / scrollbars."
+},
+{
+"ref":"textual.scroll_view.ScrollView.size",
+"url":23,
+"doc":"The size of the content area."
+},
+{
+"ref":"textual.scroll_view.ScrollView.outer_size",
+"url":23,
+"doc":"The size of the widget (including padding and border)."
+},
+{
+"ref":"textual.scroll_view.ScrollView.container_size",
+"url":23,
+"doc":"The size of the container (parent widget)."
+},
+{
+"ref":"textual.scroll_view.ScrollView.content_region",
+"url":23,
+"doc":"Gets an absolute region containing the content (minus padding and border)."
+},
+{
+"ref":"textual.scroll_view.ScrollView.content_offset",
+"url":23,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.scroll_view.ScrollView.region",
+"url":23,
+"doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.scroll_view.ScrollView.window_region",
+"url":23,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
+},
+{
+"ref":"textual.scroll_view.ScrollView.console",
+"url":23,
+"doc":"Get the current console."
+},
+{
+"ref":"textual.scroll_view.ScrollView.layout",
+"url":23,
+"doc":"Get the layout object if set in styles, or a default layout."
+},
+{
+"ref":"textual.scroll_view.ScrollView.is_container",
+"url":23,
+"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_to",
@@ -5018,41 +5079,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.scroll_view.ScrollView.content_region",
-"url":23,
-"doc":"Gets an absolute region containing the content (minus padding and border)."
-},
-{
-"ref":"textual.scroll_view.ScrollView.content_offset",
-"url":23,
-"doc":"An offset from the Widget origin where the content begins."
-},
-{
-"ref":"textual.scroll_view.ScrollView.region",
-"url":23,
-"doc":"The region occupied by this widget, relative to the Screen."
-},
-{
-"ref":"textual.scroll_view.ScrollView.window_region",
-"url":23,
-"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
-},
-{
-"ref":"textual.scroll_view.ScrollView.console",
-"url":23,
-"doc":"Get the current console."
-},
-{
-"ref":"textual.scroll_view.ScrollView.layout",
-"url":23,
-"doc":"Get the layout object if set in styles, or a default layout."
-},
-{
-"ref":"textual.scroll_view.ScrollView.is_container",
-"url":23,
-"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
-},
-{
 "ref":"textual.scroll_view.ScrollView.watch_mouse_over",
 "url":23,
 "doc":"Update from CSS if mouse over state changes.",
@@ -5062,6 +5088,12 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.watch_has_focus",
 "url":23,
 "doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.render_line",
+"url":23,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
 "func":1
 },
 {
@@ -5916,11 +5948,6 @@ INDEX=[
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
 },
 {
-"ref":"textual.scrollbar.ScrollBar.scrollbar_dimensions",
-"url":23,
-"doc":"Get the size of any scrollbars on the widget"
-},
-{
 "ref":"textual.scrollbar.ScrollBar.scrollbar_size_vertical",
 "url":23,
 "doc":"Get the width used by the  vertical scrollbar."
@@ -5931,46 +5958,24 @@ INDEX=[
 "doc":"Get the height used by the  horizontal scrollbar."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.get_dirty_regions",
+"ref":"textual.scrollbar.ScrollBar.gutter",
 "url":23,
-"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
-"func":1
+"doc":"Spacing for padding / border / scrollbars."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.scroll_to",
+"ref":"textual.scrollbar.ScrollBar.size",
 "url":23,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
+"doc":"The size of the content area."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.scroll_relative",
+"ref":"textual.scrollbar.ScrollBar.outer_size",
 "url":23,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
+"doc":"The size of the widget (including padding and border)."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.scroll_to_widget",
+"ref":"textual.scrollbar.ScrollBar.container_size",
 "url":23,
-"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBar.scroll_to_region",
-"url":23,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBar.get_pseudo_classes",
-"url":23,
-"doc":"Pseudo classes for a widget",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBar.render_styled",
-"url":23,
-"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
-"func":1
+"doc":"The size of the container (parent widget)."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.content_region",
@@ -6018,6 +6023,48 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.get_dirty_regions",
+"url":23,
+"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.scroll_to",
+"url":23,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.scroll_relative",
+"url":23,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.scroll_to_widget",
+"url":23,
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.scroll_to_region",
+"url":23,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.get_pseudo_classes",
+"url":23,
+"doc":"Pseudo classes for a widget",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.render_styled",
+"url":23,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.watch_mouse_over",
 "url":23,
 "doc":"Update from CSS if mouse over state changes.",
@@ -6027,6 +6074,12 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.watch_has_focus",
 "url":23,
 "doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.render_line",
+"url":23,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
 "func":1
 },
 {
@@ -7500,11 +7553,6 @@ INDEX=[
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
 },
 {
-"ref":"textual.layout.Vertical.scrollbar_dimensions",
-"url":23,
-"doc":"Get the size of any scrollbars on the widget"
-},
-{
 "ref":"textual.layout.Vertical.scrollbar_size_vertical",
 "url":23,
 "doc":"Get the width used by the  vertical scrollbar."
@@ -7515,46 +7563,24 @@ INDEX=[
 "doc":"Get the height used by the  horizontal scrollbar."
 },
 {
-"ref":"textual.layout.Vertical.get_dirty_regions",
+"ref":"textual.layout.Vertical.gutter",
 "url":23,
-"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
-"func":1
+"doc":"Spacing for padding / border / scrollbars."
 },
 {
-"ref":"textual.layout.Vertical.scroll_to",
+"ref":"textual.layout.Vertical.size",
 "url":23,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
+"doc":"The size of the content area."
 },
 {
-"ref":"textual.layout.Vertical.scroll_relative",
+"ref":"textual.layout.Vertical.outer_size",
 "url":23,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
+"doc":"The size of the widget (including padding and border)."
 },
 {
-"ref":"textual.layout.Vertical.scroll_to_widget",
+"ref":"textual.layout.Vertical.container_size",
 "url":23,
-"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_to_region",
-"url":23,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.get_pseudo_classes",
-"url":23,
-"doc":"Pseudo classes for a widget",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.render_styled",
-"url":23,
-"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
-"func":1
+"doc":"The size of the container (parent widget)."
 },
 {
 "ref":"textual.layout.Vertical.content_region",
@@ -7602,6 +7628,48 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
+"ref":"textual.layout.Vertical.get_dirty_regions",
+"url":23,
+"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.scroll_to",
+"url":23,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.scroll_relative",
+"url":23,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.scroll_to_widget",
+"url":23,
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.scroll_to_region",
+"url":23,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.get_pseudo_classes",
+"url":23,
+"doc":"Pseudo classes for a widget",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.render_styled",
+"url":23,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.layout.Vertical.watch_mouse_over",
 "url":23,
 "doc":"Update from CSS if mouse over state changes.",
@@ -7611,6 +7679,12 @@ INDEX=[
 "ref":"textual.layout.Vertical.watch_has_focus",
 "url":23,
 "doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.render_line",
+"url":23,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
 "func":1
 },
 {
@@ -8025,11 +8099,6 @@ INDEX=[
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
 },
 {
-"ref":"textual.layout.Horizontal.scrollbar_dimensions",
-"url":23,
-"doc":"Get the size of any scrollbars on the widget"
-},
-{
 "ref":"textual.layout.Horizontal.scrollbar_size_vertical",
 "url":23,
 "doc":"Get the width used by the  vertical scrollbar."
@@ -8040,46 +8109,24 @@ INDEX=[
 "doc":"Get the height used by the  horizontal scrollbar."
 },
 {
-"ref":"textual.layout.Horizontal.get_dirty_regions",
+"ref":"textual.layout.Horizontal.gutter",
 "url":23,
-"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
-"func":1
+"doc":"Spacing for padding / border / scrollbars."
 },
 {
-"ref":"textual.layout.Horizontal.scroll_to",
+"ref":"textual.layout.Horizontal.size",
 "url":23,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
+"doc":"The size of the content area."
 },
 {
-"ref":"textual.layout.Horizontal.scroll_relative",
+"ref":"textual.layout.Horizontal.outer_size",
 "url":23,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
+"doc":"The size of the widget (including padding and border)."
 },
 {
-"ref":"textual.layout.Horizontal.scroll_to_widget",
+"ref":"textual.layout.Horizontal.container_size",
 "url":23,
-"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_to_region",
-"url":23,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.get_pseudo_classes",
-"url":23,
-"doc":"Pseudo classes for a widget",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.render_styled",
-"url":23,
-"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
-"func":1
+"doc":"The size of the container (parent widget)."
 },
 {
 "ref":"textual.layout.Horizontal.content_region",
@@ -8127,6 +8174,48 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
+"ref":"textual.layout.Horizontal.get_dirty_regions",
+"url":23,
+"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.scroll_to",
+"url":23,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.scroll_relative",
+"url":23,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.scroll_to_widget",
+"url":23,
+"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.scroll_to_region",
+"url":23,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.get_pseudo_classes",
+"url":23,
+"doc":"Pseudo classes for a widget",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.render_styled",
+"url":23,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.watch_mouse_over",
 "url":23,
 "doc":"Update from CSS if mouse over state changes.",
@@ -8136,6 +8225,12 @@ INDEX=[
 "ref":"textual.layout.Horizontal.watch_has_focus",
 "url":23,
 "doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.render_line",
+"url":23,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
 "func":1
 },
 {
@@ -8543,7 +8638,13 @@ INDEX=[
 {
 "ref":"textual.renderables.tint.Tint",
 "url":50,
-"doc":"Applies a color on top of an existing renderable. _summary_ Args: renderable (RenderableType): A renderable. color (Color): A color (presumably with alpha)."
+"doc":"Applies a color on top of an existing renderable. Wrap a renderable to apply a tint color. Args: renderable (RenderableType): A renderable. color (Color): A color (presumably with alpha)."
+},
+{
+"ref":"textual.renderables.tint.Tint.process_segments",
+"url":50,
+"doc":"Apply tint to segments. Args: segments (Iterable[Segment]): Incoming segments. color (Color): Color of tint. Returns: Iterable[Segment]: Segments with applied tint.",
+"func":1
 },
 {
 "ref":"textual.renderables.opacity",
@@ -8553,7 +8654,13 @@ INDEX=[
 {
 "ref":"textual.renderables.opacity.Opacity",
 "url":51,
-"doc":"Wrap a renderable to blend foreground color into the background color. Args: renderable (RenderableType): The RenderableType to manipulate. opacity (float): The opacity as a float. A value of 1.0 means text is fully visible."
+"doc":"Blend foreground in to background. Wrap a renderable to blend foreground color into the background color. Args: renderable (RenderableType): The RenderableType to manipulate. opacity (float): The opacity as a float. A value of 1.0 means text is fully visible."
+},
+{
+"ref":"textual.renderables.opacity.Opacity.process_segments",
+"url":51,
+"doc":"Apply opacity to segments. Args: segments (Iterable[Segment]): Incoming segments. opacity (float): Opacity to apply. Returns: Iterable[Segment]: Segments with applied opacity.",
+"func":1
 },
 {
 "ref":"textual.renderables.blank",
@@ -8820,11 +8927,6 @@ INDEX=[
 "doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
 },
 {
-"ref":"textual.widget.Widget.scrollbar_dimensions",
-"url":23,
-"doc":"Get the size of any scrollbars on the widget"
-},
-{
 "ref":"textual.widget.Widget.scrollbar_size_vertical",
 "url":23,
 "doc":"Get the width used by the  vertical scrollbar."
@@ -8833,6 +8935,86 @@ INDEX=[
 "ref":"textual.widget.Widget.scrollbar_size_horizontal",
 "url":23,
 "doc":"Get the height used by the  horizontal scrollbar."
+},
+{
+"ref":"textual.widget.Widget.scrollbar_gutter",
+"url":23,
+"doc":""
+},
+{
+"ref":"textual.widget.Widget.gutter",
+"url":23,
+"doc":"Spacing for padding / border / scrollbars."
+},
+{
+"ref":"textual.widget.Widget.size",
+"url":23,
+"doc":"The size of the content area."
+},
+{
+"ref":"textual.widget.Widget.outer_size",
+"url":23,
+"doc":"The size of the widget (including padding and border)."
+},
+{
+"ref":"textual.widget.Widget.container_size",
+"url":23,
+"doc":"The size of the container (parent widget)."
+},
+{
+"ref":"textual.widget.Widget.content_region",
+"url":23,
+"doc":"Gets an absolute region containing the content (minus padding and border)."
+},
+{
+"ref":"textual.widget.Widget.content_offset",
+"url":23,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.widget.Widget.region",
+"url":23,
+"doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.widget.Widget.window_region",
+"url":23,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
+},
+{
+"ref":"textual.widget.Widget.scroll_offset",
+"url":23,
+"doc":""
+},
+{
+"ref":"textual.widget.Widget.is_transparent",
+"url":23,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
+},
+{
+"ref":"textual.widget.Widget.console",
+"url":23,
+"doc":"Get the current console."
+},
+{
+"ref":"textual.widget.Widget.animate",
+"url":23,
+"doc":""
+},
+{
+"ref":"textual.widget.Widget.layout",
+"url":23,
+"doc":"Get the layout object if set in styles, or a default layout."
+},
+{
+"ref":"textual.widget.Widget.is_container",
+"url":23,
+"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
+},
+{
+"ref":"textual.widget.Widget.is_scrollable",
+"url":23,
+"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
 "ref":"textual.widget.Widget.get_dirty_regions",
@@ -8943,71 +9125,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.widget.Widget.size",
-"url":23,
-"doc":""
-},
-{
-"ref":"textual.widget.Widget.container_size",
-"url":23,
-"doc":""
-},
-{
-"ref":"textual.widget.Widget.content_region",
-"url":23,
-"doc":"Gets an absolute region containing the content (minus padding and border)."
-},
-{
-"ref":"textual.widget.Widget.content_offset",
-"url":23,
-"doc":"An offset from the Widget origin where the content begins."
-},
-{
-"ref":"textual.widget.Widget.region",
-"url":23,
-"doc":"The region occupied by this widget, relative to the Screen."
-},
-{
-"ref":"textual.widget.Widget.window_region",
-"url":23,
-"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
-},
-{
-"ref":"textual.widget.Widget.scroll_offset",
-"url":23,
-"doc":""
-},
-{
-"ref":"textual.widget.Widget.is_transparent",
-"url":23,
-"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
-},
-{
-"ref":"textual.widget.Widget.console",
-"url":23,
-"doc":"Get the current console."
-},
-{
-"ref":"textual.widget.Widget.animate",
-"url":23,
-"doc":""
-},
-{
-"ref":"textual.widget.Widget.layout",
-"url":23,
-"doc":"Get the layout object if set in styles, or a default layout."
-},
-{
-"ref":"textual.widget.Widget.is_container",
-"url":23,
-"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
-},
-{
-"ref":"textual.widget.Widget.is_scrollable",
-"url":23,
-"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
-},
-{
 "ref":"textual.widget.Widget.watch_mouse_over",
 "url":23,
 "doc":"Update from CSS if mouse over state changes.",
@@ -9023,6 +9140,12 @@ INDEX=[
 "ref":"textual.widget.Widget.size_updated",
 "url":23,
 "doc":"",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.render_line",
+"url":23,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
 "func":1
 },
 {

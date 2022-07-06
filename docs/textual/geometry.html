@@ -168,6 +168,11 @@ class Size(NamedTuple):
         width, height = self
         return Region(0, 0, width, height)
 
+    @property
+    def line_range(self) -&gt; range:
+        &#34;&#34;&#34;Get a range covering lines.&#34;&#34;&#34;
+        return range(self.height)
+
     def __add__(self, other: object) -&gt; Size:
         if isinstance(other, tuple):
             width, height = self
@@ -335,21 +340,21 @@ class Region(NamedTuple):
         return bool(self.width and self.height)
 
     @property
-    def x_extents(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Get the starting and ending x coord.
+    def column_span(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Get the start and end column (x coord).
 
-        The end value is non inclusive.
+        The end value is exclusive.
 
         Returns:
-            tuple[int, int]: Pair of x coordinates (row numbers).
+            tuple[int, int]: Pair of x coordinates (column numbers).
         &#34;&#34;&#34;
         return (self.x, self.x + self.width)
 
     @property
-    def y_extents(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Get the starting and ending x coord.
+    def line_span(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Get the start and end line number (y coord).
 
-        The end value is non inclusive.
+        The end value is exclusive.
 
         Returns:
             tuple[int, int]: Pair of y coordinates (line numbers).
@@ -410,12 +415,12 @@ class Region(NamedTuple):
         return x, y, x + width, y + height
 
     @property
-    def x_range(self) -&gt; range:
+    def column_range(self) -&gt; range:
         &#34;&#34;&#34;A range object for X coordinates.&#34;&#34;&#34;
         return range(self.x, self.x + self.width)
 
     @property
-    def y_range(self) -&gt; range:
+    def line_range(self) -&gt; range:
         &#34;&#34;&#34;A range object for Y coordinates.&#34;&#34;&#34;
         return range(self.y, self.y + self.height)
 
@@ -1258,21 +1263,21 @@ def is_origin(self) -&gt; bool:
         return bool(self.width and self.height)
 
     @property
-    def x_extents(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Get the starting and ending x coord.
+    def column_span(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Get the start and end column (x coord).
 
-        The end value is non inclusive.
+        The end value is exclusive.
 
         Returns:
-            tuple[int, int]: Pair of x coordinates (row numbers).
+            tuple[int, int]: Pair of x coordinates (column numbers).
         &#34;&#34;&#34;
         return (self.x, self.x + self.width)
 
     @property
-    def y_extents(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Get the starting and ending x coord.
+    def line_span(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Get the start and end line number (y coord).
 
-        The end value is non inclusive.
+        The end value is exclusive.
 
         Returns:
             tuple[int, int]: Pair of y coordinates (line numbers).
@@ -1333,12 +1338,12 @@ def is_origin(self) -&gt; bool:
         return x, y, x + width, y + height
 
     @property
-    def x_range(self) -&gt; range:
+    def column_range(self) -&gt; range:
         &#34;&#34;&#34;A range object for X coordinates.&#34;&#34;&#34;
         return range(self.x, self.x + self.width)
 
     @property
-    def y_range(self) -&gt; range:
+    def line_range(self) -&gt; range:
         &#34;&#34;&#34;A range object for Y coordinates.&#34;&#34;&#34;
         return range(self.y, self.y + self.height)
 
@@ -1935,6 +1940,44 @@ def bottom_right(self) -&gt; Offset:
     return Offset(x + width, y + height)</code></pre>
 </details>
 </dd>
+<dt id="textual.geometry.Region.column_range"><code class="name">var <span class="ident">column_range</span> : range</code></dt>
+<dd>
+<div class="desc"><p>A range object for X coordinates.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def column_range(self) -&gt; range:
+    &#34;&#34;&#34;A range object for X coordinates.&#34;&#34;&#34;
+    return range(self.x, self.x + self.width)</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.column_span"><code class="name">var <span class="ident">column_span</span> : tuple[int, int]</code></dt>
+<dd>
+<div class="desc"><p>Get the start and end column (x coord).</p>
+<p>The end value is exclusive.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[int, int]</code></dt>
+<dd>Pair of x coordinates (column numbers).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def column_span(self) -&gt; tuple[int, int]:
+    &#34;&#34;&#34;Get the start and end column (x coord).
+
+    The end value is exclusive.
+
+    Returns:
+        tuple[int, int]: Pair of x coordinates (column numbers).
+    &#34;&#34;&#34;
+    return (self.x, self.x + self.width)</code></pre>
+</details>
+</dd>
 <dt id="textual.geometry.Region.corners"><code class="name">var <span class="ident">corners</span> : tuple[int, int, int, int]</code></dt>
 <dd>
 <div class="desc"><p>Get the top left and bottom right coordinates as a tuple of integers.</p>
@@ -1961,6 +2004,44 @@ def corners(self) -&gt; tuple[int, int, int, int]:
 <dt id="textual.geometry.Region.height"><code class="name">var <span class="ident">height</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Alias for field number 3</p></div>
+</dd>
+<dt id="textual.geometry.Region.line_range"><code class="name">var <span class="ident">line_range</span> : range</code></dt>
+<dd>
+<div class="desc"><p>A range object for Y coordinates.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def line_range(self) -&gt; range:
+    &#34;&#34;&#34;A range object for Y coordinates.&#34;&#34;&#34;
+    return range(self.y, self.y + self.height)</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.line_span"><code class="name">var <span class="ident">line_span</span> : tuple[int, int]</code></dt>
+<dd>
+<div class="desc"><p>Get the start and end line number (y coord).</p>
+<p>The end value is exclusive.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[int, int]</code></dt>
+<dd>Pair of y coordinates (line numbers).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def line_span(self) -&gt; tuple[int, int]:
+    &#34;&#34;&#34;Get the start and end line number (y coord).
+
+    The end value is exclusive.
+
+    Returns:
+        tuple[int, int]: Pair of y coordinates (line numbers).
+    &#34;&#34;&#34;
+    return (self.y, self.y + self.height)</code></pre>
+</details>
 </dd>
 <dt id="textual.geometry.Region.offset"><code class="name">var <span class="ident">offset</span> : <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
 <dd>
@@ -2037,85 +2118,9 @@ def top_right(self) -&gt; Offset:
 <dd>
 <div class="desc"><p>Alias for field number 0</p></div>
 </dd>
-<dt id="textual.geometry.Region.x_extents"><code class="name">var <span class="ident">x_extents</span> : tuple[int, int]</code></dt>
-<dd>
-<div class="desc"><p>Get the starting and ending x coord.</p>
-<p>The end value is non inclusive.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple[int, int]</code></dt>
-<dd>Pair of x coordinates (row numbers).</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def x_extents(self) -&gt; tuple[int, int]:
-    &#34;&#34;&#34;Get the starting and ending x coord.
-
-    The end value is non inclusive.
-
-    Returns:
-        tuple[int, int]: Pair of x coordinates (row numbers).
-    &#34;&#34;&#34;
-    return (self.x, self.x + self.width)</code></pre>
-</details>
-</dd>
-<dt id="textual.geometry.Region.x_range"><code class="name">var <span class="ident">x_range</span> : range</code></dt>
-<dd>
-<div class="desc"><p>A range object for X coordinates.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def x_range(self) -&gt; range:
-    &#34;&#34;&#34;A range object for X coordinates.&#34;&#34;&#34;
-    return range(self.x, self.x + self.width)</code></pre>
-</details>
-</dd>
 <dt id="textual.geometry.Region.y"><code class="name">var <span class="ident">y</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Alias for field number 1</p></div>
-</dd>
-<dt id="textual.geometry.Region.y_extents"><code class="name">var <span class="ident">y_extents</span> : tuple[int, int]</code></dt>
-<dd>
-<div class="desc"><p>Get the starting and ending x coord.</p>
-<p>The end value is non inclusive.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>tuple[int, int]</code></dt>
-<dd>Pair of y coordinates (line numbers).</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def y_extents(self) -&gt; tuple[int, int]:
-    &#34;&#34;&#34;Get the starting and ending x coord.
-
-    The end value is non inclusive.
-
-    Returns:
-        tuple[int, int]: Pair of y coordinates (line numbers).
-    &#34;&#34;&#34;
-    return (self.y, self.y + self.height)</code></pre>
-</details>
-</dd>
-<dt id="textual.geometry.Region.y_range"><code class="name">var <span class="ident">y_range</span> : range</code></dt>
-<dd>
-<div class="desc"><p>A range object for Y coordinates.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def y_range(self) -&gt; range:
-    &#34;&#34;&#34;A range object for Y coordinates.&#34;&#34;&#34;
-    return range(self.y, self.y + self.height)</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2795,6 +2800,11 @@ def union(self, region: Region) -&gt; Region:
         width, height = self
         return Region(0, 0, width, height)
 
+    @property
+    def line_range(self) -&gt; range:
+        &#34;&#34;&#34;Get a range covering lines.&#34;&#34;&#34;
+        return range(self.height)
+
     def __add__(self, other: object) -&gt; Size:
         if isinstance(other, tuple):
             width, height = self
@@ -2876,6 +2886,19 @@ def area(self) -&gt; int:
 <dt id="textual.geometry.Size.height"><code class="name">var <span class="ident">height</span> : int</code></dt>
 <dd>
 <div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="textual.geometry.Size.line_range"><code class="name">var <span class="ident">line_range</span> : range</code></dt>
+<dd>
+<div class="desc"><p>Get a range covering lines.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def line_range(self) -&gt; range:
+    &#34;&#34;&#34;Get a range covering lines.&#34;&#34;&#34;
+    return range(self.height)</code></pre>
+</details>
 </dd>
 <dt id="textual.geometry.Size.region"><code class="name">var <span class="ident">region</span> : <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
 <dd>
@@ -3463,6 +3486,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Region.bottom_left" href="#textual.geometry.Region.bottom_left">bottom_left</a></code></li>
 <li><code><a title="textual.geometry.Region.bottom_right" href="#textual.geometry.Region.bottom_right">bottom_right</a></code></li>
 <li><code><a title="textual.geometry.Region.clip" href="#textual.geometry.Region.clip">clip</a></code></li>
+<li><code><a title="textual.geometry.Region.column_range" href="#textual.geometry.Region.column_range">column_range</a></code></li>
+<li><code><a title="textual.geometry.Region.column_span" href="#textual.geometry.Region.column_span">column_span</a></code></li>
 <li><code><a title="textual.geometry.Region.contains" href="#textual.geometry.Region.contains">contains</a></code></li>
 <li><code><a title="textual.geometry.Region.contains_point" href="#textual.geometry.Region.contains_point">contains_point</a></code></li>
 <li><code><a title="textual.geometry.Region.contains_region" href="#textual.geometry.Region.contains_region">contains_region</a></code></li>
@@ -3475,6 +3500,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Region.get_scroll_to_visible" href="#textual.geometry.Region.get_scroll_to_visible">get_scroll_to_visible</a></code></li>
 <li><code><a title="textual.geometry.Region.height" href="#textual.geometry.Region.height">height</a></code></li>
 <li><code><a title="textual.geometry.Region.intersection" href="#textual.geometry.Region.intersection">intersection</a></code></li>
+<li><code><a title="textual.geometry.Region.line_range" href="#textual.geometry.Region.line_range">line_range</a></code></li>
+<li><code><a title="textual.geometry.Region.line_span" href="#textual.geometry.Region.line_span">line_span</a></code></li>
 <li><code><a title="textual.geometry.Region.offset" href="#textual.geometry.Region.offset">offset</a></code></li>
 <li><code><a title="textual.geometry.Region.overlaps" href="#textual.geometry.Region.overlaps">overlaps</a></code></li>
 <li><code><a title="textual.geometry.Region.reset_offset" href="#textual.geometry.Region.reset_offset">reset_offset</a></code></li>
@@ -3489,11 +3516,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Region.union" href="#textual.geometry.Region.union">union</a></code></li>
 <li><code><a title="textual.geometry.Region.width" href="#textual.geometry.Region.width">width</a></code></li>
 <li><code><a title="textual.geometry.Region.x" href="#textual.geometry.Region.x">x</a></code></li>
-<li><code><a title="textual.geometry.Region.x_extents" href="#textual.geometry.Region.x_extents">x_extents</a></code></li>
-<li><code><a title="textual.geometry.Region.x_range" href="#textual.geometry.Region.x_range">x_range</a></code></li>
 <li><code><a title="textual.geometry.Region.y" href="#textual.geometry.Region.y">y</a></code></li>
-<li><code><a title="textual.geometry.Region.y_extents" href="#textual.geometry.Region.y_extents">y_extents</a></code></li>
-<li><code><a title="textual.geometry.Region.y_range" href="#textual.geometry.Region.y_range">y_range</a></code></li>
 </ul>
 </li>
 <li>
@@ -3503,6 +3526,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Size.contains" href="#textual.geometry.Size.contains">contains</a></code></li>
 <li><code><a title="textual.geometry.Size.contains_point" href="#textual.geometry.Size.contains_point">contains_point</a></code></li>
 <li><code><a title="textual.geometry.Size.height" href="#textual.geometry.Size.height">height</a></code></li>
+<li><code><a title="textual.geometry.Size.line_range" href="#textual.geometry.Size.line_range">line_range</a></code></li>
 <li><code><a title="textual.geometry.Size.region" href="#textual.geometry.Size.region">region</a></code></li>
 <li><code><a title="textual.geometry.Size.width" href="#textual.geometry.Size.width">width</a></code></li>
 </ul>

@@ -196,6 +196,7 @@ class StylesBase(ABC):
         &#34;max_height&#34;,
         &#34;color&#34;,
         &#34;background&#34;,
+        &#34;opacity&#34;,
         &#34;tint&#34;,
         &#34;scrollbar_color&#34;,
         &#34;scrollbar_color_hover&#34;,
@@ -287,12 +288,6 @@ class StylesBase(ABC):
             Spacing: Space around widget content.
         &#34;&#34;&#34;
         spacing = self.padding + self.border.spacing
-        return spacing
-
-    @property
-    def content_gutter(self) -&gt; Spacing:
-        &#34;&#34;&#34;The spacing that surrounds the content area of the widget.&#34;&#34;&#34;
-        spacing = self.padding + self.border.spacing + self.margin
         return spacing
 
     @property
@@ -1131,7 +1126,6 @@ def inline(self) -&gt; Styles:
 <li><code><a title="textual.css.styles.StylesBase.content_align" href="#textual.css.styles.StylesBase.content_align">content_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.content_gutter" href="#textual.css.styles.StylesBase.content_gutter">content_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
@@ -2079,7 +2073,6 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
 <li><code><a title="textual.css.styles.StylesBase.content_align" href="#textual.css.styles.StylesBase.content_align">content_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.content_gutter" href="#textual.css.styles.StylesBase.content_gutter">content_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
@@ -2154,6 +2147,7 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
         &#34;max_height&#34;,
         &#34;color&#34;,
         &#34;background&#34;,
+        &#34;opacity&#34;,
         &#34;tint&#34;,
         &#34;scrollbar_color&#34;,
         &#34;scrollbar_color_hover&#34;,
@@ -2245,12 +2239,6 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
             Spacing: Space around widget content.
         &#34;&#34;&#34;
         spacing = self.padding + self.border.spacing
-        return spacing
-
-    @property
-    def content_gutter(self) -&gt; Spacing:
-        &#34;&#34;&#34;The spacing that surrounds the content area of the widget.&#34;&#34;&#34;
-        spacing = self.padding + self.border.spacing + self.margin
         return spacing
 
     @property
@@ -2672,6 +2660,8 @@ For example "border-right", "outline-bottom", etc.</p></div>
             it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
     &#34;&#34;&#34;
     box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    if box_type in {&#34;none&#34;, &#34;hidden&#34;}:
+        box_type = &#34;&#34;
     return (box_type, color)</code></pre>
 </details>
 </dd>
@@ -2697,6 +2687,8 @@ For example "border-right", "outline-bottom", etc.</p></div>
             it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
     &#34;&#34;&#34;
     box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    if box_type in {&#34;none&#34;, &#34;hidden&#34;}:
+        box_type = &#34;&#34;
     return (box_type, color)</code></pre>
 </details>
 </dd>
@@ -2722,6 +2714,8 @@ For example "border-right", "outline-bottom", etc.</p></div>
             it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
     &#34;&#34;&#34;
     box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    if box_type in {&#34;none&#34;, &#34;hidden&#34;}:
+        box_type = &#34;&#34;
     return (box_type, color)</code></pre>
 </details>
 </dd>
@@ -2747,6 +2741,8 @@ For example "border-right", "outline-bottom", etc.</p></div>
             it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
     &#34;&#34;&#34;
     box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    if box_type in {&#34;none&#34;, &#34;hidden&#34;}:
+        box_type = &#34;&#34;
     return (box_type, color)</code></pre>
 </details>
 </dd>
@@ -2848,20 +2844,6 @@ value belongs in the set of valid values.</p></div>
         str: The string property value
     &#34;&#34;&#34;
     return obj.get_rule(self.name, self._default)</code></pre>
-</details>
-</dd>
-<dt id="textual.css.styles.StylesBase.content_gutter"><code class="name">var <span class="ident">content_gutter</span> : <a title="textual.geometry.Spacing" href="../geometry.html#textual.geometry.Spacing">Spacing</a></code></dt>
-<dd>
-<div class="desc"><p>The spacing that surrounds the content area of the widget.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def content_gutter(self) -&gt; Spacing:
-    &#34;&#34;&#34;The spacing that surrounds the content area of the widget.&#34;&#34;&#34;
-    spacing = self.padding + self.border.spacing + self.margin
-    return spacing</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.display"><code class="name">var <span class="ident">display</span> : str</code></dt>
@@ -3251,6 +3233,8 @@ For example "border-right", "outline-bottom", etc.</p></div>
             it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
     &#34;&#34;&#34;
     box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    if box_type in {&#34;none&#34;, &#34;hidden&#34;}:
+        box_type = &#34;&#34;
     return (box_type, color)</code></pre>
 </details>
 </dd>
@@ -3276,6 +3260,8 @@ For example "border-right", "outline-bottom", etc.</p></div>
             it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
     &#34;&#34;&#34;
     box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    if box_type in {&#34;none&#34;, &#34;hidden&#34;}:
+        box_type = &#34;&#34;
     return (box_type, color)</code></pre>
 </details>
 </dd>
@@ -3301,6 +3287,8 @@ For example "border-right", "outline-bottom", etc.</p></div>
             it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
     &#34;&#34;&#34;
     box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    if box_type in {&#34;none&#34;, &#34;hidden&#34;}:
+        box_type = &#34;&#34;
     return (box_type, color)</code></pre>
 </details>
 </dd>
@@ -3326,6 +3314,8 @@ For example "border-right", "outline-bottom", etc.</p></div>
             it&#39;s style. Example types are &#34;rounded&#34;, &#34;solid&#34;, and &#34;dashed&#34;.
     &#34;&#34;&#34;
     box_type, color = obj.get_rule(self.name) or (&#34;&#34;, self._default_color)
+    if box_type in {&#34;none&#34;, &#34;hidden&#34;}:
+        box_type = &#34;&#34;
     return (box_type, color)</code></pre>
 </details>
 </dd>
@@ -4227,7 +4217,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.content_align" href="#textual.css.styles.StylesBase.content_align">content_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.content_gutter" href="#textual.css.styles.StylesBase.content_gutter">content_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>

@@ -28,6 +28,7 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
+from typing import Iterable
 
 from rich.console import ConsoleOptions, Console, RenderResult, RenderableType
 from rich.segment import Segment
@@ -40,7 +41,7 @@ class Tint:
     &#34;&#34;&#34;Applies a color on top of an existing renderable.&#34;&#34;&#34;
 
     def __init__(self, renderable: RenderableType, color: Color) -&gt; None:
-        &#34;&#34;&#34;_summary_
+        &#34;&#34;&#34;Wrap a renderable to apply a tint color.
 
         Args:
             renderable (RenderableType): A renderable.
@@ -49,20 +50,29 @@ class Tint:
         self.renderable = renderable
         self.color = color
 
-    def __rich_console__(
-        self, console: Console, options: ConsoleOptions
-    ) -&gt; RenderResult:
-        segments = console.render(self.renderable, options)
+    @classmethod
+    def process_segments(
+        cls, segments: Iterable[Segment], color: Color
+    ) -&gt; Iterable[Segment]:
+        &#34;&#34;&#34;Apply tint to segments.
 
-        color = self.color
+        Args:
+            segments (Iterable[Segment]): Incoming segments.
+            color (Color): Color of tint.
+
+        Returns:
+            Iterable[Segment]: Segments with applied tint.
+
+        &#34;&#34;&#34;
         from_rich_color = Color.from_rich_color
         style_from_color = Style.from_color
+        _Segment = Segment
         for segment in segments:
             text, style, control = segment
             if control or style is None:
                 yield segment
             else:
-                yield Segment(
+                yield _Segment(
                     text,
                     (
                         style
@@ -72,7 +82,14 @@ class Tint:
                         )
                     ),
                     control,
-                )</code></pre>
+                )
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
+        segments = console.render(self.renderable, options)
+        color = self.color
+        return self.process_segments(segments, color)</code></pre>
 </details>
 </section>
 <section>
@@ -90,7 +107,7 @@ class Tint:
 </code></dt>
 <dd>
 <div class="desc"><p>Applies a color on top of an existing renderable.</p>
-<p><em>summary</em></p>
+<p>Wrap a renderable to apply a tint color.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>renderable</code></strong> :&ensp;<code>RenderableType</code></dt>
@@ -106,7 +123,7 @@ class Tint:
     &#34;&#34;&#34;Applies a color on top of an existing renderable.&#34;&#34;&#34;
 
     def __init__(self, renderable: RenderableType, color: Color) -&gt; None:
-        &#34;&#34;&#34;_summary_
+        &#34;&#34;&#34;Wrap a renderable to apply a tint color.
 
         Args:
             renderable (RenderableType): A renderable.
@@ -115,20 +132,29 @@ class Tint:
         self.renderable = renderable
         self.color = color
 
-    def __rich_console__(
-        self, console: Console, options: ConsoleOptions
-    ) -&gt; RenderResult:
-        segments = console.render(self.renderable, options)
+    @classmethod
+    def process_segments(
+        cls, segments: Iterable[Segment], color: Color
+    ) -&gt; Iterable[Segment]:
+        &#34;&#34;&#34;Apply tint to segments.
 
-        color = self.color
+        Args:
+            segments (Iterable[Segment]): Incoming segments.
+            color (Color): Color of tint.
+
+        Returns:
+            Iterable[Segment]: Segments with applied tint.
+
+        &#34;&#34;&#34;
         from_rich_color = Color.from_rich_color
         style_from_color = Style.from_color
+        _Segment = Segment
         for segment in segments:
             text, style, control = segment
             if control or style is None:
                 yield segment
             else:
-                yield Segment(
+                yield _Segment(
                     text,
                     (
                         style
@@ -138,8 +164,74 @@ class Tint:
                         )
                     ),
                     control,
-                )</code></pre>
+                )
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
+        segments = console.render(self.renderable, options)
+        color = self.color
+        return self.process_segments(segments, color)</code></pre>
 </details>
+<h3>Static methods</h3>
+<dl>
+<dt id="textual.renderables.tint.Tint.process_segments"><code class="name flex">
+<span>def <span class="ident">process_segments</span></span>(<span>segments: Iterable[Segment], color: Color) ‑> Iterable[rich.segment.Segment]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Apply tint to segments.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>segments</code></strong> :&ensp;<code>Iterable[Segment]</code></dt>
+<dd>Incoming segments.</dd>
+<dt><strong><code>color</code></strong> :&ensp;<code>Color</code></dt>
+<dd>Color of tint.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Iterable[Segment]</code></dt>
+<dd>Segments with applied tint.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def process_segments(
+    cls, segments: Iterable[Segment], color: Color
+) -&gt; Iterable[Segment]:
+    &#34;&#34;&#34;Apply tint to segments.
+
+    Args:
+        segments (Iterable[Segment]): Incoming segments.
+        color (Color): Color of tint.
+
+    Returns:
+        Iterable[Segment]: Segments with applied tint.
+
+    &#34;&#34;&#34;
+    from_rich_color = Color.from_rich_color
+    style_from_color = Style.from_color
+    _Segment = Segment
+    for segment in segments:
+        text, style, control = segment
+        if control or style is None:
+            yield segment
+        else:
+            yield _Segment(
+                text,
+                (
+                    style
+                    + style_from_color(
+                        (from_rich_color(style.color) + color).rich_color,
+                        (from_rich_color(style.bgcolor) + color).rich_color,
+                    )
+                ),
+                control,
+            )</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -205,6 +297,9 @@ setTimeout(() => input.focus(), 100);
 <ul>
 <li>
 <h4><code><a title="textual.renderables.tint.Tint" href="#textual.renderables.tint.Tint">Tint</a></code></h4>
+<ul class="">
+<li><code><a title="textual.renderables.tint.Tint.process_segments" href="#textual.renderables.tint.Tint.process_segments">process_segments</a></code></li>
+</ul>
 </li>
 </ul>
 </li>
