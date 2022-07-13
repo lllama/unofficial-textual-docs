@@ -171,7 +171,7 @@ class Token(NamedTuple):
         yield &#34;name&#34;, self.name
         yield &#34;value&#34;, self.value
         yield &#34;path&#34;, self.path
-        yield &#34;code&#34;, self.code
+        yield &#34;code&#34;, self.code if len(self.code) &lt; 40 else self.code[:40] + &#34;...&#34;
         yield &#34;location&#34;, self.location
         yield &#34;referenced_by&#34;, self.referenced_by, None
 
@@ -417,7 +417,7 @@ class Tokenizer:
         yield &#34;name&#34;, self.name
         yield &#34;value&#34;, self.value
         yield &#34;path&#34;, self.path
-        yield &#34;code&#34;, self.code
+        yield &#34;code&#34;, self.code if len(self.code) &lt; 40 else self.code[:40] + &#34;...&#34;
         yield &#34;location&#34;, self.location
         yield &#34;referenced_by&#34;, self.referenced_by, None</code></pre>
 </details>

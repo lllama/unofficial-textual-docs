@@ -206,6 +206,8 @@ class StylesBase(ABC):
         &#34;scrollbar_background_active&#34;,
     }
 
+    node: DOMNode | None = None
+
     display = StringEnumProperty(VALID_DISPLAY, &#34;block&#34;, layout=True)
     visibility = StringEnumProperty(VALID_VISIBILITY, &#34;visible&#34;)
     layout = LayoutProperty()
@@ -353,11 +355,12 @@ class StylesBase(ABC):
         &#34;&#34;&#34;
 
     @abstractmethod
-    def refresh(self, *, layout: bool = False) -&gt; None:
+    def refresh(self, *, layout: bool = False, children: bool = False) -&gt; None:
         &#34;&#34;&#34;Mark the styles as requiring a refresh.
 
         Args:
             layout (bool, optional): Also require a layout. Defaults to False.
+            children (bool, opional): Also refresh children. Defaults to False.
         &#34;&#34;&#34;
 
     @abstractmethod
@@ -467,7 +470,6 @@ class StylesBase(ABC):
 class Styles(StylesBase):
 
     node: DOMNode | None = None
-
     _rules: RulesMap = field(default_factory=dict)
 
     important: set[str] = field(default_factory=set)
@@ -514,9 +516,12 @@ class Styles(StylesBase):
     def get_rule(self, rule: str, default: object = None) -&gt; object:
         return self._rules.get(rule, default)
 
-    def refresh(self, *, layout: bool = False) -&gt; None:
+    def refresh(self, *, layout: bool = False, children: bool = False) -&gt; None:
         if self.node is not None:
             self.node.refresh(layout=layout)
+            if children:
+                for child in self.node.walk_children(with_self=False):
+                    child.refresh(layout=layout)
 
     def reset(self) -&gt; None:
         &#34;&#34;&#34;Reset the rules to initial state.&#34;&#34;&#34;
@@ -811,8 +816,8 @@ class RenderStyles(StylesBase):
             if self.has_rule(rule_name):
                 yield rule_name, getattr(self, rule_name)
 
-    def refresh(self, *, layout: bool = False) -&gt; None:
-        self._inline_styles.refresh(layout=layout)
+    def refresh(self, *, layout: bool = False, children: bool = False) -&gt; None:
+        self._inline_styles.refresh(layout=layout, children=children)
 
     def merge(self, other: Styles) -&gt; None:
         &#34;&#34;&#34;Merge values from another Styles.
@@ -960,8 +965,8 @@ if __name__ == &#34;__main__&#34;:
             if self.has_rule(rule_name):
                 yield rule_name, getattr(self, rule_name)
 
-    def refresh(self, *, layout: bool = False) -&gt; None:
-        self._inline_styles.refresh(layout=layout)
+    def refresh(self, *, layout: bool = False, children: bool = False) -&gt; None:
+        self._inline_styles.refresh(layout=layout, children=children)
 
     def merge(self, other: Styles) -&gt; None:
         &#34;&#34;&#34;Merge values from another Styles.
@@ -1013,6 +1018,13 @@ if __name__ == &#34;__main__&#34;:
 <li><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></li>
 <li>abc.ABC</li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.css.styles.RenderStyles.node"><code class="name">var <span class="ident">node</span> : DOMNode | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="textual.css.styles.RenderStyles.base"><code class="name">var <span class="ident">base</span> : <a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></code></dt>
@@ -1463,7 +1475,6 @@ def inline(self) -&gt; Styles:
 <pre><code class="python">class Styles(StylesBase):
 
     node: DOMNode | None = None
-
     _rules: RulesMap = field(default_factory=dict)
 
     important: set[str] = field(default_factory=set)
@@ -1510,9 +1521,12 @@ def inline(self) -&gt; Styles:
     def get_rule(self, rule: str, default: object = None) -&gt; object:
         return self._rules.get(rule, default)
 
-    def refresh(self, *, layout: bool = False) -&gt; None:
+    def refresh(self, *, layout: bool = False, children: bool = False) -&gt; None:
         if self.node is not None:
             self.node.refresh(layout=layout)
+            if children:
+                for child in self.node.walk_children(with_self=False):
+                    child.refresh(layout=layout)
 
     def reset(self) -&gt; None:
         &#34;&#34;&#34;Reset the rules to initial state.&#34;&#34;&#34;
@@ -2157,6 +2171,8 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
         &#34;scrollbar_background_active&#34;,
     }
 
+    node: DOMNode | None = None
+
     display = StringEnumProperty(VALID_DISPLAY, &#34;block&#34;, layout=True)
     visibility = StringEnumProperty(VALID_VISIBILITY, &#34;visible&#34;)
     layout = LayoutProperty()
@@ -2304,11 +2320,12 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
         &#34;&#34;&#34;
 
     @abstractmethod
-    def refresh(self, *, layout: bool = False) -&gt; None:
+    def refresh(self, *, layout: bool = False, children: bool = False) -&gt; None:
         &#34;&#34;&#34;Mark the styles as requiring a refresh.
 
         Args:
             layout (bool, optional): Also require a layout. Defaults to False.
+            children (bool, opional): Also refresh children. Defaults to False.
         &#34;&#34;&#34;
 
     @abstractmethod
@@ -2424,6 +2441,10 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.css.styles.StylesBase.ANIMATABLE"><code class="name">var <span class="ident">ANIMATABLE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.StylesBase.node"><code class="name">var <span class="ident">node</span> : DOMNode | None</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -3980,7 +4001,7 @@ def merge_rules(self, rules: RulesMap) -&gt; None:
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.refresh"><code class="name flex">
-<span>def <span class="ident">refresh</span></span>(<span>self, *, layout: bool = False) ‑> None</span>
+<span>def <span class="ident">refresh</span></span>(<span>self, *, layout: bool = False, children: bool = False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Mark the styles as requiring a refresh.</p>
@@ -3988,17 +4009,20 @@ def merge_rules(self, rules: RulesMap) -&gt; None:
 <dl>
 <dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
 <dd>Also require a layout. Defaults to False.</dd>
+<dt><strong><code>children</code></strong> :&ensp;<code>bool, opional</code></dt>
+<dd>Also refresh children. Defaults to False.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@abstractmethod
-def refresh(self, *, layout: bool = False) -&gt; None:
+def refresh(self, *, layout: bool = False, children: bool = False) -&gt; None:
     &#34;&#34;&#34;Mark the styles as requiring a refresh.
 
     Args:
         layout (bool, optional): Also require a layout. Defaults to False.
+        children (bool, opional): Also refresh children. Defaults to False.
     &#34;&#34;&#34;</code></pre>
 </details>
 </dd>
@@ -4130,6 +4154,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RenderStyles.get_rules" href="#textual.css.styles.RenderStyles.get_rules">get_rules</a></code></li>
 <li><code><a title="textual.css.styles.RenderStyles.has_rule" href="#textual.css.styles.RenderStyles.has_rule">has_rule</a></code></li>
 <li><code><a title="textual.css.styles.RenderStyles.inline" href="#textual.css.styles.RenderStyles.inline">inline</a></code></li>
+<li><code><a title="textual.css.styles.RenderStyles.node" href="#textual.css.styles.RenderStyles.node">node</a></code></li>
 </ul>
 </li>
 <li>
@@ -4238,6 +4263,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.merge_rules" href="#textual.css.styles.StylesBase.merge_rules">merge_rules</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.min_height" href="#textual.css.styles.StylesBase.min_height">min_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.min_width" href="#textual.css.styles.StylesBase.min_width">min_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.node" href="#textual.css.styles.StylesBase.node">node</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.offset" href="#textual.css.styles.StylesBase.offset">offset</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.opacity" href="#textual.css.styles.StylesBase.opacity">opacity</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.outline" href="#textual.css.styles.StylesBase.outline">outline</a></code></li>

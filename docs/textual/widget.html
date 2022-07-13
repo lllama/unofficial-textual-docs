@@ -44,9 +44,11 @@ import rich.repr
 from rich.align import Align
 from rich.console import Console, RenderableType
 from rich.measure import Measurement
-from rich.padding import Padding
+
 from rich.segment import Segment
 from rich.style import Style
+from rich.styled import Styled
+from rich.text import Text
 
 from . import errors, events, messages
 from ._animator import BoundAnimator
@@ -100,10 +102,9 @@ class Widget(DOMNode):
         scrollbar-background: $panel-darken-2;
         scrollbar-background-hover: $panel-darken-3;
         scrollbar-color: $system;
-        scrollbar-color-active: $secondary-darken-1;
+        scrollbar-color-active: $warning-darken-1;
         scrollbar-size-vertical: 2;
         scrollbar-size-horizontal: 1;
-
     }
     &#34;&#34;&#34;
 
@@ -907,54 +908,7 @@ class Widget(DOMNode):
     def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
         watch(self, attribute_name, callback)
 
-    def _style_renderable(self, renderable: RenderableType) -&gt; RenderableType:
-        &#34;&#34;&#34;Applies CSS styles to a renderable by wrapping it in another renderable.
-
-        Args:
-            renderable (RenderableType): Renderable to apply styles to.
-
-        Returns:
-            RenderableType: An updated renderable.
-        &#34;&#34;&#34;
-        (base_background, base_color), (background, color) = self.colors
-        styles = self.styles
-
-        content_align = (styles.content_align_horizontal, styles.content_align_vertical)
-        if content_align != (&#34;left&#34;, &#34;top&#34;):
-            horizontal, vertical = content_align
-            renderable = Align(renderable, horizontal, vertical=vertical)
-
-        renderable = Padding(
-            renderable,
-            styles.padding,
-            style=Style.from_color(color.rich_color, background.rich_color),
-        )
-
-        if styles.border:
-            renderable = Border(
-                renderable,
-                styles.border,
-                inner_color=background,
-                outer_color=base_background,
-            )
-
-        if styles.outline:
-            renderable = Border(
-                renderable,
-                styles.outline,
-                inner_color=styles.background,
-                outer_color=base_background,
-                outline=True,
-            )
-
-        if styles.tint.a != 0:
-            renderable = Tint(renderable, styles.tint)
-        if styles.opacity != 1.0:
-            renderable = Opacity(renderable, opacity=styles.opacity)
-
-        return renderable
-
-    def render_styled(self) -&gt; RenderableType:
+    def _render_styled(self) -&gt; RenderableType:
         &#34;&#34;&#34;Applies style attributes to the default renderable.
 
         Returns:
@@ -962,8 +916,21 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
 
         renderable = self.render()
+
+        if isinstance(renderable, str):
+            renderable = Text.from_markup(renderable)
+
+        rich_style = self.rich_style
+        if isinstance(renderable, Text):
+            renderable.stylize(rich_style)
+        else:
+            renderable = Styled(renderable, rich_style)
+
         styles = self.styles
-        content_align = (styles.content_align_horizontal, styles.content_align_vertical)
+        content_align = (
+            styles.content_align_horizontal,
+            styles.content_align_vertical,
+        )
         if content_align != (&#34;left&#34;, &#34;top&#34;):
             horizontal, vertical = content_align
             renderable = Align(renderable, horizontal, vertical=vertical)
@@ -1005,11 +972,11 @@ class Widget(DOMNode):
     def _render_content(self) -&gt; None:
         &#34;&#34;&#34;Render all lines.&#34;&#34;&#34;
         width, height = self.size
-        renderable = self.render_styled()
+        renderable = self._render_styled()
         options = self.console.options.update_dimensions(width, height).update(
             highlight=False
         )
-        lines = self.console.render_lines(renderable, options, style=self.rich_style)
+        lines = self.console.render_lines(renderable, options)
         self._render_cache = RenderCache(self.size, lines)
         self._dirty_regions.clear()
 
@@ -1354,10 +1321,9 @@ def cursor_line(self) -&gt; int | None:
         scrollbar-background: $panel-darken-2;
         scrollbar-background-hover: $panel-darken-3;
         scrollbar-color: $system;
-        scrollbar-color-active: $secondary-darken-1;
+        scrollbar-color-active: $warning-darken-1;
         scrollbar-size-vertical: 2;
         scrollbar-size-horizontal: 1;
-
     }
     &#34;&#34;&#34;
 
@@ -2161,54 +2127,7 @@ def cursor_line(self) -&gt; int | None:
     def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
         watch(self, attribute_name, callback)
 
-    def _style_renderable(self, renderable: RenderableType) -&gt; RenderableType:
-        &#34;&#34;&#34;Applies CSS styles to a renderable by wrapping it in another renderable.
-
-        Args:
-            renderable (RenderableType): Renderable to apply styles to.
-
-        Returns:
-            RenderableType: An updated renderable.
-        &#34;&#34;&#34;
-        (base_background, base_color), (background, color) = self.colors
-        styles = self.styles
-
-        content_align = (styles.content_align_horizontal, styles.content_align_vertical)
-        if content_align != (&#34;left&#34;, &#34;top&#34;):
-            horizontal, vertical = content_align
-            renderable = Align(renderable, horizontal, vertical=vertical)
-
-        renderable = Padding(
-            renderable,
-            styles.padding,
-            style=Style.from_color(color.rich_color, background.rich_color),
-        )
-
-        if styles.border:
-            renderable = Border(
-                renderable,
-                styles.border,
-                inner_color=background,
-                outer_color=base_background,
-            )
-
-        if styles.outline:
-            renderable = Border(
-                renderable,
-                styles.outline,
-                inner_color=styles.background,
-                outer_color=base_background,
-                outline=True,
-            )
-
-        if styles.tint.a != 0:
-            renderable = Tint(renderable, styles.tint)
-        if styles.opacity != 1.0:
-            renderable = Opacity(renderable, opacity=styles.opacity)
-
-        return renderable
-
-    def render_styled(self) -&gt; RenderableType:
+    def _render_styled(self) -&gt; RenderableType:
         &#34;&#34;&#34;Applies style attributes to the default renderable.
 
         Returns:
@@ -2216,8 +2135,21 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
 
         renderable = self.render()
+
+        if isinstance(renderable, str):
+            renderable = Text.from_markup(renderable)
+
+        rich_style = self.rich_style
+        if isinstance(renderable, Text):
+            renderable.stylize(rich_style)
+        else:
+            renderable = Styled(renderable, rich_style)
+
         styles = self.styles
-        content_align = (styles.content_align_horizontal, styles.content_align_vertical)
+        content_align = (
+            styles.content_align_horizontal,
+            styles.content_align_vertical,
+        )
         if content_align != (&#34;left&#34;, &#34;top&#34;):
             horizontal, vertical = content_align
             renderable = Align(renderable, horizontal, vertical=vertical)
@@ -2259,11 +2191,11 @@ def cursor_line(self) -&gt; int | None:
     def _render_content(self) -&gt; None:
         &#34;&#34;&#34;Render all lines.&#34;&#34;&#34;
         width, height = self.size
-        renderable = self.render_styled()
+        renderable = self._render_styled()
         options = self.console.options.update_dimensions(width, height).update(
             highlight=False
         )
-        lines = self.console.render_lines(renderable, options, style=self.rich_style)
+        lines = self.console.render_lines(renderable, options)
         self._render_cache = RenderCache(self.size, lines)
         self._dirty_regions.clear()
 
@@ -4053,37 +3985,6 @@ next idle event. Only one refresh will be done even if this method is called mul
     return lines</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.render_styled"><code class="name flex">
-<span>def <span class="ident">render_styled</span></span>(<span>self) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Applies style attributes to the default renderable.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>RenderableType</code></dt>
-<dd>A new renderable.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def render_styled(self) -&gt; RenderableType:
-    &#34;&#34;&#34;Applies style attributes to the default renderable.
-
-    Returns:
-        RenderableType: A new renderable.
-    &#34;&#34;&#34;
-
-    renderable = self.render()
-    styles = self.styles
-    content_align = (styles.content_align_horizontal, styles.content_align_vertical)
-    if content_align != (&#34;left&#34;, &#34;top&#34;):
-        horizontal, vertical = content_align
-        renderable = Align(renderable, horizontal, vertical=vertical)
-
-    return renderable</code></pre>
-</details>
-</dd>
 <dt id="textual.widget.Widget.scroll_down"><code class="name flex">
 <span>def <span class="ident">scroll_down</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
@@ -4897,7 +4798,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.render" href="#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_line" href="#textual.widget.Widget.render_line">render_line</a></code></li>
 <li><code><a title="textual.widget.Widget.render_lines" href="#textual.widget.Widget.render_lines">render_lines</a></code></li>
-<li><code><a title="textual.widget.Widget.render_styled" href="#textual.widget.Widget.render_styled">render_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_down" href="#textual.widget.Widget.scroll_down">scroll_down</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_end" href="#textual.widget.Widget.scroll_end">scroll_end</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_home" href="#textual.widget.Widget.scroll_home">scroll_home</a></code></li>
