@@ -317,10 +317,12 @@ class Widget(DOMNode):
     def watch_scroll_x(self, new_value: float) -&gt; None:
         self.horizontal_scrollbar.position = int(new_value)
         self.refresh(layout=True)
+        self.horizontal_scrollbar.refresh()
 
     def watch_scroll_y(self, new_value: float) -&gt; None:
         self.vertical_scrollbar.position = int(new_value)
         self.refresh(layout=True)
+        self.vertical_scrollbar.refresh()
 
     def validate_scroll_x(self, value: float) -&gt; float:
         return clamp(value, 0, self.max_scroll_x)
@@ -335,7 +337,7 @@ class Widget(DOMNode):
         return clamp(value, 0, self.max_scroll_y)
 
     @property
-    def max_scroll_x(self) -&gt; float:
+    def max_scroll_x(self) -&gt; int:
         &#34;&#34;&#34;The maximum value of `scroll_x`.&#34;&#34;&#34;
         return max(
             0,
@@ -345,7 +347,7 @@ class Widget(DOMNode):
         )
 
     @property
-    def max_scroll_y(self) -&gt; float:
+    def max_scroll_y(self) -&gt; int:
         &#34;&#34;&#34;The maximum value of `scroll_y`.&#34;&#34;&#34;
         return max(
             0,
@@ -494,6 +496,16 @@ class Widget(DOMNode):
         &#34;&#34;&#34;The region occupied by this widget, relative to the Screen.&#34;&#34;&#34;
         try:
             return self.screen.find_widget(self).region
+        except errors.NoWidget:
+            return Region()
+
+    @property
+    def virtual_region(self) -&gt; Region:
+        &#34;&#34;&#34;The widget region relative to it&#39;s container. Which may not be visible,
+        depending on scroll offset.
+        &#34;&#34;&#34;
+        try:
+            return self.screen.find_widget(self).virtual_region
         except errors.NoWidget:
             return Region()
 
@@ -716,9 +728,7 @@ class Widget(DOMNode):
         )
 
     def scroll_to_widget(self, widget: Widget, *, animate: bool = True) -&gt; bool:
-        &#34;&#34;&#34;Starting from `widget`, travel up the DOM to this node, scrolling all containers such that
-        every widget is visible within its parent container. This will, in the majority of cases,
-        bring the target widget into
+        &#34;&#34;&#34;Scroll scrolling to bring a widget in to view.
 
         Args:
             widget (Widget): A descendant widget.
@@ -728,54 +738,25 @@ class Widget(DOMNode):
             bool: True if any scrolling has occurred in any descendant, otherwise False.
         &#34;&#34;&#34;
 
-        # TODO: Update this to use scroll_to_region
-        scrolls = set()
+        # Grow the region by the margin so to keep the margin in view.
+        region = widget.virtual_region.grow(widget.styles.margin)
+        scrolled = False
 
-        node = widget.parent
-        child = widget
-        while node:
-            try:
-                widget_region = child.region
-                container_region = node.region
-            except (errors.NoWidget, AttributeError):
-                return False
+        while isinstance(widget.parent, Widget) and widget is not self:
+            container = widget.parent
+            scroll_offset = container.scroll_to_region(region, animate=animate)
+            if scroll_offset:
+                scrolled = True
 
-            if widget_region in container_region:
-                # Widget is visible, nothing to do
-                child = node
-                node = node.parent
-                continue
-
-            # We can either scroll so the widget is at the top of the container, or so that
-            # it is at the bottom. We want to pick which has the shortest distance
-            top_delta = widget_region.offset - container_region.origin
-
-            bottom_delta = widget_region.offset - (
-                container_region.origin
-                + Offset(0, container_region.height - widget_region.height)
-            )
-
-            if widget_region.width &gt; container_region.width:
-                delta_x = top_delta.x
-            else:
-                delta_x = min(top_delta.x, bottom_delta.x, key=abs)
-
-            if widget_region.height &gt; container_region.height:
-                delta_y = top_delta.y
-            else:
-                delta_y = min(top_delta.y, bottom_delta.y, key=abs)
-
-            scrolled = node.scroll_relative(
-                delta_x or None, delta_y or None, animate=animate, duration=0.2
-            )
-            scrolls.add(scrolled)
-
-            if node == self:
-                break
-            child = node
-            node = node.parent
-
-        return any(scrolls)
+            # Adjust the region by the amount we just scrolled it, and convert to
+            # it&#39;s parent&#39;s virtual coordinate system.
+            region = (
+                region.translate(-scroll_offset)
+                .translate(-widget.scroll_offset)
+                .translate(container.virtual_region.offset)
+            ).intersection(container.virtual_region)
+            widget = container
+        return scrolled
 
     def scroll_to_region(
         self, region: Region, *, spacing: Spacing | None = None, animate: bool = True
@@ -791,13 +772,18 @@ class Widget(DOMNode):
             spacing (Spacing): Space to subtract from the window region.
 
         Returns:
-            bool: True if the window was scrolled.
+            Offset: The distance that was scrolled.
         &#34;&#34;&#34;
 
         window = self.content_region.at_offset(self.scroll_offset)
         if spacing is not None:
             window = window.shrink(spacing)
-        delta = Region.get_scroll_to_visible(window, region)
+        delta_x, delta_y = Region.get_scroll_to_visible(window, region)
+        scroll_x, scroll_y = self.scroll_offset
+        delta = Offset(
+            clamp(scroll_x + delta_x, 0, self.max_scroll_x) - scroll_x,
+            clamp(scroll_y + delta_y, 0, self.max_scroll_y) - scroll_y,
+        )
         if delta:
             self.scroll_relative(
                 delta.x or None,
@@ -809,7 +795,7 @@ class Widget(DOMNode):
 
     def __init_subclass__(
         cls,
-        can_focus: bool = True,
+        can_focus: bool = False,
         can_focus_children: bool = True,
         inherit_css: bool = True,
     ) -&gt; None:
@@ -1536,10 +1522,12 @@ def cursor_line(self) -&gt; int | None:
     def watch_scroll_x(self, new_value: float) -&gt; None:
         self.horizontal_scrollbar.position = int(new_value)
         self.refresh(layout=True)
+        self.horizontal_scrollbar.refresh()
 
     def watch_scroll_y(self, new_value: float) -&gt; None:
         self.vertical_scrollbar.position = int(new_value)
         self.refresh(layout=True)
+        self.vertical_scrollbar.refresh()
 
     def validate_scroll_x(self, value: float) -&gt; float:
         return clamp(value, 0, self.max_scroll_x)
@@ -1554,7 +1542,7 @@ def cursor_line(self) -&gt; int | None:
         return clamp(value, 0, self.max_scroll_y)
 
     @property
-    def max_scroll_x(self) -&gt; float:
+    def max_scroll_x(self) -&gt; int:
         &#34;&#34;&#34;The maximum value of `scroll_x`.&#34;&#34;&#34;
         return max(
             0,
@@ -1564,7 +1552,7 @@ def cursor_line(self) -&gt; int | None:
         )
 
     @property
-    def max_scroll_y(self) -&gt; float:
+    def max_scroll_y(self) -&gt; int:
         &#34;&#34;&#34;The maximum value of `scroll_y`.&#34;&#34;&#34;
         return max(
             0,
@@ -1713,6 +1701,16 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;The region occupied by this widget, relative to the Screen.&#34;&#34;&#34;
         try:
             return self.screen.find_widget(self).region
+        except errors.NoWidget:
+            return Region()
+
+    @property
+    def virtual_region(self) -&gt; Region:
+        &#34;&#34;&#34;The widget region relative to it&#39;s container. Which may not be visible,
+        depending on scroll offset.
+        &#34;&#34;&#34;
+        try:
+            return self.screen.find_widget(self).virtual_region
         except errors.NoWidget:
             return Region()
 
@@ -1935,9 +1933,7 @@ def cursor_line(self) -&gt; int | None:
         )
 
     def scroll_to_widget(self, widget: Widget, *, animate: bool = True) -&gt; bool:
-        &#34;&#34;&#34;Starting from `widget`, travel up the DOM to this node, scrolling all containers such that
-        every widget is visible within its parent container. This will, in the majority of cases,
-        bring the target widget into
+        &#34;&#34;&#34;Scroll scrolling to bring a widget in to view.
 
         Args:
             widget (Widget): A descendant widget.
@@ -1947,54 +1943,25 @@ def cursor_line(self) -&gt; int | None:
             bool: True if any scrolling has occurred in any descendant, otherwise False.
         &#34;&#34;&#34;
 
-        # TODO: Update this to use scroll_to_region
-        scrolls = set()
+        # Grow the region by the margin so to keep the margin in view.
+        region = widget.virtual_region.grow(widget.styles.margin)
+        scrolled = False
 
-        node = widget.parent
-        child = widget
-        while node:
-            try:
-                widget_region = child.region
-                container_region = node.region
-            except (errors.NoWidget, AttributeError):
-                return False
+        while isinstance(widget.parent, Widget) and widget is not self:
+            container = widget.parent
+            scroll_offset = container.scroll_to_region(region, animate=animate)
+            if scroll_offset:
+                scrolled = True
 
-            if widget_region in container_region:
-                # Widget is visible, nothing to do
-                child = node
-                node = node.parent
-                continue
-
-            # We can either scroll so the widget is at the top of the container, or so that
-            # it is at the bottom. We want to pick which has the shortest distance
-            top_delta = widget_region.offset - container_region.origin
-
-            bottom_delta = widget_region.offset - (
-                container_region.origin
-                + Offset(0, container_region.height - widget_region.height)
-            )
-
-            if widget_region.width &gt; container_region.width:
-                delta_x = top_delta.x
-            else:
-                delta_x = min(top_delta.x, bottom_delta.x, key=abs)
-
-            if widget_region.height &gt; container_region.height:
-                delta_y = top_delta.y
-            else:
-                delta_y = min(top_delta.y, bottom_delta.y, key=abs)
-
-            scrolled = node.scroll_relative(
-                delta_x or None, delta_y or None, animate=animate, duration=0.2
-            )
-            scrolls.add(scrolled)
-
-            if node == self:
-                break
-            child = node
-            node = node.parent
-
-        return any(scrolls)
+            # Adjust the region by the amount we just scrolled it, and convert to
+            # it&#39;s parent&#39;s virtual coordinate system.
+            region = (
+                region.translate(-scroll_offset)
+                .translate(-widget.scroll_offset)
+                .translate(container.virtual_region.offset)
+            ).intersection(container.virtual_region)
+            widget = container
+        return scrolled
 
     def scroll_to_region(
         self, region: Region, *, spacing: Spacing | None = None, animate: bool = True
@@ -2010,13 +1977,18 @@ def cursor_line(self) -&gt; int | None:
             spacing (Spacing): Space to subtract from the window region.
 
         Returns:
-            bool: True if the window was scrolled.
+            Offset: The distance that was scrolled.
         &#34;&#34;&#34;
 
         window = self.content_region.at_offset(self.scroll_offset)
         if spacing is not None:
             window = window.shrink(spacing)
-        delta = Region.get_scroll_to_visible(window, region)
+        delta_x, delta_y = Region.get_scroll_to_visible(window, region)
+        scroll_x, scroll_y = self.scroll_offset
+        delta = Offset(
+            clamp(scroll_x + delta_x, 0, self.max_scroll_x) - scroll_x,
+            clamp(scroll_y + delta_y, 0, self.max_scroll_y) - scroll_y,
+        )
         if delta:
             self.scroll_relative(
                 delta.x or None,
@@ -2028,7 +2000,7 @@ def cursor_line(self) -&gt; int | None:
 
     def __init_subclass__(
         cls,
-        can_focus: bool = True,
+        can_focus: bool = False,
         can_focus_children: bool = True,
         inherit_css: bool = True,
     ) -&gt; None:
@@ -2726,7 +2698,7 @@ def layout(self) -&gt; Layout:
     return self.styles.layout or self._default_layout</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.max_scroll_x"><code class="name">var <span class="ident">max_scroll_x</span> : float</code></dt>
+<dt id="textual.widget.Widget.max_scroll_x"><code class="name">var <span class="ident">max_scroll_x</span> : int</code></dt>
 <dd>
 <div class="desc"><p>The maximum value of <code>scroll_x</code>.</p></div>
 <details class="source">
@@ -2734,7 +2706,7 @@ def layout(self) -&gt; Layout:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def max_scroll_x(self) -&gt; float:
+def max_scroll_x(self) -&gt; int:
     &#34;&#34;&#34;The maximum value of `scroll_x`.&#34;&#34;&#34;
     return max(
         0,
@@ -2744,7 +2716,7 @@ def max_scroll_x(self) -&gt; float:
     )</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.max_scroll_y"><code class="name">var <span class="ident">max_scroll_y</span> : float</code></dt>
+<dt id="textual.widget.Widget.max_scroll_y"><code class="name">var <span class="ident">max_scroll_y</span> : int</code></dt>
 <dd>
 <div class="desc"><p>The maximum value of <code>scroll_y</code>.</p></div>
 <details class="source">
@@ -2752,7 +2724,7 @@ def max_scroll_x(self) -&gt; float:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def max_scroll_y(self) -&gt; float:
+def max_scroll_y(self) -&gt; int:
     &#34;&#34;&#34;The maximum value of `scroll_y`.&#34;&#34;&#34;
     return max(
         0,
@@ -2995,6 +2967,25 @@ def vertical_scrollbar(self) -&gt; ScrollBar:
     )
     self.app.start_widget(self, scroll_bar)
     return scroll_bar</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.virtual_region"><code class="name">var <span class="ident">virtual_region</span> : <a title="textual.geometry.Region" href="geometry.html#textual.geometry.Region">Region</a></code></dt>
+<dd>
+<div class="desc"><p>The widget region relative to it's container. Which may not be visible,
+depending on scroll offset.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def virtual_region(self) -&gt; Region:
+    &#34;&#34;&#34;The widget region relative to it&#39;s container. Which may not be visible,
+    depending on scroll offset.
+    &#34;&#34;&#34;
+    try:
+        return self.screen.find_widget(self).virtual_region
+    except errors.NoWidget:
+        return Region()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.virtual_size"><code class="name">var <span class="ident">virtual_size</span> : ReactiveType</code></dt>
@@ -4264,8 +4255,8 @@ the scrollable area.</p>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>bool</code></dt>
-<dd>True if the window was scrolled.</dd>
+<dt><code>Offset</code></dt>
+<dd>The distance that was scrolled.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -4285,13 +4276,18 @@ the scrollable area.</p>
         spacing (Spacing): Space to subtract from the window region.
 
     Returns:
-        bool: True if the window was scrolled.
+        Offset: The distance that was scrolled.
     &#34;&#34;&#34;
 
     window = self.content_region.at_offset(self.scroll_offset)
     if spacing is not None:
         window = window.shrink(spacing)
-    delta = Region.get_scroll_to_visible(window, region)
+    delta_x, delta_y = Region.get_scroll_to_visible(window, region)
+    scroll_x, scroll_y = self.scroll_offset
+    delta = Offset(
+        clamp(scroll_x + delta_x, 0, self.max_scroll_x) - scroll_x,
+        clamp(scroll_y + delta_y, 0, self.max_scroll_y) - scroll_y,
+    )
     if delta:
         self.scroll_relative(
             delta.x or None,
@@ -4306,9 +4302,7 @@ the scrollable area.</p>
 <span>def <span class="ident">scroll_to_widget</span></span>(<span>self, widget: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Starting from <code>widget</code>, travel up the DOM to this node, scrolling all containers such that
-every widget is visible within its parent container. This will, in the majority of cases,
-bring the target widget into</p>
+<div class="desc"><p>Scroll scrolling to bring a widget in to view.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>widget</code></strong> :&ensp;<code><a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a></code></dt>
@@ -4326,9 +4320,7 @@ bring the target widget into</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def scroll_to_widget(self, widget: Widget, *, animate: bool = True) -&gt; bool:
-    &#34;&#34;&#34;Starting from `widget`, travel up the DOM to this node, scrolling all containers such that
-    every widget is visible within its parent container. This will, in the majority of cases,
-    bring the target widget into
+    &#34;&#34;&#34;Scroll scrolling to bring a widget in to view.
 
     Args:
         widget (Widget): A descendant widget.
@@ -4338,54 +4330,25 @@ bring the target widget into</p>
         bool: True if any scrolling has occurred in any descendant, otherwise False.
     &#34;&#34;&#34;
 
-    # TODO: Update this to use scroll_to_region
-    scrolls = set()
+    # Grow the region by the margin so to keep the margin in view.
+    region = widget.virtual_region.grow(widget.styles.margin)
+    scrolled = False
 
-    node = widget.parent
-    child = widget
-    while node:
-        try:
-            widget_region = child.region
-            container_region = node.region
-        except (errors.NoWidget, AttributeError):
-            return False
+    while isinstance(widget.parent, Widget) and widget is not self:
+        container = widget.parent
+        scroll_offset = container.scroll_to_region(region, animate=animate)
+        if scroll_offset:
+            scrolled = True
 
-        if widget_region in container_region:
-            # Widget is visible, nothing to do
-            child = node
-            node = node.parent
-            continue
-
-        # We can either scroll so the widget is at the top of the container, or so that
-        # it is at the bottom. We want to pick which has the shortest distance
-        top_delta = widget_region.offset - container_region.origin
-
-        bottom_delta = widget_region.offset - (
-            container_region.origin
-            + Offset(0, container_region.height - widget_region.height)
-        )
-
-        if widget_region.width &gt; container_region.width:
-            delta_x = top_delta.x
-        else:
-            delta_x = min(top_delta.x, bottom_delta.x, key=abs)
-
-        if widget_region.height &gt; container_region.height:
-            delta_y = top_delta.y
-        else:
-            delta_y = min(top_delta.y, bottom_delta.y, key=abs)
-
-        scrolled = node.scroll_relative(
-            delta_x or None, delta_y or None, animate=animate, duration=0.2
-        )
-        scrolls.add(scrolled)
-
-        if node == self:
-            break
-        child = node
-        node = node.parent
-
-    return any(scrolls)</code></pre>
+        # Adjust the region by the amount we just scrolled it, and convert to
+        # it&#39;s parent&#39;s virtual coordinate system.
+        region = (
+            region.translate(-scroll_offset)
+            .translate(-widget.scroll_offset)
+            .translate(container.virtual_region.offset)
+        ).intersection(container.virtual_region)
+        widget = container
+    return scrolled</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scroll_up"><code class="name flex">
@@ -4539,7 +4502,8 @@ bring the target widget into</p>
 </summary>
 <pre><code class="python">def watch_scroll_x(self, new_value: float) -&gt; None:
     self.horizontal_scrollbar.position = int(new_value)
-    self.refresh(layout=True)</code></pre>
+    self.refresh(layout=True)
+    self.horizontal_scrollbar.refresh()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.watch_scroll_y"><code class="name flex">
@@ -4553,7 +4517,8 @@ bring the target widget into</p>
 </summary>
 <pre><code class="python">def watch_scroll_y(self, new_value: float) -&gt; None:
     self.vertical_scrollbar.position = int(new_value)
-    self.refresh(layout=True)</code></pre>
+    self.refresh(layout=True)
+    self.vertical_scrollbar.refresh()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.watch_show_horizontal_scrollbar"><code class="name flex">
@@ -4830,6 +4795,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.validate_scroll_x" href="#textual.widget.Widget.validate_scroll_x">validate_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.validate_scroll_y" href="#textual.widget.Widget.validate_scroll_y">validate_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.vertical_scrollbar" href="#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.virtual_region" href="#textual.widget.Widget.virtual_region">virtual_region</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_size" href="#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
 <li><code><a title="textual.widget.Widget.watch" href="#textual.widget.Widget.watch">watch</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>

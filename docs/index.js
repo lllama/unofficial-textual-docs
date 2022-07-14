@@ -3796,6 +3796,11 @@ INDEX=[
 "doc":"The region occupied by this widget, relative to the Screen."
 },
 {
+"ref":"textual.widget.Widget.virtual_region",
+"url":22,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
 "ref":"textual.widget.Widget.window_region",
 "url":22,
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
@@ -3916,13 +3921,13 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.scroll_to_widget",
 "url":22,
-"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_to_region",
 "url":22,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -5050,6 +5055,11 @@ INDEX=[
 "doc":"The region occupied by this widget, relative to the Screen."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.virtual_region",
+"url":22,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
 "ref":"textual.scrollbar.ScrollBar.window_region",
 "url":22,
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
@@ -5100,13 +5110,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_to_widget",
 "url":22,
-"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_to_region",
 "url":22,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -8344,9 +8354,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.geometry.Region.grow",
+"url":42,
+"doc":"Grow a region by adding spacing. Args: margin (Spacing): Defines how many cells to grow the Region by at each edge. Returns: Region: New region.",
+"func":1
+},
+{
 "ref":"textual.geometry.Region.shrink",
 "url":42,
-"doc":"Shrink a region by pushing each edge inwards. Args: margin (Spacing): Defines how many cells to shrink the Region by at each edge. Returns: Region: The new, smaller region.",
+"doc":"Shrink a region by subtracting spacing. Args: margin (Spacing): Defines how many cells to shrink the Region by at each edge. Returns: Region: The new, smaller region.",
 "func":1
 },
 {
@@ -8988,6 +9004,11 @@ INDEX=[
 "doc":"The region occupied by this widget, relative to the Screen."
 },
 {
+"ref":"textual.layout.Vertical.virtual_region",
+"url":22,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
 "ref":"textual.layout.Vertical.window_region",
 "url":22,
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
@@ -9038,13 +9059,13 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.scroll_to_widget",
 "url":22,
-"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_to_region",
 "url":22,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -9528,6 +9549,11 @@ INDEX=[
 "doc":"The region occupied by this widget, relative to the Screen."
 },
 {
+"ref":"textual.layout.Horizontal.virtual_region",
+"url":22,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
 "ref":"textual.layout.Horizontal.window_region",
 "url":22,
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
@@ -9578,13 +9604,13 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.scroll_to_widget",
 "url":22,
-"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_to_region",
 "url":22,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -10154,6 +10180,11 @@ INDEX=[
 "doc":"The region occupied by this widget, relative to the Screen."
 },
 {
+"ref":"textual.screen.Screen.virtual_region",
+"url":22,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
 "ref":"textual.screen.Screen.window_region",
 "url":22,
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
@@ -10199,13 +10230,13 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.scroll_to_widget",
 "url":22,
-"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_to_region",
 "url":22,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -10728,6 +10759,11 @@ INDEX=[
 "doc":"The region occupied by this widget, relative to the Screen."
 },
 {
+"ref":"textual.scroll_view.ScrollView.virtual_region",
+"url":22,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
 "ref":"textual.scroll_view.ScrollView.window_region",
 "url":22,
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
@@ -10762,13 +10798,13 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.scroll_to_widget",
 "url":22,
-"doc":"Starting from  widget , travel up the DOM to this node, scrolling all containers such that every widget is visible within its parent container. This will, in the majority of cases, bring the target widget into Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_to_region",
 "url":22,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: bool: True if the window was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {

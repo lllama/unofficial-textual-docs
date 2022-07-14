@@ -598,8 +598,27 @@ class Region(NamedTuple):
         )
         return new_region
 
+    def grow(self, margin: tuple[int, int, int, int]) -&gt; Region:
+        &#34;&#34;&#34;Grow a region by adding spacing.
+
+        Args:
+            margin (Spacing): Defines how many cells to grow the Region by at each edge.
+
+        Returns:
+            Region: New region.
+        &#34;&#34;&#34;
+
+        top, right, bottom, left = margin
+        x, y, width, height = self
+        return Region(
+            x=x - left,
+            y=y - top,
+            width=max(0, width + left + right),
+            height=max(0, height + top + bottom),
+        )
+
     def shrink(self, margin: tuple[int, int, int, int]) -&gt; Region:
-        &#34;&#34;&#34;Shrink a region by pushing each edge inwards.
+        &#34;&#34;&#34;Shrink a region by subtracting spacing.
 
         Args:
             margin (Spacing): Defines how many cells to shrink the Region by at each edge.
@@ -1521,8 +1540,27 @@ def is_origin(self) -&gt; bool:
         )
         return new_region
 
+    def grow(self, margin: tuple[int, int, int, int]) -&gt; Region:
+        &#34;&#34;&#34;Grow a region by adding spacing.
+
+        Args:
+            margin (Spacing): Defines how many cells to grow the Region by at each edge.
+
+        Returns:
+            Region: New region.
+        &#34;&#34;&#34;
+
+        top, right, bottom, left = margin
+        x, y, width, height = self
+        return Region(
+            x=x - left,
+            y=y - top,
+            width=max(0, width + left + right),
+            height=max(0, height + top + bottom),
+        )
+
     def shrink(self, margin: tuple[int, int, int, int]) -&gt; Region:
-        &#34;&#34;&#34;Shrink a region by pushing each edge inwards.
+        &#34;&#34;&#34;Shrink a region by subtracting spacing.
 
         Args:
             margin (Spacing): Defines how many cells to shrink the Region by at each edge.
@@ -2381,6 +2419,45 @@ def top_right(self) -&gt; Offset:
     )</code></pre>
 </details>
 </dd>
+<dt id="textual.geometry.Region.grow"><code class="name flex">
+<span>def <span class="ident">grow</span></span>(<span>self, margin: tuple[int, int, int, int]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Grow a region by adding spacing.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>margin</code></strong> :&ensp;<code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd>Defines how many cells to grow the Region by at each edge.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>New region.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def grow(self, margin: tuple[int, int, int, int]) -&gt; Region:
+    &#34;&#34;&#34;Grow a region by adding spacing.
+
+    Args:
+        margin (Spacing): Defines how many cells to grow the Region by at each edge.
+
+    Returns:
+        Region: New region.
+    &#34;&#34;&#34;
+
+    top, right, bottom, left = margin
+    x, y, width, height = self
+    return Region(
+        x=x - left,
+        y=y - top,
+        width=max(0, width + left + right),
+        height=max(0, height + top + bottom),
+    )</code></pre>
+</details>
+</dd>
 <dt id="textual.geometry.Region.intersection"><code class="name flex">
 <span>def <span class="ident">intersection</span></span>(<span>self, region: <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
 </code></dt>
@@ -2467,7 +2544,7 @@ def overlaps(self, other: Region) -&gt; bool:
 <span>def <span class="ident">shrink</span></span>(<span>self, margin: tuple[int, int, int, int]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Shrink a region by pushing each edge inwards.</p>
+<div class="desc"><p>Shrink a region by subtracting spacing.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>margin</code></strong> :&ensp;<code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
@@ -2483,7 +2560,7 @@ def overlaps(self, other: Region) -&gt; bool:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def shrink(self, margin: tuple[int, int, int, int]) -&gt; Region:
-    &#34;&#34;&#34;Shrink a region by pushing each edge inwards.
+    &#34;&#34;&#34;Shrink a region by subtracting spacing.
 
     Args:
         margin (Spacing): Defines how many cells to shrink the Region by at each edge.
@@ -3498,6 +3575,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Region.from_offset" href="#textual.geometry.Region.from_offset">from_offset</a></code></li>
 <li><code><a title="textual.geometry.Region.from_union" href="#textual.geometry.Region.from_union">from_union</a></code></li>
 <li><code><a title="textual.geometry.Region.get_scroll_to_visible" href="#textual.geometry.Region.get_scroll_to_visible">get_scroll_to_visible</a></code></li>
+<li><code><a title="textual.geometry.Region.grow" href="#textual.geometry.Region.grow">grow</a></code></li>
 <li><code><a title="textual.geometry.Region.height" href="#textual.geometry.Region.height">height</a></code></li>
 <li><code><a title="textual.geometry.Region.intersection" href="#textual.geometry.Region.intersection">intersection</a></code></li>
 <li><code><a title="textual.geometry.Region.line_range" href="#textual.geometry.Region.line_range">line_range</a></code></li>
