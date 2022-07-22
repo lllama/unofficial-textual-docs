@@ -37,37 +37,16 @@ from rich.text import Text
 
 from .color import Color, WHITE
 
+
 NUMBER_OF_SHADES = 3
 
 # Where no content exists
 DEFAULT_DARK_BACKGROUND = &#34;#000000&#34;
 # What text usually goes on top off
-DEFAULT_DARK_SURFACE = &#34;#121212&#34;
+DEFAULT_DARK_SURFACE = &#34;#292929&#34;
 
 DEFAULT_LIGHT_SURFACE = &#34;#f5f5f5&#34;
 DEFAULT_LIGHT_BACKGROUND = &#34;#efefef&#34;
-
-
-class ColorProperty:
-    &#34;&#34;&#34;Descriptor to parse colors.&#34;&#34;&#34;
-
-    def __set_name__(self, owner: ColorSystem, name: str) -&gt; None:
-        self._name = f&#34;_{name}&#34;
-
-    def __get__(
-        self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-    ) -&gt; Color | None:
-        color = getattr(obj, self._name)
-        if color is None:
-            return None
-        else:
-            return Color.parse(color)
-
-    def __set__(self, obj: ColorSystem, value: Color | str | None) -&gt; None:
-        if isinstance(value, Color):
-            setattr(obj, self._name, value.css)
-        else:
-            setattr(obj, self._name, value)
 
 
 class ColorSystem:
@@ -91,7 +70,6 @@ class ColorSystem:
         &#34;error&#34;,
         &#34;success&#34;,
         &#34;accent&#34;,
-        &#34;system&#34;,
     ]
 
     def __init__(
@@ -102,42 +80,30 @@ class ColorSystem:
         error: str | None = None,
         success: str | None = None,
         accent: str | None = None,
-        system: str | None = None,
         background: str | None = None,
         surface: str | None = None,
-        dark_background: str | None = None,
-        dark_surface: str | None = None,
         panel: str | None = None,
+        dark: bool = False,
+        luminosity_spread: float = 0.15,
+        text_alpha: float = 0.95,
     ):
-        self._primary = primary
-        self._secondary = secondary
-        self._warning = warning
-        self._error = error
-        self._success = success
-        self._accent = accent
-        self._system = system
-        self._background = background
-        self._surface = surface
-        self._dark_background = dark_background
-        self._dark_surface = dark_surface
-        self._panel = panel
+        def parse(color: str | None) -&gt; Color | None:
+            if color is None:
+                return None
+            return Color.parse(color)
 
-    @property
-    def primary(self) -&gt; Color:
-        &#34;&#34;&#34;Get the primary color.&#34;&#34;&#34;
-        return Color.parse(self._primary)
-
-    secondary = ColorProperty()
-    warning = ColorProperty()
-    error = ColorProperty()
-    success = ColorProperty()
-    accent = ColorProperty()
-    system = ColorProperty()
-    surface = ColorProperty()
-    background = ColorProperty()
-    dark_surface = ColorProperty()
-    dark_background = ColorProperty()
-    panel = ColorProperty()
+        self.primary = Color.parse(primary)
+        self.secondary = parse(secondary)
+        self.warning = parse(warning)
+        self.error = parse(error)
+        self.success = parse(success)
+        self.accent = parse(accent)
+        self.background = parse(background)
+        self.surface = parse(surface)
+        self.panel = parse(panel)
+        self._dark = dark
+        self._luminosity_spread = luminosity_spread
+        self._text_alpha = text_alpha
 
     @property
     def shades(self) -&gt; Iterable[str]:
@@ -151,12 +117,7 @@ class ColorSystem:
                 else:
                     yield color
 
-    def generate(
-        self,
-        dark: bool = False,
-        luminosity_spread: float = 0.15,
-        text_alpha: float = 0.9,
-    ) -&gt; dict[str, str]:
+    def generate(self) -&gt; dict[str, str]:
         &#34;&#34;&#34;Generate a mapping of color name on to a CSS color.
 
         Args:
@@ -176,22 +137,20 @@ class ColorSystem:
         error = self.error or secondary
         success = self.success or secondary
         accent = self.accent or primary
-        system = self.system or accent
 
-        light_background = self.background or Color.parse(DEFAULT_LIGHT_BACKGROUND)
-        dark_background = self.dark_background or Color.parse(DEFAULT_DARK_BACKGROUND)
+        dark = self._dark
+        luminosity_spread = self._luminosity_spread
+        text_alpha = self._text_alpha
 
-        light_surface = self.surface or Color.parse(DEFAULT_LIGHT_SURFACE)
-        dark_surface = self.dark_surface or Color.parse(DEFAULT_DARK_SURFACE)
+        if dark:
+            background = self.background or Color.parse(DEFAULT_DARK_BACKGROUND)
+            surface = self.surface or Color.parse(DEFAULT_DARK_SURFACE)
+        else:
+            background = self.background or Color.parse(DEFAULT_LIGHT_BACKGROUND)
+            surface = self.surface or Color.parse(DEFAULT_LIGHT_SURFACE)
 
-        background = dark_background if dark else light_background
-        surface = dark_surface if dark else light_surface
-
-        text = background.get_contrast_text(1.0)
         if self.panel is None:
-            panel = background.blend(
-                text, luminosity_spread if dark else luminosity_spread
-            )
+            panel = surface.blend(primary, luminosity_spread)
         else:
             panel = self.panel
 
@@ -227,7 +186,6 @@ class ColorSystem:
             (&#34;error&#34;, error),
             (&#34;success&#34;, success),
             (&#34;accent&#34;, accent),
-            (&#34;system&#34;, system),
         ]
 
         # Colors names that have a dark variant
@@ -235,7 +193,7 @@ class ColorSystem:
 
         for name, color in COLORS:
             is_dark_shade = dark and name in DARK_SHADES
-            spread = luminosity_spread / 1.5 if is_dark_shade else luminosity_spread
+            spread = luminosity_spread
             if name == &#34;panel&#34;:
                 spread /= 2
             for shade_name, luminosity_delta in luminosity_range(spread):
@@ -259,27 +217,39 @@ class ColorSystem:
 
         return colors
 
-    def __rich__(self) -&gt; Table:
-        @group()
-        def make_shades(dark: bool):
-            colors = self.generate(dark)
-            for name in self.shades:
-                background = colors[name]
-                foreground = colors[f&#34;text-{name}&#34;]
-                text = Text(f&#34;{background} &#34;, style=f&#34;{foreground} on {background}&#34;)
-                for fade in range(3):
-                    foreground = colors[
-                        f&#34;text-{name}-fade-{fade}&#34; if fade else f&#34;text-{name}&#34;
-                    ]
-                    text.append(f&#34;{name} &#34;, style=f&#34;{foreground} on {background}&#34;)
 
-                yield Padding(text, 1, style=f&#34;{foreground} on {background}&#34;)
+def show_design(light: ColorSystem, dark: ColorSystem) -&gt; Table:
+    &#34;&#34;&#34;Generate a renderable to show color systems.
 
-        table = Table(box=None, expand=True)
-        table.add_column(&#34;Light&#34;, justify=&#34;center&#34;)
-        table.add_column(&#34;Dark&#34;, justify=&#34;center&#34;)
-        table.add_row(make_shades(False), make_shades(True))
-        return table
+    Args:
+        light (ColorSystem): Light ColorSystem.
+        dark (ColorSystem): Dark ColorSystem
+
+    Returns:
+        Table: Table showing all colors.
+
+    &#34;&#34;&#34;
+
+    @group()
+    def make_shades(system: ColorSystem):
+        colors = system.generate()
+        for name in system.shades:
+            background = colors[name]
+            foreground = colors[f&#34;text-{name}&#34;]
+            text = Text(f&#34;{background} &#34;, style=f&#34;{foreground} on {background}&#34;)
+            for fade in range(3):
+                foreground = colors[
+                    f&#34;text-{name}-fade-{fade}&#34; if fade else f&#34;text-{name}&#34;
+                ]
+                text.append(f&#34;{name} &#34;, style=f&#34;{foreground} on {background}&#34;)
+
+            yield Padding(text, 1, style=f&#34;{foreground} on {background}&#34;)
+
+    table = Table(box=None, expand=True)
+    table.add_column(&#34;Light&#34;, justify=&#34;center&#34;)
+    table.add_column(&#34;Dark&#34;, justify=&#34;center&#34;)
+    table.add_row(make_shades(light), make_shades(dark))
+    return table
 
 
 if __name__ == &#34;__main__&#34;:
@@ -287,7 +257,7 @@ if __name__ == &#34;__main__&#34;:
 
     from rich import print
 
-    print(DEFAULT_COLORS)</code></pre>
+    print(show_design(DEFAULT_COLORS[&#34;light&#34;], DEFAULT_COLORS[&#34;dark&#34;]))</code></pre>
 </details>
 </section>
 <section>
@@ -295,44 +265,71 @@ if __name__ == &#34;__main__&#34;:
 <section>
 </section>
 <section>
-</section>
-<section>
-<h2 class="section-title" id="header-classes">Classes</h2>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="textual.design.ColorProperty"><code class="flex name class">
-<span>class <span class="ident">ColorProperty</span></span>
+<dt id="textual.design.show_design"><code class="name flex">
+<span>def <span class="ident">show_design</span></span>(<span>light: <a title="textual.design.ColorSystem" href="#textual.design.ColorSystem">ColorSystem</a>, dark: <a title="textual.design.ColorSystem" href="#textual.design.ColorSystem">ColorSystem</a>) ‑> rich.table.Table</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
+<div class="desc"><p>Generate a renderable to show color systems.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>light</code></strong> :&ensp;<code><a title="textual.design.ColorSystem" href="#textual.design.ColorSystem">ColorSystem</a></code></dt>
+<dd>Light ColorSystem.</dd>
+<dt><strong><code>dark</code></strong> :&ensp;<code><a title="textual.design.ColorSystem" href="#textual.design.ColorSystem">ColorSystem</a></code></dt>
+<dd>Dark ColorSystem</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Table</code></dt>
+<dd>Table showing all colors.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ColorProperty:
-    &#34;&#34;&#34;Descriptor to parse colors.&#34;&#34;&#34;
+<pre><code class="python">def show_design(light: ColorSystem, dark: ColorSystem) -&gt; Table:
+    &#34;&#34;&#34;Generate a renderable to show color systems.
 
-    def __set_name__(self, owner: ColorSystem, name: str) -&gt; None:
-        self._name = f&#34;_{name}&#34;
+    Args:
+        light (ColorSystem): Light ColorSystem.
+        dark (ColorSystem): Dark ColorSystem
 
-    def __get__(
-        self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-    ) -&gt; Color | None:
-        color = getattr(obj, self._name)
-        if color is None:
-            return None
-        else:
-            return Color.parse(color)
+    Returns:
+        Table: Table showing all colors.
 
-    def __set__(self, obj: ColorSystem, value: Color | str | None) -&gt; None:
-        if isinstance(value, Color):
-            setattr(obj, self._name, value.css)
-        else:
-            setattr(obj, self._name, value)</code></pre>
+    &#34;&#34;&#34;
+
+    @group()
+    def make_shades(system: ColorSystem):
+        colors = system.generate()
+        for name in system.shades:
+            background = colors[name]
+            foreground = colors[f&#34;text-{name}&#34;]
+            text = Text(f&#34;{background} &#34;, style=f&#34;{foreground} on {background}&#34;)
+            for fade in range(3):
+                foreground = colors[
+                    f&#34;text-{name}-fade-{fade}&#34; if fade else f&#34;text-{name}&#34;
+                ]
+                text.append(f&#34;{name} &#34;, style=f&#34;{foreground} on {background}&#34;)
+
+            yield Padding(text, 1, style=f&#34;{foreground} on {background}&#34;)
+
+    table = Table(box=None, expand=True)
+    table.add_column(&#34;Light&#34;, justify=&#34;center&#34;)
+    table.add_column(&#34;Dark&#34;, justify=&#34;center&#34;)
+    table.add_row(make_shades(light), make_shades(dark))
+    return table</code></pre>
 </details>
 </dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
 <dt id="textual.design.ColorSystem"><code class="flex name class">
 <span>class <span class="ident">ColorSystem</span></span>
-<span>(</span><span>primary: str, secondary: str | None = None, warning: str | None = None, error: str | None = None, success: str | None = None, accent: str | None = None, system: str | None = None, background: str | None = None, surface: str | None = None, dark_background: str | None = None, dark_surface: str | None = None, panel: str | None = None)</span>
+<span>(</span><span>primary: str, secondary: str | None = None, warning: str | None = None, error: str | None = None, success: str | None = None, accent: str | None = None, background: str | None = None, surface: str | None = None, panel: str | None = None, dark: bool = False, luminosity_spread: float = 0.15, text_alpha: float = 0.95)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Defines a standard set of colors and variations for building a UI.</p>
@@ -363,7 +360,6 @@ Secondary is a second theme color</p></div>
         &#34;error&#34;,
         &#34;success&#34;,
         &#34;accent&#34;,
-        &#34;system&#34;,
     ]
 
     def __init__(
@@ -374,42 +370,30 @@ Secondary is a second theme color</p></div>
         error: str | None = None,
         success: str | None = None,
         accent: str | None = None,
-        system: str | None = None,
         background: str | None = None,
         surface: str | None = None,
-        dark_background: str | None = None,
-        dark_surface: str | None = None,
         panel: str | None = None,
+        dark: bool = False,
+        luminosity_spread: float = 0.15,
+        text_alpha: float = 0.95,
     ):
-        self._primary = primary
-        self._secondary = secondary
-        self._warning = warning
-        self._error = error
-        self._success = success
-        self._accent = accent
-        self._system = system
-        self._background = background
-        self._surface = surface
-        self._dark_background = dark_background
-        self._dark_surface = dark_surface
-        self._panel = panel
+        def parse(color: str | None) -&gt; Color | None:
+            if color is None:
+                return None
+            return Color.parse(color)
 
-    @property
-    def primary(self) -&gt; Color:
-        &#34;&#34;&#34;Get the primary color.&#34;&#34;&#34;
-        return Color.parse(self._primary)
-
-    secondary = ColorProperty()
-    warning = ColorProperty()
-    error = ColorProperty()
-    success = ColorProperty()
-    accent = ColorProperty()
-    system = ColorProperty()
-    surface = ColorProperty()
-    background = ColorProperty()
-    dark_surface = ColorProperty()
-    dark_background = ColorProperty()
-    panel = ColorProperty()
+        self.primary = Color.parse(primary)
+        self.secondary = parse(secondary)
+        self.warning = parse(warning)
+        self.error = parse(error)
+        self.success = parse(success)
+        self.accent = parse(accent)
+        self.background = parse(background)
+        self.surface = parse(surface)
+        self.panel = parse(panel)
+        self._dark = dark
+        self._luminosity_spread = luminosity_spread
+        self._text_alpha = text_alpha
 
     @property
     def shades(self) -&gt; Iterable[str]:
@@ -423,12 +407,7 @@ Secondary is a second theme color</p></div>
                 else:
                     yield color
 
-    def generate(
-        self,
-        dark: bool = False,
-        luminosity_spread: float = 0.15,
-        text_alpha: float = 0.9,
-    ) -&gt; dict[str, str]:
+    def generate(self) -&gt; dict[str, str]:
         &#34;&#34;&#34;Generate a mapping of color name on to a CSS color.
 
         Args:
@@ -448,22 +427,20 @@ Secondary is a second theme color</p></div>
         error = self.error or secondary
         success = self.success or secondary
         accent = self.accent or primary
-        system = self.system or accent
 
-        light_background = self.background or Color.parse(DEFAULT_LIGHT_BACKGROUND)
-        dark_background = self.dark_background or Color.parse(DEFAULT_DARK_BACKGROUND)
+        dark = self._dark
+        luminosity_spread = self._luminosity_spread
+        text_alpha = self._text_alpha
 
-        light_surface = self.surface or Color.parse(DEFAULT_LIGHT_SURFACE)
-        dark_surface = self.dark_surface or Color.parse(DEFAULT_DARK_SURFACE)
+        if dark:
+            background = self.background or Color.parse(DEFAULT_DARK_BACKGROUND)
+            surface = self.surface or Color.parse(DEFAULT_DARK_SURFACE)
+        else:
+            background = self.background or Color.parse(DEFAULT_LIGHT_BACKGROUND)
+            surface = self.surface or Color.parse(DEFAULT_LIGHT_SURFACE)
 
-        background = dark_background if dark else light_background
-        surface = dark_surface if dark else light_surface
-
-        text = background.get_contrast_text(1.0)
         if self.panel is None:
-            panel = background.blend(
-                text, luminosity_spread if dark else luminosity_spread
-            )
+            panel = surface.blend(primary, luminosity_spread)
         else:
             panel = self.panel
 
@@ -499,7 +476,6 @@ Secondary is a second theme color</p></div>
             (&#34;error&#34;, error),
             (&#34;success&#34;, success),
             (&#34;accent&#34;, accent),
-            (&#34;system&#34;, system),
         ]
 
         # Colors names that have a dark variant
@@ -507,7 +483,7 @@ Secondary is a second theme color</p></div>
 
         for name, color in COLORS:
             is_dark_shade = dark and name in DARK_SHADES
-            spread = luminosity_spread / 1.5 if is_dark_shade else luminosity_spread
+            spread = luminosity_spread
             if name == &#34;panel&#34;:
                 spread /= 2
             for shade_name, luminosity_delta in luminosity_range(spread):
@@ -529,29 +505,7 @@ Secondary is a second theme color</p></div>
                         on_name = f&#34;text-{name}{shade_name}&#34;
                     colors[on_name] = text_color.hex
 
-        return colors
-
-    def __rich__(self) -&gt; Table:
-        @group()
-        def make_shades(dark: bool):
-            colors = self.generate(dark)
-            for name in self.shades:
-                background = colors[name]
-                foreground = colors[f&#34;text-{name}&#34;]
-                text = Text(f&#34;{background} &#34;, style=f&#34;{foreground} on {background}&#34;)
-                for fade in range(3):
-                    foreground = colors[
-                        f&#34;text-{name}-fade-{fade}&#34; if fade else f&#34;text-{name}&#34;
-                    ]
-                    text.append(f&#34;{name} &#34;, style=f&#34;{foreground} on {background}&#34;)
-
-                yield Padding(text, 1, style=f&#34;{foreground} on {background}&#34;)
-
-        table = Table(box=None, expand=True)
-        table.add_column(&#34;Light&#34;, justify=&#34;center&#34;)
-        table.add_column(&#34;Dark&#34;, justify=&#34;center&#34;)
-        table.add_row(make_shades(False), make_shades(True))
-        return table</code></pre>
+        return colors</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
@@ -562,138 +516,6 @@ Secondary is a second theme color</p></div>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.design.ColorSystem.accent"><code class="name">var <span class="ident">accent</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
-<dt id="textual.design.ColorSystem.background"><code class="name">var <span class="ident">background</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
-<dt id="textual.design.ColorSystem.dark_background"><code class="name">var <span class="ident">dark_background</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
-<dt id="textual.design.ColorSystem.dark_surface"><code class="name">var <span class="ident">dark_surface</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
-<dt id="textual.design.ColorSystem.error"><code class="name">var <span class="ident">error</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
-<dt id="textual.design.ColorSystem.panel"><code class="name">var <span class="ident">panel</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
-<dt id="textual.design.ColorSystem.primary"><code class="name">var <span class="ident">primary</span> : <a title="textual.color.Color" href="color.html#textual.color.Color">Color</a></code></dt>
-<dd>
-<div class="desc"><p>Get the primary color.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def primary(self) -&gt; Color:
-    &#34;&#34;&#34;Get the primary color.&#34;&#34;&#34;
-    return Color.parse(self._primary)</code></pre>
-</details>
-</dd>
-<dt id="textual.design.ColorSystem.secondary"><code class="name">var <span class="ident">secondary</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
 <dt id="textual.design.ColorSystem.shades"><code class="name">var <span class="ident">shades</span> : Iterable[str]</code></dt>
 <dd>
 <div class="desc"><p>The names of the colors and derived shades.</p></div>
@@ -714,79 +536,11 @@ def shades(self) -&gt; Iterable[str]:
                 yield color</code></pre>
 </details>
 </dd>
-<dt id="textual.design.ColorSystem.success"><code class="name">var <span class="ident">success</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
-<dt id="textual.design.ColorSystem.surface"><code class="name">var <span class="ident">surface</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
-<dt id="textual.design.ColorSystem.system"><code class="name">var <span class="ident">system</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
-<dt id="textual.design.ColorSystem.warning"><code class="name">var <span class="ident">warning</span> : Color | None</code></dt>
-<dd>
-<div class="desc"><p>Descriptor to parse colors.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: ColorSystem, objtype: type[ColorSystem] | None = None
-) -&gt; Color | None:
-    color = getattr(obj, self._name)
-    if color is None:
-        return None
-    else:
-        return Color.parse(color)</code></pre>
-</details>
-</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="textual.design.ColorSystem.generate"><code class="name flex">
-<span>def <span class="ident">generate</span></span>(<span>self, dark: bool = False, luminosity_spread: float = 0.15, text_alpha: float = 0.9) ‑> dict[str, str]</span>
+<span>def <span class="ident">generate</span></span>(<span>self) ‑> dict[str, str]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate a mapping of color name on to a CSS color.</p>
@@ -809,12 +563,7 @@ shades. Defaults to 0.2.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def generate(
-    self,
-    dark: bool = False,
-    luminosity_spread: float = 0.15,
-    text_alpha: float = 0.9,
-) -&gt; dict[str, str]:
+<pre><code class="python">def generate(self) -&gt; dict[str, str]:
     &#34;&#34;&#34;Generate a mapping of color name on to a CSS color.
 
     Args:
@@ -834,22 +583,20 @@ shades. Defaults to 0.2.</dd>
     error = self.error or secondary
     success = self.success or secondary
     accent = self.accent or primary
-    system = self.system or accent
 
-    light_background = self.background or Color.parse(DEFAULT_LIGHT_BACKGROUND)
-    dark_background = self.dark_background or Color.parse(DEFAULT_DARK_BACKGROUND)
+    dark = self._dark
+    luminosity_spread = self._luminosity_spread
+    text_alpha = self._text_alpha
 
-    light_surface = self.surface or Color.parse(DEFAULT_LIGHT_SURFACE)
-    dark_surface = self.dark_surface or Color.parse(DEFAULT_DARK_SURFACE)
+    if dark:
+        background = self.background or Color.parse(DEFAULT_DARK_BACKGROUND)
+        surface = self.surface or Color.parse(DEFAULT_DARK_SURFACE)
+    else:
+        background = self.background or Color.parse(DEFAULT_LIGHT_BACKGROUND)
+        surface = self.surface or Color.parse(DEFAULT_LIGHT_SURFACE)
 
-    background = dark_background if dark else light_background
-    surface = dark_surface if dark else light_surface
-
-    text = background.get_contrast_text(1.0)
     if self.panel is None:
-        panel = background.blend(
-            text, luminosity_spread if dark else luminosity_spread
-        )
+        panel = surface.blend(primary, luminosity_spread)
     else:
         panel = self.panel
 
@@ -885,7 +632,6 @@ shades. Defaults to 0.2.</dd>
         (&#34;error&#34;, error),
         (&#34;success&#34;, success),
         (&#34;accent&#34;, accent),
-        (&#34;system&#34;, system),
     ]
 
     # Colors names that have a dark variant
@@ -893,7 +639,7 @@ shades. Defaults to 0.2.</dd>
 
     for name, color in COLORS:
         is_dark_shade = dark and name in DARK_SHADES
-        spread = luminosity_spread / 1.5 if is_dark_shade else luminosity_spread
+        spread = luminosity_spread
         if name == &#34;panel&#34;:
             spread /= 2
         for shade_name, luminosity_delta in luminosity_range(spread):
@@ -980,29 +726,19 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual" href="index.html">textual</a></code></li>
 </ul>
 </li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="textual.design.show_design" href="#textual.design.show_design">show_design</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="textual.design.ColorProperty" href="#textual.design.ColorProperty">ColorProperty</a></code></h4>
-</li>
-<li>
 <h4><code><a title="textual.design.ColorSystem" href="#textual.design.ColorSystem">ColorSystem</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="textual.design.ColorSystem.COLOR_NAMES" href="#textual.design.ColorSystem.COLOR_NAMES">COLOR_NAMES</a></code></li>
-<li><code><a title="textual.design.ColorSystem.accent" href="#textual.design.ColorSystem.accent">accent</a></code></li>
-<li><code><a title="textual.design.ColorSystem.background" href="#textual.design.ColorSystem.background">background</a></code></li>
-<li><code><a title="textual.design.ColorSystem.dark_background" href="#textual.design.ColorSystem.dark_background">dark_background</a></code></li>
-<li><code><a title="textual.design.ColorSystem.dark_surface" href="#textual.design.ColorSystem.dark_surface">dark_surface</a></code></li>
-<li><code><a title="textual.design.ColorSystem.error" href="#textual.design.ColorSystem.error">error</a></code></li>
 <li><code><a title="textual.design.ColorSystem.generate" href="#textual.design.ColorSystem.generate">generate</a></code></li>
-<li><code><a title="textual.design.ColorSystem.panel" href="#textual.design.ColorSystem.panel">panel</a></code></li>
-<li><code><a title="textual.design.ColorSystem.primary" href="#textual.design.ColorSystem.primary">primary</a></code></li>
-<li><code><a title="textual.design.ColorSystem.secondary" href="#textual.design.ColorSystem.secondary">secondary</a></code></li>
 <li><code><a title="textual.design.ColorSystem.shades" href="#textual.design.ColorSystem.shades">shades</a></code></li>
-<li><code><a title="textual.design.ColorSystem.success" href="#textual.design.ColorSystem.success">success</a></code></li>
-<li><code><a title="textual.design.ColorSystem.surface" href="#textual.design.ColorSystem.surface">surface</a></code></li>
-<li><code><a title="textual.design.ColorSystem.system" href="#textual.design.ColorSystem.system">system</a></code></li>
-<li><code><a title="textual.design.ColorSystem.warning" href="#textual.design.ColorSystem.warning">warning</a></code></li>
 </ul>
 </li>
 </ul>

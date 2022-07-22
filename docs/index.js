@@ -365,14 +365,14 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.css.tokenizer.TokenizeError",
+"ref":"textual.css.tokenizer.TokenError",
 "url":6,
-"doc":"Error raised when the CSS cannot be tokenized (syntax error). Args: path (str): Path to source or \" \" if source is parsed from a literal. code (str): The code being parsed. line_no (int): Line number of the error. col_no (int): Column number of the error. message (str): A message associated with the error."
+"doc":"Error raised when the CSS cannot be tokenized (syntax error). Args: path (str): Path to source or \" \" if source is parsed from a literal. code (str): The code being parsed. start (tuple[int, int]): Line number of the error. message (str): A message associated with the error. end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None."
 },
 {
 "ref":"textual.css.tokenizer.EOFError",
 "url":6,
-"doc":"Error raised when the CSS cannot be tokenized (syntax error). Args: path (str): Path to source or \" \" if source is parsed from a literal. code (str): The code being parsed. line_no (int): Line number of the error. col_no (int): Column number of the error. message (str): A message associated with the error."
+"doc":"Error raised when the CSS cannot be tokenized (syntax error). Args: path (str): Path to source or \" \" if source is parsed from a literal. code (str): The code being parsed. start (tuple[int, int]): Line number of the error. message (str): A message associated with the error. end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None."
 },
 {
 "ref":"textual.css.tokenizer.Expect",
@@ -439,6 +439,16 @@ INDEX=[
 "ref":"textual.css.tokenizer.Token.referenced_by",
 "url":6,
 "doc":"Alias for field number 5"
+},
+{
+"ref":"textual.css.tokenizer.Token.start",
+"url":6,
+"doc":"Start line and column (1 indexed)."
+},
+{
+"ref":"textual.css.tokenizer.Token.end",
+"url":6,
+"doc":"End line and column (1 indexed)."
 },
 {
 "ref":"textual.css.tokenizer.Token.with_reference",
@@ -2489,14 +2499,14 @@ INDEX=[
 "doc":"Common base class for all non-exit exceptions."
 },
 {
-"ref":"textual.css.errors.UnresolvedVariableError",
-"url":17,
-"doc":"Name not found globally."
-},
-{
 "ref":"textual.css.errors.StyleTypeError",
 "url":17,
 "doc":"Inappropriate argument type."
+},
+{
+"ref":"textual.css.errors.UnresolvedVariableError",
+"url":17,
+"doc":"Error raised when the CSS cannot be tokenized (syntax error). Args: path (str): Path to source or \" \" if source is parsed from a literal. code (str): The code being parsed. start (tuple[int, int]): Line number of the error. message (str): A message associated with the error. end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None."
 },
 {
 "ref":"textual.css.errors.StyleValueError",
@@ -3080,12 +3090,6 @@ INDEX=[
 "doc":"Not transparent, i.e. renders something."
 },
 {
-"ref":"textual.scroll_view.ScrollView.get_dirty_regions",
-"url":34,
-"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
-"func":1
-},
-{
 "ref":"textual.scroll_view.ScrollView.on_mount",
 "url":34,
 "doc":"",
@@ -3373,7 +3377,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.render_lines",
 "url":35,
-"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to. Returns: Lines: A list of list of segments",
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
 "func":1
 },
 {
@@ -4594,12 +4598,6 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.get_dirty_regions",
-"url":35,
-"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
-"func":1
-},
-{
 "ref":"textual.scrollbar.ScrollBar.scroll_to",
 "url":35,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -4650,7 +4648,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.render_lines",
 "url":35,
-"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to. Returns: Lines: A list of list of segments",
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
 "func":1
 },
 {
@@ -7565,12 +7563,6 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
-"ref":"textual.screen.Screen.get_dirty_regions",
-"url":35,
-"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
-"func":1
-},
-{
 "ref":"textual.screen.Screen.scroll_to",
 "url":35,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -7621,7 +7613,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.render_lines",
 "url":35,
-"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to. Returns: Lines: A list of list of segments",
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
 "func":1
 },
 {
@@ -7871,11 +7863,6 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.design.ColorProperty",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
 "ref":"textual.design.ColorSystem",
 "url":44,
 "doc":"Defines a standard set of colors and variations for building a UI. Primary is the main theme color Secondary is a second theme color"
@@ -7886,66 +7873,6 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.design.ColorSystem.primary",
-"url":44,
-"doc":"Get the primary color."
-},
-{
-"ref":"textual.design.ColorSystem.secondary",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
-"ref":"textual.design.ColorSystem.warning",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
-"ref":"textual.design.ColorSystem.error",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
-"ref":"textual.design.ColorSystem.success",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
-"ref":"textual.design.ColorSystem.accent",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
-"ref":"textual.design.ColorSystem.system",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
-"ref":"textual.design.ColorSystem.surface",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
-"ref":"textual.design.ColorSystem.background",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
-"ref":"textual.design.ColorSystem.dark_surface",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
-"ref":"textual.design.ColorSystem.dark_background",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
-"ref":"textual.design.ColorSystem.panel",
-"url":44,
-"doc":"Descriptor to parse colors."
-},
-{
 "ref":"textual.design.ColorSystem.shades",
 "url":44,
 "doc":"The names of the colors and derived shades."
@@ -7954,6 +7881,12 @@ INDEX=[
 "ref":"textual.design.ColorSystem.generate",
 "url":44,
 "doc":"Generate a mapping of color name on to a CSS color. Args: dark (bool, optional): Enable dark mode. Defaults to False. luminosity_spread (float, optional): Amount of luminosity to subtract and add to generate shades. Defaults to 0.2. text_alpha (float, optional): Alpha value for text. Defaults to 0.9. Returns: dict[str, str]: A mapping of color name on to a CSS-style encoded color",
+"func":1
+},
+{
+"ref":"textual.design.show_design",
+"url":44,
+"doc":"Generate a renderable to show color systems. Args: light (ColorSystem): Light ColorSystem. dark (ColorSystem): Dark ColorSystem Returns: Table: Table showing all colors.",
 "func":1
 },
 {
@@ -9177,12 +9110,6 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
-"ref":"textual.layout.Vertical.get_dirty_regions",
-"url":35,
-"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
-"func":1
-},
-{
 "ref":"textual.layout.Vertical.scroll_to",
 "url":35,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -9233,7 +9160,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.render_lines",
 "url":35,
-"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to. Returns: Lines: A list of list of segments",
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
 "func":1
 },
 {
@@ -9722,12 +9649,6 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
-"ref":"textual.layout.Horizontal.get_dirty_regions",
-"url":35,
-"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
-"func":1
-},
-{
 "ref":"textual.layout.Horizontal.scroll_to",
 "url":35,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -9778,7 +9699,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.render_lines",
 "url":35,
-"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to. Returns: Lines: A list of list of segments",
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
 "func":1
 },
 {
@@ -11377,12 +11298,6 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
-"ref":"textual.widget.Widget.get_dirty_regions",
-"url":35,
-"doc":"Get regions which require a repaint. Returns: Collection[Region]: Regions to repaint.",
-"func":1
-},
-{
 "ref":"textual.widget.Widget.scroll_to",
 "url":35,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -11505,7 +11420,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.render_lines",
 "url":35,
-"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to. Returns: Lines: A list of list of segments",
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
 "func":1
 },
 {

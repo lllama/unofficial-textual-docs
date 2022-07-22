@@ -99,9 +99,9 @@ class Widget(DOMNode):
 
     CSS = &#34;&#34;&#34;
     Widget{
-        scrollbar-background: $panel-darken-2;
-        scrollbar-background-hover: $panel-darken-3;
-        scrollbar-color: $system;
+        scrollbar-background: $panel-darken-1;
+        scrollbar-background-hover: $panel-darken-2;
+        scrollbar-color: $primary-lighten-1;
         scrollbar-color-active: $warning-darken-1;
         scrollbar-size-vertical: 2;
         scrollbar-size-horizontal: 1;
@@ -134,7 +134,10 @@ class Widget(DOMNode):
         self._horizontal_scrollbar: ScrollBar | None = None
 
         self._render_cache = RenderCache(Size(0, 0), [])
+        # Regions which need to be updated (in Widget)
         self._dirty_regions: set[Region] = set()
+        # Regions which need to be transferred from cache to screen
+        self._repaint_regions: set[Region] = set()
 
         # Cache the auto content dimensions
         # TODO: add mechanism to explicitly clear this
@@ -577,24 +580,27 @@ class Widget(DOMNode):
             *regions (Region): Regions which require a repaint.
 
         &#34;&#34;&#34;
-
         if regions:
             content_offset = self.content_offset
             widget_regions = [region.translate(content_offset) for region in regions]
             self._dirty_regions.update(widget_regions)
+            self._repaint_regions.update(widget_regions)
             self._styles_cache.set_dirty(*widget_regions)
         else:
             self._dirty_regions.clear()
+            self._repaint_regions.clear()
             self._styles_cache.clear()
             self._dirty_regions.add(self.outer_size.region)
+            self._repaint_regions.add(self.outer_size.region)
 
-    def get_dirty_regions(self) -&gt; Collection[Region]:
-        &#34;&#34;&#34;Get regions which require a repaint.
+    def _exchange_repaint_regions(self) -&gt; Collection[Region]:
+        &#34;&#34;&#34;Get a copy of the regions which need a repaint, and clear internal cache.
 
         Returns:
             Collection[Region]: Regions to repaint.
         &#34;&#34;&#34;
-        regions = self._dirty_regions.copy()
+        regions = self._repaint_regions.copy()
+        self._repaint_regions.clear()
         return regions
 
     def scroll_to(
@@ -984,10 +990,10 @@ class Widget(DOMNode):
         &#34;&#34;&#34;Render the widget in to lines.
 
         Args:
-            crop (Region): Region within visible area to.
+            crop (Region): Region within visible area to render.
 
         Returns:
-            Lines: A list of list of segments
+            Lines: A list of list of segments.
         &#34;&#34;&#34;
         lines = self._styles_cache.render_widget(self, crop)
         return lines
@@ -1304,9 +1310,9 @@ def cursor_line(self) -&gt; int | None:
 
     CSS = &#34;&#34;&#34;
     Widget{
-        scrollbar-background: $panel-darken-2;
-        scrollbar-background-hover: $panel-darken-3;
-        scrollbar-color: $system;
+        scrollbar-background: $panel-darken-1;
+        scrollbar-background-hover: $panel-darken-2;
+        scrollbar-color: $primary-lighten-1;
         scrollbar-color-active: $warning-darken-1;
         scrollbar-size-vertical: 2;
         scrollbar-size-horizontal: 1;
@@ -1339,7 +1345,10 @@ def cursor_line(self) -&gt; int | None:
         self._horizontal_scrollbar: ScrollBar | None = None
 
         self._render_cache = RenderCache(Size(0, 0), [])
+        # Regions which need to be updated (in Widget)
         self._dirty_regions: set[Region] = set()
+        # Regions which need to be transferred from cache to screen
+        self._repaint_regions: set[Region] = set()
 
         # Cache the auto content dimensions
         # TODO: add mechanism to explicitly clear this
@@ -1782,24 +1791,27 @@ def cursor_line(self) -&gt; int | None:
             *regions (Region): Regions which require a repaint.
 
         &#34;&#34;&#34;
-
         if regions:
             content_offset = self.content_offset
             widget_regions = [region.translate(content_offset) for region in regions]
             self._dirty_regions.update(widget_regions)
+            self._repaint_regions.update(widget_regions)
             self._styles_cache.set_dirty(*widget_regions)
         else:
             self._dirty_regions.clear()
+            self._repaint_regions.clear()
             self._styles_cache.clear()
             self._dirty_regions.add(self.outer_size.region)
+            self._repaint_regions.add(self.outer_size.region)
 
-    def get_dirty_regions(self) -&gt; Collection[Region]:
-        &#34;&#34;&#34;Get regions which require a repaint.
+    def _exchange_repaint_regions(self) -&gt; Collection[Region]:
+        &#34;&#34;&#34;Get a copy of the regions which need a repaint, and clear internal cache.
 
         Returns:
             Collection[Region]: Regions to repaint.
         &#34;&#34;&#34;
-        regions = self._dirty_regions.copy()
+        regions = self._repaint_regions.copy()
+        self._repaint_regions.clear()
         return regions
 
     def scroll_to(
@@ -2189,10 +2201,10 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;Render the widget in to lines.
 
         Args:
-            crop (Region): Region within visible area to.
+            crop (Region): Region within visible area to render.
 
         Returns:
-            Lines: A list of list of segments
+            Lines: A list of list of segments.
         &#34;&#34;&#34;
         lines = self._styles_cache.render_widget(self, crop)
         return lines
@@ -3279,30 +3291,6 @@ def window_region(self) -&gt; Region:
     return width</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.get_dirty_regions"><code class="name flex">
-<span>def <span class="ident">get_dirty_regions</span></span>(<span>self) ‑> Collection[<a title="textual.geometry.Region" href="geometry.html#textual.geometry.Region">Region</a>]</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Get regions which require a repaint.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Collection[Region]</code></dt>
-<dd>Regions to repaint.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_dirty_regions(self) -&gt; Collection[Region]:
-    &#34;&#34;&#34;Get regions which require a repaint.
-
-    Returns:
-        Collection[Region]: Regions to repaint.
-    &#34;&#34;&#34;
-    regions = self._dirty_regions.copy()
-    return regions</code></pre>
-</details>
-</dd>
 <dt id="textual.widget.Widget.get_pseudo_classes"><code class="name flex">
 <span>def <span class="ident">get_pseudo_classes</span></span>(<span>self) ‑> Iterable[str]</span>
 </code></dt>
@@ -3952,12 +3940,12 @@ next idle event. Only one refresh will be done even if this method is called mul
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>crop</code></strong> :&ensp;<code>Region</code></dt>
-<dd>Region within visible area to.</dd>
+<dd>Region within visible area to render.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Lines</code></dt>
-<dd>A list of list of segments</dd>
+<dd>A list of list of segments.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -3967,10 +3955,10 @@ next idle event. Only one refresh will be done even if this method is called mul
     &#34;&#34;&#34;Render the widget in to lines.
 
     Args:
-        crop (Region): Region within visible area to.
+        crop (Region): Region within visible area to render.
 
     Returns:
-        Lines: A list of list of segments
+        Lines: A list of list of segments.
     &#34;&#34;&#34;
     lines = self._styles_cache.render_widget(self, crop)
     return lines</code></pre>
@@ -4713,7 +4701,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.get_box_model" href="#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_height" href="#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_width" href="#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
-<li><code><a title="textual.widget.Widget.get_dirty_regions" href="#textual.widget.Widget.get_dirty_regions">get_dirty_regions</a></code></li>
 <li><code><a title="textual.widget.Widget.get_pseudo_classes" href="#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.get_style_at" href="#textual.widget.Widget.get_style_at">get_style_at</a></code></li>
 <li><code><a title="textual.widget.Widget.gutter" href="#textual.widget.Widget.gutter">gutter</a></code></li>

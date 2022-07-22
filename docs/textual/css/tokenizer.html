@@ -43,28 +43,33 @@ from rich.text import Text
 from .._loop import loop_last
 
 
-class TokenizeError(Exception):
+class TokenError(Exception):
     &#34;&#34;&#34;Error raised when the CSS cannot be tokenized (syntax error).&#34;&#34;&#34;
 
     def __init__(
-        self, path: str, code: str, line_no: int, col_no: int, message: str
+        self,
+        path: str,
+        code: str,
+        start: tuple[int, int],
+        message: str,
+        end: tuple[int, int] | None = None,
     ) -&gt; None:
         &#34;&#34;&#34;
         Args:
             path (str): Path to source or &#34;&lt;object&gt;&#34; if source is parsed from a literal.
             code (str): The code being parsed.
-            line_no (int): Line number of the error.
-            col_no (int): Column number of the error.
+            start (tuple[int, int]): Line number of the error.
             message (str): A message associated with the error.
+            end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None.
         &#34;&#34;&#34;
+
         self.path = path
         self.code = code
-        self.line_no = line_no
-        self.col_no = col_no
+        self.start = start
+        self.end = end or start
         super().__init__(message)
 
-    @classmethod
-    def _get_snippet(cls, code: str, line_no: int) -&gt; Panel:
+    def _get_snippet(self) -&gt; Panel:
         &#34;&#34;&#34;Get a short snippet of code around a given line number.
 
         Args:
@@ -74,9 +79,10 @@ class TokenizeError(Exception):
         Returns:
             Panel: A renderable.
         &#34;&#34;&#34;
+        line_no = self.start[0]
         # TODO: Highlight column number
         syntax = Syntax(
-            code,
+            self.code,
             lexer=&#34;scss&#34;,
             theme=&#34;ansi_light&#34;,
             line_numbers=True,
@@ -84,6 +90,7 @@ class TokenizeError(Exception):
             line_range=(max(0, line_no - 2), line_no + 2),
             highlight_lines={line_no},
         )
+        syntax.stylize_range(&#34;reverse bold&#34;, self.start, self.end)
         return Panel(syntax, border_style=&#34;red&#34;)
 
     def __rich__(self) -&gt; RenderableType:
@@ -91,24 +98,29 @@ class TokenizeError(Exception):
         errors: list[RenderableType] = []
 
         message = str(self)
-        errors.append(Text(&#34; Tokenizer error in stylesheet:&#34;, style=&#34;bold red&#34;))
+        errors.append(Text(&#34; Error in stylesheet:&#34;, style=&#34;bold red&#34;))
 
+        line_no, col_no = self.start
+
+        errors.append(highlighter(f&#34; {self.path or &#39;&lt;unknown&gt;&#39;}:{line_no}:{col_no}&#34;))
+        errors.append(self._get_snippet())
+
+        final_message = &#34;\n&#34;.join(
+            f&#34;• {message_part.strip()}&#34; for message_part in message.split(&#34;;&#34;)
+        )
         errors.append(
-            highlighter(
-                f&#34; {self.path or &#39;&lt;unknown&gt;&#39;}:{self.line_no + 1}:{self.col_no + 1}&#34;
+            Padding(
+                highlighter(
+                    Text(final_message, &#34;red&#34;),
+                ),
+                pad=(0, 1),
             )
         )
-        errors.append(self._get_snippet(self.code, self.line_no + 1))
-        final_message = &#34;&#34;
-        for is_last, message_part in loop_last(message.split(&#34;;&#34;)):
-            end = &#34;&#34; if is_last else &#34;\n&#34;
-            final_message += f&#34;• {message_part.strip()};{end}&#34;
-        errors.append(Padding(highlighter(Text(final_message, &#34;red&#34;)), pad=(0, 1)))
 
         return Group(*errors)
 
 
-class EOFError(TokenizeError):
+class EOFError(TokenError):
     pass
 
 
@@ -147,6 +159,18 @@ class Token(NamedTuple):
     code: str
     location: tuple[int, int]
     referenced_by: ReferencedBy | None = None
+
+    @property
+    def start(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Start line and column (1 indexed).&#34;&#34;&#34;
+        line, offset = self.location
+        return (line + 1, offset)
+
+    @property
+    def end(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;End line and column (1 indexed).&#34;&#34;&#34;
+        line, offset = self.location
+        return (line + 1, offset + len(self.value))
 
     def with_reference(self, by: ReferencedBy | None) -&gt; &#34;Token&#34;:
         &#34;&#34;&#34;Return a copy of the Token, with reference information attached.
@@ -189,19 +213,28 @@ class Tokenizer:
         col_no = self.col_no
         if line_no &gt;= len(self.lines):
             if expect._expect_eof:
-                return Token(&#34;eof&#34;, &#34;&#34;, self.path, self.code, (line_no, col_no), None)
+                return Token(
+                    &#34;eof&#34;,
+                    &#34;&#34;,
+                    self.path,
+                    self.code,
+                    (line_no + 1, col_no + 1),
+                    None,
+                )
             else:
                 raise EOFError(
-                    self.path, self.code, line_no, col_no, &#34;Unexpected end of file&#34;
+                    self.path,
+                    self.code,
+                    (line_no + 1, col_no + 1),
+                    &#34;Unexpected end of file&#34;,
                 )
         line = self.lines[line_no]
         match = expect.match(line, col_no)
         if match is None:
-            raise TokenizeError(
+            raise TokenError(
                 self.path,
                 self.code,
-                line_no,
-                col_no,
+                (line_no, col_no),
                 &#34;expected &#34; + &#34;, &#34;.join(name.upper() for name in expect.names),
             )
         iter_groups = iter(match.groups())
@@ -262,7 +295,7 @@ class Tokenizer:
 <dl>
 <dt id="textual.css.tokenizer.EOFError"><code class="flex name class">
 <span>class <span class="ident">EOFError</span></span>
-<span>(</span><span>path: str, code: str, line_no: int, col_no: int, message: str)</span>
+<span>(</span><span>path: str, code: str, start: tuple[int, int], message: str, end: tuple[int, int] | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Error raised when the CSS cannot be tokenized (syntax error).</p>
@@ -272,23 +305,22 @@ class Tokenizer:
 <dd>Path to source or "<object>" if source is parsed from a literal.</dd>
 <dt><strong><code>code</code></strong> :&ensp;<code>str</code></dt>
 <dd>The code being parsed.</dd>
-<dt><strong><code>line_no</code></strong> :&ensp;<code>int</code></dt>
+<dt><strong><code>start</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
 <dd>Line number of the error.</dd>
-<dt><strong><code>col_no</code></strong> :&ensp;<code>int</code></dt>
-<dd>Column number of the error.</dd>
 <dt><strong><code>message</code></strong> :&ensp;<code>str</code></dt>
 <dd>A message associated with the error.</dd>
-</dl></div>
+</dl>
+<p>end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class EOFError(TokenizeError):
+<pre><code class="python">class EOFError(TokenError):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="textual.css.tokenizer.TokenizeError" href="#textual.css.tokenizer.TokenizeError">TokenizeError</a></li>
+<li><a title="textual.css.tokenizer.TokenError" href="#textual.css.tokenizer.TokenError">TokenError</a></li>
 <li>builtins.Exception</li>
 <li>builtins.BaseException</li>
 </ul>
@@ -394,6 +426,18 @@ class Tokenizer:
     location: tuple[int, int]
     referenced_by: ReferencedBy | None = None
 
+    @property
+    def start(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Start line and column (1 indexed).&#34;&#34;&#34;
+        line, offset = self.location
+        return (line + 1, offset)
+
+    @property
+    def end(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;End line and column (1 indexed).&#34;&#34;&#34;
+        line, offset = self.location
+        return (line + 1, offset + len(self.value))
+
     def with_reference(self, by: ReferencedBy | None) -&gt; &#34;Token&#34;:
         &#34;&#34;&#34;Return a copy of the Token, with reference information attached.
         This is used for variable substitution, where a variable reference
@@ -431,6 +475,20 @@ class Tokenizer:
 <dd>
 <div class="desc"><p>Alias for field number 3</p></div>
 </dd>
+<dt id="textual.css.tokenizer.Token.end"><code class="name">var <span class="ident">end</span> : tuple[int, int]</code></dt>
+<dd>
+<div class="desc"><p>End line and column (1 indexed).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def end(self) -&gt; tuple[int, int]:
+    &#34;&#34;&#34;End line and column (1 indexed).&#34;&#34;&#34;
+    line, offset = self.location
+    return (line + 1, offset + len(self.value))</code></pre>
+</details>
+</dd>
 <dt id="textual.css.tokenizer.Token.location"><code class="name">var <span class="ident">location</span></code></dt>
 <dd>
 <div class="desc"><p>Alias for field number 4</p></div>
@@ -446,6 +504,20 @@ class Tokenizer:
 <dt id="textual.css.tokenizer.Token.referenced_by"><code class="name">var <span class="ident">referenced_by</span></code></dt>
 <dd>
 <div class="desc"><p>Alias for field number 5</p></div>
+</dd>
+<dt id="textual.css.tokenizer.Token.start"><code class="name">var <span class="ident">start</span> : tuple[int, int]</code></dt>
+<dd>
+<div class="desc"><p>Start line and column (1 indexed).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def start(self) -&gt; tuple[int, int]:
+    &#34;&#34;&#34;Start line and column (1 indexed).&#34;&#34;&#34;
+    line, offset = self.location
+    return (line + 1, offset)</code></pre>
+</details>
 </dd>
 <dt id="textual.css.tokenizer.Token.value"><code class="name">var <span class="ident">value</span></code></dt>
 <dd>
@@ -486,9 +558,9 @@ to is used.</p></div>
 </dd>
 </dl>
 </dd>
-<dt id="textual.css.tokenizer.TokenizeError"><code class="flex name class">
-<span>class <span class="ident">TokenizeError</span></span>
-<span>(</span><span>path: str, code: str, line_no: int, col_no: int, message: str)</span>
+<dt id="textual.css.tokenizer.TokenError"><code class="flex name class">
+<span>class <span class="ident">TokenError</span></span>
+<span>(</span><span>path: str, code: str, start: tuple[int, int], message: str, end: tuple[int, int] | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Error raised when the CSS cannot be tokenized (syntax error).</p>
@@ -498,39 +570,43 @@ to is used.</p></div>
 <dd>Path to source or "<object>" if source is parsed from a literal.</dd>
 <dt><strong><code>code</code></strong> :&ensp;<code>str</code></dt>
 <dd>The code being parsed.</dd>
-<dt><strong><code>line_no</code></strong> :&ensp;<code>int</code></dt>
+<dt><strong><code>start</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
 <dd>Line number of the error.</dd>
-<dt><strong><code>col_no</code></strong> :&ensp;<code>int</code></dt>
-<dd>Column number of the error.</dd>
 <dt><strong><code>message</code></strong> :&ensp;<code>str</code></dt>
 <dd>A message associated with the error.</dd>
-</dl></div>
+</dl>
+<p>end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TokenizeError(Exception):
+<pre><code class="python">class TokenError(Exception):
     &#34;&#34;&#34;Error raised when the CSS cannot be tokenized (syntax error).&#34;&#34;&#34;
 
     def __init__(
-        self, path: str, code: str, line_no: int, col_no: int, message: str
+        self,
+        path: str,
+        code: str,
+        start: tuple[int, int],
+        message: str,
+        end: tuple[int, int] | None = None,
     ) -&gt; None:
         &#34;&#34;&#34;
         Args:
             path (str): Path to source or &#34;&lt;object&gt;&#34; if source is parsed from a literal.
             code (str): The code being parsed.
-            line_no (int): Line number of the error.
-            col_no (int): Column number of the error.
+            start (tuple[int, int]): Line number of the error.
             message (str): A message associated with the error.
+            end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None.
         &#34;&#34;&#34;
+
         self.path = path
         self.code = code
-        self.line_no = line_no
-        self.col_no = col_no
+        self.start = start
+        self.end = end or start
         super().__init__(message)
 
-    @classmethod
-    def _get_snippet(cls, code: str, line_no: int) -&gt; Panel:
+    def _get_snippet(self) -&gt; Panel:
         &#34;&#34;&#34;Get a short snippet of code around a given line number.
 
         Args:
@@ -540,9 +616,10 @@ to is used.</p></div>
         Returns:
             Panel: A renderable.
         &#34;&#34;&#34;
+        line_no = self.start[0]
         # TODO: Highlight column number
         syntax = Syntax(
-            code,
+            self.code,
             lexer=&#34;scss&#34;,
             theme=&#34;ansi_light&#34;,
             line_numbers=True,
@@ -550,6 +627,7 @@ to is used.</p></div>
             line_range=(max(0, line_no - 2), line_no + 2),
             highlight_lines={line_no},
         )
+        syntax.stylize_range(&#34;reverse bold&#34;, self.start, self.end)
         return Panel(syntax, border_style=&#34;red&#34;)
 
     def __rich__(self) -&gt; RenderableType:
@@ -557,19 +635,24 @@ to is used.</p></div>
         errors: list[RenderableType] = []
 
         message = str(self)
-        errors.append(Text(&#34; Tokenizer error in stylesheet:&#34;, style=&#34;bold red&#34;))
+        errors.append(Text(&#34; Error in stylesheet:&#34;, style=&#34;bold red&#34;))
 
+        line_no, col_no = self.start
+
+        errors.append(highlighter(f&#34; {self.path or &#39;&lt;unknown&gt;&#39;}:{line_no}:{col_no}&#34;))
+        errors.append(self._get_snippet())
+
+        final_message = &#34;\n&#34;.join(
+            f&#34;• {message_part.strip()}&#34; for message_part in message.split(&#34;;&#34;)
+        )
         errors.append(
-            highlighter(
-                f&#34; {self.path or &#39;&lt;unknown&gt;&#39;}:{self.line_no + 1}:{self.col_no + 1}&#34;
+            Padding(
+                highlighter(
+                    Text(final_message, &#34;red&#34;),
+                ),
+                pad=(0, 1),
             )
         )
-        errors.append(self._get_snippet(self.code, self.line_no + 1))
-        final_message = &#34;&#34;
-        for is_last, message_part in loop_last(message.split(&#34;;&#34;)):
-            end = &#34;&#34; if is_last else &#34;\n&#34;
-            final_message += f&#34;• {message_part.strip()};{end}&#34;
-        errors.append(Padding(highlighter(Text(final_message, &#34;red&#34;)), pad=(0, 1)))
 
         return Group(*errors)</code></pre>
 </details>
@@ -580,6 +663,7 @@ to is used.</p></div>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="textual.css.errors.UnresolvedVariableError" href="errors.html#textual.css.errors.UnresolvedVariableError">UnresolvedVariableError</a></li>
 <li><a title="textual.css.tokenizer.EOFError" href="#textual.css.tokenizer.EOFError">EOFError</a></li>
 </ul>
 </dd>
@@ -606,19 +690,28 @@ to is used.</p></div>
         col_no = self.col_no
         if line_no &gt;= len(self.lines):
             if expect._expect_eof:
-                return Token(&#34;eof&#34;, &#34;&#34;, self.path, self.code, (line_no, col_no), None)
+                return Token(
+                    &#34;eof&#34;,
+                    &#34;&#34;,
+                    self.path,
+                    self.code,
+                    (line_no + 1, col_no + 1),
+                    None,
+                )
             else:
                 raise EOFError(
-                    self.path, self.code, line_no, col_no, &#34;Unexpected end of file&#34;
+                    self.path,
+                    self.code,
+                    (line_no + 1, col_no + 1),
+                    &#34;Unexpected end of file&#34;,
                 )
         line = self.lines[line_no]
         match = expect.match(line, col_no)
         if match is None:
-            raise TokenizeError(
+            raise TokenError(
                 self.path,
                 self.code,
-                line_no,
-                col_no,
+                (line_no, col_no),
                 &#34;expected &#34; + &#34;, &#34;.join(name.upper() for name in expect.names),
             )
         iter_groups = iter(match.groups())
@@ -683,19 +776,28 @@ to is used.</p></div>
     col_no = self.col_no
     if line_no &gt;= len(self.lines):
         if expect._expect_eof:
-            return Token(&#34;eof&#34;, &#34;&#34;, self.path, self.code, (line_no, col_no), None)
+            return Token(
+                &#34;eof&#34;,
+                &#34;&#34;,
+                self.path,
+                self.code,
+                (line_no + 1, col_no + 1),
+                None,
+            )
         else:
             raise EOFError(
-                self.path, self.code, line_no, col_no, &#34;Unexpected end of file&#34;
+                self.path,
+                self.code,
+                (line_no + 1, col_no + 1),
+                &#34;Unexpected end of file&#34;,
             )
     line = self.lines[line_no]
     match = expect.match(line, col_no)
     if match is None:
-        raise TokenizeError(
+        raise TokenError(
             self.path,
             self.code,
-            line_no,
-            col_no,
+            (line_no, col_no),
             &#34;expected &#34; + &#34;, &#34;.join(name.upper() for name in expect.names),
         )
     iter_groups = iter(match.groups())
@@ -840,16 +942,18 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.css.tokenizer.Token" href="#textual.css.tokenizer.Token">Token</a></code></h4>
 <ul class="two-column">
 <li><code><a title="textual.css.tokenizer.Token.code" href="#textual.css.tokenizer.Token.code">code</a></code></li>
+<li><code><a title="textual.css.tokenizer.Token.end" href="#textual.css.tokenizer.Token.end">end</a></code></li>
 <li><code><a title="textual.css.tokenizer.Token.location" href="#textual.css.tokenizer.Token.location">location</a></code></li>
 <li><code><a title="textual.css.tokenizer.Token.name" href="#textual.css.tokenizer.Token.name">name</a></code></li>
 <li><code><a title="textual.css.tokenizer.Token.path" href="#textual.css.tokenizer.Token.path">path</a></code></li>
 <li><code><a title="textual.css.tokenizer.Token.referenced_by" href="#textual.css.tokenizer.Token.referenced_by">referenced_by</a></code></li>
+<li><code><a title="textual.css.tokenizer.Token.start" href="#textual.css.tokenizer.Token.start">start</a></code></li>
 <li><code><a title="textual.css.tokenizer.Token.value" href="#textual.css.tokenizer.Token.value">value</a></code></li>
 <li><code><a title="textual.css.tokenizer.Token.with_reference" href="#textual.css.tokenizer.Token.with_reference">with_reference</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="textual.css.tokenizer.TokenizeError" href="#textual.css.tokenizer.TokenizeError">TokenizeError</a></code></h4>
+<h4><code><a title="textual.css.tokenizer.TokenError" href="#textual.css.tokenizer.TokenError">TokenError</a></code></h4>
 </li>
 <li>
 <h4><code><a title="textual.css.tokenizer.Tokenizer" href="#textual.css.tokenizer.Tokenizer">Tokenizer</a></code></h4>

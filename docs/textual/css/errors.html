@@ -28,11 +28,12 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from rich.console import ConsoleOptions, Console
+from rich.console import ConsoleOptions, Console, RenderResult
 from rich.traceback import Traceback
 
 from ._help_renderables import HelpText
 from .tokenize import Token
+from .tokenizer import TokenError
 
 
 class DeclarationError(Exception):
@@ -43,11 +44,11 @@ class DeclarationError(Exception):
         super().__init__(message)
 
 
-class UnresolvedVariableError(NameError):
+class StyleTypeError(TypeError):
     pass
 
 
-class StyleTypeError(TypeError):
+class UnresolvedVariableError(TokenError):
     pass
 
 
@@ -63,7 +64,9 @@ class StyleValueError(ValueError):
         super().__init__(*args)
         self.help_text = help_text
 
-    def __rich_console__(self, console: Console, options: ConsoleOptions):
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
         yield Traceback.from_exception(type(self), self, self.__traceback__)
         if self.help_text is not None:
             yield &#34;&#34;
@@ -152,7 +155,9 @@ error is raised.</p></div>
         super().__init__(*args)
         self.help_text = help_text
 
-    def __rich_console__(self, console: Console, options: ConsoleOptions):
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
         yield Traceback.from_exception(type(self), self, self.__traceback__)
         if self.help_text is not None:
             yield &#34;&#34;
@@ -191,20 +196,32 @@ error is raised.</p></div>
 </dd>
 <dt id="textual.css.errors.UnresolvedVariableError"><code class="flex name class">
 <span>class <span class="ident">UnresolvedVariableError</span></span>
-<span>(</span><span>*args, **kwargs)</span>
+<span>(</span><span>path: str, code: str, start: tuple[int, int], message: str, end: tuple[int, int] | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Name not found globally.</p></div>
+<div class="desc"><p>Error raised when the CSS cannot be tokenized (syntax error).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong> :&ensp;<code>str</code></dt>
+<dd>Path to source or "<object>" if source is parsed from a literal.</dd>
+<dt><strong><code>code</code></strong> :&ensp;<code>str</code></dt>
+<dd>The code being parsed.</dd>
+<dt><strong><code>start</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
+<dd>Line number of the error.</dd>
+<dt><strong><code>message</code></strong> :&ensp;<code>str</code></dt>
+<dd>A message associated with the error.</dd>
+</dl>
+<p>end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UnresolvedVariableError(NameError):
+<pre><code class="python">class UnresolvedVariableError(TokenError):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>builtins.NameError</li>
+<li><a title="textual.css.tokenizer.TokenError" href="tokenizer.html#textual.css.tokenizer.TokenError">TokenError</a></li>
 <li>builtins.Exception</li>
 <li>builtins.BaseException</li>
 </ul>
