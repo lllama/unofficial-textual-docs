@@ -54,6 +54,8 @@ from typing import Callable, NamedTuple
 
 import rich.repr
 from rich.color import Color as RichColor
+from rich.color import ColorType
+from rich.color_triplet import ColorTriplet
 from rich.style import Style
 from rich.text import Text
 
@@ -62,6 +64,9 @@ from textual.css.tokenize import COMMA, OPEN_BRACE, CLOSE_BRACE, DECIMAL, PERCEN
 from textual.suggestions import get_suggestion
 from ._color_constants import COLOR_NAME_TO_RGB
 from .geometry import clamp
+
+
+_TRUECOLOR = ColorType.TRUECOLOR
 
 
 class HLS(NamedTuple):
@@ -166,11 +171,10 @@ class Color(NamedTuple):
 
     def __rich__(self) -&gt; Text:
         &#34;&#34;&#34;A Rich method to show the color.&#34;&#34;&#34;
-        r, g, b, _ = self
         return Text(
             f&#34; {self!r} &#34;,
             style=Style.from_color(
-                self.get_contrast_text().rich_color, RichColor.from_rgb(r, g, b)
+                self.get_contrast_text().rich_color, self.rich_color
             ),
         )
 
@@ -195,9 +199,10 @@ class Color(NamedTuple):
     @property
     def rich_color(self) -&gt; RichColor:
         &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.&#34;&#34;&#34;
-        # TODO: This isn&#39;t cheap as I&#39;d like - cache in a LRUCache ?
         r, g, b, _a = self
-        return RichColor.from_rgb(r, g, b)
+        return RichColor(
+            f&#34;#{r:02x}{g:02x}{b:02x}&#34;, _TRUECOLOR, None, ColorTriplet(r, g, b)
+        )
 
     @property
     def normalized(self) -&gt; tuple[float, float, float]:
@@ -408,7 +413,7 @@ class Color(NamedTuple):
         Returns:
             Color: New color.
         &#34;&#34;&#34;
-        return self.darken(-amount).clamped
+        return self.darken(-amount)
 
     @lru_cache(maxsize=1024)
     def get_contrast_text(self, alpha=0.95) -&gt; Color:
@@ -688,11 +693,10 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
 
     def __rich__(self) -&gt; Text:
         &#34;&#34;&#34;A Rich method to show the color.&#34;&#34;&#34;
-        r, g, b, _ = self
         return Text(
             f&#34; {self!r} &#34;,
             style=Style.from_color(
-                self.get_contrast_text().rich_color, RichColor.from_rgb(r, g, b)
+                self.get_contrast_text().rich_color, self.rich_color
             ),
         )
 
@@ -717,9 +721,10 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
     @property
     def rich_color(self) -&gt; RichColor:
         &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.&#34;&#34;&#34;
-        # TODO: This isn&#39;t cheap as I&#39;d like - cache in a LRUCache ?
         r, g, b, _a = self
-        return RichColor.from_rgb(r, g, b)
+        return RichColor(
+            f&#34;#{r:02x}{g:02x}{b:02x}&#34;, _TRUECOLOR, None, ColorTriplet(r, g, b)
+        )
 
     @property
     def normalized(self) -&gt; tuple[float, float, float]:
@@ -930,7 +935,7 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         Returns:
             Color: New color.
         &#34;&#34;&#34;
-        return self.darken(-amount).clamped
+        return self.darken(-amount)
 
     @lru_cache(maxsize=1024)
     def get_contrast_text(self, alpha=0.95) -&gt; Color:
@@ -1311,9 +1316,10 @@ def rgb(self) -&gt; tuple[int, int, int]:
 <pre><code class="python">@property
 def rich_color(self) -&gt; RichColor:
     &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.&#34;&#34;&#34;
-    # TODO: This isn&#39;t cheap as I&#39;d like - cache in a LRUCache ?
     r, g, b, _a = self
-    return RichColor.from_rgb(r, g, b)</code></pre>
+    return RichColor(
+        f&#34;#{r:02x}{g:02x}{b:02x}&#34;, _TRUECOLOR, None, ColorTriplet(r, g, b)
+    )</code></pre>
 </details>
 </dd>
 </dl>
@@ -1464,7 +1470,7 @@ def get_contrast_text(self, alpha=0.95) -&gt; Color:
     Returns:
         Color: New color.
     &#34;&#34;&#34;
-    return self.darken(-amount).clamped</code></pre>
+    return self.darken(-amount)</code></pre>
 </details>
 </dd>
 <dt id="textual.color.Color.with_alpha"><code class="name flex">

@@ -912,6 +912,24 @@ class Spacing(NamedTuple):
             )
         return NotImplemented
 
+    def grow_maximum(self, other: Spacing) -&gt; Spacing:
+        &#34;&#34;&#34;Grow spacing with a maximum.
+
+        Args:
+            other (Spacing): Spacing object.
+
+        Returns:
+            Spacing: New spacing were the values are maximum of the two values.
+        &#34;&#34;&#34;
+        top, right, bottom, left = self
+        other_top, other_right, other_bottom, other_left = other
+        return Spacing(
+            max(top, other_top),
+            max(right, other_right),
+            max(bottom, other_bottom),
+            max(left, other_left),
+        )
+
 
 NULL_OFFSET = Offset(0, 0)</code></pre>
 </details>
@@ -3209,7 +3227,25 @@ def region(self) -&gt; Region:
             return Spacing(
                 top1 - top2, right1 - right2, bottom1 - bottom2, left1 - left2
             )
-        return NotImplemented</code></pre>
+        return NotImplemented
+
+    def grow_maximum(self, other: Spacing) -&gt; Spacing:
+        &#34;&#34;&#34;Grow spacing with a maximum.
+
+        Args:
+            other (Spacing): Spacing object.
+
+        Returns:
+            Spacing: New spacing were the values are maximum of the two values.
+        &#34;&#34;&#34;
+        top, right, bottom, left = self
+        other_top, other_right, other_bottom, other_left = other
+        return Spacing(
+            max(top, other_top),
+            max(right, other_right),
+            max(bottom, other_bottom),
+            max(left, other_left),
+        )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -3476,6 +3512,47 @@ def width(self) -&gt; int:
 </details>
 </dd>
 </dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.geometry.Spacing.grow_maximum"><code class="name flex">
+<span>def <span class="ident">grow_maximum</span></span>(<span>self, other: <a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a>) ‑> <a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Grow spacing with a maximum.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>other</code></strong> :&ensp;<code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd>Spacing object.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
+<dd>New spacing were the values are maximum of the two values.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def grow_maximum(self, other: Spacing) -&gt; Spacing:
+    &#34;&#34;&#34;Grow spacing with a maximum.
+
+    Args:
+        other (Spacing): Spacing object.
+
+    Returns:
+        Spacing: New spacing were the values are maximum of the two values.
+    &#34;&#34;&#34;
+    top, right, bottom, left = self
+    other_top, other_right, other_bottom, other_left = other
+    return Spacing(
+        max(top, other_top),
+        max(right, other_right),
+        max(bottom, other_bottom),
+        max(left, other_left),
+    )</code></pre>
+</details>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
@@ -3616,6 +3693,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Spacing.bottom" href="#textual.geometry.Spacing.bottom">bottom</a></code></li>
 <li><code><a title="textual.geometry.Spacing.bottom_right" href="#textual.geometry.Spacing.bottom_right">bottom_right</a></code></li>
 <li><code><a title="textual.geometry.Spacing.css" href="#textual.geometry.Spacing.css">css</a></code></li>
+<li><code><a title="textual.geometry.Spacing.grow_maximum" href="#textual.geometry.Spacing.grow_maximum">grow_maximum</a></code></li>
 <li><code><a title="textual.geometry.Spacing.height" href="#textual.geometry.Spacing.height">height</a></code></li>
 <li><code><a title="textual.geometry.Spacing.horizontal" href="#textual.geometry.Spacing.horizontal">horizontal</a></code></li>
 <li><code><a title="textual.geometry.Spacing.left" href="#textual.geometry.Spacing.left">left</a></code></li>

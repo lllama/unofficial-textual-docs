@@ -40,7 +40,7 @@ from rich.tree import Tree
 
 from ._context import NoActiveAppError
 from ._node_list import NodeList
-from .color import Color
+from .color import Color, WHITE, BLACK
 from .css._error_tools import friendly_list
 from .css.constants import VALID_DISPLAY, VALID_VISIBILITY
 from .css.errors import StyleValueError
@@ -375,9 +375,8 @@ class DOMNode(MessagePump):
     def text_style(self) -&gt; Style:
         &#34;&#34;&#34;Get the text style object.
 
-        A widget&#39;s style is influenced by its parent. For instance if a widgets background has an alpha,
-        then its parent&#39;s background color will show through. Additionally, widgets will inherit their
-        parent&#39;s text style (i.e. bold, italic etc).
+        A widget&#39;s style is influenced by its parent. for instance if a parent is bold, then
+        the child will also be bold.
 
         Returns:
             Style: Rich Style object.
@@ -393,20 +392,39 @@ class DOMNode(MessagePump):
     @property
     def rich_style(self) -&gt; Style:
         &#34;&#34;&#34;Get a Rich Style object for this DOMNode.&#34;&#34;&#34;
-        (_, _), (background, color) = self.colors
-        style = Style.from_color(color.rich_color, background.rich_color)
-        style += self.text_style
+        _, _, background, color = self.colors
+        style = (
+            Style.from_color(color.rich_color, background.rich_color) + self.text_style
+        )
         return style
 
     @property
-    def colors(self) -&gt; tuple[tuple[Color, Color], tuple[Color, Color]]:
-        &#34;&#34;&#34;Gets the Widgets foreground and background colors, and its parent&#39;s colors.
+    def background_colors(self) -&gt; tuple[Color, Color]:
+        &#34;&#34;&#34;Get the background color and the color of the parent&#39;s background.
 
         Returns:
-            tuple[tuple[Color, Color], tuple[Color, Color]]: Base colors and widget colors
+            tuple[Color, Color]: Tuple of (base background, background)
+
         &#34;&#34;&#34;
-        base_background = background = Color(0, 0, 0, 0)
-        base_color = color = Color(255, 255, 255, 0)
+
+        base_background = background = BLACK
+
+        for node in reversed(self.ancestors):
+            styles = node.styles
+            if styles.has_rule(&#34;background&#34;):
+                base_background = background
+                background += styles.background
+        return (base_background, background)
+
+    @property
+    def colors(self) -&gt; tuple[Color, Color, Color, Color]:
+        &#34;&#34;&#34;Gets the Widgets foreground and background colors, and its parent&#39;s (base) colors.
+
+        Returns:
+            tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)
+        &#34;&#34;&#34;
+        base_background = background = WHITE
+        base_color = color = BLACK
         for node in reversed(self.ancestors):
             styles = node.styles
             if styles.has_rule(&#34;background&#34;):
@@ -414,17 +432,17 @@ class DOMNode(MessagePump):
                 background += styles.background
             if styles.has_rule(&#34;color&#34;):
                 base_color = color
-                color += styles.color
-        return (base_background, base_color), (background, color)
+                color = styles.color
+        return (base_background, base_color, background, color)
 
     @property
     def ancestors(self) -&gt; list[DOMNode]:
         &#34;&#34;&#34;Get a list of Nodes by tracing ancestors all the way back to App.&#34;&#34;&#34;
         nodes: list[DOMNode] = [self]
         add_node = nodes.append
-        node = self
+        node: DOMNode = self
         while True:
-            node = node.parent
+            node = node._parent
             if node is None:
                 break
             add_node(node)
@@ -942,9 +960,8 @@ class DOMNode(MessagePump):
     def text_style(self) -&gt; Style:
         &#34;&#34;&#34;Get the text style object.
 
-        A widget&#39;s style is influenced by its parent. For instance if a widgets background has an alpha,
-        then its parent&#39;s background color will show through. Additionally, widgets will inherit their
-        parent&#39;s text style (i.e. bold, italic etc).
+        A widget&#39;s style is influenced by its parent. for instance if a parent is bold, then
+        the child will also be bold.
 
         Returns:
             Style: Rich Style object.
@@ -960,20 +977,39 @@ class DOMNode(MessagePump):
     @property
     def rich_style(self) -&gt; Style:
         &#34;&#34;&#34;Get a Rich Style object for this DOMNode.&#34;&#34;&#34;
-        (_, _), (background, color) = self.colors
-        style = Style.from_color(color.rich_color, background.rich_color)
-        style += self.text_style
+        _, _, background, color = self.colors
+        style = (
+            Style.from_color(color.rich_color, background.rich_color) + self.text_style
+        )
         return style
 
     @property
-    def colors(self) -&gt; tuple[tuple[Color, Color], tuple[Color, Color]]:
-        &#34;&#34;&#34;Gets the Widgets foreground and background colors, and its parent&#39;s colors.
+    def background_colors(self) -&gt; tuple[Color, Color]:
+        &#34;&#34;&#34;Get the background color and the color of the parent&#39;s background.
 
         Returns:
-            tuple[tuple[Color, Color], tuple[Color, Color]]: Base colors and widget colors
+            tuple[Color, Color]: Tuple of (base background, background)
+
         &#34;&#34;&#34;
-        base_background = background = Color(0, 0, 0, 0)
-        base_color = color = Color(255, 255, 255, 0)
+
+        base_background = background = BLACK
+
+        for node in reversed(self.ancestors):
+            styles = node.styles
+            if styles.has_rule(&#34;background&#34;):
+                base_background = background
+                background += styles.background
+        return (base_background, background)
+
+    @property
+    def colors(self) -&gt; tuple[Color, Color, Color, Color]:
+        &#34;&#34;&#34;Gets the Widgets foreground and background colors, and its parent&#39;s (base) colors.
+
+        Returns:
+            tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)
+        &#34;&#34;&#34;
+        base_background = background = WHITE
+        base_color = color = BLACK
         for node in reversed(self.ancestors):
             styles = node.styles
             if styles.has_rule(&#34;background&#34;):
@@ -981,17 +1017,17 @@ class DOMNode(MessagePump):
                 background += styles.background
             if styles.has_rule(&#34;color&#34;):
                 base_color = color
-                color += styles.color
-        return (base_background, base_color), (background, color)
+                color = styles.color
+        return (base_background, base_color, background, color)
 
     @property
     def ancestors(self) -&gt; list[DOMNode]:
         &#34;&#34;&#34;Get a list of Nodes by tracing ancestors all the way back to App.&#34;&#34;&#34;
         nodes: list[DOMNode] = [self]
         add_node = nodes.append
-        node = self
+        node: DOMNode = self
         while True:
-            node = node.parent
+            node = node._parent
             if node is None:
                 break
             add_node(node)
@@ -1207,13 +1243,44 @@ def ancestors(self) -&gt; list[DOMNode]:
     &#34;&#34;&#34;Get a list of Nodes by tracing ancestors all the way back to App.&#34;&#34;&#34;
     nodes: list[DOMNode] = [self]
     add_node = nodes.append
-    node = self
+    node: DOMNode = self
     while True:
-        node = node.parent
+        node = node._parent
         if node is None:
             break
         add_node(node)
     return nodes</code></pre>
+</details>
+</dd>
+<dt id="textual.dom.DOMNode.background_colors"><code class="name">var <span class="ident">background_colors</span> : tuple[Color, Color]</code></dt>
+<dd>
+<div class="desc"><p>Get the background color and the color of the parent's background.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[Color, Color]</code></dt>
+<dd>Tuple of (base background, background)</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def background_colors(self) -&gt; tuple[Color, Color]:
+    &#34;&#34;&#34;Get the background color and the color of the parent&#39;s background.
+
+    Returns:
+        tuple[Color, Color]: Tuple of (base background, background)
+
+    &#34;&#34;&#34;
+
+    base_background = background = BLACK
+
+    for node in reversed(self.ancestors):
+        styles = node.styles
+        if styles.has_rule(&#34;background&#34;):
+            base_background = background
+            background += styles.background
+    return (base_background, background)</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.classes"><code class="name">var <span class="ident">classes</span> : frozenset[str]</code></dt>
@@ -1228,27 +1295,27 @@ def classes(self) -&gt; frozenset[str]:
     return frozenset(self._classes)</code></pre>
 </details>
 </dd>
-<dt id="textual.dom.DOMNode.colors"><code class="name">var <span class="ident">colors</span> : tuple[tuple[Color, Color], tuple[Color, Color]]</code></dt>
+<dt id="textual.dom.DOMNode.colors"><code class="name">var <span class="ident">colors</span> : tuple[Color, Color, Color, Color]</code></dt>
 <dd>
-<div class="desc"><p>Gets the Widgets foreground and background colors, and its parent's colors.</p>
+<div class="desc"><p>Gets the Widgets foreground and background colors, and its parent's (base) colors.</p>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>tuple[tuple[Color, Color], tuple[Color, Color]]</code></dt>
-<dd>Base colors and widget colors</dd>
+<dt><code>tuple[Color, Color, Color, Color]</code></dt>
+<dd>Tuple of (base background, base color, background, color)</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def colors(self) -&gt; tuple[tuple[Color, Color], tuple[Color, Color]]:
-    &#34;&#34;&#34;Gets the Widgets foreground and background colors, and its parent&#39;s colors.
+def colors(self) -&gt; tuple[Color, Color, Color, Color]:
+    &#34;&#34;&#34;Gets the Widgets foreground and background colors, and its parent&#39;s (base) colors.
 
     Returns:
-        tuple[tuple[Color, Color], tuple[Color, Color]]: Base colors and widget colors
+        tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)
     &#34;&#34;&#34;
-    base_background = background = Color(0, 0, 0, 0)
-    base_color = color = Color(255, 255, 255, 0)
+    base_background = background = WHITE
+    base_color = color = BLACK
     for node in reversed(self.ancestors):
         styles = node.styles
         if styles.has_rule(&#34;background&#34;):
@@ -1256,8 +1323,8 @@ def colors(self) -&gt; tuple[tuple[Color, Color], tuple[Color, Color]]:
             background += styles.background
         if styles.has_rule(&#34;color&#34;):
             base_color = color
-            color += styles.color
-    return (base_background, base_color), (background, color)</code></pre>
+            color = styles.color
+    return (base_background, base_color, background, color)</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.css"><code class="name">var <span class="ident">css</span> : list[tuple[str, str]]</code></dt>
@@ -1481,9 +1548,10 @@ def pseudo_classes(self) -&gt; frozenset[str]:
 <pre><code class="python">@property
 def rich_style(self) -&gt; Style:
     &#34;&#34;&#34;Get a Rich Style object for this DOMNode.&#34;&#34;&#34;
-    (_, _), (background, color) = self.colors
-    style = Style.from_color(color.rich_color, background.rich_color)
-    style += self.text_style
+    _, _, background, color = self.colors
+    style = (
+        Style.from_color(color.rich_color, background.rich_color) + self.text_style
+    )
     return style</code></pre>
 </details>
 </dd>
@@ -1511,9 +1579,8 @@ def screen(self) -&gt; &#34;Screen&#34;:
 <dt id="textual.dom.DOMNode.text_style"><code class="name">var <span class="ident">text_style</span> : rich.style.Style</code></dt>
 <dd>
 <div class="desc"><p>Get the text style object.</p>
-<p>A widget's style is influenced by its parent. For instance if a widgets background has an alpha,
-then its parent's background color will show through. Additionally, widgets will inherit their
-parent's text style (i.e. bold, italic etc).</p>
+<p>A widget's style is influenced by its parent. for instance if a parent is bold, then
+the child will also be bold.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Style</code></dt>
@@ -1527,9 +1594,8 @@ parent's text style (i.e. bold, italic etc).</p>
 def text_style(self) -&gt; Style:
     &#34;&#34;&#34;Get the text style object.
 
-    A widget&#39;s style is influenced by its parent. For instance if a widgets background has an alpha,
-    then its parent&#39;s background color will show through. Additionally, widgets will inherit their
-    parent&#39;s text style (i.e. bold, italic etc).
+    A widget&#39;s style is influenced by its parent. for instance if a parent is bold, then
+    the child will also be bold.
 
     Returns:
         Style: Rich Style object.
@@ -2133,6 +2199,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.add_children" href="#textual.dom.DOMNode.add_children">add_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_class" href="#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.ancestors" href="#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
+<li><code><a title="textual.dom.DOMNode.background_colors" href="#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.classes" href="#textual.dom.DOMNode.classes">classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.colors" href="#textual.dom.DOMNode.colors">colors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css" href="#textual.dom.DOMNode.css">css</a></code></li>

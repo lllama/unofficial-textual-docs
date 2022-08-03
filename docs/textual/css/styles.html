@@ -40,7 +40,7 @@ from rich.style import Style
 
 from .._animator import Animation, EasingFunction
 from ..color import Color
-from ..geometry import Spacing
+from ..geometry import Size, Offset, Spacing
 from ._style_properties import (
     AlignProperty,
     BorderProperty,
@@ -213,7 +213,7 @@ class StylesBase(ABC):
     layout = LayoutProperty()
 
     color = ColorProperty(Color(255, 255, 255))
-    background = ColorProperty(Color(0, 0, 0, 0))
+    background = ColorProperty(Color(0, 0, 0, 0), background=True)
     text_style = StyleFlagsProperty()
 
     opacity = FractionalProperty()
@@ -463,6 +463,23 @@ class StylesBase(ABC):
             else:
                 offset_y = parent_height - height
         return offset_y
+
+    def align_size(self, child: tuple[int, int], parent: tuple[int, int]) -&gt; Offset:
+        &#34;&#34;&#34;Align a size according to alignment rules.
+
+        Args:
+            child (tuple[int, int]): The size of the child (width, height)
+            parent (tuple[int, int]): The size of the parent (width, height)
+
+        Returns:
+            Offset: Offset required to align the child.
+        &#34;&#34;&#34;
+        width, height = child
+        parent_width, parent_height = parent
+        return Offset(
+            self.align_width(width, parent_width),
+            self.align_height(height, parent_height),
+        )
 
 
 @rich.repr.auto
@@ -1124,6 +1141,7 @@ def inline(self) -&gt; Styles:
 <li><code><a title="textual.css.styles.StylesBase.align" href="#textual.css.styles.StylesBase.align">align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_size" href="#textual.css.styles.StylesBase.align_size">align_size</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
@@ -2073,6 +2091,7 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
 <li><code><a title="textual.css.styles.StylesBase.align" href="#textual.css.styles.StylesBase.align">align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_size" href="#textual.css.styles.StylesBase.align_size">align_size</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
@@ -2178,7 +2197,7 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
     layout = LayoutProperty()
 
     color = ColorProperty(Color(255, 255, 255))
-    background = ColorProperty(Color(0, 0, 0, 0))
+    background = ColorProperty(Color(0, 0, 0, 0), background=True)
     text_style = StyleFlagsProperty()
 
     opacity = FractionalProperty()
@@ -2427,7 +2446,24 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
                 offset_y = (parent_height - height) // 2
             else:
                 offset_y = parent_height - height
-        return offset_y</code></pre>
+        return offset_y
+
+    def align_size(self, child: tuple[int, int], parent: tuple[int, int]) -&gt; Offset:
+        &#34;&#34;&#34;Align a size according to alignment rules.
+
+        Args:
+            child (tuple[int, int]): The size of the child (width, height)
+            parent (tuple[int, int]): The size of the parent (width, height)
+
+        Returns:
+            Offset: Offset required to align the child.
+        &#34;&#34;&#34;
+        width, height = child
+        parent_width, parent_height = parent
+        return Offset(
+            self.align_width(width, parent_width),
+            self.align_height(height, parent_height),
+        )</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2888,7 +2924,7 @@ value belongs in the set of valid values.</p></div>
     return obj.get_rule(self.name, self._default)</code></pre>
 </details>
 </dd>
-<dt id="textual.css.styles.StylesBase.dock"><code class="name">var <span class="ident">dock</span> : str</code></dt>
+<dt id="textual.css.styles.StylesBase.dock"><code class="name">var <span class="ident">dock</span> : DockEdge</code></dt>
 <dd>
 <div class="desc"><p>Descriptor for getting and setting the dock property. The dock property
 allows you to specify which dock you wish a Widget to be attached to. This
@@ -2898,7 +2934,9 @@ the docks themselves, and where they are located on screen.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; DockEdge:
     &#34;&#34;&#34;Get the Dock property
 
     Args:
@@ -2908,7 +2946,7 @@ the docks themselves, and where they are located on screen.</p></div>
     Returns:
         str: The dock name as a string, or &#34;&#34; if the rule is not set.
     &#34;&#34;&#34;
-    return obj.get_rule(&#34;dock&#34;, &#34;_default&#34;)</code></pre>
+    return cast(DockEdge, obj.get_rule(&#34;dock&#34;, &#34;&#34;))</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.docks"><code class="name">var <span class="ident">docks</span> : tuple[<a title="textual.css.styles.DockGroup" href="#textual.css.styles.DockGroup">DockGroup</a>, ...]</code></dt>
@@ -3762,6 +3800,45 @@ value belongs in the set of valid values.</p></div>
     return offset_y</code></pre>
 </details>
 </dd>
+<dt id="textual.css.styles.StylesBase.align_size"><code class="name flex">
+<span>def <span class="ident">align_size</span></span>(<span>self, child: tuple[int, int], parent: tuple[int, int]) ‑> Offset</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Align a size according to alignment rules.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>child</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
+<dd>The size of the child (width, height)</dd>
+<dt><strong><code>parent</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
+<dd>The size of the parent (width, height)</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Offset</code></dt>
+<dd>Offset required to align the child.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def align_size(self, child: tuple[int, int], parent: tuple[int, int]) -&gt; Offset:
+    &#34;&#34;&#34;Align a size according to alignment rules.
+
+    Args:
+        child (tuple[int, int]): The size of the child (width, height)
+        parent (tuple[int, int]): The size of the parent (width, height)
+
+    Returns:
+        Offset: Offset required to align the child.
+    &#34;&#34;&#34;
+    width, height = child
+    parent_width, parent_height = parent
+    return Offset(
+        self.align_width(width, parent_width),
+        self.align_height(height, parent_height),
+    )</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.StylesBase.align_width"><code class="name flex">
 <span>def <span class="ident">align_width</span></span>(<span>self, width: int, parent_width: int) ‑> int</span>
 </code></dt>
@@ -4227,6 +4304,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.align" href="#textual.css.styles.StylesBase.align">align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.align_size" href="#textual.css.styles.StylesBase.align_size">align_size</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>

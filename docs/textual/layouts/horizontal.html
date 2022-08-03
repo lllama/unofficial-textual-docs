@@ -44,7 +44,9 @@ class HorizontalLayout(Layout):
 
     name = &#34;horizontal&#34;
 
-    def arrange(self, parent: Widget, size: Size) -&gt; ArrangeResult:
+    def arrange(
+        self, parent: Widget, children: list[Widget], size: Size
+    ) -&gt; ArrangeResult:
 
         placements: list[WidgetPlacement] = []
         add_placement = placements.append
@@ -52,7 +54,6 @@ class HorizontalLayout(Layout):
         x = max_width = max_height = Fraction(0)
         parent_size = parent.outer_size
 
-        children = list(parent.children)
         styles = [child.styles for child in children if child.styles.width is not None]
         total_fraction = sum(
             [int(style.width.value) for style in styles if style.width.is_fraction]
@@ -61,7 +62,7 @@ class HorizontalLayout(Layout):
 
         box_models = [
             widget.get_box_model(size, parent_size, fraction_unit)
-            for widget in cast(&#34;list[Widget]&#34;, parent.children)
+            for widget in cast(&#34;list[Widget]&#34;, children)
         ]
 
         margins = [
@@ -124,7 +125,9 @@ fill the space of their parent container, all widgets used in a horizontal layou
 
     name = &#34;horizontal&#34;
 
-    def arrange(self, parent: Widget, size: Size) -&gt; ArrangeResult:
+    def arrange(
+        self, parent: Widget, children: list[Widget], size: Size
+    ) -&gt; ArrangeResult:
 
         placements: list[WidgetPlacement] = []
         add_placement = placements.append
@@ -132,7 +135,6 @@ fill the space of their parent container, all widgets used in a horizontal layou
         x = max_width = max_height = Fraction(0)
         parent_size = parent.outer_size
 
-        children = list(parent.children)
         styles = [child.styles for child in children if child.styles.width is not None]
         total_fraction = sum(
             [int(style.width.value) for style in styles if style.width.is_fraction]
@@ -141,7 +143,7 @@ fill the space of their parent container, all widgets used in a horizontal layou
 
         box_models = [
             widget.get_box_model(size, parent_size, fraction_unit)
-            for widget in cast(&#34;list[Widget]&#34;, parent.children)
+            for widget in cast(&#34;list[Widget]&#34;, children)
         ]
 
         margins = [
@@ -192,7 +194,7 @@ fill the space of their parent container, all widgets used in a horizontal layou
 <h3>Methods</h3>
 <dl>
 <dt id="textual.layouts.horizontal.HorizontalLayout.arrange"><code class="name flex">
-<span>def <span class="ident">arrange</span></span>(<span>self, parent: Widget, size: Size) ‑> tuple[list[WidgetPlacement], set[Widget]]</span>
+<span>def <span class="ident">arrange</span></span>(<span>self, parent: Widget, children: list[Widget], size: Size) ‑> ArrangeResult</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate a layout map that defines where on the screen the widgets will be drawn.</p>
@@ -212,7 +214,9 @@ fill the space of their parent container, all widgets used in a horizontal layou
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def arrange(self, parent: Widget, size: Size) -&gt; ArrangeResult:
+<pre><code class="python">def arrange(
+    self, parent: Widget, children: list[Widget], size: Size
+) -&gt; ArrangeResult:
 
     placements: list[WidgetPlacement] = []
     add_placement = placements.append
@@ -220,7 +224,6 @@ fill the space of their parent container, all widgets used in a horizontal layou
     x = max_width = max_height = Fraction(0)
     parent_size = parent.outer_size
 
-    children = list(parent.children)
     styles = [child.styles for child in children if child.styles.width is not None]
     total_fraction = sum(
         [int(style.width.value) for style in styles if style.width.is_fraction]
@@ -229,7 +232,7 @@ fill the space of their parent container, all widgets used in a horizontal layou
 
     box_models = [
         widget.get_box_model(size, parent_size, fraction_unit)
-        for widget in cast(&#34;list[Widget]&#34;, parent.children)
+        for widget in cast(&#34;list[Widget]&#34;, children)
     ]
 
     margins = [

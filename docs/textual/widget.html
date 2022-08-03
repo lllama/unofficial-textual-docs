@@ -52,7 +52,7 @@ from rich.text import Text
 
 from . import errors, events, messages
 from ._animator import BoundAnimator
-from ._border import Border
+from ._arrange import arrange, DockArrangeResult
 from ._context import active_app
 from ._layout import ArrangeResult, Layout
 from ._segment_tools import line_crop
@@ -64,8 +64,6 @@ from .geometry import Offset, Region, Size, Spacing, clamp
 from .layouts.vertical import VerticalLayout
 from .message import Message
 from .reactive import Reactive, watch
-from .renderables.opacity import Opacity
-from .renderables.tint import Tint
 
 if TYPE_CHECKING:
     from .app import App, ComposeResult
@@ -144,7 +142,7 @@ class Widget(DOMNode):
         self._content_width_cache: tuple[object, int] = (None, 0)
         self._content_height_cache: tuple[object, int] = (None, 0)
 
-        self._arrangement: ArrangeResult | None = None
+        self._arrangement: DockArrangeResult | None = None
         self._arrangement_cache_key: tuple[int, Size] = (-1, Size())
 
         self._styles_cache = StylesCache()
@@ -165,7 +163,7 @@ class Widget(DOMNode):
     show_vertical_scrollbar = Reactive(False, layout=True)
     show_horizontal_scrollbar = Reactive(False, layout=True)
 
-    def _arrange(self, size: Size) -&gt; ArrangeResult:
+    def _arrange(self, size: Size) -&gt; DockArrangeResult:
         &#34;&#34;&#34;Arrange children.
 
         Args:
@@ -174,14 +172,16 @@ class Widget(DOMNode):
         Returns:
             ArrangeResult: Widget locations.
         &#34;&#34;&#34;
+
         arrange_cache_key = (self.children._updates, size)
         if (
             self._arrangement is not None
             and arrange_cache_key == self._arrangement_cache_key
         ):
             return self._arrangement
-        self._arrangement = self.layout.arrange(self, size)
-        self._arrangement_cache_key = (self.children._updates, size)
+
+        self._arrangement_cache_key = arrange_cache_key
+        self._arrangement = arrange(self, self.children, size, self.screen.size)
         return self._arrangement
 
     def _clear_arrangement_cache(self) -&gt; None:
@@ -569,6 +569,25 @@ class Widget(DOMNode):
             bool: True if this widget may be scrolled.
         &#34;&#34;&#34;
         return self.is_container
+
+    @property
+    def layer(self) -&gt; str:
+        &#34;&#34;&#34;Get the name of this widgets layer.&#34;&#34;&#34;
+        return self.styles.layer or &#34;default&#34;
+
+    @property
+    def layers(self) -&gt; tuple[str, ...]:
+        &#34;&#34;&#34;Layers of from parent.
+
+        Returns:
+            tuple[str, ...]: Tuple of layer names.
+        &#34;&#34;&#34;
+        for node in self.ancestors:
+            if not isinstance(node, Widget):
+                break
+            if node.styles.has_rule(&#34;layers&#34;):
+                return node.styles.layers
+        return (&#34;default&#34;,)
 
     def _set_dirty(self, *regions: Region) -&gt; None:
         &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-paint).
@@ -1355,7 +1374,7 @@ def cursor_line(self) -&gt; int | None:
         self._content_width_cache: tuple[object, int] = (None, 0)
         self._content_height_cache: tuple[object, int] = (None, 0)
 
-        self._arrangement: ArrangeResult | None = None
+        self._arrangement: DockArrangeResult | None = None
         self._arrangement_cache_key: tuple[int, Size] = (-1, Size())
 
         self._styles_cache = StylesCache()
@@ -1376,7 +1395,7 @@ def cursor_line(self) -&gt; int | None:
     show_vertical_scrollbar = Reactive(False, layout=True)
     show_horizontal_scrollbar = Reactive(False, layout=True)
 
-    def _arrange(self, size: Size) -&gt; ArrangeResult:
+    def _arrange(self, size: Size) -&gt; DockArrangeResult:
         &#34;&#34;&#34;Arrange children.
 
         Args:
@@ -1385,14 +1404,16 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             ArrangeResult: Widget locations.
         &#34;&#34;&#34;
+
         arrange_cache_key = (self.children._updates, size)
         if (
             self._arrangement is not None
             and arrange_cache_key == self._arrangement_cache_key
         ):
             return self._arrangement
-        self._arrangement = self.layout.arrange(self, size)
-        self._arrangement_cache_key = (self.children._updates, size)
+
+        self._arrangement_cache_key = arrange_cache_key
+        self._arrangement = arrange(self, self.children, size, self.screen.size)
         return self._arrangement
 
     def _clear_arrangement_cache(self) -&gt; None:
@@ -1780,6 +1801,25 @@ def cursor_line(self) -&gt; int | None:
             bool: True if this widget may be scrolled.
         &#34;&#34;&#34;
         return self.is_container
+
+    @property
+    def layer(self) -&gt; str:
+        &#34;&#34;&#34;Get the name of this widgets layer.&#34;&#34;&#34;
+        return self.styles.layer or &#34;default&#34;
+
+    @property
+    def layers(self) -&gt; tuple[str, ...]:
+        &#34;&#34;&#34;Layers of from parent.
+
+        Returns:
+            tuple[str, ...]: Tuple of layer names.
+        &#34;&#34;&#34;
+        for node in self.ancestors:
+            if not isinstance(node, Widget):
+                break
+            if node.styles.has_rule(&#34;layers&#34;):
+                return node.styles.layers
+        return (&#34;default&#34;,)
 
     def _set_dirty(self, *regions: Region) -&gt; None:
         &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-paint).
@@ -2695,6 +2735,46 @@ def is_transparent(self) -&gt; bool:
         bool: ``True`` if there is background color, otherwise ``False``.
     &#34;&#34;&#34;
     return self.is_scrollable and self.styles.background.is_transparent</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.layer"><code class="name">var <span class="ident">layer</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Get the name of this widgets layer.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def layer(self) -&gt; str:
+    &#34;&#34;&#34;Get the name of this widgets layer.&#34;&#34;&#34;
+    return self.styles.layer or &#34;default&#34;</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.layers"><code class="name">var <span class="ident">layers</span> : tuple[str, ...]</code></dt>
+<dd>
+<div class="desc"><p>Layers of from parent.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[str, &hellip;]</code></dt>
+<dd>Tuple of layer names.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def layers(self) -&gt; tuple[str, ...]:
+    &#34;&#34;&#34;Layers of from parent.
+
+    Returns:
+        tuple[str, ...]: Tuple of layer names.
+    &#34;&#34;&#34;
+    for node in self.ancestors:
+        if not isinstance(node, Widget):
+            break
+        if node.styles.has_rule(&#34;layers&#34;):
+            return node.styles.layers
+    return (&#34;default&#34;,)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.layout"><code class="name">var <span class="ident">layout</span> : textual._layout.Layout</code></dt>
@@ -4569,6 +4649,7 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.add_class" href="dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.ancestors" href="dom.html#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.dom.DOMNode.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.dom.DOMNode.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.dom.DOMNode.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
@@ -4722,6 +4803,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.key_pageup" href="#textual.widget.Widget.key_pageup">key_pageup</a></code></li>
 <li><code><a title="textual.widget.Widget.key_right" href="#textual.widget.Widget.key_right">key_right</a></code></li>
 <li><code><a title="textual.widget.Widget.key_up" href="#textual.widget.Widget.key_up">key_up</a></code></li>
+<li><code><a title="textual.widget.Widget.layer" href="#textual.widget.Widget.layer">layer</a></code></li>
+<li><code><a title="textual.widget.Widget.layers" href="#textual.widget.Widget.layers">layers</a></code></li>
 <li><code><a title="textual.widget.Widget.layout" href="#textual.widget.Widget.layout">layout</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>

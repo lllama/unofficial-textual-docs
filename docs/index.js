@@ -53,7 +53,6 @@ URLS=[
 "textual/messages.html",
 "textual/geometry.html",
 "textual/layouts/index.html",
-"textual/layouts/dock.html",
 "textual/layouts/vertical.html",
 "textual/layouts/horizontal.html",
 "textual/layouts/factory.html",
@@ -1759,6 +1758,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.css.styles.StylesBase.align_size",
+"url":16,
+"doc":"Align a size according to alignment rules. Args: child (tuple[int, int]): The size of the child (width, height) parent (tuple[int, int]): The size of the parent (width, height) Returns: Offset: Offset required to align the child.",
+"func":1
+},
+{
 "ref":"textual.css.styles.Styles",
 "url":16,
 "doc":"Styles(node: 'DOMNode | None' = None, _rules: 'RulesMap' =  , important: 'set[str]' =  )"
@@ -2130,6 +2135,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.css.styles.Styles.align_size",
+"url":16,
+"doc":"Align a size according to alignment rules. Args: child (tuple[int, int]): The size of the child (width, height) parent (tuple[int, int]): The size of the parent (width, height) Returns: Offset: Offset required to align the child.",
+"func":1
+},
+{
 "ref":"textual.css.styles.RenderStyles",
 "url":16,
 "doc":"Presents a combined view of two Styles object: a base Styles and inline Styles."
@@ -2486,6 +2497,12 @@ INDEX=[
 "ref":"textual.css.styles.RenderStyles.align_height",
 "url":16,
 "doc":"Align the height dimensions Args: height (int): Height of the content. parent_height (int): Height of the parent container. Returns: int: An offset to add to the Y coordinate.",
+"func":1
+},
+{
+"ref":"textual.css.styles.RenderStyles.align_size",
+"url":16,
+"doc":"Align a size according to alignment rules. Args: child (tuple[int, int]): The size of the child (width, height) parent (tuple[int, int]): The size of the parent (width, height) Returns: Offset: Offset required to align the child.",
 "func":1
 },
 {
@@ -3327,6 +3344,16 @@ INDEX=[
 "doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
 },
 {
+"ref":"textual.scroll_view.ScrollView.layer",
+"url":35,
+"doc":"Get the name of this widgets layer."
+},
+{
+"ref":"textual.scroll_view.ScrollView.layers",
+"url":35,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
 "ref":"textual.scroll_view.ScrollView.scroll_to",
 "url":35,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -3469,7 +3496,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.text_style",
 "url":36,
-"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
 },
 {
 "ref":"textual.scroll_view.ScrollView.rich_style",
@@ -3477,9 +3504,14 @@ INDEX=[
 "doc":"Get a Rich Style object for this DOMNode."
 },
 {
+"ref":"textual.scroll_view.ScrollView.background_colors",
+"url":36,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
 "ref":"textual.scroll_view.ScrollView.colors",
 "url":36,
-"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
 },
 {
 "ref":"textual.scroll_view.ScrollView.ancestors",
@@ -3743,7 +3775,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.text_style",
 "url":36,
-"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
 },
 {
 "ref":"textual.dom.DOMNode.rich_style",
@@ -3751,9 +3783,14 @@ INDEX=[
 "doc":"Get a Rich Style object for this DOMNode."
 },
 {
+"ref":"textual.dom.DOMNode.background_colors",
+"url":36,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
 "ref":"textual.dom.DOMNode.colors",
 "url":36,
-"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
 },
 {
 "ref":"textual.dom.DOMNode.ancestors",
@@ -4598,6 +4635,16 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.layer",
+"url":35,
+"doc":"Get the name of this widgets layer."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.layers",
+"url":35,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
 "ref":"textual.scrollbar.ScrollBar.scroll_to",
 "url":35,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -4740,7 +4787,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.text_style",
 "url":36,
-"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.rich_style",
@@ -4748,9 +4795,14 @@ INDEX=[
 "doc":"Get a Rich Style object for this DOMNode."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.background_colors",
+"url":36,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
 "ref":"textual.scrollbar.ScrollBar.colors",
 "url":36,
-"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
 },
 {
 "ref":"textual.scrollbar.ScrollBar.ancestors",
@@ -7563,6 +7615,16 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
+"ref":"textual.screen.Screen.layer",
+"url":35,
+"doc":"Get the name of this widgets layer."
+},
+{
+"ref":"textual.screen.Screen.layers",
+"url":35,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
 "ref":"textual.screen.Screen.scroll_to",
 "url":35,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -7699,7 +7761,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.text_style",
 "url":36,
-"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
 },
 {
 "ref":"textual.screen.Screen.rich_style",
@@ -7707,9 +7769,14 @@ INDEX=[
 "doc":"Get a Rich Style object for this DOMNode."
 },
 {
+"ref":"textual.screen.Screen.background_colors",
+"url":36,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
 "ref":"textual.screen.Screen.colors",
 "url":36,
-"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
 },
 {
 "ref":"textual.screen.Screen.ancestors",
@@ -9110,6 +9177,16 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
+"ref":"textual.layout.Vertical.layer",
+"url":35,
+"doc":"Get the name of this widgets layer."
+},
+{
+"ref":"textual.layout.Vertical.layers",
+"url":35,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
 "ref":"textual.layout.Vertical.scroll_to",
 "url":35,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -9258,7 +9335,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.text_style",
 "url":36,
-"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
 },
 {
 "ref":"textual.layout.Vertical.rich_style",
@@ -9266,9 +9343,14 @@ INDEX=[
 "doc":"Get a Rich Style object for this DOMNode."
 },
 {
+"ref":"textual.layout.Vertical.background_colors",
+"url":36,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
 "ref":"textual.layout.Vertical.colors",
 "url":36,
-"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
 },
 {
 "ref":"textual.layout.Vertical.ancestors",
@@ -9649,6 +9731,16 @@ INDEX=[
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
 },
 {
+"ref":"textual.layout.Horizontal.layer",
+"url":35,
+"doc":"Get the name of this widgets layer."
+},
+{
+"ref":"textual.layout.Horizontal.layers",
+"url":35,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
 "ref":"textual.layout.Horizontal.scroll_to",
 "url":35,
 "doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
@@ -9797,7 +9889,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.text_style",
 "url":36,
-"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
 },
 {
 "ref":"textual.layout.Horizontal.rich_style",
@@ -9805,9 +9897,14 @@ INDEX=[
 "doc":"Get a Rich Style object for this DOMNode."
 },
 {
+"ref":"textual.layout.Horizontal.background_colors",
+"url":36,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
 "ref":"textual.layout.Horizontal.colors",
 "url":36,
-"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
 },
 {
 "ref":"textual.layout.Horizontal.ancestors",
@@ -10694,292 +10791,231 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.geometry.Spacing.grow_maximum",
+"url":52,
+"doc":"Grow spacing with a maximum. Args: other (Spacing): Spacing object. Returns: Spacing: New spacing were the values are maximum of the two values.",
+"func":1
+},
+{
 "ref":"textual.layouts",
 "url":53,
 "doc":""
 },
 {
-"ref":"textual.layouts.dock",
-"url":54,
-"doc":""
-},
-{
-"ref":"textual.layouts.dock.DockOptions",
-"url":54,
-"doc":"DockOptions(size: 'int | None' = None, fraction: 'int | None' = 1, min_size: 'int' = 1)"
-},
-{
-"ref":"textual.layouts.dock.DockOptions.size",
-"url":54,
-"doc":""
-},
-{
-"ref":"textual.layouts.dock.DockOptions.fraction",
-"url":54,
-"doc":""
-},
-{
-"ref":"textual.layouts.dock.DockOptions.min_size",
-"url":54,
-"doc":""
-},
-{
-"ref":"textual.layouts.dock.Dock",
-"url":54,
-"doc":"Dock(edge, widgets, z)"
-},
-{
-"ref":"textual.layouts.dock.Dock.edge",
-"url":54,
-"doc":"Alias for field number 0"
-},
-{
-"ref":"textual.layouts.dock.Dock.widgets",
-"url":54,
-"doc":"Alias for field number 1"
-},
-{
-"ref":"textual.layouts.dock.Dock.z",
-"url":54,
-"doc":"Alias for field number 2"
-},
-{
-"ref":"textual.layouts.dock.DockLayout",
-"url":54,
-"doc":"Dock Widgets to edge of screen."
-},
-{
-"ref":"textual.layouts.dock.DockLayout.name",
-"url":54,
-"doc":""
-},
-{
-"ref":"textual.layouts.dock.DockLayout.get_docks",
-"url":54,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.dock.DockLayout.arrange",
-"url":54,
-"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
-"func":1
-},
-{
 "ref":"textual.layouts.vertical",
-"url":55,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.layouts.vertical.VerticalLayout",
-"url":55,
+"url":54,
 "doc":"Used to layout Widgets vertically on screen, from top to bottom."
 },
 {
 "ref":"textual.layouts.vertical.VerticalLayout.name",
-"url":55,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.layouts.vertical.VerticalLayout.arrange",
-"url":55,
+"url":54,
 "doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 },
 {
 "ref":"textual.layouts.horizontal",
-"url":56,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.layouts.horizontal.HorizontalLayout",
-"url":56,
+"url":55,
 "doc":"Used to layout Widgets horizontally on screen, from left to right. Since Widgets naturally fill the space of their parent container, all widgets used in a horizontal layout should have a specified."
 },
 {
 "ref":"textual.layouts.horizontal.HorizontalLayout.name",
-"url":56,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.layouts.horizontal.HorizontalLayout.arrange",
-"url":56,
+"url":55,
 "doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 },
 {
 "ref":"textual.layouts.factory",
-"url":57,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.layouts.factory.MissingLayout",
-"url":57,
+"url":56,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.layouts.factory.get_layout",
-"url":57,
+"url":56,
 "doc":"Get a named layout object. Args: name (str): Name of the layout. Raises: MissingLayout: If the named layout doesn't exist. Returns: Layout: A layout object.",
 "func":1
 },
 {
 "ref":"textual.layouts.grid",
-"url":58,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridOptions",
-"url":58,
+"url":57,
 "doc":"GridOptions(name: 'str', size: 'int | None' = None, fraction: 'int' = 1, min_size: 'int' = 1, max_size: 'int | None' = None)"
 },
 {
 "ref":"textual.layouts.grid.GridOptions.name",
-"url":58,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridOptions.size",
-"url":58,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridOptions.fraction",
-"url":58,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridOptions.min_size",
-"url":58,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridOptions.max_size",
-"url":58,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridArea",
-"url":58,
+"url":57,
 "doc":"GridArea(col_start, col_end, row_start, row_end)"
 },
 {
 "ref":"textual.layouts.grid.GridArea.col_start",
-"url":58,
+"url":57,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.layouts.grid.GridArea.col_end",
-"url":58,
+"url":57,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.layouts.grid.GridArea.row_start",
-"url":58,
+"url":57,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.layouts.grid.GridArea.row_end",
-"url":58,
+"url":57,
 "doc":"Alias for field number 3"
 },
 {
 "ref":"textual.layouts.grid.GridLayout",
-"url":58,
+"url":57,
 "doc":"Responsible for arranging Widgets in a view and rendering them."
 },
 {
 "ref":"textual.layouts.grid.GridLayout.name",
-"url":58,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridLayout.is_row_visible",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.is_column_visible",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.show_row",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.show_column",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.add_column",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.add_row",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.add_areas",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.set_gap",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.set_gutter",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.add_widget",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.place",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.set_repeat",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.set_align",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.get_widgets",
-"url":58,
+"url":57,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.arrange",
-"url":58,
+"url":57,
 "doc":"Generate a map that associates widgets with their location on screen. Args: width (int): [description] height (int): [description] offset (Point, optional): [description]. Defaults to Point(0, 0). Returns: dict[Widget, OrderedRegion]: [description]",
 "func":1
 },
@@ -11296,6 +11332,16 @@ INDEX=[
 "ref":"textual.widget.Widget.is_scrollable",
 "url":35,
 "doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
+},
+{
+"ref":"textual.widget.Widget.layer",
+"url":35,
+"doc":"Get the name of this widgets layer."
+},
+{
+"ref":"textual.widget.Widget.layers",
+"url":35,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
 },
 {
 "ref":"textual.widget.Widget.scroll_to",
@@ -11704,7 +11750,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.text_style",
 "url":36,
-"doc":"Get the text style object. A widget's style is influenced by its parent. For instance if a widgets background has an alpha, then its parent's background color will show through. Additionally, widgets will inherit their parent's text style (i.e. bold, italic etc). Returns: Style: Rich Style object."
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
 },
 {
 "ref":"textual.widget.Widget.rich_style",
@@ -11712,9 +11758,14 @@ INDEX=[
 "doc":"Get a Rich Style object for this DOMNode."
 },
 {
+"ref":"textual.widget.Widget.background_colors",
+"url":36,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
 "ref":"textual.widget.Widget.colors",
 "url":36,
-"doc":"Gets the Widgets foreground and background colors, and its parent's colors. Returns: tuple[tuple[Color, Color], tuple[Color, Color : Base colors and widget colors"
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
 },
 {
 "ref":"textual.widget.Widget.ancestors",
