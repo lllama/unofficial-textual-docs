@@ -221,14 +221,20 @@ class MessagePump:
         return timer
 
     def call_later(self, callback: Callable, *args, **kwargs) -&gt; None:
-        &#34;&#34;&#34;Run a callback after processing all messages and refreshing the screen.
+        &#34;&#34;&#34;Schedule a callback to run after all messages are processed and the screen
+        has been refreshed.
 
         Args:
             callback (Callable): A callable.
         &#34;&#34;&#34;
-        self.post_message_no_wait(
-            events.Callback(self, partial(callback, *args, **kwargs))
-        )
+        # We send the InvokeLater message to ourselves first, to ensure we&#39;ve cleared
+        # out anything already pending in our own queue.
+        message = messages.InvokeLater(self, partial(callback, *args, **kwargs))
+        self.post_message_no_wait(message)
+
+    def handle_invoke_later(self, message: messages.InvokeLater) -&gt; None:
+        # Forward InvokeLater message to the Screen
+        self.app.screen.post_message_no_wait(message)
 
     def close_messages_no_wait(self) -&gt; None:
         &#34;&#34;&#34;Request the message queue to exit.&#34;&#34;&#34;
@@ -419,9 +425,6 @@ class MessagePump:
         if self._closing or self._closed:
             return False
         return self.post_message_no_wait(message)
-
-    async def on_callback(self, event: events.Callback) -&gt; None:
-        await invoke(event.callback)
 
     def emit_no_wait(self, message: Message) -&gt; bool:
         if self._parent:
@@ -680,14 +683,20 @@ class MessagePump:
         return timer
 
     def call_later(self, callback: Callable, *args, **kwargs) -&gt; None:
-        &#34;&#34;&#34;Run a callback after processing all messages and refreshing the screen.
+        &#34;&#34;&#34;Schedule a callback to run after all messages are processed and the screen
+        has been refreshed.
 
         Args:
             callback (Callable): A callable.
         &#34;&#34;&#34;
-        self.post_message_no_wait(
-            events.Callback(self, partial(callback, *args, **kwargs))
-        )
+        # We send the InvokeLater message to ourselves first, to ensure we&#39;ve cleared
+        # out anything already pending in our own queue.
+        message = messages.InvokeLater(self, partial(callback, *args, **kwargs))
+        self.post_message_no_wait(message)
+
+    def handle_invoke_later(self, message: messages.InvokeLater) -&gt; None:
+        # Forward InvokeLater message to the Screen
+        self.app.screen.post_message_no_wait(message)
 
     def close_messages_no_wait(self) -&gt; None:
         &#34;&#34;&#34;Request the message queue to exit.&#34;&#34;&#34;
@@ -879,9 +888,6 @@ class MessagePump:
             return False
         return self.post_message_no_wait(message)
 
-    async def on_callback(self, event: events.Callback) -&gt; None:
-        await invoke(event.callback)
-
     def emit_no_wait(self, message: Message) -&gt; bool:
         if self._parent:
             return self._parent.post_message_from_child_no_wait(message)
@@ -1007,7 +1013,8 @@ def task(self) -&gt; Task:
 <span>def <span class="ident">call_later</span></span>(<span>self, callback: Callable, *args, **kwargs) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Run a callback after processing all messages and refreshing the screen.</p>
+<div class="desc"><p>Schedule a callback to run after all messages are processed and the screen
+has been refreshed.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>callback</code></strong> :&ensp;<code>Callable</code></dt>
@@ -1018,14 +1025,16 @@ def task(self) -&gt; Task:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def call_later(self, callback: Callable, *args, **kwargs) -&gt; None:
-    &#34;&#34;&#34;Run a callback after processing all messages and refreshing the screen.
+    &#34;&#34;&#34;Schedule a callback to run after all messages are processed and the screen
+    has been refreshed.
 
     Args:
         callback (Callable): A callable.
     &#34;&#34;&#34;
-    self.post_message_no_wait(
-        events.Callback(self, partial(callback, *args, **kwargs))
-    )</code></pre>
+    # We send the InvokeLater message to ourselves first, to ensure we&#39;ve cleared
+    # out anything already pending in our own queue.
+    message = messages.InvokeLater(self, partial(callback, *args, **kwargs))
+    self.post_message_no_wait(message)</code></pre>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.check_idle"><code class="name flex">
@@ -1239,6 +1248,20 @@ def task(self) -&gt; Task:
     return message</code></pre>
 </details>
 </dd>
+<dt id="textual.message_pump.MessagePump.handle_invoke_later"><code class="name flex">
+<span>def <span class="ident">handle_invoke_later</span></span>(<span>self, message: messages.InvokeLater) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_invoke_later(self, message: messages.InvokeLater) -&gt; None:
+    # Forward InvokeLater message to the Screen
+    self.app.screen.post_message_no_wait(message)</code></pre>
+</details>
+</dd>
 <dt id="textual.message_pump.MessagePump.log"><code class="name flex">
 <span>def <span class="ident">log</span></span>(<span>self, *args, **kwargs) ‑> None</span>
 </code></dt>
@@ -1250,19 +1273,6 @@ def task(self) -&gt; Task:
 </summary>
 <pre><code class="python">def log(self, *args, **kwargs) -&gt; None:
     return self.app.log(*args, **kwargs, _textual_calling_frame=inspect.stack()[1])</code></pre>
-</details>
-</dd>
-<dt id="textual.message_pump.MessagePump.on_callback"><code class="name flex">
-<span>async def <span class="ident">on_callback</span></span>(<span>self, event: events.Callback) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_callback(self, event: events.Callback) -&gt; None:
-    await invoke(event.callback)</code></pre>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.on_event"><code class="name flex">
@@ -1721,11 +1731,11 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.message_pump.MessagePump.emit_no_wait" href="#textual.message_pump.MessagePump.emit_no_wait">emit_no_wait</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.enable_messages" href="#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.get_message" href="#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.handle_invoke_later" href="#textual.message_pump.MessagePump.handle_invoke_later">handle_invoke_later</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.has_parent" href="#textual.message_pump.MessagePump.has_parent">has_parent</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.is_parent_active" href="#textual.message_pump.MessagePump.is_parent_active">is_parent_active</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.is_running" href="#textual.message_pump.MessagePump.is_running">is_running</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.log" href="#textual.message_pump.MessagePump.log">log</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.on_callback" href="#textual.message_pump.MessagePump.on_callback">on_callback</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_event" href="#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_message" href="#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_timer" href="#textual.message_pump.MessagePump.on_timer">on_timer</a></code></li>

@@ -36,16 +36,18 @@ from rich.style import Style
 
 
 from . import events, messages, errors
+from ._callback import invoke
 
 from .geometry import Offset, Region, Size
 from ._compositor import Compositor, MapGeometry
+from .messages import CallbackType
 from .reactive import Reactive
 from .renderables.blank import Blank
 from ._timer import Timer
 from .widget import Widget
 
 if sys.version_info &gt;= (3, 8):
-    from typing import Final
+    from typing import Final, Callable, Awaitable
 else:
     from typing_extensions import Final
 
@@ -59,7 +61,7 @@ class Screen(Widget):
 
     CSS = &#34;&#34;&#34;
     Screen {
-            
+
         layout: vertical;
         overflow-y: auto;
     }
@@ -72,6 +74,7 @@ class Screen(Widget):
         self._compositor = Compositor()
         self._dirty_widgets: set[Widget] = set()
         self._update_timer: Timer | None = None
+        self._callbacks: list[CallbackType] = []
 
     @property
     def is_transparent(self) -&gt; bool:
@@ -138,7 +141,7 @@ class Screen(Widget):
         &#34;&#34;&#34;
         return self._compositor.find_widget(widget)
 
-    def on_idle(self, event: events.Idle) -&gt; None:
+    async def on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
         event.prevent_default()
         if self._layout_required:
@@ -153,6 +156,9 @@ class Screen(Widget):
         if self._dirty_widgets:
             self.update_timer.resume()
 
+        # The Screen is idle - a good opportunity to invoke the scheduled callbacks
+        await self._invoke_and_clear_callbacks()
+
     def _on_update(self) -&gt; None:
         &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
         # Render widgets together
@@ -160,7 +166,27 @@ class Screen(Widget):
             self._compositor.update_widgets(self._dirty_widgets)
             self.app._display(self._compositor.render())
             self._dirty_widgets.clear()
+
         self.update_timer.pause()
+        if self._callbacks:
+            self.post_message_no_wait(events.InvokeCallbacks(self))
+
+    async def on_invoke_callbacks(self, event: events.InvokeCallbacks) -&gt; None:
+        &#34;&#34;&#34;Handle PostScreenUpdate events, which are sent after the screen is updated&#34;&#34;&#34;
+        await self._invoke_and_clear_callbacks()
+
+    async def _invoke_and_clear_callbacks(self) -&gt; None:
+        &#34;&#34;&#34;If there are scheduled callbacks to run, call them and clear
+        the callback queue.&#34;&#34;&#34;
+        if self._callbacks:
+            callbacks = self._callbacks[:]
+            self._callbacks.clear()
+            for callback in callbacks:
+                await invoke(callback)
+
+    def handle_invoke_later(self, message: messages.InvokeLater) -&gt; None:
+        # Enqueue the callback function to be called later
+        self._callbacks.append(message.callback)
 
     def _refresh_layout(self, size: Size | None = None, full: bool = False) -&gt; None:
         &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
@@ -322,7 +348,7 @@ class Screen(Widget):
 
     CSS = &#34;&#34;&#34;
     Screen {
-            
+
         layout: vertical;
         overflow-y: auto;
     }
@@ -335,6 +361,7 @@ class Screen(Widget):
         self._compositor = Compositor()
         self._dirty_widgets: set[Widget] = set()
         self._update_timer: Timer | None = None
+        self._callbacks: list[CallbackType] = []
 
     @property
     def is_transparent(self) -&gt; bool:
@@ -401,7 +428,7 @@ class Screen(Widget):
         &#34;&#34;&#34;
         return self._compositor.find_widget(widget)
 
-    def on_idle(self, event: events.Idle) -&gt; None:
+    async def on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
         event.prevent_default()
         if self._layout_required:
@@ -416,6 +443,9 @@ class Screen(Widget):
         if self._dirty_widgets:
             self.update_timer.resume()
 
+        # The Screen is idle - a good opportunity to invoke the scheduled callbacks
+        await self._invoke_and_clear_callbacks()
+
     def _on_update(self) -&gt; None:
         &#34;&#34;&#34;Called by the _update_timer.&#34;&#34;&#34;
         # Render widgets together
@@ -423,7 +453,27 @@ class Screen(Widget):
             self._compositor.update_widgets(self._dirty_widgets)
             self.app._display(self._compositor.render())
             self._dirty_widgets.clear()
+
         self.update_timer.pause()
+        if self._callbacks:
+            self.post_message_no_wait(events.InvokeCallbacks(self))
+
+    async def on_invoke_callbacks(self, event: events.InvokeCallbacks) -&gt; None:
+        &#34;&#34;&#34;Handle PostScreenUpdate events, which are sent after the screen is updated&#34;&#34;&#34;
+        await self._invoke_and_clear_callbacks()
+
+    async def _invoke_and_clear_callbacks(self) -&gt; None:
+        &#34;&#34;&#34;If there are scheduled callbacks to run, call them and clear
+        the callback queue.&#34;&#34;&#34;
+        if self._callbacks:
+            callbacks = self._callbacks[:]
+            self._callbacks.clear()
+            for callback in callbacks:
+                await invoke(callback)
+
+    def handle_invoke_later(self, message: messages.InvokeLater) -&gt; None:
+        # Enqueue the callback function to be called later
+        self._callbacks.append(message.callback)
 
     def _refresh_layout(self, size: Size | None = None, full: bool = False) -&gt; None:
         &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
@@ -802,6 +852,20 @@ def update_timer(self) -&gt; Timer:
     return self._compositor.get_widget_at(x, y)</code></pre>
 </details>
 </dd>
+<dt id="textual.screen.Screen.handle_invoke_later"><code class="name flex">
+<span>def <span class="ident">handle_invoke_later</span></span>(<span>self, message: messages.InvokeLater) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def handle_invoke_later(self, message: messages.InvokeLater) -&gt; None:
+    # Enqueue the callback function to be called later
+    self._callbacks.append(message.callback)</code></pre>
+</details>
+</dd>
 <dt id="textual.screen.Screen.handle_layout"><code class="name flex">
 <span>async def <span class="ident">handle_layout</span></span>(<span>self, message: messages.Layout) ‑> None</span>
 </code></dt>
@@ -834,6 +898,20 @@ def update_timer(self) -&gt; Timer:
     assert isinstance(widget, Widget)
     self._dirty_widgets.add(widget)
     self.check_idle()</code></pre>
+</details>
+</dd>
+<dt id="textual.screen.Screen.on_invoke_callbacks"><code class="name flex">
+<span>async def <span class="ident">on_invoke_callbacks</span></span>(<span>self, event: events.InvokeCallbacks) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Handle PostScreenUpdate events, which are sent after the screen is updated</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_invoke_callbacks(self, event: events.InvokeCallbacks) -&gt; None:
+    &#34;&#34;&#34;Handle PostScreenUpdate events, which are sent after the screen is updated&#34;&#34;&#34;
+    await self._invoke_and_clear_callbacks()</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.on_resize"><code class="name flex">
@@ -897,7 +975,7 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
-<li><code><a title="textual.widget.Widget.focusable_children" href="dom.html#textual.dom.DOMNode.focusable_children">focusable_children</a></code></li>
+<li><code><a title="textual.widget.Widget.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.widget.Widget.get_box_model" href="widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
@@ -957,6 +1035,7 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
 <li><code><a title="textual.widget.Widget.vertical_scrollbar" href="widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_region" href="widget.html#textual.widget.Widget.virtual_region">virtual_region</a></code></li>
+<li><code><a title="textual.widget.Widget.virtual_region_with_margin" href="widget.html#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
@@ -1043,8 +1122,10 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.screen.Screen.get_offset" href="#textual.screen.Screen.get_offset">get_offset</a></code></li>
 <li><code><a title="textual.screen.Screen.get_style_at" href="#textual.screen.Screen.get_style_at">get_style_at</a></code></li>
 <li><code><a title="textual.screen.Screen.get_widget_at" href="#textual.screen.Screen.get_widget_at">get_widget_at</a></code></li>
+<li><code><a title="textual.screen.Screen.handle_invoke_later" href="#textual.screen.Screen.handle_invoke_later">handle_invoke_later</a></code></li>
 <li><code><a title="textual.screen.Screen.handle_layout" href="#textual.screen.Screen.handle_layout">handle_layout</a></code></li>
 <li><code><a title="textual.screen.Screen.handle_update" href="#textual.screen.Screen.handle_update">handle_update</a></code></li>
+<li><code><a title="textual.screen.Screen.on_invoke_callbacks" href="#textual.screen.Screen.on_invoke_callbacks">on_invoke_callbacks</a></code></li>
 <li><code><a title="textual.screen.Screen.on_resize" href="#textual.screen.Screen.on_resize">on_resize</a></code></li>
 <li><code><a title="textual.screen.Screen.update_timer" href="#textual.screen.Screen.update_timer">update_timer</a></code></li>
 <li><code><a title="textual.screen.Screen.watch_dark" href="#textual.screen.Screen.watch_dark">watch_dark</a></code></li>

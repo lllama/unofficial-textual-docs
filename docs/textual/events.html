@@ -73,6 +73,10 @@ class Callback(Event, bubble=False, verbosity=3):
         yield &#34;callback&#34;, self.callback
 
 
+class InvokeCallbacks(Event, bubble=False):
+    &#34;&#34;&#34;Sent after the Screen is updated&#34;&#34;&#34;
+
+
 class ShutdownRequest(Event):
     pass
 
@@ -115,8 +119,7 @@ class Action(Event):
 class Resize(Event, verbosity=2, bubble=False):
     &#34;&#34;&#34;Sent when the app or widget has been resized.&#34;&#34;&#34;
 
-    __slots__ = [&#34;size&#34;]
-    size: Size
+    __slots__ = [&#34;size&#34;, &#34;virtual_size&#34;, &#34;container_size&#34;]
 
     def __init__(
         self,
@@ -238,7 +241,7 @@ class Key(InputEvent):
         Returns:
             bool: True if the key is printable. False otherwise.
         &#34;&#34;&#34;
-        return self.key not in KEY_VALUES
+        return self.key == Keys.Space or self.key not in KEY_VALUES
 
 
 @rich.repr.auto
@@ -1025,6 +1028,7 @@ class Paste(Event, bubble=False):
 <li><a title="textual.events.Hide" href="#textual.events.Hide">Hide</a></li>
 <li><a title="textual.events.Idle" href="#textual.events.Idle">Idle</a></li>
 <li><a title="textual.events.InputEvent" href="#textual.events.InputEvent">InputEvent</a></li>
+<li><a title="textual.events.InvokeCallbacks" href="#textual.events.InvokeCallbacks">InvokeCallbacks</a></li>
 <li><a title="textual.events.Leave" href="#textual.events.Leave">Leave</a></li>
 <li><a title="textual.events.Load" href="#textual.events.Load">Load</a></li>
 <li><a title="textual.events.Mount" href="#textual.events.Mount">Mount</a></li>
@@ -1301,6 +1305,59 @@ through the usual message queue.</p>
 </li>
 </ul>
 </dd>
+<dt id="textual.events.InvokeCallbacks"><code class="flex name class">
+<span>class <span class="ident">InvokeCallbacks</span></span>
+<span>(</span><span>sender: MessageTarget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sent after the Screen is updated</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class InvokeCallbacks(Event, bubble=False):
+    &#34;&#34;&#34;Sent after the Screen is updated&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.events.Event" href="#textual.events.Event">Event</a></li>
+<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.events.InvokeCallbacks.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.InvokeCallbacks.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.InvokeCallbacks.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="textual.events.Key"><code class="flex name class">
 <span>class <span class="ident">Key</span></span>
 <span>(</span><span>sender: MessageTarget, key: str)</span>
@@ -1344,7 +1401,7 @@ through the usual message queue.</p>
         Returns:
             bool: True if the key is printable. False otherwise.
         &#34;&#34;&#34;
-        return self.key not in KEY_VALUES</code></pre>
+        return self.key == Keys.Space or self.key not in KEY_VALUES</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1390,7 +1447,7 @@ def is_printable(self) -&gt; bool:
     Returns:
         bool: True if the key is printable. False otherwise.
     &#34;&#34;&#34;
-    return self.key not in KEY_VALUES</code></pre>
+    return self.key == Keys.Space or self.key not in KEY_VALUES</code></pre>
 </details>
 </dd>
 <dt id="textual.events.Key.key"><code class="name">var <span class="ident">key</span></code></dt>
@@ -2577,8 +2634,7 @@ and disable it when the app shuts down.</p>
 <pre><code class="python">class Resize(Event, verbosity=2, bubble=False):
     &#34;&#34;&#34;Sent when the app or widget has been resized.&#34;&#34;&#34;
 
-    __slots__ = [&#34;size&#34;]
-    size: Size
+    __slots__ = [&#34;size&#34;, &#34;virtual_size&#34;, &#34;container_size&#34;]
 
     def __init__(
         self,
@@ -2630,7 +2686,15 @@ and disable it when the app shuts down.</p>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.events.Resize.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
+<dt id="textual.events.Resize.container_size"><code class="name">var <span class="ident">container_size</span></code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="textual.events.Resize.size"><code class="name">var <span class="ident">size</span></code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="textual.events.Resize.virtual_size"><code class="name">var <span class="ident">virtual_size</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
@@ -3112,6 +3176,14 @@ setTimeout(() => input.focus(), 100);
 </ul>
 </li>
 <li>
+<h4><code><a title="textual.events.InvokeCallbacks" href="#textual.events.InvokeCallbacks">InvokeCallbacks</a></code></h4>
+<ul class="">
+<li><code><a title="textual.events.InvokeCallbacks.bubble" href="#textual.events.InvokeCallbacks.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.InvokeCallbacks.system" href="#textual.events.InvokeCallbacks.system">system</a></code></li>
+<li><code><a title="textual.events.InvokeCallbacks.verbosity" href="#textual.events.InvokeCallbacks.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="textual.events.Key" href="#textual.events.Key">Key</a></code></h4>
 <ul class="">
 <li><code><a title="textual.events.Key.bubble" href="#textual.events.Key.bubble">bubble</a></code></li>
@@ -3242,11 +3314,13 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="textual.events.Resize" href="#textual.events.Resize">Resize</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="textual.events.Resize.bubble" href="#textual.events.Resize.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Resize.container_size" href="#textual.events.Resize.container_size">container_size</a></code></li>
 <li><code><a title="textual.events.Resize.size" href="#textual.events.Resize.size">size</a></code></li>
 <li><code><a title="textual.events.Resize.system" href="#textual.events.Resize.system">system</a></code></li>
 <li><code><a title="textual.events.Resize.verbosity" href="#textual.events.Resize.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Resize.virtual_size" href="#textual.events.Resize.virtual_size">virtual_size</a></code></li>
 </ul>
 </li>
 <li>

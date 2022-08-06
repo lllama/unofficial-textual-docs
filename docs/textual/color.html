@@ -237,7 +237,7 @@ class Color(NamedTuple):
             str: A CSS hex-style color, e.g. &#34;#46b3de&#34; or &#34;#3342457f&#34;
 
         &#34;&#34;&#34;
-        r, g, b, a = self
+        r, g, b, a = self.clamped
         return (
             f&#34;#{r:02X}{g:02X}{b:02X}&#34;
             if a == 1
@@ -759,7 +759,7 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
             str: A CSS hex-style color, e.g. &#34;#46b3de&#34; or &#34;#3342457f&#34;
 
         &#34;&#34;&#34;
-        r, g, b, a = self
+        r, g, b, a = self.clamped
         return (
             f&#34;#{r:02X}{g:02X}{b:02X}&#34;
             if a == 1
@@ -1239,7 +1239,7 @@ def hex(self) -&gt; str:
         str: A CSS hex-style color, e.g. &#34;#46b3de&#34; or &#34;#3342457f&#34;
 
     &#34;&#34;&#34;
-    r, g, b, a = self
+    r, g, b, a = self.clamped
     return (
         f&#34;#{r:02X}{g:02X}{b:02X}&#34;
         if a == 1

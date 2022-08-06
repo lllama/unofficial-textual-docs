@@ -51,6 +51,7 @@ URLS=[
 "textual/errors.html",
 "textual/layout.html",
 "textual/messages.html",
+"textual/constants.html",
 "textual/geometry.html",
 "textual/layouts/index.html",
 "textual/layouts/vertical.html",
@@ -2667,7 +2668,13 @@ INDEX=[
 {
 "ref":"textual.message_pump.MessagePump.call_later",
 "url":20,
-"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Args: callback (Callable): A callable.",
+"func":1
+},
+{
+"ref":"textual.message_pump.MessagePump.handle_invoke_later",
+"url":20,
+"doc":"",
 "func":1
 },
 {
@@ -2744,12 +2751,6 @@ INDEX=[
 },
 {
 "ref":"textual.message_pump.MessagePump.post_message_from_child_no_wait",
-"url":20,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.message_pump.MessagePump.on_callback",
 "url":20,
 "doc":"",
 "func":1
@@ -3329,6 +3330,16 @@ INDEX=[
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
+"ref":"textual.scroll_view.ScrollView.virtual_region_with_margin",
+"url":35,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.scroll_view.ScrollView.focusable_children",
+"url":35,
+"doc":"Get the children which may be focused."
+},
+{
 "ref":"textual.scroll_view.ScrollView.console",
 "url":35,
 "doc":"Get the current console."
@@ -3410,7 +3421,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.call_later",
 "url":35,
-"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Args: callback (Callable): A callable.",
 "func":1
 },
 {
@@ -3522,11 +3533,6 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.displayed_children",
 "url":36,
 "doc":"The children which don't have display: none set."
-},
-{
-"ref":"textual.scroll_view.ScrollView.focusable_children",
-"url":36,
-"doc":"Get the children which may be focused."
 },
 {
 "ref":"textual.scroll_view.ScrollView.reset_styles",
@@ -3803,11 +3809,6 @@ INDEX=[
 "doc":"The children which don't have display: none set."
 },
 {
-"ref":"textual.dom.DOMNode.focusable_children",
-"url":36,
-"doc":"Get the children which may be focused."
-},
-{
 "ref":"textual.dom.DOMNode.get_pseudo_classes",
 "url":36,
 "doc":"Get any pseudo classes applicable to this Node, e.g. hover, focus. Returns: Iterable[str]: Iterable of strings, such as a generator.",
@@ -3923,7 +3924,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.call_later",
 "url":20,
-"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Args: callback (Callable): A callable.",
 "func":1
 },
 {
@@ -4610,6 +4611,16 @@ INDEX=[
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.virtual_region_with_margin",
+"url":35,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.focusable_children",
+"url":35,
+"doc":"Get the children which may be focused."
+},
+{
 "ref":"textual.scrollbar.ScrollBar.is_transparent",
 "url":35,
 "doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
@@ -4701,7 +4712,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.call_later",
 "url":35,
-"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Args: callback (Callable): A callable.",
 "func":1
 },
 {
@@ -4813,11 +4824,6 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.displayed_children",
 "url":36,
 "doc":"The children which don't have display: none set."
-},
-{
-"ref":"textual.scrollbar.ScrollBar.focusable_children",
-"url":36,
-"doc":"Get the children which may be focused."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.reset_styles",
@@ -5149,6 +5155,65 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.InvokeCallbacks",
+"url":40,
+"doc":"Sent after the Screen is updated Args: sender (MessageTarget): The sender of the message / event."
+},
+{
+"ref":"textual.events.InvokeCallbacks.sender",
+"url":40,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.InvokeCallbacks.bubble",
+"url":40,
+"doc":""
+},
+{
+"ref":"textual.events.InvokeCallbacks.verbosity",
+"url":40,
+"doc":""
+},
+{
+"ref":"textual.events.InvokeCallbacks.system",
+"url":40,
+"doc":""
+},
+{
+"ref":"textual.events.InvokeCallbacks.set_forwarded",
+"url":33,
+"doc":"Mark this event as being forwarded.",
+"func":1
+},
+{
+"ref":"textual.events.InvokeCallbacks.can_replace",
+"url":33,
+"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
+"func":1
+},
+{
+"ref":"textual.events.InvokeCallbacks.prevent_default",
+"url":33,
+"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.InvokeCallbacks.stop",
+"url":33,
+"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.InvokeCallbacks.name",
+"url":33,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.InvokeCallbacks.time",
+"url":33,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
 "ref":"textual.events.ShutdownRequest",
 "url":40,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
@@ -5454,13 +5519,28 @@ INDEX=[
 "doc":"Sent when the app or widget has been resized. Args: sender (MessageTarget): The sender of the event (the Screen). size (Size): The new size of the Widget. virtual_size (Size): The virtual size (scrollable size) of the Widget. container_size (Size | None, optional): The size of the Widget's container widget. Defaults to None."
 },
 {
+"ref":"textual.events.Resize.sender",
+"url":40,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
 "ref":"textual.events.Resize.can_replace",
 "url":40,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
+"ref":"textual.events.Resize.container_size",
+"url":40,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
 "ref":"textual.events.Resize.size",
+"url":40,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.Resize.virtual_size",
 "url":40,
 "doc":"Return an attribute of instance, which is of type owner."
 },
@@ -5478,11 +5558,6 @@ INDEX=[
 "ref":"textual.events.Resize.system",
 "url":40,
 "doc":""
-},
-{
-"ref":"textual.events.Resize.sender",
-"url":40,
-"doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.set_forwarded",
@@ -7379,6 +7454,18 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.on_invoke_callbacks",
+"url":43,
+"doc":"Handle PostScreenUpdate events, which are sent after the screen is updated",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.handle_invoke_later",
+"url":43,
+"doc":"",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.handle_update",
 "url":43,
 "doc":"",
@@ -7595,6 +7682,16 @@ INDEX=[
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
+"ref":"textual.screen.Screen.virtual_region_with_margin",
+"url":35,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.screen.Screen.focusable_children",
+"url":35,
+"doc":"Get the children which may be focused."
+},
+{
 "ref":"textual.screen.Screen.console",
 "url":35,
 "doc":"Get the current console."
@@ -7681,7 +7778,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.call_later",
 "url":35,
-"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Args: callback (Callable): A callable.",
 "func":1
 },
 {
@@ -7787,11 +7884,6 @@ INDEX=[
 "ref":"textual.screen.Screen.displayed_children",
 "url":36,
 "doc":"The children which don't have display: none set."
-},
-{
-"ref":"textual.screen.Screen.focusable_children",
-"url":36,
-"doc":"Get the children which may be focused."
 },
 {
 "ref":"textual.screen.Screen.reset_styles",
@@ -9152,6 +9244,16 @@ INDEX=[
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
+"ref":"textual.layout.Vertical.virtual_region_with_margin",
+"url":35,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.layout.Vertical.focusable_children",
+"url":35,
+"doc":"Get the children which may be focused."
+},
+{
 "ref":"textual.layout.Vertical.is_transparent",
 "url":35,
 "doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
@@ -9243,7 +9345,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.call_later",
 "url":35,
-"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Args: callback (Callable): A callable.",
 "func":1
 },
 {
@@ -9361,11 +9463,6 @@ INDEX=[
 "ref":"textual.layout.Vertical.displayed_children",
 "url":36,
 "doc":"The children which don't have display: none set."
-},
-{
-"ref":"textual.layout.Vertical.focusable_children",
-"url":36,
-"doc":"Get the children which may be focused."
 },
 {
 "ref":"textual.layout.Vertical.reset_styles",
@@ -9706,6 +9803,16 @@ INDEX=[
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
+"ref":"textual.layout.Horizontal.virtual_region_with_margin",
+"url":35,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.layout.Horizontal.focusable_children",
+"url":35,
+"doc":"Get the children which may be focused."
+},
+{
 "ref":"textual.layout.Horizontal.is_transparent",
 "url":35,
 "doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
@@ -9797,7 +9904,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.call_later",
 "url":35,
-"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Args: callback (Callable): A callable.",
 "func":1
 },
 {
@@ -9915,11 +10022,6 @@ INDEX=[
 "ref":"textual.layout.Horizontal.displayed_children",
 "url":36,
 "doc":"The children which don't have display: none set."
-},
-{
-"ref":"textual.layout.Horizontal.focusable_children",
-"url":36,
-"doc":"Get the children which may be focused."
 },
 {
 "ref":"textual.layout.Horizontal.reset_styles",
@@ -10176,6 +10278,65 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.messages.InvokeLater",
+"url":51,
+"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+},
+{
+"ref":"textual.messages.InvokeLater.sender",
+"url":51,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.messages.InvokeLater.bubble",
+"url":51,
+"doc":""
+},
+{
+"ref":"textual.messages.InvokeLater.verbosity",
+"url":51,
+"doc":""
+},
+{
+"ref":"textual.messages.InvokeLater.system",
+"url":51,
+"doc":""
+},
+{
+"ref":"textual.messages.InvokeLater.set_forwarded",
+"url":33,
+"doc":"Mark this event as being forwarded.",
+"func":1
+},
+{
+"ref":"textual.messages.InvokeLater.can_replace",
+"url":33,
+"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
+"func":1
+},
+{
+"ref":"textual.messages.InvokeLater.prevent_default",
+"url":33,
+"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.messages.InvokeLater.stop",
+"url":33,
+"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.messages.InvokeLater.name",
+"url":33,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.messages.InvokeLater.time",
+"url":33,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
 "ref":"textual.messages.CursorMove",
 "url":51,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
@@ -10412,610 +10573,615 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.geometry",
+"ref":"textual.constants",
 "url":52,
+"doc":"Constants that we might want to expose via the public API."
+},
+{
+"ref":"textual.geometry",
+"url":53,
 "doc":"Functions and classes to manage terminal geometry (anything involving coordinates or dimensions)."
 },
 {
 "ref":"textual.geometry.clamp",
-"url":52,
+"url":53,
 "doc":"Clamps a value between two other values. Args: value (T): A value minimum (T): Minimum value maximum (T): maximum value Returns: T: New value that is not less than the minimum or greater than the maximum.",
 "func":1
 },
 {
 "ref":"textual.geometry.Offset",
-"url":52,
-"doc":"A point defined by x and y coordinates."
+"url":53,
+"doc":"A cell offset defined by x and y coordinates. Offsets are typically relative to the top left of the terminal or other container."
 },
 {
 "ref":"textual.geometry.Offset.x",
-"url":52,
-"doc":"Alias for field number 0"
+"url":53,
+"doc":"Offset in the x-axis (horizontal)"
 },
 {
 "ref":"textual.geometry.Offset.y",
-"url":52,
-"doc":"Alias for field number 1"
+"url":53,
+"doc":"Offset in the y-axis (vertical)"
 },
 {
 "ref":"textual.geometry.Offset.is_origin",
-"url":52,
+"url":53,
 "doc":"Check if the point is at the origin (0, 0)"
 },
 {
 "ref":"textual.geometry.Offset.blend",
-"url":52,
+"url":53,
 "doc":"Blend (interpolate) to a new point. Args: destination (Point): Point where progress is 1.0 factor (float): A value between 0 and 1.0 Returns: Point: A new point on a line between self and destination",
 "func":1
 },
 {
 "ref":"textual.geometry.Offset.get_distance_to",
-"url":52,
+"url":53,
 "doc":"Get the distance to another offset. Args: other (Offset): An offset Returns: float: Distance to other offset",
 "func":1
 },
 {
 "ref":"textual.geometry.Size",
-"url":52,
+"url":53,
 "doc":"An area defined by its width and height."
 },
 {
 "ref":"textual.geometry.Size.width",
-"url":52,
-"doc":"Alias for field number 0"
+"url":53,
+"doc":"The width in cells."
 },
 {
 "ref":"textual.geometry.Size.height",
-"url":52,
-"doc":"Alias for field number 1"
+"url":53,
+"doc":"The height in cells."
 },
 {
 "ref":"textual.geometry.Size.area",
-"url":52,
+"url":53,
 "doc":"Get the area of the size. Returns: int: Area in cells."
 },
 {
 "ref":"textual.geometry.Size.region",
-"url":52,
+"url":53,
 "doc":"Get a region of the same size."
 },
 {
 "ref":"textual.geometry.Size.line_range",
-"url":52,
+"url":53,
 "doc":"Get a range covering lines."
 },
 {
 "ref":"textual.geometry.Size.contains",
-"url":52,
+"url":53,
 "doc":"Check if a point is in the size. Args: x (int): X coordinate (column) y (int): Y coordinate (row) Returns: bool: True if the point is within the region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Size.contains_point",
-"url":52,
+"url":53,
 "doc":"Check if a point is in the size. Args: point (tuple[int, int]): A tuple of x and y coordinates. Returns: bool: True if the point is within the region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region",
-"url":52,
-"doc":"Defines a rectangular region."
+"url":53,
+"doc":"Defines a rectangular region. A Region consists a coordinate (x and y) and dimensions (width and height).   (x, y) \u250c          \u2510 \u25b2 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 height \u2502 \u2502 \u2502 \u2502 \u2502 \u2502 \u2514          \u2518 \u25bc \u25c0   \u2500 width    \u25b6  "
 },
 {
 "ref":"textual.geometry.Region.x",
-"url":52,
-"doc":"Alias for field number 0"
+"url":53,
+"doc":"Offset in the x-axis (horizontal)"
 },
 {
 "ref":"textual.geometry.Region.y",
-"url":52,
-"doc":"Alias for field number 1"
+"url":53,
+"doc":"Offset in the y-axis (vertical)"
 },
 {
 "ref":"textual.geometry.Region.width",
-"url":52,
-"doc":"Alias for field number 2"
+"url":53,
+"doc":"The widget of the region"
 },
 {
 "ref":"textual.geometry.Region.height",
-"url":52,
-"doc":"Alias for field number 3"
+"url":53,
+"doc":"The height of the region"
 },
 {
 "ref":"textual.geometry.Region.from_union",
-"url":52,
+"url":53,
 "doc":"Create a Region from the union of other regions. Args: regions (Collection[Region]): One or more regions. Returns: Region: A Region that encloses all other regions.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.from_corners",
-"url":52,
+"url":53,
 "doc":"Construct a Region form the top left and bottom right corners. Args: x1 (int): Top left x y1 (int): Top left y x2 (int): Bottom right x y2 (int): Bottom right y Returns: Region: A new region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.from_offset",
-"url":52,
+"url":53,
 "doc":"Create a region from offset and size. Args: offset (Point): Offset (top left point) size (tuple[int, int]): Dimensions of region. Returns: Region: A region instance.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.get_scroll_to_visible",
-"url":52,
+"url":53,
 "doc":"Calculate the smallest offset required to translate a window so that it contains another region. This method is used to calculate the required offset to scroll something in to view. Args: window_region (Region): The window region. region (Region): The region to move inside the window. Returns: Offset: An offset required to add to region to move it inside window_region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.column_span",
-"url":52,
+"url":53,
 "doc":"Get the start and end column (x coord). The end value is exclusive. Returns: tuple[int, int]: Pair of x coordinates (column numbers)."
 },
 {
 "ref":"textual.geometry.Region.line_span",
-"url":52,
+"url":53,
 "doc":"Get the start and end line number (y coord). The end value is exclusive. Returns: tuple[int, int]: Pair of y coordinates (line numbers)."
 },
 {
 "ref":"textual.geometry.Region.right",
-"url":52,
+"url":53,
 "doc":"Maximum X value (non inclusive)"
 },
 {
 "ref":"textual.geometry.Region.bottom",
-"url":52,
+"url":53,
 "doc":"Maximum Y value (non inclusive)"
 },
 {
 "ref":"textual.geometry.Region.area",
-"url":52,
+"url":53,
 "doc":"Get the area within the region."
 },
 {
 "ref":"textual.geometry.Region.offset",
-"url":52,
+"url":53,
 "doc":"Get the start point of the region."
 },
 {
 "ref":"textual.geometry.Region.bottom_left",
-"url":52,
+"url":53,
 "doc":"Bottom left offset of the region."
 },
 {
 "ref":"textual.geometry.Region.top_right",
-"url":52,
+"url":53,
 "doc":"Top right offset of the region."
 },
 {
 "ref":"textual.geometry.Region.bottom_right",
-"url":52,
+"url":53,
 "doc":"Bottom right of the region."
 },
 {
 "ref":"textual.geometry.Region.size",
-"url":52,
+"url":53,
 "doc":"Get the size of the region."
 },
 {
 "ref":"textual.geometry.Region.corners",
-"url":52,
+"url":53,
 "doc":"Get the top left and bottom right coordinates as a tuple of integers. Returns: tuple[int, int, int, int]: A tuple of  ( ,  ,  ,  ) "
 },
 {
 "ref":"textual.geometry.Region.column_range",
-"url":52,
+"url":53,
 "doc":"A range object for X coordinates."
 },
 {
 "ref":"textual.geometry.Region.line_range",
-"url":52,
+"url":53,
 "doc":"A range object for Y coordinates."
 },
 {
 "ref":"textual.geometry.Region.reset_offset",
-"url":52,
+"url":53,
 "doc":"An region of the same size at (0, 0)."
 },
 {
 "ref":"textual.geometry.Region.at_offset",
-"url":52,
+"url":53,
 "doc":"Get a new Region with the same size at a given offset. Args: offset (tuple[int, int]): An offset. Returns: Region: New Region with adjusted offset.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.crop_size",
-"url":52,
+"url":53,
 "doc":"Get a region with the same offset, with a size no larger than  size . Args: size (tuple[int, int]): Maximum width and height (WIDTH, HEIGHT). Returns: Region: New region that could fit within  size .",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.expand",
-"url":52,
+"url":53,
 "doc":"Increase the size of the region by adding a border. Args: size (tuple[int, int]): Additional width and height. Returns: Region: A new region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.overlaps",
-"url":52,
+"url":53,
 "doc":"Check if another region overlaps this region. Args: other (Region): A Region. Returns: bool: True if other region shares any cells with this region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.contains",
-"url":52,
+"url":53,
 "doc":"Check if a point is in the region. Args: x (int): X coordinate (column) y (int): Y coordinate (row) Returns: bool: True if the point is within the region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.contains_point",
-"url":52,
+"url":53,
 "doc":"Check if a point is in the region. Args: point (tuple[int, int]): A tuple of x and y coordinates. Returns: bool: True if the point is within the region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.contains_region",
-"url":52,
+"url":53,
 "doc":"Check if a region is entirely contained within this region. Args: other (Region): A region. Returns: bool: True if the other region fits perfectly within this region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.translate",
-"url":52,
+"url":53,
 "doc":"Move the offset of the Region. Args: translate (tuple[int, int]): Offset to add to region. Returns: Region: A new region shifted by (x, y)",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.clip",
-"url":52,
+"url":53,
 "doc":"Clip this region to fit within width, height. Args: width (int): Width of bounds. height (int): Height of bounds. Returns: Region: Clipped region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.grow",
-"url":52,
+"url":53,
 "doc":"Grow a region by adding spacing. Args: margin (Spacing): Defines how many cells to grow the Region by at each edge. Returns: Region: New region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.shrink",
-"url":52,
+"url":53,
 "doc":"Shrink a region by subtracting spacing. Args: margin (Spacing): Defines how many cells to shrink the Region by at each edge. Returns: Region: The new, smaller region.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.intersection",
-"url":52,
+"url":53,
 "doc":"Get the overlapping portion of the two regions. Args: region (Region): A region that overlaps this region. Returns: Region: A new region that covers when the two regions overlap.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.union",
-"url":52,
+"url":53,
 "doc":"Get the smallest region that contains both regions. Args: region (Region): Another region. Returns: Region: An optimally sized region to cover both regions.",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.split",
-"url":52,
+"url":53,
 "doc":"Split a region in to 4 from given x and y offsets (cuts).   cut_x \u2193 \u250c    \u2510\u250c \u2500\u2510 \u2502  \u2502 \u2502 0  1 \u2502 \u2502  \u2502 cut_y \u2192 \u2514    \u2518\u2514 \u2500\u2518 \u250c    \u2510\u250c \u2500\u2510 \u2502 2  3 \u2502 \u2514    \u2518\u2514 \u2500\u2518   Args: cut_x (int): Offset from self.x where the cut should be made. If negative, the cut is taken from the right edge. cut_y (int): Offset from self.y where the cut should be made. If negative, the cut is taken from the lower edge. Returns: tuple[Region, Region, Region, Region]: Four new regions which add up to the original (self).",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.split_vertical",
-"url":52,
+"url":53,
 "doc":"Split a region in to two, from a given x offset.   cut \u2193 \u250c    \u2510\u250c \u2500\u2510 \u2502 0  1 \u2502 \u2502  \u2502 \u2514    \u2518\u2514 \u2500\u2518   Args: cut (int): An offset from self.x where the cut should be made. If cut is negative, it is taken from the right edge. Returns: tuple[Region, Region]: Two regions, which add up to the original (self).",
 "func":1
 },
 {
 "ref":"textual.geometry.Region.split_horizontal",
-"url":52,
+"url":53,
 "doc":"Split a region in to two, from a given x offset.   \u250c    \u2500\u2510 \u2502 0 \u2502 \u2502 \u2502 cut \u2192 \u2514    \u2500\u2518 \u250c    \u2500\u2510 \u2502 1 \u2502 \u2514    \u2500\u2518   Args: cut (int): An offset from self.x where the cut should be made. May be negative, for the offset to start from the right edge. Returns: tuple[Region, Region]: Two regions, which add up to the original (self).",
 "func":1
 },
 {
 "ref":"textual.geometry.Spacing",
-"url":52,
+"url":53,
 "doc":"The spacing around a renderable."
 },
 {
 "ref":"textual.geometry.Spacing.top",
-"url":52,
-"doc":"Alias for field number 0"
+"url":53,
+"doc":"Space from the top of a region."
 },
 {
 "ref":"textual.geometry.Spacing.right",
-"url":52,
-"doc":"Alias for field number 1"
+"url":53,
+"doc":"Space from the left of a region."
 },
 {
 "ref":"textual.geometry.Spacing.bottom",
-"url":52,
-"doc":"Alias for field number 2"
+"url":53,
+"doc":"Space from the bottom of a region."
 },
 {
 "ref":"textual.geometry.Spacing.left",
-"url":52,
-"doc":"Alias for field number 3"
+"url":53,
+"doc":"Space from the left of a region."
 },
 {
 "ref":"textual.geometry.Spacing.width",
-"url":52,
+"url":53,
 "doc":"Total space in width."
 },
 {
 "ref":"textual.geometry.Spacing.height",
-"url":52,
+"url":53,
 "doc":"Total space in height."
 },
 {
 "ref":"textual.geometry.Spacing.top_left",
-"url":52,
+"url":53,
 "doc":"Top left space."
 },
 {
 "ref":"textual.geometry.Spacing.bottom_right",
-"url":52,
+"url":53,
 "doc":"Bottom right space."
 },
 {
 "ref":"textual.geometry.Spacing.totals",
-"url":52,
+"url":53,
 "doc":"Returns a tuple of ( ,  )."
 },
 {
 "ref":"textual.geometry.Spacing.css",
-"url":52,
+"url":53,
 "doc":"Gets a string containing the spacing in CSS format."
 },
 {
 "ref":"textual.geometry.Spacing.unpack",
-"url":52,
+"url":53,
 "doc":"Unpack padding specified in CSS style. Args: pad (SpacingDimensions): An integer, or tuple of 1, 2, or 4 integers. Raises: ValueError: If  pad is an invalid value. Returns: Spacing: New Spacing object.",
 "func":1
 },
 {
 "ref":"textual.geometry.Spacing.vertical",
-"url":52,
+"url":53,
 "doc":"Construct a Spacing with a given amount of spacing on vertical edges, and no horizontal spacing. Args: amount (int): The magnitude of spacing to apply to vertical edges Returns: Spacing:  Spacing(amount, 0, amount, 0) ",
 "func":1
 },
 {
 "ref":"textual.geometry.Spacing.horizontal",
-"url":52,
+"url":53,
 "doc":"Construct a Spacing with a given amount of spacing on horizontal edges, and no vertical spacing. Args: amount (int): The magnitude of spacing to apply to horizontal edges Returns: Spacing:  Spacing(0, amount, 0, amount) ",
 "func":1
 },
 {
 "ref":"textual.geometry.Spacing.all",
-"url":52,
+"url":53,
 "doc":"Construct a Spacing with a given amount of spacing on all edges. Args: amount (int): The magnitude of spacing to apply to all edges Returns: Spacing:  Spacing(amount, amount, amount, amount) ",
 "func":1
 },
 {
 "ref":"textual.geometry.Spacing.grow_maximum",
-"url":52,
+"url":53,
 "doc":"Grow spacing with a maximum. Args: other (Spacing): Spacing object. Returns: Spacing: New spacing were the values are maximum of the two values.",
 "func":1
 },
 {
 "ref":"textual.layouts",
-"url":53,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.layouts.vertical",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.layouts.vertical.VerticalLayout",
-"url":54,
+"url":55,
 "doc":"Used to layout Widgets vertically on screen, from top to bottom."
 },
 {
 "ref":"textual.layouts.vertical.VerticalLayout.name",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.layouts.vertical.VerticalLayout.arrange",
-"url":54,
+"url":55,
 "doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 },
 {
 "ref":"textual.layouts.horizontal",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.layouts.horizontal.HorizontalLayout",
-"url":55,
+"url":56,
 "doc":"Used to layout Widgets horizontally on screen, from left to right. Since Widgets naturally fill the space of their parent container, all widgets used in a horizontal layout should have a specified."
 },
 {
 "ref":"textual.layouts.horizontal.HorizontalLayout.name",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.layouts.horizontal.HorizontalLayout.arrange",
-"url":55,
+"url":56,
 "doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 },
 {
 "ref":"textual.layouts.factory",
-"url":56,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.layouts.factory.MissingLayout",
-"url":56,
+"url":57,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.layouts.factory.get_layout",
-"url":56,
+"url":57,
 "doc":"Get a named layout object. Args: name (str): Name of the layout. Raises: MissingLayout: If the named layout doesn't exist. Returns: Layout: A layout object.",
 "func":1
 },
 {
 "ref":"textual.layouts.grid",
-"url":57,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridOptions",
-"url":57,
+"url":58,
 "doc":"GridOptions(name: 'str', size: 'int | None' = None, fraction: 'int' = 1, min_size: 'int' = 1, max_size: 'int | None' = None)"
 },
 {
 "ref":"textual.layouts.grid.GridOptions.name",
-"url":57,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridOptions.size",
-"url":57,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridOptions.fraction",
-"url":57,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridOptions.min_size",
-"url":57,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridOptions.max_size",
-"url":57,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridArea",
-"url":57,
+"url":58,
 "doc":"GridArea(col_start, col_end, row_start, row_end)"
 },
 {
 "ref":"textual.layouts.grid.GridArea.col_start",
-"url":57,
+"url":58,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.layouts.grid.GridArea.col_end",
-"url":57,
+"url":58,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.layouts.grid.GridArea.row_start",
-"url":57,
+"url":58,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.layouts.grid.GridArea.row_end",
-"url":57,
+"url":58,
 "doc":"Alias for field number 3"
 },
 {
 "ref":"textual.layouts.grid.GridLayout",
-"url":57,
+"url":58,
 "doc":"Responsible for arranging Widgets in a view and rendering them."
 },
 {
 "ref":"textual.layouts.grid.GridLayout.name",
-"url":57,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridLayout.is_row_visible",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.is_column_visible",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.show_row",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.show_column",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.add_column",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.add_row",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.add_areas",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.set_gap",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.set_gutter",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.add_widget",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.place",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.set_repeat",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.set_align",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.get_widgets",
-"url":57,
+"url":58,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.layouts.grid.GridLayout.arrange",
-"url":57,
+"url":58,
 "doc":"Generate a map that associates widgets with their location on screen. Args: width (int): [description] height (int): [description] offset (Point, optional): [description]. Defaults to Point(0, 0). Returns: dict[Widget, OrderedRegion]: [description]",
 "func":1
 },
@@ -11299,6 +11465,16 @@ INDEX=[
 "doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
 },
 {
+"ref":"textual.widget.Widget.virtual_region_with_margin",
+"url":35,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.widget.Widget.focusable_children",
+"url":35,
+"doc":"Get the children which may be focused."
+},
+{
 "ref":"textual.widget.Widget.scroll_offset",
 "url":35,
 "doc":""
@@ -11478,7 +11654,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.call_later",
 "url":35,
-"doc":"Run a callback after processing all messages and refreshing the screen. Args: callback (Callable): A callable.",
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Args: callback (Callable): A callable.",
 "func":1
 },
 {
@@ -11776,11 +11952,6 @@ INDEX=[
 "ref":"textual.widget.Widget.displayed_children",
 "url":36,
 "doc":"The children which don't have display: none set."
-},
-{
-"ref":"textual.widget.Widget.focusable_children",
-"url":36,
-"doc":"Get the children which may be focused."
 },
 {
 "ref":"textual.widget.Widget.reset_styles",

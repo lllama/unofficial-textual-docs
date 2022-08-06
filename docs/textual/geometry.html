@@ -74,10 +74,13 @@ def clamp(value: T, minimum: T, maximum: T) -&gt; T:
 
 
 class Offset(NamedTuple):
-    &#34;&#34;&#34;A point defined by x and y coordinates.&#34;&#34;&#34;
+    &#34;&#34;&#34;A cell offset defined by x and y coordinates. Offsets are typically relative to the
+    top left of the terminal or other container.&#34;&#34;&#34;
 
     x: int = 0
+    &#34;&#34;&#34;Offset in the x-axis (horizontal)&#34;&#34;&#34;
     y: int = 0
+    &#34;&#34;&#34;Offset in the y-axis (vertical)&#34;&#34;&#34;
 
     @property
     def is_origin(self) -&gt; bool:
@@ -147,7 +150,10 @@ class Size(NamedTuple):
     &#34;&#34;&#34;An area defined by its width and height.&#34;&#34;&#34;
 
     width: int = 0
+    &#34;&#34;&#34;The width in cells.&#34;&#34;&#34;
+
     height: int = 0
+    &#34;&#34;&#34;The height in cells.&#34;&#34;&#34;
 
     def __bool__(self) -&gt; bool:
         &#34;&#34;&#34;A Size is Falsy if it has area 0.&#34;&#34;&#34;
@@ -225,12 +231,32 @@ class Size(NamedTuple):
 
 
 class Region(NamedTuple):
-    &#34;&#34;&#34;Defines a rectangular region.&#34;&#34;&#34;
+    &#34;&#34;&#34;Defines a rectangular region.
+
+    A Region consists a coordinate (x and y) and dimensions (width and height).
+
+    ```
+      (x, y)
+        ┌────────────────────┐ ▲
+        │                    │ │
+        │                    │ │
+        │                    │ height
+        │                    │ │
+        │                    │ │
+        └────────────────────┘ ▼
+        ◀─────── width ──────▶
+    ```
+
+    &#34;&#34;&#34;
 
     x: int = 0
+    &#34;&#34;&#34;Offset in the x-axis (horizontal)&#34;&#34;&#34;
     y: int = 0
+    &#34;&#34;&#34;Offset in the y-axis (vertical)&#34;&#34;&#34;
     width: int = 0
+    &#34;&#34;&#34;The widget of the region&#34;&#34;&#34;
     height: int = 0
+    &#34;&#34;&#34;The height of the region&#34;&#34;&#34;
 
     @classmethod
     def from_union(
@@ -783,9 +809,13 @@ class Spacing(NamedTuple):
     &#34;&#34;&#34;The spacing around a renderable.&#34;&#34;&#34;
 
     top: int = 0
+    &#34;&#34;&#34;Space from the top of a region.&#34;&#34;&#34;
     right: int = 0
+    &#34;&#34;&#34;Space from the left of a region.&#34;&#34;&#34;
     bottom: int = 0
+    &#34;&#34;&#34;Space from the bottom of a region.&#34;&#34;&#34;
     left: int = 0
+    &#34;&#34;&#34;Space from the left of a region.&#34;&#34;&#34;
 
     def __bool__(self) -&gt; bool:
         return self != (0, 0, 0, 0)
@@ -995,16 +1025,20 @@ NULL_OFFSET = Offset(0, 0)</code></pre>
 <span>(</span><span>x: int = 0, y: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A point defined by x and y coordinates.</p></div>
+<div class="desc"><p>A cell offset defined by x and y coordinates. Offsets are typically relative to the
+top left of the terminal or other container.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Offset(NamedTuple):
-    &#34;&#34;&#34;A point defined by x and y coordinates.&#34;&#34;&#34;
+    &#34;&#34;&#34;A cell offset defined by x and y coordinates. Offsets are typically relative to the
+    top left of the terminal or other container.&#34;&#34;&#34;
 
     x: int = 0
+    &#34;&#34;&#34;Offset in the x-axis (horizontal)&#34;&#34;&#34;
     y: int = 0
+    &#34;&#34;&#34;Offset in the y-axis (vertical)&#34;&#34;&#34;
 
     @property
     def is_origin(self) -&gt; bool:
@@ -1090,11 +1124,11 @@ def is_origin(self) -&gt; bool:
 </dd>
 <dt id="textual.geometry.Offset.x"><code class="name">var <span class="ident">x</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 0</p></div>
+<div class="desc"><p>Offset in the x-axis (horizontal)</p></div>
 </dd>
 <dt id="textual.geometry.Offset.y"><code class="name">var <span class="ident">y</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 1</p></div>
+<div class="desc"><p>Offset in the y-axis (vertical)</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1179,18 +1213,49 @@ def is_origin(self) -&gt; bool:
 <span>(</span><span>x: int = 0, y: int = 0, width: int = 0, height: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Defines a rectangular region.</p></div>
+<div class="desc"><p>Defines a rectangular region.</p>
+<p>A Region consists a coordinate (x and y) and dimensions (width and height).</p>
+<pre><code>  (x, y)
+    ┌────────────────────┐ ▲
+    │                    │ │
+    │                    │ │
+    │                    │ height
+    │                    │ │
+    │                    │ │
+    └────────────────────┘ ▼
+    ◀─────── width ──────▶
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Region(NamedTuple):
-    &#34;&#34;&#34;Defines a rectangular region.&#34;&#34;&#34;
+    &#34;&#34;&#34;Defines a rectangular region.
+
+    A Region consists a coordinate (x and y) and dimensions (width and height).
+
+    ```
+      (x, y)
+        ┌────────────────────┐ ▲
+        │                    │ │
+        │                    │ │
+        │                    │ height
+        │                    │ │
+        │                    │ │
+        └────────────────────┘ ▼
+        ◀─────── width ──────▶
+    ```
+
+    &#34;&#34;&#34;
 
     x: int = 0
+    &#34;&#34;&#34;Offset in the x-axis (horizontal)&#34;&#34;&#34;
     y: int = 0
+    &#34;&#34;&#34;Offset in the y-axis (vertical)&#34;&#34;&#34;
     width: int = 0
+    &#34;&#34;&#34;The widget of the region&#34;&#34;&#34;
     height: int = 0
+    &#34;&#34;&#34;The height of the region&#34;&#34;&#34;
 
     @classmethod
     def from_union(
@@ -2059,7 +2124,7 @@ def corners(self) -&gt; tuple[int, int, int, int]:
 </dd>
 <dt id="textual.geometry.Region.height"><code class="name">var <span class="ident">height</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 3</p></div>
+<div class="desc"><p>The height of the region</p></div>
 </dd>
 <dt id="textual.geometry.Region.line_range"><code class="name">var <span class="ident">line_range</span> : range</code></dt>
 <dd>
@@ -2168,15 +2233,15 @@ def top_right(self) -&gt; Offset:
 </dd>
 <dt id="textual.geometry.Region.width"><code class="name">var <span class="ident">width</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 2</p></div>
+<div class="desc"><p>The widget of the region</p></div>
 </dd>
 <dt id="textual.geometry.Region.x"><code class="name">var <span class="ident">x</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 0</p></div>
+<div class="desc"><p>Offset in the x-axis (horizontal)</p></div>
 </dd>
 <dt id="textual.geometry.Region.y"><code class="name">var <span class="ident">y</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 1</p></div>
+<div class="desc"><p>Offset in the y-axis (vertical)</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2874,7 +2939,10 @@ def union(self, region: Region) -&gt; Region:
     &#34;&#34;&#34;An area defined by its width and height.&#34;&#34;&#34;
 
     width: int = 0
+    &#34;&#34;&#34;The width in cells.&#34;&#34;&#34;
+
     height: int = 0
+    &#34;&#34;&#34;The height in cells.&#34;&#34;&#34;
 
     def __bool__(self) -&gt; bool:
         &#34;&#34;&#34;A Size is Falsy if it has area 0.&#34;&#34;&#34;
@@ -2980,7 +3048,7 @@ def area(self) -&gt; int:
 </dd>
 <dt id="textual.geometry.Size.height"><code class="name">var <span class="ident">height</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 1</p></div>
+<div class="desc"><p>The height in cells.</p></div>
 </dd>
 <dt id="textual.geometry.Size.line_range"><code class="name">var <span class="ident">line_range</span> : range</code></dt>
 <dd>
@@ -3011,7 +3079,7 @@ def region(self) -&gt; Region:
 </dd>
 <dt id="textual.geometry.Size.width"><code class="name">var <span class="ident">width</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 0</p></div>
+<div class="desc"><p>The width in cells.</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -3100,9 +3168,13 @@ def region(self) -&gt; Region:
     &#34;&#34;&#34;The spacing around a renderable.&#34;&#34;&#34;
 
     top: int = 0
+    &#34;&#34;&#34;Space from the top of a region.&#34;&#34;&#34;
     right: int = 0
+    &#34;&#34;&#34;Space from the left of a region.&#34;&#34;&#34;
     bottom: int = 0
+    &#34;&#34;&#34;Space from the bottom of a region.&#34;&#34;&#34;
     left: int = 0
+    &#34;&#34;&#34;Space from the left of a region.&#34;&#34;&#34;
 
     def __bool__(self) -&gt; bool:
         return self != (0, 0, 0, 0)
@@ -3412,7 +3484,7 @@ def vertical(cls, amount: int) -&gt; Spacing:
 <dl>
 <dt id="textual.geometry.Spacing.bottom"><code class="name">var <span class="ident">bottom</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 2</p></div>
+<div class="desc"><p>Space from the bottom of a region.</p></div>
 </dd>
 <dt id="textual.geometry.Spacing.bottom_right"><code class="name">var <span class="ident">bottom_right</span> : tuple[int, int]</code></dt>
 <dd>
@@ -3461,15 +3533,15 @@ def height(self) -&gt; int:
 </dd>
 <dt id="textual.geometry.Spacing.left"><code class="name">var <span class="ident">left</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 3</p></div>
+<div class="desc"><p>Space from the left of a region.</p></div>
 </dd>
 <dt id="textual.geometry.Spacing.right"><code class="name">var <span class="ident">right</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 1</p></div>
+<div class="desc"><p>Space from the left of a region.</p></div>
 </dd>
 <dt id="textual.geometry.Spacing.top"><code class="name">var <span class="ident">top</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 0</p></div>
+<div class="desc"><p>Space from the top of a region.</p></div>
 </dd>
 <dt id="textual.geometry.Spacing.top_left"><code class="name">var <span class="ident">top_left</span> : tuple[int, int]</code></dt>
 <dd>
