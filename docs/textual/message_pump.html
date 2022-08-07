@@ -426,6 +426,9 @@ class MessagePump:
             return False
         return self.post_message_no_wait(message)
 
+    async def on_callback(self, event: events.Callback) -&gt; None:
+        await invoke(event.callback)
+
     def emit_no_wait(self, message: Message) -&gt; bool:
         if self._parent:
             return self._parent.post_message_from_child_no_wait(message)
@@ -888,6 +891,9 @@ class MessagePump:
             return False
         return self.post_message_no_wait(message)
 
+    async def on_callback(self, event: events.Callback) -&gt; None:
+        await invoke(event.callback)
+
     def emit_no_wait(self, message: Message) -&gt; bool:
         if self._parent:
             return self._parent.post_message_from_child_no_wait(message)
@@ -1273,6 +1279,19 @@ has been refreshed.</p>
 </summary>
 <pre><code class="python">def log(self, *args, **kwargs) -&gt; None:
     return self.app.log(*args, **kwargs, _textual_calling_frame=inspect.stack()[1])</code></pre>
+</details>
+</dd>
+<dt id="textual.message_pump.MessagePump.on_callback"><code class="name flex">
+<span>async def <span class="ident">on_callback</span></span>(<span>self, event: events.Callback) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_callback(self, event: events.Callback) -&gt; None:
+    await invoke(event.callback)</code></pre>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.on_event"><code class="name flex">
@@ -1736,6 +1755,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.message_pump.MessagePump.is_parent_active" href="#textual.message_pump.MessagePump.is_parent_active">is_parent_active</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.is_running" href="#textual.message_pump.MessagePump.is_running">is_running</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.log" href="#textual.message_pump.MessagePump.log">log</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.on_callback" href="#textual.message_pump.MessagePump.on_callback">on_callback</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_event" href="#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_message" href="#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_timer" href="#textual.message_pump.MessagePump.on_timer">on_timer</a></code></li>

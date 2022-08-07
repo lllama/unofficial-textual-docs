@@ -2756,6 +2756,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.message_pump.MessagePump.on_callback",
+"url":20,
+"doc":"",
+"func":1
+},
+{
 "ref":"textual.message_pump.MessagePump.emit_no_wait",
 "url":20,
 "doc":"",
