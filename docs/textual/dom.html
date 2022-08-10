@@ -282,7 +282,7 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         Returns: ``True`` if this DOMNode is displayed (``display != &#34;none&#34;``), ``False`` otherwise.
         &#34;&#34;&#34;
-        return self.styles.display != &#34;none&#34;
+        return self.styles.display != &#34;none&#34; and not (self._closing or self._closed)
 
     @display.setter
     def display(self, new_val: bool | str) -&gt; None:
@@ -861,7 +861,7 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         Returns: ``True`` if this DOMNode is displayed (``display != &#34;none&#34;``), ``False`` otherwise.
         &#34;&#34;&#34;
-        return self.styles.display != &#34;none&#34;
+        return self.styles.display != &#34;none&#34; and not (self._closing or self._closed)
 
     @display.setter
     def display(self, new_val: bool | str) -&gt; None:
@@ -1434,7 +1434,7 @@ def display(self) -&gt; bool:
     &#34;&#34;&#34;
     Returns: ``True`` if this DOMNode is displayed (``display != &#34;none&#34;``), ``False`` otherwise.
     &#34;&#34;&#34;
-    return self.styles.display != &#34;none&#34;</code></pre>
+    return self.styles.display != &#34;none&#34; and not (self._closing or self._closed)</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.displayed_children"><code class="name">var <span class="ident">displayed_children</span> : list[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>]</code></dt>

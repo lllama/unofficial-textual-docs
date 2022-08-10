@@ -198,7 +198,6 @@ class Screen(Widget):
         self.update_timer.pause()
         try:
             hidden, shown, resized = self._compositor.reflow(self, size)
-
             Hide = events.Hide
             Show = events.Show
             for widget in hidden:
@@ -485,7 +484,6 @@ class Screen(Widget):
         self.update_timer.pause()
         try:
             hidden, shown, resized = self._compositor.reflow(self, size)
-
             Hide = events.Hide
             Show = events.Show
             for widget in hidden:
@@ -996,6 +994,7 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.layout" href="widget.html#textual.widget.Widget.layout">layout</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
@@ -1008,6 +1007,7 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.widget.Widget.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.widget.Widget.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove" href="widget.html#textual.widget.Widget.remove">remove</a></code></li>
 <li><code><a title="textual.widget.Widget.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_line" href="widget.html#textual.widget.Widget.render_line">render_line</a></code></li>
@@ -1021,6 +1021,7 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_to_region" href="widget.html#textual.widget.Widget.scroll_to_region">scroll_to_region</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_to_widget" href="widget.html#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_visible" href="widget.html#textual.widget.Widget.scroll_visible">scroll_visible</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>

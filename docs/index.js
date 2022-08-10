@@ -57,7 +57,8 @@ URLS=[
 "textual/layouts/vertical.html",
 "textual/layouts/horizontal.html",
 "textual/layouts/factory.html",
-"textual/layouts/grid.html"
+"textual/layouts/grid.html",
+"textual/layouts/center.html"
 ];
 INDEX=[
 {
@@ -507,6 +508,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.css.query.DOMQuery.last",
+"url":7,
+"doc":"Get the last matched node. Returns: DOMNode: A DOM Node.",
+"func":1
+},
+{
 "ref":"textual.css.query.DOMQuery.add_class",
 "url":7,
 "doc":"Add the given class name(s) to nodes.",
@@ -522,6 +529,12 @@ INDEX=[
 "ref":"textual.css.query.DOMQuery.toggle_class",
 "url":7,
 "doc":"Toggle the given class names from matched nodes.",
+"func":1
+},
+{
+"ref":"textual.css.query.DOMQuery.remove",
+"url":7,
+"doc":"Remove matched nodes from the DOM",
 "func":1
 },
 {
@@ -3238,6 +3251,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scroll_view.ScrollView.mount",
+"url":35,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example: self.mount(Static(\"hello\"), header=Header( ",
+"func":1
+},
+{
 "ref":"textual.scroll_view.ScrollView.compose",
 "url":35,
 "doc":"Yield child widgets for a container.",
@@ -3395,6 +3414,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scroll_view.ScrollView.scroll_visible",
+"url":35,
+"doc":"Scroll the container to make this widget visible. Returns: bool: True if the parent was scrolled.",
+"func":1
+},
+{
 "ref":"textual.scroll_view.ScrollView.get_pseudo_classes",
 "url":35,
 "doc":"Pseudo classes for a widget",
@@ -3434,6 +3459,12 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.refresh",
 "url":35,
 "doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. Args: repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.remove",
+"url":35,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
 "func":1
 },
 {
@@ -4370,6 +4401,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.on_hide",
+"url":38,
+"doc":"",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.on_enter",
 "url":38,
 "doc":"",
@@ -4504,6 +4541,12 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.watch_show_vertical_scrollbar",
 "url":35,
 "doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.mount",
+"url":35,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example: self.mount(Static(\"hello\"), header=Header( ",
 "func":1
 },
 {
@@ -4686,6 +4729,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.scroll_visible",
+"url":35,
+"doc":"Scroll the container to make this widget visible. Returns: bool: True if the parent was scrolled.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.get_pseudo_classes",
 "url":35,
 "doc":"Pseudo classes for a widget",
@@ -4725,6 +4774,12 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.refresh",
 "url":35,
 "doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. Args: repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.remove",
+"url":35,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
 "func":1
 },
 {
@@ -5708,6 +5763,65 @@ INDEX=[
 },
 {
 "ref":"textual.events.Unmount.time",
+"url":33,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.Remove",
+"url":40,
+"doc":"Sent to a widget to ask it to remove itself from the DOM. Args: sender (MessageTarget): The sender of the message / event."
+},
+{
+"ref":"textual.events.Remove.sender",
+"url":40,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.Remove.bubble",
+"url":40,
+"doc":""
+},
+{
+"ref":"textual.events.Remove.verbosity",
+"url":40,
+"doc":""
+},
+{
+"ref":"textual.events.Remove.system",
+"url":40,
+"doc":""
+},
+{
+"ref":"textual.events.Remove.set_forwarded",
+"url":33,
+"doc":"Mark this event as being forwarded.",
+"func":1
+},
+{
+"ref":"textual.events.Remove.can_replace",
+"url":33,
+"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
+"func":1
+},
+{
+"ref":"textual.events.Remove.prevent_default",
+"url":33,
+"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.Remove.stop",
+"url":33,
+"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.Remove.name",
+"url":33,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.Remove.time",
 "url":33,
 "doc":"Return an attribute of instance, which is of type owner."
 },
@@ -7578,6 +7692,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.mount",
+"url":35,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example: self.mount(Static(\"hello\"), header=Header( ",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.compose",
 "url":35,
 "doc":"Yield child widgets for a container.",
@@ -7752,6 +7872,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.scroll_visible",
+"url":35,
+"doc":"Scroll the container to make this widget visible. Returns: bool: True if the parent was scrolled.",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.get_pseudo_classes",
 "url":35,
 "doc":"Pseudo classes for a widget",
@@ -7791,6 +7917,12 @@ INDEX=[
 "ref":"textual.screen.Screen.refresh",
 "url":35,
 "doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. Args: repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.remove",
+"url":35,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
 "func":1
 },
 {
@@ -9043,17 +9175,589 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.layout.Container",
+"url":50,
+"doc":"Simple container widget, with vertical layout."
+},
+{
+"ref":"textual.layout.Container.COMPONENT_CLASSES",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.layout.Container.CSS",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.layout.Container.can_focus",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.layout.Container.can_focus_children",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.layout.Container.virtual_size",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.auto_width",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.auto_height",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.has_focus",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.descendant_has_focus",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.mouse_over",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.scroll_x",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.scroll_y",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.scroll_target_x",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.scroll_target_y",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.show_vertical_scrollbar",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.show_horizontal_scrollbar",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Container.watch_show_horizontal_scrollbar",
+"url":35,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.watch_show_vertical_scrollbar",
+"url":35,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.mount",
+"url":35,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example: self.mount(Static(\"hello\"), header=Header( ",
+"func":1
+},
+{
+"ref":"textual.layout.Container.compose",
+"url":35,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.on_register",
+"url":35,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.get_box_model",
+"url":35,
+"doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.get_content_width",
+"url":35,
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.get_content_height",
+"url":35,
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.max_scroll_x",
+"url":35,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.layout.Container.max_scroll_y",
+"url":35,
+"doc":"The maximum value of  scroll_y ."
+},
+{
+"ref":"textual.layout.Container.vertical_scrollbar",
+"url":35,
+"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.layout.Container.horizontal_scrollbar",
+"url":35,
+"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.layout.Container.scrollbars_enabled",
+"url":35,
+"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.layout.Container.scrollbar_size_vertical",
+"url":35,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.layout.Container.scrollbar_size_horizontal",
+"url":35,
+"doc":"Get the height used by the  horizontal scrollbar."
+},
+{
+"ref":"textual.layout.Container.gutter",
+"url":35,
+"doc":"Spacing for padding / border / scrollbars."
+},
+{
+"ref":"textual.layout.Container.size",
+"url":35,
+"doc":"The size of the content area."
+},
+{
+"ref":"textual.layout.Container.outer_size",
+"url":35,
+"doc":"The size of the widget (including padding and border)."
+},
+{
+"ref":"textual.layout.Container.container_size",
+"url":35,
+"doc":"The size of the container (parent widget)."
+},
+{
+"ref":"textual.layout.Container.content_region",
+"url":35,
+"doc":"Gets an absolute region containing the content (minus padding and border)."
+},
+{
+"ref":"textual.layout.Container.content_offset",
+"url":35,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.layout.Container.region",
+"url":35,
+"doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.layout.Container.virtual_region",
+"url":35,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
+"ref":"textual.layout.Container.window_region",
+"url":35,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
+},
+{
+"ref":"textual.layout.Container.virtual_region_with_margin",
+"url":35,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.layout.Container.focusable_children",
+"url":35,
+"doc":"Get the children which may be focused."
+},
+{
+"ref":"textual.layout.Container.is_transparent",
+"url":35,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
+},
+{
+"ref":"textual.layout.Container.console",
+"url":35,
+"doc":"Get the current console."
+},
+{
+"ref":"textual.layout.Container.layout",
+"url":35,
+"doc":"Get the layout object if set in styles, or a default layout."
+},
+{
+"ref":"textual.layout.Container.is_container",
+"url":35,
+"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
+},
+{
+"ref":"textual.layout.Container.is_scrollable",
+"url":35,
+"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
+},
+{
+"ref":"textual.layout.Container.layer",
+"url":35,
+"doc":"Get the name of this widgets layer."
+},
+{
+"ref":"textual.layout.Container.layers",
+"url":35,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
+"ref":"textual.layout.Container.scroll_to",
+"url":35,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.scroll_relative",
+"url":35,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.scroll_to_widget",
+"url":35,
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.scroll_to_region",
+"url":35,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.scroll_visible",
+"url":35,
+"doc":"Scroll the container to make this widget visible. Returns: bool: True if the parent was scrolled.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.get_pseudo_classes",
+"url":35,
+"doc":"Pseudo classes for a widget",
+"func":1
+},
+{
+"ref":"textual.layout.Container.watch_mouse_over",
+"url":35,
+"doc":"Update from CSS if mouse over state changes.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.watch_has_focus",
+"url":35,
+"doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.render_line",
+"url":35,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.render_lines",
+"url":35,
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.call_later",
+"url":35,
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Args: callback (Callable): A callable.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.refresh",
+"url":35,
+"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. Args: repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.remove",
+"url":35,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
+"func":1
+},
+{
+"ref":"textual.layout.Container.render",
+"url":35,
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
+"func":1
+},
+{
+"ref":"textual.layout.Container.on_idle",
+"url":35,
+"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.focus",
+"url":35,
+"doc":"Give input focus to this widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.capture_mouse",
+"url":35,
+"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.release_mouse",
+"url":35,
+"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.css",
+"url":36,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
+"ref":"textual.layout.Container.parent",
+"url":36,
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
+},
+{
+"ref":"textual.layout.Container.screen",
+"url":36,
+"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
+},
+{
+"ref":"textual.layout.Container.id",
+"url":36,
+"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
+},
+{
+"ref":"textual.layout.Container.css_identifier",
+"url":36,
+"doc":"A CSS selector that identifies this DOM node."
+},
+{
+"ref":"textual.layout.Container.css_identifier_styled",
+"url":36,
+"doc":"A stylized CSS identifier."
+},
+{
+"ref":"textual.layout.Container.pseudo_classes",
+"url":36,
+"doc":"Get a set of all pseudo classes"
+},
+{
+"ref":"textual.layout.Container.css_path_nodes",
+"url":36,
+"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
+},
+{
+"ref":"textual.layout.Container.display",
+"url":36,
+"doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
+},
+{
+"ref":"textual.layout.Container.tree",
+"url":36,
+"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.layout.Container.text_style",
+"url":36,
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.layout.Container.rich_style",
+"url":36,
+"doc":"Get a Rich Style object for this DOMNode."
+},
+{
+"ref":"textual.layout.Container.background_colors",
+"url":36,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
+"ref":"textual.layout.Container.colors",
+"url":36,
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
+},
+{
+"ref":"textual.layout.Container.ancestors",
+"url":36,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
+},
+{
+"ref":"textual.layout.Container.displayed_children",
+"url":36,
+"doc":"The children which don't have display: none set."
+},
+{
+"ref":"textual.layout.Container.reset_styles",
+"url":36,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
+"ref":"textual.layout.Container.add_child",
+"url":36,
+"doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.add_children",
+"url":36,
+"doc":"Add multiple children to this node. Args:  nodes (DOMNode): Positional args should be new DOM nodes.  named_nodes (DOMNode): Keyword args will be assigned the argument name as an ID.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.walk_children",
+"url":36,
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.get_child",
+"url":36,
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"func":1
+},
+{
+"ref":"textual.layout.Container.query",
+"url":36,
+"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.set_styles",
+"url":36,
+"doc":"Set custom styles on this object.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.has_class",
+"url":36,
+"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.layout.Container.add_class",
+"url":36,
+"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.remove_class",
+"url":36,
+"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.toggle_class",
+"url":36,
+"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.has_pseudo_class",
+"url":36,
+"doc":"Check for pseudo class (such as hover, focus etc)",
+"func":1
+},
+{
+"ref":"textual.layout.Container.app",
+"url":20,
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
+},
+{
+"ref":"textual.layout.Container.disable_messages",
+"url":20,
+"doc":"Disable message types from being processed.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.enable_messages",
+"url":20,
+"doc":"Enable processing of messages types.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.get_message",
+"url":20,
+"doc":"Get the next event on the queue, or None if queue is closed. Returns: Optional[Event]: Event object or None.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.peek_message",
+"url":20,
+"doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.close_messages_no_wait",
+"url":20,
+"doc":"Request the message queue to exit.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.close_messages",
+"url":20,
+"doc":"Close message queue, and optionally wait for queue to finish processing.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.check_idle",
+"url":20,
+"doc":"Prompt the message pump to call idle if the queue is empty.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.post_priority_message",
+"url":20,
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.dispatch_key",
+"url":20,
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
+"func":1
+},
+{
 "ref":"textual.layout.Vertical",
 "url":50,
 "doc":"A container widget to align children vertically."
 },
 {
 "ref":"textual.layout.Vertical.COMPONENT_CLASSES",
-"url":50,
-"doc":""
-},
-{
-"ref":"textual.layout.Vertical.CSS",
 "url":50,
 "doc":""
 },
@@ -9137,6 +9841,12 @@ INDEX=[
 "ref":"textual.layout.Vertical.watch_show_vertical_scrollbar",
 "url":35,
 "doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.mount",
+"url":35,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example: self.mount(Static(\"hello\"), header=Header( ",
 "func":1
 },
 {
@@ -9319,6 +10029,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Vertical.scroll_visible",
+"url":35,
+"doc":"Scroll the container to make this widget visible. Returns: bool: True if the parent was scrolled.",
+"func":1
+},
+{
 "ref":"textual.layout.Vertical.get_pseudo_classes",
 "url":35,
 "doc":"Pseudo classes for a widget",
@@ -9358,6 +10074,12 @@ INDEX=[
 "ref":"textual.layout.Vertical.refresh",
 "url":35,
 "doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. Args: repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.remove",
+"url":35,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
 "func":1
 },
 {
@@ -9699,6 +10421,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Horizontal.mount",
+"url":35,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example: self.mount(Static(\"hello\"), header=Header( ",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.compose",
 "url":35,
 "doc":"Yield child widgets for a container.",
@@ -9878,6 +10606,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Horizontal.scroll_visible",
+"url":35,
+"doc":"Scroll the container to make this widget visible. Returns: bool: True if the parent was scrolled.",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.get_pseudo_classes",
 "url":35,
 "doc":"Pseudo classes for a widget",
@@ -9917,6 +10651,12 @@ INDEX=[
 "ref":"textual.layout.Horizontal.refresh",
 "url":35,
 "doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. Args: repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.remove",
+"url":35,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
 "func":1
 },
 {
@@ -10156,6 +10896,583 @@ INDEX=[
 },
 {
 "ref":"textual.layout.Horizontal.dispatch_key",
+"url":20,
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
+"func":1
+},
+{
+"ref":"textual.layout.Center",
+"url":50,
+"doc":"A container widget to align children in the center."
+},
+{
+"ref":"textual.layout.Center.COMPONENT_CLASSES",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.layout.Center.CSS",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.layout.Center.can_focus",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.layout.Center.can_focus_children",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.layout.Center.virtual_size",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.auto_width",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.auto_height",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.has_focus",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.descendant_has_focus",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.mouse_over",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.scroll_x",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.scroll_y",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.scroll_target_x",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.scroll_target_y",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.show_vertical_scrollbar",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.show_horizontal_scrollbar",
+"url":35,
+"doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.watch_show_horizontal_scrollbar",
+"url":35,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.watch_show_vertical_scrollbar",
+"url":35,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.mount",
+"url":35,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example: self.mount(Static(\"hello\"), header=Header( ",
+"func":1
+},
+{
+"ref":"textual.layout.Center.compose",
+"url":35,
+"doc":"Yield child widgets for a container.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.on_register",
+"url":35,
+"doc":"Called when the instance is registered. Args: app (App): App instance.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.get_box_model",
+"url":35,
+"doc":"Process the box model for this widget. Args: container (Size): The size of the container widget (with a layout) viewport (Size): The viewport size. Returns: BoxModel: The size and margin for this widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.get_content_width",
+"url":35,
+"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.get_content_height",
+"url":35,
+"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.max_scroll_x",
+"url":35,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.layout.Center.max_scroll_y",
+"url":35,
+"doc":"The maximum value of  scroll_y ."
+},
+{
+"ref":"textual.layout.Center.vertical_scrollbar",
+"url":35,
+"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.layout.Center.horizontal_scrollbar",
+"url":35,
+"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.layout.Center.scrollbars_enabled",
+"url":35,
+"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.layout.Center.scrollbar_size_vertical",
+"url":35,
+"doc":"Get the width used by the  vertical scrollbar."
+},
+{
+"ref":"textual.layout.Center.scrollbar_size_horizontal",
+"url":35,
+"doc":"Get the height used by the  horizontal scrollbar."
+},
+{
+"ref":"textual.layout.Center.gutter",
+"url":35,
+"doc":"Spacing for padding / border / scrollbars."
+},
+{
+"ref":"textual.layout.Center.size",
+"url":35,
+"doc":"The size of the content area."
+},
+{
+"ref":"textual.layout.Center.outer_size",
+"url":35,
+"doc":"The size of the widget (including padding and border)."
+},
+{
+"ref":"textual.layout.Center.container_size",
+"url":35,
+"doc":"The size of the container (parent widget)."
+},
+{
+"ref":"textual.layout.Center.content_region",
+"url":35,
+"doc":"Gets an absolute region containing the content (minus padding and border)."
+},
+{
+"ref":"textual.layout.Center.content_offset",
+"url":35,
+"doc":"An offset from the Widget origin where the content begins."
+},
+{
+"ref":"textual.layout.Center.region",
+"url":35,
+"doc":"The region occupied by this widget, relative to the Screen."
+},
+{
+"ref":"textual.layout.Center.virtual_region",
+"url":35,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
+"ref":"textual.layout.Center.window_region",
+"url":35,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
+},
+{
+"ref":"textual.layout.Center.virtual_region_with_margin",
+"url":35,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.layout.Center.focusable_children",
+"url":35,
+"doc":"Get the children which may be focused."
+},
+{
+"ref":"textual.layout.Center.is_transparent",
+"url":35,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
+},
+{
+"ref":"textual.layout.Center.console",
+"url":35,
+"doc":"Get the current console."
+},
+{
+"ref":"textual.layout.Center.layout",
+"url":35,
+"doc":"Get the layout object if set in styles, or a default layout."
+},
+{
+"ref":"textual.layout.Center.is_container",
+"url":35,
+"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
+},
+{
+"ref":"textual.layout.Center.is_scrollable",
+"url":35,
+"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
+},
+{
+"ref":"textual.layout.Center.layer",
+"url":35,
+"doc":"Get the name of this widgets layer."
+},
+{
+"ref":"textual.layout.Center.layers",
+"url":35,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
+"ref":"textual.layout.Center.scroll_to",
+"url":35,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or  None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.scroll_relative",
+"url":35,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.scroll_to_widget",
+"url":35,
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.scroll_to_region",
+"url":35,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.scroll_visible",
+"url":35,
+"doc":"Scroll the container to make this widget visible. Returns: bool: True if the parent was scrolled.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.get_pseudo_classes",
+"url":35,
+"doc":"Pseudo classes for a widget",
+"func":1
+},
+{
+"ref":"textual.layout.Center.watch_mouse_over",
+"url":35,
+"doc":"Update from CSS if mouse over state changes.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.watch_has_focus",
+"url":35,
+"doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.render_line",
+"url":35,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.render_lines",
+"url":35,
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.call_later",
+"url":35,
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Args: callback (Callable): A callable.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.refresh",
+"url":35,
+"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. Args: repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.remove",
+"url":35,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
+"func":1
+},
+{
+"ref":"textual.layout.Center.render",
+"url":35,
+"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
+"func":1
+},
+{
+"ref":"textual.layout.Center.on_idle",
+"url":35,
+"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.focus",
+"url":35,
+"doc":"Give input focus to this widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.capture_mouse",
+"url":35,
+"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.release_mouse",
+"url":35,
+"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.css",
+"url":36,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+},
+{
+"ref":"textual.layout.Center.parent",
+"url":36,
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
+},
+{
+"ref":"textual.layout.Center.screen",
+"url":36,
+"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
+},
+{
+"ref":"textual.layout.Center.id",
+"url":36,
+"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
+},
+{
+"ref":"textual.layout.Center.css_identifier",
+"url":36,
+"doc":"A CSS selector that identifies this DOM node."
+},
+{
+"ref":"textual.layout.Center.css_identifier_styled",
+"url":36,
+"doc":"A stylized CSS identifier."
+},
+{
+"ref":"textual.layout.Center.pseudo_classes",
+"url":36,
+"doc":"Get a set of all pseudo classes"
+},
+{
+"ref":"textual.layout.Center.css_path_nodes",
+"url":36,
+"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
+},
+{
+"ref":"textual.layout.Center.display",
+"url":36,
+"doc":"Returns:  True if this DOMNode is displayed ( display != \"none\" ),  False otherwise."
+},
+{
+"ref":"textual.layout.Center.tree",
+"url":36,
+"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.layout.Center.text_style",
+"url":36,
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.layout.Center.rich_style",
+"url":36,
+"doc":"Get a Rich Style object for this DOMNode."
+},
+{
+"ref":"textual.layout.Center.background_colors",
+"url":36,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
+"ref":"textual.layout.Center.colors",
+"url":36,
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
+},
+{
+"ref":"textual.layout.Center.ancestors",
+"url":36,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
+},
+{
+"ref":"textual.layout.Center.displayed_children",
+"url":36,
+"doc":"The children which don't have display: none set."
+},
+{
+"ref":"textual.layout.Center.reset_styles",
+"url":36,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
+"ref":"textual.layout.Center.add_child",
+"url":36,
+"doc":"Add a new child node. Args: node (DOMNode): A DOM node.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.add_children",
+"url":36,
+"doc":"Add multiple children to this node. Args:  nodes (DOMNode): Positional args should be new DOM nodes.  named_nodes (DOMNode): Keyword args will be assigned the argument name as an ID.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.walk_children",
+"url":36,
+"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.get_child",
+"url":36,
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"func":1
+},
+{
+"ref":"textual.layout.Center.query",
+"url":36,
+"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.set_styles",
+"url":36,
+"doc":"Set custom styles on this object.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.has_class",
+"url":36,
+"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.layout.Center.add_class",
+"url":36,
+"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.remove_class",
+"url":36,
+"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.toggle_class",
+"url":36,
+"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.has_pseudo_class",
+"url":36,
+"doc":"Check for pseudo class (such as hover, focus etc)",
+"func":1
+},
+{
+"ref":"textual.layout.Center.app",
+"url":20,
+"doc":"Get the current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
+},
+{
+"ref":"textual.layout.Center.disable_messages",
+"url":20,
+"doc":"Disable message types from being processed.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.enable_messages",
+"url":20,
+"doc":"Enable processing of messages types.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.get_message",
+"url":20,
+"doc":"Get the next event on the queue, or None if queue is closed. Returns: Optional[Event]: Event object or None.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.peek_message",
+"url":20,
+"doc":"Peek the message at the head of the queue (does not remove it from the queue), or return None if the queue is empty. Returns: Optional[Message]: The message or None.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.close_messages_no_wait",
+"url":20,
+"doc":"Request the message queue to exit.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.close_messages",
+"url":20,
+"doc":"Close message queue, and optionally wait for queue to finish processing.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.check_idle",
+"url":20,
+"doc":"Prompt the message pump to call idle if the queue is empty.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.post_priority_message",
+"url":20,
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.dispatch_key",
 "url":20,
 "doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
 "func":1
@@ -11192,6 +12509,27 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layouts.center",
+"url":59,
+"doc":""
+},
+{
+"ref":"textual.layouts.center.CenterLayout",
+"url":59,
+"doc":"Positions widgets in the center of the screen."
+},
+{
+"ref":"textual.layouts.center.CenterLayout.name",
+"url":59,
+"doc":""
+},
+{
+"ref":"textual.layouts.center.CenterLayout.arrange",
+"url":59,
+"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
+"func":1
+},
+{
 "ref":"textual.widget",
 "url":35,
 "doc":""
@@ -11316,7 +12654,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.mount",
 "url":35,
-"doc":"",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example: self.mount(Static(\"hello\"), header=Header( ",
 "func":1
 },
 {
@@ -11610,6 +12948,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.scroll_visible",
+"url":35,
+"doc":"Scroll the container to make this widget visible. Returns: bool: True if the parent was scrolled.",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.get_pseudo_classes",
 "url":35,
 "doc":"Pseudo classes for a widget",
@@ -11673,6 +13017,12 @@ INDEX=[
 "ref":"textual.widget.Widget.refresh",
 "url":35,
 "doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. Args: repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.remove",
+"url":35,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
 "func":1
 },
 {
@@ -11743,6 +13093,12 @@ INDEX=[
 },
 {
 "ref":"textual.widget.Widget.on_key",
+"url":35,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.on_remove",
 "url":35,
 "doc":"",
 "func":1

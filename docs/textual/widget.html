@@ -209,7 +209,17 @@ class Widget(DOMNode):
             self.scroll_to(0, 0, animate=False)
 
     def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
-        self.app.register(self, *anon_widgets, **widgets)
+        &#34;&#34;&#34;Mount child widgets (making this widget a container).
+
+        Widgets may be passed as positional arguments or keyword arguments. If keyword arguments,
+        the keys will be set as the Widget&#39;s id.
+
+        Example:
+            self.mount(Static(&#34;hello&#34;), header=Header())
+
+
+        &#34;&#34;&#34;
+        self.app._register(self, *anon_widgets, **widgets)
         self.screen.refresh()
 
     def compose(self) -&gt; ComposeResult:
@@ -843,6 +853,17 @@ class Widget(DOMNode):
             )
         return delta
 
+    def scroll_visible(self) -&gt; bool:
+        &#34;&#34;&#34;Scroll the container to make this widget visible.
+
+        Returns:
+            bool: True if the parent was scrolled.
+        &#34;&#34;&#34;
+        parent = self.parent
+        if isinstance(parent, Widget):
+            return parent.scroll_to_widget(self)
+        return False
+
     def __init_subclass__(
         cls,
         can_focus: bool = False,
@@ -1068,7 +1089,9 @@ class Widget(DOMNode):
 
         if layout:
             self._layout_required = True
-            self._clear_arrangement_cache()
+            if isinstance(self._parent, Widget):
+                self._parent._clear_arrangement_cache()
+
         if repaint:
             self._set_dirty(*regions)
             self._content_width_cache = (None, 0)
@@ -1078,6 +1101,10 @@ class Widget(DOMNode):
                 self.parent.refresh(layout=True)
 
         self.check_idle()
+
+    def remove(self) -&gt; None:
+        &#34;&#34;&#34;Remove the Widget from the DOM (effectively deleting it)&#34;&#34;&#34;
+        self.post_message_no_wait(events.Remove(self))
 
     def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
@@ -1118,7 +1145,7 @@ class Widget(DOMNode):
         &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
         self.app.set_focus(self)
 
-    async def capture_mouse(self, capture: bool = True) -&gt; None:
+    def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
 
         When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.
@@ -1126,14 +1153,14 @@ class Widget(DOMNode):
         Args:
             capture (bool, optional): True to capture or False to release. Defaults to True.
         &#34;&#34;&#34;
-        await self.app.capture_mouse(self if capture else None)
+        self.app.capture_mouse(self if capture else None)
 
-    async def release_mouse(self) -&gt; None:
+    def release_mouse(self) -&gt; None:
         &#34;&#34;&#34;Release the mouse.
 
         Mouse events will only be sent when the mouse is over the widget.
         &#34;&#34;&#34;
-        await self.app.capture_mouse(None)
+        self.app.capture_mouse(None)
 
     async def broker_event(self, event_name: str, event: events.Event) -&gt; bool:
         return await self.app.broker_event(event_name, event, default_namespace=self)
@@ -1150,16 +1177,22 @@ class Widget(DOMNode):
     async def on_key(self, event: events.Key) -&gt; None:
         await self.dispatch_key(event)
 
+    async def on_remove(self, event: events.Remove) -&gt; None:
+        await self.close_messages()
+        self.app._unregister(self)
+        assert self.parent
+        self.parent.refresh(layout=True)
+
     def on_mount(self, event: events.Mount) -&gt; None:
         widgets = list(self.compose())
         if widgets:
             self.mount(*widgets)
             self.screen.refresh(repaint=False, layout=True)
 
-    def on_leave(self) -&gt; None:
+    def on_leave(self, event: events.Leave) -&gt; None:
         self.mouse_over = False
 
-    def on_enter(self) -&gt; None:
+    def on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
 
     def on_focus(self, event: events.Focus) -&gt; None:
@@ -1465,7 +1498,17 @@ def cursor_line(self) -&gt; int | None:
             self.scroll_to(0, 0, animate=False)
 
     def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
-        self.app.register(self, *anon_widgets, **widgets)
+        &#34;&#34;&#34;Mount child widgets (making this widget a container).
+
+        Widgets may be passed as positional arguments or keyword arguments. If keyword arguments,
+        the keys will be set as the Widget&#39;s id.
+
+        Example:
+            self.mount(Static(&#34;hello&#34;), header=Header())
+
+
+        &#34;&#34;&#34;
+        self.app._register(self, *anon_widgets, **widgets)
         self.screen.refresh()
 
     def compose(self) -&gt; ComposeResult:
@@ -2099,6 +2142,17 @@ def cursor_line(self) -&gt; int | None:
             )
         return delta
 
+    def scroll_visible(self) -&gt; bool:
+        &#34;&#34;&#34;Scroll the container to make this widget visible.
+
+        Returns:
+            bool: True if the parent was scrolled.
+        &#34;&#34;&#34;
+        parent = self.parent
+        if isinstance(parent, Widget):
+            return parent.scroll_to_widget(self)
+        return False
+
     def __init_subclass__(
         cls,
         can_focus: bool = False,
@@ -2324,7 +2378,9 @@ def cursor_line(self) -&gt; int | None:
 
         if layout:
             self._layout_required = True
-            self._clear_arrangement_cache()
+            if isinstance(self._parent, Widget):
+                self._parent._clear_arrangement_cache()
+
         if repaint:
             self._set_dirty(*regions)
             self._content_width_cache = (None, 0)
@@ -2334,6 +2390,10 @@ def cursor_line(self) -&gt; int | None:
                 self.parent.refresh(layout=True)
 
         self.check_idle()
+
+    def remove(self) -&gt; None:
+        &#34;&#34;&#34;Remove the Widget from the DOM (effectively deleting it)&#34;&#34;&#34;
+        self.post_message_no_wait(events.Remove(self))
 
     def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
@@ -2374,7 +2434,7 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
         self.app.set_focus(self)
 
-    async def capture_mouse(self, capture: bool = True) -&gt; None:
+    def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
 
         When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.
@@ -2382,14 +2442,14 @@ def cursor_line(self) -&gt; int | None:
         Args:
             capture (bool, optional): True to capture or False to release. Defaults to True.
         &#34;&#34;&#34;
-        await self.app.capture_mouse(self if capture else None)
+        self.app.capture_mouse(self if capture else None)
 
-    async def release_mouse(self) -&gt; None:
+    def release_mouse(self) -&gt; None:
         &#34;&#34;&#34;Release the mouse.
 
         Mouse events will only be sent when the mouse is over the widget.
         &#34;&#34;&#34;
-        await self.app.capture_mouse(None)
+        self.app.capture_mouse(None)
 
     async def broker_event(self, event_name: str, event: events.Event) -&gt; bool:
         return await self.app.broker_event(event_name, event, default_namespace=self)
@@ -2406,16 +2466,22 @@ def cursor_line(self) -&gt; int | None:
     async def on_key(self, event: events.Key) -&gt; None:
         await self.dispatch_key(event)
 
+    async def on_remove(self, event: events.Remove) -&gt; None:
+        await self.close_messages()
+        self.app._unregister(self)
+        assert self.parent
+        self.parent.refresh(layout=True)
+
     def on_mount(self, event: events.Mount) -&gt; None:
         widgets = list(self.compose())
         if widgets:
             self.mount(*widgets)
             self.screen.refresh(repaint=False, layout=True)
 
-    def on_leave(self) -&gt; None:
+    def on_leave(self, event: events.Leave) -&gt; None:
         self.mouse_over = False
 
-    def on_enter(self) -&gt; None:
+    def on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
 
     def on_focus(self, event: events.Focus) -&gt; None:
@@ -2536,8 +2602,7 @@ def cursor_line(self) -&gt; int | None:
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="textual.layout.Horizontal" href="layout.html#textual.layout.Horizontal">Horizontal</a></li>
-<li><a title="textual.layout.Vertical" href="layout.html#textual.layout.Vertical">Vertical</a></li>
+<li><a title="textual.layout.Container" href="layout.html#textual.layout.Container">Container</a></li>
 <li><a title="textual.screen.Screen" href="screen.html#textual.screen.Screen">Screen</a></li>
 <li><a title="textual.scroll_view.ScrollView" href="scroll_view.html#textual.scroll_view.ScrollView">ScrollView</a></li>
 <li><a title="textual.scrollbar.ScrollBar" href="scrollbar.html#textual.scrollbar.ScrollBar">ScrollBar</a></li>
@@ -3233,7 +3298,7 @@ def window_region(self) -&gt; Region:
 </details>
 </dd>
 <dt id="textual.widget.Widget.capture_mouse"><code class="name flex">
-<span>async def <span class="ident">capture_mouse</span></span>(<span>self, capture: bool = True) ‑> None</span>
+<span>def <span class="ident">capture_mouse</span></span>(<span>self, capture: bool = True) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Capture (or release) the mouse.</p>
@@ -3247,7 +3312,7 @@ def window_region(self) -&gt; Region:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def capture_mouse(self, capture: bool = True) -&gt; None:
+<pre><code class="python">def capture_mouse(self, capture: bool = True) -&gt; None:
     &#34;&#34;&#34;Capture (or release) the mouse.
 
     When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.
@@ -3255,7 +3320,7 @@ def window_region(self) -&gt; Region:
     Args:
         capture (bool, optional): True to capture or False to release. Defaults to True.
     &#34;&#34;&#34;
-    await self.app.capture_mouse(self if capture else None)</code></pre>
+    self.app.capture_mouse(self if capture else None)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.compose"><code class="name flex">
@@ -3700,13 +3765,27 @@ def window_region(self) -&gt; Region:
 <span>def <span class="ident">mount</span></span>(<span>self, *anon_widgets: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>, **widgets: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Mount child widgets (making this widget a container).</p>
+<p>Widgets may be passed as positional arguments or keyword arguments. If keyword arguments,
+the keys will be set as the Widget's id.</p>
+<h2 id="example">Example</h2>
+<p>self.mount(Static("hello"), header=Header())</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
-    self.app.register(self, *anon_widgets, **widgets)
+    &#34;&#34;&#34;Mount child widgets (making this widget a container).
+
+    Widgets may be passed as positional arguments or keyword arguments. If keyword arguments,
+    the keys will be set as the Widget&#39;s id.
+
+    Example:
+        self.mount(Static(&#34;hello&#34;), header=Header())
+
+
+    &#34;&#34;&#34;
+    self.app._register(self, *anon_widgets, **widgets)
     self.screen.refresh()</code></pre>
 </details>
 </dd>
@@ -3777,7 +3856,7 @@ def window_region(self) -&gt; Region:
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_enter"><code class="name flex">
-<span>def <span class="ident">on_enter</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">on_enter</span></span>(<span>self, event: events.Enter) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3785,7 +3864,7 @@ def window_region(self) -&gt; Region:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def on_enter(self) -&gt; None:
+<pre><code class="python">def on_enter(self, event: events.Enter) -&gt; None:
     self.mouse_over = True</code></pre>
 </details>
 </dd>
@@ -3847,7 +3926,7 @@ def window_region(self) -&gt; Region:
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_leave"><code class="name flex">
-<span>def <span class="ident">on_leave</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">on_leave</span></span>(<span>self, event: events.Leave) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -3855,7 +3934,7 @@ def window_region(self) -&gt; Region:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def on_leave(self) -&gt; None:
+<pre><code class="python">def on_leave(self, event: events.Leave) -&gt; None:
     self.mouse_over = False</code></pre>
 </details>
 </dd>
@@ -3956,6 +4035,22 @@ def window_region(self) -&gt; Region:
         self.app.stylesheet.add_source(css, path=path, is_default_css=True)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.on_remove"><code class="name flex">
+<span>async def <span class="ident">on_remove</span></span>(<span>self, event: events.Remove) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_remove(self, event: events.Remove) -&gt; None:
+    await self.close_messages()
+    self.app._unregister(self)
+    assert self.parent
+    self.parent.refresh(layout=True)</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.post_message"><code class="name flex">
 <span>async def <span class="ident">post_message</span></span>(<span>self, message: Message) ‑> bool</span>
 </code></dt>
@@ -4006,7 +4101,9 @@ next idle event. Only one refresh will be done even if this method is called mul
 
     if layout:
         self._layout_required = True
-        self._clear_arrangement_cache()
+        if isinstance(self._parent, Widget):
+            self._parent._clear_arrangement_cache()
+
     if repaint:
         self._set_dirty(*regions)
         self._content_width_cache = (None, 0)
@@ -4019,7 +4116,7 @@ next idle event. Only one refresh will be done even if this method is called mul
 </details>
 </dd>
 <dt id="textual.widget.Widget.release_mouse"><code class="name flex">
-<span>async def <span class="ident">release_mouse</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">release_mouse</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Release the mouse.</p>
@@ -4028,12 +4125,26 @@ next idle event. Only one refresh will be done even if this method is called mul
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def release_mouse(self) -&gt; None:
+<pre><code class="python">def release_mouse(self) -&gt; None:
     &#34;&#34;&#34;Release the mouse.
 
     Mouse events will only be sent when the mouse is over the widget.
     &#34;&#34;&#34;
-    await self.app.capture_mouse(None)</code></pre>
+    self.app.capture_mouse(None)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.remove"><code class="name flex">
+<span>def <span class="ident">remove</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Remove the Widget from the DOM (effectively deleting it)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def remove(self) -&gt; None:
+    &#34;&#34;&#34;Remove the Widget from the DOM (effectively deleting it)&#34;&#34;&#34;
+    self.post_message_no_wait(events.Remove(self))</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.render"><code class="name flex">
@@ -4521,6 +4632,32 @@ the scrollable area.</p>
     return self.scroll_to(y=self.scroll_target_y + 1, animate=animate)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.scroll_visible"><code class="name flex">
+<span>def <span class="ident">scroll_visible</span></span>(<span>self) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Scroll the container to make this widget visible.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the parent was scrolled.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_visible(self) -&gt; bool:
+    &#34;&#34;&#34;Scroll the container to make this widget visible.
+
+    Returns:
+        bool: True if the parent was scrolled.
+    &#34;&#34;&#34;
+    parent = self.parent
+    if isinstance(parent, Widget):
+        return parent.scroll_to_widget(self)
+    return False</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.size_updated"><code class="name flex">
 <span>def <span class="ident">size_updated</span></span>(<span>self, size: Size, virtual_size: Size, container_size: Size) ‑> None</span>
 </code></dt>
@@ -4914,11 +5051,13 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.on_mouse_scroll_up" href="#textual.widget.Widget.on_mouse_scroll_up">on_mouse_scroll_up</a></code></li>
 <li><code><a title="textual.widget.Widget.on_mouse_up" href="#textual.widget.Widget.on_mouse_up">on_mouse_up</a></code></li>
 <li><code><a title="textual.widget.Widget.on_register" href="#textual.widget.Widget.on_register">on_register</a></code></li>
+<li><code><a title="textual.widget.Widget.on_remove" href="#textual.widget.Widget.on_remove">on_remove</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.widget.Widget.region" href="#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.widget.Widget.release_mouse" href="#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove" href="#textual.widget.Widget.remove">remove</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_line" href="#textual.widget.Widget.render_line">render_line</a></code></li>
 <li><code><a title="textual.widget.Widget.render_lines" href="#textual.widget.Widget.render_lines">render_lines</a></code></li>
@@ -4939,6 +5078,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.scroll_to_region" href="#textual.widget.Widget.scroll_to_region">scroll_to_region</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_to_widget" href="#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_up" href="#textual.widget.Widget.scroll_up">scroll_up</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_visible" href="#textual.widget.Widget.scroll_visible">scroll_visible</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_x" href="#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_gutter" href="#textual.widget.Widget.scrollbar_gutter">scrollbar_gutter</a></code></li>

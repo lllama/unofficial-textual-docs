@@ -259,10 +259,14 @@ class ScrollBar(Widget):
             style=scrollbar_style,
         )
 
-    async def on_enter(self, event: events.Enter) -&gt; None:
+    def on_hide(self, event: events.Hide) -&gt; None:
+        if self.grabbed:
+            self.release_mouse()
+
+    def on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
 
-    async def on_leave(self, event: events.Leave) -&gt; None:
+    def on_leave(self, event: events.Leave) -&gt; None:
         self.mouse_over = False
 
     async def action_scroll_down(self) -&gt; None:
@@ -271,21 +275,21 @@ class ScrollBar(Widget):
     async def action_scroll_up(self) -&gt; None:
         await self.emit(ScrollUp(self) if self.vertical else ScrollLeft(self))
 
-    async def action_grab(self) -&gt; None:
-        await self.capture_mouse()
+    def action_grab(self) -&gt; None:
+        self.capture_mouse()
 
-    async def action_released(self) -&gt; None:
-        await self.capture_mouse(False)
+    def action_released(self) -&gt; None:
+        self.capture_mouse(False)
 
     async def on_mouse_up(self, event: events.MouseUp) -&gt; None:
         if self.grabbed:
-            await self.release_mouse()
+            self.release_mouse()
 
-    async def on_mouse_capture(self, event: events.MouseCapture) -&gt; None:
+    def on_mouse_capture(self, event: events.MouseCapture) -&gt; None:
         self.grabbed = event.mouse_position
         self.grabbed_position = self.position
 
-    async def on_mouse_release(self, event: events.MouseRelease) -&gt; None:
+    def on_mouse_release(self, event: events.MouseRelease) -&gt; None:
         self.grabbed = None
 
     async def on_mouse_move(self, event: events.MouseMove) -&gt; None:
@@ -390,10 +394,14 @@ if __name__ == &#34;__main__&#34;:
             style=scrollbar_style,
         )
 
-    async def on_enter(self, event: events.Enter) -&gt; None:
+    def on_hide(self, event: events.Hide) -&gt; None:
+        if self.grabbed:
+            self.release_mouse()
+
+    def on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
 
-    async def on_leave(self, event: events.Leave) -&gt; None:
+    def on_leave(self, event: events.Leave) -&gt; None:
         self.mouse_over = False
 
     async def action_scroll_down(self) -&gt; None:
@@ -402,21 +410,21 @@ if __name__ == &#34;__main__&#34;:
     async def action_scroll_up(self) -&gt; None:
         await self.emit(ScrollUp(self) if self.vertical else ScrollLeft(self))
 
-    async def action_grab(self) -&gt; None:
-        await self.capture_mouse()
+    def action_grab(self) -&gt; None:
+        self.capture_mouse()
 
-    async def action_released(self) -&gt; None:
-        await self.capture_mouse(False)
+    def action_released(self) -&gt; None:
+        self.capture_mouse(False)
 
     async def on_mouse_up(self, event: events.MouseUp) -&gt; None:
         if self.grabbed:
-            await self.release_mouse()
+            self.release_mouse()
 
-    async def on_mouse_capture(self, event: events.MouseCapture) -&gt; None:
+    def on_mouse_capture(self, event: events.MouseCapture) -&gt; None:
         self.grabbed = event.mouse_position
         self.grabbed_position = self.position
 
-    async def on_mouse_release(self, event: events.MouseRelease) -&gt; None:
+    def on_mouse_release(self, event: events.MouseRelease) -&gt; None:
         self.grabbed = None
 
     async def on_mouse_move(self, event: events.MouseMove) -&gt; None:
@@ -508,7 +516,7 @@ if __name__ == &#34;__main__&#34;:
 <h3>Methods</h3>
 <dl>
 <dt id="textual.scrollbar.ScrollBar.action_grab"><code class="name flex">
-<span>async def <span class="ident">action_grab</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">action_grab</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -516,12 +524,12 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def action_grab(self) -&gt; None:
-    await self.capture_mouse()</code></pre>
+<pre><code class="python">def action_grab(self) -&gt; None:
+    self.capture_mouse()</code></pre>
 </details>
 </dd>
 <dt id="textual.scrollbar.ScrollBar.action_released"><code class="name flex">
-<span>async def <span class="ident">action_released</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">action_released</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -529,8 +537,8 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def action_released(self) -&gt; None:
-    await self.capture_mouse(False)</code></pre>
+<pre><code class="python">def action_released(self) -&gt; None:
+    self.capture_mouse(False)</code></pre>
 </details>
 </dd>
 <dt id="textual.scrollbar.ScrollBar.action_scroll_down"><code class="name flex">
@@ -560,7 +568,7 @@ if __name__ == &#34;__main__&#34;:
 </details>
 </dd>
 <dt id="textual.scrollbar.ScrollBar.on_enter"><code class="name flex">
-<span>async def <span class="ident">on_enter</span></span>(<span>self, event: events.Enter) ‑> None</span>
+<span>def <span class="ident">on_enter</span></span>(<span>self, event: events.Enter) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -568,12 +576,12 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def on_enter(self, event: events.Enter) -&gt; None:
+<pre><code class="python">def on_enter(self, event: events.Enter) -&gt; None:
     self.mouse_over = True</code></pre>
 </details>
 </dd>
-<dt id="textual.scrollbar.ScrollBar.on_leave"><code class="name flex">
-<span>async def <span class="ident">on_leave</span></span>(<span>self, event: events.Leave) ‑> None</span>
+<dt id="textual.scrollbar.ScrollBar.on_hide"><code class="name flex">
+<span>def <span class="ident">on_hide</span></span>(<span>self, event: events.Hide) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -581,12 +589,26 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def on_leave(self, event: events.Leave) -&gt; None:
+<pre><code class="python">def on_hide(self, event: events.Hide) -&gt; None:
+    if self.grabbed:
+        self.release_mouse()</code></pre>
+</details>
+</dd>
+<dt id="textual.scrollbar.ScrollBar.on_leave"><code class="name flex">
+<span>def <span class="ident">on_leave</span></span>(<span>self, event: events.Leave) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_leave(self, event: events.Leave) -&gt; None:
     self.mouse_over = False</code></pre>
 </details>
 </dd>
 <dt id="textual.scrollbar.ScrollBar.on_mouse_capture"><code class="name flex">
-<span>async def <span class="ident">on_mouse_capture</span></span>(<span>self, event: events.MouseCapture) ‑> None</span>
+<span>def <span class="ident">on_mouse_capture</span></span>(<span>self, event: events.MouseCapture) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -594,7 +616,7 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def on_mouse_capture(self, event: events.MouseCapture) -&gt; None:
+<pre><code class="python">def on_mouse_capture(self, event: events.MouseCapture) -&gt; None:
     self.grabbed = event.mouse_position
     self.grabbed_position = self.position</code></pre>
 </details>
@@ -632,7 +654,7 @@ if __name__ == &#34;__main__&#34;:
 </details>
 </dd>
 <dt id="textual.scrollbar.ScrollBar.on_mouse_release"><code class="name flex">
-<span>async def <span class="ident">on_mouse_release</span></span>(<span>self, event: events.MouseRelease) ‑> None</span>
+<span>def <span class="ident">on_mouse_release</span></span>(<span>self, event: events.MouseRelease) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -640,7 +662,7 @@ if __name__ == &#34;__main__&#34;:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def on_mouse_release(self, event: events.MouseRelease) -&gt; None:
+<pre><code class="python">def on_mouse_release(self, event: events.MouseRelease) -&gt; None:
     self.grabbed = None</code></pre>
 </details>
 </dd>
@@ -655,7 +677,7 @@ if __name__ == &#34;__main__&#34;:
 </summary>
 <pre><code class="python">async def on_mouse_up(self, event: events.MouseUp) -&gt; None:
     if self.grabbed:
-        await self.release_mouse()</code></pre>
+        self.release_mouse()</code></pre>
 </details>
 </dd>
 </dl>
@@ -714,6 +736,7 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.layout" href="widget.html#textual.widget.Widget.layout">layout</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
@@ -726,6 +749,7 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.widget.Widget.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.widget.Widget.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove" href="widget.html#textual.widget.Widget.remove">remove</a></code></li>
 <li><code><a title="textual.widget.Widget.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_line" href="widget.html#textual.widget.Widget.render_line">render_line</a></code></li>
@@ -739,6 +763,7 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_to_region" href="widget.html#textual.widget.Widget.scroll_to_region">scroll_to_region</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_to_widget" href="widget.html#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_visible" href="widget.html#textual.widget.Widget.scroll_visible">scroll_visible</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
@@ -1407,6 +1432,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scrollbar.ScrollBar.can_focus_children" href="#textual.scrollbar.ScrollBar.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.grabbed" href="#textual.scrollbar.ScrollBar.grabbed">grabbed</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_enter" href="#textual.scrollbar.ScrollBar.on_enter">on_enter</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollBar.on_hide" href="#textual.scrollbar.ScrollBar.on_hide">on_hide</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_leave" href="#textual.scrollbar.ScrollBar.on_leave">on_leave</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_mouse_capture" href="#textual.scrollbar.ScrollBar.on_mouse_capture">on_mouse_capture</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.on_mouse_move" href="#textual.scrollbar.ScrollBar.on_mouse_move">on_mouse_move</a></code></li>

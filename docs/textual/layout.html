@@ -29,25 +29,39 @@
 <pre><code class="python">from .widget import Widget
 
 
-class Vertical(Widget):
-    &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;
+class Container(Widget):
+    &#34;&#34;&#34;Simple container widget, with vertical layout.&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-    Vertical {
+    Container {
         layout: vertical;       
         overflow: auto;
     }    
     &#34;&#34;&#34;
 
 
-class Horizontal(Widget):
+class Vertical(Container):
+    &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;
+
+
+class Horizontal(Container):
     &#34;&#34;&#34;A container widget to align children horizontally.&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
     Horizontal {
-        layout: horizontal;
-        overflow: auto;
+        layout: horizontal;        
     }    
+    &#34;&#34;&#34;
+
+
+class Center(Container):
+    &#34;&#34;&#34;A container widget to align children in the center.&#34;&#34;&#34;
+
+    CSS = &#34;&#34;&#34;
+    Center {
+        layout: center;        
+    }
+    
     &#34;&#34;&#34;</code></pre>
 </details>
 </section>
@@ -60,22 +74,177 @@ class Horizontal(Widget):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="textual.layout.Horizontal"><code class="flex name class">
-<span>class <span class="ident">Horizontal</span></span>
+<dt id="textual.layout.Center"><code class="flex name class">
+<span>class <span class="ident">Center</span></span>
 <span>(</span><span>*children: Widget, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A container widget to align children horizontally.</p></div>
+<div class="desc"><p>A container widget to align children in the center.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Horizontal(Widget):
-    &#34;&#34;&#34;A container widget to align children horizontally.&#34;&#34;&#34;
+<pre><code class="python">class Center(Container):
+    &#34;&#34;&#34;A container widget to align children in the center.&#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
-    Horizontal {
-        layout: horizontal;
+    Center {
+        layout: center;        
+    }
+    
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.layout.Container" href="#textual.layout.Container">Container</a></li>
+<li><a title="textual.widget.Widget" href="widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></li>
+<li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.layout.Center.COMPONENT_CLASSES"><code class="name">var <span class="ident">COMPONENT_CLASSES</span> : ClassVar[set[str]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layout.Center.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layout.Center.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layout.Center.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.layout.Container" href="#textual.layout.Container">Container</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.layout.Container.add_child" href="dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.layout.Container.add_children" href="dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.layout.Container.add_class" href="dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
+<li><code><a title="textual.layout.Container.ancestors" href="dom.html#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
+<li><code><a title="textual.layout.Container.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.layout.Container.auto_height" href="widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.layout.Container.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
+<li><code><a title="textual.layout.Container.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
+<li><code><a title="textual.layout.Container.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.layout.Container.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.layout.Container.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.layout.Container.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.layout.Container.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
+<li><code><a title="textual.layout.Container.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
+<li><code><a title="textual.layout.Container.compose" href="widget.html#textual.widget.Widget.compose">compose</a></code></li>
+<li><code><a title="textual.layout.Container.console" href="widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.layout.Container.container_size" href="widget.html#textual.widget.Widget.container_size">container_size</a></code></li>
+<li><code><a title="textual.layout.Container.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
+<li><code><a title="textual.layout.Container.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.layout.Container.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
+<li><code><a title="textual.layout.Container.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.layout.Container.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.layout.Container.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
+<li><code><a title="textual.layout.Container.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
+<li><code><a title="textual.layout.Container.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.layout.Container.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.layout.Container.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
+<li><code><a title="textual.layout.Container.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
+<li><code><a title="textual.layout.Container.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.layout.Container.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.layout.Container.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
+<li><code><a title="textual.layout.Container.get_box_model" href="widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.layout.Container.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
+<li><code><a title="textual.layout.Container.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
+<li><code><a title="textual.layout.Container.get_content_width" href="widget.html#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
+<li><code><a title="textual.layout.Container.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.layout.Container.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.layout.Container.gutter" href="widget.html#textual.widget.Widget.gutter">gutter</a></code></li>
+<li><code><a title="textual.layout.Container.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.layout.Container.has_focus" href="widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.layout.Container.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.layout.Container.horizontal_scrollbar" href="widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.layout.Container.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.layout.Container.is_scrollable" href="widget.html#textual.widget.Widget.is_scrollable">is_scrollable</a></code></li>
+<li><code><a title="textual.layout.Container.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.layout.Container.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
+<li><code><a title="textual.layout.Container.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
+<li><code><a title="textual.layout.Container.layout" href="widget.html#textual.widget.Widget.layout">layout</a></code></li>
+<li><code><a title="textual.layout.Container.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
+<li><code><a title="textual.layout.Container.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
+<li><code><a title="textual.layout.Container.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
+<li><code><a title="textual.layout.Container.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.layout.Container.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.layout.Container.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
+<li><code><a title="textual.layout.Container.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
+<li><code><a title="textual.layout.Container.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
+<li><code><a title="textual.layout.Container.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.layout.Container.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.layout.Container.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.layout.Container.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
+<li><code><a title="textual.layout.Container.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.layout.Container.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
+<li><code><a title="textual.layout.Container.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.layout.Container.remove" href="widget.html#textual.widget.Widget.remove">remove</a></code></li>
+<li><code><a title="textual.layout.Container.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
+<li><code><a title="textual.layout.Container.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.layout.Container.render_line" href="widget.html#textual.widget.Widget.render_line">render_line</a></code></li>
+<li><code><a title="textual.layout.Container.render_lines" href="widget.html#textual.widget.Widget.render_lines">render_lines</a></code></li>
+<li><code><a title="textual.layout.Container.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
+<li><code><a title="textual.layout.Container.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
+<li><code><a title="textual.layout.Container.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_relative" href="widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_target_x" href="widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_target_y" href="widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_to_region" href="widget.html#textual.widget.Widget.scroll_to_region">scroll_to_region</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_to_widget" href="widget.html#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_visible" href="widget.html#textual.widget.Widget.scroll_visible">scroll_visible</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.layout.Container.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.layout.Container.scrollbar_size_vertical" href="widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
+<li><code><a title="textual.layout.Container.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.layout.Container.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.layout.Container.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
+<li><code><a title="textual.layout.Container.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
+<li><code><a title="textual.layout.Container.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.layout.Container.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.layout.Container.vertical_scrollbar" href="widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.virtual_region" href="widget.html#textual.widget.Widget.virtual_region">virtual_region</a></code></li>
+<li><code><a title="textual.layout.Container.virtual_region_with_margin" href="widget.html#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
+<li><code><a title="textual.layout.Container.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
+<li><code><a title="textual.layout.Container.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.layout.Container.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.layout.Container.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
+<li><code><a title="textual.layout.Container.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.layout.Container"><code class="flex name class">
+<span>class <span class="ident">Container</span></span>
+<span>(</span><span>*children: Widget, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Simple container widget, with vertical layout.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Container(Widget):
+    &#34;&#34;&#34;Simple container widget, with vertical layout.&#34;&#34;&#34;
+
+    CSS = &#34;&#34;&#34;
+    Container {
+        layout: vertical;       
         overflow: auto;
     }    
     &#34;&#34;&#34;</code></pre>
@@ -86,21 +255,27 @@ class Horizontal(Widget):
 <li><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="textual.layout.Center" href="#textual.layout.Center">Center</a></li>
+<li><a title="textual.layout.Horizontal" href="#textual.layout.Horizontal">Horizontal</a></li>
+<li><a title="textual.layout.Vertical" href="#textual.layout.Vertical">Vertical</a></li>
+</ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.layout.Horizontal.COMPONENT_CLASSES"><code class="name">var <span class="ident">COMPONENT_CLASSES</span> : ClassVar[set[str]]</code></dt>
+<dt id="textual.layout.Container.COMPONENT_CLASSES"><code class="name">var <span class="ident">COMPONENT_CLASSES</span> : ClassVar[set[str]]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Horizontal.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dt id="textual.layout.Container.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Horizontal.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
+<dt id="textual.layout.Container.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Horizontal.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
+<dt id="textual.layout.Container.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -160,6 +335,7 @@ class Horizontal(Widget):
 <li><code><a title="textual.widget.Widget.layout" href="widget.html#textual.widget.Widget.layout">layout</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
@@ -172,6 +348,7 @@ class Horizontal(Widget):
 <li><code><a title="textual.widget.Widget.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.widget.Widget.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.widget.Widget.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.widget.Widget.remove" href="widget.html#textual.widget.Widget.remove">remove</a></code></li>
 <li><code><a title="textual.widget.Widget.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_line" href="widget.html#textual.widget.Widget.render_line">render_line</a></code></li>
@@ -185,6 +362,7 @@ class Horizontal(Widget):
 <li><code><a title="textual.widget.Widget.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_to_region" href="widget.html#textual.widget.Widget.scroll_to_region">scroll_to_region</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_to_widget" href="widget.html#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
+<li><code><a title="textual.widget.Widget.scroll_visible" href="widget.html#textual.widget.Widget.scroll_visible">scroll_visible</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
@@ -211,6 +389,160 @@ class Horizontal(Widget):
 </li>
 </ul>
 </dd>
+<dt id="textual.layout.Horizontal"><code class="flex name class">
+<span>class <span class="ident">Horizontal</span></span>
+<span>(</span><span>*children: Widget, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A container widget to align children horizontally.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Horizontal(Container):
+    &#34;&#34;&#34;A container widget to align children horizontally.&#34;&#34;&#34;
+
+    CSS = &#34;&#34;&#34;
+    Horizontal {
+        layout: horizontal;        
+    }    
+    &#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.layout.Container" href="#textual.layout.Container">Container</a></li>
+<li><a title="textual.widget.Widget" href="widget.html#textual.widget.Widget">Widget</a></li>
+<li><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></li>
+<li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.layout.Horizontal.COMPONENT_CLASSES"><code class="name">var <span class="ident">COMPONENT_CLASSES</span> : ClassVar[set[str]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layout.Horizontal.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layout.Horizontal.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layout.Horizontal.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.layout.Container" href="#textual.layout.Container">Container</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.layout.Container.add_child" href="dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.layout.Container.add_children" href="dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.layout.Container.add_class" href="dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
+<li><code><a title="textual.layout.Container.ancestors" href="dom.html#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
+<li><code><a title="textual.layout.Container.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.layout.Container.auto_height" href="widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.layout.Container.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
+<li><code><a title="textual.layout.Container.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
+<li><code><a title="textual.layout.Container.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.layout.Container.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.layout.Container.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.layout.Container.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.layout.Container.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
+<li><code><a title="textual.layout.Container.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
+<li><code><a title="textual.layout.Container.compose" href="widget.html#textual.widget.Widget.compose">compose</a></code></li>
+<li><code><a title="textual.layout.Container.console" href="widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.layout.Container.container_size" href="widget.html#textual.widget.Widget.container_size">container_size</a></code></li>
+<li><code><a title="textual.layout.Container.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
+<li><code><a title="textual.layout.Container.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.layout.Container.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
+<li><code><a title="textual.layout.Container.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.layout.Container.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.layout.Container.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
+<li><code><a title="textual.layout.Container.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
+<li><code><a title="textual.layout.Container.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.layout.Container.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.layout.Container.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
+<li><code><a title="textual.layout.Container.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
+<li><code><a title="textual.layout.Container.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.layout.Container.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.layout.Container.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
+<li><code><a title="textual.layout.Container.get_box_model" href="widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.layout.Container.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
+<li><code><a title="textual.layout.Container.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
+<li><code><a title="textual.layout.Container.get_content_width" href="widget.html#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
+<li><code><a title="textual.layout.Container.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.layout.Container.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.layout.Container.gutter" href="widget.html#textual.widget.Widget.gutter">gutter</a></code></li>
+<li><code><a title="textual.layout.Container.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.layout.Container.has_focus" href="widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.layout.Container.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.layout.Container.horizontal_scrollbar" href="widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.layout.Container.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.layout.Container.is_scrollable" href="widget.html#textual.widget.Widget.is_scrollable">is_scrollable</a></code></li>
+<li><code><a title="textual.layout.Container.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.layout.Container.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
+<li><code><a title="textual.layout.Container.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
+<li><code><a title="textual.layout.Container.layout" href="widget.html#textual.widget.Widget.layout">layout</a></code></li>
+<li><code><a title="textual.layout.Container.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
+<li><code><a title="textual.layout.Container.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
+<li><code><a title="textual.layout.Container.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
+<li><code><a title="textual.layout.Container.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.layout.Container.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.layout.Container.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
+<li><code><a title="textual.layout.Container.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
+<li><code><a title="textual.layout.Container.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
+<li><code><a title="textual.layout.Container.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.layout.Container.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.layout.Container.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.layout.Container.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
+<li><code><a title="textual.layout.Container.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.layout.Container.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
+<li><code><a title="textual.layout.Container.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.layout.Container.remove" href="widget.html#textual.widget.Widget.remove">remove</a></code></li>
+<li><code><a title="textual.layout.Container.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
+<li><code><a title="textual.layout.Container.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.layout.Container.render_line" href="widget.html#textual.widget.Widget.render_line">render_line</a></code></li>
+<li><code><a title="textual.layout.Container.render_lines" href="widget.html#textual.widget.Widget.render_lines">render_lines</a></code></li>
+<li><code><a title="textual.layout.Container.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
+<li><code><a title="textual.layout.Container.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
+<li><code><a title="textual.layout.Container.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_relative" href="widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_target_x" href="widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_target_y" href="widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_to_region" href="widget.html#textual.widget.Widget.scroll_to_region">scroll_to_region</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_to_widget" href="widget.html#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_visible" href="widget.html#textual.widget.Widget.scroll_visible">scroll_visible</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.layout.Container.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.layout.Container.scrollbar_size_vertical" href="widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
+<li><code><a title="textual.layout.Container.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.layout.Container.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.layout.Container.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
+<li><code><a title="textual.layout.Container.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
+<li><code><a title="textual.layout.Container.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.layout.Container.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.layout.Container.vertical_scrollbar" href="widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.virtual_region" href="widget.html#textual.widget.Widget.virtual_region">virtual_region</a></code></li>
+<li><code><a title="textual.layout.Container.virtual_region_with_margin" href="widget.html#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
+<li><code><a title="textual.layout.Container.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
+<li><code><a title="textual.layout.Container.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.layout.Container.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.layout.Container.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
+<li><code><a title="textual.layout.Container.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="textual.layout.Vertical"><code class="flex name class">
 <span>class <span class="ident">Vertical</span></span>
 <span>(</span><span>*children: Widget, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
@@ -221,18 +553,12 @@ class Horizontal(Widget):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Vertical(Widget):
-    &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;
-
-    CSS = &#34;&#34;&#34;
-    Vertical {
-        layout: vertical;       
-        overflow: auto;
-    }    
-    &#34;&#34;&#34;</code></pre>
+<pre><code class="python">class Vertical(Container):
+    &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="textual.layout.Container" href="#textual.layout.Container">Container</a></li>
 <li><a title="textual.widget.Widget" href="widget.html#textual.widget.Widget">Widget</a></li>
 <li><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
@@ -240,10 +566,6 @@ class Horizontal(Widget):
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.layout.Vertical.COMPONENT_CLASSES"><code class="name">var <span class="ident">COMPONENT_CLASSES</span> : ClassVar[set[str]]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.layout.Vertical.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -258,106 +580,109 @@ class Horizontal(Widget):
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="textual.widget.Widget" href="widget.html#textual.widget.Widget">Widget</a></b></code>:
+<li><code><b><a title="textual.layout.Container" href="#textual.layout.Container">Container</a></b></code>:
 <ul class="hlist">
-<li><code><a title="textual.widget.Widget.add_child" href="dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
-<li><code><a title="textual.widget.Widget.add_children" href="dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
-<li><code><a title="textual.widget.Widget.add_class" href="dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
-<li><code><a title="textual.widget.Widget.ancestors" href="dom.html#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
-<li><code><a title="textual.widget.Widget.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
-<li><code><a title="textual.widget.Widget.auto_height" href="widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
-<li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
-<li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
-<li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
-<li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
-<li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
-<li><code><a title="textual.widget.Widget.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
-<li><code><a title="textual.widget.Widget.compose" href="widget.html#textual.widget.Widget.compose">compose</a></code></li>
-<li><code><a title="textual.widget.Widget.console" href="widget.html#textual.widget.Widget.console">console</a></code></li>
-<li><code><a title="textual.widget.Widget.container_size" href="widget.html#textual.widget.Widget.container_size">container_size</a></code></li>
-<li><code><a title="textual.widget.Widget.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
-<li><code><a title="textual.widget.Widget.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
-<li><code><a title="textual.widget.Widget.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
-<li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
-<li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
-<li><code><a title="textual.widget.Widget.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
-<li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
-<li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
-<li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
-<li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
-<li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
-<li><code><a title="textual.widget.Widget.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
-<li><code><a title="textual.widget.Widget.get_box_model" href="widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
-<li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
-<li><code><a title="textual.widget.Widget.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
-<li><code><a title="textual.widget.Widget.get_content_width" href="widget.html#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
-<li><code><a title="textual.widget.Widget.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
-<li><code><a title="textual.widget.Widget.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
-<li><code><a title="textual.widget.Widget.gutter" href="widget.html#textual.widget.Widget.gutter">gutter</a></code></li>
-<li><code><a title="textual.widget.Widget.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
-<li><code><a title="textual.widget.Widget.has_focus" href="widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
-<li><code><a title="textual.widget.Widget.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
-<li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
-<li><code><a title="textual.widget.Widget.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
-<li><code><a title="textual.widget.Widget.is_scrollable" href="widget.html#textual.widget.Widget.is_scrollable">is_scrollable</a></code></li>
-<li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
-<li><code><a title="textual.widget.Widget.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
-<li><code><a title="textual.widget.Widget.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
-<li><code><a title="textual.widget.Widget.layout" href="widget.html#textual.widget.Widget.layout">layout</a></code></li>
-<li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
-<li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
-<li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
-<li><code><a title="textual.widget.Widget.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
-<li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
-<li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
-<li><code><a title="textual.widget.Widget.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
-<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
-<li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
-<li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
-<li><code><a title="textual.widget.Widget.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
-<li><code><a title="textual.widget.Widget.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
-<li><code><a title="textual.widget.Widget.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
-<li><code><a title="textual.widget.Widget.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
-<li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
-<li><code><a title="textual.widget.Widget.render_line" href="widget.html#textual.widget.Widget.render_line">render_line</a></code></li>
-<li><code><a title="textual.widget.Widget.render_lines" href="widget.html#textual.widget.Widget.render_lines">render_lines</a></code></li>
-<li><code><a title="textual.widget.Widget.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
-<li><code><a title="textual.widget.Widget.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
-<li><code><a title="textual.widget.Widget.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_relative" href="widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_target_x" href="widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_target_y" href="widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_to_region" href="widget.html#textual.widget.Widget.scroll_to_region">scroll_to_region</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_to_widget" href="widget.html#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
-<li><code><a title="textual.widget.Widget.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
-<li><code><a title="textual.widget.Widget.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
-<li><code><a title="textual.widget.Widget.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
-<li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
-<li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
-<li><code><a title="textual.widget.Widget.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
-<li><code><a title="textual.widget.Widget.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
-<li><code><a title="textual.widget.Widget.vertical_scrollbar" href="widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.virtual_region" href="widget.html#textual.widget.Widget.virtual_region">virtual_region</a></code></li>
-<li><code><a title="textual.widget.Widget.virtual_region_with_margin" href="widget.html#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
-<li><code><a title="textual.widget.Widget.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
-<li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
+<li><code><a title="textual.layout.Container.add_child" href="dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
+<li><code><a title="textual.layout.Container.add_children" href="dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
+<li><code><a title="textual.layout.Container.add_class" href="dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
+<li><code><a title="textual.layout.Container.ancestors" href="dom.html#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
+<li><code><a title="textual.layout.Container.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
+<li><code><a title="textual.layout.Container.auto_height" href="widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.layout.Container.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
+<li><code><a title="textual.layout.Container.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
+<li><code><a title="textual.layout.Container.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.layout.Container.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
+<li><code><a title="textual.layout.Container.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
+<li><code><a title="textual.layout.Container.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
+<li><code><a title="textual.layout.Container.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
+<li><code><a title="textual.layout.Container.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
+<li><code><a title="textual.layout.Container.compose" href="widget.html#textual.widget.Widget.compose">compose</a></code></li>
+<li><code><a title="textual.layout.Container.console" href="widget.html#textual.widget.Widget.console">console</a></code></li>
+<li><code><a title="textual.layout.Container.container_size" href="widget.html#textual.widget.Widget.container_size">container_size</a></code></li>
+<li><code><a title="textual.layout.Container.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
+<li><code><a title="textual.layout.Container.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.layout.Container.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
+<li><code><a title="textual.layout.Container.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
+<li><code><a title="textual.layout.Container.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
+<li><code><a title="textual.layout.Container.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
+<li><code><a title="textual.layout.Container.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
+<li><code><a title="textual.layout.Container.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
+<li><code><a title="textual.layout.Container.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.layout.Container.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
+<li><code><a title="textual.layout.Container.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
+<li><code><a title="textual.layout.Container.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.layout.Container.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
+<li><code><a title="textual.layout.Container.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
+<li><code><a title="textual.layout.Container.get_box_model" href="widget.html#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
+<li><code><a title="textual.layout.Container.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
+<li><code><a title="textual.layout.Container.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
+<li><code><a title="textual.layout.Container.get_content_width" href="widget.html#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
+<li><code><a title="textual.layout.Container.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.layout.Container.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
+<li><code><a title="textual.layout.Container.gutter" href="widget.html#textual.widget.Widget.gutter">gutter</a></code></li>
+<li><code><a title="textual.layout.Container.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
+<li><code><a title="textual.layout.Container.has_focus" href="widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.layout.Container.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
+<li><code><a title="textual.layout.Container.horizontal_scrollbar" href="widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.layout.Container.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
+<li><code><a title="textual.layout.Container.is_scrollable" href="widget.html#textual.widget.Widget.is_scrollable">is_scrollable</a></code></li>
+<li><code><a title="textual.layout.Container.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
+<li><code><a title="textual.layout.Container.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
+<li><code><a title="textual.layout.Container.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
+<li><code><a title="textual.layout.Container.layout" href="widget.html#textual.widget.Widget.layout">layout</a></code></li>
+<li><code><a title="textual.layout.Container.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
+<li><code><a title="textual.layout.Container.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
+<li><code><a title="textual.layout.Container.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
+<li><code><a title="textual.layout.Container.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.layout.Container.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.layout.Container.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
+<li><code><a title="textual.layout.Container.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
+<li><code><a title="textual.layout.Container.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
+<li><code><a title="textual.layout.Container.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.layout.Container.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
+<li><code><a title="textual.layout.Container.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
+<li><code><a title="textual.layout.Container.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
+<li><code><a title="textual.layout.Container.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
+<li><code><a title="textual.layout.Container.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
+<li><code><a title="textual.layout.Container.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
+<li><code><a title="textual.layout.Container.remove" href="widget.html#textual.widget.Widget.remove">remove</a></code></li>
+<li><code><a title="textual.layout.Container.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
+<li><code><a title="textual.layout.Container.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
+<li><code><a title="textual.layout.Container.render_line" href="widget.html#textual.widget.Widget.render_line">render_line</a></code></li>
+<li><code><a title="textual.layout.Container.render_lines" href="widget.html#textual.widget.Widget.render_lines">render_lines</a></code></li>
+<li><code><a title="textual.layout.Container.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
+<li><code><a title="textual.layout.Container.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
+<li><code><a title="textual.layout.Container.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_relative" href="widget.html#textual.widget.Widget.scroll_relative">scroll_relative</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_target_x" href="widget.html#textual.widget.Widget.scroll_target_x">scroll_target_x</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_target_y" href="widget.html#textual.widget.Widget.scroll_target_y">scroll_target_y</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_to" href="widget.html#textual.widget.Widget.scroll_to">scroll_to</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_to_region" href="widget.html#textual.widget.Widget.scroll_to_region">scroll_to_region</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_to_widget" href="widget.html#textual.widget.Widget.scroll_to_widget">scroll_to_widget</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_visible" href="widget.html#textual.widget.Widget.scroll_visible">scroll_visible</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_x" href="widget.html#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
+<li><code><a title="textual.layout.Container.scroll_y" href="widget.html#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.layout.Container.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
+<li><code><a title="textual.layout.Container.scrollbar_size_vertical" href="widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
+<li><code><a title="textual.layout.Container.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.layout.Container.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.layout.Container.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
+<li><code><a title="textual.layout.Container.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
+<li><code><a title="textual.layout.Container.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
+<li><code><a title="textual.layout.Container.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
+<li><code><a title="textual.layout.Container.vertical_scrollbar" href="widget.html#textual.widget.Widget.vertical_scrollbar">vertical_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.virtual_region" href="widget.html#textual.widget.Widget.virtual_region">virtual_region</a></code></li>
+<li><code><a title="textual.layout.Container.virtual_region_with_margin" href="widget.html#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
+<li><code><a title="textual.layout.Container.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
+<li><code><a title="textual.layout.Container.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
+<li><code><a title="textual.layout.Container.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.layout.Container.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
+<li><code><a title="textual.layout.Container.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.layout.Container.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
 </ul>
 </li>
 </ul>
@@ -425,6 +750,24 @@ setTimeout(() => input.focus(), 100);
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="textual.layout.Center" href="#textual.layout.Center">Center</a></code></h4>
+<ul class="">
+<li><code><a title="textual.layout.Center.COMPONENT_CLASSES" href="#textual.layout.Center.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
+<li><code><a title="textual.layout.Center.CSS" href="#textual.layout.Center.CSS">CSS</a></code></li>
+<li><code><a title="textual.layout.Center.can_focus" href="#textual.layout.Center.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.layout.Center.can_focus_children" href="#textual.layout.Center.can_focus_children">can_focus_children</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.layout.Container" href="#textual.layout.Container">Container</a></code></h4>
+<ul class="">
+<li><code><a title="textual.layout.Container.COMPONENT_CLASSES" href="#textual.layout.Container.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
+<li><code><a title="textual.layout.Container.CSS" href="#textual.layout.Container.CSS">CSS</a></code></li>
+<li><code><a title="textual.layout.Container.can_focus" href="#textual.layout.Container.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.layout.Container.can_focus_children" href="#textual.layout.Container.can_focus_children">can_focus_children</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="textual.layout.Horizontal" href="#textual.layout.Horizontal">Horizontal</a></code></h4>
 <ul class="">
 <li><code><a title="textual.layout.Horizontal.COMPONENT_CLASSES" href="#textual.layout.Horizontal.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
@@ -437,7 +780,6 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.layout.Vertical" href="#textual.layout.Vertical">Vertical</a></code></h4>
 <ul class="">
 <li><code><a title="textual.layout.Vertical.COMPONENT_CLASSES" href="#textual.layout.Vertical.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.layout.Vertical.CSS" href="#textual.layout.Vertical.CSS">CSS</a></code></li>
 <li><code><a title="textual.layout.Vertical.can_focus" href="#textual.layout.Vertical.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.layout.Vertical.can_focus_children" href="#textual.layout.Vertical.can_focus_children">can_focus_children</a></code></li>
 </ul>
