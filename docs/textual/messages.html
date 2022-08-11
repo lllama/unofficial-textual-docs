@@ -78,6 +78,7 @@ class InvokeLater(Message, verbosity=3):
         yield &#34;callback&#34;, self.callback
 
 
+# TODO: This should really be an Event
 @rich.repr.auto
 class CursorMove(Message):
     def __init__(self, sender: MessagePump, line: int) -&gt; None:
@@ -94,7 +95,7 @@ class StylesUpdated(Message):
         return isinstance(message, StylesUpdated)
 
 
-class Prompt(Message, system=True):
+class Prompt(Message, no_dispatch=True):
     &#34;&#34;&#34;Used to &#39;wake up&#39; an event loop.&#34;&#34;&#34;
 
     def can_replace(self, message: Message) -&gt; bool:
@@ -147,7 +148,11 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.CursorMove.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.messages.CursorMove.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.CursorMove.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -204,7 +209,11 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.InvokeLater.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.messages.InvokeLater.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.InvokeLater.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -257,7 +266,11 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.Layout.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.messages.Layout.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.Layout.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -296,7 +309,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Prompt(Message, system=True):
+<pre><code class="python">class Prompt(Message, no_dispatch=True):
     &#34;&#34;&#34;Used to &#39;wake up&#39; an event loop.&#34;&#34;&#34;
 
     def can_replace(self, message: Message) -&gt; bool:
@@ -312,7 +325,11 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.Prompt.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.messages.Prompt.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.Prompt.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -368,7 +385,11 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.StylesUpdated.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.messages.StylesUpdated.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.StylesUpdated.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -424,7 +445,11 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.TerminalSupportsSynchronizedOutput.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.messages.TerminalSupportsSynchronizedOutput.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.TerminalSupportsSynchronizedOutput.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -491,7 +516,11 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.Update.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.messages.Update.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.messages.Update.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -581,7 +610,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.messages.CursorMove" href="#textual.messages.CursorMove">CursorMove</a></code></h4>
 <ul class="">
 <li><code><a title="textual.messages.CursorMove.bubble" href="#textual.messages.CursorMove.bubble">bubble</a></code></li>
-<li><code><a title="textual.messages.CursorMove.system" href="#textual.messages.CursorMove.system">system</a></code></li>
+<li><code><a title="textual.messages.CursorMove.namespace" href="#textual.messages.CursorMove.namespace">namespace</a></code></li>
+<li><code><a title="textual.messages.CursorMove.no_dispatch" href="#textual.messages.CursorMove.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.messages.CursorMove.verbosity" href="#textual.messages.CursorMove.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -589,7 +619,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.messages.InvokeLater" href="#textual.messages.InvokeLater">InvokeLater</a></code></h4>
 <ul class="">
 <li><code><a title="textual.messages.InvokeLater.bubble" href="#textual.messages.InvokeLater.bubble">bubble</a></code></li>
-<li><code><a title="textual.messages.InvokeLater.system" href="#textual.messages.InvokeLater.system">system</a></code></li>
+<li><code><a title="textual.messages.InvokeLater.namespace" href="#textual.messages.InvokeLater.namespace">namespace</a></code></li>
+<li><code><a title="textual.messages.InvokeLater.no_dispatch" href="#textual.messages.InvokeLater.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.messages.InvokeLater.verbosity" href="#textual.messages.InvokeLater.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -597,7 +628,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.messages.Layout" href="#textual.messages.Layout">Layout</a></code></h4>
 <ul class="">
 <li><code><a title="textual.messages.Layout.bubble" href="#textual.messages.Layout.bubble">bubble</a></code></li>
-<li><code><a title="textual.messages.Layout.system" href="#textual.messages.Layout.system">system</a></code></li>
+<li><code><a title="textual.messages.Layout.namespace" href="#textual.messages.Layout.namespace">namespace</a></code></li>
+<li><code><a title="textual.messages.Layout.no_dispatch" href="#textual.messages.Layout.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.messages.Layout.verbosity" href="#textual.messages.Layout.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -605,7 +637,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.messages.Prompt" href="#textual.messages.Prompt">Prompt</a></code></h4>
 <ul class="">
 <li><code><a title="textual.messages.Prompt.bubble" href="#textual.messages.Prompt.bubble">bubble</a></code></li>
-<li><code><a title="textual.messages.Prompt.system" href="#textual.messages.Prompt.system">system</a></code></li>
+<li><code><a title="textual.messages.Prompt.namespace" href="#textual.messages.Prompt.namespace">namespace</a></code></li>
+<li><code><a title="textual.messages.Prompt.no_dispatch" href="#textual.messages.Prompt.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.messages.Prompt.verbosity" href="#textual.messages.Prompt.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -613,7 +646,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.messages.StylesUpdated" href="#textual.messages.StylesUpdated">StylesUpdated</a></code></h4>
 <ul class="">
 <li><code><a title="textual.messages.StylesUpdated.bubble" href="#textual.messages.StylesUpdated.bubble">bubble</a></code></li>
-<li><code><a title="textual.messages.StylesUpdated.system" href="#textual.messages.StylesUpdated.system">system</a></code></li>
+<li><code><a title="textual.messages.StylesUpdated.namespace" href="#textual.messages.StylesUpdated.namespace">namespace</a></code></li>
+<li><code><a title="textual.messages.StylesUpdated.no_dispatch" href="#textual.messages.StylesUpdated.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.messages.StylesUpdated.verbosity" href="#textual.messages.StylesUpdated.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -621,7 +655,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.messages.TerminalSupportsSynchronizedOutput" href="#textual.messages.TerminalSupportsSynchronizedOutput">TerminalSupportsSynchronizedOutput</a></code></h4>
 <ul class="">
 <li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.bubble" href="#textual.messages.TerminalSupportsSynchronizedOutput.bubble">bubble</a></code></li>
-<li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.system" href="#textual.messages.TerminalSupportsSynchronizedOutput.system">system</a></code></li>
+<li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.namespace" href="#textual.messages.TerminalSupportsSynchronizedOutput.namespace">namespace</a></code></li>
+<li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.no_dispatch" href="#textual.messages.TerminalSupportsSynchronizedOutput.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.verbosity" href="#textual.messages.TerminalSupportsSynchronizedOutput.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -629,7 +664,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.messages.Update" href="#textual.messages.Update">Update</a></code></h4>
 <ul class="">
 <li><code><a title="textual.messages.Update.bubble" href="#textual.messages.Update.bubble">bubble</a></code></li>
-<li><code><a title="textual.messages.Update.system" href="#textual.messages.Update.system">system</a></code></li>
+<li><code><a title="textual.messages.Update.namespace" href="#textual.messages.Update.namespace">namespace</a></code></li>
+<li><code><a title="textual.messages.Update.no_dispatch" href="#textual.messages.Update.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.messages.Update.verbosity" href="#textual.messages.Update.verbosity">verbosity</a></code></li>
 </ul>
 </li>

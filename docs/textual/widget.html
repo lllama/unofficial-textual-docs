@@ -1133,13 +1133,12 @@ class Widget(DOMNode):
         Args:
             event (events.Idle): Idle event.
         &#34;&#34;&#34;
-
         if self._repaint_required:
+            self._repaint_required = False
             self.screen.post_message_no_wait(messages.Update(self, self))
         if self._layout_required:
+            self._layout_required = False
             self.screen.post_message_no_wait(messages.Layout(self))
-        self._layout_required = False
-        self._repaint_required = False
 
     def focus(self) -&gt; None:
         &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
@@ -1233,27 +1232,27 @@ class Widget(DOMNode):
             if self.scroll_up(animate=False):
                 event.stop()
 
-    def handle_scroll_to(self, message: ScrollTo) -&gt; None:
+    def on_scroll_to(self, message: ScrollTo) -&gt; None:
         if self.is_scrollable:
             self.scroll_to(message.x, message.y, animate=message.animate, duration=0.1)
             message.stop()
 
-    def handle_scroll_up(self, event: ScrollUp) -&gt; None:
+    def on_scroll_up(self, event: ScrollUp) -&gt; None:
         if self.is_scrollable:
             self.scroll_page_up()
             event.stop()
 
-    def handle_scroll_down(self, event: ScrollDown) -&gt; None:
+    def on_scroll_down(self, event: ScrollDown) -&gt; None:
         if self.is_scrollable:
             self.scroll_page_down()
             event.stop()
 
-    def handle_scroll_left(self, event: ScrollLeft) -&gt; None:
+    def on_scroll_left(self, event: ScrollLeft) -&gt; None:
         if self.is_scrollable:
             self.scroll_page_left()
             event.stop()
 
-    def handle_scroll_right(self, event: ScrollRight) -&gt; None:
+    def on_scroll_right(self, event: ScrollRight) -&gt; None:
         if self.is_scrollable:
             self.scroll_page_right()
             event.stop()
@@ -2422,13 +2421,12 @@ def cursor_line(self) -&gt; int | None:
         Args:
             event (events.Idle): Idle event.
         &#34;&#34;&#34;
-
         if self._repaint_required:
+            self._repaint_required = False
             self.screen.post_message_no_wait(messages.Update(self, self))
         if self._layout_required:
+            self._layout_required = False
             self.screen.post_message_no_wait(messages.Layout(self))
-        self._layout_required = False
-        self._repaint_required = False
 
     def focus(self) -&gt; None:
         &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
@@ -2522,27 +2520,27 @@ def cursor_line(self) -&gt; int | None:
             if self.scroll_up(animate=False):
                 event.stop()
 
-    def handle_scroll_to(self, message: ScrollTo) -&gt; None:
+    def on_scroll_to(self, message: ScrollTo) -&gt; None:
         if self.is_scrollable:
             self.scroll_to(message.x, message.y, animate=message.animate, duration=0.1)
             message.stop()
 
-    def handle_scroll_up(self, event: ScrollUp) -&gt; None:
+    def on_scroll_up(self, event: ScrollUp) -&gt; None:
         if self.is_scrollable:
             self.scroll_page_up()
             event.stop()
 
-    def handle_scroll_down(self, event: ScrollDown) -&gt; None:
+    def on_scroll_down(self, event: ScrollDown) -&gt; None:
         if self.is_scrollable:
             self.scroll_page_down()
             event.stop()
 
-    def handle_scroll_left(self, event: ScrollLeft) -&gt; None:
+    def on_scroll_left(self, event: ScrollLeft) -&gt; None:
         if self.is_scrollable:
             self.scroll_page_left()
             event.stop()
 
-    def handle_scroll_right(self, event: ScrollRight) -&gt; None:
+    def on_scroll_right(self, event: ScrollRight) -&gt; None:
         if self.is_scrollable:
             self.scroll_page_right()
             event.stop()
@@ -3558,81 +3556,6 @@ def window_region(self) -&gt; Region:
     return self.screen.get_style_at(x + offset_x, y + offset_y)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.handle_scroll_down"><code class="name flex">
-<span>def <span class="ident">handle_scroll_down</span></span>(<span>self, event: ScrollDown) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def handle_scroll_down(self, event: ScrollDown) -&gt; None:
-    if self.is_scrollable:
-        self.scroll_page_down()
-        event.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.handle_scroll_left"><code class="name flex">
-<span>def <span class="ident">handle_scroll_left</span></span>(<span>self, event: ScrollLeft) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def handle_scroll_left(self, event: ScrollLeft) -&gt; None:
-    if self.is_scrollable:
-        self.scroll_page_left()
-        event.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.handle_scroll_right"><code class="name flex">
-<span>def <span class="ident">handle_scroll_right</span></span>(<span>self, event: ScrollRight) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def handle_scroll_right(self, event: ScrollRight) -&gt; None:
-    if self.is_scrollable:
-        self.scroll_page_right()
-        event.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.handle_scroll_to"><code class="name flex">
-<span>def <span class="ident">handle_scroll_to</span></span>(<span>self, message: ScrollTo) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def handle_scroll_to(self, message: ScrollTo) -&gt; None:
-    if self.is_scrollable:
-        self.scroll_to(message.x, message.y, animate=message.animate, duration=0.1)
-        message.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.handle_scroll_up"><code class="name flex">
-<span>def <span class="ident">handle_scroll_up</span></span>(<span>self, event: ScrollUp) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def handle_scroll_up(self, event: ScrollUp) -&gt; None:
-    if self.is_scrollable:
-        self.scroll_page_up()
-        event.stop()</code></pre>
-</details>
-</dd>
 <dt id="textual.widget.Widget.key_down"><code class="name flex">
 <span>def <span class="ident">key_down</span></span>(<span>self) ‑> bool</span>
 </code></dt>
@@ -3903,13 +3826,12 @@ the keys will be set as the Widget's id.</p>
     Args:
         event (events.Idle): Idle event.
     &#34;&#34;&#34;
-
     if self._repaint_required:
+        self._repaint_required = False
         self.screen.post_message_no_wait(messages.Update(self, self))
     if self._layout_required:
-        self.screen.post_message_no_wait(messages.Layout(self))
-    self._layout_required = False
-    self._repaint_required = False</code></pre>
+        self._layout_required = False
+        self.screen.post_message_no_wait(messages.Layout(self))</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_key"><code class="name flex">
@@ -4051,8 +3973,8 @@ the keys will be set as the Widget's id.</p>
     self.parent.refresh(layout=True)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.post_message"><code class="name flex">
-<span>async def <span class="ident">post_message</span></span>(<span>self, message: Message) ‑> bool</span>
+<dt id="textual.widget.Widget.on_scroll_down"><code class="name flex">
+<span>def <span class="ident">on_scroll_down</span></span>(<span>self, event: ScrollDown) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -4060,12 +3982,70 @@ the keys will be set as the Widget's id.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def post_message(self, message: Message) -&gt; bool:
-    if not self.check_message_enabled(message):
-        return True
-    if not self.is_running:
-        self.log(self, f&#34;IS NOT RUNNING, {message!r} not sent&#34;)
-    return await super().post_message(message)</code></pre>
+<pre><code class="python">def on_scroll_down(self, event: ScrollDown) -&gt; None:
+    if self.is_scrollable:
+        self.scroll_page_down()
+        event.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_scroll_left"><code class="name flex">
+<span>def <span class="ident">on_scroll_left</span></span>(<span>self, event: ScrollLeft) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_scroll_left(self, event: ScrollLeft) -&gt; None:
+    if self.is_scrollable:
+        self.scroll_page_left()
+        event.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_scroll_right"><code class="name flex">
+<span>def <span class="ident">on_scroll_right</span></span>(<span>self, event: ScrollRight) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_scroll_right(self, event: ScrollRight) -&gt; None:
+    if self.is_scrollable:
+        self.scroll_page_right()
+        event.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_scroll_to"><code class="name flex">
+<span>def <span class="ident">on_scroll_to</span></span>(<span>self, message: ScrollTo) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_scroll_to(self, message: ScrollTo) -&gt; None:
+    if self.is_scrollable:
+        self.scroll_to(message.x, message.y, animate=message.animate, duration=0.1)
+        message.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.on_scroll_up"><code class="name flex">
+<span>def <span class="ident">on_scroll_up</span></span>(<span>self, event: ScrollUp) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def on_scroll_up(self, event: ScrollUp) -&gt; None:
+    if self.is_scrollable:
+        self.scroll_page_up()
+        event.stop()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.refresh"><code class="name flex">
@@ -4887,6 +4867,7 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.dom.DOMNode.dispatch_message" href="message_pump.html#textual.message_pump.MessagePump.dispatch_message">dispatch_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.dom.DOMNode.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
@@ -4895,8 +4876,12 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.dom.DOMNode.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
+<li><code><a title="textual.dom.DOMNode.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.dom.DOMNode.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.dom.DOMNode.post_message" href="message_pump.html#textual.message_pump.MessagePump.post_message">post_message</a></code></li>
+<li><code><a title="textual.dom.DOMNode.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
 <li><code><a title="textual.dom.DOMNode.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -5011,11 +4996,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.get_pseudo_classes" href="#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.get_style_at" href="#textual.widget.Widget.get_style_at">get_style_at</a></code></li>
 <li><code><a title="textual.widget.Widget.gutter" href="#textual.widget.Widget.gutter">gutter</a></code></li>
-<li><code><a title="textual.widget.Widget.handle_scroll_down" href="#textual.widget.Widget.handle_scroll_down">handle_scroll_down</a></code></li>
-<li><code><a title="textual.widget.Widget.handle_scroll_left" href="#textual.widget.Widget.handle_scroll_left">handle_scroll_left</a></code></li>
-<li><code><a title="textual.widget.Widget.handle_scroll_right" href="#textual.widget.Widget.handle_scroll_right">handle_scroll_right</a></code></li>
-<li><code><a title="textual.widget.Widget.handle_scroll_to" href="#textual.widget.Widget.handle_scroll_to">handle_scroll_to</a></code></li>
-<li><code><a title="textual.widget.Widget.handle_scroll_up" href="#textual.widget.Widget.handle_scroll_up">handle_scroll_up</a></code></li>
 <li><code><a title="textual.widget.Widget.has_focus" href="#textual.widget.Widget.has_focus">has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.is_container" href="#textual.widget.Widget.is_container">is_container</a></code></li>
@@ -5052,8 +5032,12 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.on_mouse_up" href="#textual.widget.Widget.on_mouse_up">on_mouse_up</a></code></li>
 <li><code><a title="textual.widget.Widget.on_register" href="#textual.widget.Widget.on_register">on_register</a></code></li>
 <li><code><a title="textual.widget.Widget.on_remove" href="#textual.widget.Widget.on_remove">on_remove</a></code></li>
+<li><code><a title="textual.widget.Widget.on_scroll_down" href="#textual.widget.Widget.on_scroll_down">on_scroll_down</a></code></li>
+<li><code><a title="textual.widget.Widget.on_scroll_left" href="#textual.widget.Widget.on_scroll_left">on_scroll_left</a></code></li>
+<li><code><a title="textual.widget.Widget.on_scroll_right" href="#textual.widget.Widget.on_scroll_right">on_scroll_right</a></code></li>
+<li><code><a title="textual.widget.Widget.on_scroll_to" href="#textual.widget.Widget.on_scroll_to">on_scroll_to</a></code></li>
+<li><code><a title="textual.widget.Widget.on_scroll_up" href="#textual.widget.Widget.on_scroll_up">on_scroll_up</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="#textual.widget.Widget.outer_size">outer_size</a></code></li>
-<li><code><a title="textual.widget.Widget.post_message" href="#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.widget.Widget.region" href="#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.widget.Widget.release_mouse" href="#textual.widget.Widget.release_mouse">release_mouse</a></code></li>

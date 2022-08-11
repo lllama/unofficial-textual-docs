@@ -48,15 +48,14 @@ class Message:
         &#34;_forwarded&#34;,
         &#34;_no_default_action&#34;,
         &#34;_stop_propagation&#34;,
-        &#34;__done_event&#34;,
+        &#34;_handler_name&#34;,
     ]
 
     sender: MessageTarget
     bubble: ClassVar[bool] = True  # Message will bubble to parent
     verbosity: ClassVar[int] = 1  # Verbosity (higher the more verbose)
-    system: ClassVar[
-        bool
-    ] = False  # Message is system related and may not be handled by client code
+    no_dispatch: ClassVar[bool] = False  # Message may not be handled by client code
+    namespace: ClassVar[str] = &#34;&#34;  # Namespace to disambiguate messages
 
     def __init__(self, sender: MessageTarget) -&gt; None:
         &#34;&#34;&#34;
@@ -71,6 +70,9 @@ class Message:
         self._forwarded = False
         self._no_default_action = False
         self._stop_propagation = False
+        self._handler_name = (
+            f&#34;on_{self.namespace}_{self.name}&#34; if self.namespace else f&#34;on_{self.name}&#34;
+        )
         super().__init__()
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
@@ -80,19 +82,27 @@ class Message:
         cls,
         bubble: bool | None = True,
         verbosity: int | None = 1,
-        system: bool | None = False,
+        no_dispatch: bool | None = False,
+        namespace: str | None = None,
     ) -&gt; None:
         super().__init_subclass__()
         if bubble is not None:
             cls.bubble = bubble
         if verbosity is not None:
             cls.verbosity = verbosity
-        if system is not None:
-            cls.system = system
+        if no_dispatch is not None:
+            cls.no_dispatch = no_dispatch
+        if namespace is not None:
+            cls.namespace = namespace
 
     @property
     def is_forwarded(self) -&gt; bool:
         return self._forwarded
+
+    @property
+    def handler_name(self) -&gt; str:
+        # Property to make it read only
+        return self._handler_name
 
     def set_forwarded(self) -&gt; None:
         &#34;&#34;&#34;Mark this event as being forwarded.&#34;&#34;&#34;
@@ -163,15 +173,14 @@ class Message:
         &#34;_forwarded&#34;,
         &#34;_no_default_action&#34;,
         &#34;_stop_propagation&#34;,
-        &#34;__done_event&#34;,
+        &#34;_handler_name&#34;,
     ]
 
     sender: MessageTarget
     bubble: ClassVar[bool] = True  # Message will bubble to parent
     verbosity: ClassVar[int] = 1  # Verbosity (higher the more verbose)
-    system: ClassVar[
-        bool
-    ] = False  # Message is system related and may not be handled by client code
+    no_dispatch: ClassVar[bool] = False  # Message may not be handled by client code
+    namespace: ClassVar[str] = &#34;&#34;  # Namespace to disambiguate messages
 
     def __init__(self, sender: MessageTarget) -&gt; None:
         &#34;&#34;&#34;
@@ -186,6 +195,9 @@ class Message:
         self._forwarded = False
         self._no_default_action = False
         self._stop_propagation = False
+        self._handler_name = (
+            f&#34;on_{self.namespace}_{self.name}&#34; if self.namespace else f&#34;on_{self.name}&#34;
+        )
         super().__init__()
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
@@ -195,19 +207,27 @@ class Message:
         cls,
         bubble: bool | None = True,
         verbosity: int | None = 1,
-        system: bool | None = False,
+        no_dispatch: bool | None = False,
+        namespace: str | None = None,
     ) -&gt; None:
         super().__init_subclass__()
         if bubble is not None:
             cls.bubble = bubble
         if verbosity is not None:
             cls.verbosity = verbosity
-        if system is not None:
-            cls.system = system
+        if no_dispatch is not None:
+            cls.no_dispatch = no_dispatch
+        if namespace is not None:
+            cls.namespace = namespace
 
     @property
     def is_forwarded(self) -&gt; bool:
         return self._forwarded
+
+    @property
+    def handler_name(self) -&gt; str:
+        # Property to make it read only
+        return self._handler_name
 
     def set_forwarded(self) -&gt; None:
         &#34;&#34;&#34;Mark this event as being forwarded.&#34;&#34;&#34;
@@ -261,7 +281,11 @@ class Message:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.message.Message.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.message.Message.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.message.Message.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -272,6 +296,19 @@ class Message:
 </dl>
 <h3>Instance variables</h3>
 <dl>
+<dt id="textual.message.Message.handler_name"><code class="name">var <span class="ident">handler_name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def handler_name(self) -&gt; str:
+    # Property to make it read only
+    return self._handler_name</code></pre>
+</details>
+</dd>
 <dt id="textual.message.Message.is_forwarded"><code class="name">var <span class="ident">is_forwarded</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
@@ -463,13 +500,15 @@ setTimeout(() => input.focus(), 100);
 <ul class="two-column">
 <li><code><a title="textual.message.Message.bubble" href="#textual.message.Message.bubble">bubble</a></code></li>
 <li><code><a title="textual.message.Message.can_replace" href="#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.handler_name" href="#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.message.Message.is_forwarded" href="#textual.message.Message.is_forwarded">is_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.name" href="#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.message.Message.namespace" href="#textual.message.Message.namespace">namespace</a></code></li>
+<li><code><a title="textual.message.Message.no_dispatch" href="#textual.message.Message.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="#textual.message.Message.sender">sender</a></code></li>
 <li><code><a title="textual.message.Message.set_forwarded" href="#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="#textual.message.Message.stop">stop</a></code></li>
-<li><code><a title="textual.message.Message.system" href="#textual.message.Message.system">system</a></code></li>
 <li><code><a title="textual.message.Message.time" href="#textual.message.Message.time">time</a></code></li>
 <li><code><a title="textual.message.Message.verbosity" href="#textual.message.Message.verbosity">verbosity</a></code></li>
 </ul>

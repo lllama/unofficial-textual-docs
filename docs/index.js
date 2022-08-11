@@ -2595,6 +2595,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.message_pump.MessagePumpMeta",
+"url":20,
+"doc":"Metaclass for message pump. This exists to populate a Message inner class of a Widget with the parent classes' name."
+},
+{
 "ref":"textual.message_pump.MessagePump",
 "url":20,
 "doc":""
@@ -2685,7 +2690,7 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.message_pump.MessagePump.handle_invoke_later",
+"ref":"textual.message_pump.MessagePump.on_invoke_later",
 "url":20,
 "doc":"",
 "func":1
@@ -2717,19 +2722,19 @@ INDEX=[
 {
 "ref":"textual.message_pump.MessagePump.dispatch_message",
 "url":20,
-"doc":"",
+"doc":"Dispatch a message received from the message queue. Args: message (Message): A message object",
 "func":1
 },
 {
 "ref":"textual.message_pump.MessagePump.on_event",
 "url":20,
-"doc":"",
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
 "func":1
 },
 {
 "ref":"textual.message_pump.MessagePump.on_message",
 "url":20,
-"doc":"",
+"doc":"Called to process a message. Args: message (Message): A Message object.",
 "func":1
 },
 {
@@ -2741,31 +2746,19 @@ INDEX=[
 {
 "ref":"textual.message_pump.MessagePump.post_message",
 "url":20,
-"doc":"",
+"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
 "func":1
 },
 {
 "ref":"textual.message_pump.MessagePump.post_priority_message",
 "url":20,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
 "ref":"textual.message_pump.MessagePump.post_message_no_wait",
 "url":20,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.message_pump.MessagePump.post_message_from_child",
-"url":20,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.message_pump.MessagePump.post_message_from_child_no_wait",
-"url":20,
-"doc":"",
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -3048,12 +3041,22 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.message.Message.system",
+"ref":"textual.message.Message.no_dispatch",
+"url":33,
+"doc":""
+},
+{
+"ref":"textual.message.Message.namespace",
 "url":33,
 "doc":""
 },
 {
 "ref":"textual.message.Message.is_forwarded",
+"url":33,
+"doc":""
+},
+{
+"ref":"textual.message.Message.handler_name",
 "url":33,
 "doc":""
 },
@@ -3468,6 +3471,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scroll_view.ScrollView.post_message",
+"url":35,
+"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"func":1
+},
+{
 "ref":"textual.scroll_view.ScrollView.on_idle",
 "url":35,
 "doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
@@ -3685,6 +3694,24 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scroll_view.ScrollView.dispatch_message",
+"url":20,
+"doc":"Dispatch a message received from the message queue. Args: message (Message): A message object",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.on_event",
+"url":20,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.on_message",
+"url":20,
+"doc":"Called to process a message. Args: message (Message): A Message object.",
+"func":1
+},
+{
 "ref":"textual.scroll_view.ScrollView.check_idle",
 "url":20,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
@@ -3693,7 +3720,13 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.post_priority_message",
 "url":20,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.post_message_no_wait",
+"url":20,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -3977,15 +4010,45 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.dom.DOMNode.dispatch_message",
+"url":20,
+"doc":"Dispatch a message received from the message queue. Args: message (Message): A message object",
+"func":1
+},
+{
+"ref":"textual.dom.DOMNode.on_event",
+"url":20,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.dom.DOMNode.on_message",
+"url":20,
+"doc":"Called to process a message. Args: message (Message): A Message object.",
+"func":1
+},
+{
 "ref":"textual.dom.DOMNode.check_idle",
 "url":20,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
 "func":1
 },
 {
+"ref":"textual.dom.DOMNode.post_message",
+"url":20,
+"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"func":1
+},
+{
 "ref":"textual.dom.DOMNode.post_priority_message",
 "url":20,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.dom.DOMNode.post_message_no_wait",
+"url":20,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -4010,6 +4073,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.scrollbar.ScrollMessage.namespace",
+"url":38,
+"doc":""
+},
+{
 "ref":"textual.scrollbar.ScrollMessage.bubble",
 "url":38,
 "doc":""
@@ -4020,7 +4088,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollMessage.system",
+"ref":"textual.scrollbar.ScrollMessage.no_dispatch",
 "url":38,
 "doc":""
 },
@@ -4069,6 +4137,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.scrollbar.ScrollUp.namespace",
+"url":38,
+"doc":""
+},
+{
 "ref":"textual.scrollbar.ScrollUp.bubble",
 "url":38,
 "doc":""
@@ -4079,7 +4152,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollUp.system",
+"ref":"textual.scrollbar.ScrollUp.no_dispatch",
 "url":38,
 "doc":""
 },
@@ -4128,6 +4201,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.scrollbar.ScrollDown.namespace",
+"url":38,
+"doc":""
+},
+{
 "ref":"textual.scrollbar.ScrollDown.bubble",
 "url":38,
 "doc":""
@@ -4138,7 +4216,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollDown.system",
+"ref":"textual.scrollbar.ScrollDown.no_dispatch",
 "url":38,
 "doc":""
 },
@@ -4187,6 +4265,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.scrollbar.ScrollLeft.namespace",
+"url":38,
+"doc":""
+},
+{
 "ref":"textual.scrollbar.ScrollLeft.bubble",
 "url":38,
 "doc":""
@@ -4197,7 +4280,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollLeft.system",
+"ref":"textual.scrollbar.ScrollLeft.no_dispatch",
 "url":38,
 "doc":""
 },
@@ -4246,6 +4329,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.scrollbar.ScrollRight.namespace",
+"url":38,
+"doc":""
+},
+{
 "ref":"textual.scrollbar.ScrollRight.bubble",
 "url":38,
 "doc":""
@@ -4256,7 +4344,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollRight.system",
+"ref":"textual.scrollbar.ScrollRight.no_dispatch",
 "url":38,
 "doc":""
 },
@@ -4305,6 +4393,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.scrollbar.ScrollTo.namespace",
+"url":38,
+"doc":""
+},
+{
 "ref":"textual.scrollbar.ScrollTo.bubble",
 "url":38,
 "doc":""
@@ -4315,7 +4408,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollTo.system",
+"ref":"textual.scrollbar.ScrollTo.no_dispatch",
 "url":38,
 "doc":""
 },
@@ -4783,6 +4876,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.post_message",
+"url":35,
+"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.on_idle",
 "url":35,
 "doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
@@ -5000,6 +5099,24 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.dispatch_message",
+"url":20,
+"doc":"Dispatch a message received from the message queue. Args: message (Message): A message object",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.on_event",
+"url":20,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.on_message",
+"url":20,
+"doc":"Called to process a message. Args: message (Message): A Message object.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.check_idle",
 "url":20,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
@@ -5008,7 +5125,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.post_priority_message",
 "url":20,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.post_message_no_wait",
+"url":20,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -5049,6 +5172,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Event.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Event.bubble",
 "url":40,
 "doc":""
@@ -5059,7 +5187,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Event.system",
+"ref":"textual.events.Event.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5098,65 +5226,6 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.events.Null",
-"url":40,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
-},
-{
-"ref":"textual.events.Null.sender",
-"url":40,
-"doc":"Return an attribute of instance, which is of type owner."
-},
-{
-"ref":"textual.events.Null.can_replace",
-"url":40,
-"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
-"func":1
-},
-{
-"ref":"textual.events.Null.bubble",
-"url":40,
-"doc":""
-},
-{
-"ref":"textual.events.Null.verbosity",
-"url":40,
-"doc":""
-},
-{
-"ref":"textual.events.Null.system",
-"url":40,
-"doc":""
-},
-{
-"ref":"textual.events.Null.set_forwarded",
-"url":33,
-"doc":"Mark this event as being forwarded.",
-"func":1
-},
-{
-"ref":"textual.events.Null.prevent_default",
-"url":33,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.events.Null.stop",
-"url":33,
-"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.events.Null.name",
-"url":33,
-"doc":"Return an attribute of instance, which is of type owner."
-},
-{
-"ref":"textual.events.Null.time",
-"url":33,
-"doc":"Return an attribute of instance, which is of type owner."
-},
-{
 "ref":"textual.events.Callback",
 "url":40,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
@@ -5165,6 +5234,11 @@ INDEX=[
 "ref":"textual.events.Callback.sender",
 "url":40,
 "doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.Callback.namespace",
+"url":40,
+"doc":""
 },
 {
 "ref":"textual.events.Callback.bubble",
@@ -5177,7 +5251,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Callback.system",
+"ref":"textual.events.Callback.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5226,6 +5300,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.InvokeCallbacks.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.InvokeCallbacks.bubble",
 "url":40,
 "doc":""
@@ -5236,7 +5315,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.InvokeCallbacks.system",
+"ref":"textual.events.InvokeCallbacks.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5285,6 +5364,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.ShutdownRequest.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.ShutdownRequest.bubble",
 "url":40,
 "doc":""
@@ -5295,7 +5379,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.ShutdownRequest.system",
+"ref":"textual.events.ShutdownRequest.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5344,6 +5428,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Shutdown.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Shutdown.bubble",
 "url":40,
 "doc":""
@@ -5354,7 +5443,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Shutdown.system",
+"ref":"textual.events.Shutdown.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5403,6 +5492,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Load.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Load.bubble",
 "url":40,
 "doc":""
@@ -5413,7 +5507,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Load.system",
+"ref":"textual.events.Load.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5462,6 +5556,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Idle.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Idle.bubble",
 "url":40,
 "doc":""
@@ -5472,7 +5571,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Idle.system",
+"ref":"textual.events.Idle.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5521,6 +5620,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Action.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Action.action",
 "url":40,
 "doc":"Return an attribute of instance, which is of type owner."
@@ -5536,7 +5640,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Action.system",
+"ref":"textual.events.Action.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5585,6 +5689,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Resize.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Resize.can_replace",
 "url":40,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
@@ -5616,7 +5725,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Resize.system",
+"ref":"textual.events.Resize.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5659,6 +5768,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Mount.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Mount.bubble",
 "url":40,
 "doc":""
@@ -5669,7 +5783,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Mount.system",
+"ref":"textual.events.Mount.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5718,6 +5832,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Unmount.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Unmount.bubble",
 "url":40,
 "doc":""
@@ -5728,7 +5847,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Unmount.system",
+"ref":"textual.events.Unmount.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5777,6 +5896,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Remove.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Remove.bubble",
 "url":40,
 "doc":""
@@ -5787,7 +5911,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Remove.system",
+"ref":"textual.events.Remove.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5836,6 +5960,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Show.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Show.bubble",
 "url":40,
 "doc":""
@@ -5846,7 +5975,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Show.system",
+"ref":"textual.events.Show.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5895,6 +6024,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Hide.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Hide.bubble",
 "url":40,
 "doc":""
@@ -5905,7 +6039,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Hide.system",
+"ref":"textual.events.Hide.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -5954,6 +6088,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.MouseCapture.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.MouseCapture.bubble",
 "url":40,
 "doc":""
@@ -5964,7 +6103,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseCapture.system",
+"ref":"textual.events.MouseCapture.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6013,6 +6152,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.MouseRelease.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.MouseRelease.bubble",
 "url":40,
 "doc":""
@@ -6023,7 +6167,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseRelease.system",
+"ref":"textual.events.MouseRelease.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6072,6 +6216,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.InputEvent.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.InputEvent.bubble",
 "url":40,
 "doc":""
@@ -6082,7 +6231,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.InputEvent.system",
+"ref":"textual.events.InputEvent.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6131,6 +6280,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Key.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Key.is_printable",
 "url":40,
 "doc":"Return True if the key is printable. Currently, we assume any key event that isn't defined in key bindings is printable. Returns: bool: True if the key is printable. False otherwise."
@@ -6151,7 +6305,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Key.system",
+"ref":"textual.events.Key.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6198,6 +6352,11 @@ INDEX=[
 "ref":"textual.events.MouseEvent.sender",
 "url":40,
 "doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.MouseEvent.namespace",
+"url":40,
+"doc":""
 },
 {
 "ref":"textual.events.MouseEvent.from_event",
@@ -6277,7 +6436,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseEvent.system",
+"ref":"textual.events.MouseEvent.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6326,6 +6485,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.MouseMove.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.MouseMove.bubble",
 "url":40,
 "doc":""
@@ -6336,7 +6500,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseMove.system",
+"ref":"textual.events.MouseMove.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6435,6 +6599,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.MouseDown.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.MouseDown.bubble",
 "url":40,
 "doc":""
@@ -6445,7 +6614,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseDown.system",
+"ref":"textual.events.MouseDown.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6544,6 +6713,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.MouseUp.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.MouseUp.bubble",
 "url":40,
 "doc":""
@@ -6554,7 +6728,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseUp.system",
+"ref":"textual.events.MouseUp.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6653,6 +6827,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.MouseScrollDown.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.MouseScrollDown.x",
 "url":40,
 "doc":"Return an attribute of instance, which is of type owner."
@@ -6673,7 +6852,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseScrollDown.system",
+"ref":"textual.events.MouseScrollDown.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6722,6 +6901,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.MouseScrollUp.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.MouseScrollUp.bubble",
 "url":40,
 "doc":""
@@ -6732,7 +6916,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseScrollUp.system",
+"ref":"textual.events.MouseScrollUp.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6791,6 +6975,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Click.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Click.bubble",
 "url":40,
 "doc":""
@@ -6801,7 +6990,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Click.system",
+"ref":"textual.events.Click.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -6900,6 +7089,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.DoubleClick.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.DoubleClick.bubble",
 "url":40,
 "doc":""
@@ -6910,7 +7104,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.DoubleClick.system",
+"ref":"textual.events.DoubleClick.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -7009,6 +7203,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Timer.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Timer.callback",
 "url":40,
 "doc":"Return an attribute of instance, which is of type owner."
@@ -7034,7 +7233,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Timer.system",
+"ref":"textual.events.Timer.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -7078,6 +7277,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Enter.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Enter.bubble",
 "url":40,
 "doc":""
@@ -7088,7 +7292,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Enter.system",
+"ref":"textual.events.Enter.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -7137,6 +7341,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Leave.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Leave.bubble",
 "url":40,
 "doc":""
@@ -7147,7 +7356,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Leave.system",
+"ref":"textual.events.Leave.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -7196,6 +7405,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Focus.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Focus.bubble",
 "url":40,
 "doc":""
@@ -7206,7 +7420,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Focus.system",
+"ref":"textual.events.Focus.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -7255,6 +7469,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Blur.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Blur.bubble",
 "url":40,
 "doc":""
@@ -7265,7 +7484,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Blur.system",
+"ref":"textual.events.Blur.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -7314,6 +7533,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.DescendantFocus.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.DescendantFocus.bubble",
 "url":40,
 "doc":""
@@ -7324,7 +7548,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.DescendantFocus.system",
+"ref":"textual.events.DescendantFocus.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -7373,6 +7597,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.DescendantBlur.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.DescendantBlur.bubble",
 "url":40,
 "doc":""
@@ -7383,7 +7612,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.DescendantBlur.system",
+"ref":"textual.events.DescendantBlur.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -7432,6 +7661,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.events.Paste.namespace",
+"url":40,
+"doc":""
+},
+{
 "ref":"textual.events.Paste.bubble",
 "url":40,
 "doc":""
@@ -7442,7 +7676,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Paste.system",
+"ref":"textual.events.Paste.no_dispatch",
 "url":40,
 "doc":""
 },
@@ -7580,19 +7814,13 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.screen.Screen.handle_invoke_later",
+"ref":"textual.screen.Screen.on_update",
 "url":43,
 "doc":"",
 "func":1
 },
 {
-"ref":"textual.screen.Screen.handle_update",
-"url":43,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.handle_layout",
+"ref":"textual.screen.Screen.on_layout",
 "url":43,
 "doc":"",
 "func":1
@@ -7926,6 +8154,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.post_message",
+"url":35,
+"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.focus",
 "url":35,
 "doc":"Give input focus to this widget.",
@@ -8137,6 +8371,24 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.dispatch_message",
+"url":20,
+"doc":"Dispatch a message received from the message queue. Args: message (Message): A message object",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.on_event",
+"url":20,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.on_message",
+"url":20,
+"doc":"Called to process a message. Args: message (Message): A Message object.",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.check_idle",
 "url":20,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
@@ -8145,7 +8397,13 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.post_priority_message",
 "url":20,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.post_message_no_wait",
+"url":20,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -9517,6 +9775,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Container.post_message",
+"url":35,
+"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"func":1
+},
+{
 "ref":"textual.layout.Container.on_idle",
 "url":35,
 "doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
@@ -9734,6 +9998,24 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Container.dispatch_message",
+"url":20,
+"doc":"Dispatch a message received from the message queue. Args: message (Message): A message object",
+"func":1
+},
+{
+"ref":"textual.layout.Container.on_event",
+"url":20,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.on_message",
+"url":20,
+"doc":"Called to process a message. Args: message (Message): A Message object.",
+"func":1
+},
+{
 "ref":"textual.layout.Container.check_idle",
 "url":20,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
@@ -9742,7 +10024,13 @@ INDEX=[
 {
 "ref":"textual.layout.Container.post_priority_message",
 "url":20,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.post_message_no_wait",
+"url":20,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -10089,6 +10377,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Vertical.post_message",
+"url":35,
+"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"func":1
+},
+{
 "ref":"textual.layout.Vertical.on_idle",
 "url":35,
 "doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
@@ -10306,6 +10600,24 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Vertical.dispatch_message",
+"url":20,
+"doc":"Dispatch a message received from the message queue. Args: message (Message): A message object",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.on_event",
+"url":20,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.on_message",
+"url":20,
+"doc":"Called to process a message. Args: message (Message): A Message object.",
+"func":1
+},
+{
 "ref":"textual.layout.Vertical.check_idle",
 "url":20,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
@@ -10314,7 +10626,13 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.post_priority_message",
 "url":20,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.post_message_no_wait",
+"url":20,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -10666,6 +10984,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Horizontal.post_message",
+"url":35,
+"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.on_idle",
 "url":35,
 "doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
@@ -10883,6 +11207,24 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Horizontal.dispatch_message",
+"url":20,
+"doc":"Dispatch a message received from the message queue. Args: message (Message): A message object",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.on_event",
+"url":20,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.on_message",
+"url":20,
+"doc":"Called to process a message. Args: message (Message): A Message object.",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.check_idle",
 "url":20,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
@@ -10891,7 +11233,13 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.post_priority_message",
 "url":20,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.post_message_no_wait",
+"url":20,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -11243,6 +11591,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Center.post_message",
+"url":35,
+"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"func":1
+},
+{
 "ref":"textual.layout.Center.on_idle",
 "url":35,
 "doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
@@ -11460,6 +11814,24 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Center.dispatch_message",
+"url":20,
+"doc":"Dispatch a message received from the message queue. Args: message (Message): A message object",
+"func":1
+},
+{
+"ref":"textual.layout.Center.on_event",
+"url":20,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.on_message",
+"url":20,
+"doc":"Called to process a message. Args: message (Message): A Message object.",
+"func":1
+},
+{
 "ref":"textual.layout.Center.check_idle",
 "url":20,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
@@ -11468,7 +11840,13 @@ INDEX=[
 {
 "ref":"textual.layout.Center.post_priority_message",
 "url":20,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.post_message_no_wait",
+"url":20,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -11493,6 +11871,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.messages.Update.namespace",
+"url":51,
+"doc":""
+},
+{
 "ref":"textual.messages.Update.can_replace",
 "url":51,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
@@ -11509,7 +11892,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.Update.system",
+"ref":"textual.messages.Update.no_dispatch",
 "url":51,
 "doc":""
 },
@@ -11552,6 +11935,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.messages.Layout.namespace",
+"url":51,
+"doc":""
+},
+{
 "ref":"textual.messages.Layout.can_replace",
 "url":51,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
@@ -11568,7 +11956,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.Layout.system",
+"ref":"textual.messages.Layout.no_dispatch",
 "url":51,
 "doc":""
 },
@@ -11611,6 +11999,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.messages.InvokeLater.namespace",
+"url":51,
+"doc":""
+},
+{
 "ref":"textual.messages.InvokeLater.bubble",
 "url":51,
 "doc":""
@@ -11621,7 +12014,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.InvokeLater.system",
+"ref":"textual.messages.InvokeLater.no_dispatch",
 "url":51,
 "doc":""
 },
@@ -11670,6 +12063,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.messages.CursorMove.namespace",
+"url":51,
+"doc":""
+},
+{
 "ref":"textual.messages.CursorMove.bubble",
 "url":51,
 "doc":""
@@ -11680,7 +12078,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.CursorMove.system",
+"ref":"textual.messages.CursorMove.no_dispatch",
 "url":51,
 "doc":""
 },
@@ -11729,6 +12127,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.messages.StylesUpdated.namespace",
+"url":51,
+"doc":""
+},
+{
 "ref":"textual.messages.StylesUpdated.can_replace",
 "url":51,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
@@ -11745,7 +12148,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.StylesUpdated.system",
+"ref":"textual.messages.StylesUpdated.no_dispatch",
 "url":51,
 "doc":""
 },
@@ -11788,6 +12191,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.messages.Prompt.namespace",
+"url":51,
+"doc":""
+},
+{
 "ref":"textual.messages.Prompt.can_replace",
 "url":51,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
@@ -11804,7 +12212,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.Prompt.system",
+"ref":"textual.messages.Prompt.no_dispatch",
 "url":51,
 "doc":""
 },
@@ -11847,6 +12255,11 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.namespace",
+"url":51,
+"doc":""
+},
+{
 "ref":"textual.messages.TerminalSupportsSynchronizedOutput.bubble",
 "url":51,
 "doc":""
@@ -11857,7 +12270,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.TerminalSupportsSynchronizedOutput.system",
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.no_dispatch",
 "url":51,
 "doc":""
 },
@@ -13040,7 +13453,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.post_message",
 "url":35,
-"doc":"",
+"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
 "func":1
 },
 {
@@ -13158,31 +13571,31 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.widget.Widget.handle_scroll_to",
+"ref":"textual.widget.Widget.on_scroll_to",
 "url":35,
 "doc":"",
 "func":1
 },
 {
-"ref":"textual.widget.Widget.handle_scroll_up",
+"ref":"textual.widget.Widget.on_scroll_up",
 "url":35,
 "doc":"",
 "func":1
 },
 {
-"ref":"textual.widget.Widget.handle_scroll_down",
+"ref":"textual.widget.Widget.on_scroll_down",
 "url":35,
 "doc":"",
 "func":1
 },
 {
-"ref":"textual.widget.Widget.handle_scroll_left",
+"ref":"textual.widget.Widget.on_scroll_left",
 "url":35,
 "doc":"",
 "func":1
 },
 {
-"ref":"textual.widget.Widget.handle_scroll_right",
+"ref":"textual.widget.Widget.on_scroll_right",
 "url":35,
 "doc":"",
 "func":1
@@ -13429,6 +13842,24 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.dispatch_message",
+"url":20,
+"doc":"Dispatch a message received from the message queue. Args: message (Message): A message object",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.on_event",
+"url":20,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.on_message",
+"url":20,
+"doc":"Called to process a message. Args: message (Message): A Message object.",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.check_idle",
 "url":20,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
@@ -13437,7 +13868,13 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.post_priority_message",
 "url":20,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed.",
+"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.post_message_no_wait",
+"url":20,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {

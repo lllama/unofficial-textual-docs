@@ -184,9 +184,15 @@ class Screen(Widget):
             for callback in callbacks:
                 await invoke(callback)
 
-    def handle_invoke_later(self, message: messages.InvokeLater) -&gt; None:
-        # Enqueue the callback function to be called later
-        self._callbacks.append(message.callback)
+    def _invoke_later(self, callback: CallbackType) -&gt; None:
+        &#34;&#34;&#34;Enqueue a callback to be invoked after the screen is repainted.
+
+        Args:
+            callback (CallbackType): A callback.
+        &#34;&#34;&#34;
+
+        self._callbacks.append(callback)
+        self.check_idle()
 
     def _refresh_layout(self, size: Size | None = None, full: bool = False) -&gt; None:
         &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
@@ -229,7 +235,7 @@ class Screen(Widget):
         if display_update is not None:
             self.app._display(display_update)
 
-    async def handle_update(self, message: messages.Update) -&gt; None:
+    async def on_update(self, message: messages.Update) -&gt; None:
         message.stop()
         message.prevent_default()
         widget = message.widget
@@ -237,7 +243,7 @@ class Screen(Widget):
         self._dirty_widgets.add(widget)
         self.check_idle()
 
-    async def handle_layout(self, message: messages.Layout) -&gt; None:
+    async def on_layout(self, message: messages.Layout) -&gt; None:
         message.stop()
         message.prevent_default()
         self._layout_required = True
@@ -470,9 +476,15 @@ class Screen(Widget):
             for callback in callbacks:
                 await invoke(callback)
 
-    def handle_invoke_later(self, message: messages.InvokeLater) -&gt; None:
-        # Enqueue the callback function to be called later
-        self._callbacks.append(message.callback)
+    def _invoke_later(self, callback: CallbackType) -&gt; None:
+        &#34;&#34;&#34;Enqueue a callback to be invoked after the screen is repainted.
+
+        Args:
+            callback (CallbackType): A callback.
+        &#34;&#34;&#34;
+
+        self._callbacks.append(callback)
+        self.check_idle()
 
     def _refresh_layout(self, size: Size | None = None, full: bool = False) -&gt; None:
         &#34;&#34;&#34;Refresh the layout (can change size and positions of widgets).&#34;&#34;&#34;
@@ -515,7 +527,7 @@ class Screen(Widget):
         if display_update is not None:
             self.app._display(display_update)
 
-    async def handle_update(self, message: messages.Update) -&gt; None:
+    async def on_update(self, message: messages.Update) -&gt; None:
         message.stop()
         message.prevent_default()
         widget = message.widget
@@ -523,7 +535,7 @@ class Screen(Widget):
         self._dirty_widgets.add(widget)
         self.check_idle()
 
-    async def handle_layout(self, message: messages.Layout) -&gt; None:
+    async def on_layout(self, message: messages.Layout) -&gt; None:
         message.stop()
         message.prevent_default()
         self._layout_required = True
@@ -850,54 +862,6 @@ def update_timer(self) -&gt; Timer:
     return self._compositor.get_widget_at(x, y)</code></pre>
 </details>
 </dd>
-<dt id="textual.screen.Screen.handle_invoke_later"><code class="name flex">
-<span>def <span class="ident">handle_invoke_later</span></span>(<span>self, message: messages.InvokeLater) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def handle_invoke_later(self, message: messages.InvokeLater) -&gt; None:
-    # Enqueue the callback function to be called later
-    self._callbacks.append(message.callback)</code></pre>
-</details>
-</dd>
-<dt id="textual.screen.Screen.handle_layout"><code class="name flex">
-<span>async def <span class="ident">handle_layout</span></span>(<span>self, message: messages.Layout) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def handle_layout(self, message: messages.Layout) -&gt; None:
-    message.stop()
-    message.prevent_default()
-    self._layout_required = True
-    self.check_idle()</code></pre>
-</details>
-</dd>
-<dt id="textual.screen.Screen.handle_update"><code class="name flex">
-<span>async def <span class="ident">handle_update</span></span>(<span>self, message: messages.Update) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def handle_update(self, message: messages.Update) -&gt; None:
-    message.stop()
-    message.prevent_default()
-    widget = message.widget
-    assert isinstance(widget, Widget)
-    self._dirty_widgets.add(widget)
-    self.check_idle()</code></pre>
-</details>
-</dd>
 <dt id="textual.screen.Screen.on_invoke_callbacks"><code class="name flex">
 <span>async def <span class="ident">on_invoke_callbacks</span></span>(<span>self, event: events.InvokeCallbacks) ‑> None</span>
 </code></dt>
@@ -912,6 +876,22 @@ def update_timer(self) -&gt; Timer:
     await self._invoke_and_clear_callbacks()</code></pre>
 </details>
 </dd>
+<dt id="textual.screen.Screen.on_layout"><code class="name flex">
+<span>async def <span class="ident">on_layout</span></span>(<span>self, message: messages.Layout) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_layout(self, message: messages.Layout) -&gt; None:
+    message.stop()
+    message.prevent_default()
+    self._layout_required = True
+    self.check_idle()</code></pre>
+</details>
+</dd>
 <dt id="textual.screen.Screen.on_resize"><code class="name flex">
 <span>async def <span class="ident">on_resize</span></span>(<span>self, event: events.Resize) ‑> None</span>
 </code></dt>
@@ -923,6 +903,24 @@ def update_timer(self) -&gt; Timer:
 </summary>
 <pre><code class="python">async def on_resize(self, event: events.Resize) -&gt; None:
     event.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.screen.Screen.on_update"><code class="name flex">
+<span>async def <span class="ident">on_update</span></span>(<span>self, message: messages.Update) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def on_update(self, message: messages.Update) -&gt; None:
+    message.stop()
+    message.prevent_default()
+    widget = message.widget
+    assert isinstance(widget, Widget)
+    self._dirty_widgets.add(widget)
+    self.check_idle()</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.watch_dark"><code class="name flex">
@@ -969,6 +967,7 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_message" href="message_pump.html#textual.message_pump.MessagePump.dispatch_message">dispatch_message</a></code></li>
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
@@ -996,11 +995,15 @@ def update_timer(self) -&gt; Timer:
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.widget.Widget.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.widget.Widget.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_message" href="message_pump.html#textual.message_pump.MessagePump.post_message">post_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -1123,11 +1126,10 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.screen.Screen.get_offset" href="#textual.screen.Screen.get_offset">get_offset</a></code></li>
 <li><code><a title="textual.screen.Screen.get_style_at" href="#textual.screen.Screen.get_style_at">get_style_at</a></code></li>
 <li><code><a title="textual.screen.Screen.get_widget_at" href="#textual.screen.Screen.get_widget_at">get_widget_at</a></code></li>
-<li><code><a title="textual.screen.Screen.handle_invoke_later" href="#textual.screen.Screen.handle_invoke_later">handle_invoke_later</a></code></li>
-<li><code><a title="textual.screen.Screen.handle_layout" href="#textual.screen.Screen.handle_layout">handle_layout</a></code></li>
-<li><code><a title="textual.screen.Screen.handle_update" href="#textual.screen.Screen.handle_update">handle_update</a></code></li>
 <li><code><a title="textual.screen.Screen.on_invoke_callbacks" href="#textual.screen.Screen.on_invoke_callbacks">on_invoke_callbacks</a></code></li>
+<li><code><a title="textual.screen.Screen.on_layout" href="#textual.screen.Screen.on_layout">on_layout</a></code></li>
 <li><code><a title="textual.screen.Screen.on_resize" href="#textual.screen.Screen.on_resize">on_resize</a></code></li>
+<li><code><a title="textual.screen.Screen.on_update" href="#textual.screen.Screen.on_update">on_update</a></code></li>
 <li><code><a title="textual.screen.Screen.update_timer" href="#textual.screen.Screen.update_timer">update_timer</a></code></li>
 <li><code><a title="textual.screen.Screen.watch_dark" href="#textual.screen.Screen.watch_dark">watch_dark</a></code></li>
 </ul>

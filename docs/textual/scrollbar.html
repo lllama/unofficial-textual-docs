@@ -711,6 +711,7 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.widget.Widget.dispatch_message" href="message_pump.html#textual.message_pump.MessagePump.dispatch_message">dispatch_message</a></code></li>
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
@@ -738,11 +739,15 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.widget.Widget.on_idle" href="widget.html#textual.widget.Widget.on_idle">on_idle</a></code></li>
+<li><code><a title="textual.widget.Widget.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.widget.Widget.on_register" href="widget.html#textual.widget.Widget.on_register">on_register</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_message" href="message_pump.html#textual.message_pump.MessagePump.post_message">post_message</a></code></li>
+<li><code><a title="textual.widget.Widget.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -1046,7 +1051,11 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollDown.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.scrollbar.ScrollDown.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollDown.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1099,7 +1108,11 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollLeft.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.scrollbar.ScrollLeft.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollLeft.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1159,7 +1172,11 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollMessage.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.scrollbar.ScrollMessage.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollMessage.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1212,7 +1229,11 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollRight.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.scrollbar.ScrollRight.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollRight.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1282,7 +1303,11 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollTo.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.scrollbar.ScrollTo.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollTo.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1335,7 +1360,11 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollUp.system"><code class="name">var <span class="ident">system</span> : ClassVar[bool]</code></dt>
+<dt id="textual.scrollbar.ScrollUp.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.scrollbar.ScrollUp.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1453,7 +1482,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollDown" href="#textual.scrollbar.ScrollDown">ScrollDown</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollDown.bubble" href="#textual.scrollbar.ScrollDown.bubble">bubble</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollDown.system" href="#textual.scrollbar.ScrollDown.system">system</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollDown.namespace" href="#textual.scrollbar.ScrollDown.namespace">namespace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollDown.no_dispatch" href="#textual.scrollbar.ScrollDown.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollDown.verbosity" href="#textual.scrollbar.ScrollDown.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -1461,7 +1491,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollLeft" href="#textual.scrollbar.ScrollLeft">ScrollLeft</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollLeft.bubble" href="#textual.scrollbar.ScrollLeft.bubble">bubble</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollLeft.system" href="#textual.scrollbar.ScrollLeft.system">system</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollLeft.namespace" href="#textual.scrollbar.ScrollLeft.namespace">namespace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollLeft.no_dispatch" href="#textual.scrollbar.ScrollLeft.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollLeft.verbosity" href="#textual.scrollbar.ScrollLeft.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -1469,7 +1500,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollMessage.bubble" href="#textual.scrollbar.ScrollMessage.bubble">bubble</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollMessage.system" href="#textual.scrollbar.ScrollMessage.system">system</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.namespace" href="#textual.scrollbar.ScrollMessage.namespace">namespace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.no_dispatch" href="#textual.scrollbar.ScrollMessage.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.verbosity" href="#textual.scrollbar.ScrollMessage.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -1477,7 +1509,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollRight" href="#textual.scrollbar.ScrollRight">ScrollRight</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollRight.bubble" href="#textual.scrollbar.ScrollRight.bubble">bubble</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollRight.system" href="#textual.scrollbar.ScrollRight.system">system</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollRight.namespace" href="#textual.scrollbar.ScrollRight.namespace">namespace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollRight.no_dispatch" href="#textual.scrollbar.ScrollRight.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollRight.verbosity" href="#textual.scrollbar.ScrollRight.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -1485,7 +1518,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollTo" href="#textual.scrollbar.ScrollTo">ScrollTo</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollTo.bubble" href="#textual.scrollbar.ScrollTo.bubble">bubble</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollTo.system" href="#textual.scrollbar.ScrollTo.system">system</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollTo.namespace" href="#textual.scrollbar.ScrollTo.namespace">namespace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollTo.no_dispatch" href="#textual.scrollbar.ScrollTo.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollTo.verbosity" href="#textual.scrollbar.ScrollTo.verbosity">verbosity</a></code></li>
 </ul>
 </li>
@@ -1493,7 +1527,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollUp" href="#textual.scrollbar.ScrollUp">ScrollUp</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollUp.bubble" href="#textual.scrollbar.ScrollUp.bubble">bubble</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollUp.system" href="#textual.scrollbar.ScrollUp.system">system</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollUp.namespace" href="#textual.scrollbar.ScrollUp.namespace">namespace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollUp.no_dispatch" href="#textual.scrollbar.ScrollUp.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollUp.verbosity" href="#textual.scrollbar.ScrollUp.verbosity">verbosity</a></code></li>
 </ul>
 </li>

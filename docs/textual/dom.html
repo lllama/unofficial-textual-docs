@@ -115,7 +115,8 @@ class DOMNode(MessagePump):
         Returns:
             Iterator[Type[DOMNode]]: An iterable of DOMNode classes.
         &#34;&#34;&#34;
-        return self._css_bases(self.__class__)
+        # Node bases are in reversed order so that the base class is lower priority
+        return reversed(list(self._css_bases(self.__class__)))
 
     @classmethod
     def _css_bases(cls, base: Type[DOMNode]) -&gt; Iterator[Type[DOMNode]]:
@@ -694,7 +695,8 @@ class DOMNode(MessagePump):
         Returns:
             Iterator[Type[DOMNode]]: An iterable of DOMNode classes.
         &#34;&#34;&#34;
-        return self._css_bases(self.__class__)
+        # Node bases are in reversed order so that the base class is lower priority
+        return reversed(list(self._css_bases(self.__class__)))
 
     @classmethod
     def _css_bases(cls, base: Type[DOMNode]) -&gt; Iterator[Type[DOMNode]]:
@@ -2077,9 +2079,14 @@ def visible(self) -&gt; bool:
 <li><code><a title="textual.message_pump.MessagePump.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.dispatch_message" href="message_pump.html#textual.message_pump.MessagePump.dispatch_message">dispatch_message</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.post_message" href="message_pump.html#textual.message_pump.MessagePump.post_message">post_message</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 </ul>
 </li>
