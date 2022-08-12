@@ -55,8 +55,7 @@ from . import errors, events, messages
 from ._animator import BoundAnimator
 from ._arrange import arrange, DockArrangeResult
 from ._context import active_app
-from ._layout import ArrangeResult, Layout
-from ._segment_tools import line_crop
+from ._layout import Layout
 from ._styles_cache import StylesCache
 from ._types import Lines
 from .box_model import BoxModel, get_box_model
@@ -234,8 +233,10 @@ class Widget(DOMNode):
             app (App): App instance.
         &#34;&#34;&#34;
         # Parse the Widget&#39;s CSS
-        for path, css in self.css:
-            self.app.stylesheet.add_source(css, path=path, is_default_css=True)
+        for path, css, tie_breaker in self.get_default_css():
+            self.app.stylesheet.add_source(
+                css, path=path, is_default_css=True, tie_breaker=tie_breaker
+            )
 
     def get_box_model(
         self, container: Size, viewport: Size, fraction_unit: Fraction
@@ -1522,8 +1523,10 @@ def cursor_line(self) -&gt; int | None:
             app (App): App instance.
         &#34;&#34;&#34;
         # Parse the Widget&#39;s CSS
-        for path, css in self.css:
-            self.app.stylesheet.add_source(css, path=path, is_default_css=True)
+        for path, css, tie_breaker in self.get_default_css():
+            self.app.stylesheet.add_source(
+                css, path=path, is_default_css=True, tie_breaker=tie_breaker
+            )
 
     def get_box_model(
         self, container: Size, viewport: Size, fraction_unit: Fraction
@@ -3953,8 +3956,10 @@ the keys will be set as the Widget's id.</p>
         app (App): App instance.
     &#34;&#34;&#34;
     # Parse the Widget&#39;s CSS
-    for path, css in self.css:
-        self.app.stylesheet.add_source(css, path=path, is_default_css=True)</code></pre>
+    for path, css, tie_breaker in self.get_default_css():
+        self.app.stylesheet.add_source(
+            css, path=path, is_default_css=True, tie_breaker=tie_breaker
+        )</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.on_remove"><code class="name flex">
@@ -4861,7 +4866,6 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
 <li><code><a title="textual.dom.DOMNode.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
-<li><code><a title="textual.dom.DOMNode.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
@@ -4872,6 +4876,7 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
+<li><code><a title="textual.dom.DOMNode.get_default_css" href="dom.html#textual.dom.DOMNode.get_default_css">get_default_css</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
@@ -4885,6 +4890,7 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
+<li><code><a title="textual.dom.DOMNode.query_one" href="dom.html#textual.dom.DOMNode.query_one">query_one</a></code></li>
 <li><code><a title="textual.dom.DOMNode.remove_class" href="dom.html#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>

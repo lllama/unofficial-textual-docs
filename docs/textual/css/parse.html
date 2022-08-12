@@ -76,22 +76,23 @@ def parse_selectors(css_selectors: str) -&gt; tuple[SelectorSet, ...]:
             token = next(tokens)
         except EOFError:
             break
-        if token.name == &#34;pseudo_class&#34;:
+        token_name = token.name
+        if token_name == &#34;pseudo_class&#34;:
             selectors[-1]._add_pseudo_class(token.value.lstrip(&#34;:&#34;))
-        elif token.name == &#34;whitespace&#34;:
+        elif token_name == &#34;whitespace&#34;:
             if combinator is None or combinator == CombinatorType.SAME:
                 combinator = CombinatorType.DESCENDENT
-        elif token.name == &#34;new_selector&#34;:
+        elif token_name == &#34;new_selector&#34;:
             rule_selectors.append(selectors[:])
             selectors.clear()
             combinator = None
-        elif token.name == &#34;declaration_set_start&#34;:
+        elif token_name == &#34;declaration_set_start&#34;:
             break
-        elif token.name == &#34;combinator_child&#34;:
+        elif token_name == &#34;combinator_child&#34;:
             combinator = CombinatorType.CHILD
         else:
             _selector, specificity = get_selector(
-                token.name, (SelectorType.TYPE, (0, 0, 0))
+                token_name, (SelectorType.TYPE, (0, 0, 0))
             )
             selectors.append(
                 Selector(
@@ -110,7 +111,10 @@ def parse_selectors(css_selectors: str) -&gt; tuple[SelectorSet, ...]:
 
 
 def parse_rule_set(
-    tokens: Iterator[Token], token: Token, is_default_rules: bool = False
+    tokens: Iterator[Token],
+    token: Token,
+    is_default_rules: bool = False,
+    tie_breaker: int = 0,
 ) -&gt; Iterable[RuleSet]:
     get_selector = SELECTOR_MAP.get
     combinator: CombinatorType | None = CombinatorType.DESCENDENT
@@ -184,6 +188,7 @@ def parse_rule_set(
         styles_builder.styles,
         errors,
         is_default_rules=is_default_rules,
+        tie_breaker=tie_breaker,
     )
     rule_set._post_parse()
     yield rule_set
@@ -360,6 +365,7 @@ def parse(
     path: str | PurePath,
     variables: dict[str, str] | None = None,
     is_default_rules: bool = False,
+    tie_breaker: int = 0,
 ) -&gt; Iterable[RuleSet]:
     &#34;&#34;&#34;Parse CSS by tokenizing it, performing variable substitution,
     and generating rule sets from it.
@@ -378,7 +384,12 @@ def parse(
         if token is None:
             break
         if token.name.startswith(&#34;selector_start&#34;):
-            yield from parse_rule_set(tokens, token, is_default_rules=is_default_rules)
+            yield from parse_rule_set(
+                tokens,
+                token,
+                is_default_rules=is_default_rules,
+                tie_breaker=tie_breaker,
+            )
 
 
 if __name__ == &#34;__main__&#34;:
@@ -412,7 +423,7 @@ if __name__ == &#34;__main__&#34;:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="textual.css.parse.parse"><code class="name flex">
-<span>def <span class="ident">parse</span></span>(<span>css: str, path: str | PurePath, variables: dict[str, str] | None = None, is_default_rules: bool = False) ‑> Iterable[RuleSet]</span>
+<span>def <span class="ident">parse</span></span>(<span>css: str, path: str | PurePath, variables: dict[str, str] | None = None, is_default_rules: bool = False, tie_breaker: int = 0) ‑> Iterable[RuleSet]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse CSS by tokenizing it, performing variable substitution,
@@ -438,6 +449,7 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
     path: str | PurePath,
     variables: dict[str, str] | None = None,
     is_default_rules: bool = False,
+    tie_breaker: int = 0,
 ) -&gt; Iterable[RuleSet]:
     &#34;&#34;&#34;Parse CSS by tokenizing it, performing variable substitution,
     and generating rule sets from it.
@@ -456,7 +468,12 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
         if token is None:
             break
         if token.name.startswith(&#34;selector_start&#34;):
-            yield from parse_rule_set(tokens, token, is_default_rules=is_default_rules)</code></pre>
+            yield from parse_rule_set(
+                tokens,
+                token,
+                is_default_rules=is_default_rules,
+                tie_breaker=tie_breaker,
+            )</code></pre>
 </details>
 </dd>
 <dt id="textual.css.parse.parse_declarations"><code class="name flex">
@@ -530,7 +547,7 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
 </details>
 </dd>
 <dt id="textual.css.parse.parse_rule_set"><code class="name flex">
-<span>def <span class="ident">parse_rule_set</span></span>(<span>tokens: Iterator[Token], token: Token, is_default_rules: bool = False) ‑> Iterable[<a title="textual.css.model.RuleSet" href="model.html#textual.css.model.RuleSet">RuleSet</a>]</span>
+<span>def <span class="ident">parse_rule_set</span></span>(<span>tokens: Iterator[Token], token: Token, is_default_rules: bool = False, tie_breaker: int = 0) ‑> Iterable[<a title="textual.css.model.RuleSet" href="model.html#textual.css.model.RuleSet">RuleSet</a>]</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -539,7 +556,10 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def parse_rule_set(
-    tokens: Iterator[Token], token: Token, is_default_rules: bool = False
+    tokens: Iterator[Token],
+    token: Token,
+    is_default_rules: bool = False,
+    tie_breaker: int = 0,
 ) -&gt; Iterable[RuleSet]:
     get_selector = SELECTOR_MAP.get
     combinator: CombinatorType | None = CombinatorType.DESCENDENT
@@ -613,6 +633,7 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
         styles_builder.styles,
         errors,
         is_default_rules=is_default_rules,
+        tie_breaker=tie_breaker,
     )
     rule_set._post_parse()
     yield rule_set</code></pre>
@@ -641,22 +662,23 @@ def parse_selectors(css_selectors: str) -&gt; tuple[SelectorSet, ...]:
             token = next(tokens)
         except EOFError:
             break
-        if token.name == &#34;pseudo_class&#34;:
+        token_name = token.name
+        if token_name == &#34;pseudo_class&#34;:
             selectors[-1]._add_pseudo_class(token.value.lstrip(&#34;:&#34;))
-        elif token.name == &#34;whitespace&#34;:
+        elif token_name == &#34;whitespace&#34;:
             if combinator is None or combinator == CombinatorType.SAME:
                 combinator = CombinatorType.DESCENDENT
-        elif token.name == &#34;new_selector&#34;:
+        elif token_name == &#34;new_selector&#34;:
             rule_selectors.append(selectors[:])
             selectors.clear()
             combinator = None
-        elif token.name == &#34;declaration_set_start&#34;:
+        elif token_name == &#34;declaration_set_start&#34;:
             break
-        elif token.name == &#34;combinator_child&#34;:
+        elif token_name == &#34;combinator_child&#34;:
             combinator = CombinatorType.CHILD
         else:
             _selector, specificity = get_selector(
-                token.name, (SelectorType.TYPE, (0, 0, 0))
+                token_name, (SelectorType.TYPE, (0, 0, 0))
             )
             selectors.append(
                 Selector(

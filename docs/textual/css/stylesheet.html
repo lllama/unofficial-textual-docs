@@ -51,7 +51,7 @@ from .parse import parse
 from .styles import RulesMap, Styles
 from .tokenize import tokenize_values, Token
 from .tokenizer import TokenError
-from .types import Specificity3, Specificity4
+from .types import Specificity3, Specificity5
 from ..dom import DOMNode
 from .. import messages
 
@@ -156,6 +156,7 @@ class CssSource(NamedTuple):
 
     content: str
     is_defaults: bool
+    tie_breaker: int = 0
 
 
 @rich.repr.auto(angular=True)
@@ -200,7 +201,11 @@ class Stylesheet:
         self.variables = variables
 
     def _parse_rules(
-        self, css: str, path: str | PurePath, is_default_rules: bool = False
+        self,
+        css: str,
+        path: str | PurePath,
+        is_default_rules: bool = False,
+        tie_breaker: int = 0,
     ) -&gt; list[RuleSet]:
         &#34;&#34;&#34;Parse CSS and return rules.
 
@@ -224,6 +229,7 @@ class Stylesheet:
                     path,
                     variables=self.variables,
                     is_default_rules=is_default_rules,
+                    tie_breaker=tie_breaker,
                 )
             )
         except TokenError:
@@ -250,11 +256,15 @@ class Stylesheet:
             path = os.path.abspath(filename)
         except Exception as error:
             raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
-        self.source[str(path)] = CssSource(content=css, is_defaults=False)
+        self.source[str(path)] = CssSource(css, False, 0)
         self._require_parse = True
 
     def add_source(
-        self, css: str, path: str | PurePath | None = None, is_default_css: bool = False
+        self,
+        css: str,
+        path: str | PurePath | None = None,
+        is_default_css: bool = False,
+        tie_breaker: int = 0,
     ) -&gt; None:
         &#34;&#34;&#34;Parse CSS from a string.
 
@@ -276,9 +286,11 @@ class Stylesheet:
             path = str(css)
         if path in self.source and self.source[path].content == css:
             # Path already in source, and CSS is identical
+            content, is_defaults, source_tie_breaker = self.source[path]
+            if source_tie_breaker &gt; tie_breaker:
+                self.source[path] = CssSource(content, is_defaults, tie_breaker)
             return
-
-        self.source[path] = CssSource(content=css, is_defaults=is_default_css)
+        self.source[path] = CssSource(css, is_default_css, tie_breaker)
         self._require_parse = True
 
     def parse(self) -&gt; None:
@@ -289,8 +301,10 @@ class Stylesheet:
         &#34;&#34;&#34;
         rules: list[RuleSet] = []
         add_rules = rules.extend
-        for path, (css, is_default_rules) in self.source.items():
-            css_rules = self._parse_rules(css, path, is_default_rules=is_default_rules)
+        for path, (css, is_default_rules, tie_breaker) in self.source.items():
+            css_rules = self._parse_rules(
+                css, path, is_default_rules=is_default_rules, tie_breaker=tie_breaker
+            )
             if any(rule.errors for rule in css_rules):
                 error_renderable = StylesheetErrors(css_rules)
                 raise StylesheetParseError(error_renderable)
@@ -308,8 +322,10 @@ class Stylesheet:
         &#34;&#34;&#34;
         # Do this in a fresh Stylesheet so if there are errors we don&#39;t break self.
         stylesheet = Stylesheet(variables=self.variables)
-        for path, (css, is_defaults) in self.source.items():
-            stylesheet.add_source(css, path, is_default_css=is_defaults)
+        for path, (css, is_defaults, tie_breaker) in self.source.items():
+            stylesheet.add_source(
+                css, path, is_default_css=is_defaults, tie_breaker=tie_breaker
+            )
         stylesheet.parse()
         self._rules = stylesheet.rules
         self.source = stylesheet.source
@@ -337,7 +353,7 @@ class Stylesheet:
         # We can use this to determine, for a given rule, whether we should apply it
         # or not by examining the specificity. If we have two rules for the
         # same attribute, then we can choose the most specific rule and use that.
-        rule_attributes: dict[str, list[tuple[Specificity4, object]]]
+        rule_attributes: dict[str, list[tuple[Specificity5, object]]]
         rule_attributes = defaultdict(list)
 
         _check_rule = self._check_rule
@@ -345,9 +361,10 @@ class Stylesheet:
         # Collect the rules defined in the stylesheet
         for rule in reversed(self.rules):
             is_default_rules = rule.is_default_rules
+            tie_breaker = rule.tie_breaker
             for base_specificity in _check_rule(rule, node):
                 for key, rule_specificity, value in rule.styles.extract_rules(
-                    base_specificity, is_default_rules
+                    base_specificity, is_default_rules, tie_breaker
                 ):
                     rule_attributes[key].append((rule_specificity, value))
 
@@ -558,7 +575,7 @@ if __name__ == &#34;__main__&#34;:
 <dl>
 <dt id="textual.css.stylesheet.CssSource"><code class="flex name class">
 <span>class <span class="ident">CssSource</span></span>
-<span>(</span><span>content: str, is_defaults: bool)</span>
+<span>(</span><span>content: str, is_defaults: bool, tie_breaker: int = 0)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Contains the CSS content and whether or not the CSS comes from user defined stylesheets
@@ -586,7 +603,8 @@ False if it's user CSS (which will override the defaults).</dd>
     &#34;&#34;&#34;
 
     content: str
-    is_defaults: bool</code></pre>
+    is_defaults: bool
+    tie_breaker: int = 0</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -601,6 +619,10 @@ False if it's user CSS (which will override the defaults).</dd>
 <dt id="textual.css.stylesheet.CssSource.is_defaults"><code class="name">var <span class="ident">is_defaults</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Alias for field number 1</p></div>
+</dd>
+<dt id="textual.css.stylesheet.CssSource.tie_breaker"><code class="name">var <span class="ident">tie_breaker</span> : int</code></dt>
+<dd>
+<div class="desc"><p>Alias for field number 2</p></div>
 </dd>
 </dl>
 </dd>
@@ -655,7 +677,11 @@ False if it's user CSS (which will override the defaults).</dd>
         self.variables = variables
 
     def _parse_rules(
-        self, css: str, path: str | PurePath, is_default_rules: bool = False
+        self,
+        css: str,
+        path: str | PurePath,
+        is_default_rules: bool = False,
+        tie_breaker: int = 0,
     ) -&gt; list[RuleSet]:
         &#34;&#34;&#34;Parse CSS and return rules.
 
@@ -679,6 +705,7 @@ False if it's user CSS (which will override the defaults).</dd>
                     path,
                     variables=self.variables,
                     is_default_rules=is_default_rules,
+                    tie_breaker=tie_breaker,
                 )
             )
         except TokenError:
@@ -705,11 +732,15 @@ False if it's user CSS (which will override the defaults).</dd>
             path = os.path.abspath(filename)
         except Exception as error:
             raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
-        self.source[str(path)] = CssSource(content=css, is_defaults=False)
+        self.source[str(path)] = CssSource(css, False, 0)
         self._require_parse = True
 
     def add_source(
-        self, css: str, path: str | PurePath | None = None, is_default_css: bool = False
+        self,
+        css: str,
+        path: str | PurePath | None = None,
+        is_default_css: bool = False,
+        tie_breaker: int = 0,
     ) -&gt; None:
         &#34;&#34;&#34;Parse CSS from a string.
 
@@ -731,9 +762,11 @@ False if it's user CSS (which will override the defaults).</dd>
             path = str(css)
         if path in self.source and self.source[path].content == css:
             # Path already in source, and CSS is identical
+            content, is_defaults, source_tie_breaker = self.source[path]
+            if source_tie_breaker &gt; tie_breaker:
+                self.source[path] = CssSource(content, is_defaults, tie_breaker)
             return
-
-        self.source[path] = CssSource(content=css, is_defaults=is_default_css)
+        self.source[path] = CssSource(css, is_default_css, tie_breaker)
         self._require_parse = True
 
     def parse(self) -&gt; None:
@@ -744,8 +777,10 @@ False if it's user CSS (which will override the defaults).</dd>
         &#34;&#34;&#34;
         rules: list[RuleSet] = []
         add_rules = rules.extend
-        for path, (css, is_default_rules) in self.source.items():
-            css_rules = self._parse_rules(css, path, is_default_rules=is_default_rules)
+        for path, (css, is_default_rules, tie_breaker) in self.source.items():
+            css_rules = self._parse_rules(
+                css, path, is_default_rules=is_default_rules, tie_breaker=tie_breaker
+            )
             if any(rule.errors for rule in css_rules):
                 error_renderable = StylesheetErrors(css_rules)
                 raise StylesheetParseError(error_renderable)
@@ -763,8 +798,10 @@ False if it's user CSS (which will override the defaults).</dd>
         &#34;&#34;&#34;
         # Do this in a fresh Stylesheet so if there are errors we don&#39;t break self.
         stylesheet = Stylesheet(variables=self.variables)
-        for path, (css, is_defaults) in self.source.items():
-            stylesheet.add_source(css, path, is_default_css=is_defaults)
+        for path, (css, is_defaults, tie_breaker) in self.source.items():
+            stylesheet.add_source(
+                css, path, is_default_css=is_defaults, tie_breaker=tie_breaker
+            )
         stylesheet.parse()
         self._rules = stylesheet.rules
         self.source = stylesheet.source
@@ -792,7 +829,7 @@ False if it's user CSS (which will override the defaults).</dd>
         # We can use this to determine, for a given rule, whether we should apply it
         # or not by examining the specificity. If we have two rules for the
         # same attribute, then we can choose the most specific rule and use that.
-        rule_attributes: dict[str, list[tuple[Specificity4, object]]]
+        rule_attributes: dict[str, list[tuple[Specificity5, object]]]
         rule_attributes = defaultdict(list)
 
         _check_rule = self._check_rule
@@ -800,9 +837,10 @@ False if it's user CSS (which will override the defaults).</dd>
         # Collect the rules defined in the stylesheet
         for rule in reversed(self.rules):
             is_default_rules = rule.is_default_rules
+            tie_breaker = rule.tie_breaker
             for base_specificity in _check_rule(rule, node):
                 for key, rule_specificity, value in rule.styles.extract_rules(
-                    base_specificity, is_default_rules
+                    base_specificity, is_default_rules, tie_breaker
                 ):
                     rule_attributes[key].append((rule_specificity, value))
 
@@ -1030,7 +1068,7 @@ def rules(self) -&gt; list[RuleSet]:
 <h3>Methods</h3>
 <dl>
 <dt id="textual.css.stylesheet.Stylesheet.add_source"><code class="name flex">
-<span>def <span class="ident">add_source</span></span>(<span>self, css: str, path: str | PurePath | None = None, is_default_css: bool = False) ‑> None</span>
+<span>def <span class="ident">add_source</span></span>(<span>self, css: str, path: str | PurePath | None = None, is_default_css: bool = False, tie_breaker: int = 0) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse CSS from a string.</p>
@@ -1056,7 +1094,11 @@ in a user stylesheet.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def add_source(
-    self, css: str, path: str | PurePath | None = None, is_default_css: bool = False
+    self,
+    css: str,
+    path: str | PurePath | None = None,
+    is_default_css: bool = False,
+    tie_breaker: int = 0,
 ) -&gt; None:
     &#34;&#34;&#34;Parse CSS from a string.
 
@@ -1078,9 +1120,11 @@ in a user stylesheet.</dd>
         path = str(css)
     if path in self.source and self.source[path].content == css:
         # Path already in source, and CSS is identical
+        content, is_defaults, source_tie_breaker = self.source[path]
+        if source_tie_breaker &gt; tie_breaker:
+            self.source[path] = CssSource(content, is_defaults, tie_breaker)
         return
-
-    self.source[path] = CssSource(content=css, is_defaults=is_default_css)
+    self.source[path] = CssSource(css, is_default_css, tie_breaker)
     self._require_parse = True</code></pre>
 </details>
 </dd>
@@ -1121,7 +1165,7 @@ rule will be applied.</dd>
     # We can use this to determine, for a given rule, whether we should apply it
     # or not by examining the specificity. If we have two rules for the
     # same attribute, then we can choose the most specific rule and use that.
-    rule_attributes: dict[str, list[tuple[Specificity4, object]]]
+    rule_attributes: dict[str, list[tuple[Specificity5, object]]]
     rule_attributes = defaultdict(list)
 
     _check_rule = self._check_rule
@@ -1129,9 +1173,10 @@ rule will be applied.</dd>
     # Collect the rules defined in the stylesheet
     for rule in reversed(self.rules):
         is_default_rules = rule.is_default_rules
+        tie_breaker = rule.tie_breaker
         for base_specificity in _check_rule(rule, node):
             for key, rule_specificity, value in rule.styles.extract_rules(
-                base_specificity, is_default_rules
+                base_specificity, is_default_rules, tie_breaker
             ):
                 rule_attributes[key].append((rule_specificity, value))
 
@@ -1202,8 +1247,10 @@ rule will be applied.</dd>
     &#34;&#34;&#34;
     rules: list[RuleSet] = []
     add_rules = rules.extend
-    for path, (css, is_default_rules) in self.source.items():
-        css_rules = self._parse_rules(css, path, is_default_rules=is_default_rules)
+    for path, (css, is_default_rules, tie_breaker) in self.source.items():
+        css_rules = self._parse_rules(
+            css, path, is_default_rules=is_default_rules, tie_breaker=tie_breaker
+        )
         if any(rule.errors for rule in css_rules):
             error_renderable = StylesheetErrors(css_rules)
             raise StylesheetParseError(error_renderable)
@@ -1247,7 +1294,7 @@ rule will be applied.</dd>
         path = os.path.abspath(filename)
     except Exception as error:
         raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
-    self.source[str(path)] = CssSource(content=css, is_defaults=False)
+    self.source[str(path)] = CssSource(css, False, 0)
     self._require_parse = True</code></pre>
 </details>
 </dd>
@@ -1277,8 +1324,10 @@ rule will be applied.</dd>
     &#34;&#34;&#34;
     # Do this in a fresh Stylesheet so if there are errors we don&#39;t break self.
     stylesheet = Stylesheet(variables=self.variables)
-    for path, (css, is_defaults) in self.source.items():
-        stylesheet.add_source(css, path, is_default_css=is_defaults)
+    for path, (css, is_defaults, tie_breaker) in self.source.items():
+        stylesheet.add_source(
+            css, path, is_default_css=is_defaults, tie_breaker=tie_breaker
+        )
     stylesheet.parse()
     self._rules = stylesheet.rules
     self.source = stylesheet.source</code></pre>
@@ -1529,6 +1578,7 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.css.stylesheet.CssSource.content" href="#textual.css.stylesheet.CssSource.content">content</a></code></li>
 <li><code><a title="textual.css.stylesheet.CssSource.is_defaults" href="#textual.css.stylesheet.CssSource.is_defaults">is_defaults</a></code></li>
+<li><code><a title="textual.css.stylesheet.CssSource.tie_breaker" href="#textual.css.stylesheet.CssSource.tie_breaker">tie_breaker</a></code></li>
 </ul>
 </li>
 <li>

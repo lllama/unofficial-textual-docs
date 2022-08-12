@@ -116,7 +116,7 @@ class DOMNode(MessagePump):
             Iterator[Type[DOMNode]]: An iterable of DOMNode classes.
         &#34;&#34;&#34;
         # Node bases are in reversed order so that the base class is lower priority
-        return reversed(list(self._css_bases(self.__class__)))
+        return self._css_bases(self.__class__)
 
     @classmethod
     def _css_bases(cls, base: Type[DOMNode]) -&gt; Iterator[Type[DOMNode]]:
@@ -153,8 +153,7 @@ class DOMNode(MessagePump):
         if self._classes:
             yield &#34;classes&#34;, &#34; &#34;.join(self._classes)
 
-    @property
-    def css(self) -&gt; list[tuple[str, str]]:
+    def get_default_css(self) -&gt; list[tuple[str, str, int]]:
         &#34;&#34;&#34;Gets the CSS for this class and inherited from bases.
 
         Returns:
@@ -162,7 +161,7 @@ class DOMNode(MessagePump):
                 and inherited from base classes.
         &#34;&#34;&#34;
 
-        css_stack: list[tuple[str, str]] = []
+        css_stack: list[tuple[str, str, int]] = []
 
         def get_path(base: Type[DOMNode]) -&gt; str:
             &#34;&#34;&#34;Get a path to the DOM Node&#34;&#34;&#34;
@@ -171,10 +170,10 @@ class DOMNode(MessagePump):
             except TypeError:
                 return f&#34;{base.__name__}&#34;
 
-        for base in self._node_bases:
+        for tie_breaker, base in enumerate(self._node_bases):
             css = base.CSS.strip()
             if css:
-                css_stack.append((get_path(base), css))
+                css_stack.append((get_path(base), css, -tie_breaker))
 
         return css_stack
 
@@ -552,6 +551,20 @@ class DOMNode(MessagePump):
         from .css.query import DOMQuery
 
         return DOMQuery(self, selector)
+
+    def query_one(self, selector: str) -&gt; Widget:
+        &#34;&#34;&#34;Get the first Widget matching the given selector.
+
+        Args:
+            selector (str | None, optional): A selector.
+
+        Returns:
+            Widget: A widget matching the selector.
+        &#34;&#34;&#34;
+        from .css.query import DOMQuery
+
+        query = DOMQuery(self.screen, selector)
+        return query.first()
 
     def set_styles(self, css: str | None = None, **styles) -&gt; None:
         &#34;&#34;&#34;Set custom styles on this object.&#34;&#34;&#34;
@@ -696,7 +709,7 @@ class DOMNode(MessagePump):
             Iterator[Type[DOMNode]]: An iterable of DOMNode classes.
         &#34;&#34;&#34;
         # Node bases are in reversed order so that the base class is lower priority
-        return reversed(list(self._css_bases(self.__class__)))
+        return self._css_bases(self.__class__)
 
     @classmethod
     def _css_bases(cls, base: Type[DOMNode]) -&gt; Iterator[Type[DOMNode]]:
@@ -733,8 +746,7 @@ class DOMNode(MessagePump):
         if self._classes:
             yield &#34;classes&#34;, &#34; &#34;.join(self._classes)
 
-    @property
-    def css(self) -&gt; list[tuple[str, str]]:
+    def get_default_css(self) -&gt; list[tuple[str, str, int]]:
         &#34;&#34;&#34;Gets the CSS for this class and inherited from bases.
 
         Returns:
@@ -742,7 +754,7 @@ class DOMNode(MessagePump):
                 and inherited from base classes.
         &#34;&#34;&#34;
 
-        css_stack: list[tuple[str, str]] = []
+        css_stack: list[tuple[str, str, int]] = []
 
         def get_path(base: Type[DOMNode]) -&gt; str:
             &#34;&#34;&#34;Get a path to the DOM Node&#34;&#34;&#34;
@@ -751,10 +763,10 @@ class DOMNode(MessagePump):
             except TypeError:
                 return f&#34;{base.__name__}&#34;
 
-        for base in self._node_bases:
+        for tie_breaker, base in enumerate(self._node_bases):
             css = base.CSS.strip()
             if css:
-                css_stack.append((get_path(base), css))
+                css_stack.append((get_path(base), css, -tie_breaker))
 
         return css_stack
 
@@ -1132,6 +1144,20 @@ class DOMNode(MessagePump):
         from .css.query import DOMQuery
 
         return DOMQuery(self, selector)
+
+    def query_one(self, selector: str) -&gt; Widget:
+        &#34;&#34;&#34;Get the first Widget matching the given selector.
+
+        Args:
+            selector (str | None, optional): A selector.
+
+        Returns:
+            Widget: A widget matching the selector.
+        &#34;&#34;&#34;
+        from .css.query import DOMQuery
+
+        query = DOMQuery(self.screen, selector)
+        return query.first()
 
     def set_styles(self, css: str | None = None, **styles) -&gt; None:
         &#34;&#34;&#34;Set custom styles on this object.&#34;&#34;&#34;
@@ -1317,45 +1343,6 @@ def colors(self) -&gt; tuple[Color, Color, Color, Color]:
             base_color = color
             color = styles.color
     return (base_background, base_color, background, color)</code></pre>
-</details>
-</dd>
-<dt id="textual.dom.DOMNode.css"><code class="name">var <span class="ident">css</span> : list[tuple[str, str]]</code></dt>
-<dd>
-<div class="desc"><p>Gets the CSS for this class and inherited from bases.</p>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>list[tuple[str, str]]</code></dt>
-<dd>a list of tuples containing (PATH, SOURCE) for this
-and inherited from base classes.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def css(self) -&gt; list[tuple[str, str]]:
-    &#34;&#34;&#34;Gets the CSS for this class and inherited from bases.
-
-    Returns:
-        list[tuple[str, str]]: a list of tuples containing (PATH, SOURCE) for this
-            and inherited from base classes.
-    &#34;&#34;&#34;
-
-    css_stack: list[tuple[str, str]] = []
-
-    def get_path(base: Type[DOMNode]) -&gt; str:
-        &#34;&#34;&#34;Get a path to the DOM Node&#34;&#34;&#34;
-        try:
-            return f&#34;{getfile(base)}:{base.__name__}&#34;
-        except TypeError:
-            return f&#34;{base.__name__}&#34;
-
-    for base in self._node_bases:
-        css = base.CSS.strip()
-        if css:
-            css_stack.append((get_path(base), css))
-
-    return css_stack</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.css_identifier"><code class="name">var <span class="ident">css_identifier</span> : str</code></dt>
@@ -1794,6 +1781,46 @@ def visible(self) -&gt; bool:
     raise NoMatchingNodesError(f&#34;No child found with id={id!r}&#34;)</code></pre>
 </details>
 </dd>
+<dt id="textual.dom.DOMNode.get_default_css"><code class="name flex">
+<span>def <span class="ident">get_default_css</span></span>(<span>self) ‑> list[tuple[str, str, int]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the CSS for this class and inherited from bases.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list[tuple[str, str]]</code></dt>
+<dd>a list of tuples containing (PATH, SOURCE) for this
+and inherited from base classes.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_default_css(self) -&gt; list[tuple[str, str, int]]:
+    &#34;&#34;&#34;Gets the CSS for this class and inherited from bases.
+
+    Returns:
+        list[tuple[str, str]]: a list of tuples containing (PATH, SOURCE) for this
+            and inherited from base classes.
+    &#34;&#34;&#34;
+
+    css_stack: list[tuple[str, str, int]] = []
+
+    def get_path(base: Type[DOMNode]) -&gt; str:
+        &#34;&#34;&#34;Get a path to the DOM Node&#34;&#34;&#34;
+        try:
+            return f&#34;{getfile(base)}:{base.__name__}&#34;
+        except TypeError:
+            return f&#34;{base.__name__}&#34;
+
+    for tie_breaker, base in enumerate(self._node_bases):
+        css = base.CSS.strip()
+        if css:
+            css_stack.append((get_path(base), css, -tie_breaker))
+
+    return css_stack</code></pre>
+</details>
+</dd>
 <dt id="textual.dom.DOMNode.get_pseudo_classes"><code class="name flex">
 <span>def <span class="ident">get_pseudo_classes</span></span>(<span>self) ‑> Iterable[str]</span>
 </code></dt>
@@ -1916,6 +1943,37 @@ def visible(self) -&gt; bool:
     from .css.query import DOMQuery
 
     return DOMQuery(self, selector)</code></pre>
+</details>
+</dd>
+<dt id="textual.dom.DOMNode.query_one"><code class="name flex">
+<span>def <span class="ident">query_one</span></span>(<span>self, selector: str) ‑> Widget</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the first Widget matching the given selector.</p>
+<h2 id="args">Args</h2>
+<p>selector (str | None, optional): A selector.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Widget</code></dt>
+<dd>A widget matching the selector.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def query_one(self, selector: str) -&gt; Widget:
+    &#34;&#34;&#34;Get the first Widget matching the given selector.
+
+    Args:
+        selector (str | None, optional): A selector.
+
+    Returns:
+        Widget: A widget matching the selector.
+    &#34;&#34;&#34;
+    from .css.query import DOMQuery
+
+    query = DOMQuery(self.screen, selector)
+    return query.first()</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.refresh"><code class="name flex">
@@ -2185,13 +2243,13 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.background_colors" href="#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.classes" href="#textual.dom.DOMNode.classes">classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.colors" href="#textual.dom.DOMNode.colors">colors</a></code></li>
-<li><code><a title="textual.dom.DOMNode.css" href="#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_path_nodes" href="#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.dom.DOMNode.displayed_children" href="#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_child" href="#textual.dom.DOMNode.get_child">get_child</a></code></li>
+<li><code><a title="textual.dom.DOMNode.get_default_css" href="#textual.dom.DOMNode.get_default_css">get_default_css</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_pseudo_classes" href="#textual.dom.DOMNode.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_class" href="#textual.dom.DOMNode.has_class">has_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_pseudo_class" href="#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
@@ -2201,6 +2259,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.parent" href="#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.dom.DOMNode.pseudo_classes" href="#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.query" href="#textual.dom.DOMNode.query">query</a></code></li>
+<li><code><a title="textual.dom.DOMNode.query_one" href="#textual.dom.DOMNode.query_one">query_one</a></code></li>
 <li><code><a title="textual.dom.DOMNode.refresh" href="#textual.dom.DOMNode.refresh">refresh</a></code></li>
 <li><code><a title="textual.dom.DOMNode.remove_class" href="#textual.dom.DOMNode.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.reset_styles" href="#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>

@@ -185,6 +185,7 @@ class RuleSet:
     errors: list[tuple[Token, str]] = field(default_factory=list)
     classes: set[str] = field(default_factory=set)
     is_default_rules: bool = False
+    tie_breaker: int = 0
 
     @classmethod
     def _selector_to_css(cls, selectors: list[Selector]) -&gt; str:
@@ -305,10 +306,10 @@ class RuleSet:
 </dd>
 <dt id="textual.css.model.RuleSet"><code class="flex name class">
 <span>class <span class="ident">RuleSet</span></span>
-<span>(</span><span>selector_set: list[<a title="textual.css.model.SelectorSet" href="#textual.css.model.SelectorSet">SelectorSet</a>] = &lt;factory&gt;, styles: Styles = &lt;factory&gt;, errors: list[tuple[Token, str]] = &lt;factory&gt;, classes: set[str] = &lt;factory&gt;, is_default_rules: bool = False)</span>
+<span>(</span><span>selector_set: list[<a title="textual.css.model.SelectorSet" href="#textual.css.model.SelectorSet">SelectorSet</a>] = &lt;factory&gt;, styles: Styles = &lt;factory&gt;, errors: list[tuple[Token, str]] = &lt;factory&gt;, classes: set[str] = &lt;factory&gt;, is_default_rules: bool = False, tie_breaker: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>RuleSet(selector_set: 'list[SelectorSet]' = <factory>, styles: 'Styles' = <factory>, errors: 'list[tuple[Token, str]]' = <factory>, classes: 'set[str]' = <factory>, is_default_rules: 'bool' = False)</p></div>
+<div class="desc"><p>RuleSet(selector_set: 'list[SelectorSet]' = <factory>, styles: 'Styles' = <factory>, errors: 'list[tuple[Token, str]]' = <factory>, classes: 'set[str]' = <factory>, is_default_rules: 'bool' = False, tie_breaker: 'int' = 0)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -319,6 +320,7 @@ class RuleSet:
     errors: list[tuple[Token, str]] = field(default_factory=list)
     classes: set[str] = field(default_factory=set)
     is_default_rules: bool = False
+    tie_breaker: int = 0
 
     @classmethod
     def _selector_to_css(cls, selectors: list[Selector]) -&gt; str:
@@ -380,6 +382,10 @@ class RuleSet:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.model.RuleSet.styles"><code class="name">var <span class="ident">styles</span> : Styles</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.model.RuleSet.tie_breaker"><code class="name">var <span class="ident">tie_breaker</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -811,6 +817,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.model.RuleSet.selector_set" href="#textual.css.model.RuleSet.selector_set">selector_set</a></code></li>
 <li><code><a title="textual.css.model.RuleSet.selectors" href="#textual.css.model.RuleSet.selectors">selectors</a></code></li>
 <li><code><a title="textual.css.model.RuleSet.styles" href="#textual.css.model.RuleSet.styles">styles</a></code></li>
+<li><code><a title="textual.css.model.RuleSet.tie_breaker" href="#textual.css.model.RuleSet.tie_breaker">tie_breaker</a></code></li>
 </ul>
 </li>
 <li>

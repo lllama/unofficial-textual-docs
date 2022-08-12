@@ -43,6 +43,9 @@ class Container(Widget):
 class Vertical(Container):
     &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;
 
+    # Blank CSS is important, otherwise you get a clone of Container
+    CSS = &#34;&#34;
+
 
 class Horizontal(Container):
     &#34;&#34;&#34;A container widget to align children horizontally.&#34;&#34;&#34;
@@ -141,7 +144,6 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.container_size" href="widget.html#textual.widget.Widget.container_size">container_size</a></code></li>
 <li><code><a title="textual.layout.Container.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.layout.Container.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
-<li><code><a title="textual.layout.Container.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.layout.Container.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.layout.Container.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.layout.Container.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
@@ -158,6 +160,7 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.layout.Container.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
 <li><code><a title="textual.layout.Container.get_content_width" href="widget.html#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
+<li><code><a title="textual.layout.Container.get_default_css" href="dom.html#textual.dom.DOMNode.get_default_css">get_default_css</a></code></li>
 <li><code><a title="textual.layout.Container.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
 <li><code><a title="textual.layout.Container.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.layout.Container.gutter" href="widget.html#textual.widget.Widget.gutter">gutter</a></code></li>
@@ -188,6 +191,7 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.layout.Container.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.layout.Container.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
+<li><code><a title="textual.layout.Container.query_one" href="dom.html#textual.dom.DOMNode.query_one">query_one</a></code></li>
 <li><code><a title="textual.layout.Container.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.layout.Container.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.layout.Container.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
@@ -306,7 +310,6 @@ class Center(Container):
 <li><code><a title="textual.widget.Widget.container_size" href="widget.html#textual.widget.Widget.container_size">container_size</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
-<li><code><a title="textual.widget.Widget.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
@@ -323,6 +326,7 @@ class Center(Container):
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_width" href="widget.html#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
+<li><code><a title="textual.widget.Widget.get_default_css" href="dom.html#textual.dom.DOMNode.get_default_css">get_default_css</a></code></li>
 <li><code><a title="textual.widget.Widget.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
 <li><code><a title="textual.widget.Widget.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.gutter" href="widget.html#textual.widget.Widget.gutter">gutter</a></code></li>
@@ -353,6 +357,7 @@ class Center(Container):
 <li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
+<li><code><a title="textual.widget.Widget.query_one" href="dom.html#textual.dom.DOMNode.query_one">query_one</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.widget.Widget.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.widget.Widget.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
@@ -465,7 +470,6 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.container_size" href="widget.html#textual.widget.Widget.container_size">container_size</a></code></li>
 <li><code><a title="textual.layout.Container.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.layout.Container.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
-<li><code><a title="textual.layout.Container.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.layout.Container.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.layout.Container.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.layout.Container.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
@@ -482,6 +486,7 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.layout.Container.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
 <li><code><a title="textual.layout.Container.get_content_width" href="widget.html#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
+<li><code><a title="textual.layout.Container.get_default_css" href="dom.html#textual.dom.DOMNode.get_default_css">get_default_css</a></code></li>
 <li><code><a title="textual.layout.Container.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
 <li><code><a title="textual.layout.Container.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.layout.Container.gutter" href="widget.html#textual.widget.Widget.gutter">gutter</a></code></li>
@@ -512,6 +517,7 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.layout.Container.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.layout.Container.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
+<li><code><a title="textual.layout.Container.query_one" href="dom.html#textual.dom.DOMNode.query_one">query_one</a></code></li>
 <li><code><a title="textual.layout.Container.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.layout.Container.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.layout.Container.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
@@ -567,7 +573,10 @@ class Center(Container):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Vertical(Container):
-    &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;</code></pre>
+    &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;
+
+    # Blank CSS is important, otherwise you get a clone of Container
+    CSS = &#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -579,6 +588,10 @@ class Center(Container):
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.layout.Vertical.COMPONENT_CLASSES"><code class="name">var <span class="ident">COMPONENT_CLASSES</span> : ClassVar[set[str]]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.layout.Vertical.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -614,7 +627,6 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.container_size" href="widget.html#textual.widget.Widget.container_size">container_size</a></code></li>
 <li><code><a title="textual.layout.Container.content_offset" href="widget.html#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.layout.Container.content_region" href="widget.html#textual.widget.Widget.content_region">content_region</a></code></li>
-<li><code><a title="textual.layout.Container.css" href="dom.html#textual.dom.DOMNode.css">css</a></code></li>
 <li><code><a title="textual.layout.Container.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.layout.Container.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.layout.Container.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
@@ -631,6 +643,7 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.layout.Container.get_content_height" href="widget.html#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
 <li><code><a title="textual.layout.Container.get_content_width" href="widget.html#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
+<li><code><a title="textual.layout.Container.get_default_css" href="dom.html#textual.dom.DOMNode.get_default_css">get_default_css</a></code></li>
 <li><code><a title="textual.layout.Container.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
 <li><code><a title="textual.layout.Container.get_pseudo_classes" href="widget.html#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.layout.Container.gutter" href="widget.html#textual.widget.Widget.gutter">gutter</a></code></li>
@@ -661,6 +674,7 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.layout.Container.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.layout.Container.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
+<li><code><a title="textual.layout.Container.query_one" href="dom.html#textual.dom.DOMNode.query_one">query_one</a></code></li>
 <li><code><a title="textual.layout.Container.refresh" href="widget.html#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.layout.Container.region" href="widget.html#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.layout.Container.release_mouse" href="widget.html#textual.widget.Widget.release_mouse">release_mouse</a></code></li>
@@ -798,6 +812,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.layout.Vertical" href="#textual.layout.Vertical">Vertical</a></code></h4>
 <ul class="">
 <li><code><a title="textual.layout.Vertical.COMPONENT_CLASSES" href="#textual.layout.Vertical.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
+<li><code><a title="textual.layout.Vertical.CSS" href="#textual.layout.Vertical.CSS">CSS</a></code></li>
 <li><code><a title="textual.layout.Vertical.can_focus" href="#textual.layout.Vertical.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.layout.Vertical.can_focus_children" href="#textual.layout.Vertical.can_focus_children">can_focus_children</a></code></li>
 </ul>

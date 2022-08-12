@@ -586,6 +586,11 @@ INDEX=[
 "doc":"Alias for field number 1"
 },
 {
+"ref":"textual.css.stylesheet.CssSource.tie_breaker",
+"url":8,
+"doc":"Alias for field number 2"
+},
+{
 "ref":"textual.css.stylesheet.Stylesheet",
 "url":8,
 "doc":""
@@ -1068,7 +1073,7 @@ INDEX=[
 {
 "ref":"textual.css.model.RuleSet",
 "url":13,
-"doc":"RuleSet(selector_set: 'list[SelectorSet]' =  , styles: 'Styles' =  , errors: 'list[tuple[Token, str ' =  , classes: 'set[str]' =  , is_default_rules: 'bool' = False)"
+"doc":"RuleSet(selector_set: 'list[SelectorSet]' =  , styles: 'Styles' =  , errors: 'list[tuple[Token, str ' =  , classes: 'set[str]' =  , is_default_rules: 'bool' = False, tie_breaker: 'int' = 0)"
 },
 {
 "ref":"textual.css.model.RuleSet.selector_set",
@@ -1092,6 +1097,11 @@ INDEX=[
 },
 {
 "ref":"textual.css.model.RuleSet.is_default_rules",
+"url":13,
+"doc":""
+},
+{
+"ref":"textual.css.model.RuleSet.tie_breaker",
 "url":13,
 "doc":""
 },
@@ -3501,9 +3511,10 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.scroll_view.ScrollView.css",
+"ref":"textual.scroll_view.ScrollView.get_default_css",
 "url":36,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.parent",
@@ -3614,6 +3625,12 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.query",
 "url":36,
 "doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.query_one",
+"url":36,
+"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -3784,9 +3801,10 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.dom.DOMNode.css",
+"ref":"textual.dom.DOMNode.get_default_css",
 "url":36,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
 },
 {
 "ref":"textual.dom.DOMNode.parent",
@@ -3918,6 +3936,12 @@ INDEX=[
 "ref":"textual.dom.DOMNode.query",
 "url":36,
 "doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.dom.DOMNode.query_one",
+"url":36,
+"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -4906,9 +4930,10 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.scrollbar.ScrollBar.css",
+"ref":"textual.scrollbar.ScrollBar.get_default_css",
 "url":36,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.parent",
@@ -5019,6 +5044,12 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.query",
 "url":36,
 "doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.query_one",
+"url":36,
+"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -8178,9 +8209,10 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.screen.Screen.css",
+"ref":"textual.screen.Screen.get_default_css",
 "url":36,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
 },
 {
 "ref":"textual.screen.Screen.parent",
@@ -8291,6 +8323,12 @@ INDEX=[
 "ref":"textual.screen.Screen.query",
 "url":36,
 "doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.query_one",
+"url":36,
+"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -9805,9 +9843,10 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Container.css",
+"ref":"textual.layout.Container.get_default_css",
 "url":36,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
 },
 {
 "ref":"textual.layout.Container.parent",
@@ -9918,6 +9957,12 @@ INDEX=[
 "ref":"textual.layout.Container.query",
 "url":36,
 "doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.query_one",
+"url":36,
+"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -10046,6 +10091,11 @@ INDEX=[
 },
 {
 "ref":"textual.layout.Vertical.COMPONENT_CLASSES",
+"url":50,
+"doc":""
+},
+{
+"ref":"textual.layout.Vertical.CSS",
 "url":50,
 "doc":""
 },
@@ -10407,9 +10457,10 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Vertical.css",
+"ref":"textual.layout.Vertical.get_default_css",
 "url":36,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
 },
 {
 "ref":"textual.layout.Vertical.parent",
@@ -10520,6 +10571,12 @@ INDEX=[
 "ref":"textual.layout.Vertical.query",
 "url":36,
 "doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.query_one",
+"url":36,
+"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -11014,9 +11071,10 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Horizontal.css",
+"ref":"textual.layout.Horizontal.get_default_css",
 "url":36,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
 },
 {
 "ref":"textual.layout.Horizontal.parent",
@@ -11127,6 +11185,12 @@ INDEX=[
 "ref":"textual.layout.Horizontal.query",
 "url":36,
 "doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.query_one",
+"url":36,
+"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -11621,9 +11685,10 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Center.css",
+"ref":"textual.layout.Center.get_default_css",
 "url":36,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
 },
 {
 "ref":"textual.layout.Center.parent",
@@ -11734,6 +11799,12 @@ INDEX=[
 "ref":"textual.layout.Center.query",
 "url":36,
 "doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.query_one",
+"url":36,
+"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -13649,9 +13720,10 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.widget.Widget.css",
+"ref":"textual.widget.Widget.get_default_css",
 "url":36,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes."
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
 },
 {
 "ref":"textual.widget.Widget.parent",
@@ -13762,6 +13834,12 @@ INDEX=[
 "ref":"textual.widget.Widget.query",
 "url":36,
 "doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.query_one",
+"url":36,
+"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
