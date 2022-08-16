@@ -37,11 +37,11 @@ from .tokenizer import TokenError
 
 
 class DeclarationError(Exception):
-    def __init__(self, name: str, token: Token, message: str) -&gt; None:
+    def __init__(self, name: str, token: Token, message: str | HelpText) -&gt; None:
         self.name = name
         self.token = token
         self.message = message
-        super().__init__(message)
+        super().__init__(str(message))
 
 
 class StyleTypeError(TypeError):
@@ -89,7 +89,7 @@ class StylesheetError(Exception):
 <dl>
 <dt id="textual.css.errors.DeclarationError"><code class="flex name class">
 <span>class <span class="ident">DeclarationError</span></span>
-<span>(</span><span>name: str, token: Token, message: str)</span>
+<span>(</span><span>name: str, token: Token, message: str | HelpText)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
@@ -98,11 +98,11 @@ class StylesheetError(Exception):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class DeclarationError(Exception):
-    def __init__(self, name: str, token: Token, message: str) -&gt; None:
+    def __init__(self, name: str, token: Token, message: str | HelpText) -&gt; None:
         self.name = name
         self.token = token
         self.message = message
-        super().__init__(message)</code></pre>
+        super().__init__(str(message))</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">

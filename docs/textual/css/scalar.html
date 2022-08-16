@@ -65,6 +65,8 @@ class Unit(Enum):
     AUTO = 8
 
 
+UNIT_EXCLUDES_BORDER = {Unit.CELLS, Unit.FRACTION, Unit.VIEW_WIDTH, Unit.VIEW_HEIGHT}
+
 UNIT_SYMBOL = {
     Unit.CELLS: &#34;&#34;,
     Unit.FRACTION: &#34;fr&#34;,
@@ -226,6 +228,10 @@ class Scalar(NamedTuple):
     def is_fraction(self) -&gt; bool:
         &#34;&#34;&#34;Check if the unit is a fraction.&#34;&#34;&#34;
         return self.unit == Unit.FRACTION
+
+    @property
+    def excludes_border(self) -&gt; bool:
+        return self.unit in UNIT_EXCLUDES_BORDER
 
     @property
     def cells(self) -&gt; int | None:
@@ -491,6 +497,10 @@ if __name__ == &#34;__main__&#34;:
         return self.unit == Unit.FRACTION
 
     @property
+    def excludes_border(self) -&gt; bool:
+        return self.unit in UNIT_EXCLUDES_BORDER
+
+    @property
     def cells(self) -&gt; int | None:
         &#34;&#34;&#34;Check if the unit is explicit cells.&#34;&#34;&#34;
         value, unit, _ = self
@@ -695,6 +705,18 @@ def cells(self) -&gt; int | None:
     &#34;&#34;&#34;Check if the unit is explicit cells.&#34;&#34;&#34;
     value, unit, _ = self
     return int(value) if unit == Unit.CELLS else None</code></pre>
+</details>
+</dd>
+<dt id="textual.css.scalar.Scalar.excludes_border"><code class="name">var <span class="ident">excludes_border</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def excludes_border(self) -&gt; bool:
+    return self.unit in UNIT_EXCLUDES_BORDER</code></pre>
 </details>
 </dd>
 <dt id="textual.css.scalar.Scalar.fraction"><code class="name">var <span class="ident">fraction</span> : int | None</code></dt>
@@ -1157,6 +1179,7 @@ setTimeout(() => input.focus(), 100);
 <ul class="two-column">
 <li><code><a title="textual.css.scalar.Scalar.cells" href="#textual.css.scalar.Scalar.cells">cells</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.copy_with" href="#textual.css.scalar.Scalar.copy_with">copy_with</a></code></li>
+<li><code><a title="textual.css.scalar.Scalar.excludes_border" href="#textual.css.scalar.Scalar.excludes_border">excludes_border</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.fraction" href="#textual.css.scalar.Scalar.fraction">fraction</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.from_number" href="#textual.css.scalar.Scalar.from_number">from_number</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.is_auto" href="#textual.css.scalar.Scalar.is_auto">is_auto</a></code></li>

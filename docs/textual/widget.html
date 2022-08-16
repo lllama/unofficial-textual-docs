@@ -163,6 +163,16 @@ class Widget(DOMNode):
     show_vertical_scrollbar = Reactive(False, layout=True)
     show_horizontal_scrollbar = Reactive(False, layout=True)
 
+    @property
+    def allow_vertical_scroll(self) -&gt; bool:
+        &#34;&#34;&#34;Check if vertical scroll is permitted.&#34;&#34;&#34;
+        return self.is_scrollable and self.show_vertical_scrollbar
+
+    @property
+    def allow_horizontal_scroll(self) -&gt; bool:
+        &#34;&#34;&#34;Check if horizontal scroll is permitted.&#34;&#34;&#34;
+        return self.is_scrollable and self.show_horizontal_scrollbar
+
     def _arrange(self, size: Size) -&gt; DockArrangeResult:
         &#34;&#34;&#34;Arrange children.
 
@@ -966,14 +976,12 @@ class Widget(DOMNode):
     def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
         watch(self, attribute_name, callback)
 
-    def _render_styled(self) -&gt; RenderableType:
+    def post_render(self, renderable: RenderableType) -&gt; RenderableType:
         &#34;&#34;&#34;Applies style attributes to the default renderable.
 
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
-
-        renderable = self.render()
 
         if isinstance(renderable, str):
             renderable = Text.from_markup(renderable)
@@ -1030,7 +1038,8 @@ class Widget(DOMNode):
     def _render_content(self) -&gt; None:
         &#34;&#34;&#34;Render all lines.&#34;&#34;&#34;
         width, height = self.size
-        renderable = self._render_styled()
+        renderable = self.render()
+        renderable = self.post_render(renderable)
         options = self.console.options.update_dimensions(width, height).update(
             highlight=False
         )
@@ -1183,7 +1192,7 @@ class Widget(DOMNode):
         assert self.parent
         self.parent.refresh(layout=True)
 
-    def on_mount(self, event: events.Mount) -&gt; None:
+    def _on_mount(self, event: events.Mount) -&gt; None:
         widgets = list(self.compose())
         if widgets:
             self.mount(*widgets)
@@ -1224,12 +1233,12 @@ class Widget(DOMNode):
                     break
 
     def on_mouse_scroll_down(self, event) -&gt; None:
-        if self.is_scrollable:
+        if self.allow_vertical_scroll:
             if self.scroll_down(animate=False):
                 event.stop()
 
     def on_mouse_scroll_up(self, event) -&gt; None:
-        if self.is_scrollable:
+        if self.allow_vertical_scroll:
             if self.scroll_up(animate=False):
                 event.stop()
 
@@ -1453,6 +1462,16 @@ def cursor_line(self) -&gt; int | None:
     show_vertical_scrollbar = Reactive(False, layout=True)
     show_horizontal_scrollbar = Reactive(False, layout=True)
 
+    @property
+    def allow_vertical_scroll(self) -&gt; bool:
+        &#34;&#34;&#34;Check if vertical scroll is permitted.&#34;&#34;&#34;
+        return self.is_scrollable and self.show_vertical_scrollbar
+
+    @property
+    def allow_horizontal_scroll(self) -&gt; bool:
+        &#34;&#34;&#34;Check if horizontal scroll is permitted.&#34;&#34;&#34;
+        return self.is_scrollable and self.show_horizontal_scrollbar
+
     def _arrange(self, size: Size) -&gt; DockArrangeResult:
         &#34;&#34;&#34;Arrange children.
 
@@ -2256,14 +2275,12 @@ def cursor_line(self) -&gt; int | None:
     def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
         watch(self, attribute_name, callback)
 
-    def _render_styled(self) -&gt; RenderableType:
+    def post_render(self, renderable: RenderableType) -&gt; RenderableType:
         &#34;&#34;&#34;Applies style attributes to the default renderable.
 
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
-
-        renderable = self.render()
 
         if isinstance(renderable, str):
             renderable = Text.from_markup(renderable)
@@ -2320,7 +2337,8 @@ def cursor_line(self) -&gt; int | None:
     def _render_content(self) -&gt; None:
         &#34;&#34;&#34;Render all lines.&#34;&#34;&#34;
         width, height = self.size
-        renderable = self._render_styled()
+        renderable = self.render()
+        renderable = self.post_render(renderable)
         options = self.console.options.update_dimensions(width, height).update(
             highlight=False
         )
@@ -2473,7 +2491,7 @@ def cursor_line(self) -&gt; int | None:
         assert self.parent
         self.parent.refresh(layout=True)
 
-    def on_mount(self, event: events.Mount) -&gt; None:
+    def _on_mount(self, event: events.Mount) -&gt; None:
         widgets = list(self.compose())
         if widgets:
             self.mount(*widgets)
@@ -2514,12 +2532,12 @@ def cursor_line(self) -&gt; int | None:
                     break
 
     def on_mouse_scroll_down(self, event) -&gt; None:
-        if self.is_scrollable:
+        if self.allow_vertical_scroll:
             if self.scroll_down(animate=False):
                 event.stop()
 
     def on_mouse_scroll_up(self, event) -&gt; None:
-        if self.is_scrollable:
+        if self.allow_vertical_scroll:
             if self.scroll_up(animate=False):
                 event.stop()
 
@@ -2629,6 +2647,32 @@ def cursor_line(self) -&gt; int | None:
 </dl>
 <h3>Instance variables</h3>
 <dl>
+<dt id="textual.widget.Widget.allow_horizontal_scroll"><code class="name">var <span class="ident">allow_horizontal_scroll</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Check if horizontal scroll is permitted.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def allow_horizontal_scroll(self) -&gt; bool:
+    &#34;&#34;&#34;Check if horizontal scroll is permitted.&#34;&#34;&#34;
+    return self.is_scrollable and self.show_horizontal_scrollbar</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.allow_vertical_scroll"><code class="name">var <span class="ident">allow_vertical_scroll</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Check if vertical scroll is permitted.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def allow_vertical_scroll(self) -&gt; bool:
+    &#34;&#34;&#34;Check if vertical scroll is permitted.&#34;&#34;&#34;
+    return self.is_scrollable and self.show_vertical_scrollbar</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.animate"><code class="name">var <span class="ident">animate</span> : textual._animator.BoundAnimator</code></dt>
 <dd>
 <div class="desc"></div>
@@ -3863,22 +3907,6 @@ the keys will be set as the Widget's id.</p>
     self.mouse_over = False</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.on_mount"><code class="name flex">
-<span>def <span class="ident">on_mount</span></span>(<span>self, event: events.Mount) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_mount(self, event: events.Mount) -&gt; None:
-    widgets = list(self.compose())
-    if widgets:
-        self.mount(*widgets)
-        self.screen.refresh(repaint=False, layout=True)</code></pre>
-</details>
-</dd>
 <dt id="textual.widget.Widget.on_mouse_down"><code class="name flex">
 <span>async def <span class="ident">on_mouse_down</span></span>(<span>self, event: events.MouseUp) ‑> None</span>
 </code></dt>
@@ -3902,7 +3930,7 @@ the keys will be set as the Widget's id.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def on_mouse_scroll_down(self, event) -&gt; None:
-    if self.is_scrollable:
+    if self.allow_vertical_scroll:
         if self.scroll_down(animate=False):
             event.stop()</code></pre>
 </details>
@@ -3917,7 +3945,7 @@ the keys will be set as the Widget's id.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def on_mouse_scroll_up(self, event) -&gt; None:
-    if self.is_scrollable:
+    if self.allow_vertical_scroll:
         if self.scroll_up(animate=False):
             event.stop()</code></pre>
 </details>
@@ -4051,6 +4079,48 @@ the keys will be set as the Widget's id.</p>
     if self.is_scrollable:
         self.scroll_page_up()
         event.stop()</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.post_render"><code class="name flex">
+<span>def <span class="ident">post_render</span></span>(<span>self, renderable: RenderableType) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Applies style attributes to the default renderable.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>RenderableType</code></dt>
+<dd>A new renderable.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def post_render(self, renderable: RenderableType) -&gt; RenderableType:
+    &#34;&#34;&#34;Applies style attributes to the default renderable.
+
+    Returns:
+        RenderableType: A new renderable.
+    &#34;&#34;&#34;
+
+    if isinstance(renderable, str):
+        renderable = Text.from_markup(renderable)
+
+    rich_style = self.rich_style
+    if isinstance(renderable, Text):
+        renderable.stylize(rich_style)
+    else:
+        renderable = Styled(renderable, rich_style)
+
+    styles = self.styles
+    content_align = (
+        styles.content_align_horizontal,
+        styles.content_align_vertical,
+    )
+    if content_align != (&#34;left&#34;, &#34;top&#34;):
+        horizontal, vertical = content_align
+        renderable = Align(renderable, horizontal, vertical=vertical)
+
+    return renderable</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.refresh"><code class="name flex">
@@ -4876,6 +4946,7 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
+<li><code><a title="textual.dom.DOMNode.get_component_styles" href="dom.html#textual.dom.DOMNode.get_component_styles">get_component_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_default_css" href="dom.html#textual.dom.DOMNode.get_default_css">get_default_css</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
@@ -4980,6 +5051,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.COMPONENT_CLASSES" href="#textual.widget.Widget.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
 <li><code><a title="textual.widget.Widget.CSS" href="#textual.widget.Widget.CSS">CSS</a></code></li>
 <li><code><a title="textual.widget.Widget.action" href="#textual.widget.Widget.action">action</a></code></li>
+<li><code><a title="textual.widget.Widget.allow_horizontal_scroll" href="#textual.widget.Widget.allow_horizontal_scroll">allow_horizontal_scroll</a></code></li>
+<li><code><a title="textual.widget.Widget.allow_vertical_scroll" href="#textual.widget.Widget.allow_vertical_scroll">allow_vertical_scroll</a></code></li>
 <li><code><a title="textual.widget.Widget.animate" href="#textual.widget.Widget.animate">animate</a></code></li>
 <li><code><a title="textual.widget.Widget.auto_height" href="#textual.widget.Widget.auto_height">auto_height</a></code></li>
 <li><code><a title="textual.widget.Widget.auto_width" href="#textual.widget.Widget.auto_width">auto_width</a></code></li>
@@ -5031,7 +5104,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.on_idle" href="#textual.widget.Widget.on_idle">on_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.on_key" href="#textual.widget.Widget.on_key">on_key</a></code></li>
 <li><code><a title="textual.widget.Widget.on_leave" href="#textual.widget.Widget.on_leave">on_leave</a></code></li>
-<li><code><a title="textual.widget.Widget.on_mount" href="#textual.widget.Widget.on_mount">on_mount</a></code></li>
 <li><code><a title="textual.widget.Widget.on_mouse_down" href="#textual.widget.Widget.on_mouse_down">on_mouse_down</a></code></li>
 <li><code><a title="textual.widget.Widget.on_mouse_scroll_down" href="#textual.widget.Widget.on_mouse_scroll_down">on_mouse_scroll_down</a></code></li>
 <li><code><a title="textual.widget.Widget.on_mouse_scroll_up" href="#textual.widget.Widget.on_mouse_scroll_up">on_mouse_scroll_up</a></code></li>
@@ -5044,6 +5116,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.on_scroll_to" href="#textual.widget.Widget.on_scroll_to">on_scroll_to</a></code></li>
 <li><code><a title="textual.widget.Widget.on_scroll_up" href="#textual.widget.Widget.on_scroll_up">on_scroll_up</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="#textual.widget.Widget.outer_size">outer_size</a></code></li>
+<li><code><a title="textual.widget.Widget.post_render" href="#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.widget.Widget.region" href="#textual.widget.Widget.region">region</a></code></li>
 <li><code><a title="textual.widget.Widget.release_mouse" href="#textual.widget.Widget.release_mouse">release_mouse</a></code></li>

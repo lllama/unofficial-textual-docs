@@ -26,7 +26,9 @@
 <p>This set of nodes may be further filtered with the filter method. Additional methods apply
 actions to the nodes in the query.</p>
 <p>If this sounds like JQuery, a (once) popular JS library, it is no coincidence.</p>
-<p>DOMQuery objects are typically created by Widget.filter method.</p>
+<p>DOMQuery objects are typically created by Widget.query method.</p>
+<p>Queries are <em>lazy</em>. Results will be calculated at the point you iterate over the query, or call
+a method which evaluates the query, such as first() and last().</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -39,63 +41,108 @@ actions to the nodes in the query.
 
 If this sounds like JQuery, a (once) popular JS library, it is no coincidence.
 
-DOMQuery objects are typically created by Widget.filter method.
+DOMQuery objects are typically created by Widget.query method.
+
+Queries are *lazy*. Results will be calculated at the point you iterate over the query, or call
+a method which evaluates the query, such as first() and last().
 
 &#34;&#34;&#34;
 
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING, Iterator, TypeVar, overload
 
 import rich.repr
 
-from typing import Iterator, overload, TYPE_CHECKING
-
-
+from .errors import DeclarationError
 from .match import match
-from .parse import parse_selectors
+from .model import SelectorSet
+from .parse import parse_declarations, parse_selectors
 
 if TYPE_CHECKING:
     from ..dom import DOMNode
     from ..widget import Widget
 
 
-class NoMatchingNodesError(Exception):
+class QueryError(Exception):
+    pass
+
+
+class NoMatchingNodesError(QueryError):
+    pass
+
+
+class WrongType(QueryError):
     pass
 
 
 @rich.repr.auto(angular=True)
 class DOMQuery:
+    __slots__ = [
+        &#34;_node&#34;,
+        &#34;_nodes&#34;,
+        &#34;_filters&#34;,
+        &#34;_excludes&#34;,
+    ]
+
     def __init__(
         self,
-        node: DOMNode | None = None,
-        selector: str | None = None,
-        nodes: list[Widget] | None = None,
+        node: DOMNode,
+        *,
+        filter: str | None = None,
+        exclude: str | None = None,
+        parent: DOMQuery | None = None,
     ) -&gt; None:
+
+        self._node = node
+        self._nodes: list[Widget] | None = None
+        self._filters: list[tuple[SelectorSet, ...]] = (
+            parent._filters.copy() if parent else []
+        )
+        self._excludes: list[tuple[SelectorSet, ...]] = (
+            parent._excludes.copy() if parent else []
+        )
+        if filter is not None:
+            self._filters.append(parse_selectors(filter))
+        if exclude is not None:
+            self._excludes.append(parse_selectors(exclude))
+
+    @property
+    def node(self) -&gt; DOMNode:
+        return self._node
+
+    @property
+    def nodes(self) -&gt; list[Widget]:
+        &#34;&#34;&#34;Lazily evaluate nodes.&#34;&#34;&#34;
         from ..widget import Widget
 
-        self._selector = selector
-        self._nodes: list[Widget] = []
-        if nodes is not None:
+        if self._nodes is None:
+            nodes = [
+                node
+                for node in self._node.walk_children(Widget)
+                if all(match(selector_set, node) for selector_set in self._filters)
+            ]
+            nodes = [
+                node
+                for node in nodes
+                if not any(match(selector_set, node) for selector_set in self._excludes)
+            ]
             self._nodes = nodes
-        elif node is not None:
-            self._nodes = [node for node in node.walk_children()]
-        else:
-            self._nodes = []
-
-        if selector is not None:
-            selector_set = parse_selectors(selector)
-            self._nodes = [_node for _node in self._nodes if match(selector_set, _node)]
+        return self._nodes
 
     def __len__(self) -&gt; int:
-        return len(self._nodes)
+        return len(self.nodes)
 
     def __bool__(self) -&gt; bool:
         &#34;&#34;&#34;True if non-empty, otherwise False.&#34;&#34;&#34;
-        return bool(self._nodes)
+        return bool(self.nodes)
 
     def __iter__(self) -&gt; Iterator[Widget]:
-        return iter(self._nodes)
+        return iter(self.nodes)
+
+    def __reversed__(self) -&gt; Iterator[Widget]:
+        return reversed(self.nodes)
 
     @overload
     def __getitem__(self, index: int) -&gt; Widget:
@@ -106,10 +153,20 @@ class DOMQuery:
         ...
 
     def __getitem__(self, index: int | slice) -&gt; Widget | list[Widget]:
-        return self._nodes[index]
+        return self.nodes[index]
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield self._nodes
+        yield self.node
+        if self._filters:
+            yield &#34;filter&#34;, &#34; AND &#34;.join(
+                &#34;,&#34;.join(selector.css for selector in selectors)
+                for selectors in self._filters
+            )
+        if self._excludes:
+            yield &#34;exclude&#34;, &#34; OR &#34;.join(
+                &#34;,&#34;.join(selector.css for selector in selectors)
+                for selectors in self._excludes
+            )
 
     def filter(self, selector: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Filter this set by the given CSS selector.
@@ -121,11 +178,7 @@ class DOMQuery:
             DOMQuery: New DOM Query.
         &#34;&#34;&#34;
 
-        selector_set = parse_selectors(selector)
-        query = DOMQuery(
-            nodes=[_node for _node in self._nodes if match(selector_set, _node)]
-        )
-        return query
+        return DOMQuery(self.node, filter=selector, parent=self)
 
     def exclude(self, selector: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Exclude nodes that match a given selector.
@@ -136,70 +189,145 @@ class DOMQuery:
         Returns:
             DOMQuery: New DOM query.
         &#34;&#34;&#34;
-        selector_set = parse_selectors(selector)
-        query = DOMQuery(
-            nodes=[_node for _node in self._nodes if not match(selector_set, _node)]
-        )
-        return query
+        return DOMQuery(self.node, exclude=selector, parent=self)
 
+    ExpectType = TypeVar(&#34;ExpectType&#34;)
+
+    @overload
     def first(self) -&gt; Widget:
-        &#34;&#34;&#34;Get the first matched node.
+        ...
+
+    @overload
+    def first(self, expect_type: type[ExpectType]) -&gt; ExpectType:
+        ...
+
+    def first(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+        &#34;&#34;&#34;Get the *first* match node.
+
+        Args:
+            expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
+                or None for any type. Defaults to None.
+
+        Raises:
+            WrongType: If the wrong type was found.
+            NoMatchingNodesError: If there are no matching nodes in the query.
 
         Returns:
-            DOMNode: A DOM Node.
+            Widget | ExpectType: The matching Widget.
         &#34;&#34;&#34;
-        if self._nodes:
-            return self._nodes[0]
+        if self.nodes:
+            first = self.nodes[0]
+            if expect_type is not None:
+                if not isinstance(first, expect_type):
+                    raise WrongType(
+                        f&#34;Query value is wrong type; expected {expect_type}, got {type(first)}&#34;
+                    )
+            return first
         else:
-            raise NoMatchingNodesError(
-                f&#34;No nodes match the selector {self._selector!r}&#34;
-            )
+            raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)
 
+    @overload
     def last(self) -&gt; Widget:
-        &#34;&#34;&#34;Get the last matched node.
+        ...
+
+    @overload
+    def last(self, expect_type: type[ExpectType]) -&gt; ExpectType:
+        ...
+
+    def last(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+        &#34;&#34;&#34;Get the *last* match node.
+
+        Args:
+            expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
+                or None for any type. Defaults to None.
+
+        Raises:
+            WrongType: If the wrong type was found.
+            NoMatchingNodesError: If there are no matching nodes in the query.
 
         Returns:
-            DOMNode: A DOM Node.
+            Widget | ExpectType: The matching Widget.
         &#34;&#34;&#34;
-        if self._nodes:
-            return self._nodes[-1]
+        if self.nodes:
+            last = self.nodes[-1]
+            if expect_type is not None:
+                if not isinstance(last, expect_type):
+                    raise WrongType(
+                        f&#34;Query value is wrong type; expected {expect_type}, got {type(last)}&#34;
+                    )
+            return last
         else:
-            raise NoMatchingNodesError(
-                f&#34;No nodes match the selector {self._selector!r}&#34;
-            )
+            raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)
+
+    @overload
+    def results(self) -&gt; Iterator[Widget]:
+        ...
+
+    @overload
+    def results(self, filter_type: type[ExpectType]) -&gt; Iterator[ExpectType]:
+        ...
+
+    def results(
+        self, filter_type: type[ExpectType] | None = None
+    ) -&gt; Iterator[Widget | ExpectType]:
+        &#34;&#34;&#34;Get query results, optionally filtered by a given type.
+
+        Args:
+            filter_type (type[ExpectType] | None): A Widget class to filter results,
+                or None for no filter. Defaults to None.
+
+        Yields:
+            Iterator[Widget | ExpectType]: An iterator of Widget instances.
+        &#34;&#34;&#34;
+        if filter_type is None:
+            yield from self
+        else:
+            for node in self:
+                if isinstance(node, filter_type):
+                    yield node
 
     def add_class(self, *class_names: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Add the given class name(s) to nodes.&#34;&#34;&#34;
-        for node in self._nodes:
+        for node in self:
             node.add_class(*class_names)
         return self
 
     def remove_class(self, *class_names: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Remove the given class names from the nodes.&#34;&#34;&#34;
-        for node in self._nodes:
+        for node in self:
             node.remove_class(*class_names)
         return self
 
     def toggle_class(self, *class_names: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Toggle the given class names from matched nodes.&#34;&#34;&#34;
-        for node in self._nodes:
+        for node in self:
             node.toggle_class(*class_names)
         return self
 
     def remove(self) -&gt; DOMQuery:
         &#34;&#34;&#34;Remove matched nodes from the DOM&#34;&#34;&#34;
-        for node in self._nodes:
+        for node in self:
             node.remove()
         return self
 
-    def set_styles(self, css: str | None = None, **styles: str) -&gt; DOMQuery:
+    def set_styles(self, css: str | None = None, **update_styles) -&gt; DOMQuery:
         &#34;&#34;&#34;Set styles on matched nodes.
 
         Args:
             css (str, optional): CSS declarations to parser, or None. Defaults to None.
         &#34;&#34;&#34;
-        for node in self._nodes:
-            node.set_styles(css, **styles)
+        _rich_traceback_omit = True
+
+        for node in self:
+            node.set_styles(**update_styles)
+        if css is not None:
+            try:
+                new_styles = parse_declarations(css, path=&#34;set_styles&#34;)
+            except DeclarationError as error:
+                raise DeclarationError(error.name, error.token, error.message) from None
+            for node in self:
+                node._inline_styles.merge(new_styles)
+                node.refresh(layout=True)
         return self
 
     def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; DOMQuery:
@@ -212,7 +340,7 @@ class DOMQuery:
         Returns:
             DOMQuery: Query for chaining.
         &#34;&#34;&#34;
-        for node in self._nodes:
+        for node in self:
             node.refresh(repaint=repaint, layout=layout)
         return self</code></pre>
 </details>
@@ -228,7 +356,7 @@ class DOMQuery:
 <dl>
 <dt id="textual.css.query.DOMQuery"><code class="flex name class">
 <span>class <span class="ident">DOMQuery</span></span>
-<span>(</span><span>node: DOMNode | None = None, selector: str | None = None, nodes: list[Widget] | None = None)</span>
+<span>(</span><span>node: DOMNode, *, filter: str | None = None, exclude: str | None = None, parent: <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a> | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -237,36 +365,70 @@ class DOMQuery:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class DOMQuery:
+    __slots__ = [
+        &#34;_node&#34;,
+        &#34;_nodes&#34;,
+        &#34;_filters&#34;,
+        &#34;_excludes&#34;,
+    ]
+
     def __init__(
         self,
-        node: DOMNode | None = None,
-        selector: str | None = None,
-        nodes: list[Widget] | None = None,
+        node: DOMNode,
+        *,
+        filter: str | None = None,
+        exclude: str | None = None,
+        parent: DOMQuery | None = None,
     ) -&gt; None:
+
+        self._node = node
+        self._nodes: list[Widget] | None = None
+        self._filters: list[tuple[SelectorSet, ...]] = (
+            parent._filters.copy() if parent else []
+        )
+        self._excludes: list[tuple[SelectorSet, ...]] = (
+            parent._excludes.copy() if parent else []
+        )
+        if filter is not None:
+            self._filters.append(parse_selectors(filter))
+        if exclude is not None:
+            self._excludes.append(parse_selectors(exclude))
+
+    @property
+    def node(self) -&gt; DOMNode:
+        return self._node
+
+    @property
+    def nodes(self) -&gt; list[Widget]:
+        &#34;&#34;&#34;Lazily evaluate nodes.&#34;&#34;&#34;
         from ..widget import Widget
 
-        self._selector = selector
-        self._nodes: list[Widget] = []
-        if nodes is not None:
+        if self._nodes is None:
+            nodes = [
+                node
+                for node in self._node.walk_children(Widget)
+                if all(match(selector_set, node) for selector_set in self._filters)
+            ]
+            nodes = [
+                node
+                for node in nodes
+                if not any(match(selector_set, node) for selector_set in self._excludes)
+            ]
             self._nodes = nodes
-        elif node is not None:
-            self._nodes = [node for node in node.walk_children()]
-        else:
-            self._nodes = []
-
-        if selector is not None:
-            selector_set = parse_selectors(selector)
-            self._nodes = [_node for _node in self._nodes if match(selector_set, _node)]
+        return self._nodes
 
     def __len__(self) -&gt; int:
-        return len(self._nodes)
+        return len(self.nodes)
 
     def __bool__(self) -&gt; bool:
         &#34;&#34;&#34;True if non-empty, otherwise False.&#34;&#34;&#34;
-        return bool(self._nodes)
+        return bool(self.nodes)
 
     def __iter__(self) -&gt; Iterator[Widget]:
-        return iter(self._nodes)
+        return iter(self.nodes)
+
+    def __reversed__(self) -&gt; Iterator[Widget]:
+        return reversed(self.nodes)
 
     @overload
     def __getitem__(self, index: int) -&gt; Widget:
@@ -277,10 +439,20 @@ class DOMQuery:
         ...
 
     def __getitem__(self, index: int | slice) -&gt; Widget | list[Widget]:
-        return self._nodes[index]
+        return self.nodes[index]
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield self._nodes
+        yield self.node
+        if self._filters:
+            yield &#34;filter&#34;, &#34; AND &#34;.join(
+                &#34;,&#34;.join(selector.css for selector in selectors)
+                for selectors in self._filters
+            )
+        if self._excludes:
+            yield &#34;exclude&#34;, &#34; OR &#34;.join(
+                &#34;,&#34;.join(selector.css for selector in selectors)
+                for selectors in self._excludes
+            )
 
     def filter(self, selector: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Filter this set by the given CSS selector.
@@ -292,11 +464,7 @@ class DOMQuery:
             DOMQuery: New DOM Query.
         &#34;&#34;&#34;
 
-        selector_set = parse_selectors(selector)
-        query = DOMQuery(
-            nodes=[_node for _node in self._nodes if match(selector_set, _node)]
-        )
-        return query
+        return DOMQuery(self.node, filter=selector, parent=self)
 
     def exclude(self, selector: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Exclude nodes that match a given selector.
@@ -307,70 +475,145 @@ class DOMQuery:
         Returns:
             DOMQuery: New DOM query.
         &#34;&#34;&#34;
-        selector_set = parse_selectors(selector)
-        query = DOMQuery(
-            nodes=[_node for _node in self._nodes if not match(selector_set, _node)]
-        )
-        return query
+        return DOMQuery(self.node, exclude=selector, parent=self)
 
+    ExpectType = TypeVar(&#34;ExpectType&#34;)
+
+    @overload
     def first(self) -&gt; Widget:
-        &#34;&#34;&#34;Get the first matched node.
+        ...
+
+    @overload
+    def first(self, expect_type: type[ExpectType]) -&gt; ExpectType:
+        ...
+
+    def first(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+        &#34;&#34;&#34;Get the *first* match node.
+
+        Args:
+            expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
+                or None for any type. Defaults to None.
+
+        Raises:
+            WrongType: If the wrong type was found.
+            NoMatchingNodesError: If there are no matching nodes in the query.
 
         Returns:
-            DOMNode: A DOM Node.
+            Widget | ExpectType: The matching Widget.
         &#34;&#34;&#34;
-        if self._nodes:
-            return self._nodes[0]
+        if self.nodes:
+            first = self.nodes[0]
+            if expect_type is not None:
+                if not isinstance(first, expect_type):
+                    raise WrongType(
+                        f&#34;Query value is wrong type; expected {expect_type}, got {type(first)}&#34;
+                    )
+            return first
         else:
-            raise NoMatchingNodesError(
-                f&#34;No nodes match the selector {self._selector!r}&#34;
-            )
+            raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)
 
+    @overload
     def last(self) -&gt; Widget:
-        &#34;&#34;&#34;Get the last matched node.
+        ...
+
+    @overload
+    def last(self, expect_type: type[ExpectType]) -&gt; ExpectType:
+        ...
+
+    def last(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+        &#34;&#34;&#34;Get the *last* match node.
+
+        Args:
+            expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
+                or None for any type. Defaults to None.
+
+        Raises:
+            WrongType: If the wrong type was found.
+            NoMatchingNodesError: If there are no matching nodes in the query.
 
         Returns:
-            DOMNode: A DOM Node.
+            Widget | ExpectType: The matching Widget.
         &#34;&#34;&#34;
-        if self._nodes:
-            return self._nodes[-1]
+        if self.nodes:
+            last = self.nodes[-1]
+            if expect_type is not None:
+                if not isinstance(last, expect_type):
+                    raise WrongType(
+                        f&#34;Query value is wrong type; expected {expect_type}, got {type(last)}&#34;
+                    )
+            return last
         else:
-            raise NoMatchingNodesError(
-                f&#34;No nodes match the selector {self._selector!r}&#34;
-            )
+            raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)
+
+    @overload
+    def results(self) -&gt; Iterator[Widget]:
+        ...
+
+    @overload
+    def results(self, filter_type: type[ExpectType]) -&gt; Iterator[ExpectType]:
+        ...
+
+    def results(
+        self, filter_type: type[ExpectType] | None = None
+    ) -&gt; Iterator[Widget | ExpectType]:
+        &#34;&#34;&#34;Get query results, optionally filtered by a given type.
+
+        Args:
+            filter_type (type[ExpectType] | None): A Widget class to filter results,
+                or None for no filter. Defaults to None.
+
+        Yields:
+            Iterator[Widget | ExpectType]: An iterator of Widget instances.
+        &#34;&#34;&#34;
+        if filter_type is None:
+            yield from self
+        else:
+            for node in self:
+                if isinstance(node, filter_type):
+                    yield node
 
     def add_class(self, *class_names: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Add the given class name(s) to nodes.&#34;&#34;&#34;
-        for node in self._nodes:
+        for node in self:
             node.add_class(*class_names)
         return self
 
     def remove_class(self, *class_names: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Remove the given class names from the nodes.&#34;&#34;&#34;
-        for node in self._nodes:
+        for node in self:
             node.remove_class(*class_names)
         return self
 
     def toggle_class(self, *class_names: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Toggle the given class names from matched nodes.&#34;&#34;&#34;
-        for node in self._nodes:
+        for node in self:
             node.toggle_class(*class_names)
         return self
 
     def remove(self) -&gt; DOMQuery:
         &#34;&#34;&#34;Remove matched nodes from the DOM&#34;&#34;&#34;
-        for node in self._nodes:
+        for node in self:
             node.remove()
         return self
 
-    def set_styles(self, css: str | None = None, **styles: str) -&gt; DOMQuery:
+    def set_styles(self, css: str | None = None, **update_styles) -&gt; DOMQuery:
         &#34;&#34;&#34;Set styles on matched nodes.
 
         Args:
             css (str, optional): CSS declarations to parser, or None. Defaults to None.
         &#34;&#34;&#34;
-        for node in self._nodes:
-            node.set_styles(css, **styles)
+        _rich_traceback_omit = True
+
+        for node in self:
+            node.set_styles(**update_styles)
+        if css is not None:
+            try:
+                new_styles = parse_declarations(css, path=&#34;set_styles&#34;)
+            except DeclarationError as error:
+                raise DeclarationError(error.name, error.token, error.message) from None
+            for node in self:
+                node._inline_styles.merge(new_styles)
+                node.refresh(layout=True)
         return self
 
     def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; DOMQuery:
@@ -383,10 +626,59 @@ class DOMQuery:
         Returns:
             DOMQuery: Query for chaining.
         &#34;&#34;&#34;
-        for node in self._nodes:
+        for node in self:
             node.refresh(repaint=repaint, layout=layout)
         return self</code></pre>
 </details>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.css.query.DOMQuery.ExpectType"><code class="name">var <span class="ident">ExpectType</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.css.query.DOMQuery.node"><code class="name">var <span class="ident">node</span> : DOMNode</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def node(self) -&gt; DOMNode:
+    return self._node</code></pre>
+</details>
+</dd>
+<dt id="textual.css.query.DOMQuery.nodes"><code class="name">var <span class="ident">nodes</span> : list[Widget]</code></dt>
+<dd>
+<div class="desc"><p>Lazily evaluate nodes.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def nodes(self) -&gt; list[Widget]:
+    &#34;&#34;&#34;Lazily evaluate nodes.&#34;&#34;&#34;
+    from ..widget import Widget
+
+    if self._nodes is None:
+        nodes = [
+            node
+            for node in self._node.walk_children(Widget)
+            if all(match(selector_set, node) for selector_set in self._filters)
+        ]
+        nodes = [
+            node
+            for node in nodes
+            if not any(match(selector_set, node) for selector_set in self._excludes)
+        ]
+        self._nodes = nodes
+    return self._nodes</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="textual.css.query.DOMQuery.add_class"><code class="name flex">
@@ -400,7 +692,7 @@ class DOMQuery:
 </summary>
 <pre><code class="python">def add_class(self, *class_names: str) -&gt; DOMQuery:
     &#34;&#34;&#34;Add the given class name(s) to nodes.&#34;&#34;&#34;
-    for node in self._nodes:
+    for node in self:
         node.add_class(*class_names)
     return self</code></pre>
 </details>
@@ -433,11 +725,7 @@ class DOMQuery:
     Returns:
         DOMQuery: New DOM query.
     &#34;&#34;&#34;
-    selector_set = parse_selectors(selector)
-    query = DOMQuery(
-        nodes=[_node for _node in self._nodes if not match(selector_set, _node)]
-    )
-    return query</code></pre>
+    return DOMQuery(self.node, exclude=selector, parent=self)</code></pre>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.filter"><code class="name flex">
@@ -469,67 +757,101 @@ class DOMQuery:
         DOMQuery: New DOM Query.
     &#34;&#34;&#34;
 
-    selector_set = parse_selectors(selector)
-    query = DOMQuery(
-        nodes=[_node for _node in self._nodes if match(selector_set, _node)]
-    )
-    return query</code></pre>
+    return DOMQuery(self.node, filter=selector, parent=self)</code></pre>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.first"><code class="name flex">
-<span>def <span class="ident">first</span></span>(<span>self) ‑> Widget</span>
+<span>def <span class="ident">first</span></span>(<span>self, expect_type: type[ExpectType] | None = None) ‑> Widget | ExpectType</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the first matched node.</p>
-<h2 id="returns">Returns</h2>
+<div class="desc"><p>Get the <em>first</em> match node.</p>
+<h2 id="args">Args</h2>
+<p>expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
+or None for any type. Defaults to None.</p>
+<h2 id="raises">Raises</h2>
 <dl>
-<dt><code>DOMNode</code></dt>
-<dd>A DOM Node.</dd>
-</dl></div>
+<dt><code><a title="textual.css.query.WrongType" href="#textual.css.query.WrongType">WrongType</a></code></dt>
+<dd>If the wrong type was found.</dd>
+<dt><code><a title="textual.css.query.NoMatchingNodesError" href="#textual.css.query.NoMatchingNodesError">NoMatchingNodesError</a></code></dt>
+<dd>If there are no matching nodes in the query.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Widget | ExpectType: The matching Widget.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def first(self) -&gt; Widget:
-    &#34;&#34;&#34;Get the first matched node.
+<pre><code class="python">def first(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+    &#34;&#34;&#34;Get the *first* match node.
+
+    Args:
+        expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
+            or None for any type. Defaults to None.
+
+    Raises:
+        WrongType: If the wrong type was found.
+        NoMatchingNodesError: If there are no matching nodes in the query.
 
     Returns:
-        DOMNode: A DOM Node.
+        Widget | ExpectType: The matching Widget.
     &#34;&#34;&#34;
-    if self._nodes:
-        return self._nodes[0]
+    if self.nodes:
+        first = self.nodes[0]
+        if expect_type is not None:
+            if not isinstance(first, expect_type):
+                raise WrongType(
+                    f&#34;Query value is wrong type; expected {expect_type}, got {type(first)}&#34;
+                )
+        return first
     else:
-        raise NoMatchingNodesError(
-            f&#34;No nodes match the selector {self._selector!r}&#34;
-        )</code></pre>
+        raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)</code></pre>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.last"><code class="name flex">
-<span>def <span class="ident">last</span></span>(<span>self) ‑> Widget</span>
+<span>def <span class="ident">last</span></span>(<span>self, expect_type: type[ExpectType] | None = None) ‑> Widget | ExpectType</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the last matched node.</p>
-<h2 id="returns">Returns</h2>
+<div class="desc"><p>Get the <em>last</em> match node.</p>
+<h2 id="args">Args</h2>
+<p>expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
+or None for any type. Defaults to None.</p>
+<h2 id="raises">Raises</h2>
 <dl>
-<dt><code>DOMNode</code></dt>
-<dd>A DOM Node.</dd>
-</dl></div>
+<dt><code><a title="textual.css.query.WrongType" href="#textual.css.query.WrongType">WrongType</a></code></dt>
+<dd>If the wrong type was found.</dd>
+<dt><code><a title="textual.css.query.NoMatchingNodesError" href="#textual.css.query.NoMatchingNodesError">NoMatchingNodesError</a></code></dt>
+<dd>If there are no matching nodes in the query.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Widget | ExpectType: The matching Widget.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def last(self) -&gt; Widget:
-    &#34;&#34;&#34;Get the last matched node.
+<pre><code class="python">def last(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+    &#34;&#34;&#34;Get the *last* match node.
+
+    Args:
+        expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
+            or None for any type. Defaults to None.
+
+    Raises:
+        WrongType: If the wrong type was found.
+        NoMatchingNodesError: If there are no matching nodes in the query.
 
     Returns:
-        DOMNode: A DOM Node.
+        Widget | ExpectType: The matching Widget.
     &#34;&#34;&#34;
-    if self._nodes:
-        return self._nodes[-1]
+    if self.nodes:
+        last = self.nodes[-1]
+        if expect_type is not None:
+            if not isinstance(last, expect_type):
+                raise WrongType(
+                    f&#34;Query value is wrong type; expected {expect_type}, got {type(last)}&#34;
+                )
+        return last
     else:
-        raise NoMatchingNodesError(
-            f&#34;No nodes match the selector {self._selector!r}&#34;
-        )</code></pre>
+        raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)</code></pre>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.refresh"><code class="name flex">
@@ -563,7 +885,7 @@ class DOMQuery:
     Returns:
         DOMQuery: Query for chaining.
     &#34;&#34;&#34;
-    for node in self._nodes:
+    for node in self:
         node.refresh(repaint=repaint, layout=layout)
     return self</code></pre>
 </details>
@@ -579,7 +901,7 @@ class DOMQuery:
 </summary>
 <pre><code class="python">def remove(self) -&gt; DOMQuery:
     &#34;&#34;&#34;Remove matched nodes from the DOM&#34;&#34;&#34;
-    for node in self._nodes:
+    for node in self:
         node.remove()
     return self</code></pre>
 </details>
@@ -595,13 +917,47 @@ class DOMQuery:
 </summary>
 <pre><code class="python">def remove_class(self, *class_names: str) -&gt; DOMQuery:
     &#34;&#34;&#34;Remove the given class names from the nodes.&#34;&#34;&#34;
-    for node in self._nodes:
+    for node in self:
         node.remove_class(*class_names)
     return self</code></pre>
 </details>
 </dd>
+<dt id="textual.css.query.DOMQuery.results"><code class="name flex">
+<span>def <span class="ident">results</span></span>(<span>self, filter_type: type[ExpectType] | None = None) ‑> Iterator[Widget | ExpectType]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get query results, optionally filtered by a given type.</p>
+<h2 id="args">Args</h2>
+<p>filter_type (type[ExpectType] | None): A Widget class to filter results,
+or None for no filter. Defaults to None.</p>
+<h2 id="yields">Yields</h2>
+<p>Iterator[Widget | ExpectType]: An iterator of Widget instances.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def results(
+    self, filter_type: type[ExpectType] | None = None
+) -&gt; Iterator[Widget | ExpectType]:
+    &#34;&#34;&#34;Get query results, optionally filtered by a given type.
+
+    Args:
+        filter_type (type[ExpectType] | None): A Widget class to filter results,
+            or None for no filter. Defaults to None.
+
+    Yields:
+        Iterator[Widget | ExpectType]: An iterator of Widget instances.
+    &#34;&#34;&#34;
+    if filter_type is None:
+        yield from self
+    else:
+        for node in self:
+            if isinstance(node, filter_type):
+                yield node</code></pre>
+</details>
+</dd>
 <dt id="textual.css.query.DOMQuery.set_styles"><code class="name flex">
-<span>def <span class="ident">set_styles</span></span>(<span>self, css: str | None = None, **styles: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+<span>def <span class="ident">set_styles</span></span>(<span>self, css: str | None = None, **update_styles) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Set styles on matched nodes.</p>
@@ -614,14 +970,24 @@ class DOMQuery:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def set_styles(self, css: str | None = None, **styles: str) -&gt; DOMQuery:
+<pre><code class="python">def set_styles(self, css: str | None = None, **update_styles) -&gt; DOMQuery:
     &#34;&#34;&#34;Set styles on matched nodes.
 
     Args:
         css (str, optional): CSS declarations to parser, or None. Defaults to None.
     &#34;&#34;&#34;
-    for node in self._nodes:
-        node.set_styles(css, **styles)
+    _rich_traceback_omit = True
+
+    for node in self:
+        node.set_styles(**update_styles)
+    if css is not None:
+        try:
+            new_styles = parse_declarations(css, path=&#34;set_styles&#34;)
+        except DeclarationError as error:
+            raise DeclarationError(error.name, error.token, error.message) from None
+        for node in self:
+            node._inline_styles.merge(new_styles)
+            node.refresh(layout=True)
     return self</code></pre>
 </details>
 </dd>
@@ -636,7 +1002,7 @@ class DOMQuery:
 </summary>
 <pre><code class="python">def toggle_class(self, *class_names: str) -&gt; DOMQuery:
     &#34;&#34;&#34;Toggle the given class names from matched nodes.&#34;&#34;&#34;
-    for node in self._nodes:
+    for node in self:
         node.toggle_class(*class_names)
     return self</code></pre>
 </details>
@@ -653,11 +1019,56 @@ class DOMQuery:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class NoMatchingNodesError(Exception):
+<pre><code class="python">class NoMatchingNodesError(QueryError):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li><a title="textual.css.query.QueryError" href="#textual.css.query.QueryError">QueryError</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="textual.css.query.QueryError"><code class="flex name class">
+<span>class <span class="ident">QueryError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class QueryError(Exception):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="textual.css.query.NoMatchingNodesError" href="#textual.css.query.NoMatchingNodesError">NoMatchingNodesError</a></li>
+<li><a title="textual.css.query.WrongType" href="#textual.css.query.WrongType">WrongType</a></li>
+</ul>
+</dd>
+<dt id="textual.css.query.WrongType"><code class="flex name class">
+<span>class <span class="ident">WrongType</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class WrongType(QueryError):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.css.query.QueryError" href="#textual.css.query.QueryError">QueryError</a></li>
 <li>builtins.Exception</li>
 <li>builtins.BaseException</li>
 </ul>
@@ -727,20 +1138,30 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></code></h4>
 <ul class="two-column">
+<li><code><a title="textual.css.query.DOMQuery.ExpectType" href="#textual.css.query.DOMQuery.ExpectType">ExpectType</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.add_class" href="#textual.css.query.DOMQuery.add_class">add_class</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.exclude" href="#textual.css.query.DOMQuery.exclude">exclude</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.filter" href="#textual.css.query.DOMQuery.filter">filter</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.first" href="#textual.css.query.DOMQuery.first">first</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.last" href="#textual.css.query.DOMQuery.last">last</a></code></li>
+<li><code><a title="textual.css.query.DOMQuery.node" href="#textual.css.query.DOMQuery.node">node</a></code></li>
+<li><code><a title="textual.css.query.DOMQuery.nodes" href="#textual.css.query.DOMQuery.nodes">nodes</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.refresh" href="#textual.css.query.DOMQuery.refresh">refresh</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.remove" href="#textual.css.query.DOMQuery.remove">remove</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.remove_class" href="#textual.css.query.DOMQuery.remove_class">remove_class</a></code></li>
+<li><code><a title="textual.css.query.DOMQuery.results" href="#textual.css.query.DOMQuery.results">results</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.set_styles" href="#textual.css.query.DOMQuery.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.toggle_class" href="#textual.css.query.DOMQuery.toggle_class">toggle_class</a></code></li>
 </ul>
 </li>
 <li>
 <h4><code><a title="textual.css.query.NoMatchingNodesError" href="#textual.css.query.NoMatchingNodesError">NoMatchingNodesError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="textual.css.query.QueryError" href="#textual.css.query.QueryError">QueryError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="textual.css.query.WrongType" href="#textual.css.query.WrongType">WrongType</a></code></h4>
 </li>
 </ul>
 </li>

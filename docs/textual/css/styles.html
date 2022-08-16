@@ -40,7 +40,7 @@ from rich.style import Style
 
 from .._animator import Animation, EasingFunction
 from ..color import Color
-from ..geometry import Offset, Size, Spacing
+from ..geometry import Offset, Spacing
 from ._style_properties import (
     AlignProperty,
     BorderProperty,
@@ -250,8 +250,6 @@ class StylesBase(ABC):
     layer = NameProperty()
     layers = NameListProperty()
     transitions = TransitionsProperty()
-
-    rich_style = StyleProperty()
 
     tint = ColorProperty(&#34;transparent&#34;)
     scrollbar_color = ColorProperty(&#34;ansi_bright_magenta&#34;)
@@ -828,6 +826,12 @@ class RenderStyles(StylesBase):
         &#34;&#34;&#34;Quick access to the inline styles.&#34;&#34;&#34;
         return self._inline_styles
 
+    @property
+    def rich_style(self) -&gt; Style:
+        &#34;&#34;&#34;Get a Rich style for this Styles object.&#34;&#34;&#34;
+        assert self.node is not None
+        return self.node.rich_style
+
     def __rich_repr__(self) -&gt; rich.repr.Result:
         for rule_name in RULE_NAMES:
             if self.has_rule(rule_name):
@@ -977,6 +981,12 @@ if __name__ == &#34;__main__&#34;:
         &#34;&#34;&#34;Quick access to the inline styles.&#34;&#34;&#34;
         return self._inline_styles
 
+    @property
+    def rich_style(self) -&gt; Style:
+        &#34;&#34;&#34;Get a Rich style for this Styles object.&#34;&#34;&#34;
+        assert self.node is not None
+        return self.node.rich_style
+
     def __rich_repr__(self) -&gt; rich.repr.Result:
         for rule_name in RULE_NAMES:
             if self.has_rule(rule_name):
@@ -1087,6 +1097,20 @@ def inline(self) -&gt; Styles:
     return self._inline_styles</code></pre>
 </details>
 </dd>
+<dt id="textual.css.styles.RenderStyles.rich_style"><code class="name">var <span class="ident">rich_style</span> : rich.style.Style</code></dt>
+<dd>
+<div class="desc"><p>Get a Rich style for this Styles object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def rich_style(self) -&gt; Style:
+    &#34;&#34;&#34;Get a Rich style for this Styles object.&#34;&#34;&#34;
+    assert self.node is not None
+    return self.node.rich_style</code></pre>
+</details>
+</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
@@ -1186,7 +1210,6 @@ def inline(self) -&gt; Styles:
 <li><code><a title="textual.css.styles.StylesBase.parse" href="#textual.css.styles.StylesBase.parse">parse</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.refresh" href="#textual.css.styles.StylesBase.refresh">refresh</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.reset" href="#textual.css.styles.StylesBase.reset">reset</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.rich_style" href="#textual.css.styles.StylesBase.rich_style">rich_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background" href="#textual.css.styles.StylesBase.scrollbar_background">scrollbar_background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background_active" href="#textual.css.styles.StylesBase.scrollbar_background_active">scrollbar_background_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background_hover" href="#textual.css.styles.StylesBase.scrollbar_background_hover">scrollbar_background_hover</a></code></li>
@@ -2140,7 +2163,6 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
 <li><code><a title="textual.css.styles.StylesBase.parse" href="#textual.css.styles.StylesBase.parse">parse</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.refresh" href="#textual.css.styles.StylesBase.refresh">refresh</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.reset" href="#textual.css.styles.StylesBase.reset">reset</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.rich_style" href="#textual.css.styles.StylesBase.rich_style">rich_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background" href="#textual.css.styles.StylesBase.scrollbar_background">scrollbar_background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background_active" href="#textual.css.styles.StylesBase.scrollbar_background_active">scrollbar_background_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background_hover" href="#textual.css.styles.StylesBase.scrollbar_background_hover">scrollbar_background_hover</a></code></li>
@@ -2237,8 +2259,6 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
     layer = NameProperty()
     layers = NameListProperty()
     transitions = TransitionsProperty()
-
-    rich_style = StyleProperty()
 
     tint = ColorProperty(&#34;transparent&#34;)
     scrollbar_color = ColorProperty(&#34;ansi_bright_magenta&#34;)
@@ -3444,29 +3464,6 @@ value belongs in the set of valid values.</p></div>
     return obj.get_rule(self.name, NULL_SPACING)</code></pre>
 </details>
 </dd>
-<dt id="textual.css.styles.StylesBase.rich_style"><code class="name">var <span class="ident">rich_style</span> : Style</code></dt>
-<dd>
-<div class="desc"><p>Descriptor for getting the Rich style.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: StylesBase, objtype: type[StylesBase] | None = None
-) -&gt; Style:
-    &#34;&#34;&#34;Get the Style
-
-    Args:
-        obj (Styles): The ``Styles`` object
-        objtype (type[Styles]): The ``Styles`` class
-
-    Returns:
-        A ``Style`` object.
-    &#34;&#34;&#34;
-    style = ColorPair(obj.color, obj.background).style + obj.text_style
-    return style</code></pre>
-</details>
-</dd>
 <dt id="textual.css.styles.StylesBase.scrollbar_background"><code class="name">var <span class="ident">scrollbar_background</span> : Color</code></dt>
 <dd>
 <div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
@@ -4234,6 +4231,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RenderStyles.has_rule" href="#textual.css.styles.RenderStyles.has_rule">has_rule</a></code></li>
 <li><code><a title="textual.css.styles.RenderStyles.inline" href="#textual.css.styles.RenderStyles.inline">inline</a></code></li>
 <li><code><a title="textual.css.styles.RenderStyles.node" href="#textual.css.styles.RenderStyles.node">node</a></code></li>
+<li><code><a title="textual.css.styles.RenderStyles.rich_style" href="#textual.css.styles.RenderStyles.rich_style">rich_style</a></code></li>
 </ul>
 </li>
 <li>
@@ -4357,7 +4355,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.parse" href="#textual.css.styles.StylesBase.parse">parse</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.refresh" href="#textual.css.styles.StylesBase.refresh">refresh</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.reset" href="#textual.css.styles.StylesBase.reset">reset</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.rich_style" href="#textual.css.styles.StylesBase.rich_style">rich_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background" href="#textual.css.styles.StylesBase.scrollbar_background">scrollbar_background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background_active" href="#textual.css.styles.StylesBase.scrollbar_background_active">scrollbar_background_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background_hover" href="#textual.css.styles.StylesBase.scrollbar_background_hover">scrollbar_background_hover</a></code></li>

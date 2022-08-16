@@ -29,8 +29,7 @@
 <pre><code class="python">from __future__ import annotations
 
 from inspect import getfile
-from operator import attrgetter
-from typing import ClassVar, Iterable, Iterator, Type, TYPE_CHECKING
+from typing import ClassVar, Iterable, Iterator, Type, overload, TypeVar, TYPE_CHECKING
 
 import rich.repr
 from rich.highlighter import ReprHighlighter
@@ -44,7 +43,7 @@ from ._node_list import NodeList
 from .color import Color, WHITE, BLACK
 from .css._error_tools import friendly_list
 from .css.constants import VALID_DISPLAY, VALID_VISIBILITY
-from .css.errors import StyleValueError
+from .css.errors import StyleValueError, DeclarationError
 from .css.parse import parse_declarations
 from .css.styles import Styles, RenderStyles
 from .css.query import NoMatchingNodesError
@@ -52,7 +51,6 @@ from .message_pump import MessagePump
 
 if TYPE_CHECKING:
     from .app import App
-    from .css.styles import StylesBase
     from .css.query import DOMQuery
     from .screen import Screen
     from .widget import Widget
@@ -96,7 +94,7 @@ class DOMNode(MessagePump):
         self._inline_styles: Styles = Styles(self)
         self.styles = RenderStyles(self, self._css_styles, self._inline_styles)
         # A mapping of class names to Styles set in COMPONENT_CLASSES
-        self.component_styles: dict[str, StylesBase] = {}
+        self._component_styles: dict[str, RenderStyles] = {}
 
         super().__init__()
 
@@ -107,6 +105,23 @@ class DOMNode(MessagePump):
         for base in cls._css_bases(cls):
             css_type_names.add(base.__name__.lower())
         cls._css_type_names = frozenset(css_type_names)
+
+    def get_component_styles(self, name: str) -&gt; RenderStyles:
+        &#34;&#34;&#34;Get a &#34;component&#34; styles object (must be defined in COMPONENT_CLASSES classvar).
+
+        Args:
+            name (str): Name of the component.
+
+        Raises:
+            KeyError: If the component class doesn&#39;t exist.
+
+        Returns:
+            RenderStyles: A Styles object.
+        &#34;&#34;&#34;
+        if name not in self._component_styles:
+            raise KeyError(f&#34;No {name!r} key in COMPONENT_CLASSES&#34;)
+        styles = self._component_styles[name]
+        return styles
 
     @property
     def _node_bases(self) -&gt; Iterator[Type[DOMNode]]:
@@ -473,7 +488,7 @@ class DOMNode(MessagePump):
                 node._set_dirty()
                 node._layout_required = True
 
-    def add_child(self, node: DOMNode) -&gt; None:
+    def add_child(self, node: Widget) -&gt; None:
         &#34;&#34;&#34;Add a new child node.
 
         Args:
@@ -482,7 +497,7 @@ class DOMNode(MessagePump):
         self.children._append(node)
         node.set_parent(self)
 
-    def add_children(self, *nodes: DOMNode, **named_nodes: DOMNode) -&gt; None:
+    def add_children(self, *nodes: Widget, **named_nodes: Widget) -&gt; None:
         &#34;&#34;&#34;Add multiple children to this node.
 
         Args:
@@ -498,19 +513,45 @@ class DOMNode(MessagePump):
             _append(node)
             node.id = node_id
 
-    def walk_children(self, with_self: bool = True) -&gt; Iterable[DOMNode]:
-        &#34;&#34;&#34;Generate all descendants of this node.
+    WalkType = TypeVar(&#34;WalkType&#34;)
+
+    @overload
+    def walk_children(
+        self,
+        filter_type: type[WalkType],
+        *,
+        with_self: bool = True,
+    ) -&gt; Iterable[WalkType]:
+        ...
+
+    @overload
+    def walk_children(self, *, with_self: bool = True) -&gt; Iterable[DOMNode]:
+        ...
+
+    def walk_children(
+        self,
+        filter_type: type[WalkType] | None = None,
+        *,
+        with_self: bool = True,
+    ) -&gt; Iterable[DOMNode | WalkType]:
+        &#34;&#34;&#34;Generate descendant nodes.
 
         Args:
-            with_self (bool, optional): Also include self in the results. Defaults to True.
+            filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter.
+                Defaults to None.
+            with_self (bool, optional): Also yield self in addition to descendants. Defaults to True.
+
+        Returns:
+            Iterable[DOMNode | WalkType]: An iterable of nodes.
 
         &#34;&#34;&#34;
 
         stack: list[Iterator[DOMNode]] = [iter(self.children)]
         pop = stack.pop
         push = stack.append
+        check_type = filter_type or DOMNode
 
-        if with_self:
+        if with_self and isinstance(self, check_type):
             yield self
 
         while stack:
@@ -518,7 +559,8 @@ class DOMNode(MessagePump):
             if node is None:
                 pop()
             else:
-                yield node
+                if isinstance(node, check_type):
+                    yield node
                 if node.children:
                     push(iter(node.children))
 
@@ -550,10 +592,28 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         from .css.query import DOMQuery
 
-        return DOMQuery(self, selector)
+        return DOMQuery(self, filter=selector)
 
+    ExpectType = TypeVar(&#34;ExpectType&#34;)
+
+    @overload
     def query_one(self, selector: str) -&gt; Widget:
-        &#34;&#34;&#34;Get the first Widget matching the given selector.
+        ...
+
+    @overload
+    def query_one(self, selector: type[ExpectType]) -&gt; ExpectType:
+        ...
+
+    @overload
+    def query_one(self, selector: str, expect_type: type[ExpectType]) -&gt; ExpectType:
+        ...
+
+    def query_one(
+        self,
+        selector: str | type[ExpectType],
+        expect_type: type[ExpectType] | None = None,
+    ) -&gt; ExpectType | Widget:
+        &#34;&#34;&#34;Get the first Widget matching the given selector or selector type.
 
         Args:
             selector (str | None, optional): A selector.
@@ -563,19 +623,31 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         from .css.query import DOMQuery
 
-        query = DOMQuery(self.screen, selector)
-        return query.first()
+        if isinstance(selector, str):
+            query_selector = selector
+        else:
+            query_selector = selector.__name__
+        query = DOMQuery(self.screen, filter=query_selector)
 
-    def set_styles(self, css: str | None = None, **styles) -&gt; None:
+        if expect_type is None:
+            return query.first()
+        else:
+            return query.first(expect_type)
+
+    def set_styles(self, css: str | None = None, **update_styles) -&gt; None:
         &#34;&#34;&#34;Set custom styles on this object.&#34;&#34;&#34;
-        # TODO: This can be done more efficiently
-        kwarg_css = &#34;\n&#34;.join(
-            f&#34;{key.replace(&#39;_&#39;, &#39;-&#39;)}: {value}&#34; for key, value in styles.items()
-        )
-        apply_css = f&#34;{css or &#39;&#39;}\n{kwarg_css}\n&#34;
-        new_styles = parse_declarations(apply_css, f&#34;&lt;custom styles for ${self!r}&gt;&#34;)
-        self.styles.merge(new_styles)
-        self.refresh()
+
+        if css is not None:
+            try:
+                new_styles = parse_declarations(css, path=&#34;set_styles&#34;)
+            except DeclarationError as error:
+                raise DeclarationError(error.name, error.token, error.message) from None
+            self._inline_styles.merge(new_styles)
+            self.refresh(layout=True)
+
+        styles = self.styles
+        for key, value in update_styles.items():
+            setattr(styles, key, value)
 
     def has_class(self, *class_names: str) -&gt; bool:
         &#34;&#34;&#34;Check if the Node has all the given class names.
@@ -689,7 +761,7 @@ class DOMNode(MessagePump):
         self._inline_styles: Styles = Styles(self)
         self.styles = RenderStyles(self, self._css_styles, self._inline_styles)
         # A mapping of class names to Styles set in COMPONENT_CLASSES
-        self.component_styles: dict[str, StylesBase] = {}
+        self._component_styles: dict[str, RenderStyles] = {}
 
         super().__init__()
 
@@ -700,6 +772,23 @@ class DOMNode(MessagePump):
         for base in cls._css_bases(cls):
             css_type_names.add(base.__name__.lower())
         cls._css_type_names = frozenset(css_type_names)
+
+    def get_component_styles(self, name: str) -&gt; RenderStyles:
+        &#34;&#34;&#34;Get a &#34;component&#34; styles object (must be defined in COMPONENT_CLASSES classvar).
+
+        Args:
+            name (str): Name of the component.
+
+        Raises:
+            KeyError: If the component class doesn&#39;t exist.
+
+        Returns:
+            RenderStyles: A Styles object.
+        &#34;&#34;&#34;
+        if name not in self._component_styles:
+            raise KeyError(f&#34;No {name!r} key in COMPONENT_CLASSES&#34;)
+        styles = self._component_styles[name]
+        return styles
 
     @property
     def _node_bases(self) -&gt; Iterator[Type[DOMNode]]:
@@ -1066,7 +1155,7 @@ class DOMNode(MessagePump):
                 node._set_dirty()
                 node._layout_required = True
 
-    def add_child(self, node: DOMNode) -&gt; None:
+    def add_child(self, node: Widget) -&gt; None:
         &#34;&#34;&#34;Add a new child node.
 
         Args:
@@ -1075,7 +1164,7 @@ class DOMNode(MessagePump):
         self.children._append(node)
         node.set_parent(self)
 
-    def add_children(self, *nodes: DOMNode, **named_nodes: DOMNode) -&gt; None:
+    def add_children(self, *nodes: Widget, **named_nodes: Widget) -&gt; None:
         &#34;&#34;&#34;Add multiple children to this node.
 
         Args:
@@ -1091,19 +1180,45 @@ class DOMNode(MessagePump):
             _append(node)
             node.id = node_id
 
-    def walk_children(self, with_self: bool = True) -&gt; Iterable[DOMNode]:
-        &#34;&#34;&#34;Generate all descendants of this node.
+    WalkType = TypeVar(&#34;WalkType&#34;)
+
+    @overload
+    def walk_children(
+        self,
+        filter_type: type[WalkType],
+        *,
+        with_self: bool = True,
+    ) -&gt; Iterable[WalkType]:
+        ...
+
+    @overload
+    def walk_children(self, *, with_self: bool = True) -&gt; Iterable[DOMNode]:
+        ...
+
+    def walk_children(
+        self,
+        filter_type: type[WalkType] | None = None,
+        *,
+        with_self: bool = True,
+    ) -&gt; Iterable[DOMNode | WalkType]:
+        &#34;&#34;&#34;Generate descendant nodes.
 
         Args:
-            with_self (bool, optional): Also include self in the results. Defaults to True.
+            filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter.
+                Defaults to None.
+            with_self (bool, optional): Also yield self in addition to descendants. Defaults to True.
+
+        Returns:
+            Iterable[DOMNode | WalkType]: An iterable of nodes.
 
         &#34;&#34;&#34;
 
         stack: list[Iterator[DOMNode]] = [iter(self.children)]
         pop = stack.pop
         push = stack.append
+        check_type = filter_type or DOMNode
 
-        if with_self:
+        if with_self and isinstance(self, check_type):
             yield self
 
         while stack:
@@ -1111,7 +1226,8 @@ class DOMNode(MessagePump):
             if node is None:
                 pop()
             else:
-                yield node
+                if isinstance(node, check_type):
+                    yield node
                 if node.children:
                     push(iter(node.children))
 
@@ -1143,10 +1259,28 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         from .css.query import DOMQuery
 
-        return DOMQuery(self, selector)
+        return DOMQuery(self, filter=selector)
 
+    ExpectType = TypeVar(&#34;ExpectType&#34;)
+
+    @overload
     def query_one(self, selector: str) -&gt; Widget:
-        &#34;&#34;&#34;Get the first Widget matching the given selector.
+        ...
+
+    @overload
+    def query_one(self, selector: type[ExpectType]) -&gt; ExpectType:
+        ...
+
+    @overload
+    def query_one(self, selector: str, expect_type: type[ExpectType]) -&gt; ExpectType:
+        ...
+
+    def query_one(
+        self,
+        selector: str | type[ExpectType],
+        expect_type: type[ExpectType] | None = None,
+    ) -&gt; ExpectType | Widget:
+        &#34;&#34;&#34;Get the first Widget matching the given selector or selector type.
 
         Args:
             selector (str | None, optional): A selector.
@@ -1156,19 +1290,31 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         from .css.query import DOMQuery
 
-        query = DOMQuery(self.screen, selector)
-        return query.first()
+        if isinstance(selector, str):
+            query_selector = selector
+        else:
+            query_selector = selector.__name__
+        query = DOMQuery(self.screen, filter=query_selector)
 
-    def set_styles(self, css: str | None = None, **styles) -&gt; None:
+        if expect_type is None:
+            return query.first()
+        else:
+            return query.first(expect_type)
+
+    def set_styles(self, css: str | None = None, **update_styles) -&gt; None:
         &#34;&#34;&#34;Set custom styles on this object.&#34;&#34;&#34;
-        # TODO: This can be done more efficiently
-        kwarg_css = &#34;\n&#34;.join(
-            f&#34;{key.replace(&#39;_&#39;, &#39;-&#39;)}: {value}&#34; for key, value in styles.items()
-        )
-        apply_css = f&#34;{css or &#39;&#39;}\n{kwarg_css}\n&#34;
-        new_styles = parse_declarations(apply_css, f&#34;&lt;custom styles for ${self!r}&gt;&#34;)
-        self.styles.merge(new_styles)
-        self.refresh()
+
+        if css is not None:
+            try:
+                new_styles = parse_declarations(css, path=&#34;set_styles&#34;)
+            except DeclarationError as error:
+                raise DeclarationError(error.name, error.token, error.message) from None
+            self._inline_styles.merge(new_styles)
+            self.refresh(layout=True)
+
+        styles = self.styles
+        for key, value in update_styles.items():
+            setattr(styles, key, value)
 
     def has_class(self, *class_names: str) -&gt; bool:
         &#34;&#34;&#34;Check if the Node has all the given class names.
@@ -1243,6 +1389,14 @@ class DOMNode(MessagePump):
 <div class="desc"></div>
 </dd>
 <dt id="textual.dom.DOMNode.CSS"><code class="name">var <span class="ident">CSS</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.dom.DOMNode.ExpectType"><code class="name">var <span class="ident">ExpectType</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.dom.DOMNode.WalkType"><code class="name">var <span class="ident">WalkType</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1655,7 +1809,7 @@ def visible(self) -&gt; bool:
 <h3>Methods</h3>
 <dl>
 <dt id="textual.dom.DOMNode.add_child"><code class="name flex">
-<span>def <span class="ident">add_child</span></span>(<span>self, node: <a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>) ‑> None</span>
+<span>def <span class="ident">add_child</span></span>(<span>self, node: Widget) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a new child node.</p>
@@ -1668,7 +1822,7 @@ def visible(self) -&gt; bool:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_child(self, node: DOMNode) -&gt; None:
+<pre><code class="python">def add_child(self, node: Widget) -&gt; None:
     &#34;&#34;&#34;Add a new child node.
 
     Args:
@@ -1679,7 +1833,7 @@ def visible(self) -&gt; bool:
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.add_children"><code class="name flex">
-<span>def <span class="ident">add_children</span></span>(<span>self, *nodes: <a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>, **named_nodes: <a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>) ‑> None</span>
+<span>def <span class="ident">add_children</span></span>(<span>self, *nodes: Widget, **named_nodes: Widget) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add multiple children to this node.</p>
@@ -1694,7 +1848,7 @@ def visible(self) -&gt; bool:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_children(self, *nodes: DOMNode, **named_nodes: DOMNode) -&gt; None:
+<pre><code class="python">def add_children(self, *nodes: Widget, **named_nodes: Widget) -&gt; None:
     &#34;&#34;&#34;Add multiple children to this node.
 
     Args:
@@ -1779,6 +1933,48 @@ def visible(self) -&gt; bool:
         if child.id == id:
             return child
     raise NoMatchingNodesError(f&#34;No child found with id={id!r}&#34;)</code></pre>
+</details>
+</dd>
+<dt id="textual.dom.DOMNode.get_component_styles"><code class="name flex">
+<span>def <span class="ident">get_component_styles</span></span>(<span>self, name: str) ‑> <a title="textual.css.styles.RenderStyles" href="css/styles.html#textual.css.styles.RenderStyles">RenderStyles</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get a "component" styles object (must be defined in COMPONENT_CLASSES classvar).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the component.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>KeyError</code></dt>
+<dd>If the component class doesn't exist.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>RenderStyles</code></dt>
+<dd>A Styles object.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_component_styles(self, name: str) -&gt; RenderStyles:
+    &#34;&#34;&#34;Get a &#34;component&#34; styles object (must be defined in COMPONENT_CLASSES classvar).
+
+    Args:
+        name (str): Name of the component.
+
+    Raises:
+        KeyError: If the component class doesn&#39;t exist.
+
+    Returns:
+        RenderStyles: A Styles object.
+    &#34;&#34;&#34;
+    if name not in self._component_styles:
+        raise KeyError(f&#34;No {name!r} key in COMPONENT_CLASSES&#34;)
+    styles = self._component_styles[name]
+    return styles</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.get_default_css"><code class="name flex">
@@ -1942,14 +2138,14 @@ and inherited from base classes.</dd>
     &#34;&#34;&#34;
     from .css.query import DOMQuery
 
-    return DOMQuery(self, selector)</code></pre>
+    return DOMQuery(self, filter=selector)</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.query_one"><code class="name flex">
-<span>def <span class="ident">query_one</span></span>(<span>self, selector: str) ‑> Widget</span>
+<span>def <span class="ident">query_one</span></span>(<span>self, selector: str | type[ExpectType], expect_type: type[ExpectType] | None = None) ‑> ExpectType | Widget</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the first Widget matching the given selector.</p>
+<div class="desc"><p>Get the first Widget matching the given selector or selector type.</p>
 <h2 id="args">Args</h2>
 <p>selector (str | None, optional): A selector.</p>
 <h2 id="returns">Returns</h2>
@@ -1961,8 +2157,12 @@ and inherited from base classes.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def query_one(self, selector: str) -&gt; Widget:
-    &#34;&#34;&#34;Get the first Widget matching the given selector.
+<pre><code class="python">def query_one(
+    self,
+    selector: str | type[ExpectType],
+    expect_type: type[ExpectType] | None = None,
+) -&gt; ExpectType | Widget:
+    &#34;&#34;&#34;Get the first Widget matching the given selector or selector type.
 
     Args:
         selector (str | None, optional): A selector.
@@ -1972,8 +2172,16 @@ and inherited from base classes.</dd>
     &#34;&#34;&#34;
     from .css.query import DOMQuery
 
-    query = DOMQuery(self.screen, selector)
-    return query.first()</code></pre>
+    if isinstance(selector, str):
+        query_selector = selector
+    else:
+        query_selector = selector.__name__
+    query = DOMQuery(self.screen, filter=query_selector)
+
+    if expect_type is None:
+        return query.first()
+    else:
+        return query.first(expect_type)</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.refresh"><code class="name flex">
@@ -2038,7 +2246,7 @@ and inherited from base classes.</dd>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.set_styles"><code class="name flex">
-<span>def <span class="ident">set_styles</span></span>(<span>self, css: str | None = None, **styles) ‑> None</span>
+<span>def <span class="ident">set_styles</span></span>(<span>self, css: str | None = None, **update_styles) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Set custom styles on this object.</p></div>
@@ -2046,16 +2254,20 @@ and inherited from base classes.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def set_styles(self, css: str | None = None, **styles) -&gt; None:
+<pre><code class="python">def set_styles(self, css: str | None = None, **update_styles) -&gt; None:
     &#34;&#34;&#34;Set custom styles on this object.&#34;&#34;&#34;
-    # TODO: This can be done more efficiently
-    kwarg_css = &#34;\n&#34;.join(
-        f&#34;{key.replace(&#39;_&#39;, &#39;-&#39;)}: {value}&#34; for key, value in styles.items()
-    )
-    apply_css = f&#34;{css or &#39;&#39;}\n{kwarg_css}\n&#34;
-    new_styles = parse_declarations(apply_css, f&#34;&lt;custom styles for ${self!r}&gt;&#34;)
-    self.styles.merge(new_styles)
-    self.refresh()</code></pre>
+
+    if css is not None:
+        try:
+            new_styles = parse_declarations(css, path=&#34;set_styles&#34;)
+        except DeclarationError as error:
+            raise DeclarationError(error.name, error.token, error.message) from None
+        self._inline_styles.merge(new_styles)
+        self.refresh(layout=True)
+
+    styles = self.styles
+    for key, value in update_styles.items():
+        setattr(styles, key, value)</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.toggle_class"><code class="name flex">
@@ -2087,32 +2299,47 @@ and inherited from base classes.</dd>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.walk_children"><code class="name flex">
-<span>def <span class="ident">walk_children</span></span>(<span>self, with_self: bool = True) ‑> Iterable[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>]</span>
+<span>def <span class="ident">walk_children</span></span>(<span>self, filter_type: type[WalkType] | None = None, *, with_self: bool = True) ‑> Iterable[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a> | WalkType]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Generate all descendants of this node.</p>
+<div class="desc"><p>Generate descendant nodes.</p>
 <h2 id="args">Args</h2>
 <dl>
+<dt>filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter.</dt>
+<dt>Defaults to None.</dt>
 <dt><strong><code>with_self</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Also include self in the results. Defaults to True.</dd>
-</dl></div>
+<dd>Also yield self in addition to descendants. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Iterable[DOMNode | WalkType]: An iterable of nodes.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def walk_children(self, with_self: bool = True) -&gt; Iterable[DOMNode]:
-    &#34;&#34;&#34;Generate all descendants of this node.
+<pre><code class="python">def walk_children(
+    self,
+    filter_type: type[WalkType] | None = None,
+    *,
+    with_self: bool = True,
+) -&gt; Iterable[DOMNode | WalkType]:
+    &#34;&#34;&#34;Generate descendant nodes.
 
     Args:
-        with_self (bool, optional): Also include self in the results. Defaults to True.
+        filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter.
+            Defaults to None.
+        with_self (bool, optional): Also yield self in addition to descendants. Defaults to True.
+
+    Returns:
+        Iterable[DOMNode | WalkType]: An iterable of nodes.
 
     &#34;&#34;&#34;
 
     stack: list[Iterator[DOMNode]] = [iter(self.children)]
     pop = stack.pop
     push = stack.append
+    check_type = filter_type or DOMNode
 
-    if with_self:
+    if with_self and isinstance(self, check_type):
         yield self
 
     while stack:
@@ -2120,7 +2347,8 @@ and inherited from base classes.</dd>
         if node is None:
             pop()
         else:
-            yield node
+            if isinstance(node, check_type):
+                yield node
             if node.children:
                 push(iter(node.children))</code></pre>
 </details>
@@ -2236,6 +2464,8 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.dom.DOMNode.COMPONENT_CLASSES" href="#textual.dom.DOMNode.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
 <li><code><a title="textual.dom.DOMNode.CSS" href="#textual.dom.DOMNode.CSS">CSS</a></code></li>
+<li><code><a title="textual.dom.DOMNode.ExpectType" href="#textual.dom.DOMNode.ExpectType">ExpectType</a></code></li>
+<li><code><a title="textual.dom.DOMNode.WalkType" href="#textual.dom.DOMNode.WalkType">WalkType</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_child" href="#textual.dom.DOMNode.add_child">add_child</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_children" href="#textual.dom.DOMNode.add_children">add_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_class" href="#textual.dom.DOMNode.add_class">add_class</a></code></li>
@@ -2249,6 +2479,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.display" href="#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.dom.DOMNode.displayed_children" href="#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_child" href="#textual.dom.DOMNode.get_child">get_child</a></code></li>
+<li><code><a title="textual.dom.DOMNode.get_component_styles" href="#textual.dom.DOMNode.get_component_styles">get_component_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_default_css" href="#textual.dom.DOMNode.get_default_css">get_default_css</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_pseudo_classes" href="#textual.dom.DOMNode.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_class" href="#textual.dom.DOMNode.has_class">has_class</a></code></li>

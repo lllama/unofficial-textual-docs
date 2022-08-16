@@ -165,7 +165,7 @@ class Reactive(Generic[ReactiveType]):
 
 
 def watch(
-    obj: Reactable, attribute_name: str, callback: Callable[[Any], Awaitable[None]]
+    obj: Reactable, attribute_name: str, callback: Callable[[Any], object]
 ) -&gt; None:
     watcher_name = f&#34;__{attribute_name}_watchers&#34;
     current_value = getattr(obj, attribute_name, None)
@@ -184,7 +184,7 @@ def watch(
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="textual.reactive.watch"><code class="name flex">
-<span>def <span class="ident">watch</span></span>(<span>obj: Reactable, attribute_name: str, callback: Callable[[Any], Awaitable[None]]) ‑> None</span>
+<span>def <span class="ident">watch</span></span>(<span>obj: Reactable, attribute_name: str, callback: Callable[[Any], object]) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -193,7 +193,7 @@ def watch(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def watch(
-    obj: Reactable, attribute_name: str, callback: Callable[[Any], Awaitable[None]]
+    obj: Reactable, attribute_name: str, callback: Callable[[Any], object]
 ) -&gt; None:
     watcher_name = f&#34;__{attribute_name}_watchers&#34;
     current_value = getattr(obj, attribute_name, None)

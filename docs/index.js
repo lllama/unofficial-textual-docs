@@ -477,7 +477,12 @@ INDEX=[
 {
 "ref":"textual.css.query",
 "url":7,
-"doc":"A DOMQuery is a set of DOM nodes associated with a given CSS selector. This set of nodes may be further filtered with the filter method. Additional methods apply actions to the nodes in the query. If this sounds like JQuery, a (once) popular JS library, it is no coincidence. DOMQuery objects are typically created by Widget.filter method."
+"doc":"A DOMQuery is a set of DOM nodes associated with a given CSS selector. This set of nodes may be further filtered with the filter method. Additional methods apply actions to the nodes in the query. If this sounds like JQuery, a (once) popular JS library, it is no coincidence. DOMQuery objects are typically created by Widget.query method. Queries are  lazy . Results will be calculated at the point you iterate over the query, or call a method which evaluates the query, such as first() and last()."
+},
+{
+"ref":"textual.css.query.QueryError",
+"url":7,
+"doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.query.NoMatchingNodesError",
@@ -485,9 +490,24 @@ INDEX=[
 "doc":"Common base class for all non-exit exceptions."
 },
 {
+"ref":"textual.css.query.WrongType",
+"url":7,
+"doc":"Common base class for all non-exit exceptions."
+},
+{
 "ref":"textual.css.query.DOMQuery",
 "url":7,
 "doc":""
+},
+{
+"ref":"textual.css.query.DOMQuery.node",
+"url":7,
+"doc":""
+},
+{
+"ref":"textual.css.query.DOMQuery.nodes",
+"url":7,
+"doc":"Lazily evaluate nodes."
 },
 {
 "ref":"textual.css.query.DOMQuery.filter",
@@ -502,15 +522,26 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.css.query.DOMQuery.ExpectType",
+"url":7,
+"doc":""
+},
+{
 "ref":"textual.css.query.DOMQuery.first",
 "url":7,
-"doc":"Get the first matched node. Returns: DOMNode: A DOM Node.",
+"doc":"Get the  first match node. Args: expect_type (type[ExpectType] | None, optional): Require matched node is of this type, or None for any type. Defaults to None. Raises: WrongType: If the wrong type was found. NoMatchingNodesError: If there are no matching nodes in the query. Returns: Widget | ExpectType: The matching Widget.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.last",
 "url":7,
-"doc":"Get the last matched node. Returns: DOMNode: A DOM Node.",
+"doc":"Get the  last match node. Args: expect_type (type[ExpectType] | None, optional): Require matched node is of this type, or None for any type. Defaults to None. Raises: WrongType: If the wrong type was found. NoMatchingNodesError: If there are no matching nodes in the query. Returns: Widget | ExpectType: The matching Widget.",
+"func":1
+},
+{
+"ref":"textual.css.query.DOMQuery.results",
+"url":7,
+"doc":"Get query results, optionally filtered by a given type. Args: filter_type (type[ExpectType] | None): A Widget class to filter results, or None for no filter. Defaults to None. Yields: Iterator[Widget | ExpectType]: An iterator of Widget instances.",
 "func":1
 },
 {
@@ -759,6 +790,11 @@ INDEX=[
 "ref":"textual.css.scalar.Scalar.is_fraction",
 "url":9,
 "doc":"Check if the unit is a fraction."
+},
+{
+"ref":"textual.css.scalar.Scalar.excludes_border",
+"url":9,
+"doc":""
 },
 {
 "ref":"textual.css.scalar.Scalar.cells",
@@ -1061,6 +1097,11 @@ INDEX=[
 },
 {
 "ref":"textual.css.model.SelectorSet.specificity",
+"url":13,
+"doc":""
+},
+{
+"ref":"textual.css.model.SelectorSet.css",
 "url":13,
 "doc":""
 },
@@ -1597,11 +1638,6 @@ INDEX=[
 "doc":"Descriptor for getting transitions properties"
 },
 {
-"ref":"textual.css.styles.StylesBase.rich_style",
-"url":16,
-"doc":"Descriptor for getting the Rich style."
-},
-{
 "ref":"textual.css.styles.StylesBase.tint",
 "url":16,
 "doc":"Descriptor for getting and setting color properties."
@@ -2044,11 +2080,6 @@ INDEX=[
 "doc":"Descriptor for getting transitions properties"
 },
 {
-"ref":"textual.css.styles.Styles.rich_style",
-"url":16,
-"doc":"Descriptor for getting the Rich style."
-},
-{
 "ref":"textual.css.styles.Styles.tint",
 "url":16,
 "doc":"Descriptor for getting and setting color properties."
@@ -2183,6 +2214,11 @@ INDEX=[
 "ref":"textual.css.styles.RenderStyles.inline",
 "url":16,
 "doc":"Quick access to the inline styles."
+},
+{
+"ref":"textual.css.styles.RenderStyles.rich_style",
+"url":16,
+"doc":"Get a Rich style for this Styles object."
 },
 {
 "ref":"textual.css.styles.RenderStyles.refresh",
@@ -2407,11 +2443,6 @@ INDEX=[
 "ref":"textual.css.styles.RenderStyles.transitions",
 "url":16,
 "doc":"Descriptor for getting transitions properties"
-},
-{
-"ref":"textual.css.styles.RenderStyles.rich_style",
-"url":16,
-"doc":"Descriptor for getting the Rich style."
 },
 {
 "ref":"textual.css.styles.RenderStyles.tint",
@@ -3252,6 +3283,16 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.scroll_view.ScrollView.allow_vertical_scroll",
+"url":35,
+"doc":"Check if vertical scroll is permitted."
+},
+{
+"ref":"textual.scroll_view.ScrollView.allow_horizontal_scroll",
+"url":35,
+"doc":"Check if horizontal scroll is permitted."
+},
+{
 "ref":"textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar",
 "url":35,
 "doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
@@ -3439,6 +3480,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scroll_view.ScrollView.post_render",
+"url":35,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.scroll_view.ScrollView.watch_mouse_over",
 "url":35,
 "doc":"Update from CSS if mouse over state changes.",
@@ -3508,6 +3555,12 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.release_mouse",
 "url":35,
 "doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.get_component_styles",
+"url":36,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
 "func":1
 },
 {
@@ -3612,7 +3665,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.walk_children",
 "url":36,
-"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -3630,7 +3683,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.query_one",
 "url":36,
-"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -3795,6 +3848,12 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.dom.DOMNode.get_component_styles",
+"url":36,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
+"func":1
+},
+{
 "ref":"textual.dom.DOMNode.on_register",
 "url":36,
 "doc":"Called when the widget is registered Args: app (App): Parent application.",
@@ -3921,9 +3980,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.dom.DOMNode.WalkType",
+"url":36,
+"doc":""
+},
+{
 "ref":"textual.dom.DOMNode.walk_children",
 "url":36,
-"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -3939,9 +4003,14 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.dom.DOMNode.ExpectType",
+"url":36,
+"doc":""
+},
+{
 "ref":"textual.dom.DOMNode.query_one",
 "url":36,
-"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -4649,6 +4718,16 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.allow_vertical_scroll",
+"url":35,
+"doc":"Check if vertical scroll is permitted."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.allow_horizontal_scroll",
+"url":35,
+"doc":"Check if horizontal scroll is permitted."
+},
+{
 "ref":"textual.scrollbar.ScrollBar.watch_show_horizontal_scrollbar",
 "url":35,
 "doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
@@ -4858,6 +4937,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.post_render",
+"url":35,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.watch_mouse_over",
 "url":35,
 "doc":"Update from CSS if mouse over state changes.",
@@ -4927,6 +5012,12 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.release_mouse",
 "url":35,
 "doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBar.get_component_styles",
+"url":36,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
 "func":1
 },
 {
@@ -5031,7 +5122,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.walk_children",
 "url":36,
-"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -5049,7 +5140,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.query_one",
 "url":36,
-"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -7939,6 +8030,16 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.screen.Screen.allow_vertical_scroll",
+"url":35,
+"doc":"Check if vertical scroll is permitted."
+},
+{
+"ref":"textual.screen.Screen.allow_horizontal_scroll",
+"url":35,
+"doc":"Check if horizontal scroll is permitted."
+},
+{
 "ref":"textual.screen.Screen.watch_show_horizontal_scrollbar",
 "url":35,
 "doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
@@ -8143,6 +8244,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.post_render",
+"url":35,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.watch_mouse_over",
 "url":35,
 "doc":"Update from CSS if mouse over state changes.",
@@ -8206,6 +8313,12 @@ INDEX=[
 "ref":"textual.screen.Screen.release_mouse",
 "url":35,
 "doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.get_component_styles",
+"url":36,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
 "func":1
 },
 {
@@ -8310,7 +8423,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.walk_children",
 "url":36,
-"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -8328,7 +8441,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.query_one",
 "url":36,
-"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -9556,6 +9669,16 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.layout.Container.allow_vertical_scroll",
+"url":35,
+"doc":"Check if vertical scroll is permitted."
+},
+{
+"ref":"textual.layout.Container.allow_horizontal_scroll",
+"url":35,
+"doc":"Check if horizontal scroll is permitted."
+},
+{
 "ref":"textual.layout.Container.watch_show_horizontal_scrollbar",
 "url":35,
 "doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
@@ -9765,6 +9888,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Container.post_render",
+"url":35,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.layout.Container.watch_mouse_over",
 "url":35,
 "doc":"Update from CSS if mouse over state changes.",
@@ -9840,6 +9969,12 @@ INDEX=[
 "ref":"textual.layout.Container.release_mouse",
 "url":35,
 "doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Container.get_component_styles",
+"url":36,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
 "func":1
 },
 {
@@ -9944,7 +10079,7 @@ INDEX=[
 {
 "ref":"textual.layout.Container.walk_children",
 "url":36,
-"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -9962,7 +10097,7 @@ INDEX=[
 {
 "ref":"textual.layout.Container.query_one",
 "url":36,
-"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -10168,6 +10303,16 @@ INDEX=[
 "ref":"textual.layout.Vertical.show_horizontal_scrollbar",
 "url":35,
 "doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Vertical.allow_vertical_scroll",
+"url":35,
+"doc":"Check if vertical scroll is permitted."
+},
+{
+"ref":"textual.layout.Vertical.allow_horizontal_scroll",
+"url":35,
+"doc":"Check if horizontal scroll is permitted."
 },
 {
 "ref":"textual.layout.Vertical.watch_show_horizontal_scrollbar",
@@ -10379,6 +10524,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Vertical.post_render",
+"url":35,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.layout.Vertical.watch_mouse_over",
 "url":35,
 "doc":"Update from CSS if mouse over state changes.",
@@ -10454,6 +10605,12 @@ INDEX=[
 "ref":"textual.layout.Vertical.release_mouse",
 "url":35,
 "doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.get_component_styles",
+"url":36,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
 "func":1
 },
 {
@@ -10558,7 +10715,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.walk_children",
 "url":36,
-"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -10576,7 +10733,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.query_one",
 "url":36,
-"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -10782,6 +10939,16 @@ INDEX=[
 "ref":"textual.layout.Horizontal.show_horizontal_scrollbar",
 "url":35,
 "doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Horizontal.allow_vertical_scroll",
+"url":35,
+"doc":"Check if vertical scroll is permitted."
+},
+{
+"ref":"textual.layout.Horizontal.allow_horizontal_scroll",
+"url":35,
+"doc":"Check if horizontal scroll is permitted."
 },
 {
 "ref":"textual.layout.Horizontal.watch_show_horizontal_scrollbar",
@@ -10993,6 +11160,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Horizontal.post_render",
+"url":35,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.watch_mouse_over",
 "url":35,
 "doc":"Update from CSS if mouse over state changes.",
@@ -11068,6 +11241,12 @@ INDEX=[
 "ref":"textual.layout.Horizontal.release_mouse",
 "url":35,
 "doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Horizontal.get_component_styles",
+"url":36,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
 "func":1
 },
 {
@@ -11172,7 +11351,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.walk_children",
 "url":36,
-"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -11190,7 +11369,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.query_one",
 "url":36,
-"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -11396,6 +11575,16 @@ INDEX=[
 "ref":"textual.layout.Center.show_horizontal_scrollbar",
 "url":35,
 "doc":"Reactive descriptor."
+},
+{
+"ref":"textual.layout.Center.allow_vertical_scroll",
+"url":35,
+"doc":"Check if vertical scroll is permitted."
+},
+{
+"ref":"textual.layout.Center.allow_horizontal_scroll",
+"url":35,
+"doc":"Check if horizontal scroll is permitted."
 },
 {
 "ref":"textual.layout.Center.watch_show_horizontal_scrollbar",
@@ -11607,6 +11796,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Center.post_render",
+"url":35,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.layout.Center.watch_mouse_over",
 "url":35,
 "doc":"Update from CSS if mouse over state changes.",
@@ -11682,6 +11877,12 @@ INDEX=[
 "ref":"textual.layout.Center.release_mouse",
 "url":35,
 "doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.layout.Center.get_component_styles",
+"url":36,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
 "func":1
 },
 {
@@ -11786,7 +11987,7 @@ INDEX=[
 {
 "ref":"textual.layout.Center.walk_children",
 "url":36,
-"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -11804,7 +12005,7 @@ INDEX=[
 {
 "ref":"textual.layout.Center.query_one",
 "url":36,
-"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
@@ -13124,6 +13325,16 @@ INDEX=[
 "doc":"Reactive descriptor."
 },
 {
+"ref":"textual.widget.Widget.allow_vertical_scroll",
+"url":35,
+"doc":"Check if vertical scroll is permitted."
+},
+{
+"ref":"textual.widget.Widget.allow_horizontal_scroll",
+"url":35,
+"doc":"Check if horizontal scroll is permitted."
+},
+{
 "ref":"textual.widget.Widget.watch_show_horizontal_scrollbar",
 "url":35,
 "doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
@@ -13450,6 +13661,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.post_render",
+"url":35,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.watch_mouse_over",
 "url":35,
 "doc":"Update from CSS if mouse over state changes.",
@@ -13588,12 +13805,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.widget.Widget.on_mount",
-"url":35,
-"doc":"",
-"func":1
-},
-{
 "ref":"textual.widget.Widget.on_leave",
 "url":35,
 "doc":"",
@@ -13720,6 +13931,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.get_component_styles",
+"url":36,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.get_default_css",
 "url":36,
 "doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
@@ -13821,7 +14038,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.walk_children",
 "url":36,
-"doc":"Generate all descendants of this node. Args: with_self (bool, optional): Also include self in the results. Defaults to True.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -13839,7 +14056,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.query_one",
 "url":36,
-"doc":"Get the first Widget matching the given selector. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
 "func":1
 },
 {
