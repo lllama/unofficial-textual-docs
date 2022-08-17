@@ -153,6 +153,8 @@ class RulesMap(TypedDict, total=False):
     scrollbar_color_hover: Color
     scrollbar_color_active: Color
 
+    scrollbar_corner_color: Color
+
     scrollbar_background: Color
     scrollbar_background_hover: Color
     scrollbar_background_active: Color
@@ -255,6 +257,8 @@ class StylesBase(ABC):
     scrollbar_color = ColorProperty(&#34;ansi_bright_magenta&#34;)
     scrollbar_color_hover = ColorProperty(&#34;ansi_yellow&#34;)
     scrollbar_color_active = ColorProperty(&#34;ansi_bright_yellow&#34;)
+
+    scrollbar_corner_color = ColorProperty(&#34;#666666&#34;)
 
     scrollbar_background = ColorProperty(&#34;#555555&#34;)
     scrollbar_background_hover = ColorProperty(&#34;#444444&#34;)
@@ -1216,6 +1220,7 @@ def rich_style(self) -&gt; Style:
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color" href="#textual.css.styles.StylesBase.scrollbar_color">scrollbar_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_corner_color" href="#textual.css.styles.StylesBase.scrollbar_corner_color">scrollbar_corner_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_gutter" href="#textual.css.styles.StylesBase.scrollbar_gutter">scrollbar_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
@@ -1295,6 +1300,8 @@ def rich_style(self) -&gt; Style:
     scrollbar_color: Color
     scrollbar_color_hover: Color
     scrollbar_color_active: Color
+
+    scrollbar_corner_color: Color
 
     scrollbar_background: Color
     scrollbar_background_hover: Color
@@ -1466,6 +1473,10 @@ def rich_style(self) -&gt; Style:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.styles.RulesMap.scrollbar_color_hover"><code class="name">var <span class="ident">scrollbar_color_hover</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.scrollbar_corner_color"><code class="name">var <span class="ident">scrollbar_corner_color</span> : Color</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2169,6 +2180,7 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color" href="#textual.css.styles.StylesBase.scrollbar_color">scrollbar_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_corner_color" href="#textual.css.styles.StylesBase.scrollbar_corner_color">scrollbar_corner_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_gutter" href="#textual.css.styles.StylesBase.scrollbar_gutter">scrollbar_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
@@ -2264,6 +2276,8 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
     scrollbar_color = ColorProperty(&#34;ansi_bright_magenta&#34;)
     scrollbar_color_hover = ColorProperty(&#34;ansi_yellow&#34;)
     scrollbar_color_active = ColorProperty(&#34;ansi_bright_yellow&#34;)
+
+    scrollbar_corner_color = ColorProperty(&#34;#666666&#34;)
 
     scrollbar_background = ColorProperty(&#34;#555555&#34;)
     scrollbar_background_hover = ColorProperty(&#34;#444444&#34;)
@@ -3596,6 +3610,28 @@ value belongs in the set of valid values.</p></div>
     return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
 </details>
 </dd>
+<dt id="textual.css.styles.StylesBase.scrollbar_corner_color"><code class="name">var <span class="ident">scrollbar_corner_color</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.StylesBase.scrollbar_gutter"><code class="name">var <span class="ident">scrollbar_gutter</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
@@ -4275,6 +4311,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_color" href="#textual.css.styles.RulesMap.scrollbar_color">scrollbar_color</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_color_active" href="#textual.css.styles.RulesMap.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_color_hover" href="#textual.css.styles.RulesMap.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.scrollbar_corner_color" href="#textual.css.styles.RulesMap.scrollbar_corner_color">scrollbar_corner_color</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_gutter" href="#textual.css.styles.RulesMap.scrollbar_gutter">scrollbar_gutter</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_size_horizontal" href="#textual.css.styles.RulesMap.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_size_vertical" href="#textual.css.styles.RulesMap.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
@@ -4361,6 +4398,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color" href="#textual.css.styles.StylesBase.scrollbar_color">scrollbar_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_active" href="#textual.css.styles.StylesBase.scrollbar_color_active">scrollbar_color_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_color_hover" href="#textual.css.styles.StylesBase.scrollbar_color_hover">scrollbar_color_hover</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.scrollbar_corner_color" href="#textual.css.styles.StylesBase.scrollbar_corner_color">scrollbar_corner_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_gutter" href="#textual.css.styles.StylesBase.scrollbar_gutter">scrollbar_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_size_horizontal" href="#textual.css.styles.StylesBase.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_size_vertical" href="#textual.css.styles.StylesBase.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>

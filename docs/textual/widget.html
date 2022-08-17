@@ -45,7 +45,6 @@ import rich.repr
 from rich.align import Align
 from rich.console import Console, RenderableType
 from rich.measure import Measurement
-
 from rich.segment import Segment
 from rich.style import Style
 from rich.styled import Styled
@@ -74,6 +73,7 @@ if TYPE_CHECKING:
         ScrollRight,
         ScrollTo,
         ScrollUp,
+        ScrollBarCorner,
     )
 
 
@@ -101,6 +101,7 @@ class Widget(DOMNode):
         scrollbar-background-hover: $panel-darken-2;
         scrollbar-color: $primary-lighten-1;
         scrollbar-color-active: $warning-darken-1;
+        scrollbar-corner-color: $panel-darken-3;
         scrollbar-size-vertical: 2;
         scrollbar-size-horizontal: 1;
     }
@@ -130,6 +131,7 @@ class Widget(DOMNode):
 
         self._vertical_scrollbar: ScrollBar | None = None
         self._horizontal_scrollbar: ScrollBar | None = None
+        self._scrollbar_corner: ScrollBarCorner | None = None
 
         self._render_cache = RenderCache(Size(0, 0), [])
         # Regions which need to be updated (in Widget)
@@ -380,6 +382,19 @@ class Widget(DOMNode):
             - self.container_size.height
             + self.scrollbar_size_horizontal,
         )
+
+    @property
+    def scrollbar_corner(self) -&gt; ScrollBarCorner:
+        &#34;&#34;&#34;Return the ScrollBarCorner - the cells that appear between the
+        horizontal and vertical scrollbars (only when both are visible).
+        &#34;&#34;&#34;
+        from .scrollbar import ScrollBarCorner
+
+        if self._scrollbar_corner is not None:
+            return self._scrollbar_corner
+        self._scrollbar_corner = ScrollBarCorner()
+        self.app.start_widget(self, self._scrollbar_corner)
+        return self._scrollbar_corner
 
     @property
     def vertical_scrollbar(self) -&gt; ScrollBar:
@@ -946,15 +961,18 @@ class Widget(DOMNode):
                 _,
                 vertical_scrollbar_region,
                 horizontal_scrollbar_region,
-                _,
+                scrollbar_corner_gap,
             ) = region.split(
                 -scrollbar_size_vertical,
                 -scrollbar_size_horizontal,
             )
+            if scrollbar_corner_gap:
+                yield self.scrollbar_corner, scrollbar_corner_gap
             if vertical_scrollbar_region:
                 yield self.vertical_scrollbar, vertical_scrollbar_region
             if horizontal_scrollbar_region:
                 yield self.horizontal_scrollbar, horizontal_scrollbar_region
+
         elif show_vertical_scrollbar:
             _, scrollbar_region = region.split_vertical(-scrollbar_size_vertical)
             if scrollbar_region:
@@ -1400,6 +1418,7 @@ def cursor_line(self) -&gt; int | None:
         scrollbar-background-hover: $panel-darken-2;
         scrollbar-color: $primary-lighten-1;
         scrollbar-color-active: $warning-darken-1;
+        scrollbar-corner-color: $panel-darken-3;
         scrollbar-size-vertical: 2;
         scrollbar-size-horizontal: 1;
     }
@@ -1429,6 +1448,7 @@ def cursor_line(self) -&gt; int | None:
 
         self._vertical_scrollbar: ScrollBar | None = None
         self._horizontal_scrollbar: ScrollBar | None = None
+        self._scrollbar_corner: ScrollBarCorner | None = None
 
         self._render_cache = RenderCache(Size(0, 0), [])
         # Regions which need to be updated (in Widget)
@@ -1679,6 +1699,19 @@ def cursor_line(self) -&gt; int | None:
             - self.container_size.height
             + self.scrollbar_size_horizontal,
         )
+
+    @property
+    def scrollbar_corner(self) -&gt; ScrollBarCorner:
+        &#34;&#34;&#34;Return the ScrollBarCorner - the cells that appear between the
+        horizontal and vertical scrollbars (only when both are visible).
+        &#34;&#34;&#34;
+        from .scrollbar import ScrollBarCorner
+
+        if self._scrollbar_corner is not None:
+            return self._scrollbar_corner
+        self._scrollbar_corner = ScrollBarCorner()
+        self.app.start_widget(self, self._scrollbar_corner)
+        return self._scrollbar_corner
 
     @property
     def vertical_scrollbar(self) -&gt; ScrollBar:
@@ -2245,15 +2278,18 @@ def cursor_line(self) -&gt; int | None:
                 _,
                 vertical_scrollbar_region,
                 horizontal_scrollbar_region,
-                _,
+                scrollbar_corner_gap,
             ) = region.split(
                 -scrollbar_size_vertical,
                 -scrollbar_size_horizontal,
             )
+            if scrollbar_corner_gap:
+                yield self.scrollbar_corner, scrollbar_corner_gap
             if vertical_scrollbar_region:
                 yield self.vertical_scrollbar, vertical_scrollbar_region
             if horizontal_scrollbar_region:
                 yield self.horizontal_scrollbar, horizontal_scrollbar_region
+
         elif show_vertical_scrollbar:
             _, scrollbar_region = region.split_vertical(-scrollbar_size_vertical)
             if scrollbar_region:
@@ -2625,6 +2661,7 @@ def cursor_line(self) -&gt; int | None:
 <li><a title="textual.screen.Screen" href="screen.html#textual.screen.Screen">Screen</a></li>
 <li><a title="textual.scroll_view.ScrollView" href="scroll_view.html#textual.scroll_view.ScrollView">ScrollView</a></li>
 <li><a title="textual.scrollbar.ScrollBar" href="scrollbar.html#textual.scrollbar.ScrollBar">ScrollBar</a></li>
+<li><a title="textual.scrollbar.ScrollBarCorner" href="scrollbar.html#textual.scrollbar.ScrollBarCorner">ScrollBarCorner</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -3095,6 +3132,28 @@ def scroll_offset(self) -&gt; Offset:
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
     return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scrollbar_corner"><code class="name">var <span class="ident">scrollbar_corner</span> : ScrollBarCorner</code></dt>
+<dd>
+<div class="desc"><p>Return the ScrollBarCorner - the cells that appear between the
+horizontal and vertical scrollbars (only when both are visible).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def scrollbar_corner(self) -&gt; ScrollBarCorner:
+    &#34;&#34;&#34;Return the ScrollBarCorner - the cells that appear between the
+    horizontal and vertical scrollbars (only when both are visible).
+    &#34;&#34;&#34;
+    from .scrollbar import ScrollBarCorner
+
+    if self._scrollbar_corner is not None:
+        return self._scrollbar_corner
+    self._scrollbar_corner = ScrollBarCorner()
+    self.app.start_widget(self, self._scrollbar_corner)
+    return self._scrollbar_corner</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scrollbar_gutter"><code class="name">var <span class="ident">scrollbar_gutter</span> : <a title="textual.geometry.Spacing" href="geometry.html#textual.geometry.Spacing">Spacing</a></code></dt>
@@ -5144,6 +5203,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.scroll_visible" href="#textual.widget.Widget.scroll_visible">scroll_visible</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_x" href="#textual.widget.Widget.scroll_x">scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_y" href="#textual.widget.Widget.scroll_y">scroll_y</a></code></li>
+<li><code><a title="textual.widget.Widget.scrollbar_corner" href="#textual.widget.Widget.scrollbar_corner">scrollbar_corner</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_gutter" href="#textual.widget.Widget.scrollbar_gutter">scrollbar_gutter</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
