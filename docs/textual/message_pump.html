@@ -150,7 +150,12 @@ class MessagePump(metaclass=MessagePumpMeta):
     def log(self, *args, **kwargs) -&gt; None:
         return self.app.log(*args, **kwargs, _textual_calling_frame=inspect.stack()[1])
 
-    def set_parent(self, parent: MessagePump) -&gt; None:
+    def _attach(self, parent: MessagePump) -&gt; None:
+        &#34;&#34;&#34;Set the parent, and therefore attach this node to the tree.
+
+        Args:
+            parent (MessagePump): Parent node.
+        &#34;&#34;&#34;
         self._parent = parent
 
     def check_message_enabled(self, message: Message) -&gt; bool:
@@ -649,7 +654,12 @@ class MessagePump(metaclass=MessagePumpMeta):
     def log(self, *args, **kwargs) -&gt; None:
         return self.app.log(*args, **kwargs, _textual_calling_frame=inspect.stack()[1])
 
-    def set_parent(self, parent: MessagePump) -&gt; None:
+    def _attach(self, parent: MessagePump) -&gt; None:
+        &#34;&#34;&#34;Set the parent, and therefore attach this node to the tree.
+
+        Args:
+            parent (MessagePump): Parent node.
+        &#34;&#34;&#34;
         self._parent = parent
 
     def check_message_enabled(self, message: Message) -&gt; bool:
@@ -1690,19 +1700,6 @@ timer messages to skip the queue, so that they can be more regular.</p>
     return timer</code></pre>
 </details>
 </dd>
-<dt id="textual.message_pump.MessagePump.set_parent"><code class="name flex">
-<span>def <span class="ident">set_parent</span></span>(<span>self, parent: <a title="textual.message_pump.MessagePump" href="#textual.message_pump.MessagePump">MessagePump</a>) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_parent(self, parent: MessagePump) -&gt; None:
-    self._parent = parent</code></pre>
-</details>
-</dd>
 <dt id="textual.message_pump.MessagePump.set_timer"><code class="name flex">
 <span>def <span class="ident">set_timer</span></span>(<span>self, delay: float, callback: TimerCallback = None, *, name: str | None = None, pause: bool = False) ‑> Timer</span>
 </code></dt>
@@ -1927,7 +1924,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.message_pump.MessagePump.post_priority_message" href="#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.process_messages" href="#textual.message_pump.MessagePump.process_messages">process_messages</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.set_interval" href="#textual.message_pump.MessagePump.set_interval">set_interval</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.set_parent" href="#textual.message_pump.MessagePump.set_parent">set_parent</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.set_timer" href="#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.start_messages" href="#textual.message_pump.MessagePump.start_messages">start_messages</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.task" href="#textual.message_pump.MessagePump.task">task</a></code></li>

@@ -48,6 +48,7 @@ URLS=[
 "textual/box_model.html",
 "textual/constants.html",
 "textual/renderables/index.html",
+"textual/renderables/align.html",
 "textual/renderables/gradient.html",
 "textual/renderables/sparkline.html",
 "textual/renderables/underline_bar.html",
@@ -1020,12 +1021,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.scrollbar.ScrollBar.on_idle",
-"url":4,
-"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
-"func":1
-},
-{
 "ref":"textual.scrollbar.ScrollBar.focus",
 "url":4,
 "doc":"Give input focus to this widget.",
@@ -1653,12 +1648,6 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBarCorner.post_message",
 "url":4,
 "doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBarCorner.on_idle",
-"url":4,
-"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
 "func":1
 },
 {
@@ -2587,12 +2576,6 @@ INDEX=[
 "ref":"textual.widget.Widget.post_message",
 "url":4,
 "doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.on_idle",
-"url":4,
-"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
 "func":1
 },
 {
@@ -3783,12 +3766,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Container.on_idle",
-"url":4,
-"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
-"func":1
-},
-{
 "ref":"textual.layout.Container.focus",
 "url":4,
 "doc":"Give input focus to this widget.",
@@ -4421,12 +4398,6 @@ INDEX=[
 "ref":"textual.layout.Vertical.post_message",
 "url":4,
 "doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.on_idle",
-"url":4,
-"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
 "func":1
 },
 {
@@ -5065,12 +5036,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Horizontal.on_idle",
-"url":4,
-"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
-"func":1
-},
-{
 "ref":"textual.layout.Horizontal.focus",
 "url":4,
 "doc":"Give input focus to this widget.",
@@ -5706,12 +5671,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Center.on_idle",
-"url":4,
-"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
-"func":1
-},
-{
 "ref":"textual.layout.Center.focus",
 "url":4,
 "doc":"Give input focus to this widget.",
@@ -5994,6 +5953,11 @@ INDEX=[
 },
 {
 "ref":"textual.dom.DOMNode.CSS",
+"url":5,
+"doc":""
+},
+{
+"ref":"textual.dom.DOMNode.DEFAULT_CLASSES",
 "url":5,
 "doc":""
 },
@@ -6849,12 +6813,6 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.post_message",
 "url":4,
 "doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
-"func":1
-},
-{
-"ref":"textual.scroll_view.ScrollView.on_idle",
-"url":4,
-"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
 "func":1
 },
 {
@@ -11248,115 +11206,125 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.renderables.gradient",
+"ref":"textual.renderables.align",
 "url":49,
+"doc":""
+},
+{
+"ref":"textual.renderables.align.Align",
+"url":49,
+"doc":"Align a child renderable Args: renderable (RenderableType): Renderable to align. size (Size): Size of container. style (Style): Style of any padding. horizontal (AlignHorizontal): Horizontal alignment. vertical (AlignVertical): Vertical alignment."
+},
+{
+"ref":"textual.renderables.gradient",
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.renderables.gradient.VerticalGradient",
-"url":49,
+"url":50,
 "doc":"Draw a vertical gradient."
 },
 {
 "ref":"textual.renderables.sparkline",
-"url":50,
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.renderables.sparkline.Sparkline",
-"url":50,
+"url":51,
 "doc":"A sparkline representing a series of data. Args: data (Sequence[T]): The sequence of data to render. width (int, optional): The width of the sparkline/the number of buckets to partition the data into. min_color (Color, optional): The color of values equal to the min value in data. max_color (Color, optional): The color of values equal to the max value in data. summary_function (Callable[list[T ): Function that will be applied to each bucket."
 },
 {
 "ref":"textual.renderables.sparkline.Sparkline.BARS",
-"url":50,
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.renderables.underline_bar",
-"url":51,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.renderables.underline_bar.UnderlineBar",
-"url":51,
+"url":52,
 "doc":"Thin horizontal bar with a portion highlighted. Args: highlight_range (tuple[float, float]): The range to highlight. Defaults to  (0, 0) (no highlight) highlight_style (StyleType): The style of the highlighted range of the bar. background_style (StyleType): The style of the non-highlighted range(s) of the bar. width (int, optional): The width of the bar, or  None to fill available width."
 },
 {
 "ref":"textual.renderables.opacity",
-"url":52,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.renderables.opacity.Opacity",
-"url":52,
+"url":53,
 "doc":"Blend foreground in to background. Wrap a renderable to blend foreground color into the background color. Args: renderable (RenderableType): The RenderableType to manipulate. opacity (float): The opacity as a float. A value of 1.0 means text is fully visible."
 },
 {
 "ref":"textual.renderables.opacity.Opacity.process_segments",
-"url":52,
+"url":53,
 "doc":"Apply opacity to segments. Args: segments (Iterable[Segment]): Incoming segments. opacity (float): Opacity to apply. Returns: Iterable[Segment]: Segments with applied opacity.",
 "func":1
 },
 {
 "ref":"textual.renderables.blank",
-"url":53,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.renderables.blank.Blank",
-"url":53,
+"url":54,
 "doc":"Draw solid background color."
 },
 {
 "ref":"textual.renderables.tint",
-"url":54,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.renderables.tint.Tint",
-"url":54,
+"url":55,
 "doc":"Applies a color on top of an existing renderable. Wrap a renderable to apply a tint color. Args: renderable (RenderableType): A renderable. color (Color): A color (presumably with alpha)."
 },
 {
 "ref":"textual.renderables.tint.Tint.process_segments",
-"url":54,
+"url":55,
 "doc":"Apply tint to segments. Args: segments (Iterable[Segment]): Incoming segments. color (Color): Color of tint. Returns: Iterable[Segment]: Segments with applied tint.",
 "func":1
 },
 {
 "ref":"textual.events",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Event",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Event.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Event.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Event.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Event.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Event.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -11395,32 +11363,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Callback",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Callback.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Callback.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -11459,32 +11427,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.InvokeCallbacks",
-"url":55,
+"url":56,
 "doc":"Sent after the Screen is updated Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.InvokeCallbacks.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.InvokeCallbacks.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.InvokeCallbacks.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.InvokeCallbacks.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.InvokeCallbacks.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -11523,32 +11491,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.ShutdownRequest",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.ShutdownRequest.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.ShutdownRequest.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -11587,32 +11555,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Shutdown",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Shutdown.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Shutdown.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -11651,32 +11619,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Load",
-"url":55,
+"url":56,
 "doc":"Sent when the App is running but  before the terminal is in application mode. Use this event to run any set up that doesn't require any visuals such as loading configuration and binding keys. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Load.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Load.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Load.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Load.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Load.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -11715,32 +11683,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Idle",
-"url":55,
+"url":56,
 "doc":"Sent when there are no more items in the message queue. This is a pseudo-event in that it is created by the Textual system and doesn't go through the usual message queue. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Idle.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Idle.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -11779,37 +11747,37 @@ INDEX=[
 },
 {
 "ref":"textual.events.Action",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Action.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Action.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Action.action",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Action.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Action.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Action.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -11848,53 +11816,53 @@ INDEX=[
 },
 {
 "ref":"textual.events.Resize",
-"url":55,
+"url":56,
 "doc":"Sent when the app or widget has been resized. Args: sender (MessageTarget): The sender of the event (the Screen). size (Size): The new size of the Widget. virtual_size (Size): The virtual size (scrollable size) of the Widget. container_size (Size | None, optional): The size of the Widget's container widget. Defaults to None."
 },
 {
 "ref":"textual.events.Resize.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.can_replace",
-"url":55,
+"url":56,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.events.Resize.container_size",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.size",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.virtual_size",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -11927,32 +11895,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Mount",
-"url":55,
+"url":56,
 "doc":"Sent when a widget is  mounted and may receive messages. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Mount.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Mount.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -11991,32 +11959,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Unmount",
-"url":55,
+"url":56,
 "doc":"Sent when a widget is unmounted, and may no longer receive messages. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Unmount.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Unmount.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Unmount.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Unmount.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Unmount.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -12055,32 +12023,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Remove",
-"url":55,
+"url":56,
 "doc":"Sent to a widget to ask it to remove itself from the DOM. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Remove.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Remove.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Remove.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Remove.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Remove.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -12119,32 +12087,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Show",
-"url":55,
+"url":56,
 "doc":"Sent when a widget has become visible. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Show.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Show.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Show.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Show.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Show.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -12183,32 +12151,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Hide",
-"url":55,
+"url":56,
 "doc":"Sent when a widget has been hidden. A widget may be hidden by setting its  visible flag to  False , if it is no longer in a layout, or if it has been offset beyond the edges of the terminal. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Hide.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Hide.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -12247,32 +12215,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseCapture",
-"url":55,
+"url":56,
 "doc":"Sent when the mouse has been captured. When a mouse has been captures, all further mouse events will be sent to the capturing widget. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when captured."
 },
 {
 "ref":"textual.events.MouseCapture.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseCapture.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -12311,32 +12279,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseRelease",
-"url":55,
+"url":56,
 "doc":"Mouse has been released. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when released."
 },
 {
 "ref":"textual.events.MouseRelease.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseRelease.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -12375,32 +12343,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.InputEvent",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.InputEvent.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.InputEvent.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -12439,42 +12407,42 @@ INDEX=[
 },
 {
 "ref":"textual.events.Key",
-"url":55,
+"url":56,
 "doc":"Sent when the user hits a key on the keyboard Args: sender (MessageTarget): The sender of the event (the App) key (str): The pressed key if a single character (or a longer string for special characters)"
 },
 {
 "ref":"textual.events.Key.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Key.is_printable",
-"url":55,
+"url":56,
 "doc":"Return True if the key is printable. Currently, we assume any key event that isn't defined in key bindings is printable. Returns: bool: True if the key is printable. False otherwise."
 },
 {
 "ref":"textual.events.Key.key",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Key.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Key.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -12513,99 +12481,99 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseEvent",
-"url":55,
+"url":56,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseEvent.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.from_event",
-"url":55,
+"url":56,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events.MouseEvent.style",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.offset",
-"url":55,
+"url":56,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events.MouseEvent.button",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.ctrl",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.delta_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.delta_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.meta",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.screen_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.screen_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.shift",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -12644,82 +12612,82 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseMove",
-"url":55,
+"url":56,
 "doc":"Sent when the mouse cursor moves. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseMove.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.button",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.ctrl",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.delta_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.delta_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.meta",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.screen_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.screen_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.shift",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -12758,82 +12726,82 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseDown",
-"url":55,
+"url":56,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseDown.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.button",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.ctrl",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.delta_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.delta_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.meta",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.screen_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.screen_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.shift",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -12872,82 +12840,82 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseUp",
-"url":55,
+"url":56,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseUp.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.button",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.ctrl",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.delta_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.delta_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.meta",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.screen_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.screen_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.shift",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -12986,42 +12954,42 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseScrollDown",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.MouseScrollDown.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -13060,42 +13028,42 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseScrollUp",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.MouseScrollUp.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -13134,82 +13102,82 @@ INDEX=[
 },
 {
 "ref":"textual.events.Click",
-"url":55,
+"url":56,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.Click.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Click.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Click.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Click.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Click.button",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.ctrl",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.delta_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.delta_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.meta",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.screen_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.screen_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.shift",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -13248,82 +13216,82 @@ INDEX=[
 },
 {
 "ref":"textual.events.DoubleClick",
-"url":55,
+"url":56,
 "doc":"Sent in response to a mouse event Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.DoubleClick.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.DoubleClick.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.DoubleClick.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.DoubleClick.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.DoubleClick.button",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.ctrl",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.delta_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.delta_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.meta",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.screen_x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.screen_y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.shift",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.x",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DoubleClick.y",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -13362,47 +13330,47 @@ INDEX=[
 },
 {
 "ref":"textual.events.Timer",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Timer.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.callback",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.count",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.time",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -13436,32 +13404,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Enter",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Enter.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Enter.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -13500,32 +13468,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Leave",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Leave.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Leave.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -13564,32 +13532,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Focus",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Focus.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Focus.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -13628,32 +13596,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Blur",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.Blur.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Blur.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -13692,32 +13660,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.DescendantFocus",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.DescendantFocus.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DescendantFocus.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantFocus.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantFocus.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantFocus.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -13756,32 +13724,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.DescendantBlur",
-"url":55,
+"url":56,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.events.DescendantBlur.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DescendantBlur.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantBlur.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantBlur.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantBlur.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -13820,32 +13788,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Paste",
-"url":55,
+"url":56,
 "doc":"Event containing text that was pasted into the Textual application. This event will only appear when running in a terminal emulator that supports bracketed paste mode. Textual will enable bracketed pastes when an app starts, and disable it when the app shuts down. Args: sender (MessageTarget): The sender of the event, (in this case the app). text: The text that has been pasted"
 },
 {
 "ref":"textual.events.Paste.sender",
-"url":55,
+"url":56,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Paste.namespace",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Paste.bubble",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Paste.verbosity",
-"url":55,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.events.Paste.no_dispatch",
-"url":55,
+"url":56,
 "doc":""
 },
 {
@@ -13883,8 +13851,136 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.cli",
+"ref":"textual.events.ScreenResume",
 "url":56,
+"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+},
+{
+"ref":"textual.events.ScreenResume.sender",
+"url":56,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.ScreenResume.namespace",
+"url":56,
+"doc":""
+},
+{
+"ref":"textual.events.ScreenResume.bubble",
+"url":56,
+"doc":""
+},
+{
+"ref":"textual.events.ScreenResume.verbosity",
+"url":56,
+"doc":""
+},
+{
+"ref":"textual.events.ScreenResume.no_dispatch",
+"url":56,
+"doc":""
+},
+{
+"ref":"textual.events.ScreenResume.set_forwarded",
+"url":3,
+"doc":"Mark this event as being forwarded.",
+"func":1
+},
+{
+"ref":"textual.events.ScreenResume.can_replace",
+"url":3,
+"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
+"func":1
+},
+{
+"ref":"textual.events.ScreenResume.prevent_default",
+"url":3,
+"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.ScreenResume.stop",
+"url":3,
+"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.ScreenResume.name",
+"url":3,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.ScreenResume.time",
+"url":3,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.ScreenSuspend",
+"url":56,
+"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+},
+{
+"ref":"textual.events.ScreenSuspend.sender",
+"url":56,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.ScreenSuspend.namespace",
+"url":56,
+"doc":""
+},
+{
+"ref":"textual.events.ScreenSuspend.bubble",
+"url":56,
+"doc":""
+},
+{
+"ref":"textual.events.ScreenSuspend.verbosity",
+"url":56,
+"doc":""
+},
+{
+"ref":"textual.events.ScreenSuspend.no_dispatch",
+"url":56,
+"doc":""
+},
+{
+"ref":"textual.events.ScreenSuspend.set_forwarded",
+"url":3,
+"doc":"Mark this event as being forwarded.",
+"func":1
+},
+{
+"ref":"textual.events.ScreenSuspend.can_replace",
+"url":3,
+"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
+"func":1
+},
+{
+"ref":"textual.events.ScreenSuspend.prevent_default",
+"url":3,
+"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.ScreenSuspend.stop",
+"url":3,
+"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.ScreenSuspend.name",
+"url":3,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.ScreenSuspend.time",
+"url":3,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.cli",
+"url":57,
 "doc":""
 },
 {
@@ -13959,12 +14055,6 @@ INDEX=[
 },
 {
 "ref":"textual.message_pump.MessagePump.log",
-"url":6,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.message_pump.MessagePump.set_parent",
 "url":6,
 "doc":"",
 "func":1
@@ -14121,158 +14211,133 @@ INDEX=[
 },
 {
 "ref":"textual.features",
-"url":57,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.features.parse_features",
-"url":57,
+"url":58,
 "doc":"Parse features env var Args: features (str): Comma separated feature flags Returns: frozenset[FeatureFlag]: A frozen set of known features.",
 "func":1
 },
 {
 "ref":"textual.reactive",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.reactive.Reactive",
-"url":58,
+"url":59,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.reactive.Reactive.check_watchers",
-"url":58,
+"url":59,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.reactive.Reactive.compute",
-"url":58,
+"url":59,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.reactive.watch",
-"url":58,
+"url":59,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.screen",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen",
-"url":59,
+"url":60,
 "doc":"A widget for the root of the app."
 },
 {
 "ref":"textual.screen.Screen.COMPONENT_CLASSES",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen.CSS",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen.dark",
-"url":59,
+"url":60,
 "doc":"Reactive descriptor."
 },
 {
 "ref":"textual.screen.Screen.is_transparent",
-"url":59,
+"url":60,
 "doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
 },
 {
+"ref":"textual.screen.Screen.is_current",
+"url":60,
+"doc":"Check if this screen is current (i.e. visible to user)."
+},
+{
 "ref":"textual.screen.Screen.update_timer",
-"url":59,
+"url":60,
 "doc":"Timer used to perform updates."
 },
 {
 "ref":"textual.screen.Screen.watch_dark",
-"url":59,
+"url":60,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.render",
-"url":59,
+"url":60,
 "doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_offset",
-"url":59,
+"url":60,
 "doc":"Get the absolute offset of a given Widget. Args: widget (Widget): A widget Returns: Offset: The widget's offset relative to the top left of the terminal.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_widget_at",
-"url":59,
+"url":60,
 "doc":"Get the widget at a given coordinate. Args: x (int): X Coordinate. y (int): Y Coordinate. Returns: tuple[Widget, Region]: Widget and screen region.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_style_at",
-"url":59,
+"url":60,
 "doc":"Get the style under a given coordinate. Args: x (int): X Coordinate. y (int): Y Coordinate. Returns: Style: Rich Style object",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.find_widget",
-"url":59,
+"url":60,
 "doc":"Get the screen region of a Widget. Args: widget (Widget): A Widget within the composition. Returns: Region: Region relative to screen.",
 "func":1
 },
 {
-"ref":"textual.screen.Screen.on_idle",
-"url":59,
-"doc":"Called when there are no more events on the queue. Args: event (events.Idle): Idle event.",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.on_invoke_callbacks",
-"url":59,
-"doc":"Handle PostScreenUpdate events, which are sent after the screen is updated",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.on_update",
-"url":59,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.on_layout",
-"url":59,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.on_resize",
-"url":59,
-"doc":"",
-"func":1
-},
-{
 "ref":"textual.screen.Screen.forward_event",
-"url":59,
+"url":60,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.can_focus",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen.can_focus_children",
-"url":59,
+"url":60,
 "doc":""
 },
 {

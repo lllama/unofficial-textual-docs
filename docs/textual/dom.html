@@ -71,6 +71,9 @@ class DOMNode(MessagePump):
     # Custom CSS
     CSS: ClassVar[str] = &#34;&#34;
 
+    # Default classes argument if not supplied
+    DEFAULT_CLASSES: str = &#34;&#34;
+
     # Virtual DOM nodes
     COMPONENT_CLASSES: ClassVar[set[str]] = set()
 
@@ -495,7 +498,7 @@ class DOMNode(MessagePump):
             node (DOMNode): A DOM node.
         &#34;&#34;&#34;
         self.children._append(node)
-        node.set_parent(self)
+        node._attach(self)
 
     def add_children(self, *nodes: Widget, **named_nodes: Widget) -&gt; None:
         &#34;&#34;&#34;Add multiple children to this node.
@@ -506,10 +509,10 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         _append = self.children._append
         for node in nodes:
-            node.set_parent(self)
+            node._attach(self)
             _append(node)
         for node_id, node in named_nodes.items():
-            node.set_parent(self)
+            node._attach(self)
             _append(node)
             node.id = node_id
 
@@ -738,6 +741,9 @@ class DOMNode(MessagePump):
     # Custom CSS
     CSS: ClassVar[str] = &#34;&#34;
 
+    # Default classes argument if not supplied
+    DEFAULT_CLASSES: str = &#34;&#34;
+
     # Virtual DOM nodes
     COMPONENT_CLASSES: ClassVar[set[str]] = set()
 
@@ -1162,7 +1168,7 @@ class DOMNode(MessagePump):
             node (DOMNode): A DOM node.
         &#34;&#34;&#34;
         self.children._append(node)
-        node.set_parent(self)
+        node._attach(self)
 
     def add_children(self, *nodes: Widget, **named_nodes: Widget) -&gt; None:
         &#34;&#34;&#34;Add multiple children to this node.
@@ -1173,10 +1179,10 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         _append = self.children._append
         for node in nodes:
-            node.set_parent(self)
+            node._attach(self)
             _append(node)
         for node_id, node in named_nodes.items():
-            node.set_parent(self)
+            node._attach(self)
             _append(node)
             node.id = node_id
 
@@ -1389,6 +1395,10 @@ class DOMNode(MessagePump):
 <div class="desc"></div>
 </dd>
 <dt id="textual.dom.DOMNode.CSS"><code class="name">var <span class="ident">CSS</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.dom.DOMNode.DEFAULT_CLASSES"><code class="name">var <span class="ident">DEFAULT_CLASSES</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1829,7 +1839,7 @@ def visible(self) -&gt; bool:
         node (DOMNode): A DOM node.
     &#34;&#34;&#34;
     self.children._append(node)
-    node.set_parent(self)</code></pre>
+    node._attach(self)</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.add_children"><code class="name flex">
@@ -1857,10 +1867,10 @@ def visible(self) -&gt; bool:
     &#34;&#34;&#34;
     _append = self.children._append
     for node in nodes:
-        node.set_parent(self)
+        node._attach(self)
         _append(node)
     for node_id, node in named_nodes.items():
-        node.set_parent(self)
+        node._attach(self)
         _append(node)
         node.id = node_id</code></pre>
 </details>
@@ -2464,6 +2474,7 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.dom.DOMNode.COMPONENT_CLASSES" href="#textual.dom.DOMNode.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
 <li><code><a title="textual.dom.DOMNode.CSS" href="#textual.dom.DOMNode.CSS">CSS</a></code></li>
+<li><code><a title="textual.dom.DOMNode.DEFAULT_CLASSES" href="#textual.dom.DOMNode.DEFAULT_CLASSES">DEFAULT_CLASSES</a></code></li>
 <li><code><a title="textual.dom.DOMNode.ExpectType" href="#textual.dom.DOMNode.ExpectType">ExpectType</a></code></li>
 <li><code><a title="textual.dom.DOMNode.WalkType" href="#textual.dom.DOMNode.WalkType">WalkType</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_child" href="#textual.dom.DOMNode.add_child">add_child</a></code></li>

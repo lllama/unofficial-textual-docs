@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.renderables API documentation</title>
+<title>textual.renderables.align API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,48 +19,150 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.renderables</code></h1>
+<h1 class="title">Module <code>textual.renderables.align</code></h1>
 </header>
 <section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from __future__ import annotations
+
+from rich.console import Console, ConsoleOptions, RenderableType, RenderResult
+from rich.measure import Measurement
+from rich.segment import Segment
+from rich.style import Style
+
+from .._segment_tools import align_lines
+from ..css.types import AlignHorizontal, AlignVertical
+from ..geometry import Size
+
+
+class Align:
+    def __init__(
+        self,
+        renderable: RenderableType,
+        size: Size,
+        style: Style,
+        horizontal: AlignHorizontal,
+        vertical: AlignVertical,
+    ) -&gt; None:
+        &#34;&#34;&#34;Align a child renderable
+
+        Args:
+            renderable (RenderableType): Renderable to align.
+            size (Size): Size of container.
+            style (Style): Style of any padding.
+            horizontal (AlignHorizontal): Horizontal alignment.
+            vertical (AlignVertical): Vertical alignment.
+        &#34;&#34;&#34;
+        self.renderable = renderable
+        self.size = size
+        self.style = style
+        self.horizontal = horizontal
+        self.vertical = vertical
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
+        lines = console.render_lines(self.renderable, options, pad=False)
+        new_line = Segment.line()
+        for line in align_lines(
+            lines,
+            self.style,
+            self.size,
+            self.horizontal,
+            self.vertical,
+        ):
+            yield from line
+            yield new_line
+
+    def __rich_measure__(
+        self, console: &#34;Console&#34;, options: &#34;ConsoleOptions&#34;
+    ) -&gt; Measurement:
+        width, _ = self.size
+        return Measurement(width, width)</code></pre>
+</details>
 </section>
 <section>
-<h2 class="section-title" id="header-submodules">Sub-modules</h2>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt><code class="name"><a title="textual.renderables.align" href="align.html">textual.renderables.align</a></code></dt>
+<dt id="textual.renderables.align.Align"><code class="flex name class">
+<span>class <span class="ident">Align</span></span>
+<span>(</span><span>renderable: RenderableType, size: Size, style: Style, horizontal: AlignHorizontal, vertical: AlignVertical)</span>
+</code></dt>
 <dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.blank" href="blank.html">textual.renderables.blank</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.gradient" href="gradient.html">textual.renderables.gradient</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.opacity" href="opacity.html">textual.renderables.opacity</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.sparkline" href="sparkline.html">textual.renderables.sparkline</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.tint" href="tint.html">textual.renderables.tint</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt><code class="name"><a title="textual.renderables.underline_bar" href="underline_bar.html">textual.renderables.underline_bar</a></code></dt>
-<dd>
-<div class="desc"></div>
+<div class="desc"><p>Align a child renderable</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>renderable</code></strong> :&ensp;<code>RenderableType</code></dt>
+<dd>Renderable to align.</dd>
+<dt><strong><code>size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>Size of container.</dd>
+<dt><strong><code>style</code></strong> :&ensp;<code>Style</code></dt>
+<dd>Style of any padding.</dd>
+<dt><strong><code>horizontal</code></strong> :&ensp;<code>AlignHorizontal</code></dt>
+<dd>Horizontal alignment.</dd>
+<dt><strong><code>vertical</code></strong> :&ensp;<code>AlignVertical</code></dt>
+<dd>Vertical alignment.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Align:
+    def __init__(
+        self,
+        renderable: RenderableType,
+        size: Size,
+        style: Style,
+        horizontal: AlignHorizontal,
+        vertical: AlignVertical,
+    ) -&gt; None:
+        &#34;&#34;&#34;Align a child renderable
+
+        Args:
+            renderable (RenderableType): Renderable to align.
+            size (Size): Size of container.
+            style (Style): Style of any padding.
+            horizontal (AlignHorizontal): Horizontal alignment.
+            vertical (AlignVertical): Vertical alignment.
+        &#34;&#34;&#34;
+        self.renderable = renderable
+        self.size = size
+        self.style = style
+        self.horizontal = horizontal
+        self.vertical = vertical
+
+    def __rich_console__(
+        self, console: Console, options: ConsoleOptions
+    ) -&gt; RenderResult:
+        lines = console.render_lines(self.renderable, options, pad=False)
+        new_line = Segment.line()
+        for line in align_lines(
+            lines,
+            self.style,
+            self.size,
+            self.horizontal,
+            self.vertical,
+        ):
+            yield from line
+            yield new_line
+
+    def __rich_measure__(
+        self, console: &#34;Console&#34;, options: &#34;ConsoleOptions&#34;
+    ) -&gt; Measurement:
+        width, _ = self.size
+        return Measurement(width, width)</code></pre>
+</details>
 </dd>
 </dl>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
 </section>
 </article>
 <nav id="sidebar">
@@ -117,18 +219,14 @@ setTimeout(() => input.focus(), 100);
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="textual" href="../index.html">textual</a></code></li>
+<li><code><a title="textual.renderables" href="index.html">textual.renderables</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-submodules">Sub-modules</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
-<li><code><a title="textual.renderables.align" href="align.html">textual.renderables.align</a></code></li>
-<li><code><a title="textual.renderables.blank" href="blank.html">textual.renderables.blank</a></code></li>
-<li><code><a title="textual.renderables.gradient" href="gradient.html">textual.renderables.gradient</a></code></li>
-<li><code><a title="textual.renderables.opacity" href="opacity.html">textual.renderables.opacity</a></code></li>
-<li><code><a title="textual.renderables.sparkline" href="sparkline.html">textual.renderables.sparkline</a></code></li>
-<li><code><a title="textual.renderables.tint" href="tint.html">textual.renderables.tint</a></code></li>
-<li><code><a title="textual.renderables.underline_bar" href="underline_bar.html">textual.renderables.underline_bar</a></code></li>
+<li>
+<h4><code><a title="textual.renderables.align.Align" href="#textual.renderables.align.Align">Align</a></code></h4>
+</li>
 </ul>
 </li>
 </ul>

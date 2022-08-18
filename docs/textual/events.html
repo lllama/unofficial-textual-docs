@@ -463,7 +463,15 @@ class Paste(Event, bubble=False):
         self.text = text
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
-        yield &#34;text&#34;, self.text</code></pre>
+        yield &#34;text&#34;, self.text
+
+
+class ScreenResume(Event, bubble=False):
+    pass
+
+
+class ScreenSuspend(Event, bubble=False):
+    pass</code></pre>
 </details>
 </section>
 <section>
@@ -1068,6 +1076,8 @@ class Paste(Event, bubble=False):
 <li><a title="textual.events.Paste" href="#textual.events.Paste">Paste</a></li>
 <li><a title="textual.events.Remove" href="#textual.events.Remove">Remove</a></li>
 <li><a title="textual.events.Resize" href="#textual.events.Resize">Resize</a></li>
+<li><a title="textual.events.ScreenResume" href="#textual.events.ScreenResume">ScreenResume</a></li>
+<li><a title="textual.events.ScreenSuspend" href="#textual.events.ScreenSuspend">ScreenSuspend</a></li>
 <li><a title="textual.events.Show" href="#textual.events.Show">Show</a></li>
 <li><a title="textual.events.Shutdown" href="#textual.events.Shutdown">Shutdown</a></li>
 <li><a title="textual.events.ShutdownRequest" href="#textual.events.ShutdownRequest">ShutdownRequest</a></li>
@@ -2828,6 +2838,120 @@ and disable it when the app shuts down.</p>
 </li>
 </ul>
 </dd>
+<dt id="textual.events.ScreenResume"><code class="flex name class">
+<span>class <span class="ident">ScreenResume</span></span>
+<span>(</span><span>sender: MessageTarget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for a message.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ScreenResume(Event, bubble=False):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.events.Event" href="#textual.events.Event">Event</a></li>
+<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.events.ScreenResume.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.ScreenResume.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.ScreenResume.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.ScreenResume.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.events.ScreenSuspend"><code class="flex name class">
+<span>class <span class="ident">ScreenSuspend</span></span>
+<span>(</span><span>sender: MessageTarget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Base class for a message.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
+<dd>The sender of the message / event.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ScreenSuspend(Event, bubble=False):
+    pass</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.events.Event" href="#textual.events.Event">Event</a></li>
+<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.events.ScreenSuspend.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.ScreenSuspend.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.ScreenSuspend.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.ScreenSuspend.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="textual.events.Show"><code class="flex name class">
 <span>class <span class="ident">Show</span></span>
 <span>(</span><span>sender: MessageTarget)</span>
@@ -3484,6 +3608,24 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Resize.size" href="#textual.events.Resize.size">size</a></code></li>
 <li><code><a title="textual.events.Resize.verbosity" href="#textual.events.Resize.verbosity">verbosity</a></code></li>
 <li><code><a title="textual.events.Resize.virtual_size" href="#textual.events.Resize.virtual_size">virtual_size</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.events.ScreenResume" href="#textual.events.ScreenResume">ScreenResume</a></code></h4>
+<ul class="">
+<li><code><a title="textual.events.ScreenResume.bubble" href="#textual.events.ScreenResume.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.ScreenResume.namespace" href="#textual.events.ScreenResume.namespace">namespace</a></code></li>
+<li><code><a title="textual.events.ScreenResume.no_dispatch" href="#textual.events.ScreenResume.no_dispatch">no_dispatch</a></code></li>
+<li><code><a title="textual.events.ScreenResume.verbosity" href="#textual.events.ScreenResume.verbosity">verbosity</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.events.ScreenSuspend" href="#textual.events.ScreenSuspend">ScreenSuspend</a></code></h4>
+<ul class="">
+<li><code><a title="textual.events.ScreenSuspend.bubble" href="#textual.events.ScreenSuspend.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.ScreenSuspend.namespace" href="#textual.events.ScreenSuspend.namespace">namespace</a></code></li>
+<li><code><a title="textual.events.ScreenSuspend.no_dispatch" href="#textual.events.ScreenSuspend.no_dispatch">no_dispatch</a></code></li>
+<li><code><a title="textual.events.ScreenSuspend.verbosity" href="#textual.events.ScreenSuspend.verbosity">verbosity</a></code></li>
 </ul>
 </li>
 <li>
