@@ -40,6 +40,7 @@ import rich.repr
 from rich.syntax import Syntax
 from rich.text import Text
 
+from ._error_tools import friendly_list
 from .._loop import loop_last
 
 
@@ -231,11 +232,13 @@ class Tokenizer:
         line = self.lines[line_no]
         match = expect.match(line, col_no)
         if match is None:
+            expected = friendly_list(&#34; &#34;.join(name.split(&#34;_&#34;)) for name in expect.names)
+            message = f&#34;Expected one of {expected}.; Did you forget a semicolon at the end of a line?&#34;
             raise TokenError(
                 self.path,
                 self.code,
                 (line_no, col_no),
-                &#34;expected &#34; + &#34;, &#34;.join(name.upper() for name in expect.names),
+                message,
             )
         iter_groups = iter(match.groups())
         next(iter_groups)
@@ -708,11 +711,13 @@ to is used.</p></div>
         line = self.lines[line_no]
         match = expect.match(line, col_no)
         if match is None:
+            expected = friendly_list(&#34; &#34;.join(name.split(&#34;_&#34;)) for name in expect.names)
+            message = f&#34;Expected one of {expected}.; Did you forget a semicolon at the end of a line?&#34;
             raise TokenError(
                 self.path,
                 self.code,
                 (line_no, col_no),
-                &#34;expected &#34; + &#34;, &#34;.join(name.upper() for name in expect.names),
+                message,
             )
         iter_groups = iter(match.groups())
         next(iter_groups)
@@ -794,11 +799,13 @@ to is used.</p></div>
     line = self.lines[line_no]
     match = expect.match(line, col_no)
     if match is None:
+        expected = friendly_list(&#34; &#34;.join(name.split(&#34;_&#34;)) for name in expect.names)
+        message = f&#34;Expected one of {expected}.; Did you forget a semicolon at the end of a line?&#34;
         raise TokenError(
             self.path,
             self.code,
             (line_no, col_no),
-            &#34;expected &#34; + &#34;, &#34;.join(name.upper() for name in expect.names),
+            message,
         )
     iter_groups = iter(match.groups())
     next(iter_groups)
