@@ -38,6 +38,7 @@ from typing import TYPE_CHECKING, Any, Iterable, NamedTuple, cast
 import rich.repr
 from rich.style import Style
 
+from textual._types import CallbackType
 from .._animator import Animation, EasingFunction
 from ..color import Color
 from ..geometry import Offset, Spacing
@@ -607,9 +608,9 @@ class Styles(StylesBase):
         duration: float | None,
         speed: float | None,
         easing: EasingFunction,
+        on_complete: CallbackType | None = None,
     ) -&gt; Animation | None:
-        from ..widget import Widget
-
+        # from ..widget import Widget
         # node = self.node
         # assert isinstance(self.node, Widget)
         if isinstance(value, ScalarOffset):
@@ -622,6 +623,7 @@ class Styles(StylesBase):
                 duration=duration,
                 speed=speed,
                 easing=easing,
+                on_complete=on_complete,
             )
         return None
 
@@ -788,7 +790,7 @@ class Styles(StylesBase):
             )
         elif has_rule(&#34;align_horizontal&#34;):
             append_declaration(&#34;align-horizontal&#34;, self.align_horizontal)
-        elif has_rule(&#34;align_horizontal&#34;):
+        elif has_rule(&#34;align_vertical&#34;):
             append_declaration(&#34;align-vertical&#34;, self.align_vertical)
 
         if has_rule(&#34;content_align_horizontal&#34;) and has_rule(&#34;content_align_vertical&#34;):
@@ -800,7 +802,7 @@ class Styles(StylesBase):
             append_declaration(
                 &#34;content-align-horizontal&#34;, self.content_align_horizontal
             )
-        elif has_rule(&#34;content_align_horizontal&#34;):
+        elif has_rule(&#34;content_align_vertical&#34;):
             append_declaration(&#34;content-align-vertical&#34;, self.content_align_vertical)
 
         lines.sort()
@@ -1646,9 +1648,9 @@ def rich_style(self) -&gt; Style:
         duration: float | None,
         speed: float | None,
         easing: EasingFunction,
+        on_complete: CallbackType | None = None,
     ) -&gt; Animation | None:
-        from ..widget import Widget
-
+        # from ..widget import Widget
         # node = self.node
         # assert isinstance(self.node, Widget)
         if isinstance(value, ScalarOffset):
@@ -1661,6 +1663,7 @@ def rich_style(self) -&gt; Style:
                 duration=duration,
                 speed=speed,
                 easing=easing,
+                on_complete=on_complete,
             )
         return None
 
@@ -1827,7 +1830,7 @@ def rich_style(self) -&gt; Style:
             )
         elif has_rule(&#34;align_horizontal&#34;):
             append_declaration(&#34;align-horizontal&#34;, self.align_horizontal)
-        elif has_rule(&#34;align_horizontal&#34;):
+        elif has_rule(&#34;align_vertical&#34;):
             append_declaration(&#34;align-vertical&#34;, self.align_vertical)
 
         if has_rule(&#34;content_align_horizontal&#34;) and has_rule(&#34;content_align_vertical&#34;):
@@ -1839,7 +1842,7 @@ def rich_style(self) -&gt; Style:
             append_declaration(
                 &#34;content-align-horizontal&#34;, self.content_align_horizontal
             )
-        elif has_rule(&#34;content_align_horizontal&#34;):
+        elif has_rule(&#34;content_align_vertical&#34;):
             append_declaration(&#34;content-align-vertical&#34;, self.content_align_vertical)
 
         lines.sort()
@@ -1994,7 +1997,7 @@ def css_lines(self) -&gt; list[str]:
         )
     elif has_rule(&#34;align_horizontal&#34;):
         append_declaration(&#34;align-horizontal&#34;, self.align_horizontal)
-    elif has_rule(&#34;align_horizontal&#34;):
+    elif has_rule(&#34;align_vertical&#34;):
         append_declaration(&#34;align-vertical&#34;, self.align_vertical)
 
     if has_rule(&#34;content_align_horizontal&#34;) and has_rule(&#34;content_align_vertical&#34;):
@@ -2006,7 +2009,7 @@ def css_lines(self) -&gt; list[str]:
         append_declaration(
             &#34;content-align-horizontal&#34;, self.content_align_horizontal
         )
-    elif has_rule(&#34;content_align_horizontal&#34;):
+    elif has_rule(&#34;content_align_vertical&#34;):
         append_declaration(&#34;content-align-vertical&#34;, self.content_align_vertical)
 
     lines.sort()

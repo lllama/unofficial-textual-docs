@@ -98,6 +98,14 @@ class LinuxDriver(Driver):
         # Note: E.g. lxterminal understands 1000h, but not the urxvt or sgr
         #       extensions.
 
+    def _enable_bracketed_paste(self) -&gt; None:
+        &#34;&#34;&#34;Enable bracketed paste mode.&#34;&#34;&#34;
+        self.console.file.write(&#34;\x1b[?2004h&#34;)
+
+    def _disable_bracketed_paste(self) -&gt; None:
+        &#34;&#34;&#34;Disable bracketed paste mode.&#34;&#34;&#34;
+        self.console.file.write(&#34;\x1b[?2004l&#34;)
+
     def _disable_mouse_support(self) -&gt; None:
         write = self.console.file.write
         write(&#34;\x1b[?1000l&#34;)  #
@@ -158,6 +166,7 @@ class LinuxDriver(Driver):
         send_size_event()
         self._key_thread.start()
         self._request_terminal_sync_mode_support()
+        self._enable_bracketed_paste()
 
     def _request_terminal_sync_mode_support(self):
         self.console.file.write(&#34;\033[?2026$p&#34;)
@@ -196,6 +205,7 @@ class LinuxDriver(Driver):
             pass
 
     def stop_application_mode(self) -&gt; None:
+        self._disable_bracketed_paste()
         self.disable_input()
 
         if self.attrs_before is not None:
@@ -329,6 +339,14 @@ if __name__ == &#34;__main__&#34;:
         # Note: E.g. lxterminal understands 1000h, but not the urxvt or sgr
         #       extensions.
 
+    def _enable_bracketed_paste(self) -&gt; None:
+        &#34;&#34;&#34;Enable bracketed paste mode.&#34;&#34;&#34;
+        self.console.file.write(&#34;\x1b[?2004h&#34;)
+
+    def _disable_bracketed_paste(self) -&gt; None:
+        &#34;&#34;&#34;Disable bracketed paste mode.&#34;&#34;&#34;
+        self.console.file.write(&#34;\x1b[?2004l&#34;)
+
     def _disable_mouse_support(self) -&gt; None:
         write = self.console.file.write
         write(&#34;\x1b[?1000l&#34;)  #
@@ -389,6 +407,7 @@ if __name__ == &#34;__main__&#34;:
         send_size_event()
         self._key_thread.start()
         self._request_terminal_sync_mode_support()
+        self._enable_bracketed_paste()
 
     def _request_terminal_sync_mode_support(self):
         self.console.file.write(&#34;\033[?2026$p&#34;)
@@ -427,6 +446,7 @@ if __name__ == &#34;__main__&#34;:
             pass
 
     def stop_application_mode(self) -&gt; None:
+        self._disable_bracketed_paste()
         self.disable_input()
 
         if self.attrs_before is not None:
@@ -587,7 +607,8 @@ if __name__ == &#34;__main__&#34;:
     self._key_thread = Thread(target=self.run_input_thread, args=(loop,))
     send_size_event()
     self._key_thread.start()
-    self._request_terminal_sync_mode_support()</code></pre>
+    self._request_terminal_sync_mode_support()
+    self._enable_bracketed_paste()</code></pre>
 </details>
 </dd>
 <dt id="textual.drivers.linux_driver.LinuxDriver.stop_application_mode"><code class="name flex">
@@ -600,6 +621,7 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def stop_application_mode(self) -&gt; None:
+    self._disable_bracketed_paste()
     self.disable_input()
 
     if self.attrs_before is not None:
@@ -618,8 +640,6 @@ if __name__ == &#34;__main__&#34;:
 <ul class="hlist">
 <li><code><b><a title="textual.driver.Driver" href="../driver.html#textual.driver.Driver">Driver</a></b></code>:
 <ul class="hlist">
-<li><code><a title="textual.driver.Driver.disable_bracketed_paste" href="../driver.html#textual.driver.Driver.disable_bracketed_paste">disable_bracketed_paste</a></code></li>
-<li><code><a title="textual.driver.Driver.enable_bracketed_paste" href="../driver.html#textual.driver.Driver.enable_bracketed_paste">enable_bracketed_paste</a></code></li>
 <li><code><a title="textual.driver.Driver.process_event" href="../driver.html#textual.driver.Driver.process_event">process_event</a></code></li>
 </ul>
 </li>

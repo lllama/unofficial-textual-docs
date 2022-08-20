@@ -48,6 +48,7 @@ from .css.parse import parse_declarations
 from .css.styles import Styles, RenderStyles
 from .css.query import NoMatchingNodesError
 from .message_pump import MessagePump
+from ._timer import Timer
 
 if TYPE_CHECKING:
     from .app import App
@@ -99,7 +100,29 @@ class DOMNode(MessagePump):
         # A mapping of class names to Styles set in COMPONENT_CLASSES
         self._component_styles: dict[str, RenderStyles] = {}
 
+        self._auto_refresh: float | None = None
+        self._auto_refresh_timer: Timer | None = None
+
         super().__init__()
+
+    @property
+    def auto_refresh(self) -&gt; float | None:
+        return self._auto_refresh
+
+    @auto_refresh.setter
+    def auto_refresh(self, interval: float | None) -&gt; None:
+        if self._auto_refresh_timer is not None:
+            self._auto_refresh_timer.stop_no_wait()
+            self._auto_refresh_timer = None
+        if interval is not None:
+            self._auto_refresh_timer = self.set_interval(
+                interval, self._automatic_refresh
+            )
+        self._auto_refresh = interval
+
+    def _automatic_refresh(self) -&gt; None:
+        &#34;&#34;&#34;Perform an automatic refresh (set with auto_refresh property).&#34;&#34;&#34;
+        self.refresh()
 
     def __init_subclass__(cls, inherit_css: bool = True) -&gt; None:
         super().__init_subclass__()
@@ -769,7 +792,29 @@ class DOMNode(MessagePump):
         # A mapping of class names to Styles set in COMPONENT_CLASSES
         self._component_styles: dict[str, RenderStyles] = {}
 
+        self._auto_refresh: float | None = None
+        self._auto_refresh_timer: Timer | None = None
+
         super().__init__()
+
+    @property
+    def auto_refresh(self) -&gt; float | None:
+        return self._auto_refresh
+
+    @auto_refresh.setter
+    def auto_refresh(self, interval: float | None) -&gt; None:
+        if self._auto_refresh_timer is not None:
+            self._auto_refresh_timer.stop_no_wait()
+            self._auto_refresh_timer = None
+        if interval is not None:
+            self._auto_refresh_timer = self.set_interval(
+                interval, self._automatic_refresh
+            )
+        self._auto_refresh = interval
+
+    def _automatic_refresh(self) -&gt; None:
+        &#34;&#34;&#34;Perform an automatic refresh (set with auto_refresh property).&#34;&#34;&#34;
+        self.refresh()
 
     def __init_subclass__(cls, inherit_css: bool = True) -&gt; None:
         super().__init_subclass__()
@@ -1432,6 +1477,18 @@ def ancestors(self) -&gt; list[DOMNode]:
             break
         add_node(node)
     return nodes</code></pre>
+</details>
+</dd>
+<dt id="textual.dom.DOMNode.auto_refresh"><code class="name">var <span class="ident">auto_refresh</span> : float | None</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def auto_refresh(self) -&gt; float | None:
+    return self._auto_refresh</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.background_colors"><code class="name">var <span class="ident">background_colors</span> : tuple[Color, Color]</code></dt>
@@ -2481,6 +2538,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.add_children" href="#textual.dom.DOMNode.add_children">add_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_class" href="#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.ancestors" href="#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
+<li><code><a title="textual.dom.DOMNode.auto_refresh" href="#textual.dom.DOMNode.auto_refresh">auto_refresh</a></code></li>
 <li><code><a title="textual.dom.DOMNode.background_colors" href="#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.classes" href="#textual.dom.DOMNode.classes">classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.colors" href="#textual.dom.DOMNode.colors">colors</a></code></li>

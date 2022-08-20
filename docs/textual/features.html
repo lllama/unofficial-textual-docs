@@ -53,12 +53,9 @@ def parse_features(features: str) -&gt; frozenset[FeatureFlag]:
     &#34;&#34;&#34;
 
     features_set = frozenset(
-        set(
-            feature.strip().lower()
-            for feature in features.split(&#34;,&#34;)
-            if feature.strip()
-        ).intersection(FEATURES)
-    )
+        feature.strip().lower() for feature in features.split(&#34;,&#34;) if feature.strip()
+    ).intersection(FEATURES)
+
     return cast(&#34;frozenset[FeatureFlag]&#34;, features_set)</code></pre>
 </details>
 </section>
@@ -99,12 +96,9 @@ def parse_features(features: str) -&gt; frozenset[FeatureFlag]:
     &#34;&#34;&#34;
 
     features_set = frozenset(
-        set(
-            feature.strip().lower()
-            for feature in features.split(&#34;,&#34;)
-            if feature.strip()
-        ).intersection(FEATURES)
-    )
+        feature.strip().lower() for feature in features.split(&#34;,&#34;) if feature.strip()
+    ).intersection(FEATURES)
+
     return cast(&#34;frozenset[FeatureFlag]&#34;, features_set)</code></pre>
 </details>
 </dd>
