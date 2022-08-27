@@ -34,7 +34,11 @@ class TextualError(Exception):
 
 
 class NoWidget(TextualError):
-    &#34;&#34;&#34;Specified widget was not found.&#34;&#34;&#34;</code></pre>
+    &#34;&#34;&#34;Specified widget was not found.&#34;&#34;&#34;
+
+
+class RenderError(TextualError):
+    &#34;&#34;&#34;An object could not be rendered.&#34;&#34;&#34;</code></pre>
 </details>
 </section>
 <section>
@@ -66,6 +70,26 @@ class NoWidget(TextualError):
 <li>builtins.BaseException</li>
 </ul>
 </dd>
+<dt id="textual.errors.RenderError"><code class="flex name class">
+<span>class <span class="ident">RenderError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An object could not be rendered.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class RenderError(TextualError):
+    &#34;&#34;&#34;An object could not be rendered.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.errors.TextualError" href="#textual.errors.TextualError">TextualError</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
 <dt id="textual.errors.TextualError"><code class="flex name class">
 <span>class <span class="ident">TextualError</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -87,6 +111,7 @@ class NoWidget(TextualError):
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="textual.errors.NoWidget" href="#textual.errors.NoWidget">NoWidget</a></li>
+<li><a title="textual.errors.RenderError" href="#textual.errors.RenderError">RenderError</a></li>
 </ul>
 </dd>
 </dl>
@@ -153,6 +178,9 @@ setTimeout(() => input.focus(), 100);
 <ul>
 <li>
 <h4><code><a title="textual.errors.NoWidget" href="#textual.errors.NoWidget">NoWidget</a></code></h4>
+</li>
+<li>
+<h4><code><a title="textual.errors.RenderError" href="#textual.errors.RenderError">RenderError</a></code></h4>
 </li>
 <li>
 <h4><code><a title="textual.errors.TextualError" href="#textual.errors.TextualError">TextualError</a></code></h4>

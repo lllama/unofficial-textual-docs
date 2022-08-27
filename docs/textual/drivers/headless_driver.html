@@ -28,15 +28,45 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-
+import asyncio
 from ..driver import Driver
+from ..geometry import Size
+from .. import events
 
 
 class HeadlessDriver(Driver):
     &#34;&#34;&#34;A do-nothing driver for testing.&#34;&#34;&#34;
 
+    def _get_terminal_size(self) -&gt; tuple[int, int]:
+        width: int | None = 80
+        height: int | None = 25
+        import shutil
+
+        try:
+            width, height = shutil.get_terminal_size()
+        except (AttributeError, ValueError, OSError):
+            try:
+                width, height = shutil.get_terminal_size()
+            except (AttributeError, ValueError, OSError):
+                pass
+        width = width or 80
+        height = height or 25
+        return width, height
+
     def start_application_mode(self) -&gt; None:
-        pass
+        loop = asyncio.get_running_loop()
+
+        def send_size_event():
+            terminal_size = self._get_terminal_size()
+            width, height = terminal_size
+            textual_size = Size(width, height)
+            event = events.Resize(self._target, textual_size, textual_size)
+            asyncio.run_coroutine_threadsafe(
+                self._target.post_message(event),
+                loop=loop,
+            )
+
+        send_size_event()
 
     def disable_input(self) -&gt; None:
         pass
@@ -67,8 +97,36 @@ class HeadlessDriver(Driver):
 <pre><code class="python">class HeadlessDriver(Driver):
     &#34;&#34;&#34;A do-nothing driver for testing.&#34;&#34;&#34;
 
+    def _get_terminal_size(self) -&gt; tuple[int, int]:
+        width: int | None = 80
+        height: int | None = 25
+        import shutil
+
+        try:
+            width, height = shutil.get_terminal_size()
+        except (AttributeError, ValueError, OSError):
+            try:
+                width, height = shutil.get_terminal_size()
+            except (AttributeError, ValueError, OSError):
+                pass
+        width = width or 80
+        height = height or 25
+        return width, height
+
     def start_application_mode(self) -&gt; None:
-        pass
+        loop = asyncio.get_running_loop()
+
+        def send_size_event():
+            terminal_size = self._get_terminal_size()
+            width, height = terminal_size
+            textual_size = Size(width, height)
+            event = events.Resize(self._target, textual_size, textual_size)
+            asyncio.run_coroutine_threadsafe(
+                self._target.post_message(event),
+                loop=loop,
+            )
+
+        send_size_event()
 
     def disable_input(self) -&gt; None:
         pass
@@ -106,7 +164,19 @@ class HeadlessDriver(Driver):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def start_application_mode(self) -&gt; None:
-    pass</code></pre>
+    loop = asyncio.get_running_loop()
+
+    def send_size_event():
+        terminal_size = self._get_terminal_size()
+        width, height = terminal_size
+        textual_size = Size(width, height)
+        event = events.Resize(self._target, textual_size, textual_size)
+        asyncio.run_coroutine_threadsafe(
+            self._target.post_message(event),
+            loop=loop,
+        )
+
+    send_size_event()</code></pre>
 </details>
 </dd>
 <dt id="textual.drivers.headless_driver.HeadlessDriver.stop_application_mode"><code class="name flex">

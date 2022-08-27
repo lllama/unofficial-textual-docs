@@ -40,7 +40,18 @@ class ActionError(Exception):
 re_action_params = re.compile(r&#34;([\w\.]+)(\(.*?\))&#34;)
 
 
-def parse(action: str) -&gt; tuple[str, tuple[Any, ...]]:
+def parse(action: str) -&gt; tuple[str, tuple[object, ...]]:
+    &#34;&#34;&#34;Parses an action string.
+
+    Args:
+        action (str): String containing action.
+
+    Raises:
+        ActionError: If the action has invalid syntax.
+
+    Returns:
+        tuple[str, tuple[object, ...]]: Action name and parameters
+    &#34;&#34;&#34;
     params_match = re_action_params.match(action)
     if params_match is not None:
         action_name, action_params_str = params_match.groups()
@@ -77,15 +88,41 @@ if __name__ == &#34;__main__&#34;:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="textual.actions.parse"><code class="name flex">
-<span>def <span class="ident">parse</span></span>(<span>action: str) ‑> tuple[str, tuple[Any, ...]]</span>
+<span>def <span class="ident">parse</span></span>(<span>action: str) ‑> tuple[str, tuple[object, ...]]</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Parses an action string.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>action</code></strong> :&ensp;<code>str</code></dt>
+<dd>String containing action.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code><a title="textual.actions.ActionError" href="#textual.actions.ActionError">ActionError</a></code></dt>
+<dd>If the action has invalid syntax.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[str, tuple[object, &hellip;]]</code></dt>
+<dd>Action name and parameters</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def parse(action: str) -&gt; tuple[str, tuple[Any, ...]]:
+<pre><code class="python">def parse(action: str) -&gt; tuple[str, tuple[object, ...]]:
+    &#34;&#34;&#34;Parses an action string.
+
+    Args:
+        action (str): String containing action.
+
+    Raises:
+        ActionError: If the action has invalid syntax.
+
+    Returns:
+        tuple[str, tuple[object, ...]]: Action name and parameters
+    &#34;&#34;&#34;
     params_match = re_action_params.match(action)
     if params_match is not None:
         action_name, action_params_str = params_match.groups()

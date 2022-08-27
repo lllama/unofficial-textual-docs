@@ -37,7 +37,7 @@ from __future__ import annotations
 
 import sys
 from functools import lru_cache
-from operator import itemgetter, attrgetter
+from operator import attrgetter, itemgetter
 from typing import Any, Collection, NamedTuple, Tuple, TypeVar, Union, cast
 
 if sys.version_info &gt;= (3, 10):
@@ -53,12 +53,13 @@ T = TypeVar(&#34;T&#34;, int, float)
 
 
 def clamp(value: T, minimum: T, maximum: T) -&gt; T:
-    &#34;&#34;&#34;Clamps a value between two other values.
+    &#34;&#34;&#34;Adjust a value to it is not less than a minimum and not greater
+    than a maximum value.
 
     Args:
-        value (T): A value
-        minimum (T): Minimum value
-        maximum (T): maximum value
+        value (T): A value.
+        minimum (T): Minimum value.
+        maximum (T): maximum value.
 
     Returns:
         T: New value that is not less than the minimum or greater than the maximum.
@@ -75,7 +76,11 @@ def clamp(value: T, minimum: T, maximum: T) -&gt; T:
 
 class Offset(NamedTuple):
     &#34;&#34;&#34;A cell offset defined by x and y coordinates. Offsets are typically relative to the
-    top left of the terminal or other container.&#34;&#34;&#34;
+    top left of the terminal or other container.
+
+    Textual prefers the names `x` and `y`, but you could consider `x` to be the _column_ and `y` to be the _row_.
+
+    &#34;&#34;&#34;
 
     x: int = 0
     &#34;&#34;&#34;Offset in the x-axis (horizontal)&#34;&#34;&#34;
@@ -84,7 +89,12 @@ class Offset(NamedTuple):
 
     @property
     def is_origin(self) -&gt; bool:
-        &#34;&#34;&#34;Check if the point is at the origin (0, 0)&#34;&#34;&#34;
+        &#34;&#34;&#34;Check if the point is at the origin (0, 0).
+
+        Returns:
+            bool: True if the offset is the origin.
+
+        &#34;&#34;&#34;
         return self == (0, 0)
 
     def __bool__(self) -&gt; bool:
@@ -118,11 +128,11 @@ class Offset(NamedTuple):
         &#34;&#34;&#34;Blend (interpolate) to a new point.
 
         Args:
-            destination (Point): Point where progress is 1.0
-            factor (float): A value between 0 and 1.0
+            destination (Point): Point where factor would be 1.0.
+            factor (float): A value between 0 and 1.0.
 
         Returns:
-            Point: A new point on a line between self and destination
+            Point: A new point on a line between self and destination.
         &#34;&#34;&#34;
         x1, y1 = self
         x2, y2 = destination
@@ -135,10 +145,10 @@ class Offset(NamedTuple):
         &#34;&#34;&#34;Get the distance to another offset.
 
         Args:
-            other (Offset): An offset
+            other (Offset): An offset.
 
         Returns:
-            float: Distance to other offset
+            float: Distance to other offset.
         &#34;&#34;&#34;
         x1, y1 = self
         x2, y2 = other
@@ -147,7 +157,7 @@ class Offset(NamedTuple):
 
 
 class Size(NamedTuple):
-    &#34;&#34;&#34;An area defined by its width and height.&#34;&#34;&#34;
+    &#34;&#34;&#34;The dimensions of a rectangular region.&#34;&#34;&#34;
 
     width: int = 0
     &#34;&#34;&#34;The width in cells.&#34;&#34;&#34;
@@ -170,13 +180,22 @@ class Size(NamedTuple):
 
     @property
     def region(self) -&gt; Region:
-        &#34;&#34;&#34;Get a region of the same size.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get a region of the same size.
+
+        Returns:
+            Region: A region with the same size at (0, 0).
+
+        &#34;&#34;&#34;
         width, height = self
         return Region(0, 0, width, height)
 
     @property
     def line_range(self) -&gt; range:
-        &#34;&#34;&#34;Get a range covering lines.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get a range covering lines.
+
+        Returns:
+            range: A builtin range object.
+        &#34;&#34;&#34;
         return range(self.height)
 
     def __add__(self, other: object) -&gt; Size:
@@ -194,11 +213,11 @@ class Size(NamedTuple):
         return NotImplemented
 
     def contains(self, x: int, y: int) -&gt; bool:
-        &#34;&#34;&#34;Check if a point is in the size.
+        &#34;&#34;&#34;Check if a point is in area defined by the size.
 
         Args:
-            x (int): X coordinate (column)
-            y (int): Y coordinate (row)
+            x (int): X coordinate.
+            y (int): Y coordinate.
 
         Returns:
             bool: True if the point is within the region.
@@ -207,7 +226,7 @@ class Size(NamedTuple):
         return width &gt; x &gt;= 0 and height &gt; y &gt;= 0
 
     def contains_point(self, point: tuple[int, int]) -&gt; bool:
-        &#34;&#34;&#34;Check if a point is in the size.
+        &#34;&#34;&#34;Check if a point is in the area defined by the size.
 
         Args:
             point (tuple[int, int]): A tuple of x and y coordinates.
@@ -250,13 +269,13 @@ class Region(NamedTuple):
     &#34;&#34;&#34;
 
     x: int = 0
-    &#34;&#34;&#34;Offset in the x-axis (horizontal)&#34;&#34;&#34;
+    &#34;&#34;&#34;Offset in the x-axis (horizontal).&#34;&#34;&#34;
     y: int = 0
-    &#34;&#34;&#34;Offset in the y-axis (vertical)&#34;&#34;&#34;
+    &#34;&#34;&#34;Offset in the y-axis (vertical).&#34;&#34;&#34;
     width: int = 0
-    &#34;&#34;&#34;The widget of the region&#34;&#34;&#34;
+    &#34;&#34;&#34;The width of the region.&#34;&#34;&#34;
     height: int = 0
-    &#34;&#34;&#34;The height of the region&#34;&#34;&#34;
+    &#34;&#34;&#34;The height of the region.&#34;&#34;&#34;
 
     @classmethod
     def from_union(
@@ -288,10 +307,10 @@ class Region(NamedTuple):
         &#34;&#34;&#34;Construct a Region form the top left and bottom right corners.
 
         Args:
-            x1 (int): Top left x
-            y1 (int): Top left y
-            x2 (int): Bottom right x
-            y2 (int): Bottom right y
+            x1 (int): Top left x.
+            y1 (int): Top left y.
+            x2 (int): Bottom right x.
+            y2 (int): Bottom right y.
 
         Returns:
             Region: A new region.
@@ -303,7 +322,7 @@ class Region(NamedTuple):
         &#34;&#34;&#34;Create a region from offset and size.
 
         Args:
-            offset (Point): Offset (top left point)
+            offset (Point): Offset (top left point).
             size (tuple[int, int]): Dimensions of region.
 
         Returns:
@@ -367,12 +386,13 @@ class Region(NamedTuple):
 
     @property
     def column_span(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Get the start and end column (x coord).
+        &#34;&#34;&#34;Get the start and end columns (x coord).
 
         The end value is exclusive.
 
         Returns:
             tuple[int, int]: Pair of x coordinates (column numbers).
+
         &#34;&#34;&#34;
         return (self.x, self.x + self.width)
 
@@ -384,50 +404,91 @@ class Region(NamedTuple):
 
         Returns:
             tuple[int, int]: Pair of y coordinates (line numbers).
+
         &#34;&#34;&#34;
         return (self.y, self.y + self.height)
 
     @property
     def right(self) -&gt; int:
-        &#34;&#34;&#34;Maximum X value (non inclusive)&#34;&#34;&#34;
+        &#34;&#34;&#34;Maximum X value (non inclusive).
+
+        Returns:
+            int: x coordinate.
+
+        &#34;&#34;&#34;
         return self.x + self.width
 
     @property
     def bottom(self) -&gt; int:
-        &#34;&#34;&#34;Maximum Y value (non inclusive)&#34;&#34;&#34;
+        &#34;&#34;&#34;Maximum Y value (non inclusive).
+
+        Returns:
+            int: y coordinate.
+
+        &#34;&#34;&#34;
         return self.y + self.height
 
     @property
     def area(self) -&gt; int:
-        &#34;&#34;&#34;Get the area within the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the area within the region.
+
+        Returns:
+            int: Area covered by this region.
+
+        &#34;&#34;&#34;
         return self.width * self.height
 
     @property
     def offset(self) -&gt; Offset:
-        &#34;&#34;&#34;Get the start point of the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the start point of the region.
+
+        Returns:
+            Offset: Top left offset.
+
+        &#34;&#34;&#34;
         return Offset(self.x, self.y)
 
     @property
     def bottom_left(self) -&gt; Offset:
-        &#34;&#34;&#34;Bottom left offset of the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Bottom left offset of the region.
+
+        Returns:
+            Offset: Bottom left offset.
+
+        &#34;&#34;&#34;
         x, y, _width, height = self
         return Offset(x, y + height)
 
     @property
     def top_right(self) -&gt; Offset:
-        &#34;&#34;&#34;Top right offset of the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Top right offset of the region.
+
+        Returns:
+            Offset: Top right.
+
+        &#34;&#34;&#34;
         x, y, width, _height = self
         return Offset(x + width, y)
 
     @property
     def bottom_right(self) -&gt; Offset:
-        &#34;&#34;&#34;Bottom right of the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Bottom right of the region.
+
+        Returns:
+            Offset: Bottom right.
+
+        &#34;&#34;&#34;
         x, y, width, height = self
         return Offset(x + width, y + height)
 
     @property
     def size(self) -&gt; Size:
-        &#34;&#34;&#34;Get the size of the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the size of the region.
+
+        Returns:
+            Size: Size of the region.
+
+        &#34;&#34;&#34;
         return Size(self.width, self.height)
 
     @property
@@ -435,7 +496,7 @@ class Region(NamedTuple):
         &#34;&#34;&#34;Get the top left and bottom right coordinates as a tuple of integers.
 
         Returns:
-            tuple[int, int, int, int]: A tuple of `(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)`
+            tuple[int, int, int, int]: A tuple of `(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)`.
         &#34;&#34;&#34;
         x, y, width, height = self
         return x, y, x + width, y + height
@@ -452,7 +513,12 @@ class Region(NamedTuple):
 
     @property
     def reset_offset(self) -&gt; Region:
-        &#34;&#34;&#34;An region of the same size at (0, 0).&#34;&#34;&#34;
+        &#34;&#34;&#34;An region of the same size at (0, 0).
+
+        Returns:
+            Region: reset region.
+
+        &#34;&#34;&#34;
         _, _, width, height = self
         return Region(0, 0, width, height)
 
@@ -535,8 +601,8 @@ class Region(NamedTuple):
         &#34;&#34;&#34;Check if a point is in the region.
 
         Args:
-            x (int): X coordinate (column)
-            y (int): Y coordinate (row)
+            x (int): X coordinate.
+            y (int): Y coordinate.
 
         Returns:
             bool: True if the point is within the region.
@@ -628,7 +694,7 @@ class Region(NamedTuple):
         &#34;&#34;&#34;Grow a region by adding spacing.
 
         Args:
-            margin (Spacing): Defines how many cells to grow the Region by at each edge.
+            margin (tuple[int, int, in, int]): Grow space by `(&lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;, &lt;left&gt;)`.
 
         Returns:
             Region: New region.
@@ -647,7 +713,7 @@ class Region(NamedTuple):
         &#34;&#34;&#34;Shrink a region by subtracting spacing.
 
         Args:
-            margin (Spacing): Defines how many cells to shrink the Region by at each edge.
+            margin (tuple[int, int, int, int]): Shrink space by `(&lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;, &lt;left&gt;)`.
 
         Returns:
             Region: The new, smaller region.
@@ -658,8 +724,8 @@ class Region(NamedTuple):
         return Region(
             x=x + left,
             y=y + top,
-            width=max(0, width - left - right),
-            height=max(0, height - top - bottom),
+            width=max(0, width - (left + right)),
+            height=max(0, height - (top + bottom)),
         )
 
     @lru_cache(maxsize=4096)
@@ -711,14 +777,14 @@ class Region(NamedTuple):
 
         ```
                    cut_x ↓
-                ┌────────┐┌───┐
-                │        ││   │
-                │    0   ││ 1 │
-                │        ││   │
-        cut_y → └────────┘└───┘
-                ┌────────┐┌───┐
-                │    2   ││ 3 │
-                └────────┘└───┘
+                ┌────────┐ ┌───┐
+                │        │ │   │
+                │    0   │ │ 1 │
+                │        │ │   │
+        cut_y → └────────┘ └───┘
+                ┌────────┐ ┌───┐
+                │    2   │ │ 3 │
+                └────────┘ └───┘
         ```
 
         Args:
@@ -822,33 +888,64 @@ class Spacing(NamedTuple):
 
     @property
     def width(self) -&gt; int:
-        &#34;&#34;&#34;Total space in width.&#34;&#34;&#34;
+        &#34;&#34;&#34;Total space in width.
+
+        Returns:
+            int: Width.
+
+        &#34;&#34;&#34;
         return self.left + self.right
 
     @property
     def height(self) -&gt; int:
-        &#34;&#34;&#34;Total space in height.&#34;&#34;&#34;
+        &#34;&#34;&#34;Total space in height.
+
+        Returns:
+            int: Height.
+
+        &#34;&#34;&#34;
         return self.top + self.bottom
 
     @property
     def top_left(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Top left space.&#34;&#34;&#34;
+        &#34;&#34;&#34;Top left space.
+
+        Returns:
+            tuple[int, int]: `(&lt;left&gt;, &lt;top&gt;)`
+
+        &#34;&#34;&#34;
         return (self.left, self.top)
 
     @property
     def bottom_right(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Bottom right space.&#34;&#34;&#34;
+        &#34;&#34;&#34;Bottom right space.
+
+        Returns:
+            tuple[int, int]: `(&lt;right&gt;, &lt;bottom&gt;)`
+
+        &#34;&#34;&#34;
         return (self.right, self.bottom)
 
     @property
     def totals(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Returns a tuple of (&lt;HORIZONTAL SPACE&gt;, &lt;VERTICAL SPACE&gt;).&#34;&#34;&#34;
+        &#34;&#34;&#34;Get total horizontal and vertical space.
+
+        Returns:
+            tuple[int, int]: `(&lt;horizontal&gt;, &lt;vertical&gt;)`
+
+
+        &#34;&#34;&#34;
         top, right, bottom, left = self
         return (left + right, top + bottom)
 
     @property
     def css(self) -&gt; str:
-        &#34;&#34;&#34;Gets a string containing the spacing in CSS format.&#34;&#34;&#34;
+        &#34;&#34;&#34;Gets a string containing the spacing in CSS format.
+
+        Returns:
+            str: Spacing in CSS format.
+
+        &#34;&#34;&#34;
         top, right, bottom, left = self
         if top == right == bottom == left:
             return f&#34;{top}&#34;
@@ -895,7 +992,7 @@ class Spacing(NamedTuple):
             amount (int): The magnitude of spacing to apply to vertical edges
 
         Returns:
-            Spacing: ``Spacing(amount, 0, amount, 0)``
+            Spacing: `Spacing(amount, 0, amount, 0)`
         &#34;&#34;&#34;
         return Spacing(amount, 0, amount, 0)
 
@@ -908,7 +1005,7 @@ class Spacing(NamedTuple):
             amount (int): The magnitude of spacing to apply to horizontal edges
 
         Returns:
-            Spacing: ``Spacing(0, amount, 0, amount)``
+            Spacing: `Spacing(0, amount, 0, amount)`
         &#34;&#34;&#34;
         return Spacing(0, amount, 0, amount)
 
@@ -920,7 +1017,7 @@ class Spacing(NamedTuple):
             amount (int): The magnitude of spacing to apply to all edges
 
         Returns:
-            Spacing: ``Spacing(amount, amount, amount, amount)``
+            Spacing: `Spacing(amount, amount, amount, amount)`
         &#34;&#34;&#34;
         return Spacing(amount, amount, amount, amount)
 
@@ -975,15 +1072,16 @@ NULL_OFFSET = Offset(0, 0)</code></pre>
 <span>def <span class="ident">clamp</span></span>(<span>value: T, minimum: T, maximum: T) ‑> ~T</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Clamps a value between two other values.</p>
+<div class="desc"><p>Adjust a value to it is not less than a minimum and not greater
+than a maximum value.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>value</code></strong> :&ensp;<code>T</code></dt>
-<dd>A value</dd>
+<dd>A value.</dd>
 <dt><strong><code>minimum</code></strong> :&ensp;<code>T</code></dt>
-<dd>Minimum value</dd>
+<dd>Minimum value.</dd>
 <dt><strong><code>maximum</code></strong> :&ensp;<code>T</code></dt>
-<dd>maximum value</dd>
+<dd>maximum value.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -995,12 +1093,13 @@ NULL_OFFSET = Offset(0, 0)</code></pre>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def clamp(value: T, minimum: T, maximum: T) -&gt; T:
-    &#34;&#34;&#34;Clamps a value between two other values.
+    &#34;&#34;&#34;Adjust a value to it is not less than a minimum and not greater
+    than a maximum value.
 
     Args:
-        value (T): A value
-        minimum (T): Minimum value
-        maximum (T): maximum value
+        value (T): A value.
+        minimum (T): Minimum value.
+        maximum (T): maximum value.
 
     Returns:
         T: New value that is not less than the minimum or greater than the maximum.
@@ -1026,14 +1125,19 @@ NULL_OFFSET = Offset(0, 0)</code></pre>
 </code></dt>
 <dd>
 <div class="desc"><p>A cell offset defined by x and y coordinates. Offsets are typically relative to the
-top left of the terminal or other container.</p></div>
+top left of the terminal or other container.</p>
+<p>Textual prefers the names <code>x</code> and <code>y</code>, but you could consider <code>x</code> to be the <em>column</em> and <code>y</code> to be the <em>row</em>.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Offset(NamedTuple):
     &#34;&#34;&#34;A cell offset defined by x and y coordinates. Offsets are typically relative to the
-    top left of the terminal or other container.&#34;&#34;&#34;
+    top left of the terminal or other container.
+
+    Textual prefers the names `x` and `y`, but you could consider `x` to be the _column_ and `y` to be the _row_.
+
+    &#34;&#34;&#34;
 
     x: int = 0
     &#34;&#34;&#34;Offset in the x-axis (horizontal)&#34;&#34;&#34;
@@ -1042,7 +1146,12 @@ top left of the terminal or other container.</p></div>
 
     @property
     def is_origin(self) -&gt; bool:
-        &#34;&#34;&#34;Check if the point is at the origin (0, 0)&#34;&#34;&#34;
+        &#34;&#34;&#34;Check if the point is at the origin (0, 0).
+
+        Returns:
+            bool: True if the offset is the origin.
+
+        &#34;&#34;&#34;
         return self == (0, 0)
 
     def __bool__(self) -&gt; bool:
@@ -1076,11 +1185,11 @@ top left of the terminal or other container.</p></div>
         &#34;&#34;&#34;Blend (interpolate) to a new point.
 
         Args:
-            destination (Point): Point where progress is 1.0
-            factor (float): A value between 0 and 1.0
+            destination (Point): Point where factor would be 1.0.
+            factor (float): A value between 0 and 1.0.
 
         Returns:
-            Point: A new point on a line between self and destination
+            Point: A new point on a line between self and destination.
         &#34;&#34;&#34;
         x1, y1 = self
         x2, y2 = destination
@@ -1093,10 +1202,10 @@ top left of the terminal or other container.</p></div>
         &#34;&#34;&#34;Get the distance to another offset.
 
         Args:
-            other (Offset): An offset
+            other (Offset): An offset.
 
         Returns:
-            float: Distance to other offset
+            float: Distance to other offset.
         &#34;&#34;&#34;
         x1, y1 = self
         x2, y2 = other
@@ -1111,14 +1220,24 @@ top left of the terminal or other container.</p></div>
 <dl>
 <dt id="textual.geometry.Offset.is_origin"><code class="name">var <span class="ident">is_origin</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>Check if the point is at the origin (0, 0)</p></div>
+<div class="desc"><p>Check if the point is at the origin (0, 0).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the offset is the origin.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def is_origin(self) -&gt; bool:
-    &#34;&#34;&#34;Check if the point is at the origin (0, 0)&#34;&#34;&#34;
+    &#34;&#34;&#34;Check if the point is at the origin (0, 0).
+
+    Returns:
+        bool: True if the offset is the origin.
+
+    &#34;&#34;&#34;
     return self == (0, 0)</code></pre>
 </details>
 </dd>
@@ -1141,14 +1260,14 @@ def is_origin(self) -&gt; bool:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>destination</code></strong> :&ensp;<code>Point</code></dt>
-<dd>Point where progress is 1.0</dd>
+<dd>Point where factor would be 1.0.</dd>
 <dt><strong><code>factor</code></strong> :&ensp;<code>float</code></dt>
-<dd>A value between 0 and 1.0</dd>
+<dd>A value between 0 and 1.0.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Point</code></dt>
-<dd>A new point on a line between self and destination</dd>
+<dd>A new point on a line between self and destination.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1158,11 +1277,11 @@ def is_origin(self) -&gt; bool:
     &#34;&#34;&#34;Blend (interpolate) to a new point.
 
     Args:
-        destination (Point): Point where progress is 1.0
-        factor (float): A value between 0 and 1.0
+        destination (Point): Point where factor would be 1.0.
+        factor (float): A value between 0 and 1.0.
 
     Returns:
-        Point: A new point on a line between self and destination
+        Point: A new point on a line between self and destination.
     &#34;&#34;&#34;
     x1, y1 = self
     x2, y2 = destination
@@ -1180,12 +1299,12 @@ def is_origin(self) -&gt; bool:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>other</code></strong> :&ensp;<code><a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
-<dd>An offset</dd>
+<dd>An offset.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>float</code></dt>
-<dd>Distance to other offset</dd>
+<dd>Distance to other offset.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1195,10 +1314,10 @@ def is_origin(self) -&gt; bool:
     &#34;&#34;&#34;Get the distance to another offset.
 
     Args:
-        other (Offset): An offset
+        other (Offset): An offset.
 
     Returns:
-        float: Distance to other offset
+        float: Distance to other offset.
     &#34;&#34;&#34;
     x1, y1 = self
     x2, y2 = other
@@ -1249,13 +1368,13 @@ def is_origin(self) -&gt; bool:
     &#34;&#34;&#34;
 
     x: int = 0
-    &#34;&#34;&#34;Offset in the x-axis (horizontal)&#34;&#34;&#34;
+    &#34;&#34;&#34;Offset in the x-axis (horizontal).&#34;&#34;&#34;
     y: int = 0
-    &#34;&#34;&#34;Offset in the y-axis (vertical)&#34;&#34;&#34;
+    &#34;&#34;&#34;Offset in the y-axis (vertical).&#34;&#34;&#34;
     width: int = 0
-    &#34;&#34;&#34;The widget of the region&#34;&#34;&#34;
+    &#34;&#34;&#34;The width of the region.&#34;&#34;&#34;
     height: int = 0
-    &#34;&#34;&#34;The height of the region&#34;&#34;&#34;
+    &#34;&#34;&#34;The height of the region.&#34;&#34;&#34;
 
     @classmethod
     def from_union(
@@ -1287,10 +1406,10 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;Construct a Region form the top left and bottom right corners.
 
         Args:
-            x1 (int): Top left x
-            y1 (int): Top left y
-            x2 (int): Bottom right x
-            y2 (int): Bottom right y
+            x1 (int): Top left x.
+            y1 (int): Top left y.
+            x2 (int): Bottom right x.
+            y2 (int): Bottom right y.
 
         Returns:
             Region: A new region.
@@ -1302,7 +1421,7 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;Create a region from offset and size.
 
         Args:
-            offset (Point): Offset (top left point)
+            offset (Point): Offset (top left point).
             size (tuple[int, int]): Dimensions of region.
 
         Returns:
@@ -1366,12 +1485,13 @@ def is_origin(self) -&gt; bool:
 
     @property
     def column_span(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Get the start and end column (x coord).
+        &#34;&#34;&#34;Get the start and end columns (x coord).
 
         The end value is exclusive.
 
         Returns:
             tuple[int, int]: Pair of x coordinates (column numbers).
+
         &#34;&#34;&#34;
         return (self.x, self.x + self.width)
 
@@ -1383,50 +1503,91 @@ def is_origin(self) -&gt; bool:
 
         Returns:
             tuple[int, int]: Pair of y coordinates (line numbers).
+
         &#34;&#34;&#34;
         return (self.y, self.y + self.height)
 
     @property
     def right(self) -&gt; int:
-        &#34;&#34;&#34;Maximum X value (non inclusive)&#34;&#34;&#34;
+        &#34;&#34;&#34;Maximum X value (non inclusive).
+
+        Returns:
+            int: x coordinate.
+
+        &#34;&#34;&#34;
         return self.x + self.width
 
     @property
     def bottom(self) -&gt; int:
-        &#34;&#34;&#34;Maximum Y value (non inclusive)&#34;&#34;&#34;
+        &#34;&#34;&#34;Maximum Y value (non inclusive).
+
+        Returns:
+            int: y coordinate.
+
+        &#34;&#34;&#34;
         return self.y + self.height
 
     @property
     def area(self) -&gt; int:
-        &#34;&#34;&#34;Get the area within the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the area within the region.
+
+        Returns:
+            int: Area covered by this region.
+
+        &#34;&#34;&#34;
         return self.width * self.height
 
     @property
     def offset(self) -&gt; Offset:
-        &#34;&#34;&#34;Get the start point of the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the start point of the region.
+
+        Returns:
+            Offset: Top left offset.
+
+        &#34;&#34;&#34;
         return Offset(self.x, self.y)
 
     @property
     def bottom_left(self) -&gt; Offset:
-        &#34;&#34;&#34;Bottom left offset of the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Bottom left offset of the region.
+
+        Returns:
+            Offset: Bottom left offset.
+
+        &#34;&#34;&#34;
         x, y, _width, height = self
         return Offset(x, y + height)
 
     @property
     def top_right(self) -&gt; Offset:
-        &#34;&#34;&#34;Top right offset of the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Top right offset of the region.
+
+        Returns:
+            Offset: Top right.
+
+        &#34;&#34;&#34;
         x, y, width, _height = self
         return Offset(x + width, y)
 
     @property
     def bottom_right(self) -&gt; Offset:
-        &#34;&#34;&#34;Bottom right of the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Bottom right of the region.
+
+        Returns:
+            Offset: Bottom right.
+
+        &#34;&#34;&#34;
         x, y, width, height = self
         return Offset(x + width, y + height)
 
     @property
     def size(self) -&gt; Size:
-        &#34;&#34;&#34;Get the size of the region.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the size of the region.
+
+        Returns:
+            Size: Size of the region.
+
+        &#34;&#34;&#34;
         return Size(self.width, self.height)
 
     @property
@@ -1434,7 +1595,7 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;Get the top left and bottom right coordinates as a tuple of integers.
 
         Returns:
-            tuple[int, int, int, int]: A tuple of `(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)`
+            tuple[int, int, int, int]: A tuple of `(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)`.
         &#34;&#34;&#34;
         x, y, width, height = self
         return x, y, x + width, y + height
@@ -1451,7 +1612,12 @@ def is_origin(self) -&gt; bool:
 
     @property
     def reset_offset(self) -&gt; Region:
-        &#34;&#34;&#34;An region of the same size at (0, 0).&#34;&#34;&#34;
+        &#34;&#34;&#34;An region of the same size at (0, 0).
+
+        Returns:
+            Region: reset region.
+
+        &#34;&#34;&#34;
         _, _, width, height = self
         return Region(0, 0, width, height)
 
@@ -1534,8 +1700,8 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;Check if a point is in the region.
 
         Args:
-            x (int): X coordinate (column)
-            y (int): Y coordinate (row)
+            x (int): X coordinate.
+            y (int): Y coordinate.
 
         Returns:
             bool: True if the point is within the region.
@@ -1627,7 +1793,7 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;Grow a region by adding spacing.
 
         Args:
-            margin (Spacing): Defines how many cells to grow the Region by at each edge.
+            margin (tuple[int, int, in, int]): Grow space by `(&lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;, &lt;left&gt;)`.
 
         Returns:
             Region: New region.
@@ -1646,7 +1812,7 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;Shrink a region by subtracting spacing.
 
         Args:
-            margin (Spacing): Defines how many cells to shrink the Region by at each edge.
+            margin (tuple[int, int, int, int]): Shrink space by `(&lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;, &lt;left&gt;)`.
 
         Returns:
             Region: The new, smaller region.
@@ -1657,8 +1823,8 @@ def is_origin(self) -&gt; bool:
         return Region(
             x=x + left,
             y=y + top,
-            width=max(0, width - left - right),
-            height=max(0, height - top - bottom),
+            width=max(0, width - (left + right)),
+            height=max(0, height - (top + bottom)),
         )
 
     @lru_cache(maxsize=4096)
@@ -1710,14 +1876,14 @@ def is_origin(self) -&gt; bool:
 
         ```
                    cut_x ↓
-                ┌────────┐┌───┐
-                │        ││   │
-                │    0   ││ 1 │
-                │        ││   │
-        cut_y → └────────┘└───┘
-                ┌────────┐┌───┐
-                │    2   ││ 3 │
-                └────────┘└───┘
+                ┌────────┐ ┌───┐
+                │        │ │   │
+                │    0   │ │ 1 │
+                │        │ │   │
+        cut_y → └────────┘ └───┘
+                ┌────────┐ ┌───┐
+                │    2   │ │ 3 │
+                └────────┘ └───┘
         ```
 
         Args:
@@ -1817,13 +1983,13 @@ def is_origin(self) -&gt; bool:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>x1</code></strong> :&ensp;<code>int</code></dt>
-<dd>Top left x</dd>
+<dd>Top left x.</dd>
 <dt><strong><code>y1</code></strong> :&ensp;<code>int</code></dt>
-<dd>Top left y</dd>
+<dd>Top left y.</dd>
 <dt><strong><code>x2</code></strong> :&ensp;<code>int</code></dt>
-<dd>Bottom right x</dd>
+<dd>Bottom right x.</dd>
 <dt><strong><code>y2</code></strong> :&ensp;<code>int</code></dt>
-<dd>Bottom right y</dd>
+<dd>Bottom right y.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -1839,10 +2005,10 @@ def from_corners(cls, x1: int, y1: int, x2: int, y2: int) -&gt; Region:
     &#34;&#34;&#34;Construct a Region form the top left and bottom right corners.
 
     Args:
-        x1 (int): Top left x
-        y1 (int): Top left y
-        x2 (int): Bottom right x
-        y2 (int): Bottom right y
+        x1 (int): Top left x.
+        y1 (int): Top left y.
+        x2 (int): Bottom right x.
+        y2 (int): Bottom right y.
 
     Returns:
         Region: A new region.
@@ -1858,7 +2024,7 @@ def from_corners(cls, x1: int, y1: int, x2: int, y2: int) -&gt; Region:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>offset</code></strong> :&ensp;<code>Point</code></dt>
-<dd>Offset (top left point)</dd>
+<dd>Offset (top left point).</dd>
 <dt><strong><code>size</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
 <dd>Dimensions of region.</dd>
 </dl>
@@ -1876,7 +2042,7 @@ def from_offset(cls, offset: tuple[int, int], size: tuple[int, int]) -&gt; Regio
     &#34;&#34;&#34;Create a region from offset and size.
 
     Args:
-        offset (Point): Offset (top left point)
+        offset (Point): Offset (top left point).
         size (tuple[int, int]): Dimensions of region.
 
     Returns:
@@ -2009,54 +2175,94 @@ def get_scroll_to_visible(cls, window_region: Region, region: Region) -&gt; Offs
 <dl>
 <dt id="textual.geometry.Region.area"><code class="name">var <span class="ident">area</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Get the area within the region.</p></div>
+<div class="desc"><p>Get the area within the region.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>Area covered by this region.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def area(self) -&gt; int:
-    &#34;&#34;&#34;Get the area within the region.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get the area within the region.
+
+    Returns:
+        int: Area covered by this region.
+
+    &#34;&#34;&#34;
     return self.width * self.height</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.bottom"><code class="name">var <span class="ident">bottom</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Maximum Y value (non inclusive)</p></div>
+<div class="desc"><p>Maximum Y value (non inclusive).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>y coordinate.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def bottom(self) -&gt; int:
-    &#34;&#34;&#34;Maximum Y value (non inclusive)&#34;&#34;&#34;
+    &#34;&#34;&#34;Maximum Y value (non inclusive).
+
+    Returns:
+        int: y coordinate.
+
+    &#34;&#34;&#34;
     return self.y + self.height</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.bottom_left"><code class="name">var <span class="ident">bottom_left</span> : <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
 <dd>
-<div class="desc"><p>Bottom left offset of the region.</p></div>
+<div class="desc"><p>Bottom left offset of the region.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
+<dd>Bottom left offset.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def bottom_left(self) -&gt; Offset:
-    &#34;&#34;&#34;Bottom left offset of the region.&#34;&#34;&#34;
+    &#34;&#34;&#34;Bottom left offset of the region.
+
+    Returns:
+        Offset: Bottom left offset.
+
+    &#34;&#34;&#34;
     x, y, _width, height = self
     return Offset(x, y + height)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.bottom_right"><code class="name">var <span class="ident">bottom_right</span> : <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
 <dd>
-<div class="desc"><p>Bottom right of the region.</p></div>
+<div class="desc"><p>Bottom right of the region.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
+<dd>Bottom right.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def bottom_right(self) -&gt; Offset:
-    &#34;&#34;&#34;Bottom right of the region.&#34;&#34;&#34;
+    &#34;&#34;&#34;Bottom right of the region.
+
+    Returns:
+        Offset: Bottom right.
+
+    &#34;&#34;&#34;
     x, y, width, height = self
     return Offset(x + width, y + height)</code></pre>
 </details>
@@ -2076,7 +2282,7 @@ def column_range(self) -&gt; range:
 </dd>
 <dt id="textual.geometry.Region.column_span"><code class="name">var <span class="ident">column_span</span> : tuple[int, int]</code></dt>
 <dd>
-<div class="desc"><p>Get the start and end column (x coord).</p>
+<div class="desc"><p>Get the start and end columns (x coord).</p>
 <p>The end value is exclusive.</p>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2089,12 +2295,13 @@ def column_range(self) -&gt; range:
 </summary>
 <pre><code class="python">@property
 def column_span(self) -&gt; tuple[int, int]:
-    &#34;&#34;&#34;Get the start and end column (x coord).
+    &#34;&#34;&#34;Get the start and end columns (x coord).
 
     The end value is exclusive.
 
     Returns:
         tuple[int, int]: Pair of x coordinates (column numbers).
+
     &#34;&#34;&#34;
     return (self.x, self.x + self.width)</code></pre>
 </details>
@@ -2105,7 +2312,7 @@ def column_span(self) -&gt; tuple[int, int]:
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>tuple[int, int, int, int]</code></dt>
-<dd>A tuple of <code>(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)</code></dd>
+<dd>A tuple of <code>(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)</code>.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -2116,7 +2323,7 @@ def corners(self) -&gt; tuple[int, int, int, int]:
     &#34;&#34;&#34;Get the top left and bottom right coordinates as a tuple of integers.
 
     Returns:
-        tuple[int, int, int, int]: A tuple of `(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)`
+        tuple[int, int, int, int]: A tuple of `(&lt;left&gt;, &lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;)`.
     &#34;&#34;&#34;
     x, y, width, height = self
     return x, y, x + width, y + height</code></pre>
@@ -2124,7 +2331,7 @@ def corners(self) -&gt; tuple[int, int, int, int]:
 </dd>
 <dt id="textual.geometry.Region.height"><code class="name">var <span class="ident">height</span> : int</code></dt>
 <dd>
-<div class="desc"><p>The height of the region</p></div>
+<div class="desc"><p>The height of the region.</p></div>
 </dd>
 <dt id="textual.geometry.Region.line_range"><code class="name">var <span class="ident">line_range</span> : range</code></dt>
 <dd>
@@ -2160,88 +2367,139 @@ def line_span(self) -&gt; tuple[int, int]:
 
     Returns:
         tuple[int, int]: Pair of y coordinates (line numbers).
+
     &#34;&#34;&#34;
     return (self.y, self.y + self.height)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.offset"><code class="name">var <span class="ident">offset</span> : <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
 <dd>
-<div class="desc"><p>Get the start point of the region.</p></div>
+<div class="desc"><p>Get the start point of the region.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
+<dd>Top left offset.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def offset(self) -&gt; Offset:
-    &#34;&#34;&#34;Get the start point of the region.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get the start point of the region.
+
+    Returns:
+        Offset: Top left offset.
+
+    &#34;&#34;&#34;
     return Offset(self.x, self.y)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.reset_offset"><code class="name">var <span class="ident">reset_offset</span> : <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
 <dd>
-<div class="desc"><p>An region of the same size at (0, 0).</p></div>
+<div class="desc"><p>An region of the same size at (0, 0).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>reset region.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def reset_offset(self) -&gt; Region:
-    &#34;&#34;&#34;An region of the same size at (0, 0).&#34;&#34;&#34;
+    &#34;&#34;&#34;An region of the same size at (0, 0).
+
+    Returns:
+        Region: reset region.
+
+    &#34;&#34;&#34;
     _, _, width, height = self
     return Region(0, 0, width, height)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.right"><code class="name">var <span class="ident">right</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Maximum X value (non inclusive)</p></div>
+<div class="desc"><p>Maximum X value (non inclusive).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>x coordinate.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def right(self) -&gt; int:
-    &#34;&#34;&#34;Maximum X value (non inclusive)&#34;&#34;&#34;
+    &#34;&#34;&#34;Maximum X value (non inclusive).
+
+    Returns:
+        int: x coordinate.
+
+    &#34;&#34;&#34;
     return self.x + self.width</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="#textual.geometry.Size">Size</a></code></dt>
 <dd>
-<div class="desc"><p>Get the size of the region.</p></div>
+<div class="desc"><p>Get the size of the region.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Size" href="#textual.geometry.Size">Size</a></code></dt>
+<dd>Size of the region.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def size(self) -&gt; Size:
-    &#34;&#34;&#34;Get the size of the region.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get the size of the region.
+
+    Returns:
+        Size: Size of the region.
+
+    &#34;&#34;&#34;
     return Size(self.width, self.height)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.top_right"><code class="name">var <span class="ident">top_right</span> : <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
 <dd>
-<div class="desc"><p>Top right offset of the region.</p></div>
+<div class="desc"><p>Top right offset of the region.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
+<dd>Top right.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def top_right(self) -&gt; Offset:
-    &#34;&#34;&#34;Top right offset of the region.&#34;&#34;&#34;
+    &#34;&#34;&#34;Top right offset of the region.
+
+    Returns:
+        Offset: Top right.
+
+    &#34;&#34;&#34;
     x, y, width, _height = self
     return Offset(x + width, y)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.width"><code class="name">var <span class="ident">width</span> : int</code></dt>
 <dd>
-<div class="desc"><p>The widget of the region</p></div>
+<div class="desc"><p>The width of the region.</p></div>
 </dd>
 <dt id="textual.geometry.Region.x"><code class="name">var <span class="ident">x</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Offset in the x-axis (horizontal)</p></div>
+<div class="desc"><p>Offset in the x-axis (horizontal).</p></div>
 </dd>
 <dt id="textual.geometry.Region.y"><code class="name">var <span class="ident">y</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Offset in the y-axis (vertical)</p></div>
+<div class="desc"><p>Offset in the y-axis (vertical).</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -2330,9 +2588,9 @@ def top_right(self) -&gt; Offset:
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
-<dd>X coordinate (column)</dd>
+<dd>X coordinate.</dd>
 <dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
-<dd>Y coordinate (row)</dd>
+<dd>Y coordinate.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2347,8 +2605,8 @@ def top_right(self) -&gt; Offset:
     &#34;&#34;&#34;Check if a point is in the region.
 
     Args:
-        x (int): X coordinate (column)
-        y (int): Y coordinate (row)
+        x (int): X coordinate.
+        y (int): Y coordinate.
 
     Returns:
         bool: True if the point is within the region.
@@ -2509,8 +2767,8 @@ def top_right(self) -&gt; Offset:
 <div class="desc"><p>Grow a region by adding spacing.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>margin</code></strong> :&ensp;<code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
-<dd>Defines how many cells to grow the Region by at each edge.</dd>
+<dt><strong><code>margin</code></strong> :&ensp;<code>tuple[int, int, in, int]</code></dt>
+<dd>Grow space by <code>(&lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;, &lt;left&gt;)</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2525,7 +2783,7 @@ def top_right(self) -&gt; Offset:
     &#34;&#34;&#34;Grow a region by adding spacing.
 
     Args:
-        margin (Spacing): Defines how many cells to grow the Region by at each edge.
+        margin (tuple[int, int, in, int]): Grow space by `(&lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;, &lt;left&gt;)`.
 
     Returns:
         Region: New region.
@@ -2630,8 +2888,8 @@ def overlaps(self, other: Region) -&gt; bool:
 <div class="desc"><p>Shrink a region by subtracting spacing.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>margin</code></strong> :&ensp;<code><a title="textual.geometry.Spacing" href="#textual.geometry.Spacing">Spacing</a></code></dt>
-<dd>Defines how many cells to shrink the Region by at each edge.</dd>
+<dt><strong><code>margin</code></strong> :&ensp;<code>tuple[int, int, int, int]</code></dt>
+<dd>Shrink space by <code>(&lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;, &lt;left&gt;)</code>.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2646,7 +2904,7 @@ def overlaps(self, other: Region) -&gt; bool:
     &#34;&#34;&#34;Shrink a region by subtracting spacing.
 
     Args:
-        margin (Spacing): Defines how many cells to shrink the Region by at each edge.
+        margin (tuple[int, int, int, int]): Shrink space by `(&lt;top&gt;, &lt;right&gt;, &lt;bottom&gt;, &lt;left&gt;)`.
 
     Returns:
         Region: The new, smaller region.
@@ -2657,8 +2915,8 @@ def overlaps(self, other: Region) -&gt; bool:
     return Region(
         x=x + left,
         y=y + top,
-        width=max(0, width - left - right),
-        height=max(0, height - top - bottom),
+        width=max(0, width - (left + right)),
+        height=max(0, height - (top + bottom)),
     )</code></pre>
 </details>
 </dd>
@@ -2668,14 +2926,14 @@ def overlaps(self, other: Region) -&gt; bool:
 <dd>
 <div class="desc"><p>Split a region in to 4 from given x and y offsets (cuts).</p>
 <pre><code>           cut_x ↓
-        ┌────────┐┌───┐
-        │        ││   │
-        │    0   ││ 1 │
-        │        ││   │
-cut_y → └────────┘└───┘
-        ┌────────┐┌───┐
-        │    2   ││ 3 │
-        └────────┘└───┘
+        ┌────────┐ ┌───┐
+        │        │ │   │
+        │    0   │ │ 1 │
+        │        │ │   │
+cut_y → └────────┘ └───┘
+        ┌────────┐ ┌───┐
+        │    2   │ │ 3 │
+        └────────┘ └───┘
 </code></pre>
 <h2 id="args">Args</h2>
 <dl>
@@ -2701,14 +2959,14 @@ def split(self, cut_x: int, cut_y: int) -&gt; tuple[Region, Region, Region, Regi
 
     ```
                cut_x ↓
-            ┌────────┐┌───┐
-            │        ││   │
-            │    0   ││ 1 │
-            │        ││   │
-    cut_y → └────────┘└───┘
-            ┌────────┐┌───┐
-            │    2   ││ 3 │
-            └────────┘└───┘
+            ┌────────┐ ┌───┐
+            │        │ │   │
+            │    0   │ │ 1 │
+            │        │ │   │
+    cut_y → └────────┘ └───┘
+            ┌────────┐ ┌───┐
+            │    2   │ │ 3 │
+            └────────┘ └───┘
     ```
 
     Args:
@@ -2930,13 +3188,13 @@ def union(self, region: Region) -&gt; Region:
 <span>(</span><span>width: int = 0, height: int = 0)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>An area defined by its width and height.</p></div>
+<div class="desc"><p>The dimensions of a rectangular region.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Size(NamedTuple):
-    &#34;&#34;&#34;An area defined by its width and height.&#34;&#34;&#34;
+    &#34;&#34;&#34;The dimensions of a rectangular region.&#34;&#34;&#34;
 
     width: int = 0
     &#34;&#34;&#34;The width in cells.&#34;&#34;&#34;
@@ -2959,13 +3217,22 @@ def union(self, region: Region) -&gt; Region:
 
     @property
     def region(self) -&gt; Region:
-        &#34;&#34;&#34;Get a region of the same size.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get a region of the same size.
+
+        Returns:
+            Region: A region with the same size at (0, 0).
+
+        &#34;&#34;&#34;
         width, height = self
         return Region(0, 0, width, height)
 
     @property
     def line_range(self) -&gt; range:
-        &#34;&#34;&#34;Get a range covering lines.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get a range covering lines.
+
+        Returns:
+            range: A builtin range object.
+        &#34;&#34;&#34;
         return range(self.height)
 
     def __add__(self, other: object) -&gt; Size:
@@ -2983,11 +3250,11 @@ def union(self, region: Region) -&gt; Region:
         return NotImplemented
 
     def contains(self, x: int, y: int) -&gt; bool:
-        &#34;&#34;&#34;Check if a point is in the size.
+        &#34;&#34;&#34;Check if a point is in area defined by the size.
 
         Args:
-            x (int): X coordinate (column)
-            y (int): Y coordinate (row)
+            x (int): X coordinate.
+            y (int): Y coordinate.
 
         Returns:
             bool: True if the point is within the region.
@@ -2996,7 +3263,7 @@ def union(self, region: Region) -&gt; Region:
         return width &gt; x &gt;= 0 and height &gt; y &gt;= 0
 
     def contains_point(self, point: tuple[int, int]) -&gt; bool:
-        &#34;&#34;&#34;Check if a point is in the size.
+        &#34;&#34;&#34;Check if a point is in the area defined by the size.
 
         Args:
             point (tuple[int, int]): A tuple of x and y coordinates.
@@ -3052,27 +3319,46 @@ def area(self) -&gt; int:
 </dd>
 <dt id="textual.geometry.Size.line_range"><code class="name">var <span class="ident">line_range</span> : range</code></dt>
 <dd>
-<div class="desc"><p>Get a range covering lines.</p></div>
+<div class="desc"><p>Get a range covering lines.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>range</code></dt>
+<dd>A builtin range object.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def line_range(self) -&gt; range:
-    &#34;&#34;&#34;Get a range covering lines.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get a range covering lines.
+
+    Returns:
+        range: A builtin range object.
+    &#34;&#34;&#34;
     return range(self.height)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Size.region"><code class="name">var <span class="ident">region</span> : <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
 <dd>
-<div class="desc"><p>Get a region of the same size.</p></div>
+<div class="desc"><p>Get a region of the same size.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>A region with the same size at (0, 0).</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def region(self) -&gt; Region:
-    &#34;&#34;&#34;Get a region of the same size.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get a region of the same size.
+
+    Returns:
+        Region: A region with the same size at (0, 0).
+
+    &#34;&#34;&#34;
     width, height = self
     return Region(0, 0, width, height)</code></pre>
 </details>
@@ -3088,13 +3374,13 @@ def region(self) -&gt; Region:
 <span>def <span class="ident">contains</span></span>(<span>self, x: int, y: int) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Check if a point is in the size.</p>
+<div class="desc"><p>Check if a point is in area defined by the size.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
-<dd>X coordinate (column)</dd>
+<dd>X coordinate.</dd>
 <dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
-<dd>Y coordinate (row)</dd>
+<dd>Y coordinate.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -3106,11 +3392,11 @@ def region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def contains(self, x: int, y: int) -&gt; bool:
-    &#34;&#34;&#34;Check if a point is in the size.
+    &#34;&#34;&#34;Check if a point is in area defined by the size.
 
     Args:
-        x (int): X coordinate (column)
-        y (int): Y coordinate (row)
+        x (int): X coordinate.
+        y (int): Y coordinate.
 
     Returns:
         bool: True if the point is within the region.
@@ -3123,7 +3409,7 @@ def region(self) -&gt; Region:
 <span>def <span class="ident">contains_point</span></span>(<span>self, point: tuple[int, int]) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Check if a point is in the size.</p>
+<div class="desc"><p>Check if a point is in the area defined by the size.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>point</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
@@ -3139,7 +3425,7 @@ def region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def contains_point(self, point: tuple[int, int]) -&gt; bool:
-    &#34;&#34;&#34;Check if a point is in the size.
+    &#34;&#34;&#34;Check if a point is in the area defined by the size.
 
     Args:
         point (tuple[int, int]): A tuple of x and y coordinates.
@@ -3181,33 +3467,64 @@ def region(self) -&gt; Region:
 
     @property
     def width(self) -&gt; int:
-        &#34;&#34;&#34;Total space in width.&#34;&#34;&#34;
+        &#34;&#34;&#34;Total space in width.
+
+        Returns:
+            int: Width.
+
+        &#34;&#34;&#34;
         return self.left + self.right
 
     @property
     def height(self) -&gt; int:
-        &#34;&#34;&#34;Total space in height.&#34;&#34;&#34;
+        &#34;&#34;&#34;Total space in height.
+
+        Returns:
+            int: Height.
+
+        &#34;&#34;&#34;
         return self.top + self.bottom
 
     @property
     def top_left(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Top left space.&#34;&#34;&#34;
+        &#34;&#34;&#34;Top left space.
+
+        Returns:
+            tuple[int, int]: `(&lt;left&gt;, &lt;top&gt;)`
+
+        &#34;&#34;&#34;
         return (self.left, self.top)
 
     @property
     def bottom_right(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Bottom right space.&#34;&#34;&#34;
+        &#34;&#34;&#34;Bottom right space.
+
+        Returns:
+            tuple[int, int]: `(&lt;right&gt;, &lt;bottom&gt;)`
+
+        &#34;&#34;&#34;
         return (self.right, self.bottom)
 
     @property
     def totals(self) -&gt; tuple[int, int]:
-        &#34;&#34;&#34;Returns a tuple of (&lt;HORIZONTAL SPACE&gt;, &lt;VERTICAL SPACE&gt;).&#34;&#34;&#34;
+        &#34;&#34;&#34;Get total horizontal and vertical space.
+
+        Returns:
+            tuple[int, int]: `(&lt;horizontal&gt;, &lt;vertical&gt;)`
+
+
+        &#34;&#34;&#34;
         top, right, bottom, left = self
         return (left + right, top + bottom)
 
     @property
     def css(self) -&gt; str:
-        &#34;&#34;&#34;Gets a string containing the spacing in CSS format.&#34;&#34;&#34;
+        &#34;&#34;&#34;Gets a string containing the spacing in CSS format.
+
+        Returns:
+            str: Spacing in CSS format.
+
+        &#34;&#34;&#34;
         top, right, bottom, left = self
         if top == right == bottom == left:
             return f&#34;{top}&#34;
@@ -3254,7 +3571,7 @@ def region(self) -&gt; Region:
             amount (int): The magnitude of spacing to apply to vertical edges
 
         Returns:
-            Spacing: ``Spacing(amount, 0, amount, 0)``
+            Spacing: `Spacing(amount, 0, amount, 0)`
         &#34;&#34;&#34;
         return Spacing(amount, 0, amount, 0)
 
@@ -3267,7 +3584,7 @@ def region(self) -&gt; Region:
             amount (int): The magnitude of spacing to apply to horizontal edges
 
         Returns:
-            Spacing: ``Spacing(0, amount, 0, amount)``
+            Spacing: `Spacing(0, amount, 0, amount)`
         &#34;&#34;&#34;
         return Spacing(0, amount, 0, amount)
 
@@ -3279,7 +3596,7 @@ def region(self) -&gt; Region:
             amount (int): The magnitude of spacing to apply to all edges
 
         Returns:
-            Spacing: ``Spacing(amount, amount, amount, amount)``
+            Spacing: `Spacing(amount, amount, amount, amount)`
         &#34;&#34;&#34;
         return Spacing(amount, amount, amount, amount)
 
@@ -3352,7 +3669,7 @@ def all(cls, amount: int) -&gt; Spacing:
         amount (int): The magnitude of spacing to apply to all edges
 
     Returns:
-        Spacing: ``Spacing(amount, amount, amount, amount)``
+        Spacing: `Spacing(amount, amount, amount, amount)`
     &#34;&#34;&#34;
     return Spacing(amount, amount, amount, amount)</code></pre>
 </details>
@@ -3386,7 +3703,7 @@ def horizontal(cls, amount: int) -&gt; Spacing:
         amount (int): The magnitude of spacing to apply to horizontal edges
 
     Returns:
-        Spacing: ``Spacing(0, amount, 0, amount)``
+        Spacing: `Spacing(0, amount, 0, amount)`
     &#34;&#34;&#34;
     return Spacing(0, amount, 0, amount)</code></pre>
 </details>
@@ -3474,7 +3791,7 @@ def vertical(cls, amount: int) -&gt; Spacing:
         amount (int): The magnitude of spacing to apply to vertical edges
 
     Returns:
-        Spacing: ``Spacing(amount, 0, amount, 0)``
+        Spacing: `Spacing(amount, 0, amount, 0)`
     &#34;&#34;&#34;
     return Spacing(amount, 0, amount, 0)</code></pre>
 </details>
@@ -3488,27 +3805,47 @@ def vertical(cls, amount: int) -&gt; Spacing:
 </dd>
 <dt id="textual.geometry.Spacing.bottom_right"><code class="name">var <span class="ident">bottom_right</span> : tuple[int, int]</code></dt>
 <dd>
-<div class="desc"><p>Bottom right space.</p></div>
+<div class="desc"><p>Bottom right space.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[int, int]</code></dt>
+<dd><code>(&lt;right&gt;, &lt;bottom&gt;)</code></dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def bottom_right(self) -&gt; tuple[int, int]:
-    &#34;&#34;&#34;Bottom right space.&#34;&#34;&#34;
+    &#34;&#34;&#34;Bottom right space.
+
+    Returns:
+        tuple[int, int]: `(&lt;right&gt;, &lt;bottom&gt;)`
+
+    &#34;&#34;&#34;
     return (self.right, self.bottom)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Spacing.css"><code class="name">var <span class="ident">css</span> : str</code></dt>
 <dd>
-<div class="desc"><p>Gets a string containing the spacing in CSS format.</p></div>
+<div class="desc"><p>Gets a string containing the spacing in CSS format.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>Spacing in CSS format.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def css(self) -&gt; str:
-    &#34;&#34;&#34;Gets a string containing the spacing in CSS format.&#34;&#34;&#34;
+    &#34;&#34;&#34;Gets a string containing the spacing in CSS format.
+
+    Returns:
+        str: Spacing in CSS format.
+
+    &#34;&#34;&#34;
     top, right, bottom, left = self
     if top == right == bottom == left:
         return f&#34;{top}&#34;
@@ -3520,14 +3857,24 @@ def css(self) -&gt; str:
 </dd>
 <dt id="textual.geometry.Spacing.height"><code class="name">var <span class="ident">height</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Total space in height.</p></div>
+<div class="desc"><p>Total space in height.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>Height.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def height(self) -&gt; int:
-    &#34;&#34;&#34;Total space in height.&#34;&#34;&#34;
+    &#34;&#34;&#34;Total space in height.
+
+    Returns:
+        int: Height.
+
+    &#34;&#34;&#34;
     return self.top + self.bottom</code></pre>
 </details>
 </dd>
@@ -3545,41 +3892,72 @@ def height(self) -&gt; int:
 </dd>
 <dt id="textual.geometry.Spacing.top_left"><code class="name">var <span class="ident">top_left</span> : tuple[int, int]</code></dt>
 <dd>
-<div class="desc"><p>Top left space.</p></div>
+<div class="desc"><p>Top left space.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[int, int]</code></dt>
+<dd><code>(&lt;left&gt;, &lt;top&gt;)</code></dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def top_left(self) -&gt; tuple[int, int]:
-    &#34;&#34;&#34;Top left space.&#34;&#34;&#34;
+    &#34;&#34;&#34;Top left space.
+
+    Returns:
+        tuple[int, int]: `(&lt;left&gt;, &lt;top&gt;)`
+
+    &#34;&#34;&#34;
     return (self.left, self.top)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Spacing.totals"><code class="name">var <span class="ident">totals</span> : tuple[int, int]</code></dt>
 <dd>
-<div class="desc"><p>Returns a tuple of (<HORIZONTAL SPACE>, <VERTICAL SPACE>).</p></div>
+<div class="desc"><p>Get total horizontal and vertical space.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[int, int]</code></dt>
+<dd><code>(&lt;horizontal&gt;, &lt;vertical&gt;)</code></dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def totals(self) -&gt; tuple[int, int]:
-    &#34;&#34;&#34;Returns a tuple of (&lt;HORIZONTAL SPACE&gt;, &lt;VERTICAL SPACE&gt;).&#34;&#34;&#34;
+    &#34;&#34;&#34;Get total horizontal and vertical space.
+
+    Returns:
+        tuple[int, int]: `(&lt;horizontal&gt;, &lt;vertical&gt;)`
+
+
+    &#34;&#34;&#34;
     top, right, bottom, left = self
     return (left + right, top + bottom)</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Spacing.width"><code class="name">var <span class="ident">width</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Total space in width.</p></div>
+<div class="desc"><p>Total space in width.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>Width.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def width(self) -&gt; int:
-    &#34;&#34;&#34;Total space in width.&#34;&#34;&#34;
+    &#34;&#34;&#34;Total space in width.
+
+    Returns:
+        int: Width.
+
+    &#34;&#34;&#34;
     return self.left + self.right</code></pre>
 </details>
 </dd>

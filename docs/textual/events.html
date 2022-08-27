@@ -28,26 +28,26 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from typing import Awaitable, Callable, Type, TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Awaitable, Callable, Type, TypeVar
 
 import rich.repr
 from rich.style import Style
 
-from . import log
-from .geometry import Offset, Size
-from .message import Message
 from ._types import MessageTarget
-from .keys import Keys, KEY_VALUES
+from .geometry import Offset, Size
+from .keys import KEY_VALUES, Keys
+from .message import Message
 
 MouseEventT = TypeVar(&#34;MouseEventT&#34;, bound=&#34;MouseEvent&#34;)
 
 if TYPE_CHECKING:
-    from ._timer import Timer as TimerClass
-    from ._timer import TimerCallback
+    from .timer import Timer as TimerClass
+    from .timer import TimerCallback
+    from .widget import Widget
 
 
 @rich.repr.auto
-class Event(Message):
+class Event(Message, verbosity=2):
     def __rich_repr__(self) -&gt; rich.repr.Result:
         return
         yield
@@ -112,7 +112,14 @@ class Action(Event):
 
 
 class Resize(Event, verbosity=2, bubble=False):
-    &#34;&#34;&#34;Sent when the app or widget has been resized.&#34;&#34;&#34;
+    &#34;&#34;&#34;Sent when the app or widget has been resized.
+    Args:
+        sender (MessageTarget): The sender of the event (the Screen).
+        size (Size): The new size of the Widget.
+        virtual_size (Size): The virtual size (scrollable size) of the Widget.
+        container_size (Size | None, optional): The size of the Widget&#39;s container widget. Defaults to None.
+
+    &#34;&#34;&#34;
 
     __slots__ = [&#34;size&#34;, &#34;virtual_size&#34;, &#34;container_size&#34;]
 
@@ -123,14 +130,6 @@ class Resize(Event, verbosity=2, bubble=False):
         virtual_size: Size,
         container_size: Size | None = None,
     ) -&gt; None:
-        &#34;&#34;&#34;
-
-        Args:
-            sender (MessageTarget): The sender of the event (the Screen).
-            size (Size): The new size of the Widget.
-            virtual_size (Size): The virtual size (scrollable size) of the Widget.
-            container_size (Size | None, optional): The size of the Widget&#39;s container widget. Defaults to None.
-        &#34;&#34;&#34;
         self.size = size
         self.virtual_size = virtual_size
         self.container_size = size if container_size is None else container_size
@@ -156,6 +155,10 @@ class Unmount(Event, bubble=False):
 class Remove(Event, bubble=False):
     &#34;&#34;&#34;Sent to a widget to ask it to remove itself from the DOM.&#34;&#34;&#34;
 
+    def __init__(self, sender: MessageTarget, widget: Widget) -&gt; None:
+        self.widget = widget
+        super().__init__(sender)
+
 
 class Show(Event, bubble=False):
     &#34;&#34;&#34;Sent when a widget has become visible.&#34;&#34;&#34;
@@ -176,15 +179,14 @@ class MouseCapture(Event, bubble=False):
 
     When a mouse has been captures, all further mouse events will be sent to the capturing widget.
 
+
+    Args:
+        sender (MessageTarget): The sender of the event, (in this case the app).
+        mouse_position (Point): The position of the mouse when captured.
+
     &#34;&#34;&#34;
 
     def __init__(self, sender: MessageTarget, mouse_position: Offset) -&gt; None:
-        &#34;&#34;&#34;
-
-        Args:
-            sender (MessageTarget): The sender of the event, (in this case the app).
-            mouse_position (Point): The position of the mouse when captured.
-        &#34;&#34;&#34;
         super().__init__(sender)
         self.mouse_position = mouse_position
 
@@ -194,14 +196,14 @@ class MouseCapture(Event, bubble=False):
 
 @rich.repr.auto
 class MouseRelease(Event, bubble=False):
-    &#34;&#34;&#34;Mouse has been released.&#34;&#34;&#34;
+    &#34;&#34;&#34;Mouse has been released.
+
+    Args:
+        sender (MessageTarget): The sender of the event, (in this case the app).
+        mouse_position (Point): The position of the mouse when released.
+    &#34;&#34;&#34;
 
     def __init__(self, sender: MessageTarget, mouse_position: Offset) -&gt; None:
-        &#34;&#34;&#34;
-        Args:
-            sender (MessageTarget): The sender of the event, (in this case the app).
-            mouse_position (Point): The position of the mouse when released.
-        &#34;&#34;&#34;
         super().__init__(sender)
         self.mouse_position = mouse_position
 
@@ -215,17 +217,16 @@ class InputEvent(Event):
 
 @rich.repr.auto
 class Key(InputEvent):
-    &#34;&#34;&#34;Sent when the user hits a key on the keyboard&#34;&#34;&#34;
+    &#34;&#34;&#34;Sent when the user hits a key on the keyboard.
+
+    Args:
+        sender (MessageTarget): The sender of the event (the App)
+        key (str): The pressed key if a single character (or a longer string for special characters)
+    &#34;&#34;&#34;
 
     __slots__ = [&#34;key&#34;]
 
     def __init__(self, sender: MessageTarget, key: str) -&gt; None:
-        &#34;&#34;&#34;
-
-        Args:
-            sender (MessageTarget): The sender of the event (the App)
-            key (str): The pressed key if a single character (or a longer string for special characters)
-        &#34;&#34;&#34;
         super().__init__(sender)
         self.key = key.value if isinstance(key, Keys) else key
 
@@ -238,14 +239,30 @@ class Key(InputEvent):
         isn&#39;t defined in key bindings is printable.
 
         Returns:
-            bool: True if the key is printable. False otherwise.
+            bool: True if the key is printable.
         &#34;&#34;&#34;
         return self.key == Keys.Space or self.key not in KEY_VALUES
 
 
 @rich.repr.auto
 class MouseEvent(InputEvent, bubble=True, verbosity=2):
-    &#34;&#34;&#34;Sent in response to a mouse event&#34;&#34;&#34;
+    &#34;&#34;&#34;Sent in response to a mouse event.
+
+    Args:
+        sender (MessageTarget): The sender of the event.
+        x (int): The relative x coordinate.
+        y (int): The relative y coordinate.
+        delta_x (int): Change in x since the last message.
+        delta_y (int): Change in y since the last message.
+        button (int): Indexed of the pressed button.
+        shift (bool): True if the shift key is pressed.
+        meta (bool): True if the meta key is pressed.
+        ctrl (bool): True if the ctrl key is pressed.
+        screen_x (int, optional): The absolute x coordinate.
+        screen_y (int, optional): The absolute y coordinate.
+        style (Style, optional): The Rich Style under the mouse cursor.
+
+    &#34;&#34;&#34;
 
     __slots__ = [
         &#34;x&#34;,
@@ -276,22 +293,6 @@ class MouseEvent(InputEvent, bubble=True, verbosity=2):
         screen_y: int | None = None,
         style: Style | None = None,
     ) -&gt; None:
-        &#34;&#34;&#34;
-
-        Args:
-            sender (MessageTarget): The sender of the event.
-            x (int): The relative x coordinate.
-            y (int): The relative y coordinate.
-            delta_x (int): Change in x since the last message.
-            delta_y (int): Change in y since the last message.
-            button (int): Indexed of the pressed button.
-            shift (bool): True if the shift key is pressed.
-            meta (bool): True if the meta key is pressed.
-            ctrl (bool): True if the ctrl key is pressed.
-            screen_x (int, optional): The absolute x coordinate.
-            screen_y (int, optional): The absolute y coordinate.
-            style (Style, optional): The Rich Style under the mouse cursor.
-        &#34;&#34;&#34;
         super().__init__(sender)
         self.x = x
         self.y = y
@@ -386,15 +387,16 @@ class MouseScrollDown(InputEvent, verbosity=3, bubble=True):
         self.y = y
 
 
-class MouseScrollUp(MouseScrollDown, verbosity=3, bubble=True):
-    pass
+class MouseScrollUp(InputEvent, verbosity=3, bubble=True):
+    __slots__ = [&#34;x&#34;, &#34;y&#34;]
+
+    def __init__(self, sender: MessageTarget, x: int, y: int) -&gt; None:
+        super().__init__(sender)
+        self.x = x
+        self.y = y
 
 
 class Click(MouseEvent, bubble=True):
-    pass
-
-
-class DoubleClick(MouseEvent, bubble=True):
     pass
 
 
@@ -451,14 +453,13 @@ class Paste(Event, bubble=False):
     This event will only appear when running in a terminal emulator that supports
     bracketed paste mode. Textual will enable bracketed pastes when an app starts,
     and disable it when the app shuts down.
+
+    Args:
+        sender (MessageTarget): The sender of the event, (in this case the app).
+        text: The text that has been pasted.
     &#34;&#34;&#34;
 
     def __init__(self, sender: MessageTarget, text: str) -&gt; None:
-        &#34;&#34;&#34;
-        Args:
-            sender (MessageTarget): The sender of the event, (in this case the app).
-            text: The text that has been pasted
-        &#34;&#34;&#34;
         super().__init__(sender)
         self.text = text
 
@@ -680,7 +681,7 @@ class ScreenSuspend(Event, bubble=False):
 <span>(</span><span>sender: MessageTarget, x: int, y: int, delta_x: int, delta_y: int, button: int, shift: bool, meta: bool, ctrl: bool, screen_x: int | None = None, screen_y: int | None = None, style: Style | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent in response to a mouse event</p>
+<div class="desc"><p>Sent in response to a mouse event.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
@@ -880,97 +881,6 @@ class ScreenSuspend(Event, bubble=False):
 </li>
 </ul>
 </dd>
-<dt id="textual.events.DoubleClick"><code class="flex name class">
-<span>class <span class="ident">DoubleClick</span></span>
-<span>(</span><span>sender: MessageTarget, x: int, y: int, delta_x: int, delta_y: int, button: int, shift: bool, meta: bool, ctrl: bool, screen_x: int | None = None, screen_y: int | None = None, style: Style | None = None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Sent in response to a mouse event</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the event.</dd>
-<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
-<dd>The relative x coordinate.</dd>
-<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
-<dd>The relative y coordinate.</dd>
-<dt><strong><code>delta_x</code></strong> :&ensp;<code>int</code></dt>
-<dd>Change in x since the last message.</dd>
-<dt><strong><code>delta_y</code></strong> :&ensp;<code>int</code></dt>
-<dd>Change in y since the last message.</dd>
-<dt><strong><code>button</code></strong> :&ensp;<code>int</code></dt>
-<dd>Indexed of the pressed button.</dd>
-<dt><strong><code>shift</code></strong> :&ensp;<code>bool</code></dt>
-<dd>True if the shift key is pressed.</dd>
-<dt><strong><code>meta</code></strong> :&ensp;<code>bool</code></dt>
-<dd>True if the meta key is pressed.</dd>
-<dt><strong><code>ctrl</code></strong> :&ensp;<code>bool</code></dt>
-<dd>True if the ctrl key is pressed.</dd>
-<dt><strong><code>screen_x</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>The absolute x coordinate.</dd>
-<dt><strong><code>screen_y</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>The absolute y coordinate.</dd>
-<dt><strong><code>style</code></strong> :&ensp;<code>Style</code>, optional</dt>
-<dd>The Rich Style under the mouse cursor.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class DoubleClick(MouseEvent, bubble=True):
-    pass</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="textual.events.MouseEvent" href="#textual.events.MouseEvent">MouseEvent</a></li>
-<li><a title="textual.events.InputEvent" href="#textual.events.InputEvent">InputEvent</a></li>
-<li><a title="textual.events.Event" href="#textual.events.Event">Event</a></li>
-<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="textual.events.DoubleClick.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.events.DoubleClick.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.events.DoubleClick.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.events.DoubleClick.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="textual.events.MouseEvent" href="#textual.events.MouseEvent">MouseEvent</a></b></code>:
-<ul class="hlist">
-<li><code><a title="textual.events.MouseEvent.button" href="#textual.events.MouseEvent.button">button</a></code></li>
-<li><code><a title="textual.events.MouseEvent.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
-<li><code><a title="textual.events.MouseEvent.ctrl" href="#textual.events.MouseEvent.ctrl">ctrl</a></code></li>
-<li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
-<li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
-<li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
-<li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
-<li><code><a title="textual.events.MouseEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
-<li><code><a title="textual.events.MouseEvent.screen_x" href="#textual.events.MouseEvent.screen_x">screen_x</a></code></li>
-<li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
-<li><code><a title="textual.events.MouseEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.MouseEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
-<li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
-<li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
-<li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
-<li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
 <dt id="textual.events.Enter"><code class="flex name class">
 <span>class <span class="ident">Enter</span></span>
 <span>(</span><span>sender: MessageTarget)</span>
@@ -1043,7 +953,7 @@ class ScreenSuspend(Event, bubble=False):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Event(Message):
+<pre><code class="python">class Event(Message, verbosity=2):
     def __rich_repr__(self) -&gt; rich.repr.Result:
         return
         yield
@@ -1182,12 +1092,7 @@ class ScreenSuspend(Event, bubble=False):
 <dd>
 <div class="desc"><p>Sent when a widget has been hidden.</p>
 <p>A widget may be hidden by setting its <code>visible</code> flag to <code>False</code>, if it is no longer in a layout,
-or if it has been offset beyond the edges of the terminal.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+or if it has been offset beyond the edges of the terminal.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1246,12 +1151,7 @@ or if it has been offset beyond the edges of the terminal.</p>
 <dd>
 <div class="desc"><p>Sent when there are no more items in the message queue.</p>
 <p>This is a pseudo-event in that it is created by the Textual system and doesn't go
-through the usual message queue.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+through the usual message queue.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1331,6 +1231,7 @@ through the usual message queue.</p>
 <li><a title="textual.events.Key" href="#textual.events.Key">Key</a></li>
 <li><a title="textual.events.MouseEvent" href="#textual.events.MouseEvent">MouseEvent</a></li>
 <li><a title="textual.events.MouseScrollDown" href="#textual.events.MouseScrollDown">MouseScrollDown</a></li>
+<li><a title="textual.events.MouseScrollUp" href="#textual.events.MouseScrollUp">MouseScrollUp</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -1371,12 +1272,7 @@ through the usual message queue.</p>
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent after the Screen is updated</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>Sent after the Screen is updated</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1428,7 +1324,7 @@ through the usual message queue.</p>
 <span>(</span><span>sender: MessageTarget, key: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent when the user hits a key on the keyboard</p>
+<div class="desc"><p>Sent when the user hits a key on the keyboard.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
@@ -1441,17 +1337,16 @@ through the usual message queue.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Key(InputEvent):
-    &#34;&#34;&#34;Sent when the user hits a key on the keyboard&#34;&#34;&#34;
+    &#34;&#34;&#34;Sent when the user hits a key on the keyboard.
+
+    Args:
+        sender (MessageTarget): The sender of the event (the App)
+        key (str): The pressed key if a single character (or a longer string for special characters)
+    &#34;&#34;&#34;
 
     __slots__ = [&#34;key&#34;]
 
     def __init__(self, sender: MessageTarget, key: str) -&gt; None:
-        &#34;&#34;&#34;
-
-        Args:
-            sender (MessageTarget): The sender of the event (the App)
-            key (str): The pressed key if a single character (or a longer string for special characters)
-        &#34;&#34;&#34;
         super().__init__(sender)
         self.key = key.value if isinstance(key, Keys) else key
 
@@ -1464,7 +1359,7 @@ through the usual message queue.</p>
         isn&#39;t defined in key bindings is printable.
 
         Returns:
-            bool: True if the key is printable. False otherwise.
+            bool: True if the key is printable.
         &#34;&#34;&#34;
         return self.key == Keys.Space or self.key not in KEY_VALUES</code></pre>
 </details>
@@ -1502,7 +1397,7 @@ isn't defined in key bindings is printable.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bool</code></dt>
-<dd>True if the key is printable. False otherwise.</dd>
+<dd>True if the key is printable.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1514,7 +1409,7 @@ def is_printable(self) -&gt; bool:
     isn&#39;t defined in key bindings is printable.
 
     Returns:
-        bool: True if the key is printable. False otherwise.
+        bool: True if the key is printable.
     &#34;&#34;&#34;
     return self.key == Keys.Space or self.key not in KEY_VALUES</code></pre>
 </details>
@@ -1603,12 +1498,7 @@ def is_printable(self) -&gt; bool:
 <dd>
 <div class="desc"><p>Sent when the App is running but <em>before</em> the terminal is in application mode.</p>
 <p>Use this event to run any set up that doesn't require any visuals such as loading
-configuration and binding keys.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+configuration and binding keys.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1667,12 +1557,7 @@ configuration and binding keys.</p>
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent when a widget is <em>mounted</em> and may receive messages.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>Sent when a widget is <em>mounted</em> and may receive messages.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1742,15 +1627,14 @@ configuration and binding keys.</p>
 
     When a mouse has been captures, all further mouse events will be sent to the capturing widget.
 
+
+    Args:
+        sender (MessageTarget): The sender of the event, (in this case the app).
+        mouse_position (Point): The position of the mouse when captured.
+
     &#34;&#34;&#34;
 
     def __init__(self, sender: MessageTarget, mouse_position: Offset) -&gt; None:
-        &#34;&#34;&#34;
-
-        Args:
-            sender (MessageTarget): The sender of the event, (in this case the app).
-            mouse_position (Point): The position of the mouse when captured.
-        &#34;&#34;&#34;
         super().__init__(sender)
         self.mouse_position = mouse_position
 
@@ -1801,7 +1685,7 @@ configuration and binding keys.</p>
 <span>(</span><span>sender: MessageTarget, x: int, y: int, delta_x: int, delta_y: int, button: int, shift: bool, meta: bool, ctrl: bool, screen_x: int | None = None, screen_y: int | None = None, style: Style | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent in response to a mouse event</p>
+<div class="desc"><p>Sent in response to a mouse event.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
@@ -1892,7 +1776,7 @@ configuration and binding keys.</p>
 <span>(</span><span>sender: MessageTarget, x: int, y: int, delta_x: int, delta_y: int, button: int, shift: bool, meta: bool, ctrl: bool, screen_x: int | None = None, screen_y: int | None = None, style: Style | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent in response to a mouse event</p>
+<div class="desc"><p>Sent in response to a mouse event.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
@@ -1925,7 +1809,23 @@ configuration and binding keys.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MouseEvent(InputEvent, bubble=True, verbosity=2):
-    &#34;&#34;&#34;Sent in response to a mouse event&#34;&#34;&#34;
+    &#34;&#34;&#34;Sent in response to a mouse event.
+
+    Args:
+        sender (MessageTarget): The sender of the event.
+        x (int): The relative x coordinate.
+        y (int): The relative y coordinate.
+        delta_x (int): Change in x since the last message.
+        delta_y (int): Change in y since the last message.
+        button (int): Indexed of the pressed button.
+        shift (bool): True if the shift key is pressed.
+        meta (bool): True if the meta key is pressed.
+        ctrl (bool): True if the ctrl key is pressed.
+        screen_x (int, optional): The absolute x coordinate.
+        screen_y (int, optional): The absolute y coordinate.
+        style (Style, optional): The Rich Style under the mouse cursor.
+
+    &#34;&#34;&#34;
 
     __slots__ = [
         &#34;x&#34;,
@@ -1956,22 +1856,6 @@ configuration and binding keys.</p>
         screen_y: int | None = None,
         style: Style | None = None,
     ) -&gt; None:
-        &#34;&#34;&#34;
-
-        Args:
-            sender (MessageTarget): The sender of the event.
-            x (int): The relative x coordinate.
-            y (int): The relative y coordinate.
-            delta_x (int): Change in x since the last message.
-            delta_y (int): Change in y since the last message.
-            button (int): Indexed of the pressed button.
-            shift (bool): True if the shift key is pressed.
-            meta (bool): True if the meta key is pressed.
-            ctrl (bool): True if the ctrl key is pressed.
-            screen_x (int, optional): The absolute x coordinate.
-            screen_y (int, optional): The absolute y coordinate.
-            style (Style, optional): The Rich Style under the mouse cursor.
-        &#34;&#34;&#34;
         super().__init__(sender)
         self.x = x
         self.y = y
@@ -2050,7 +1934,6 @@ configuration and binding keys.</p>
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="textual.events.Click" href="#textual.events.Click">Click</a></li>
-<li><a title="textual.events.DoubleClick" href="#textual.events.DoubleClick">DoubleClick</a></li>
 <li><a title="textual.events.MouseDown" href="#textual.events.MouseDown">MouseDown</a></li>
 <li><a title="textual.events.MouseMove" href="#textual.events.MouseMove">MouseMove</a></li>
 <li><a title="textual.events.MouseUp" href="#textual.events.MouseUp">MouseUp</a></li>
@@ -2209,34 +2092,7 @@ def style(self) -&gt; Style:
 <span>(</span><span>sender: MessageTarget, x: int, y: int, delta_x: int, delta_y: int, button: int, shift: bool, meta: bool, ctrl: bool, screen_x: int | None = None, screen_y: int | None = None, style: Style | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent when the mouse cursor moves.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the event.</dd>
-<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
-<dd>The relative x coordinate.</dd>
-<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
-<dd>The relative y coordinate.</dd>
-<dt><strong><code>delta_x</code></strong> :&ensp;<code>int</code></dt>
-<dd>Change in x since the last message.</dd>
-<dt><strong><code>delta_y</code></strong> :&ensp;<code>int</code></dt>
-<dd>Change in y since the last message.</dd>
-<dt><strong><code>button</code></strong> :&ensp;<code>int</code></dt>
-<dd>Indexed of the pressed button.</dd>
-<dt><strong><code>shift</code></strong> :&ensp;<code>bool</code></dt>
-<dd>True if the shift key is pressed.</dd>
-<dt><strong><code>meta</code></strong> :&ensp;<code>bool</code></dt>
-<dd>True if the meta key is pressed.</dd>
-<dt><strong><code>ctrl</code></strong> :&ensp;<code>bool</code></dt>
-<dd>True if the ctrl key is pressed.</dd>
-<dt><strong><code>screen_x</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>The absolute x coordinate.</dd>
-<dt><strong><code>screen_y</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>The absolute y coordinate.</dd>
-<dt><strong><code>style</code></strong> :&ensp;<code>Style</code>, optional</dt>
-<dd>The Rich Style under the mouse cursor.</dd>
-</dl></div>
+<div class="desc"><p>Sent when the mouse cursor moves.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2313,14 +2169,14 @@ def style(self) -&gt; Style:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class MouseRelease(Event, bubble=False):
-    &#34;&#34;&#34;Mouse has been released.&#34;&#34;&#34;
+    &#34;&#34;&#34;Mouse has been released.
+
+    Args:
+        sender (MessageTarget): The sender of the event, (in this case the app).
+        mouse_position (Point): The position of the mouse when released.
+    &#34;&#34;&#34;
 
     def __init__(self, sender: MessageTarget, mouse_position: Offset) -&gt; None:
-        &#34;&#34;&#34;
-        Args:
-            sender (MessageTarget): The sender of the event, (in this case the app).
-            mouse_position (Point): The position of the mouse when released.
-        &#34;&#34;&#34;
         super().__init__(sender)
         self.mouse_position = mouse_position
 
@@ -2395,10 +2251,6 @@ def style(self) -&gt; Style:
 <li><a title="textual.events.Event" href="#textual.events.Event">Event</a></li>
 <li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
 </ul>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="textual.events.MouseScrollUp" href="#textual.events.MouseScrollUp">MouseScrollUp</a></li>
-</ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.events.MouseScrollDown.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
@@ -2459,12 +2311,16 @@ def style(self) -&gt; Style:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MouseScrollUp(MouseScrollDown, verbosity=3, bubble=True):
-    pass</code></pre>
+<pre><code class="python">class MouseScrollUp(InputEvent, verbosity=3, bubble=True):
+    __slots__ = [&#34;x&#34;, &#34;y&#34;]
+
+    def __init__(self, sender: MessageTarget, x: int, y: int) -&gt; None:
+        super().__init__(sender)
+        self.x = x
+        self.y = y</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="textual.events.MouseScrollDown" href="#textual.events.MouseScrollDown">MouseScrollDown</a></li>
 <li><a title="textual.events.InputEvent" href="#textual.events.InputEvent">InputEvent</a></li>
 <li><a title="textual.events.Event" href="#textual.events.Event">Event</a></li>
 <li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
@@ -2488,19 +2344,28 @@ def style(self) -&gt; Style:
 <div class="desc"></div>
 </dd>
 </dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="textual.events.MouseScrollUp.x"><code class="name">var <span class="ident">x</span></code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="textual.events.MouseScrollUp.y"><code class="name">var <span class="ident">y</span></code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="textual.events.MouseScrollDown" href="#textual.events.MouseScrollDown">MouseScrollDown</a></b></code>:
+<li><code><b><a title="textual.events.InputEvent" href="#textual.events.InputEvent">InputEvent</a></b></code>:
 <ul class="hlist">
-<li><code><a title="textual.events.MouseScrollDown.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
-<li><code><a title="textual.events.MouseScrollDown.name" href="message.html#textual.message.Message.name">name</a></code></li>
-<li><code><a title="textual.events.MouseScrollDown.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
-<li><code><a title="textual.events.MouseScrollDown.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.MouseScrollDown.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
-<li><code><a title="textual.events.MouseScrollDown.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
-<li><code><a title="textual.events.MouseScrollDown.time" href="message.html#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.events.MouseScrollDown.x" href="#textual.events.MouseScrollDown.x">x</a></code></li>
-<li><code><a title="textual.events.MouseScrollDown.y" href="#textual.events.MouseScrollDown.y">y</a></code></li>
+<li><code><a title="textual.events.InputEvent.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.InputEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.InputEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.InputEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.events.InputEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.events.InputEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.InputEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
 </li>
 </ul>
@@ -2510,7 +2375,7 @@ def style(self) -&gt; Style:
 <span>(</span><span>sender: MessageTarget, x: int, y: int, delta_x: int, delta_y: int, button: int, shift: bool, meta: bool, ctrl: bool, screen_x: int | None = None, screen_y: int | None = None, style: Style | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent in response to a mouse event</p>
+<div class="desc"><p>Sent in response to a mouse event.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
@@ -2610,7 +2475,7 @@ and disable it when the app shuts down.</p>
 <dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
 <dd>The sender of the event, (in this case the app).</dd>
 <dt><strong><code>text</code></strong></dt>
-<dd>The text that has been pasted</dd>
+<dd>The text that has been pasted.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -2621,14 +2486,13 @@ and disable it when the app shuts down.</p>
     This event will only appear when running in a terminal emulator that supports
     bracketed paste mode. Textual will enable bracketed pastes when an app starts,
     and disable it when the app shuts down.
+
+    Args:
+        sender (MessageTarget): The sender of the event, (in this case the app).
+        text: The text that has been pasted.
     &#34;&#34;&#34;
 
     def __init__(self, sender: MessageTarget, text: str) -&gt; None:
-        &#34;&#34;&#34;
-        Args:
-            sender (MessageTarget): The sender of the event, (in this case the app).
-            text: The text that has been pasted
-        &#34;&#34;&#34;
         super().__init__(sender)
         self.text = text
 
@@ -2676,21 +2540,20 @@ and disable it when the app shuts down.</p>
 </dd>
 <dt id="textual.events.Remove"><code class="flex name class">
 <span>class <span class="ident">Remove</span></span>
-<span>(</span><span>sender: MessageTarget)</span>
+<span>(</span><span>sender: MessageTarget, widget: Widget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent to a widget to ask it to remove itself from the DOM.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>Sent to a widget to ask it to remove itself from the DOM.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Remove(Event, bubble=False):
-    &#34;&#34;&#34;Sent to a widget to ask it to remove itself from the DOM.&#34;&#34;&#34;</code></pre>
+    &#34;&#34;&#34;Sent to a widget to ask it to remove itself from the DOM.&#34;&#34;&#34;
+
+    def __init__(self, sender: MessageTarget, widget: Widget) -&gt; None:
+        self.widget = widget
+        super().__init__(sender)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -2752,7 +2615,14 @@ and disable it when the app shuts down.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Resize(Event, verbosity=2, bubble=False):
-    &#34;&#34;&#34;Sent when the app or widget has been resized.&#34;&#34;&#34;
+    &#34;&#34;&#34;Sent when the app or widget has been resized.
+    Args:
+        sender (MessageTarget): The sender of the event (the Screen).
+        size (Size): The new size of the Widget.
+        virtual_size (Size): The virtual size (scrollable size) of the Widget.
+        container_size (Size | None, optional): The size of the Widget&#39;s container widget. Defaults to None.
+
+    &#34;&#34;&#34;
 
     __slots__ = [&#34;size&#34;, &#34;virtual_size&#34;, &#34;container_size&#34;]
 
@@ -2763,14 +2633,6 @@ and disable it when the app shuts down.</p>
         virtual_size: Size,
         container_size: Size | None = None,
     ) -&gt; None:
-        &#34;&#34;&#34;
-
-        Args:
-            sender (MessageTarget): The sender of the event (the Screen).
-            size (Size): The new size of the Widget.
-            virtual_size (Size): The virtual size (scrollable size) of the Widget.
-            container_size (Size | None, optional): The size of the Widget&#39;s container widget. Defaults to None.
-        &#34;&#34;&#34;
         self.size = size
         self.virtual_size = virtual_size
         self.container_size = size if container_size is None else container_size
@@ -2957,12 +2819,7 @@ and disable it when the app shuts down.</p>
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent when a widget has become visible.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>Sent when a widget has become visible.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3214,12 +3071,7 @@ and disable it when the app shuts down.</p>
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sent when a widget is unmounted, and may no longer receive messages.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>Sent when a widget is unmounted, and may no longer receive messages.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3381,15 +3233,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.DescendantFocus.namespace" href="#textual.events.DescendantFocus.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.DescendantFocus.no_dispatch" href="#textual.events.DescendantFocus.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.events.DescendantFocus.verbosity" href="#textual.events.DescendantFocus.verbosity">verbosity</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="textual.events.DoubleClick" href="#textual.events.DoubleClick">DoubleClick</a></code></h4>
-<ul class="">
-<li><code><a title="textual.events.DoubleClick.bubble" href="#textual.events.DoubleClick.bubble">bubble</a></code></li>
-<li><code><a title="textual.events.DoubleClick.namespace" href="#textual.events.DoubleClick.namespace">namespace</a></code></li>
-<li><code><a title="textual.events.DoubleClick.no_dispatch" href="#textual.events.DoubleClick.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.DoubleClick.verbosity" href="#textual.events.DoubleClick.verbosity">verbosity</a></code></li>
 </ul>
 </li>
 <li>
@@ -3564,11 +3407,13 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="textual.events.MouseScrollUp" href="#textual.events.MouseScrollUp">MouseScrollUp</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="textual.events.MouseScrollUp.bubble" href="#textual.events.MouseScrollUp.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.MouseScrollUp.namespace" href="#textual.events.MouseScrollUp.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.MouseScrollUp.no_dispatch" href="#textual.events.MouseScrollUp.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.events.MouseScrollUp.verbosity" href="#textual.events.MouseScrollUp.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.MouseScrollUp.x" href="#textual.events.MouseScrollUp.x">x</a></code></li>
+<li><code><a title="textual.events.MouseScrollUp.y" href="#textual.events.MouseScrollUp.y">y</a></code></li>
 </ul>
 </li>
 <li>

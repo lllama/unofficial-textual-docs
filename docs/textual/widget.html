@@ -28,6 +28,7 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
+from asyncio import Lock
 from itertools import islice
 from fractions import Fraction
 from operator import attrgetter
@@ -65,7 +66,7 @@ from .geometry import Offset, Region, Size, Spacing, clamp
 from .layouts.vertical import VerticalLayout
 from .message import Message
 from .reactive import Reactive
-from ._timer import Timer
+from .dom import NoScreen
 
 
 if TYPE_CHECKING:
@@ -98,6 +99,10 @@ class RenderCache(NamedTuple):
 
 @rich.repr.auto
 class Widget(DOMNode):
+    &#34;&#34;&#34;
+    A Widget is the base class for Textual widgets. Extent this class (or a sub-class) when defining your own widgets.
+
+    &#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
     Widget{
@@ -129,7 +134,6 @@ class Widget(DOMNode):
         self._repaint_required = False
         self._default_layout = VerticalLayout()
         self._animate: BoundAnimator | None = None
-        self._reactive_watches: dict[str, Callable] = {}
         self.highlight_style: Style | None = None
 
         self._vertical_scrollbar: ScrollBar | None = None
@@ -152,12 +156,14 @@ class Widget(DOMNode):
 
         self._styles_cache = StylesCache()
 
+        self._lock = Lock()
+
         super().__init__(
             name=name,
             id=id,
             classes=self.DEFAULT_CLASSES if classes is None else classes,
         )
-        self.add_children(*children)
+        self._add_children(*children)
 
     virtual_size = Reactive(Size(0, 0), layout=True)
     auto_width = Reactive(True)
@@ -173,14 +179,52 @@ class Widget(DOMNode):
     show_horizontal_scrollbar = Reactive(False, layout=True)
 
     @property
+    def siblings(self) -&gt; list[Widget]:
+        &#34;&#34;&#34;Get the widget&#39;s siblings (self is removed from the return list).
+
+        Returns:
+            list[Widget]: A list of siblings.
+        &#34;&#34;&#34;
+        parent = self.parent
+        if parent is not None:
+            siblings = list(parent.children)
+            siblings.remove(self)
+            return siblings
+        else:
+            return []
+
+    @property
     def allow_vertical_scroll(self) -&gt; bool:
-        &#34;&#34;&#34;Check if vertical scroll is permitted.&#34;&#34;&#34;
+        &#34;&#34;&#34;Check if vertical scroll is permitted.
+
+        May be overridden if you want different logic regarding allowing scrolling.
+
+        Returns:
+            bool: True if the widget may scroll _vertically_.
+        &#34;&#34;&#34;
         return self.is_scrollable and self.show_vertical_scrollbar
 
     @property
     def allow_horizontal_scroll(self) -&gt; bool:
-        &#34;&#34;&#34;Check if horizontal scroll is permitted.&#34;&#34;&#34;
+        &#34;&#34;&#34;Check if horizontal scroll is permitted.
+
+        May be overridden if you want different logic regarding allowing scrolling.
+
+        Returns:
+            bool: True if the widget may scroll _horizontally_.
+        &#34;&#34;&#34;
         return self.is_scrollable and self.show_horizontal_scrollbar
+
+    @property
+    def _allow_scroll(self) -&gt; bool:
+        &#34;&#34;&#34;Check if both axes may be scrolled.
+
+        Returns:
+            bool: True if horizontal and vertical scrolling is enabled.
+        &#34;&#34;&#34;
+        return self.is_scrollable and (
+            self.allow_horizontal_scroll or self.allow_vertical_scroll
+        )
 
     def _arrange(self, size: Size) -&gt; DockArrangeResult:
         &#34;&#34;&#34;Arrange children.
@@ -204,6 +248,7 @@ class Widget(DOMNode):
         return self._arrangement
 
     def _clear_arrangement_cache(self) -&gt; None:
+        &#34;&#34;&#34;Clear arrangement cache, forcing a new arrange operation.&#34;&#34;&#34;
         self._arrangement = None
 
     def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
@@ -233,19 +278,34 @@ class Widget(DOMNode):
         the keys will be set as the Widget&#39;s id.
 
         Example:
+            ```python
             self.mount(Static(&#34;hello&#34;), header=Header())
-
+            ```
 
         &#34;&#34;&#34;
         self.app._register(self, *anon_widgets, **widgets)
-        self.screen.refresh()
+        self.screen.refresh(layout=True)
 
     def compose(self) -&gt; ComposeResult:
-        &#34;&#34;&#34;Yield child widgets for a container.&#34;&#34;&#34;
+        &#34;&#34;&#34;Called by Textual to create child widgets.
+
+        Extend this to build a UI.
+
+        Example:
+            ```python
+            def compose(self) -&gt; ComposeResult:
+                yield Header()
+                yield Container(
+                    TreeControl(), Viewer()
+                )
+                yield Footer()
+            ```
+
+        &#34;&#34;&#34;
         return
         yield
 
-    def on_register(self, app: App) -&gt; None:
+    def _post_register(self, app: App) -&gt; None:
         &#34;&#34;&#34;Called when the instance is registered.
 
         Args:
@@ -257,7 +317,7 @@ class Widget(DOMNode):
                 css, path=path, is_default_css=True, tie_breaker=tie_breaker
             )
 
-    def get_box_model(
+    def _get_box_model(
         self, container: Size, viewport: Size, fraction_unit: Fraction
     ) -&gt; BoxModel:
         &#34;&#34;&#34;Process the box model for this widget.
@@ -265,6 +325,7 @@ class Widget(DOMNode):
         Args:
             container (Size): The size of the container widget (with a layout)
             viewport (Size): The viewport size.
+            fraction_unit (Fraction): The unit used for `fr` units.
 
         Returns:
             BoxModel: The size and margin for this widget.
@@ -290,9 +351,9 @@ class Widget(DOMNode):
             int: The optimal width of the content.
         &#34;&#34;&#34;
         if self.is_container:
-            assert self.layout is not None
+            assert self._layout is not None
             return (
-                self.layout.get_content_width(self, container, viewport)
+                self._layout.get_content_width(self, container, viewport)
                 + self.scrollbar_size_vertical
             )
 
@@ -324,9 +385,9 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
 
         if self.is_container:
-            assert self.layout is not None
+            assert self._layout is not None
             height = (
-                self.layout.get_content_height(
+                self._layout.get_content_height(
                     self,
                     container,
                     viewport,
@@ -341,8 +402,8 @@ class Widget(DOMNode):
                 return self._content_height_cache[1]
 
             renderable = self.render()
-            options = self.console.options.update_width(width).update(highlight=False)
-            segments = self.console.render(renderable, options)
+            options = self._console.options.update_width(width).update(highlight=False)
+            segments = self._console.render(renderable, options)
             # Cheaper than counting the lines returned from render_lines!
             height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
             self._content_height_cache = (cache_key, height)
@@ -502,6 +563,11 @@ class Widget(DOMNode):
 
     @property
     def scrollbar_gutter(self) -&gt; Spacing:
+        &#34;&#34;&#34;Spacing required to fit scrollbar(s)
+
+        Returns:
+            Spacing: Scrollbar gutter spacing.
+        &#34;&#34;&#34;
         gutter = Spacing(
             0, self.scrollbar_size_vertical, self.scrollbar_size_horizontal, 0
         )
@@ -509,41 +575,77 @@ class Widget(DOMNode):
 
     @property
     def gutter(self) -&gt; Spacing:
-        &#34;&#34;&#34;Spacing for padding / border / scrollbars.&#34;&#34;&#34;
+        &#34;&#34;&#34;Spacing for padding / border / scrollbars.
+
+        Returns:
+            Spacing: Additional spacing around content area.
+
+        &#34;&#34;&#34;
         return self.styles.gutter + self.scrollbar_gutter
 
     @property
     def size(self) -&gt; Size:
-        &#34;&#34;&#34;The size of the content area.&#34;&#34;&#34;
+        &#34;&#34;&#34;The size of the content area.
+
+        Returns:
+            Size: Content area size.
+        &#34;&#34;&#34;
         return self.content_region.size
 
     @property
     def outer_size(self) -&gt; Size:
-        &#34;&#34;&#34;The size of the widget (including padding and border).&#34;&#34;&#34;
+        &#34;&#34;&#34;The size of the widget (including padding and border).
+
+        Returns:
+            Size: Outer size.
+        &#34;&#34;&#34;
         return self._size
 
     @property
     def container_size(self) -&gt; Size:
-        &#34;&#34;&#34;The size of the container (parent widget).&#34;&#34;&#34;
+        &#34;&#34;&#34;The size of the container (parent widget).
+
+        Returns:
+            Size: Container size.
+        &#34;&#34;&#34;
         return self._container_size
 
     @property
     def content_region(self) -&gt; Region:
-        &#34;&#34;&#34;Gets an absolute region containing the content (minus padding and border).&#34;&#34;&#34;
+        &#34;&#34;&#34;Gets an absolute region containing the content (minus padding and border).
+
+        Returns:
+            Region: Screen region that contains a widget&#39;s content.
+        &#34;&#34;&#34;
         content_region = self.region.shrink(self.gutter)
         return content_region
 
     @property
     def content_offset(self) -&gt; Offset:
-        &#34;&#34;&#34;An offset from the Widget origin where the content begins.&#34;&#34;&#34;
+        &#34;&#34;&#34;An offset from the Widget origin where the content begins.
+
+        Returns:
+            Offset: Offset from widget&#39;s origin.
+
+        &#34;&#34;&#34;
         x, y = self.gutter.top_left
         return Offset(x, y)
 
     @property
     def region(self) -&gt; Region:
-        &#34;&#34;&#34;The region occupied by this widget, relative to the Screen.&#34;&#34;&#34;
+        &#34;&#34;&#34;The region occupied by this widget, relative to the Screen.
+
+        Raises:
+            NoScreen: If there is no screen.
+            errors.NoWidget: If the widget is not on the screen.
+
+        Returns:
+            Region: Region within screen occupied by widget.
+        &#34;&#34;&#34;
         try:
             return self.screen.find_widget(self).region
+        except NoScreen:
+            return Region()
         except errors.NoWidget:
             return Region()
 
@@ -554,6 +656,8 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
         try:
             return self.screen.find_widget(self).virtual_region
+        except NoScreen:
+            return Region()
         except errors.NoWidget:
             return Region()
 
@@ -579,7 +683,12 @@ class Widget(DOMNode):
 
     @property
     def focusable_children(self) -&gt; list[Widget]:
-        &#34;&#34;&#34;Get the children which may be focused.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the children which may be focused.
+
+        Returns:
+            list[Widget]: List of widgets that can receive focus.
+
+        &#34;&#34;&#34;
         focusable = [
             child for child in self.children if child.display and child.visible
         ]
@@ -587,12 +696,18 @@ class Widget(DOMNode):
 
     @property
     def _focus_sort_key(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Key function to sort widgets in to focus order.&#34;&#34;&#34;
         x, y, _, _ = self.virtual_region
         top, _, _, left = self.styles.margin
         return y - top, x - left
 
     @property
     def scroll_offset(self) -&gt; Offset:
+        &#34;&#34;&#34;Get the current scroll offset.
+
+        Returns:
+            Offset: Offset a container has been scrolled by.
+        &#34;&#34;&#34;
         return Offset(int(self.scroll_x), int(self.scroll_y))
 
     @property
@@ -605,20 +720,40 @@ class Widget(DOMNode):
         return self.is_scrollable and self.styles.background.is_transparent
 
     @property
-    def console(self) -&gt; Console:
-        &#34;&#34;&#34;Get the current console.&#34;&#34;&#34;
+    def _console(self) -&gt; Console:
+        &#34;&#34;&#34;Get the current console.
+
+        Returns:
+            Console: A Rich console object.
+
+        &#34;&#34;&#34;
         return active_app.get().console
 
     @property
     def animate(self) -&gt; BoundAnimator:
+        &#34;&#34;&#34;Get an animator to animate attributes on this widget.
+
+        Example:
+            ```python
+            self.animate(&#34;brightness&#34;, 0.5)
+            ```
+
+        Returns:
+            BoundAnimator: An animator bound to this widget.
+        &#34;&#34;&#34;
         if self._animate is None:
             self._animate = self.app.animator.bind(self)
         assert self._animate is not None
         return self._animate
 
     @property
-    def layout(self) -&gt; Layout:
-        &#34;&#34;&#34;Get the layout object if set in styles, or a default layout.&#34;&#34;&#34;
+    def _layout(self) -&gt; Layout:
+        &#34;&#34;&#34;Get the layout object if set in styles, or a default layout.
+
+        Returns:
+            Layout: A layout object.
+
+        &#34;&#34;&#34;
         return self.styles.layout or self._default_layout
 
     @property
@@ -637,11 +772,16 @@ class Widget(DOMNode):
         Returns:
             bool: True if this widget may be scrolled.
         &#34;&#34;&#34;
-        return self.is_container
+        return self.styles.layout is not None or bool(self.children)
 
     @property
     def layer(self) -&gt; str:
-        &#34;&#34;&#34;Get the name of this widgets layer.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the name of this widgets layer.
+
+        Returns:
+            str: Name of layer.
+
+        &#34;&#34;&#34;
         return self.styles.layer or &#34;default&#34;
 
     @property
@@ -703,9 +843,11 @@ class Widget(DOMNode):
         &#34;&#34;&#34;Scroll to a given (absolute) coordinate, optionally animating.
 
         Args:
-            x (int | None, optional): X coordinate (column) to scroll to, or ``None`` for no change. Defaults to None.
-            y (int | None, optional): Y coordinate (row) to scroll to, or ``None`` for no change. Defaults to None.
-            animate (bool, optional): Animate to new scroll position. Defaults to False.
+            x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None.
+            y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None.
+            animate (bool, optional): Animate to new scroll position. Defaults to True.
+            speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration.
+            duration (float | None, optional): Duration of animation, if animate is True and speed is False.
 
         Returns:
             bool: True if the scroll position changed, otherwise False.
@@ -767,6 +909,8 @@ class Widget(DOMNode):
             x (int | None, optional): X distance (columns) to scroll, or ``None`` for no change. Defaults to None.
             y (int | None, optional): Y distance (rows) to scroll, or ``None`` for no change. Defaults to None.
             animate (bool, optional): Animate to new scroll position. Defaults to False.
+            speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration.
+            duration (float | None, optional): Duration of animation, if animate is True and speed is False.
 
         Returns:
             bool: True if the scroll position changed, otherwise False.
@@ -780,34 +924,114 @@ class Widget(DOMNode):
         )
 
     def scroll_home(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll to home position.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+        &#34;&#34;&#34;
         return self.scroll_to(0, 0, animate=animate, duration=1)
 
     def scroll_end(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll to the end of the container.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(0, self.max_scroll_y, animate=animate, duration=1)
 
     def scroll_left(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one cell left.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(x=self.scroll_target_x - 1, animate=animate)
 
     def scroll_right(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll on cell right.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(x=self.scroll_target_x + 1, animate=animate)
 
-    def scroll_up(self, *, animate: bool = True) -&gt; bool:
+    def scroll_down(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one line down.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(y=self.scroll_target_y + 1, animate=animate)
 
-    def scroll_down(self, *, animate: bool = True) -&gt; bool:
+    def scroll_up(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one line up.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(y=self.scroll_target_y - 1, animate=animate)
 
     def scroll_page_up(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one page up.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(
             y=self.scroll_target_y - self.container_size.height, animate=animate
         )
 
     def scroll_page_down(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one page down.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(
             y=self.scroll_target_y + self.container_size.height, animate=animate
         )
 
     def scroll_page_left(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one page left.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(
             x=self.scroll_target_x - self.container_size.width,
             animate=animate,
@@ -815,6 +1039,15 @@ class Widget(DOMNode):
         )
 
     def scroll_page_right(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one page right.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(
             x=self.scroll_target_x + self.container_size.width,
             animate=animate,
@@ -845,10 +1078,14 @@ class Widget(DOMNode):
             # Adjust the region by the amount we just scrolled it, and convert to
             # it&#39;s parent&#39;s virtual coordinate system.
             region = (
-                region.translate(-scroll_offset)
-                .translate(-widget.scroll_offset)
-                .translate(container.virtual_region.offset)
-            ).intersection(container.virtual_region)
+                (
+                    region.translate(-scroll_offset)
+                    .translate(-widget.scroll_offset)
+                    .translate(container.virtual_region.offset)
+                )
+                .grow(container.styles.margin)
+                .intersection(container.virtual_region)
+            )
             widget = container
         return scrolled
 
@@ -868,7 +1105,6 @@ class Widget(DOMNode):
         Returns:
             Offset: The distance that was scrolled.
         &#34;&#34;&#34;
-
         window = self.content_region.at_offset(self.scroll_offset)
         if spacing is not None:
             window = window.shrink(spacing)
@@ -887,16 +1123,11 @@ class Widget(DOMNode):
             )
         return delta
 
-    def scroll_visible(self) -&gt; bool:
-        &#34;&#34;&#34;Scroll the container to make this widget visible.
-
-        Returns:
-            bool: True if the parent was scrolled.
-        &#34;&#34;&#34;
+    def scroll_visible(self) -&gt; None:
+        &#34;&#34;&#34;Scroll the container to make this widget visible.&#34;&#34;&#34;
         parent = self.parent
         if isinstance(parent, Widget):
-            return parent.scroll_to_widget(self)
-        return False
+            self.call_later(parent.scroll_to_widget, self)
 
     def __init_subclass__(
         cls,
@@ -991,16 +1222,18 @@ class Widget(DOMNode):
                 yield self.horizontal_scrollbar, scrollbar_region
 
     def get_pseudo_classes(self) -&gt; Iterable[str]:
-        &#34;&#34;&#34;Pseudo classes for a widget&#34;&#34;&#34;
+        &#34;&#34;&#34;Pseudo classes for a widget.
+
+        Returns:
+            Iterable[str]: Names of the pseudo classes.
+
+        &#34;&#34;&#34;
         if self.mouse_over:
             yield &#34;hover&#34;
         if self.has_focus:
             yield &#34;focus&#34;
         if self.descendant_has_focus:
             yield &#34;focus-within&#34;
-
-    def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
-        watch(self, attribute_name, callback)
 
     def post_render(self, renderable: RenderableType) -&gt; RenderableType:
         &#34;&#34;&#34;Applies style attributes to the default renderable.
@@ -1022,11 +1255,11 @@ class Widget(DOMNode):
 
     def watch_mouse_over(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
-        self.app.update_styles()
+        self.app.update_styles(self)
 
     def watch_has_focus(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Update from CSS if has focus state changes.&#34;&#34;&#34;
-        self.app.update_styles()
+        self.app.update_styles(self)
 
     def size_updated(
         self, size: Size, virtual_size: Size, container_size: Size
@@ -1048,7 +1281,8 @@ class Widget(DOMNode):
                 self.scroll_x = self.validate_scroll_x(self.scroll_x)
                 self.scroll_y = self.validate_scroll_y(self.scroll_y)
                 self.refresh(layout=True)
-                self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
+                self.scroll_to(self.scroll_x, self.scroll_y)
+                # self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
             else:
                 self.refresh()
 
@@ -1057,11 +1291,11 @@ class Widget(DOMNode):
         width, height = self.size
         renderable = self.render()
         renderable = self.post_render(renderable)
-        options = self.console.options.update_dimensions(width, height).update(
+        options = self._console.options.update_dimensions(width, height).update(
             highlight=False
         )
 
-        segments = self.console.render(renderable, options)
+        segments = self._console.render(renderable, options)
         lines = list(
             islice(
                 Segment.split_and_crop_lines(
@@ -1114,11 +1348,17 @@ class Widget(DOMNode):
         return lines
 
     def get_style_at(self, x: int, y: int) -&gt; Style:
+        &#34;&#34;&#34;Get the Rich style at a given screen offset.
+
+        Args:
+            x (int): X coordinate relative to the screen.
+            y (int): Y coordinate relative to the screen.
+
+        Returns:
+            Style: A rich Style object.
+        &#34;&#34;&#34;
         offset_x, offset_y = self.screen.get_offset(self)
         return self.screen.get_style_at(x + offset_x, y + offset_y)
-
-    def call_later(self, callback: Callable, *args, **kwargs) -&gt; None:
-        self.app.call_later(callback, *args, **kwargs)
 
     async def forward_event(self, event: events.Event) -&gt; None:
         event.set_forwarded()
@@ -1132,7 +1372,16 @@ class Widget(DOMNode):
         This method sets an internal flag to perform a refresh, which will be done on the
         next idle event. Only one refresh will be done even if this method is called multiple times.
 
+        By default this method will cause the content of the widget to refresh, but not change its size. You can also
+        set `layout=True` to perform a layout.
+
+        !!! warning
+
+            It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will
+            do this automatically.
+
         Args:
+            *regions (Region, optional): Additional screen regions to mark as dirty.
             repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True.
             layout (bool, optional): Also layout widgets in the view. Defaults to False.
         &#34;&#34;&#34;
@@ -1154,9 +1403,7 @@ class Widget(DOMNode):
 
     def remove(self) -&gt; None:
         &#34;&#34;&#34;Remove the Widget from the DOM (effectively deleting it)&#34;&#34;&#34;
-        for child in self.children:
-            child.remove()
-        self.post_message_no_wait(events.Remove(self))
+        self.app.post_message_no_wait(events.Remove(self, widget=self))
 
     def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
@@ -1186,12 +1433,18 @@ class Widget(DOMNode):
         Args:
             event (events.Idle): Idle event.
         &#34;&#34;&#34;
-        if self._repaint_required:
-            self._repaint_required = False
-            self.screen.post_message_no_wait(messages.Update(self, self))
-        if self._layout_required:
-            self._layout_required = False
-            self.screen.post_message_no_wait(messages.Layout(self))
+        if self._parent is not None and not self._closing:
+            try:
+                screen = self.screen
+            except NoScreen:
+                pass
+            else:
+                if self._repaint_required:
+                    self._repaint_required = False
+                    screen.post_message_no_wait(messages.Update(self, self))
+                if self._layout_required:
+                    self._layout_required = False
+                    screen.post_message_no_wait(messages.Layout(self))
 
     def focus(self) -&gt; None:
         &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
@@ -1215,25 +1468,19 @@ class Widget(DOMNode):
         self.app.capture_mouse(None)
 
     async def broker_event(self, event_name: str, event: events.Event) -&gt; bool:
-        return await self.app.broker_event(event_name, event, default_namespace=self)
+        return await self.app._broker_event(event_name, event, default_namespace=self)
 
-    async def on_mouse_down(self, event: events.MouseUp) -&gt; None:
+    async def _on_mouse_down(self, event: events.MouseUp) -&gt; None:
         await self.broker_event(&#34;mouse.down&#34;, event)
 
-    async def on_mouse_up(self, event: events.MouseUp) -&gt; None:
+    async def _on_mouse_up(self, event: events.MouseUp) -&gt; None:
         await self.broker_event(&#34;mouse.up&#34;, event)
 
-    async def on_click(self, event: events.Click) -&gt; None:
+    async def _on_click(self, event: events.Click) -&gt; None:
         await self.broker_event(&#34;click&#34;, event)
 
-    async def on_key(self, event: events.Key) -&gt; None:
+    async def _on_key(self, event: events.Key) -&gt; None:
         await self.dispatch_key(event)
-
-    async def on_remove(self, event: events.Remove) -&gt; None:
-        await self.close_messages()
-        assert self.parent
-        self.parent.refresh(layout=True)
-        self.app._unregister(self)
 
     def _on_mount(self, event: events.Mount) -&gt; None:
         widgets = list(self.compose())
@@ -1241,23 +1488,23 @@ class Widget(DOMNode):
             self.mount(*widgets)
             self.screen.refresh(repaint=False, layout=True)
 
-    def on_leave(self, event: events.Leave) -&gt; None:
+    def _on_leave(self, event: events.Leave) -&gt; None:
         self.mouse_over = False
 
-    def on_enter(self, event: events.Enter) -&gt; None:
+    def _on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
 
-    def on_focus(self, event: events.Focus) -&gt; None:
+    def _on_focus(self, event: events.Focus) -&gt; None:
         self.emit_no_wait(events.DescendantFocus(self))
         self.has_focus = True
         self.refresh()
 
-    def on_blur(self, event: events.Blur) -&gt; None:
+    def _on_blur(self, event: events.Blur) -&gt; None:
         self.emit_no_wait(events.DescendantBlur(self))
         self.has_focus = False
         self.refresh()
 
-    def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
+    def _on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
         self.descendant_has_focus = True
         if &#34;focus-within&#34; in self.pseudo_classes:
             sender = event.sender
@@ -1266,7 +1513,7 @@ class Widget(DOMNode):
                 if child is sender:
                     break
 
-    def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
+    def _on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
         self.descendant_has_focus = False
         if &#34;focus-within&#34; in self.pseudo_classes:
             sender = event.sender
@@ -1275,85 +1522,89 @@ class Widget(DOMNode):
                 if child is sender:
                     break
 
-    def on_mouse_scroll_down(self, event) -&gt; None:
+    def _on_mouse_scroll_down(self, event) -&gt; None:
         if self.allow_vertical_scroll:
             if self.scroll_down(animate=False):
                 event.stop()
 
-    def on_mouse_scroll_up(self, event) -&gt; None:
+    def _on_mouse_scroll_up(self, event) -&gt; None:
         if self.allow_vertical_scroll:
             if self.scroll_up(animate=False):
                 event.stop()
 
-    def on_scroll_to(self, message: ScrollTo) -&gt; None:
-        if self.is_scrollable:
+    def _on_scroll_to(self, message: ScrollTo) -&gt; None:
+        if self._allow_scroll:
             self.scroll_to(message.x, message.y, animate=message.animate, duration=0.1)
             message.stop()
 
-    def on_scroll_up(self, event: ScrollUp) -&gt; None:
-        if self.is_scrollable:
+    def _on_scroll_up(self, event: ScrollUp) -&gt; None:
+        if self.allow_vertical_scroll:
             self.scroll_page_up()
             event.stop()
 
-    def on_scroll_down(self, event: ScrollDown) -&gt; None:
-        if self.is_scrollable:
+    def _on_scroll_down(self, event: ScrollDown) -&gt; None:
+        if self.allow_vertical_scroll:
             self.scroll_page_down()
             event.stop()
 
-    def on_scroll_left(self, event: ScrollLeft) -&gt; None:
-        if self.is_scrollable:
+    def _on_scroll_left(self, event: ScrollLeft) -&gt; None:
+        if self.allow_horizontal_scroll:
             self.scroll_page_left()
             event.stop()
 
-    def on_scroll_right(self, event: ScrollRight) -&gt; None:
-        if self.is_scrollable:
+    def _on_scroll_right(self, event: ScrollRight) -&gt; None:
+        if self.allow_horizontal_scroll:
             self.scroll_page_right()
             event.stop()
 
+    def _on_hide(self, event: events.Hide) -&gt; None:
+        if self.has_focus:
+            self.app._reset_focus(self)
+
     def key_home(self) -&gt; bool:
-        if self.is_scrollable:
+        if self._allow_scroll:
             self.scroll_home()
             return True
         return False
 
     def key_end(self) -&gt; bool:
-        if self.is_scrollable:
+        if self._allow_scroll:
             self.scroll_end()
             return True
         return False
 
     def key_left(self) -&gt; bool:
-        if self.is_scrollable:
+        if self.allow_horizontal_scroll:
             self.scroll_left()
             return True
         return False
 
     def key_right(self) -&gt; bool:
-        if self.is_scrollable:
+        if self.allow_horizontal_scroll:
             self.scroll_right()
             return True
         return False
 
     def key_down(self) -&gt; bool:
-        if self.is_scrollable:
-            self.scroll_up()
-            return True
-        return False
-
-    def key_up(self) -&gt; bool:
-        if self.is_scrollable:
+        if self.allow_vertical_scroll:
             self.scroll_down()
             return True
         return False
 
+    def key_up(self) -&gt; bool:
+        if self.allow_vertical_scroll:
+            self.scroll_up()
+            return True
+        return False
+
     def key_pagedown(self) -&gt; bool:
-        if self.is_scrollable:
+        if self.allow_vertical_scroll:
             self.scroll_page_down()
             return True
         return False
 
     def key_pageup(self) -&gt; bool:
-        if self.is_scrollable:
+        if self.allow_vertical_scroll:
             self.scroll_page_up()
             return True
         return False</code></pre>
@@ -1429,13 +1680,16 @@ def cursor_line(self) -&gt; int | None:
 <span>(</span><span>*children: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A node in a hierarchy of things forming the UI.</p>
-<p>Nodes are mountable and may be styled with CSS.</p></div>
+<div class="desc"><p>A Widget is the base class for Textual widgets. Extent this class (or a sub-class) when defining your own widgets.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Widget(DOMNode):
+    &#34;&#34;&#34;
+    A Widget is the base class for Textual widgets. Extent this class (or a sub-class) when defining your own widgets.
+
+    &#34;&#34;&#34;
 
     CSS = &#34;&#34;&#34;
     Widget{
@@ -1467,7 +1721,6 @@ def cursor_line(self) -&gt; int | None:
         self._repaint_required = False
         self._default_layout = VerticalLayout()
         self._animate: BoundAnimator | None = None
-        self._reactive_watches: dict[str, Callable] = {}
         self.highlight_style: Style | None = None
 
         self._vertical_scrollbar: ScrollBar | None = None
@@ -1490,12 +1743,14 @@ def cursor_line(self) -&gt; int | None:
 
         self._styles_cache = StylesCache()
 
+        self._lock = Lock()
+
         super().__init__(
             name=name,
             id=id,
             classes=self.DEFAULT_CLASSES if classes is None else classes,
         )
-        self.add_children(*children)
+        self._add_children(*children)
 
     virtual_size = Reactive(Size(0, 0), layout=True)
     auto_width = Reactive(True)
@@ -1511,14 +1766,52 @@ def cursor_line(self) -&gt; int | None:
     show_horizontal_scrollbar = Reactive(False, layout=True)
 
     @property
+    def siblings(self) -&gt; list[Widget]:
+        &#34;&#34;&#34;Get the widget&#39;s siblings (self is removed from the return list).
+
+        Returns:
+            list[Widget]: A list of siblings.
+        &#34;&#34;&#34;
+        parent = self.parent
+        if parent is not None:
+            siblings = list(parent.children)
+            siblings.remove(self)
+            return siblings
+        else:
+            return []
+
+    @property
     def allow_vertical_scroll(self) -&gt; bool:
-        &#34;&#34;&#34;Check if vertical scroll is permitted.&#34;&#34;&#34;
+        &#34;&#34;&#34;Check if vertical scroll is permitted.
+
+        May be overridden if you want different logic regarding allowing scrolling.
+
+        Returns:
+            bool: True if the widget may scroll _vertically_.
+        &#34;&#34;&#34;
         return self.is_scrollable and self.show_vertical_scrollbar
 
     @property
     def allow_horizontal_scroll(self) -&gt; bool:
-        &#34;&#34;&#34;Check if horizontal scroll is permitted.&#34;&#34;&#34;
+        &#34;&#34;&#34;Check if horizontal scroll is permitted.
+
+        May be overridden if you want different logic regarding allowing scrolling.
+
+        Returns:
+            bool: True if the widget may scroll _horizontally_.
+        &#34;&#34;&#34;
         return self.is_scrollable and self.show_horizontal_scrollbar
+
+    @property
+    def _allow_scroll(self) -&gt; bool:
+        &#34;&#34;&#34;Check if both axes may be scrolled.
+
+        Returns:
+            bool: True if horizontal and vertical scrolling is enabled.
+        &#34;&#34;&#34;
+        return self.is_scrollable and (
+            self.allow_horizontal_scroll or self.allow_vertical_scroll
+        )
 
     def _arrange(self, size: Size) -&gt; DockArrangeResult:
         &#34;&#34;&#34;Arrange children.
@@ -1542,6 +1835,7 @@ def cursor_line(self) -&gt; int | None:
         return self._arrangement
 
     def _clear_arrangement_cache(self) -&gt; None:
+        &#34;&#34;&#34;Clear arrangement cache, forcing a new arrange operation.&#34;&#34;&#34;
         self._arrangement = None
 
     def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
@@ -1571,19 +1865,34 @@ def cursor_line(self) -&gt; int | None:
         the keys will be set as the Widget&#39;s id.
 
         Example:
+            ```python
             self.mount(Static(&#34;hello&#34;), header=Header())
-
+            ```
 
         &#34;&#34;&#34;
         self.app._register(self, *anon_widgets, **widgets)
-        self.screen.refresh()
+        self.screen.refresh(layout=True)
 
     def compose(self) -&gt; ComposeResult:
-        &#34;&#34;&#34;Yield child widgets for a container.&#34;&#34;&#34;
+        &#34;&#34;&#34;Called by Textual to create child widgets.
+
+        Extend this to build a UI.
+
+        Example:
+            ```python
+            def compose(self) -&gt; ComposeResult:
+                yield Header()
+                yield Container(
+                    TreeControl(), Viewer()
+                )
+                yield Footer()
+            ```
+
+        &#34;&#34;&#34;
         return
         yield
 
-    def on_register(self, app: App) -&gt; None:
+    def _post_register(self, app: App) -&gt; None:
         &#34;&#34;&#34;Called when the instance is registered.
 
         Args:
@@ -1595,7 +1904,7 @@ def cursor_line(self) -&gt; int | None:
                 css, path=path, is_default_css=True, tie_breaker=tie_breaker
             )
 
-    def get_box_model(
+    def _get_box_model(
         self, container: Size, viewport: Size, fraction_unit: Fraction
     ) -&gt; BoxModel:
         &#34;&#34;&#34;Process the box model for this widget.
@@ -1603,6 +1912,7 @@ def cursor_line(self) -&gt; int | None:
         Args:
             container (Size): The size of the container widget (with a layout)
             viewport (Size): The viewport size.
+            fraction_unit (Fraction): The unit used for `fr` units.
 
         Returns:
             BoxModel: The size and margin for this widget.
@@ -1628,9 +1938,9 @@ def cursor_line(self) -&gt; int | None:
             int: The optimal width of the content.
         &#34;&#34;&#34;
         if self.is_container:
-            assert self.layout is not None
+            assert self._layout is not None
             return (
-                self.layout.get_content_width(self, container, viewport)
+                self._layout.get_content_width(self, container, viewport)
                 + self.scrollbar_size_vertical
             )
 
@@ -1662,9 +1972,9 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
 
         if self.is_container:
-            assert self.layout is not None
+            assert self._layout is not None
             height = (
-                self.layout.get_content_height(
+                self._layout.get_content_height(
                     self,
                     container,
                     viewport,
@@ -1679,8 +1989,8 @@ def cursor_line(self) -&gt; int | None:
                 return self._content_height_cache[1]
 
             renderable = self.render()
-            options = self.console.options.update_width(width).update(highlight=False)
-            segments = self.console.render(renderable, options)
+            options = self._console.options.update_width(width).update(highlight=False)
+            segments = self._console.render(renderable, options)
             # Cheaper than counting the lines returned from render_lines!
             height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
             self._content_height_cache = (cache_key, height)
@@ -1840,6 +2150,11 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def scrollbar_gutter(self) -&gt; Spacing:
+        &#34;&#34;&#34;Spacing required to fit scrollbar(s)
+
+        Returns:
+            Spacing: Scrollbar gutter spacing.
+        &#34;&#34;&#34;
         gutter = Spacing(
             0, self.scrollbar_size_vertical, self.scrollbar_size_horizontal, 0
         )
@@ -1847,41 +2162,77 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def gutter(self) -&gt; Spacing:
-        &#34;&#34;&#34;Spacing for padding / border / scrollbars.&#34;&#34;&#34;
+        &#34;&#34;&#34;Spacing for padding / border / scrollbars.
+
+        Returns:
+            Spacing: Additional spacing around content area.
+
+        &#34;&#34;&#34;
         return self.styles.gutter + self.scrollbar_gutter
 
     @property
     def size(self) -&gt; Size:
-        &#34;&#34;&#34;The size of the content area.&#34;&#34;&#34;
+        &#34;&#34;&#34;The size of the content area.
+
+        Returns:
+            Size: Content area size.
+        &#34;&#34;&#34;
         return self.content_region.size
 
     @property
     def outer_size(self) -&gt; Size:
-        &#34;&#34;&#34;The size of the widget (including padding and border).&#34;&#34;&#34;
+        &#34;&#34;&#34;The size of the widget (including padding and border).
+
+        Returns:
+            Size: Outer size.
+        &#34;&#34;&#34;
         return self._size
 
     @property
     def container_size(self) -&gt; Size:
-        &#34;&#34;&#34;The size of the container (parent widget).&#34;&#34;&#34;
+        &#34;&#34;&#34;The size of the container (parent widget).
+
+        Returns:
+            Size: Container size.
+        &#34;&#34;&#34;
         return self._container_size
 
     @property
     def content_region(self) -&gt; Region:
-        &#34;&#34;&#34;Gets an absolute region containing the content (minus padding and border).&#34;&#34;&#34;
+        &#34;&#34;&#34;Gets an absolute region containing the content (minus padding and border).
+
+        Returns:
+            Region: Screen region that contains a widget&#39;s content.
+        &#34;&#34;&#34;
         content_region = self.region.shrink(self.gutter)
         return content_region
 
     @property
     def content_offset(self) -&gt; Offset:
-        &#34;&#34;&#34;An offset from the Widget origin where the content begins.&#34;&#34;&#34;
+        &#34;&#34;&#34;An offset from the Widget origin where the content begins.
+
+        Returns:
+            Offset: Offset from widget&#39;s origin.
+
+        &#34;&#34;&#34;
         x, y = self.gutter.top_left
         return Offset(x, y)
 
     @property
     def region(self) -&gt; Region:
-        &#34;&#34;&#34;The region occupied by this widget, relative to the Screen.&#34;&#34;&#34;
+        &#34;&#34;&#34;The region occupied by this widget, relative to the Screen.
+
+        Raises:
+            NoScreen: If there is no screen.
+            errors.NoWidget: If the widget is not on the screen.
+
+        Returns:
+            Region: Region within screen occupied by widget.
+        &#34;&#34;&#34;
         try:
             return self.screen.find_widget(self).region
+        except NoScreen:
+            return Region()
         except errors.NoWidget:
             return Region()
 
@@ -1892,6 +2243,8 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
         try:
             return self.screen.find_widget(self).virtual_region
+        except NoScreen:
+            return Region()
         except errors.NoWidget:
             return Region()
 
@@ -1917,7 +2270,12 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def focusable_children(self) -&gt; list[Widget]:
-        &#34;&#34;&#34;Get the children which may be focused.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the children which may be focused.
+
+        Returns:
+            list[Widget]: List of widgets that can receive focus.
+
+        &#34;&#34;&#34;
         focusable = [
             child for child in self.children if child.display and child.visible
         ]
@@ -1925,12 +2283,18 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def _focus_sort_key(self) -&gt; tuple[int, int]:
+        &#34;&#34;&#34;Key function to sort widgets in to focus order.&#34;&#34;&#34;
         x, y, _, _ = self.virtual_region
         top, _, _, left = self.styles.margin
         return y - top, x - left
 
     @property
     def scroll_offset(self) -&gt; Offset:
+        &#34;&#34;&#34;Get the current scroll offset.
+
+        Returns:
+            Offset: Offset a container has been scrolled by.
+        &#34;&#34;&#34;
         return Offset(int(self.scroll_x), int(self.scroll_y))
 
     @property
@@ -1943,20 +2307,40 @@ def cursor_line(self) -&gt; int | None:
         return self.is_scrollable and self.styles.background.is_transparent
 
     @property
-    def console(self) -&gt; Console:
-        &#34;&#34;&#34;Get the current console.&#34;&#34;&#34;
+    def _console(self) -&gt; Console:
+        &#34;&#34;&#34;Get the current console.
+
+        Returns:
+            Console: A Rich console object.
+
+        &#34;&#34;&#34;
         return active_app.get().console
 
     @property
     def animate(self) -&gt; BoundAnimator:
+        &#34;&#34;&#34;Get an animator to animate attributes on this widget.
+
+        Example:
+            ```python
+            self.animate(&#34;brightness&#34;, 0.5)
+            ```
+
+        Returns:
+            BoundAnimator: An animator bound to this widget.
+        &#34;&#34;&#34;
         if self._animate is None:
             self._animate = self.app.animator.bind(self)
         assert self._animate is not None
         return self._animate
 
     @property
-    def layout(self) -&gt; Layout:
-        &#34;&#34;&#34;Get the layout object if set in styles, or a default layout.&#34;&#34;&#34;
+    def _layout(self) -&gt; Layout:
+        &#34;&#34;&#34;Get the layout object if set in styles, or a default layout.
+
+        Returns:
+            Layout: A layout object.
+
+        &#34;&#34;&#34;
         return self.styles.layout or self._default_layout
 
     @property
@@ -1975,11 +2359,16 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             bool: True if this widget may be scrolled.
         &#34;&#34;&#34;
-        return self.is_container
+        return self.styles.layout is not None or bool(self.children)
 
     @property
     def layer(self) -&gt; str:
-        &#34;&#34;&#34;Get the name of this widgets layer.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the name of this widgets layer.
+
+        Returns:
+            str: Name of layer.
+
+        &#34;&#34;&#34;
         return self.styles.layer or &#34;default&#34;
 
     @property
@@ -2041,9 +2430,11 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;Scroll to a given (absolute) coordinate, optionally animating.
 
         Args:
-            x (int | None, optional): X coordinate (column) to scroll to, or ``None`` for no change. Defaults to None.
-            y (int | None, optional): Y coordinate (row) to scroll to, or ``None`` for no change. Defaults to None.
-            animate (bool, optional): Animate to new scroll position. Defaults to False.
+            x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None.
+            y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None.
+            animate (bool, optional): Animate to new scroll position. Defaults to True.
+            speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration.
+            duration (float | None, optional): Duration of animation, if animate is True and speed is False.
 
         Returns:
             bool: True if the scroll position changed, otherwise False.
@@ -2105,6 +2496,8 @@ def cursor_line(self) -&gt; int | None:
             x (int | None, optional): X distance (columns) to scroll, or ``None`` for no change. Defaults to None.
             y (int | None, optional): Y distance (rows) to scroll, or ``None`` for no change. Defaults to None.
             animate (bool, optional): Animate to new scroll position. Defaults to False.
+            speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration.
+            duration (float | None, optional): Duration of animation, if animate is True and speed is False.
 
         Returns:
             bool: True if the scroll position changed, otherwise False.
@@ -2118,34 +2511,114 @@ def cursor_line(self) -&gt; int | None:
         )
 
     def scroll_home(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll to home position.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+        &#34;&#34;&#34;
         return self.scroll_to(0, 0, animate=animate, duration=1)
 
     def scroll_end(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll to the end of the container.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(0, self.max_scroll_y, animate=animate, duration=1)
 
     def scroll_left(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one cell left.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(x=self.scroll_target_x - 1, animate=animate)
 
     def scroll_right(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll on cell right.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(x=self.scroll_target_x + 1, animate=animate)
 
-    def scroll_up(self, *, animate: bool = True) -&gt; bool:
+    def scroll_down(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one line down.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(y=self.scroll_target_y + 1, animate=animate)
 
-    def scroll_down(self, *, animate: bool = True) -&gt; bool:
+    def scroll_up(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one line up.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(y=self.scroll_target_y - 1, animate=animate)
 
     def scroll_page_up(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one page up.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(
             y=self.scroll_target_y - self.container_size.height, animate=animate
         )
 
     def scroll_page_down(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one page down.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(
             y=self.scroll_target_y + self.container_size.height, animate=animate
         )
 
     def scroll_page_left(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one page left.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(
             x=self.scroll_target_x - self.container_size.width,
             animate=animate,
@@ -2153,6 +2626,15 @@ def cursor_line(self) -&gt; int | None:
         )
 
     def scroll_page_right(self, *, animate: bool = True) -&gt; bool:
+        &#34;&#34;&#34;Scroll one page right.
+
+        Args:
+            animate (bool, optional): Animate scroll. Defaults to True.
+
+        Returns:
+            bool: True if any scrolling was done.
+
+        &#34;&#34;&#34;
         return self.scroll_to(
             x=self.scroll_target_x + self.container_size.width,
             animate=animate,
@@ -2183,10 +2665,14 @@ def cursor_line(self) -&gt; int | None:
             # Adjust the region by the amount we just scrolled it, and convert to
             # it&#39;s parent&#39;s virtual coordinate system.
             region = (
-                region.translate(-scroll_offset)
-                .translate(-widget.scroll_offset)
-                .translate(container.virtual_region.offset)
-            ).intersection(container.virtual_region)
+                (
+                    region.translate(-scroll_offset)
+                    .translate(-widget.scroll_offset)
+                    .translate(container.virtual_region.offset)
+                )
+                .grow(container.styles.margin)
+                .intersection(container.virtual_region)
+            )
             widget = container
         return scrolled
 
@@ -2206,7 +2692,6 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             Offset: The distance that was scrolled.
         &#34;&#34;&#34;
-
         window = self.content_region.at_offset(self.scroll_offset)
         if spacing is not None:
             window = window.shrink(spacing)
@@ -2225,16 +2710,11 @@ def cursor_line(self) -&gt; int | None:
             )
         return delta
 
-    def scroll_visible(self) -&gt; bool:
-        &#34;&#34;&#34;Scroll the container to make this widget visible.
-
-        Returns:
-            bool: True if the parent was scrolled.
-        &#34;&#34;&#34;
+    def scroll_visible(self) -&gt; None:
+        &#34;&#34;&#34;Scroll the container to make this widget visible.&#34;&#34;&#34;
         parent = self.parent
         if isinstance(parent, Widget):
-            return parent.scroll_to_widget(self)
-        return False
+            self.call_later(parent.scroll_to_widget, self)
 
     def __init_subclass__(
         cls,
@@ -2329,16 +2809,18 @@ def cursor_line(self) -&gt; int | None:
                 yield self.horizontal_scrollbar, scrollbar_region
 
     def get_pseudo_classes(self) -&gt; Iterable[str]:
-        &#34;&#34;&#34;Pseudo classes for a widget&#34;&#34;&#34;
+        &#34;&#34;&#34;Pseudo classes for a widget.
+
+        Returns:
+            Iterable[str]: Names of the pseudo classes.
+
+        &#34;&#34;&#34;
         if self.mouse_over:
             yield &#34;hover&#34;
         if self.has_focus:
             yield &#34;focus&#34;
         if self.descendant_has_focus:
             yield &#34;focus-within&#34;
-
-    def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
-        watch(self, attribute_name, callback)
 
     def post_render(self, renderable: RenderableType) -&gt; RenderableType:
         &#34;&#34;&#34;Applies style attributes to the default renderable.
@@ -2360,11 +2842,11 @@ def cursor_line(self) -&gt; int | None:
 
     def watch_mouse_over(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
-        self.app.update_styles()
+        self.app.update_styles(self)
 
     def watch_has_focus(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Update from CSS if has focus state changes.&#34;&#34;&#34;
-        self.app.update_styles()
+        self.app.update_styles(self)
 
     def size_updated(
         self, size: Size, virtual_size: Size, container_size: Size
@@ -2386,7 +2868,8 @@ def cursor_line(self) -&gt; int | None:
                 self.scroll_x = self.validate_scroll_x(self.scroll_x)
                 self.scroll_y = self.validate_scroll_y(self.scroll_y)
                 self.refresh(layout=True)
-                self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
+                self.scroll_to(self.scroll_x, self.scroll_y)
+                # self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
             else:
                 self.refresh()
 
@@ -2395,11 +2878,11 @@ def cursor_line(self) -&gt; int | None:
         width, height = self.size
         renderable = self.render()
         renderable = self.post_render(renderable)
-        options = self.console.options.update_dimensions(width, height).update(
+        options = self._console.options.update_dimensions(width, height).update(
             highlight=False
         )
 
-        segments = self.console.render(renderable, options)
+        segments = self._console.render(renderable, options)
         lines = list(
             islice(
                 Segment.split_and_crop_lines(
@@ -2452,11 +2935,17 @@ def cursor_line(self) -&gt; int | None:
         return lines
 
     def get_style_at(self, x: int, y: int) -&gt; Style:
+        &#34;&#34;&#34;Get the Rich style at a given screen offset.
+
+        Args:
+            x (int): X coordinate relative to the screen.
+            y (int): Y coordinate relative to the screen.
+
+        Returns:
+            Style: A rich Style object.
+        &#34;&#34;&#34;
         offset_x, offset_y = self.screen.get_offset(self)
         return self.screen.get_style_at(x + offset_x, y + offset_y)
-
-    def call_later(self, callback: Callable, *args, **kwargs) -&gt; None:
-        self.app.call_later(callback, *args, **kwargs)
 
     async def forward_event(self, event: events.Event) -&gt; None:
         event.set_forwarded()
@@ -2470,7 +2959,16 @@ def cursor_line(self) -&gt; int | None:
         This method sets an internal flag to perform a refresh, which will be done on the
         next idle event. Only one refresh will be done even if this method is called multiple times.
 
+        By default this method will cause the content of the widget to refresh, but not change its size. You can also
+        set `layout=True` to perform a layout.
+
+        !!! warning
+
+            It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will
+            do this automatically.
+
         Args:
+            *regions (Region, optional): Additional screen regions to mark as dirty.
             repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True.
             layout (bool, optional): Also layout widgets in the view. Defaults to False.
         &#34;&#34;&#34;
@@ -2492,9 +2990,7 @@ def cursor_line(self) -&gt; int | None:
 
     def remove(self) -&gt; None:
         &#34;&#34;&#34;Remove the Widget from the DOM (effectively deleting it)&#34;&#34;&#34;
-        for child in self.children:
-            child.remove()
-        self.post_message_no_wait(events.Remove(self))
+        self.app.post_message_no_wait(events.Remove(self, widget=self))
 
     def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
@@ -2524,12 +3020,18 @@ def cursor_line(self) -&gt; int | None:
         Args:
             event (events.Idle): Idle event.
         &#34;&#34;&#34;
-        if self._repaint_required:
-            self._repaint_required = False
-            self.screen.post_message_no_wait(messages.Update(self, self))
-        if self._layout_required:
-            self._layout_required = False
-            self.screen.post_message_no_wait(messages.Layout(self))
+        if self._parent is not None and not self._closing:
+            try:
+                screen = self.screen
+            except NoScreen:
+                pass
+            else:
+                if self._repaint_required:
+                    self._repaint_required = False
+                    screen.post_message_no_wait(messages.Update(self, self))
+                if self._layout_required:
+                    self._layout_required = False
+                    screen.post_message_no_wait(messages.Layout(self))
 
     def focus(self) -&gt; None:
         &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
@@ -2553,25 +3055,19 @@ def cursor_line(self) -&gt; int | None:
         self.app.capture_mouse(None)
 
     async def broker_event(self, event_name: str, event: events.Event) -&gt; bool:
-        return await self.app.broker_event(event_name, event, default_namespace=self)
+        return await self.app._broker_event(event_name, event, default_namespace=self)
 
-    async def on_mouse_down(self, event: events.MouseUp) -&gt; None:
+    async def _on_mouse_down(self, event: events.MouseUp) -&gt; None:
         await self.broker_event(&#34;mouse.down&#34;, event)
 
-    async def on_mouse_up(self, event: events.MouseUp) -&gt; None:
+    async def _on_mouse_up(self, event: events.MouseUp) -&gt; None:
         await self.broker_event(&#34;mouse.up&#34;, event)
 
-    async def on_click(self, event: events.Click) -&gt; None:
+    async def _on_click(self, event: events.Click) -&gt; None:
         await self.broker_event(&#34;click&#34;, event)
 
-    async def on_key(self, event: events.Key) -&gt; None:
+    async def _on_key(self, event: events.Key) -&gt; None:
         await self.dispatch_key(event)
-
-    async def on_remove(self, event: events.Remove) -&gt; None:
-        await self.close_messages()
-        assert self.parent
-        self.parent.refresh(layout=True)
-        self.app._unregister(self)
 
     def _on_mount(self, event: events.Mount) -&gt; None:
         widgets = list(self.compose())
@@ -2579,23 +3075,23 @@ def cursor_line(self) -&gt; int | None:
             self.mount(*widgets)
             self.screen.refresh(repaint=False, layout=True)
 
-    def on_leave(self, event: events.Leave) -&gt; None:
+    def _on_leave(self, event: events.Leave) -&gt; None:
         self.mouse_over = False
 
-    def on_enter(self, event: events.Enter) -&gt; None:
+    def _on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
 
-    def on_focus(self, event: events.Focus) -&gt; None:
+    def _on_focus(self, event: events.Focus) -&gt; None:
         self.emit_no_wait(events.DescendantFocus(self))
         self.has_focus = True
         self.refresh()
 
-    def on_blur(self, event: events.Blur) -&gt; None:
+    def _on_blur(self, event: events.Blur) -&gt; None:
         self.emit_no_wait(events.DescendantBlur(self))
         self.has_focus = False
         self.refresh()
 
-    def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
+    def _on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
         self.descendant_has_focus = True
         if &#34;focus-within&#34; in self.pseudo_classes:
             sender = event.sender
@@ -2604,7 +3100,7 @@ def cursor_line(self) -&gt; int | None:
                 if child is sender:
                     break
 
-    def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
+    def _on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
         self.descendant_has_focus = False
         if &#34;focus-within&#34; in self.pseudo_classes:
             sender = event.sender
@@ -2613,85 +3109,89 @@ def cursor_line(self) -&gt; int | None:
                 if child is sender:
                     break
 
-    def on_mouse_scroll_down(self, event) -&gt; None:
+    def _on_mouse_scroll_down(self, event) -&gt; None:
         if self.allow_vertical_scroll:
             if self.scroll_down(animate=False):
                 event.stop()
 
-    def on_mouse_scroll_up(self, event) -&gt; None:
+    def _on_mouse_scroll_up(self, event) -&gt; None:
         if self.allow_vertical_scroll:
             if self.scroll_up(animate=False):
                 event.stop()
 
-    def on_scroll_to(self, message: ScrollTo) -&gt; None:
-        if self.is_scrollable:
+    def _on_scroll_to(self, message: ScrollTo) -&gt; None:
+        if self._allow_scroll:
             self.scroll_to(message.x, message.y, animate=message.animate, duration=0.1)
             message.stop()
 
-    def on_scroll_up(self, event: ScrollUp) -&gt; None:
-        if self.is_scrollable:
+    def _on_scroll_up(self, event: ScrollUp) -&gt; None:
+        if self.allow_vertical_scroll:
             self.scroll_page_up()
             event.stop()
 
-    def on_scroll_down(self, event: ScrollDown) -&gt; None:
-        if self.is_scrollable:
+    def _on_scroll_down(self, event: ScrollDown) -&gt; None:
+        if self.allow_vertical_scroll:
             self.scroll_page_down()
             event.stop()
 
-    def on_scroll_left(self, event: ScrollLeft) -&gt; None:
-        if self.is_scrollable:
+    def _on_scroll_left(self, event: ScrollLeft) -&gt; None:
+        if self.allow_horizontal_scroll:
             self.scroll_page_left()
             event.stop()
 
-    def on_scroll_right(self, event: ScrollRight) -&gt; None:
-        if self.is_scrollable:
+    def _on_scroll_right(self, event: ScrollRight) -&gt; None:
+        if self.allow_horizontal_scroll:
             self.scroll_page_right()
             event.stop()
 
+    def _on_hide(self, event: events.Hide) -&gt; None:
+        if self.has_focus:
+            self.app._reset_focus(self)
+
     def key_home(self) -&gt; bool:
-        if self.is_scrollable:
+        if self._allow_scroll:
             self.scroll_home()
             return True
         return False
 
     def key_end(self) -&gt; bool:
-        if self.is_scrollable:
+        if self._allow_scroll:
             self.scroll_end()
             return True
         return False
 
     def key_left(self) -&gt; bool:
-        if self.is_scrollable:
+        if self.allow_horizontal_scroll:
             self.scroll_left()
             return True
         return False
 
     def key_right(self) -&gt; bool:
-        if self.is_scrollable:
+        if self.allow_horizontal_scroll:
             self.scroll_right()
             return True
         return False
 
     def key_down(self) -&gt; bool:
-        if self.is_scrollable:
-            self.scroll_up()
-            return True
-        return False
-
-    def key_up(self) -&gt; bool:
-        if self.is_scrollable:
+        if self.allow_vertical_scroll:
             self.scroll_down()
             return True
         return False
 
+    def key_up(self) -&gt; bool:
+        if self.allow_vertical_scroll:
+            self.scroll_up()
+            return True
+        return False
+
     def key_pagedown(self) -&gt; bool:
-        if self.is_scrollable:
+        if self.allow_vertical_scroll:
             self.scroll_page_down()
             return True
         return False
 
     def key_pageup(self) -&gt; bool:
-        if self.is_scrollable:
+        if self.allow_vertical_scroll:
             self.scroll_page_up()
             return True
         return False</code></pre>
@@ -2732,39 +3232,81 @@ def cursor_line(self) -&gt; int | None:
 <dl>
 <dt id="textual.widget.Widget.allow_horizontal_scroll"><code class="name">var <span class="ident">allow_horizontal_scroll</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>Check if horizontal scroll is permitted.</p></div>
+<div class="desc"><p>Check if horizontal scroll is permitted.</p>
+<p>May be overridden if you want different logic regarding allowing scrolling.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the widget may scroll <em>horizontally</em>.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def allow_horizontal_scroll(self) -&gt; bool:
-    &#34;&#34;&#34;Check if horizontal scroll is permitted.&#34;&#34;&#34;
+    &#34;&#34;&#34;Check if horizontal scroll is permitted.
+
+    May be overridden if you want different logic regarding allowing scrolling.
+
+    Returns:
+        bool: True if the widget may scroll _horizontally_.
+    &#34;&#34;&#34;
     return self.is_scrollable and self.show_horizontal_scrollbar</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.allow_vertical_scroll"><code class="name">var <span class="ident">allow_vertical_scroll</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>Check if vertical scroll is permitted.</p></div>
+<div class="desc"><p>Check if vertical scroll is permitted.</p>
+<p>May be overridden if you want different logic regarding allowing scrolling.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the widget may scroll <em>vertically</em>.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def allow_vertical_scroll(self) -&gt; bool:
-    &#34;&#34;&#34;Check if vertical scroll is permitted.&#34;&#34;&#34;
+    &#34;&#34;&#34;Check if vertical scroll is permitted.
+
+    May be overridden if you want different logic regarding allowing scrolling.
+
+    Returns:
+        bool: True if the widget may scroll _vertically_.
+    &#34;&#34;&#34;
     return self.is_scrollable and self.show_vertical_scrollbar</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.animate"><code class="name">var <span class="ident">animate</span> : textual._animator.BoundAnimator</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Get an animator to animate attributes on this widget.</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python">self.animate(&quot;brightness&quot;, 0.5)
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>BoundAnimator</code></dt>
+<dd>An animator bound to this widget.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def animate(self) -&gt; BoundAnimator:
+    &#34;&#34;&#34;Get an animator to animate attributes on this widget.
+
+    Example:
+        ```python
+        self.animate(&#34;brightness&#34;, 0.5)
+        ```
+
+    Returns:
+        BoundAnimator: An animator bound to this widget.
+    &#34;&#34;&#34;
     if self._animate is None:
         self._animate = self.app.animator.bind(self)
     assert self._animate is not None
@@ -2793,56 +3335,71 @@ def animate(self) -&gt; BoundAnimator:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.console"><code class="name">var <span class="ident">console</span> : rich.console.Console</code></dt>
-<dd>
-<div class="desc"><p>Get the current console.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def console(self) -&gt; Console:
-    &#34;&#34;&#34;Get the current console.&#34;&#34;&#34;
-    return active_app.get().console</code></pre>
-</details>
-</dd>
 <dt id="textual.widget.Widget.container_size"><code class="name">var <span class="ident">container_size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
 <dd>
-<div class="desc"><p>The size of the container (parent widget).</p></div>
+<div class="desc"><p>The size of the container (parent widget).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Size</code></dt>
+<dd>Container size.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def container_size(self) -&gt; Size:
-    &#34;&#34;&#34;The size of the container (parent widget).&#34;&#34;&#34;
+    &#34;&#34;&#34;The size of the container (parent widget).
+
+    Returns:
+        Size: Container size.
+    &#34;&#34;&#34;
     return self._container_size</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.content_offset"><code class="name">var <span class="ident">content_offset</span> : <a title="textual.geometry.Offset" href="geometry.html#textual.geometry.Offset">Offset</a></code></dt>
 <dd>
-<div class="desc"><p>An offset from the Widget origin where the content begins.</p></div>
+<div class="desc"><p>An offset from the Widget origin where the content begins.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Offset</code></dt>
+<dd>Offset from widget's origin.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def content_offset(self) -&gt; Offset:
-    &#34;&#34;&#34;An offset from the Widget origin where the content begins.&#34;&#34;&#34;
+    &#34;&#34;&#34;An offset from the Widget origin where the content begins.
+
+    Returns:
+        Offset: Offset from widget&#39;s origin.
+
+    &#34;&#34;&#34;
     x, y = self.gutter.top_left
     return Offset(x, y)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.content_region"><code class="name">var <span class="ident">content_region</span> : <a title="textual.geometry.Region" href="geometry.html#textual.geometry.Region">Region</a></code></dt>
 <dd>
-<div class="desc"><p>Gets an absolute region containing the content (minus padding and border).</p></div>
+<div class="desc"><p>Gets an absolute region containing the content (minus padding and border).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Region</code></dt>
+<dd>Screen region that contains a widget's content.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def content_region(self) -&gt; Region:
-    &#34;&#34;&#34;Gets an absolute region containing the content (minus padding and border).&#34;&#34;&#34;
+    &#34;&#34;&#34;Gets an absolute region containing the content (minus padding and border).
+
+    Returns:
+        Region: Screen region that contains a widget&#39;s content.
+    &#34;&#34;&#34;
     content_region = self.region.shrink(self.gutter)
     return content_region</code></pre>
 </details>
@@ -2860,14 +3417,24 @@ def content_region(self) -&gt; Region:
 </dd>
 <dt id="textual.widget.Widget.focusable_children"><code class="name">var <span class="ident">focusable_children</span> : list[<a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>]</code></dt>
 <dd>
-<div class="desc"><p>Get the children which may be focused.</p></div>
+<div class="desc"><p>Get the children which may be focused.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list[<a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>]</code></dt>
+<dd>List of widgets that can receive focus.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def focusable_children(self) -&gt; list[Widget]:
-    &#34;&#34;&#34;Get the children which may be focused.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get the children which may be focused.
+
+    Returns:
+        list[Widget]: List of widgets that can receive focus.
+
+    &#34;&#34;&#34;
     focusable = [
         child for child in self.children if child.display and child.visible
     ]
@@ -2876,14 +3443,24 @@ def focusable_children(self) -&gt; list[Widget]:
 </dd>
 <dt id="textual.widget.Widget.gutter"><code class="name">var <span class="ident">gutter</span> : <a title="textual.geometry.Spacing" href="geometry.html#textual.geometry.Spacing">Spacing</a></code></dt>
 <dd>
-<div class="desc"><p>Spacing for padding / border / scrollbars.</p></div>
+<div class="desc"><p>Spacing for padding / border / scrollbars.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Spacing</code></dt>
+<dd>Additional spacing around content area.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def gutter(self) -&gt; Spacing:
-    &#34;&#34;&#34;Spacing for padding / border / scrollbars.&#34;&#34;&#34;
+    &#34;&#34;&#34;Spacing for padding / border / scrollbars.
+
+    Returns:
+        Spacing: Additional spacing around content area.
+
+    &#34;&#34;&#34;
     return self.styles.gutter + self.scrollbar_gutter</code></pre>
 </details>
 </dd>
@@ -2970,7 +3547,7 @@ def is_scrollable(self) -&gt; bool:
     Returns:
         bool: True if this widget may be scrolled.
     &#34;&#34;&#34;
-    return self.is_container</code></pre>
+    return self.styles.layout is not None or bool(self.children)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.is_transparent"><code class="name">var <span class="ident">is_transparent</span> : bool</code></dt>
@@ -2997,14 +3574,24 @@ def is_transparent(self) -&gt; bool:
 </dd>
 <dt id="textual.widget.Widget.layer"><code class="name">var <span class="ident">layer</span> : str</code></dt>
 <dd>
-<div class="desc"><p>Get the name of this widgets layer.</p></div>
+<div class="desc"><p>Get the name of this widgets layer.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>Name of layer.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def layer(self) -&gt; str:
-    &#34;&#34;&#34;Get the name of this widgets layer.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get the name of this widgets layer.
+
+    Returns:
+        str: Name of layer.
+
+    &#34;&#34;&#34;
     return self.styles.layer or &#34;default&#34;</code></pre>
 </details>
 </dd>
@@ -3033,19 +3620,6 @@ def layers(self) -&gt; tuple[str, ...]:
         if node.styles.has_rule(&#34;layers&#34;):
             return node.styles.layers
     return (&#34;default&#34;,)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.layout"><code class="name">var <span class="ident">layout</span> : textual._layout.Layout</code></dt>
-<dd>
-<div class="desc"><p>Get the layout object if set in styles, or a default layout.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def layout(self) -&gt; Layout:
-    &#34;&#34;&#34;Get the layout object if set in styles, or a default layout.&#34;&#34;&#34;
-    return self.styles.layout or self._default_layout</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.max_scroll_x"><code class="name">var <span class="ident">max_scroll_x</span> : int</code></dt>
@@ -3097,42 +3671,83 @@ def max_scroll_y(self) -&gt; int:
 </dd>
 <dt id="textual.widget.Widget.outer_size"><code class="name">var <span class="ident">outer_size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
 <dd>
-<div class="desc"><p>The size of the widget (including padding and border).</p></div>
+<div class="desc"><p>The size of the widget (including padding and border).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Size</code></dt>
+<dd>Outer size.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def outer_size(self) -&gt; Size:
-    &#34;&#34;&#34;The size of the widget (including padding and border).&#34;&#34;&#34;
+    &#34;&#34;&#34;The size of the widget (including padding and border).
+
+    Returns:
+        Size: Outer size.
+    &#34;&#34;&#34;
     return self._size</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.region"><code class="name">var <span class="ident">region</span> : <a title="textual.geometry.Region" href="geometry.html#textual.geometry.Region">Region</a></code></dt>
 <dd>
-<div class="desc"><p>The region occupied by this widget, relative to the Screen.</p></div>
+<div class="desc"><p>The region occupied by this widget, relative to the Screen.</p>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NoScreen</code></dt>
+<dd>If there is no screen.</dd>
+<dt><code>errors.NoWidget</code></dt>
+<dd>If the widget is not on the screen.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Region</code></dt>
+<dd>Region within screen occupied by widget.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def region(self) -&gt; Region:
-    &#34;&#34;&#34;The region occupied by this widget, relative to the Screen.&#34;&#34;&#34;
+    &#34;&#34;&#34;The region occupied by this widget, relative to the Screen.
+
+    Raises:
+        NoScreen: If there is no screen.
+        errors.NoWidget: If the widget is not on the screen.
+
+    Returns:
+        Region: Region within screen occupied by widget.
+    &#34;&#34;&#34;
     try:
         return self.screen.find_widget(self).region
+    except NoScreen:
+        return Region()
     except errors.NoWidget:
         return Region()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scroll_offset"><code class="name">var <span class="ident">scroll_offset</span> : <a title="textual.geometry.Offset" href="geometry.html#textual.geometry.Offset">Offset</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Get the current scroll offset.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Offset</code></dt>
+<dd>Offset a container has been scrolled by.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def scroll_offset(self) -&gt; Offset:
+    &#34;&#34;&#34;Get the current scroll offset.
+
+    Returns:
+        Offset: Offset a container has been scrolled by.
+    &#34;&#34;&#34;
     return Offset(int(self.scroll_x), int(self.scroll_y))</code></pre>
 </details>
 </dd>
@@ -3204,13 +3819,23 @@ def scrollbar_corner(self) -&gt; ScrollBarCorner:
 </dd>
 <dt id="textual.widget.Widget.scrollbar_gutter"><code class="name">var <span class="ident">scrollbar_gutter</span> : <a title="textual.geometry.Spacing" href="geometry.html#textual.geometry.Spacing">Spacing</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Spacing required to fit scrollbar(s)</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Spacing</code></dt>
+<dd>Scrollbar gutter spacing.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def scrollbar_gutter(self) -&gt; Spacing:
+    &#34;&#34;&#34;Spacing required to fit scrollbar(s)
+
+    Returns:
+        Spacing: Scrollbar gutter spacing.
+    &#34;&#34;&#34;
     gutter = Spacing(
         0, self.scrollbar_size_vertical, self.scrollbar_size_horizontal, 0
     )
@@ -3298,16 +3923,53 @@ def scrollbars_enabled(self) -&gt; tuple[bool, bool]:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.siblings"><code class="name">var <span class="ident">siblings</span> : list[<a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>]</code></dt>
+<dd>
+<div class="desc"><p>Get the widget's siblings (self is removed from the return list).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list[<a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>]</code></dt>
+<dd>A list of siblings.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def siblings(self) -&gt; list[Widget]:
+    &#34;&#34;&#34;Get the widget&#39;s siblings (self is removed from the return list).
+
+    Returns:
+        list[Widget]: A list of siblings.
+    &#34;&#34;&#34;
+    parent = self.parent
+    if parent is not None:
+        siblings = list(parent.children)
+        siblings.remove(self)
+        return siblings
+    else:
+        return []</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.size"><code class="name">var <span class="ident">size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
 <dd>
-<div class="desc"><p>The size of the content area.</p></div>
+<div class="desc"><p>The size of the content area.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Size</code></dt>
+<dd>Content area size.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def size(self) -&gt; Size:
-    &#34;&#34;&#34;The size of the content area.&#34;&#34;&#34;
+    &#34;&#34;&#34;The size of the content area.
+
+    Returns:
+        Size: Content area size.
+    &#34;&#34;&#34;
     return self.content_region.size</code></pre>
 </details>
 </dd>
@@ -3356,6 +4018,8 @@ def virtual_region(self) -&gt; Region:
     &#34;&#34;&#34;
     try:
         return self.screen.find_widget(self).virtual_region
+    except NoScreen:
+        return Region()
     except errors.NoWidget:
         return Region()</code></pre>
 </details>
@@ -3444,7 +4108,7 @@ def window_region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">async def broker_event(self, event_name: str, event: events.Event) -&gt; bool:
-    return await self.app.broker_event(event_name, event, default_namespace=self)</code></pre>
+    return await self.app._broker_event(event_name, event, default_namespace=self)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.capture_mouse"><code class="name flex">
@@ -3477,13 +4141,36 @@ def window_region(self) -&gt; Region:
 <span>def <span class="ident">compose</span></span>(<span>self) ‑> ComposeResult</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Yield child widgets for a container.</p></div>
+<div class="desc"><p>Called by Textual to create child widgets.</p>
+<p>Extend this to build a UI.</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python">def compose(self) -&gt; ComposeResult:
+    yield Header()
+    yield Container(
+        TreeControl(), Viewer()
+    )
+    yield Footer()
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def compose(self) -&gt; ComposeResult:
-    &#34;&#34;&#34;Yield child widgets for a container.&#34;&#34;&#34;
+    &#34;&#34;&#34;Called by Textual to create child widgets.
+
+    Extend this to build a UI.
+
+    Example:
+        ```python
+        def compose(self) -&gt; ComposeResult:
+            yield Header()
+            yield Container(
+                TreeControl(), Viewer()
+            )
+            yield Footer()
+        ```
+
+    &#34;&#34;&#34;
     return
     yield</code></pre>
 </details>
@@ -3514,50 +4201,6 @@ def window_region(self) -&gt; Region:
 <pre><code class="python">async def forward_event(self, event: events.Event) -&gt; None:
     event.set_forwarded()
     await self.post_message(event)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.get_box_model"><code class="name flex">
-<span>def <span class="ident">get_box_model</span></span>(<span>self, container: Size, viewport: Size, fraction_unit: Fraction) ‑> <a title="textual.box_model.BoxModel" href="box_model.html#textual.box_model.BoxModel">BoxModel</a></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Process the box model for this widget.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>container</code></strong> :&ensp;<code>Size</code></dt>
-<dd>The size of the container widget (with a layout)</dd>
-<dt><strong><code>viewport</code></strong> :&ensp;<code>Size</code></dt>
-<dd>The viewport size.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>BoxModel</code></dt>
-<dd>The size and margin for this widget.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_box_model(
-    self, container: Size, viewport: Size, fraction_unit: Fraction
-) -&gt; BoxModel:
-    &#34;&#34;&#34;Process the box model for this widget.
-
-    Args:
-        container (Size): The size of the container widget (with a layout)
-        viewport (Size): The viewport size.
-
-    Returns:
-        BoxModel: The size and margin for this widget.
-    &#34;&#34;&#34;
-    box_model = get_box_model(
-        self.styles,
-        container,
-        viewport,
-        fraction_unit,
-        self.get_content_width,
-        self.get_content_height,
-    )
-    return box_model</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_content_height"><code class="name flex">
@@ -3596,9 +4239,9 @@ def window_region(self) -&gt; Region:
     &#34;&#34;&#34;
 
     if self.is_container:
-        assert self.layout is not None
+        assert self._layout is not None
         height = (
-            self.layout.get_content_height(
+            self._layout.get_content_height(
                 self,
                 container,
                 viewport,
@@ -3613,8 +4256,8 @@ def window_region(self) -&gt; Region:
             return self._content_height_cache[1]
 
         renderable = self.render()
-        options = self.console.options.update_width(width).update(highlight=False)
-        segments = self.console.render(renderable, options)
+        options = self._console.options.update_width(width).update(highlight=False)
+        segments = self._console.render(renderable, options)
         # Cheaper than counting the lines returned from render_lines!
         height = sum(text.count(&#34;\n&#34;) for text, _, _ in segments)
         self._content_height_cache = (cache_key, height)
@@ -3654,9 +4297,9 @@ def window_region(self) -&gt; Region:
         int: The optimal width of the content.
     &#34;&#34;&#34;
     if self.is_container:
-        assert self.layout is not None
+        assert self._layout is not None
         return (
-            self.layout.get_content_width(self, container, viewport)
+            self._layout.get_content_width(self, container, viewport)
             + self.scrollbar_size_vertical
         )
 
@@ -3680,13 +4323,23 @@ def window_region(self) -&gt; Region:
 <span>def <span class="ident">get_pseudo_classes</span></span>(<span>self) ‑> Iterable[str]</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Pseudo classes for a widget</p></div>
+<div class="desc"><p>Pseudo classes for a widget.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Iterable[str]</code></dt>
+<dd>Names of the pseudo classes.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_pseudo_classes(self) -&gt; Iterable[str]:
-    &#34;&#34;&#34;Pseudo classes for a widget&#34;&#34;&#34;
+    &#34;&#34;&#34;Pseudo classes for a widget.
+
+    Returns:
+        Iterable[str]: Names of the pseudo classes.
+
+    &#34;&#34;&#34;
     if self.mouse_over:
         yield &#34;hover&#34;
     if self.has_focus:
@@ -3699,12 +4352,33 @@ def window_region(self) -&gt; Region:
 <span>def <span class="ident">get_style_at</span></span>(<span>self, x: int, y: int) ‑> rich.style.Style</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Get the Rich style at a given screen offset.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>X coordinate relative to the screen.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>Y coordinate relative to the screen.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Style</code></dt>
+<dd>A rich Style object.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_style_at(self, x: int, y: int) -&gt; Style:
+    &#34;&#34;&#34;Get the Rich style at a given screen offset.
+
+    Args:
+        x (int): X coordinate relative to the screen.
+        y (int): Y coordinate relative to the screen.
+
+    Returns:
+        Style: A rich Style object.
+    &#34;&#34;&#34;
     offset_x, offset_y = self.screen.get_offset(self)
     return self.screen.get_style_at(x + offset_x, y + offset_y)</code></pre>
 </details>
@@ -3719,8 +4393,8 @@ def window_region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def key_down(self) -&gt; bool:
-    if self.is_scrollable:
-        self.scroll_up()
+    if self.allow_vertical_scroll:
+        self.scroll_down()
         return True
     return False</code></pre>
 </details>
@@ -3735,7 +4409,7 @@ def window_region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def key_end(self) -&gt; bool:
-    if self.is_scrollable:
+    if self._allow_scroll:
         self.scroll_end()
         return True
     return False</code></pre>
@@ -3751,7 +4425,7 @@ def window_region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def key_home(self) -&gt; bool:
-    if self.is_scrollable:
+    if self._allow_scroll:
         self.scroll_home()
         return True
     return False</code></pre>
@@ -3767,7 +4441,7 @@ def window_region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def key_left(self) -&gt; bool:
-    if self.is_scrollable:
+    if self.allow_horizontal_scroll:
         self.scroll_left()
         return True
     return False</code></pre>
@@ -3783,7 +4457,7 @@ def window_region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def key_pagedown(self) -&gt; bool:
-    if self.is_scrollable:
+    if self.allow_vertical_scroll:
         self.scroll_page_down()
         return True
     return False</code></pre>
@@ -3799,7 +4473,7 @@ def window_region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def key_pageup(self) -&gt; bool:
-    if self.is_scrollable:
+    if self.allow_vertical_scroll:
         self.scroll_page_up()
         return True
     return False</code></pre>
@@ -3815,7 +4489,7 @@ def window_region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def key_right(self) -&gt; bool:
-    if self.is_scrollable:
+    if self.allow_horizontal_scroll:
         self.scroll_right()
         return True
     return False</code></pre>
@@ -3831,8 +4505,8 @@ def window_region(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def key_up(self) -&gt; bool:
-    if self.is_scrollable:
-        self.scroll_down()
+    if self.allow_vertical_scroll:
+        self.scroll_up()
         return True
     return False</code></pre>
 </details>
@@ -3845,7 +4519,8 @@ def window_region(self) -&gt; Region:
 <p>Widgets may be passed as positional arguments or keyword arguments. If keyword arguments,
 the keys will be set as the Widget's id.</p>
 <h2 id="example">Example</h2>
-<p>self.mount(Static("hello"), header=Header())</p></div>
+<pre><code class="language-python">self.mount(Static(&quot;hello&quot;), header=Header())
+</code></pre></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3857,306 +4532,13 @@ the keys will be set as the Widget's id.</p>
     the keys will be set as the Widget&#39;s id.
 
     Example:
+        ```python
         self.mount(Static(&#34;hello&#34;), header=Header())
-
+        ```
 
     &#34;&#34;&#34;
     self.app._register(self, *anon_widgets, **widgets)
-    self.screen.refresh()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_blur"><code class="name flex">
-<span>def <span class="ident">on_blur</span></span>(<span>self, event: events.Blur) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_blur(self, event: events.Blur) -&gt; None:
-    self.emit_no_wait(events.DescendantBlur(self))
-    self.has_focus = False
-    self.refresh()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_click"><code class="name flex">
-<span>async def <span class="ident">on_click</span></span>(<span>self, event: events.Click) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_click(self, event: events.Click) -&gt; None:
-    await self.broker_event(&#34;click&#34;, event)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_descendant_blur"><code class="name flex">
-<span>def <span class="ident">on_descendant_blur</span></span>(<span>self, event: events.DescendantBlur) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
-    self.descendant_has_focus = False
-    if &#34;focus-within&#34; in self.pseudo_classes:
-        sender = event.sender
-        for child in self.walk_children(False):
-            child.refresh()
-            if child is sender:
-                break</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_descendant_focus"><code class="name flex">
-<span>def <span class="ident">on_descendant_focus</span></span>(<span>self, event: events.DescendantFocus) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
-    self.descendant_has_focus = True
-    if &#34;focus-within&#34; in self.pseudo_classes:
-        sender = event.sender
-        for child in self.walk_children(False):
-            child.refresh()
-            if child is sender:
-                break</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_enter"><code class="name flex">
-<span>def <span class="ident">on_enter</span></span>(<span>self, event: events.Enter) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_enter(self, event: events.Enter) -&gt; None:
-    self.mouse_over = True</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_focus"><code class="name flex">
-<span>def <span class="ident">on_focus</span></span>(<span>self, event: events.Focus) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_focus(self, event: events.Focus) -&gt; None:
-    self.emit_no_wait(events.DescendantFocus(self))
-    self.has_focus = True
-    self.refresh()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_key"><code class="name flex">
-<span>async def <span class="ident">on_key</span></span>(<span>self, event: events.Key) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_key(self, event: events.Key) -&gt; None:
-    await self.dispatch_key(event)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_leave"><code class="name flex">
-<span>def <span class="ident">on_leave</span></span>(<span>self, event: events.Leave) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_leave(self, event: events.Leave) -&gt; None:
-    self.mouse_over = False</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_mouse_down"><code class="name flex">
-<span>async def <span class="ident">on_mouse_down</span></span>(<span>self, event: events.MouseUp) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_mouse_down(self, event: events.MouseUp) -&gt; None:
-    await self.broker_event(&#34;mouse.down&#34;, event)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_mouse_scroll_down"><code class="name flex">
-<span>def <span class="ident">on_mouse_scroll_down</span></span>(<span>self, event) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_mouse_scroll_down(self, event) -&gt; None:
-    if self.allow_vertical_scroll:
-        if self.scroll_down(animate=False):
-            event.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_mouse_scroll_up"><code class="name flex">
-<span>def <span class="ident">on_mouse_scroll_up</span></span>(<span>self, event) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_mouse_scroll_up(self, event) -&gt; None:
-    if self.allow_vertical_scroll:
-        if self.scroll_up(animate=False):
-            event.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_mouse_up"><code class="name flex">
-<span>async def <span class="ident">on_mouse_up</span></span>(<span>self, event: events.MouseUp) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_mouse_up(self, event: events.MouseUp) -&gt; None:
-    await self.broker_event(&#34;mouse.up&#34;, event)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_register"><code class="name flex">
-<span>def <span class="ident">on_register</span></span>(<span>self, app: App) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Called when the instance is registered.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>app</code></strong> :&ensp;<code>App</code></dt>
-<dd>App instance.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_register(self, app: App) -&gt; None:
-    &#34;&#34;&#34;Called when the instance is registered.
-
-    Args:
-        app (App): App instance.
-    &#34;&#34;&#34;
-    # Parse the Widget&#39;s CSS
-    for path, css, tie_breaker in self.get_default_css():
-        self.app.stylesheet.add_source(
-            css, path=path, is_default_css=True, tie_breaker=tie_breaker
-        )</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_remove"><code class="name flex">
-<span>async def <span class="ident">on_remove</span></span>(<span>self, event: events.Remove) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_remove(self, event: events.Remove) -&gt; None:
-    await self.close_messages()
-    assert self.parent
-    self.parent.refresh(layout=True)
-    self.app._unregister(self)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_scroll_down"><code class="name flex">
-<span>def <span class="ident">on_scroll_down</span></span>(<span>self, event: ScrollDown) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_scroll_down(self, event: ScrollDown) -&gt; None:
-    if self.is_scrollable:
-        self.scroll_page_down()
-        event.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_scroll_left"><code class="name flex">
-<span>def <span class="ident">on_scroll_left</span></span>(<span>self, event: ScrollLeft) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_scroll_left(self, event: ScrollLeft) -&gt; None:
-    if self.is_scrollable:
-        self.scroll_page_left()
-        event.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_scroll_right"><code class="name flex">
-<span>def <span class="ident">on_scroll_right</span></span>(<span>self, event: ScrollRight) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_scroll_right(self, event: ScrollRight) -&gt; None:
-    if self.is_scrollable:
-        self.scroll_page_right()
-        event.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_scroll_to"><code class="name flex">
-<span>def <span class="ident">on_scroll_to</span></span>(<span>self, message: ScrollTo) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_scroll_to(self, message: ScrollTo) -&gt; None:
-    if self.is_scrollable:
-        self.scroll_to(message.x, message.y, animate=message.animate, duration=0.1)
-        message.stop()</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.on_scroll_up"><code class="name flex">
-<span>def <span class="ident">on_scroll_up</span></span>(<span>self, event: ScrollUp) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def on_scroll_up(self, event: ScrollUp) -&gt; None:
-    if self.is_scrollable:
-        self.scroll_page_up()
-        event.stop()</code></pre>
+    self.screen.refresh(layout=True)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.post_render"><code class="name flex">
@@ -4199,8 +4581,17 @@ the keys will be set as the Widget's id.</p>
 <div class="desc"><p>Initiate a refresh of the widget.</p>
 <p>This method sets an internal flag to perform a refresh, which will be done on the
 next idle event. Only one refresh will be done even if this method is called multiple times.</p>
+<p>By default this method will cause the content of the widget to refresh, but not change its size. You can also
+set <code>layout=True</code> to perform a layout.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will
+do this automatically.</p>
+</div>
 <h2 id="args">Args</h2>
 <dl>
+<dt><strong><code>*regions</code></strong> :&ensp;<code>Region</code>, optional</dt>
+<dd>Additional screen regions to mark as dirty.</dd>
 <dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
 <dd>Repaint the widget (will call render() again). Defaults to True.</dd>
 <dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
@@ -4218,7 +4609,16 @@ next idle event. Only one refresh will be done even if this method is called mul
     This method sets an internal flag to perform a refresh, which will be done on the
     next idle event. Only one refresh will be done even if this method is called multiple times.
 
+    By default this method will cause the content of the widget to refresh, but not change its size. You can also
+    set `layout=True` to perform a layout.
+
+    !!! warning
+
+        It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will
+        do this automatically.
+
     Args:
+        *regions (Region, optional): Additional screen regions to mark as dirty.
         repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True.
         layout (bool, optional): Also layout widgets in the view. Defaults to False.
     &#34;&#34;&#34;
@@ -4268,9 +4668,7 @@ next idle event. Only one refresh will be done even if this method is called mul
 </summary>
 <pre><code class="python">def remove(self) -&gt; None:
     &#34;&#34;&#34;Remove the Widget from the DOM (effectively deleting it)&#34;&#34;&#34;
-    for child in self.children:
-        child.remove()
-    self.post_message_no_wait(events.Remove(self))</code></pre>
+    self.app.post_message_no_wait(events.Remove(self, widget=self))</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.render"><code class="name flex">
@@ -4375,25 +4773,63 @@ next idle event. Only one refresh will be done even if this method is called mul
 <span>def <span class="ident">scroll_down</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Scroll one line down.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate scroll. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if any scrolling was done.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def scroll_down(self, *, animate: bool = True) -&gt; bool:
-    return self.scroll_to(y=self.scroll_target_y - 1, animate=animate)</code></pre>
+    &#34;&#34;&#34;Scroll one line down.
+
+    Args:
+        animate (bool, optional): Animate scroll. Defaults to True.
+
+    Returns:
+        bool: True if any scrolling was done.
+
+    &#34;&#34;&#34;
+    return self.scroll_to(y=self.scroll_target_y + 1, animate=animate)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scroll_end"><code class="name flex">
 <span>def <span class="ident">scroll_end</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Scroll to the end of the container.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate scroll. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if any scrolling was done.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def scroll_end(self, *, animate: bool = True) -&gt; bool:
+    &#34;&#34;&#34;Scroll to the end of the container.
+
+    Args:
+        animate (bool, optional): Animate scroll. Defaults to True.
+
+    Returns:
+        bool: True if any scrolling was done.
+
+    &#34;&#34;&#34;
     return self.scroll_to(0, self.max_scroll_y, animate=animate, duration=1)</code></pre>
 </details>
 </dd>
@@ -4401,12 +4837,30 @@ next idle event. Only one refresh will be done even if this method is called mul
 <span>def <span class="ident">scroll_home</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Scroll to home position.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate scroll. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if any scrolling was done.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def scroll_home(self, *, animate: bool = True) -&gt; bool:
+    &#34;&#34;&#34;Scroll to home position.
+
+    Args:
+        animate (bool, optional): Animate scroll. Defaults to True.
+
+    Returns:
+        bool: True if any scrolling was done.
+    &#34;&#34;&#34;
     return self.scroll_to(0, 0, animate=animate, duration=1)</code></pre>
 </details>
 </dd>
@@ -4414,12 +4868,31 @@ next idle event. Only one refresh will be done even if this method is called mul
 <span>def <span class="ident">scroll_left</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Scroll one cell left.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate scroll. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if any scrolling was done.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def scroll_left(self, *, animate: bool = True) -&gt; bool:
+    &#34;&#34;&#34;Scroll one cell left.
+
+    Args:
+        animate (bool, optional): Animate scroll. Defaults to True.
+
+    Returns:
+        bool: True if any scrolling was done.
+
+    &#34;&#34;&#34;
     return self.scroll_to(x=self.scroll_target_x - 1, animate=animate)</code></pre>
 </details>
 </dd>
@@ -4427,12 +4900,31 @@ next idle event. Only one refresh will be done even if this method is called mul
 <span>def <span class="ident">scroll_page_down</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Scroll one page down.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate scroll. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if any scrolling was done.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def scroll_page_down(self, *, animate: bool = True) -&gt; bool:
+    &#34;&#34;&#34;Scroll one page down.
+
+    Args:
+        animate (bool, optional): Animate scroll. Defaults to True.
+
+    Returns:
+        bool: True if any scrolling was done.
+
+    &#34;&#34;&#34;
     return self.scroll_to(
         y=self.scroll_target_y + self.container_size.height, animate=animate
     )</code></pre>
@@ -4442,12 +4934,31 @@ next idle event. Only one refresh will be done even if this method is called mul
 <span>def <span class="ident">scroll_page_left</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Scroll one page left.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate scroll. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if any scrolling was done.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def scroll_page_left(self, *, animate: bool = True) -&gt; bool:
+    &#34;&#34;&#34;Scroll one page left.
+
+    Args:
+        animate (bool, optional): Animate scroll. Defaults to True.
+
+    Returns:
+        bool: True if any scrolling was done.
+
+    &#34;&#34;&#34;
     return self.scroll_to(
         x=self.scroll_target_x - self.container_size.width,
         animate=animate,
@@ -4459,12 +4970,31 @@ next idle event. Only one refresh will be done even if this method is called mul
 <span>def <span class="ident">scroll_page_right</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Scroll one page right.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate scroll. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if any scrolling was done.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def scroll_page_right(self, *, animate: bool = True) -&gt; bool:
+    &#34;&#34;&#34;Scroll one page right.
+
+    Args:
+        animate (bool, optional): Animate scroll. Defaults to True.
+
+    Returns:
+        bool: True if any scrolling was done.
+
+    &#34;&#34;&#34;
     return self.scroll_to(
         x=self.scroll_target_x + self.container_size.width,
         animate=animate,
@@ -4476,12 +5006,31 @@ next idle event. Only one refresh will be done even if this method is called mul
 <span>def <span class="ident">scroll_page_up</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Scroll one page up.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate scroll. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if any scrolling was done.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def scroll_page_up(self, *, animate: bool = True) -&gt; bool:
+    &#34;&#34;&#34;Scroll one page up.
+
+    Args:
+        animate (bool, optional): Animate scroll. Defaults to True.
+
+    Returns:
+        bool: True if any scrolling was done.
+
+    &#34;&#34;&#34;
     return self.scroll_to(
         y=self.scroll_target_y - self.container_size.height, animate=animate
     )</code></pre>
@@ -4499,6 +5048,8 @@ next idle event. Only one refresh will be done even if this method is called mul
 <dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
 <dd>Animate to new scroll position. Defaults to False.</dd>
 </dl>
+<p>speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration.
+duration (float | None, optional): Duration of animation, if animate is True and speed is False.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bool</code></dt>
@@ -4523,6 +5074,8 @@ next idle event. Only one refresh will be done even if this method is called mul
         x (int | None, optional): X distance (columns) to scroll, or ``None`` for no change. Defaults to None.
         y (int | None, optional): Y distance (rows) to scroll, or ``None`` for no change. Defaults to None.
         animate (bool, optional): Animate to new scroll position. Defaults to False.
+        speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration.
+        duration (float | None, optional): Duration of animation, if animate is True and speed is False.
 
     Returns:
         bool: True if the scroll position changed, otherwise False.
@@ -4540,12 +5093,31 @@ next idle event. Only one refresh will be done even if this method is called mul
 <span>def <span class="ident">scroll_right</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Scroll on cell right.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate scroll. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if any scrolling was done.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def scroll_right(self, *, animate: bool = True) -&gt; bool:
+    &#34;&#34;&#34;Scroll on cell right.
+
+    Args:
+        animate (bool, optional): Animate scroll. Defaults to True.
+
+    Returns:
+        bool: True if any scrolling was done.
+
+    &#34;&#34;&#34;
     return self.scroll_to(x=self.scroll_target_x + 1, animate=animate)</code></pre>
 </details>
 </dd>
@@ -4556,11 +5128,13 @@ next idle event. Only one refresh will be done even if this method is called mul
 <div class="desc"><p>Scroll to a given (absolute) coordinate, optionally animating.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt>x (int | None, optional): X coordinate (column) to scroll to, or <code>None</code> for no change. Defaults to None.</dt>
-<dt>y (int | None, optional): Y coordinate (row) to scroll to, or <code>None</code> for no change. Defaults to None.</dt>
+<dt>x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None.</dt>
+<dt>y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None.</dt>
 <dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Animate to new scroll position. Defaults to False.</dd>
+<dd>Animate to new scroll position. Defaults to True.</dd>
 </dl>
+<p>speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration.
+duration (float | None, optional): Duration of animation, if animate is True and speed is False.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bool</code></dt>
@@ -4582,9 +5156,11 @@ next idle event. Only one refresh will be done even if this method is called mul
     &#34;&#34;&#34;Scroll to a given (absolute) coordinate, optionally animating.
 
     Args:
-        x (int | None, optional): X coordinate (column) to scroll to, or ``None`` for no change. Defaults to None.
-        y (int | None, optional): Y coordinate (row) to scroll to, or ``None`` for no change. Defaults to None.
-        animate (bool, optional): Animate to new scroll position. Defaults to False.
+        x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None.
+        y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None.
+        animate (bool, optional): Animate to new scroll position. Defaults to True.
+        speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration.
+        duration (float | None, optional): Duration of animation, if animate is True and speed is False.
 
     Returns:
         bool: True if the scroll position changed, otherwise False.
@@ -4673,7 +5249,6 @@ the scrollable area.</p>
     Returns:
         Offset: The distance that was scrolled.
     &#34;&#34;&#34;
-
     window = self.content_region.at_offset(self.scroll_offset)
     if spacing is not None:
         window = window.shrink(spacing)
@@ -4738,10 +5313,14 @@ the scrollable area.</p>
         # Adjust the region by the amount we just scrolled it, and convert to
         # it&#39;s parent&#39;s virtual coordinate system.
         region = (
-            region.translate(-scroll_offset)
-            .translate(-widget.scroll_offset)
-            .translate(container.virtual_region.offset)
-        ).intersection(container.virtual_region)
+            (
+                region.translate(-scroll_offset)
+                .translate(-widget.scroll_offset)
+                .translate(container.virtual_region.offset)
+            )
+            .grow(container.styles.margin)
+            .intersection(container.virtual_region)
+        )
         widget = container
     return scrolled</code></pre>
 </details>
@@ -4750,39 +5329,48 @@ the scrollable area.</p>
 <span>def <span class="ident">scroll_up</span></span>(<span>self, *, animate: bool = True) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def scroll_up(self, *, animate: bool = True) -&gt; bool:
-    return self.scroll_to(y=self.scroll_target_y + 1, animate=animate)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.scroll_visible"><code class="name flex">
-<span>def <span class="ident">scroll_visible</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Scroll the container to make this widget visible.</p>
+<div class="desc"><p>Scroll one line up.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Animate scroll. Defaults to True.</dd>
+</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bool</code></dt>
-<dd>True if the parent was scrolled.</dd>
+<dd>True if any scrolling was done.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def scroll_visible(self) -&gt; bool:
-    &#34;&#34;&#34;Scroll the container to make this widget visible.
+<pre><code class="python">def scroll_up(self, *, animate: bool = True) -&gt; bool:
+    &#34;&#34;&#34;Scroll one line up.
+
+    Args:
+        animate (bool, optional): Animate scroll. Defaults to True.
 
     Returns:
-        bool: True if the parent was scrolled.
+        bool: True if any scrolling was done.
+
     &#34;&#34;&#34;
+    return self.scroll_to(y=self.scroll_target_y - 1, animate=animate)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.scroll_visible"><code class="name flex">
+<span>def <span class="ident">scroll_visible</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Scroll the container to make this widget visible.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def scroll_visible(self) -&gt; None:
+    &#34;&#34;&#34;Scroll the container to make this widget visible.&#34;&#34;&#34;
     parent = self.parent
     if isinstance(parent, Widget):
-        return parent.scroll_to_widget(self)
-    return False</code></pre>
+        self.call_later(parent.scroll_to_widget, self)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.size_updated"><code class="name flex">
@@ -4814,7 +5402,8 @@ the scrollable area.</p>
             self.scroll_x = self.validate_scroll_x(self.scroll_x)
             self.scroll_y = self.validate_scroll_y(self.scroll_y)
             self.refresh(layout=True)
-            self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
+            self.scroll_to(self.scroll_x, self.scroll_y)
+            # self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
         else:
             self.refresh()</code></pre>
 </details>
@@ -4871,19 +5460,6 @@ the scrollable area.</p>
     return clamp(value, 0, self.max_scroll_y)</code></pre>
 </details>
 </dd>
-<dt id="textual.widget.Widget.watch"><code class="name flex">
-<span>def <span class="ident">watch</span></span>(<span>self, attribute_name, callback: Callable[[Any], Awaitable[None]]) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch(self, attribute_name, callback: Callable[[Any], Awaitable[None]]) -&gt; None:
-    watch(self, attribute_name, callback)</code></pre>
-</details>
-</dd>
 <dt id="textual.widget.Widget.watch_has_focus"><code class="name flex">
 <span>def <span class="ident">watch_has_focus</span></span>(<span>self, value: bool) ‑> None</span>
 </code></dt>
@@ -4895,7 +5471,7 @@ the scrollable area.</p>
 </summary>
 <pre><code class="python">def watch_has_focus(self, value: bool) -&gt; None:
     &#34;&#34;&#34;Update from CSS if has focus state changes.&#34;&#34;&#34;
-    self.app.update_styles()</code></pre>
+    self.app.update_styles(self)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.watch_mouse_over"><code class="name flex">
@@ -4909,7 +5485,7 @@ the scrollable area.</p>
 </summary>
 <pre><code class="python">def watch_mouse_over(self, value: bool) -&gt; None:
     &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
-    self.app.update_styles()</code></pre>
+    self.app.update_styles(self)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.watch_scroll_x"><code class="name flex">
@@ -4997,37 +5573,33 @@ the scrollable area.</p>
 <ul class="hlist">
 <li><code><b><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></b></code>:
 <ul class="hlist">
-<li><code><a title="textual.dom.DOMNode.add_child" href="dom.html#textual.dom.DOMNode.add_child">add_child</a></code></li>
-<li><code><a title="textual.dom.DOMNode.add_children" href="dom.html#textual.dom.DOMNode.add_children">add_children</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_class" href="dom.html#textual.dom.DOMNode.add_class">add_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.ancestors" href="dom.html#textual.dom.DOMNode.ancestors">ancestors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
 <li><code><a title="textual.dom.DOMNode.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
 <li><code><a title="textual.dom.DOMNode.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
-<li><code><a title="textual.dom.DOMNode.close_messages" href="message_pump.html#textual.message_pump.MessagePump.close_messages">close_messages</a></code></li>
-<li><code><a title="textual.dom.DOMNode.close_messages_no_wait" href="message_pump.html#textual.message_pump.MessagePump.close_messages_no_wait">close_messages_no_wait</a></code></li>
+<li><code><a title="textual.dom.DOMNode.classes" href="dom.html#textual.dom.DOMNode.classes">classes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.colors" href="dom.html#textual.dom.DOMNode.colors">colors</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.dom.DOMNode.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
 <li><code><a title="textual.dom.DOMNode.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
-<li><code><a title="textual.dom.DOMNode.dispatch_message" href="message_pump.html#textual.message_pump.MessagePump.dispatch_message">dispatch_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.dom.DOMNode.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
+<li><code><a title="textual.dom.DOMNode.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
 <li><code><a title="textual.dom.DOMNode.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_component_styles" href="dom.html#textual.dom.DOMNode.get_component_styles">get_component_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.get_default_css" href="dom.html#textual.dom.DOMNode.get_default_css">get_default_css</a></code></li>
-<li><code><a title="textual.dom.DOMNode.get_message" href="message_pump.html#textual.message_pump.MessagePump.get_message">get_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.dom.DOMNode.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.dom.DOMNode.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.dom.DOMNode.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
-<li><code><a title="textual.dom.DOMNode.peek_message" href="message_pump.html#textual.message_pump.MessagePump.peek_message">peek_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.post_message" href="message_pump.html#textual.message_pump.MessagePump.post_message">post_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
 <li><code><a title="textual.dom.DOMNode.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
@@ -5038,7 +5610,9 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.dom.DOMNode.set_interval" href="message_pump.html#textual.message_pump.MessagePump.set_interval">set_interval</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
+<li><code><a title="textual.dom.DOMNode.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.dom.DOMNode.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.toggle_class" href="dom.html#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.tree" href="dom.html#textual.dom.DOMNode.tree">tree</a></code></li>
@@ -5133,7 +5707,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.can_focus_children" href="#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.compose" href="#textual.widget.Widget.compose">compose</a></code></li>
-<li><code><a title="textual.widget.Widget.console" href="#textual.widget.Widget.console">console</a></code></li>
 <li><code><a title="textual.widget.Widget.container_size" href="#textual.widget.Widget.container_size">container_size</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="#textual.widget.Widget.content_region">content_region</a></code></li>
@@ -5141,7 +5714,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.focus" href="#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focusable_children" href="#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.widget.Widget.forward_event" href="#textual.widget.Widget.forward_event">forward_event</a></code></li>
-<li><code><a title="textual.widget.Widget.get_box_model" href="#textual.widget.Widget.get_box_model">get_box_model</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_height" href="#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_width" href="#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
 <li><code><a title="textual.widget.Widget.get_pseudo_classes" href="#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
@@ -5162,30 +5734,10 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.key_up" href="#textual.widget.Widget.key_up">key_up</a></code></li>
 <li><code><a title="textual.widget.Widget.layer" href="#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.widget.Widget.layers" href="#textual.widget.Widget.layers">layers</a></code></li>
-<li><code><a title="textual.widget.Widget.layout" href="#textual.widget.Widget.layout">layout</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.on_blur" href="#textual.widget.Widget.on_blur">on_blur</a></code></li>
-<li><code><a title="textual.widget.Widget.on_click" href="#textual.widget.Widget.on_click">on_click</a></code></li>
-<li><code><a title="textual.widget.Widget.on_descendant_blur" href="#textual.widget.Widget.on_descendant_blur">on_descendant_blur</a></code></li>
-<li><code><a title="textual.widget.Widget.on_descendant_focus" href="#textual.widget.Widget.on_descendant_focus">on_descendant_focus</a></code></li>
-<li><code><a title="textual.widget.Widget.on_enter" href="#textual.widget.Widget.on_enter">on_enter</a></code></li>
-<li><code><a title="textual.widget.Widget.on_focus" href="#textual.widget.Widget.on_focus">on_focus</a></code></li>
-<li><code><a title="textual.widget.Widget.on_key" href="#textual.widget.Widget.on_key">on_key</a></code></li>
-<li><code><a title="textual.widget.Widget.on_leave" href="#textual.widget.Widget.on_leave">on_leave</a></code></li>
-<li><code><a title="textual.widget.Widget.on_mouse_down" href="#textual.widget.Widget.on_mouse_down">on_mouse_down</a></code></li>
-<li><code><a title="textual.widget.Widget.on_mouse_scroll_down" href="#textual.widget.Widget.on_mouse_scroll_down">on_mouse_scroll_down</a></code></li>
-<li><code><a title="textual.widget.Widget.on_mouse_scroll_up" href="#textual.widget.Widget.on_mouse_scroll_up">on_mouse_scroll_up</a></code></li>
-<li><code><a title="textual.widget.Widget.on_mouse_up" href="#textual.widget.Widget.on_mouse_up">on_mouse_up</a></code></li>
-<li><code><a title="textual.widget.Widget.on_register" href="#textual.widget.Widget.on_register">on_register</a></code></li>
-<li><code><a title="textual.widget.Widget.on_remove" href="#textual.widget.Widget.on_remove">on_remove</a></code></li>
-<li><code><a title="textual.widget.Widget.on_scroll_down" href="#textual.widget.Widget.on_scroll_down">on_scroll_down</a></code></li>
-<li><code><a title="textual.widget.Widget.on_scroll_left" href="#textual.widget.Widget.on_scroll_left">on_scroll_left</a></code></li>
-<li><code><a title="textual.widget.Widget.on_scroll_right" href="#textual.widget.Widget.on_scroll_right">on_scroll_right</a></code></li>
-<li><code><a title="textual.widget.Widget.on_scroll_to" href="#textual.widget.Widget.on_scroll_to">on_scroll_to</a></code></li>
-<li><code><a title="textual.widget.Widget.on_scroll_up" href="#textual.widget.Widget.on_scroll_up">on_scroll_up</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.post_render" href="#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="#textual.widget.Widget.refresh">refresh</a></code></li>
@@ -5222,6 +5774,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.siblings" href="#textual.widget.Widget.siblings">siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="#textual.widget.Widget.size">size</a></code></li>
 <li><code><a title="textual.widget.Widget.size_updated" href="#textual.widget.Widget.size_updated">size_updated</a></code></li>
 <li><code><a title="textual.widget.Widget.validate_scroll_target_x" href="#textual.widget.Widget.validate_scroll_target_x">validate_scroll_target_x</a></code></li>
@@ -5232,7 +5785,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.virtual_region" href="#textual.widget.Widget.virtual_region">virtual_region</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_region_with_margin" href="#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_size" href="#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
-<li><code><a title="textual.widget.Widget.watch" href="#textual.widget.Widget.watch">watch</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_scroll_x" href="#textual.widget.Widget.watch_scroll_x">watch_scroll_x</a></code></li>

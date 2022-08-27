@@ -34,6 +34,7 @@ __all__ = [&#34;log&#34;, &#34;panic&#34;]
 
 
 def log(*args: object, verbosity: int = 0, **kwargs) -&gt; None:
+    # TODO: There may be an early-out here for when there is no endpoint for logs
     from ._context import active_app
 
     app = active_app.get()
@@ -146,7 +147,7 @@ def panic(*args: RenderableType) -&gt; None:
 </dd>
 <dt><code class="name"><a title="textual.message_pump" href="message_pump.html">textual.message_pump</a></code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A message pump is a class that processes messages …</p></div>
 </dd>
 <dt><code class="name"><a title="textual.messages" href="messages.html">textual.messages</a></code></dt>
 <dd>
@@ -176,6 +177,11 @@ def panic(*args: RenderableType) -&gt; None:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt><code class="name"><a title="textual.timer" href="timer.html">textual.timer</a></code></dt>
+<dd>
+<div class="desc"><p>Timer objects are created by [set_interval][textual.message_pump.MessagePump.set_interval] or
+…</p></div>
+</dd>
 <dt><code class="name"><a title="textual.widget" href="widget.html">textual.widget</a></code></dt>
 <dd>
 <div class="desc"></div>
@@ -197,6 +203,7 @@ def panic(*args: RenderableType) -&gt; None:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def log(*args: object, verbosity: int = 0, **kwargs) -&gt; None:
+    # TODO: There may be an early-out here for when there is no endpoint for logs
     from ._context import active_app
 
     app = active_app.get()
@@ -311,6 +318,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scroll_view" href="scroll_view.html">textual.scroll_view</a></code></li>
 <li><code><a title="textual.scrollbar" href="scrollbar.html">textual.scrollbar</a></code></li>
 <li><code><a title="textual.suggestions" href="suggestions.html">textual.suggestions</a></code></li>
+<li><code><a title="textual.timer" href="timer.html">textual.timer</a></code></li>
 <li><code><a title="textual.widget" href="widget.html">textual.widget</a></code></li>
 </ul>
 </li>

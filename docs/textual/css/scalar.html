@@ -220,6 +220,11 @@ class Scalar(NamedTuple):
         return f&#34;{int(value) if value.is_integer() else value}{self.symbol}&#34;
 
     @property
+    def is_cells(self) -&gt; bool:
+        &#34;&#34;&#34;Check if the Scalar is explicit cells.&#34;&#34;&#34;
+        return self.unit == Unit.CELLS
+
+    @property
     def is_percent(self) -&gt; bool:
         &#34;&#34;&#34;Check if the Scalar is a percentage unit.&#34;&#34;&#34;
         return self.unit == Unit.PERCENT
@@ -487,6 +492,11 @@ if __name__ == &#34;__main__&#34;:
         return f&#34;{int(value) if value.is_integer() else value}{self.symbol}&#34;
 
     @property
+    def is_cells(self) -&gt; bool:
+        &#34;&#34;&#34;Check if the Scalar is explicit cells.&#34;&#34;&#34;
+        return self.unit == Unit.CELLS
+
+    @property
     def is_percent(self) -&gt; bool:
         &#34;&#34;&#34;Check if the Scalar is a percentage unit.&#34;&#34;&#34;
         return self.unit == Unit.PERCENT
@@ -744,6 +754,19 @@ def fraction(self) -&gt; int | None:
 def is_auto(self) -&gt; bool:
     &#34;&#34;&#34;Check if this is an auto unit.&#34;&#34;&#34;
     return self.unit == Unit.AUTO</code></pre>
+</details>
+</dd>
+<dt id="textual.css.scalar.Scalar.is_cells"><code class="name">var <span class="ident">is_cells</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Check if the Scalar is explicit cells.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def is_cells(self) -&gt; bool:
+    &#34;&#34;&#34;Check if the Scalar is explicit cells.&#34;&#34;&#34;
+    return self.unit == Unit.CELLS</code></pre>
 </details>
 </dd>
 <dt id="textual.css.scalar.Scalar.is_fraction"><code class="name">var <span class="ident">is_fraction</span> : bool</code></dt>
@@ -1183,6 +1206,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.scalar.Scalar.fraction" href="#textual.css.scalar.Scalar.fraction">fraction</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.from_number" href="#textual.css.scalar.Scalar.from_number">from_number</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.is_auto" href="#textual.css.scalar.Scalar.is_auto">is_auto</a></code></li>
+<li><code><a title="textual.css.scalar.Scalar.is_cells" href="#textual.css.scalar.Scalar.is_cells">is_cells</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.is_fraction" href="#textual.css.scalar.Scalar.is_fraction">is_fraction</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.is_percent" href="#textual.css.scalar.Scalar.is_percent">is_percent</a></code></li>
 <li><code><a title="textual.css.scalar.Scalar.parse" href="#textual.css.scalar.Scalar.parse">parse</a></code></li>

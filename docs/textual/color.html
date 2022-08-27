@@ -23,11 +23,9 @@
 </header>
 <section id="section-intro">
 <p>Manages Color in Textual.</p>
-<p>All instances where the developer is presented with a color should use this class. The only
+<p>All instances where the developer is presented with a color will use this class. The only
 exception should be when passing things to a Rich renderable, which will need to use the
 <code>rich_color</code> attribute to perform a conversion.</p>
-<p>I'm not entirely happy with burdening the user with two similar color classes. In a future
-update we might add a protocol to convert automatically so the dev could use them interchangeably.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -35,20 +33,17 @@ update we might add a protocol to convert automatically so the dev could use the
 <pre><code class="python">&#34;&#34;&#34;
 Manages Color in Textual.
 
-All instances where the developer is presented with a color should use this class. The only
+All instances where the developer is presented with a color will use this class. The only
 exception should be when passing things to a Rich renderable, which will need to use the
 `rich_color` attribute to perform a conversion.
-
-I&#39;m not entirely happy with burdening the user with two similar color classes. In a future
-update we might add a protocol to convert automatically so the dev could use them interchangeably.
 
 &#34;&#34;&#34;
 
 from __future__ import annotations
 
-from colorsys import rgb_to_hls, hls_to_rgb
-from functools import lru_cache
 import re
+from colorsys import hls_to_rgb, rgb_to_hls
+from functools import lru_cache
 from operator import itemgetter
 from typing import Callable, NamedTuple
 
@@ -60,11 +55,11 @@ from rich.style import Style
 from rich.text import Text
 
 from textual.css.scalar import percentage_string_to_float
-from textual.css.tokenize import COMMA, OPEN_BRACE, CLOSE_BRACE, DECIMAL, PERCENT
+from textual.css.tokenize import CLOSE_BRACE, COMMA, DECIMAL, OPEN_BRACE, PERCENT
 from textual.suggestions import get_suggestion
+
 from ._color_constants import COLOR_NAME_TO_RGB
 from .geometry import clamp
-
 
 _TRUECOLOR = ColorType.TRUECOLOR
 
@@ -73,16 +68,22 @@ class HLS(NamedTuple):
     &#34;&#34;&#34;A color in HLS format.&#34;&#34;&#34;
 
     h: float
+    &#34;&#34;&#34;Hue&#34;&#34;&#34;
     l: float
+    &#34;&#34;&#34;Lightness&#34;&#34;&#34;
     s: float
+    &#34;&#34;&#34;Saturation&#34;&#34;&#34;
 
 
 class HSV(NamedTuple):
     &#34;&#34;&#34;A color in HSV format.&#34;&#34;&#34;
 
     h: float
+    &#34;&#34;&#34;Hue&#34;&#34;&#34;
     s: float
+    &#34;&#34;&#34;Saturation&#34;&#34;&#34;
     v: float
+    &#34;&#34;&#34;Value&#34;&#34;&#34;
 
 
 class Lab(NamedTuple):
@@ -137,9 +138,13 @@ class Color(NamedTuple):
     &#34;&#34;&#34;A class to represent a single RGB color with alpha.&#34;&#34;&#34;
 
     r: int
+    &#34;&#34;&#34;Red component (0-255)&#34;&#34;&#34;
     g: int
+    &#34;&#34;&#34;Green component (0-255)&#34;&#34;&#34;
     b: int
+    &#34;&#34;&#34;Blue component (0-255)&#34;&#34;&#34;
     a: float = 1.0
+    &#34;&#34;&#34;Alpha component (0-1)&#34;&#34;&#34;
 
     @classmethod
     def from_rich_color(cls, rich_color: RichColor) -&gt; Color:
@@ -180,12 +185,22 @@ class Color(NamedTuple):
 
     @property
     def is_transparent(self) -&gt; bool:
-        &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.&#34;&#34;&#34;
+        &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.
+
+        Returns:
+            bool: True if transparent, otherwise False.
+
+        &#34;&#34;&#34;
         return self.a == 0
 
     @property
     def clamped(self) -&gt; Color:
-        &#34;&#34;&#34;Get a color with all components saturated to maximum and minimum values.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get a color with all components saturated to maximum and minimum values.
+
+        Returns:
+            Color: A color object.
+
+        &#34;&#34;&#34;
         r, g, b, a = self
         _clamp = clamp
         color = Color(
@@ -198,7 +213,11 @@ class Color(NamedTuple):
 
     @property
     def rich_color(self) -&gt; RichColor:
-        &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.&#34;&#34;&#34;
+        &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.
+
+        Returns:
+            RichColor: A color object as used by Rich.
+        &#34;&#34;&#34;
         r, g, b, _a = self
         return RichColor(
             f&#34;#{r:02x}{g:02x}{b:02x}&#34;, _TRUECOLOR, None, ColorTriplet(r, g, b)
@@ -206,25 +225,43 @@ class Color(NamedTuple):
 
     @property
     def normalized(self) -&gt; tuple[float, float, float]:
-        &#34;&#34;&#34;A tuple of the color components normalized to between 0 and 1.&#34;&#34;&#34;
+        &#34;&#34;&#34;A tuple of the color components normalized to between 0 and 1.
+
+        Returns:
+            tuple[float, float, float]: Normalized components.
+
+        &#34;&#34;&#34;
         r, g, b, _a = self
         return (r / 255, g / 255, b / 255)
 
     @property
     def rgb(self) -&gt; tuple[int, int, int]:
-        &#34;&#34;&#34;Get just the red, green, and blue components.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get just the red, green, and blue components.
+
+        Returns:
+            tuple[int, int, int]: Color components
+        &#34;&#34;&#34;
         r, g, b, _ = self
         return (r, g, b)
 
     @property
     def hls(self) -&gt; HLS:
-        &#34;&#34;&#34;Get the color as HLS.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the color as HLS.
+
+        Returns:
+            HLS:
+        &#34;&#34;&#34;
         r, g, b = self.normalized
         return HLS(*rgb_to_hls(r, g, b))
 
     @property
     def brightness(self) -&gt; float:
-        &#34;&#34;&#34;Get the human perceptual brightness.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the human perceptual brightness.
+
+        Returns:
+            float: Brightness value (0-1).
+
+        &#34;&#34;&#34;
         r, g, b = self.normalized
         brightness = (299 * r + 587 * g + 114 * b) / 1000
         return brightness
@@ -659,9 +696,13 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
     &#34;&#34;&#34;A class to represent a single RGB color with alpha.&#34;&#34;&#34;
 
     r: int
+    &#34;&#34;&#34;Red component (0-255)&#34;&#34;&#34;
     g: int
+    &#34;&#34;&#34;Green component (0-255)&#34;&#34;&#34;
     b: int
+    &#34;&#34;&#34;Blue component (0-255)&#34;&#34;&#34;
     a: float = 1.0
+    &#34;&#34;&#34;Alpha component (0-1)&#34;&#34;&#34;
 
     @classmethod
     def from_rich_color(cls, rich_color: RichColor) -&gt; Color:
@@ -702,12 +743,22 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
 
     @property
     def is_transparent(self) -&gt; bool:
-        &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.&#34;&#34;&#34;
+        &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.
+
+        Returns:
+            bool: True if transparent, otherwise False.
+
+        &#34;&#34;&#34;
         return self.a == 0
 
     @property
     def clamped(self) -&gt; Color:
-        &#34;&#34;&#34;Get a color with all components saturated to maximum and minimum values.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get a color with all components saturated to maximum and minimum values.
+
+        Returns:
+            Color: A color object.
+
+        &#34;&#34;&#34;
         r, g, b, a = self
         _clamp = clamp
         color = Color(
@@ -720,7 +771,11 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
 
     @property
     def rich_color(self) -&gt; RichColor:
-        &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.&#34;&#34;&#34;
+        &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.
+
+        Returns:
+            RichColor: A color object as used by Rich.
+        &#34;&#34;&#34;
         r, g, b, _a = self
         return RichColor(
             f&#34;#{r:02x}{g:02x}{b:02x}&#34;, _TRUECOLOR, None, ColorTriplet(r, g, b)
@@ -728,25 +783,43 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
 
     @property
     def normalized(self) -&gt; tuple[float, float, float]:
-        &#34;&#34;&#34;A tuple of the color components normalized to between 0 and 1.&#34;&#34;&#34;
+        &#34;&#34;&#34;A tuple of the color components normalized to between 0 and 1.
+
+        Returns:
+            tuple[float, float, float]: Normalized components.
+
+        &#34;&#34;&#34;
         r, g, b, _a = self
         return (r / 255, g / 255, b / 255)
 
     @property
     def rgb(self) -&gt; tuple[int, int, int]:
-        &#34;&#34;&#34;Get just the red, green, and blue components.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get just the red, green, and blue components.
+
+        Returns:
+            tuple[int, int, int]: Color components
+        &#34;&#34;&#34;
         r, g, b, _ = self
         return (r, g, b)
 
     @property
     def hls(self) -&gt; HLS:
-        &#34;&#34;&#34;Get the color as HLS.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the color as HLS.
+
+        Returns:
+            HLS:
+        &#34;&#34;&#34;
         r, g, b = self.normalized
         return HLS(*rgb_to_hls(r, g, b))
 
     @property
     def brightness(self) -&gt; float:
-        &#34;&#34;&#34;Get the human perceptual brightness.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the human perceptual brightness.
+
+        Returns:
+            float: Brightness value (0-1).
+
+        &#34;&#34;&#34;
         r, g, b = self.normalized
         brightness = (299 * r + 587 * g + 114 * b) / 1000
         return brightness
@@ -1149,22 +1222,32 @@ def parse(cls, color_text: str | Color) -&gt; Color:
 <dl>
 <dt id="textual.color.Color.a"><code class="name">var <span class="ident">a</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 3</p></div>
+<div class="desc"><p>Alpha component (0-1)</p></div>
 </dd>
 <dt id="textual.color.Color.b"><code class="name">var <span class="ident">b</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 2</p></div>
+<div class="desc"><p>Blue component (0-255)</p></div>
 </dd>
 <dt id="textual.color.Color.brightness"><code class="name">var <span class="ident">brightness</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Get the human perceptual brightness.</p></div>
+<div class="desc"><p>Get the human perceptual brightness.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>float</code></dt>
+<dd>Brightness value (0-1).</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def brightness(self) -&gt; float:
-    &#34;&#34;&#34;Get the human perceptual brightness.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get the human perceptual brightness.
+
+    Returns:
+        float: Brightness value (0-1).
+
+    &#34;&#34;&#34;
     r, g, b = self.normalized
     brightness = (299 * r + 587 * g + 114 * b) / 1000
     return brightness</code></pre>
@@ -1172,14 +1255,24 @@ def brightness(self) -&gt; float:
 </dd>
 <dt id="textual.color.Color.clamped"><code class="name">var <span class="ident">clamped</span> : <a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
 <dd>
-<div class="desc"><p>Get a color with all components saturated to maximum and minimum values.</p></div>
+<div class="desc"><p>Get a color with all components saturated to maximum and minimum values.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>A color object.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def clamped(self) -&gt; Color:
-    &#34;&#34;&#34;Get a color with all components saturated to maximum and minimum values.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get a color with all components saturated to maximum and minimum values.
+
+    Returns:
+        Color: A color object.
+
+    &#34;&#34;&#34;
     r, g, b, a = self
     _clamp = clamp
     color = Color(
@@ -1217,7 +1310,7 @@ def css(self) -&gt; str:
 </dd>
 <dt id="textual.color.Color.g"><code class="name">var <span class="ident">g</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 1</p></div>
+<div class="desc"><p>Green component (0-255)</p></div>
 </dd>
 <dt id="textual.color.Color.hex"><code class="name">var <span class="ident">hex</span> : str</code></dt>
 <dd>
@@ -1249,73 +1342,117 @@ def hex(self) -&gt; str:
 </dd>
 <dt id="textual.color.Color.hls"><code class="name">var <span class="ident">hls</span> : <a title="textual.color.HLS" href="#textual.color.HLS">HLS</a></code></dt>
 <dd>
-<div class="desc"><p>Get the color as HLS.</p></div>
+<div class="desc"><p>Get the color as HLS.</p>
+<h2 id="returns">Returns</h2>
+<p>HLS:</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def hls(self) -&gt; HLS:
-    &#34;&#34;&#34;Get the color as HLS.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get the color as HLS.
+
+    Returns:
+        HLS:
+    &#34;&#34;&#34;
     r, g, b = self.normalized
     return HLS(*rgb_to_hls(r, g, b))</code></pre>
 </details>
 </dd>
 <dt id="textual.color.Color.is_transparent"><code class="name">var <span class="ident">is_transparent</span> : bool</code></dt>
 <dd>
-<div class="desc"><p>Check if the color is transparent, i.e. has 0 alpha.</p></div>
+<div class="desc"><p>Check if the color is transparent, i.e. has 0 alpha.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if transparent, otherwise False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def is_transparent(self) -&gt; bool:
-    &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.&#34;&#34;&#34;
+    &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.
+
+    Returns:
+        bool: True if transparent, otherwise False.
+
+    &#34;&#34;&#34;
     return self.a == 0</code></pre>
 </details>
 </dd>
 <dt id="textual.color.Color.normalized"><code class="name">var <span class="ident">normalized</span> : tuple[float, float, float]</code></dt>
 <dd>
-<div class="desc"><p>A tuple of the color components normalized to between 0 and 1.</p></div>
+<div class="desc"><p>A tuple of the color components normalized to between 0 and 1.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[float, float, float]</code></dt>
+<dd>Normalized components.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def normalized(self) -&gt; tuple[float, float, float]:
-    &#34;&#34;&#34;A tuple of the color components normalized to between 0 and 1.&#34;&#34;&#34;
+    &#34;&#34;&#34;A tuple of the color components normalized to between 0 and 1.
+
+    Returns:
+        tuple[float, float, float]: Normalized components.
+
+    &#34;&#34;&#34;
     r, g, b, _a = self
     return (r / 255, g / 255, b / 255)</code></pre>
 </details>
 </dd>
 <dt id="textual.color.Color.r"><code class="name">var <span class="ident">r</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 0</p></div>
+<div class="desc"><p>Red component (0-255)</p></div>
 </dd>
 <dt id="textual.color.Color.rgb"><code class="name">var <span class="ident">rgb</span> : tuple[int, int, int]</code></dt>
 <dd>
-<div class="desc"><p>Get just the red, green, and blue components.</p></div>
+<div class="desc"><p>Get just the red, green, and blue components.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>tuple[int, int, int]</code></dt>
+<dd>Color components</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def rgb(self) -&gt; tuple[int, int, int]:
-    &#34;&#34;&#34;Get just the red, green, and blue components.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get just the red, green, and blue components.
+
+    Returns:
+        tuple[int, int, int]: Color components
+    &#34;&#34;&#34;
     r, g, b, _ = self
     return (r, g, b)</code></pre>
 </details>
 </dd>
 <dt id="textual.color.Color.rich_color"><code class="name">var <span class="ident">rich_color</span> : rich.color.Color</code></dt>
 <dd>
-<div class="desc"><p>This color encoded in Rich's Color class.</p></div>
+<div class="desc"><p>This color encoded in Rich's Color class.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>RichColor</code></dt>
+<dd>A color object as used by Rich.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def rich_color(self) -&gt; RichColor:
-    &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.&#34;&#34;&#34;
+    &#34;&#34;&#34;This color encoded in Rich&#39;s Color class.
+
+    Returns:
+        RichColor: A color object as used by Rich.
+    &#34;&#34;&#34;
     r, g, b, _a = self
     return RichColor(
         f&#34;#{r:02x}{g:02x}{b:02x}&#34;, _TRUECOLOR, None, ColorTriplet(r, g, b)
@@ -1633,8 +1770,11 @@ def style(self) -&gt; Style:
     &#34;&#34;&#34;A color in HLS format.&#34;&#34;&#34;
 
     h: float
+    &#34;&#34;&#34;Hue&#34;&#34;&#34;
     l: float
-    s: float</code></pre>
+    &#34;&#34;&#34;Lightness&#34;&#34;&#34;
+    s: float
+    &#34;&#34;&#34;Saturation&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1644,15 +1784,15 @@ def style(self) -&gt; Style:
 <dl>
 <dt id="textual.color.HLS.h"><code class="name">var <span class="ident">h</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 0</p></div>
+<div class="desc"><p>Hue</p></div>
 </dd>
 <dt id="textual.color.HLS.l"><code class="name">var <span class="ident">l</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 1</p></div>
+<div class="desc"><p>Lightness</p></div>
 </dd>
 <dt id="textual.color.HLS.s"><code class="name">var <span class="ident">s</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 2</p></div>
+<div class="desc"><p>Saturation</p></div>
 </dd>
 </dl>
 </dd>
@@ -1670,8 +1810,11 @@ def style(self) -&gt; Style:
     &#34;&#34;&#34;A color in HSV format.&#34;&#34;&#34;
 
     h: float
+    &#34;&#34;&#34;Hue&#34;&#34;&#34;
     s: float
-    v: float</code></pre>
+    &#34;&#34;&#34;Saturation&#34;&#34;&#34;
+    v: float
+    &#34;&#34;&#34;Value&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1681,15 +1824,15 @@ def style(self) -&gt; Style:
 <dl>
 <dt id="textual.color.HSV.h"><code class="name">var <span class="ident">h</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 0</p></div>
+<div class="desc"><p>Hue</p></div>
 </dd>
 <dt id="textual.color.HSV.s"><code class="name">var <span class="ident">s</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 1</p></div>
+<div class="desc"><p>Saturation</p></div>
 </dd>
 <dt id="textual.color.HSV.v"><code class="name">var <span class="ident">v</span> : float</code></dt>
 <dd>
-<div class="desc"><p>Alias for field number 2</p></div>
+<div class="desc"><p>Value</p></div>
 </dd>
 </dl>
 </dd>

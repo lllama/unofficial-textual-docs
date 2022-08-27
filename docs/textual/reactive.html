@@ -32,7 +32,6 @@ from inspect import isawaitable
 from functools import partial
 from typing import (
     Any,
-    Awaitable,
     Callable,
     Generic,
     Type,
@@ -68,11 +67,55 @@ class Reactive(Generic[ReactiveType]):
         *,
         layout: bool = False,
         repaint: bool = True,
+        init: bool = False,
     ) -&gt; None:
+        &#34;&#34;&#34;Create a Reactive Widget attribute,
+
+        Args:
+            default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+            layout (bool, optional): Perform a layout on change. Defaults to False.
+            repaint (bool, optional): Perform a repaint on change. Defaults to True.
+            init (bool, optional): Call watchers on initialize (post mount). Defaults to False.
+        &#34;&#34;&#34;
         self._default = default
-        self.layout = layout
-        self.repaint = repaint
-        self._first = True
+        self._layout = layout
+        self._repaint = repaint
+        self._init = init
+
+    @classmethod
+    def init(
+        cls,
+        default: ReactiveType | Callable[[], ReactiveType],
+        *,
+        layout: bool = False,
+        repaint: bool = True,
+    ) -&gt; Reactive:
+        &#34;&#34;&#34;A reactive variable that calls watchers and compute on initialize (post mount).
+
+        Args:
+            default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+            layout (bool, optional): Perform a layout on change. Defaults to False.
+            repaint (bool, optional): Perform a repaint on change. Defaults to True.
+
+        Returns:
+            Reactive: A Reactive instance which calls watchers or initialize.
+        &#34;&#34;&#34;
+        return cls(default, layout=layout, repaint=repaint, init=True)
+
+    @classmethod
+    async def initialize_object(cls, obj: object) -&gt; None:
+        &#34;&#34;&#34;Call any watchers / computes for the first time.
+
+        Args:
+            obj (Reactable): An object with Reactive descriptors
+        &#34;&#34;&#34;
+
+        startswith = str.startswith
+        for key in obj.__class__.__dict__.keys():
+            if startswith(key, &#34;_init_&#34;):
+                name = key[6:]
+                default = getattr(obj, key)
+                setattr(obj, name, default() if callable(default) else default)
 
     def __set_name__(self, owner: Type[MessageTarget], name: str) -&gt; None:
 
@@ -86,31 +129,31 @@ class Reactive(Generic[ReactiveType]):
 
         self.name = name
         self.internal_name = f&#34;_reactive_{name}&#34;
-        setattr(
-            owner,
-            self.internal_name,
-            self._default() if callable(self._default) else self._default,
-        )
+        default = self._default
+
+        if self._init:
+            setattr(owner, f&#34;_init_{name}&#34;, default)
+        else:
+            setattr(
+                owner, self.internal_name, default() if callable(default) else default
+            )
 
     def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
         return getattr(obj, self.internal_name)
 
     def __set__(self, obj: Reactable, value: ReactiveType) -&gt; None:
-
         name = self.name
         current_value = getattr(obj, self.internal_name, None)
         validate_function = getattr(obj, f&#34;validate_{name}&#34;, None)
+        first_set = getattr(obj, f&#34;__first_set_{self.internal_name}&#34;, True)
         if callable(validate_function):
             value = validate_function(value)
-
-        if current_value != value or self._first:
-
-            self._first = False
+        if current_value != value or first_set:
+            setattr(obj, f&#34;__first_set_{self.internal_name}&#34;, False)
             setattr(obj, self.internal_name, value)
             self.check_watchers(obj, name, current_value)
-
-            if self.layout or self.repaint:
-                obj.refresh(repaint=self.repaint, layout=self.layout)
+            if self._layout or self._repaint:
+                obj.refresh(repaint=self._repaint, layout=self._layout)
 
     @classmethod
     def check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
@@ -211,10 +254,21 @@ def watch(
 <dl>
 <dt id="textual.reactive.Reactive"><code class="flex name class">
 <span>class <span class="ident">Reactive</span></span>
-<span>(</span><span>default: ReactiveType | Callable[[], ReactiveType], *, layout: bool = False, repaint: bool = True)</span>
+<span>(</span><span>default: ReactiveType | Callable[[], ReactiveType], *, layout: bool = False, repaint: bool = True, init: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<p>Create a Reactive Widget attribute,</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -228,11 +282,55 @@ def watch(
         *,
         layout: bool = False,
         repaint: bool = True,
+        init: bool = False,
     ) -&gt; None:
+        &#34;&#34;&#34;Create a Reactive Widget attribute,
+
+        Args:
+            default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+            layout (bool, optional): Perform a layout on change. Defaults to False.
+            repaint (bool, optional): Perform a repaint on change. Defaults to True.
+            init (bool, optional): Call watchers on initialize (post mount). Defaults to False.
+        &#34;&#34;&#34;
         self._default = default
-        self.layout = layout
-        self.repaint = repaint
-        self._first = True
+        self._layout = layout
+        self._repaint = repaint
+        self._init = init
+
+    @classmethod
+    def init(
+        cls,
+        default: ReactiveType | Callable[[], ReactiveType],
+        *,
+        layout: bool = False,
+        repaint: bool = True,
+    ) -&gt; Reactive:
+        &#34;&#34;&#34;A reactive variable that calls watchers and compute on initialize (post mount).
+
+        Args:
+            default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+            layout (bool, optional): Perform a layout on change. Defaults to False.
+            repaint (bool, optional): Perform a repaint on change. Defaults to True.
+
+        Returns:
+            Reactive: A Reactive instance which calls watchers or initialize.
+        &#34;&#34;&#34;
+        return cls(default, layout=layout, repaint=repaint, init=True)
+
+    @classmethod
+    async def initialize_object(cls, obj: object) -&gt; None:
+        &#34;&#34;&#34;Call any watchers / computes for the first time.
+
+        Args:
+            obj (Reactable): An object with Reactive descriptors
+        &#34;&#34;&#34;
+
+        startswith = str.startswith
+        for key in obj.__class__.__dict__.keys():
+            if startswith(key, &#34;_init_&#34;):
+                name = key[6:]
+                default = getattr(obj, key)
+                setattr(obj, name, default() if callable(default) else default)
 
     def __set_name__(self, owner: Type[MessageTarget], name: str) -&gt; None:
 
@@ -246,31 +344,31 @@ def watch(
 
         self.name = name
         self.internal_name = f&#34;_reactive_{name}&#34;
-        setattr(
-            owner,
-            self.internal_name,
-            self._default() if callable(self._default) else self._default,
-        )
+        default = self._default
+
+        if self._init:
+            setattr(owner, f&#34;_init_{name}&#34;, default)
+        else:
+            setattr(
+                owner, self.internal_name, default() if callable(default) else default
+            )
 
     def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
         return getattr(obj, self.internal_name)
 
     def __set__(self, obj: Reactable, value: ReactiveType) -&gt; None:
-
         name = self.name
         current_value = getattr(obj, self.internal_name, None)
         validate_function = getattr(obj, f&#34;validate_{name}&#34;, None)
+        first_set = getattr(obj, f&#34;__first_set_{self.internal_name}&#34;, True)
         if callable(validate_function):
             value = validate_function(value)
-
-        if current_value != value or self._first:
-
-            self._first = False
+        if current_value != value or first_set:
+            setattr(obj, f&#34;__first_set_{self.internal_name}&#34;, False)
             setattr(obj, self.internal_name, value)
             self.check_watchers(obj, name, current_value)
-
-            if self.layout or self.repaint:
-                obj.refresh(repaint=self.repaint, layout=self.layout)
+            if self._layout or self._repaint:
+                obj.refresh(repaint=self._repaint, layout=self._layout)
 
     @classmethod
     def check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
@@ -400,6 +498,79 @@ async def compute(cls, obj: Reactable) -&gt; None:
         setattr(obj, compute, value)</code></pre>
 </details>
 </dd>
+<dt id="textual.reactive.Reactive.init"><code class="name flex">
+<span>def <span class="ident">init</span></span>(<span>default: ReactiveType | Callable[[], ReactiveType], *, layout: bool = False, repaint: bool = True) ‑> <a title="textual.reactive.Reactive" href="#textual.reactive.Reactive">Reactive</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A reactive variable that calls watchers and compute on initialize (post mount).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.reactive.Reactive" href="#textual.reactive.Reactive">Reactive</a></code></dt>
+<dd>A Reactive instance which calls watchers or initialize.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def init(
+    cls,
+    default: ReactiveType | Callable[[], ReactiveType],
+    *,
+    layout: bool = False,
+    repaint: bool = True,
+) -&gt; Reactive:
+    &#34;&#34;&#34;A reactive variable that calls watchers and compute on initialize (post mount).
+
+    Args:
+        default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+        layout (bool, optional): Perform a layout on change. Defaults to False.
+        repaint (bool, optional): Perform a repaint on change. Defaults to True.
+
+    Returns:
+        Reactive: A Reactive instance which calls watchers or initialize.
+    &#34;&#34;&#34;
+    return cls(default, layout=layout, repaint=repaint, init=True)</code></pre>
+</details>
+</dd>
+<dt id="textual.reactive.Reactive.initialize_object"><code class="name flex">
+<span>async def <span class="ident">initialize_object</span></span>(<span>obj: object) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Call any watchers / computes for the first time.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>obj</code></strong> :&ensp;<code>Reactable</code></dt>
+<dd>An object with Reactive descriptors</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+async def initialize_object(cls, obj: object) -&gt; None:
+    &#34;&#34;&#34;Call any watchers / computes for the first time.
+
+    Args:
+        obj (Reactable): An object with Reactive descriptors
+    &#34;&#34;&#34;
+
+    startswith = str.startswith
+    for key in obj.__class__.__dict__.keys():
+        if startswith(key, &#34;_init_&#34;):
+            name = key[6:]
+            default = getattr(obj, key)
+            setattr(obj, name, default() if callable(default) else default)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -474,6 +645,8 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.reactive.Reactive.check_watchers" href="#textual.reactive.Reactive.check_watchers">check_watchers</a></code></li>
 <li><code><a title="textual.reactive.Reactive.compute" href="#textual.reactive.Reactive.compute">compute</a></code></li>
+<li><code><a title="textual.reactive.Reactive.init" href="#textual.reactive.Reactive.init">init</a></code></li>
+<li><code><a title="textual.reactive.Reactive.initialize_object" href="#textual.reactive.Reactive.initialize_object">initialize_object</a></code></li>
 </ul>
 </li>
 </ul>

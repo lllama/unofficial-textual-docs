@@ -38,15 +38,19 @@ from ._callback import invoke
 
 @rich.repr.auto
 class FileMonitor:
+    &#34;&#34;&#34;Monitors a file for changes and invokes a callback when it does.&#34;&#34;&#34;
+
     def __init__(self, path: str | PurePath, callback: Callable) -&gt; None:
         self.path = path
         self.callback = callback
         self._modified = self._get_modified()
 
     def _get_modified(self) -&gt; float:
+        &#34;&#34;&#34;Get the modified time for a file being watched.&#34;&#34;&#34;
         return os.stat(self.path).st_mtime
 
     def check(self) -&gt; bool:
+        &#34;&#34;&#34;Check the monitored file. Return True if it was changed.&#34;&#34;&#34;
         modified = self._get_modified()
         changed = modified != self._modified
         self._modified = modified
@@ -75,21 +79,25 @@ class FileMonitor:
 <span>(</span><span>path: str | PurePath, callback: Callable)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Monitors a file for changes and invokes a callback when it does.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class FileMonitor:
+    &#34;&#34;&#34;Monitors a file for changes and invokes a callback when it does.&#34;&#34;&#34;
+
     def __init__(self, path: str | PurePath, callback: Callable) -&gt; None:
         self.path = path
         self.callback = callback
         self._modified = self._get_modified()
 
     def _get_modified(self) -&gt; float:
+        &#34;&#34;&#34;Get the modified time for a file being watched.&#34;&#34;&#34;
         return os.stat(self.path).st_mtime
 
     def check(self) -&gt; bool:
+        &#34;&#34;&#34;Check the monitored file. Return True if it was changed.&#34;&#34;&#34;
         modified = self._get_modified()
         changed = modified != self._modified
         self._modified = modified
@@ -109,12 +117,13 @@ class FileMonitor:
 <span>def <span class="ident">check</span></span>(<span>self) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Check the monitored file. Return True if it was changed.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def check(self) -&gt; bool:
+    &#34;&#34;&#34;Check the monitored file. Return True if it was changed.&#34;&#34;&#34;
     modified = self._get_modified()
     changed = modified != self._modified
     self._modified = modified

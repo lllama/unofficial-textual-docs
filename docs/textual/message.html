@@ -39,7 +39,12 @@ from ._types import MessageTarget
 
 @rich.repr.auto
 class Message:
-    &#34;&#34;&#34;Base class for a message.&#34;&#34;&#34;
+    &#34;&#34;&#34;Base class for a message.
+
+    Args:
+        sender (MessageTarget): The sender of the message / event.
+
+    &#34;&#34;&#34;
 
     __slots__ = [
         &#34;sender&#34;,
@@ -58,12 +63,6 @@ class Message:
     namespace: ClassVar[str] = &#34;&#34;  # Namespace to disambiguate messages
 
     def __init__(self, sender: MessageTarget) -&gt; None:
-        &#34;&#34;&#34;
-
-        Args:
-            sender (MessageTarget): The sender of the message / event.
-        &#34;&#34;&#34;
-
         self.sender = sender
         self.name = camel_to_snake(self.__class__.__name__.replace(&#34;Message&#34;, &#34;&#34;))
         self.time = _clock.get_time_no_wait()
@@ -164,7 +163,12 @@ class Message:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Message:
-    &#34;&#34;&#34;Base class for a message.&#34;&#34;&#34;
+    &#34;&#34;&#34;Base class for a message.
+
+    Args:
+        sender (MessageTarget): The sender of the message / event.
+
+    &#34;&#34;&#34;
 
     __slots__ = [
         &#34;sender&#34;,
@@ -183,12 +187,6 @@ class Message:
     namespace: ClassVar[str] = &#34;&#34;  # Namespace to disambiguate messages
 
     def __init__(self, sender: MessageTarget) -&gt; None:
-        &#34;&#34;&#34;
-
-        Args:
-            sender (MessageTarget): The sender of the message / event.
-        &#34;&#34;&#34;
-
         self.sender = sender
         self.name = camel_to_snake(self.__class__.__name__.replace(&#34;Message&#34;, &#34;&#34;))
         self.time = _clock.get_time_no_wait()
