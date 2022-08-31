@@ -648,7 +648,7 @@ class Region(NamedTuple):
         &#34;&#34;&#34;Move the offset of the Region.
 
         Args:
-            translate (tuple[int, int]): Offset to add to region.
+            offset (tuple[int, int]): Offset to add to region.
 
         Returns:
             Region: A new region shifted by (x, y)
@@ -1747,7 +1747,7 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;Move the offset of the Region.
 
         Args:
-            translate (tuple[int, int]): Offset to add to region.
+            offset (tuple[int, int]): Offset to add to region.
 
         Returns:
             Region: A new region shifted by (x, y)
@@ -3116,7 +3116,7 @@ def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
 <div class="desc"><p>Move the offset of the Region.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>translate</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
+<dt><strong><code>offset</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
 <dd>Offset to add to region.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -3132,7 +3132,7 @@ def split_vertical(self, cut: int) -&gt; tuple[Region, Region]:
     &#34;&#34;&#34;Move the offset of the Region.
 
     Args:
-        translate (tuple[int, int]): Offset to add to region.
+        offset (tuple[int, int]): Offset to add to region.
 
     Returns:
         Region: A new region shifted by (x, y)

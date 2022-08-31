@@ -59,7 +59,6 @@ from ._style_properties import (
     SpacingProperty,
     StringEnumProperty,
     StyleFlagsProperty,
-    StyleProperty,
     TransitionsProperty,
 )
 from .constants import (
@@ -70,6 +69,7 @@ from .constants import (
     VALID_OVERFLOW,
     VALID_SCROLLBAR_GUTTER,
     VALID_VISIBILITY,
+    VALID_TEXT_ALIGN,
 )
 from .scalar import Scalar, ScalarOffset, Unit
 from .scalar_animation import ScalarAnimation
@@ -85,6 +85,7 @@ from .types import (
     Specificity3,
     Specificity6,
     Visibility,
+    TextAlign,
 )
 
 if sys.version_info &gt;= (3, 8):
@@ -170,6 +171,8 @@ class RulesMap(TypedDict, total=False):
 
     content_align_horizontal: AlignHorizontal
     content_align_vertical: AlignVertical
+
+    text_align: TextAlign
 
 
 RULE_NAMES = list(RulesMap.__annotations__.keys())
@@ -277,6 +280,8 @@ class StylesBase(ABC):
     content_align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     content_align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
     content_align = AlignProperty()
+
+    text_align = StringEnumProperty(VALID_TEXT_ALIGN, &#34;start&#34;)
 
     def __eq__(self, styles: object) -&gt; bool:
         &#34;&#34;&#34;Check that Styles contains the same rules.&#34;&#34;&#34;
@@ -487,7 +492,6 @@ class StylesBase(ABC):
 @rich.repr.auto
 @dataclass
 class Styles(StylesBase):
-
     node: DOMNode | None = None
     _rules: RulesMap = field(default_factory=dict)
 
@@ -1225,6 +1229,7 @@ def rich_style(self) -&gt; Style:
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_corner_color" href="#textual.css.styles.StylesBase.scrollbar_corner_color">scrollbar_corner_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_gutter" href="#textual.css.styles.StylesBase.scrollbar_gutter">scrollbar_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.text_align" href="#textual.css.styles.StylesBase.text_align">text_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.transitions" href="#textual.css.styles.StylesBase.transitions">transitions</a></code></li>
@@ -1318,7 +1323,9 @@ def rich_style(self) -&gt; Style:
     align_vertical: AlignVertical
 
     content_align_horizontal: AlignHorizontal
-    content_align_vertical: AlignVertical</code></pre>
+    content_align_vertical: AlignVertical
+
+    text_align: TextAlign</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1494,6 +1501,10 @@ def rich_style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.css.styles.RulesMap.text_align"><code class="name">var <span class="ident">text_align</span> : TextAlign</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.css.styles.RulesMap.text_style"><code class="name">var <span class="ident">text_style</span> : Style</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1527,7 +1538,6 @@ def rich_style(self) -&gt; Style:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Styles(StylesBase):
-
     node: DOMNode | None = None
     _rules: RulesMap = field(default_factory=dict)
 
@@ -2186,6 +2196,7 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_corner_color" href="#textual.css.styles.StylesBase.scrollbar_corner_color">scrollbar_corner_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_gutter" href="#textual.css.styles.StylesBase.scrollbar_gutter">scrollbar_gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.text_align" href="#textual.css.styles.StylesBase.text_align">text_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.transitions" href="#textual.css.styles.StylesBase.transitions">transitions</a></code></li>
@@ -2298,6 +2309,8 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
     content_align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     content_align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
     content_align = AlignProperty()
+
+    text_align = StringEnumProperty(VALID_TEXT_ALIGN, &#34;start&#34;)
 
     def __eq__(self, styles: object) -&gt; bool:
         &#34;&#34;&#34;Check that Styles contains the same rules.&#34;&#34;&#34;
@@ -3682,6 +3695,27 @@ value belongs in the set of valid values.</p></div>
     return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
 </details>
 </dd>
+<dt id="textual.css.styles.StylesBase.text_align"><code class="name">var <span class="ident">text_align</span> : str</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting string properties and ensuring that the set
+value belongs in the set of valid values.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: StylesBase, objtype: type[StylesBase] | None = None) -&gt; str:
+    &#34;&#34;&#34;Get the string property, or the default value if it&#39;s not set
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        str: The string property value
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.StylesBase.text_style"><code class="name">var <span class="ident">text_style</span> : Style</code></dt>
 <dd>
 <div class="desc"><p>Descriptor for getting and set style flag properties (e.g. <code>bold italic underline</code>).</p></div>
@@ -4318,6 +4352,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_gutter" href="#textual.css.styles.RulesMap.scrollbar_gutter">scrollbar_gutter</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_size_horizontal" href="#textual.css.styles.RulesMap.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_size_vertical" href="#textual.css.styles.RulesMap.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.text_align" href="#textual.css.styles.RulesMap.text_align">text_align</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.text_style" href="#textual.css.styles.RulesMap.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.tint" href="#textual.css.styles.RulesMap.tint">tint</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.transitions" href="#textual.css.styles.RulesMap.transitions">transitions</a></code></li>
@@ -4406,6 +4441,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_size_horizontal" href="#textual.css.styles.StylesBase.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_size_vertical" href="#textual.css.styles.StylesBase.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.text_align" href="#textual.css.styles.StylesBase.text_align">text_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.transitions" href="#textual.css.styles.StylesBase.transitions">transitions</a></code></li>

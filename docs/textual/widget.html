@@ -29,14 +29,11 @@
 <pre><code class="python">from __future__ import annotations
 
 from asyncio import Lock
-from itertools import islice
 from fractions import Fraction
+from itertools import islice
 from operator import attrgetter
 from typing import (
     TYPE_CHECKING,
-    Any,
-    Awaitable,
-    Callable,
     ClassVar,
     Collection,
     Iterable,
@@ -44,8 +41,7 @@ from typing import (
 )
 
 import rich.repr
-
-from rich.console import Console, RenderableType
+from rich.console import Console, RenderableType, JustifyMethod
 from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style
@@ -61,13 +57,13 @@ from ._segment_tools import align_lines
 from ._styles_cache import StylesCache
 from ._types import Lines
 from .box_model import BoxModel, get_box_model
+from .css.constants import VALID_TEXT_ALIGN
 from .dom import DOMNode
+from .dom import NoScreen
 from .geometry import Offset, Region, Size, Spacing, clamp
 from .layouts.vertical import VerticalLayout
 from .message import Message
 from .reactive import Reactive
-from .dom import NoScreen
-
 
 if TYPE_CHECKING:
     from .app import App, ComposeResult
@@ -1243,11 +1239,15 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
 
         if isinstance(renderable, str):
-            renderable = Text.from_markup(renderable)
+            justify = _get_rich_justify(self.styles.text_align)
+            renderable = Text.from_markup(renderable, justify=justify)
 
         rich_style = self.rich_style
         if isinstance(renderable, Text):
             renderable.stylize(rich_style)
+            if not renderable.justify:
+                justify = _get_rich_justify(self.styles.text_align)
+                renderable.justify = justify
         else:
             renderable = Styled(renderable, rich_style)
 
@@ -1407,9 +1407,6 @@ class Widget(DOMNode):
 
     def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
-
-        Args:
-            style (Styles): The Styles object for this Widget.
 
         Returns:
             RenderableType: Any renderable
@@ -1607,7 +1604,26 @@ class Widget(DOMNode):
         if self.allow_vertical_scroll:
             self.scroll_page_up()
             return True
-        return False</code></pre>
+        return False
+
+
+def _get_rich_justify(css_align: str) -&gt; JustifyMethod:
+    &#34;&#34;&#34;Given the value for CSS text-align, return the analogous argument
+    for the Rich text `justify` parameter.
+
+    Args:
+        css_align: The value of text-align CSS property.
+
+    Returns:
+        JustifyMethod: The Rich JustifyMethod that corresponds to the text-align
+            value
+    &#34;&#34;&#34;
+    assert css_align in VALID_TEXT_ALIGN
+    return {
+        &#34;start&#34;: &#34;left&#34;,
+        &#34;end&#34;: &#34;right&#34;,
+        &#34;justify&#34;: &#34;full&#34;,
+    }.get(css_align, css_align)</code></pre>
 </details>
 </section>
 <section>
@@ -2830,11 +2846,15 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
 
         if isinstance(renderable, str):
-            renderable = Text.from_markup(renderable)
+            justify = _get_rich_justify(self.styles.text_align)
+            renderable = Text.from_markup(renderable, justify=justify)
 
         rich_style = self.rich_style
         if isinstance(renderable, Text):
             renderable.stylize(rich_style)
+            if not renderable.justify:
+                justify = _get_rich_justify(self.styles.text_align)
+                renderable.justify = justify
         else:
             renderable = Styled(renderable, rich_style)
 
@@ -2994,9 +3014,6 @@ def cursor_line(self) -&gt; int | None:
 
     def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Get renderable for widget.
-
-        Args:
-            style (Styles): The Styles object for this Widget.
 
         Returns:
             RenderableType: Any renderable
@@ -4563,11 +4580,15 @@ the keys will be set as the Widget's id.</p>
     &#34;&#34;&#34;
 
     if isinstance(renderable, str):
-        renderable = Text.from_markup(renderable)
+        justify = _get_rich_justify(self.styles.text_align)
+        renderable = Text.from_markup(renderable, justify=justify)
 
     rich_style = self.rich_style
     if isinstance(renderable, Text):
         renderable.stylize(rich_style)
+        if not renderable.justify:
+            justify = _get_rich_justify(self.styles.text_align)
+            renderable.justify = justify
     else:
         renderable = Styled(renderable, rich_style)
 
@@ -4676,11 +4697,6 @@ do this automatically.</p>
 </code></dt>
 <dd>
 <div class="desc"><p>Get renderable for widget.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>style</code></strong> :&ensp;<code>Styles</code></dt>
-<dd>The Styles object for this Widget.</dd>
-</dl>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>RenderableType</code></dt>
@@ -4692,9 +4708,6 @@ do this automatically.</p>
 </summary>
 <pre><code class="python">def render(self) -&gt; RenderableType:
     &#34;&#34;&#34;Get renderable for widget.
-
-    Args:
-        style (Styles): The Styles object for this Widget.
 
     Returns:
         RenderableType: Any renderable

@@ -272,7 +272,7 @@ class MessagePump(metaclass=MessagePumpMeta):
         name: str | None = None,
         repeat: int = 0,
         pause: bool = False,
-    ):
+    ) -&gt; Timer:
         &#34;&#34;&#34;Call a function at periodic intervals.
 
         Args:
@@ -806,7 +806,7 @@ class MessagePump(metaclass=MessagePumpMeta):
         name: str | None = None,
         repeat: int = 0,
         pause: bool = False,
-    ):
+    ) -&gt; Timer:
         &#34;&#34;&#34;Call a function at periodic intervals.
 
         Args:
@@ -1647,7 +1647,7 @@ timer messages to skip the queue, so that they can be more regular.</p>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.set_interval"><code class="name flex">
-<span>def <span class="ident">set_interval</span></span>(<span>self, interval: float, callback: TimerCallback | None = None, *, name: str | None = None, repeat: int = 0, pause: bool = False)</span>
+<span>def <span class="ident">set_interval</span></span>(<span>self, interval: float, callback: TimerCallback | None = None, *, name: str | None = None, repeat: int = 0, pause: bool = False) ‑> Timer</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Call a function at periodic intervals.</p>
@@ -1679,7 +1679,7 @@ timer messages to skip the queue, so that they can be more regular.</p>
     name: str | None = None,
     repeat: int = 0,
     pause: bool = False,
-):
+) -&gt; Timer:
     &#34;&#34;&#34;Call a function at periodic intervals.
 
     Args:

@@ -610,7 +610,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.render",
 "url":2,
-"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -1310,7 +1310,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.render",
 "url":2,
-"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -2618,7 +2618,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.render",
 "url":4,
-"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -3195,7 +3195,7 @@ INDEX=[
 {
 "ref":"textual.geometry.Region.translate",
 "url":14,
-"doc":"Move the offset of the Region. Args: translate (tuple[int, int]): Offset to add to region. Returns: Region: A new region shifted by (x, y)",
+"doc":"Move the offset of the Region. Args: offset (tuple[int, int]): Offset to add to region. Returns: Region: A new region shifted by (x, y)",
 "func":1
 },
 {
@@ -3754,7 +3754,7 @@ INDEX=[
 {
 "ref":"textual.layout.Container.render",
 "url":4,
-"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -4440,7 +4440,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.render",
 "url":4,
-"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -5126,7 +5126,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.render",
 "url":4,
-"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -5812,7 +5812,7 @@ INDEX=[
 {
 "ref":"textual.layout.Center.render",
 "url":4,
-"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
@@ -9819,6 +9819,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.css.styles.RulesMap.text_align",
+"url":46,
+"doc":""
+},
+{
 "ref":"textual.css.styles.DockGroup",
 "url":46,
 "doc":"DockGroup(name, edge, z)"
@@ -10107,6 +10112,11 @@ INDEX=[
 "ref":"textual.css.styles.StylesBase.content_align",
 "url":46,
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
+},
+{
+"ref":"textual.css.styles.StylesBase.text_align",
+"url":46,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.gutter",
@@ -10546,6 +10556,11 @@ INDEX=[
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
+"ref":"textual.css.styles.Styles.text_align",
+"url":46,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
+},
+{
 "ref":"textual.css.styles.Styles.gutter",
 "url":46,
 "doc":"Get space around widget. Returns: Spacing: Space around widget content."
@@ -10914,6 +10929,11 @@ INDEX=[
 "ref":"textual.css.styles.RenderStyles.content_align",
 "url":46,
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
+},
+{
+"ref":"textual.css.styles.RenderStyles.text_align",
+"url":46,
+"doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.gutter",
@@ -14387,7 +14407,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.render",
 "url":62,
-"doc":"Get renderable for widget. Args: style (Styles): The Styles object for this Widget. Returns: RenderableType: Any renderable",
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
