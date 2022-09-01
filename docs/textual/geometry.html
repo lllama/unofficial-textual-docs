@@ -580,6 +580,19 @@ class Region(NamedTuple):
             height + expand_height * 2,
         )
 
+    def clip_size(self, size: tuple[int, int]) -&gt; Region:
+        &#34;&#34;&#34;Clip the size to fit within minimum values.
+
+        Args:
+            size (tuple[int, int]): Maximum width and height.
+
+        Returns:
+            Region: No region, not bigger than size.
+        &#34;&#34;&#34;
+        x, y, width, height = self
+        max_width, max_height = size
+        return Region(x, y, min(width, max_width), min(height, max_height))
+
     @lru_cache(maxsize=1024)
     def overlaps(self, other: Region) -&gt; bool:
         &#34;&#34;&#34;Check if another region overlaps this region.
@@ -1679,6 +1692,19 @@ def is_origin(self) -&gt; bool:
             height + expand_height * 2,
         )
 
+    def clip_size(self, size: tuple[int, int]) -&gt; Region:
+        &#34;&#34;&#34;Clip the size to fit within minimum values.
+
+        Args:
+            size (tuple[int, int]): Maximum width and height.
+
+        Returns:
+            Region: No region, not bigger than size.
+        &#34;&#34;&#34;
+        x, y, width, height = self
+        max_width, max_height = size
+        return Region(x, y, min(width, max_width), min(height, max_height))
+
     @lru_cache(maxsize=1024)
     def overlaps(self, other: Region) -&gt; bool:
         &#34;&#34;&#34;Check if another region overlaps this region.
@@ -2578,6 +2604,39 @@ def top_right(self) -&gt; Offset:
         _clamp(y2, 0, height),
     )
     return new_region</code></pre>
+</details>
+</dd>
+<dt id="textual.geometry.Region.clip_size"><code class="name flex">
+<span>def <span class="ident">clip_size</span></span>(<span>self, size: tuple[int, int]) ‑> <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Clip the size to fit within minimum values.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>size</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
+<dd>Maximum width and height.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
+<dd>No region, not bigger than size.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def clip_size(self, size: tuple[int, int]) -&gt; Region:
+    &#34;&#34;&#34;Clip the size to fit within minimum values.
+
+    Args:
+        size (tuple[int, int]): Maximum width and height.
+
+    Returns:
+        Region: No region, not bigger than size.
+    &#34;&#34;&#34;
+    x, y, width, height = self
+    max_width, max_height = size
+    return Region(x, y, min(width, max_width), min(height, max_height))</code></pre>
 </details>
 </dd>
 <dt id="textual.geometry.Region.contains"><code class="name flex">
@@ -4090,6 +4149,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.geometry.Region.bottom_left" href="#textual.geometry.Region.bottom_left">bottom_left</a></code></li>
 <li><code><a title="textual.geometry.Region.bottom_right" href="#textual.geometry.Region.bottom_right">bottom_right</a></code></li>
 <li><code><a title="textual.geometry.Region.clip" href="#textual.geometry.Region.clip">clip</a></code></li>
+<li><code><a title="textual.geometry.Region.clip_size" href="#textual.geometry.Region.clip_size">clip_size</a></code></li>
 <li><code><a title="textual.geometry.Region.column_range" href="#textual.geometry.Region.column_range">column_range</a></code></li>
 <li><code><a title="textual.geometry.Region.column_span" href="#textual.geometry.Region.column_span">column_span</a></code></li>
 <li><code><a title="textual.geometry.Region.contains" href="#textual.geometry.Region.contains">contains</a></code></li>

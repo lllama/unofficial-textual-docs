@@ -29,15 +29,16 @@
 <pre><code class="python">from __future__ import annotations
 
 from .._layout import Layout
-from .horizontal import HorizontalLayout
-from .vertical import VerticalLayout
 from .center import CenterLayout
-
+from .horizontal import HorizontalLayout
+from .table import TableLayout
+from .vertical import VerticalLayout
 
 LAYOUT_MAP: dict[str, type[Layout]] = {
-    &#34;vertical&#34;: VerticalLayout,
-    &#34;horizontal&#34;: HorizontalLayout,
     &#34;center&#34;: CenterLayout,
+    &#34;horizontal&#34;: HorizontalLayout,
+    &#34;table&#34;: TableLayout,
+    &#34;vertical&#34;: VerticalLayout,
 }
 
 

@@ -32,16 +32,16 @@ from math import ceil
 
 import rich.repr
 from rich.color import Color
-from rich.console import ConsoleOptions, RenderResult, RenderableType
+from rich.console import ConsoleOptions, RenderableType, RenderResult
 from rich.segment import Segment, Segments
 from rich.style import Style, StyleType
 
-from textual.reactive import Reactive
-from textual.renderables.blank import Blank
 from . import events
 from ._types import MessageTarget
 from .geometry import Offset
 from .message import Message
+from .reactive import Reactive
+from .renderables.blank import Blank
 from .widget import Widget
 
 
@@ -114,7 +114,6 @@ class ScrollBarRender:
         virtual_size: float = 50,
         window_size: float = 20,
         position: float = 0,
-        ascii_only: bool = False,
         thickness: int = 1,
         vertical: bool = True,
         back_color: Color = Color.parse(&#34;#555555&#34;),
@@ -122,15 +121,9 @@ class ScrollBarRender:
     ) -&gt; Segments:
 
         if vertical:
-            if ascii_only:
-                bars = [&#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;]
-            else:
-                bars = [&#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;]
+            bars = [&#34; &#34;, &#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;]
         else:
-            if ascii_only:
-                bars = [&#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;]
-            else:
-                bars = [&#34;█&#34;, &#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;]
+            bars = [&#34;█&#34;, &#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;, &#34; &#34;]
 
         back = back_color
         bar = bar_color
@@ -145,11 +138,11 @@ class ScrollBarRender:
         if window_size and size and virtual_size and size != virtual_size:
             step_size = virtual_size / size
 
-            start = int(position / step_size * 8)
-            end = start + max(8, int(ceil(window_size / step_size * 8)))
+            start = int(position / step_size * 9)
+            end = start + max(9, int(ceil(window_size / step_size * 9)))
 
-            start_index, start_bar = divmod(start, 8)
-            end_index, end_bar = divmod(end, 8)
+            start_index, start_bar = divmod(start, 9)
+            end_index, end_bar = divmod(end, 9)
 
             upper = {&#34;@click&#34;: &#34;scroll_up&#34;}
             lower = {&#34;@click&#34;: &#34;scroll_down&#34;}
@@ -166,14 +159,14 @@ class ScrollBarRender:
 
             if start_index &lt; len(segments):
                 segments[start_index] = _Segment(
-                    bars[7 - start_bar] * width_thickness,
+                    bars[8 - start_bar] * width_thickness,
                     _Style(bgcolor=back, color=bar, meta=foreground_meta)
                     if vertical
                     else _Style(bgcolor=bar, color=back, meta=foreground_meta),
                 )
             if end_index &lt; len(segments):
                 segments[end_index] = _Segment(
-                    bars[7 - end_bar] * width_thickness,
+                    bars[8 - end_bar] * width_thickness,
                     _Style(bgcolor=bar, color=back, meta=foreground_meta)
                     if vertical
                     else _Style(bgcolor=back, color=bar, meta=foreground_meta),
@@ -324,6 +317,7 @@ class ScrollBarCorner(Widget):
         super().__init__(name=name)
 
     def render(self) -&gt; RenderableType:
+        assert self.parent is not None
         styles = self.parent.styles
         color = styles.scrollbar_corner_color
         return Blank(color)
@@ -685,6 +679,7 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_class" href="dom.html#textual.dom.DOMNode.set_class">set_class</a></code></li>
 <li><code><a title="textual.widget.Widget.set_interval" href="message_pump.html#textual.message_pump.MessagePump.set_interval">set_interval</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
@@ -728,6 +723,7 @@ should they both be present.</p></div>
         super().__init__(name=name)
 
     def render(self) -&gt; RenderableType:
+        assert self.parent is not None
         styles = self.parent.styles
         color = styles.scrollbar_corner_color
         return Blank(color)</code></pre>
@@ -857,6 +853,7 @@ should they both be present.</p></div>
 <li><code><a title="textual.widget.Widget.scrollbar_size_horizontal" href="widget.html#textual.widget.Widget.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbar_size_vertical" href="widget.html#textual.widget.Widget.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.widget.Widget.scrollbars_enabled" href="widget.html#textual.widget.Widget.scrollbars_enabled">scrollbars_enabled</a></code></li>
+<li><code><a title="textual.widget.Widget.set_class" href="dom.html#textual.dom.DOMNode.set_class">set_class</a></code></li>
 <li><code><a title="textual.widget.Widget.set_interval" href="message_pump.html#textual.message_pump.MessagePump.set_interval">set_interval</a></code></li>
 <li><code><a title="textual.widget.Widget.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
@@ -915,7 +912,6 @@ should they both be present.</p></div>
         virtual_size: float = 50,
         window_size: float = 20,
         position: float = 0,
-        ascii_only: bool = False,
         thickness: int = 1,
         vertical: bool = True,
         back_color: Color = Color.parse(&#34;#555555&#34;),
@@ -923,15 +919,9 @@ should they both be present.</p></div>
     ) -&gt; Segments:
 
         if vertical:
-            if ascii_only:
-                bars = [&#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;]
-            else:
-                bars = [&#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;]
+            bars = [&#34; &#34;, &#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;]
         else:
-            if ascii_only:
-                bars = [&#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;]
-            else:
-                bars = [&#34;█&#34;, &#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;]
+            bars = [&#34;█&#34;, &#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;, &#34; &#34;]
 
         back = back_color
         bar = bar_color
@@ -946,11 +936,11 @@ should they both be present.</p></div>
         if window_size and size and virtual_size and size != virtual_size:
             step_size = virtual_size / size
 
-            start = int(position / step_size * 8)
-            end = start + max(8, int(ceil(window_size / step_size * 8)))
+            start = int(position / step_size * 9)
+            end = start + max(9, int(ceil(window_size / step_size * 9)))
 
-            start_index, start_bar = divmod(start, 8)
-            end_index, end_bar = divmod(end, 8)
+            start_index, start_bar = divmod(start, 9)
+            end_index, end_bar = divmod(end, 9)
 
             upper = {&#34;@click&#34;: &#34;scroll_up&#34;}
             lower = {&#34;@click&#34;: &#34;scroll_down&#34;}
@@ -967,14 +957,14 @@ should they both be present.</p></div>
 
             if start_index &lt; len(segments):
                 segments[start_index] = _Segment(
-                    bars[7 - start_bar] * width_thickness,
+                    bars[8 - start_bar] * width_thickness,
                     _Style(bgcolor=back, color=bar, meta=foreground_meta)
                     if vertical
                     else _Style(bgcolor=bar, color=back, meta=foreground_meta),
                 )
             if end_index &lt; len(segments):
                 segments[end_index] = _Segment(
-                    bars[7 - end_bar] * width_thickness,
+                    bars[8 - end_bar] * width_thickness,
                     _Style(bgcolor=bar, color=back, meta=foreground_meta)
                     if vertical
                     else _Style(bgcolor=back, color=bar, meta=foreground_meta),
@@ -1018,7 +1008,7 @@ should they both be present.</p></div>
 <h3>Static methods</h3>
 <dl>
 <dt id="textual.scrollbar.ScrollBarRender.render_bar"><code class="name flex">
-<span>def <span class="ident">render_bar</span></span>(<span>size: int = 25, virtual_size: float = 50, window_size: float = 20, position: float = 0, ascii_only: bool = False, thickness: int = 1, vertical: bool = True, back_color: Color = Color('#555555', ColorType.TRUECOLOR, triplet=ColorTriplet(red=85, green=85, blue=85)), bar_color: Color = Color('bright_magenta', ColorType.STANDARD, number=13)) ‑> rich.segment.Segments</span>
+<span>def <span class="ident">render_bar</span></span>(<span>size: int = 25, virtual_size: float = 50, window_size: float = 20, position: float = 0, thickness: int = 1, vertical: bool = True, back_color: Color = Color('#555555', ColorType.TRUECOLOR, triplet=ColorTriplet(red=85, green=85, blue=85)), bar_color: Color = Color('bright_magenta', ColorType.STANDARD, number=13)) ‑> rich.segment.Segments</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1033,7 +1023,6 @@ def render_bar(
     virtual_size: float = 50,
     window_size: float = 20,
     position: float = 0,
-    ascii_only: bool = False,
     thickness: int = 1,
     vertical: bool = True,
     back_color: Color = Color.parse(&#34;#555555&#34;),
@@ -1041,15 +1030,9 @@ def render_bar(
 ) -&gt; Segments:
 
     if vertical:
-        if ascii_only:
-            bars = [&#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;, &#34;|&#34;]
-        else:
-            bars = [&#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;]
+        bars = [&#34; &#34;, &#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;]
     else:
-        if ascii_only:
-            bars = [&#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;, &#34;-&#34;]
-        else:
-            bars = [&#34;█&#34;, &#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;]
+        bars = [&#34;█&#34;, &#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;, &#34; &#34;]
 
     back = back_color
     bar = bar_color
@@ -1064,11 +1047,11 @@ def render_bar(
     if window_size and size and virtual_size and size != virtual_size:
         step_size = virtual_size / size
 
-        start = int(position / step_size * 8)
-        end = start + max(8, int(ceil(window_size / step_size * 8)))
+        start = int(position / step_size * 9)
+        end = start + max(9, int(ceil(window_size / step_size * 9)))
 
-        start_index, start_bar = divmod(start, 8)
-        end_index, end_bar = divmod(end, 8)
+        start_index, start_bar = divmod(start, 9)
+        end_index, end_bar = divmod(end, 9)
 
         upper = {&#34;@click&#34;: &#34;scroll_up&#34;}
         lower = {&#34;@click&#34;: &#34;scroll_down&#34;}
@@ -1085,14 +1068,14 @@ def render_bar(
 
         if start_index &lt; len(segments):
             segments[start_index] = _Segment(
-                bars[7 - start_bar] * width_thickness,
+                bars[8 - start_bar] * width_thickness,
                 _Style(bgcolor=back, color=bar, meta=foreground_meta)
                 if vertical
                 else _Style(bgcolor=bar, color=back, meta=foreground_meta),
             )
         if end_index &lt; len(segments):
             segments[end_index] = _Segment(
-                bars[7 - end_bar] * width_thickness,
+                bars[8 - end_bar] * width_thickness,
                 _Style(bgcolor=bar, color=back, meta=foreground_meta)
                 if vertical
                 else _Style(bgcolor=back, color=bar, meta=foreground_meta),

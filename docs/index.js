@@ -27,7 +27,7 @@ URLS=[
 "textual/layouts/horizontal.html",
 "textual/layouts/center.html",
 "textual/layouts/factory.html",
-"textual/layouts/grid.html",
+"textual/layouts/table.html",
 "textual/layouts/vertical.html",
 "textual/case.html",
 "textual/draw.html",
@@ -1191,6 +1191,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.set_class",
+"url":5,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.add_class",
 "url":5,
 "doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
@@ -1869,6 +1875,12 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBarCorner.has_class",
 "url":5,
 "doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.scrollbar.ScrollBarCorner.set_class",
+"url":5,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
 "func":1
 },
 {
@@ -2840,6 +2852,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.set_class",
+"url":5,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.add_class",
 "url":5,
 "doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
@@ -3166,6 +3184,12 @@ INDEX=[
 "ref":"textual.geometry.Region.expand",
 "url":14,
 "doc":"Increase the size of the region by adding a border. Args: size (tuple[int, int]): Additional width and height. Returns: Region: A new region.",
+"func":1
+},
+{
+"ref":"textual.geometry.Region.clip_size",
+"url":14,
+"doc":"Clip the size to fit within minimum values. Args: size (tuple[int, int]): Maximum width and height. Returns: Region: No region, not bigger than size.",
 "func":1
 },
 {
@@ -3916,6 +3940,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Container.set_class",
+"url":5,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
+"func":1
+},
+{
 "ref":"textual.layout.Container.add_class",
 "url":5,
 "doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
@@ -4599,6 +4629,12 @@ INDEX=[
 "ref":"textual.layout.Vertical.has_class",
 "url":5,
 "doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.layout.Vertical.set_class",
+"url":5,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
 "func":1
 },
 {
@@ -5288,6 +5324,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Horizontal.set_class",
+"url":5,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.add_class",
 "url":5,
 "doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
@@ -5974,6 +6016,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Center.set_class",
+"url":5,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
+"func":1
+},
+{
 "ref":"textual.layout.Center.add_class",
 "url":5,
 "doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
@@ -6333,6 +6381,12 @@ INDEX=[
 "ref":"textual.dom.DOMNode.has_class",
 "url":5,
 "doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.dom.DOMNode.set_class",
+"url":5,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
 "func":1
 },
 {
@@ -7196,6 +7250,12 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.has_class",
 "url":5,
 "doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.set_class",
+"url":5,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
 "func":1
 },
 {
@@ -8444,163 +8504,24 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layouts.grid",
+"ref":"textual.layouts.table",
 "url":28,
 "doc":""
 },
 {
-"ref":"textual.layouts.grid.GridOptions",
+"ref":"textual.layouts.table.TableLayout",
 "url":28,
-"doc":"GridOptions(name: 'str', size: 'int | None' = None, fraction: 'int' = 1, min_size: 'int' = 1, max_size: 'int | None' = None)"
+"doc":"Used to layout Widgets in to a table."
 },
 {
-"ref":"textual.layouts.grid.GridOptions.name",
+"ref":"textual.layouts.table.TableLayout.name",
 "url":28,
 "doc":""
 },
 {
-"ref":"textual.layouts.grid.GridOptions.size",
+"ref":"textual.layouts.table.TableLayout.arrange",
 "url":28,
-"doc":""
-},
-{
-"ref":"textual.layouts.grid.GridOptions.fraction",
-"url":28,
-"doc":""
-},
-{
-"ref":"textual.layouts.grid.GridOptions.min_size",
-"url":28,
-"doc":""
-},
-{
-"ref":"textual.layouts.grid.GridOptions.max_size",
-"url":28,
-"doc":""
-},
-{
-"ref":"textual.layouts.grid.GridArea",
-"url":28,
-"doc":"GridArea(col_start, col_end, row_start, row_end)"
-},
-{
-"ref":"textual.layouts.grid.GridArea.col_start",
-"url":28,
-"doc":"Alias for field number 0"
-},
-{
-"ref":"textual.layouts.grid.GridArea.col_end",
-"url":28,
-"doc":"Alias for field number 1"
-},
-{
-"ref":"textual.layouts.grid.GridArea.row_start",
-"url":28,
-"doc":"Alias for field number 2"
-},
-{
-"ref":"textual.layouts.grid.GridArea.row_end",
-"url":28,
-"doc":"Alias for field number 3"
-},
-{
-"ref":"textual.layouts.grid.GridLayout",
-"url":28,
-"doc":"Responsible for arranging Widgets in a view and rendering them."
-},
-{
-"ref":"textual.layouts.grid.GridLayout.name",
-"url":28,
-"doc":""
-},
-{
-"ref":"textual.layouts.grid.GridLayout.is_row_visible",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.is_column_visible",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.show_row",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.show_column",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.add_column",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.add_row",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.add_areas",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.set_gap",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.set_gutter",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.add_widget",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.place",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.set_repeat",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.set_align",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.get_widgets",
-"url":28,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.layouts.grid.GridLayout.arrange",
-"url":28,
-"doc":"Generate a map that associates widgets with their location on screen. Args: width (int): [description] height (int): [description] offset (Point, optional): [description]. Defaults to Point(0, 0). Returns: dict[Widget, OrderedRegion]: [description]",
+"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 },
 {
@@ -9503,6 +9424,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.css.query.DOMQuery.set_class",
+"url":44,
+"doc":"Set the given class name(s) according to a condition. Args: add (bool): Add the classes if True, otherwise remove them. Returns: DOMQuery: Self.",
+"func":1
+},
+{
 "ref":"textual.css.query.DOMQuery.add_class",
 "url":44,
 "doc":"Add the given class name(s) to nodes.",
@@ -9819,6 +9746,46 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.css.styles.RulesMap.table_size_rows",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.table_size_columns",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.table_gutter_horizontal",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.table_gutter_vertical",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.table_rows",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.table_columns",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.row_span",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.RulesMap.column_span",
+"url":46,
+"doc":""
+},
+{
 "ref":"textual.css.styles.RulesMap.text_align",
 "url":46,
 "doc":""
@@ -10112,6 +10079,46 @@ INDEX=[
 "ref":"textual.css.styles.StylesBase.content_align",
 "url":46,
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
+},
+{
+"ref":"textual.css.styles.StylesBase.table_rows",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.StylesBase.table_columns",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.StylesBase.table_size_columns",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.StylesBase.table_size_rows",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.StylesBase.table_gutter_horizontal",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.StylesBase.table_gutter_vertical",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.StylesBase.row_span",
+"url":46,
+"doc":""
+},
+{
+"ref":"textual.css.styles.StylesBase.column_span",
+"url":46,
+"doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.text_align",
@@ -14330,6 +14337,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.reactive.Reactive.var",
+"url":61,
+"doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
+"func":1
+},
+{
 "ref":"textual.reactive.Reactive.initialize_object",
 "url":61,
 "doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
@@ -14985,6 +14998,12 @@ INDEX=[
 "ref":"textual.screen.Screen.has_class",
 "url":5,
 "doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.screen.Screen.set_class",
+"url":5,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
 "func":1
 },
 {

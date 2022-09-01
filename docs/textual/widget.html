@@ -213,7 +213,7 @@ class Widget(DOMNode):
 
     @property
     def _allow_scroll(self) -&gt; bool:
-        &#34;&#34;&#34;Check if both axes may be scrolled.
+        &#34;&#34;&#34;Check if both axis may be scrolled.
 
         Returns:
             bool: True if horizontal and vertical scrolling is enabled.
@@ -1238,16 +1238,19 @@ class Widget(DOMNode):
             RenderableType: A new renderable.
         &#34;&#34;&#34;
 
+        text_justify = (
+            _get_rich_justify(self.styles.text_align)
+            if self.styles.has_rule(&#34;text_align&#34;)
+            else None
+        )
         if isinstance(renderable, str):
-            justify = _get_rich_justify(self.styles.text_align)
-            renderable = Text.from_markup(renderable, justify=justify)
+            renderable = Text.from_markup(renderable, justify=text_justify)
 
         rich_style = self.rich_style
         if isinstance(renderable, Text):
             renderable.stylize(rich_style)
-            if not renderable.justify:
-                justify = _get_rich_justify(self.styles.text_align)
-                renderable.justify = justify
+            if text_justify is not None and renderable.justify is None:
+                renderable.justify = text_justify
         else:
             renderable = Styled(renderable, rich_style)
 
@@ -1820,7 +1823,7 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def _allow_scroll(self) -&gt; bool:
-        &#34;&#34;&#34;Check if both axes may be scrolled.
+        &#34;&#34;&#34;Check if both axis may be scrolled.
 
         Returns:
             bool: True if horizontal and vertical scrolling is enabled.
@@ -2845,16 +2848,19 @@ def cursor_line(self) -&gt; int | None:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
 
+        text_justify = (
+            _get_rich_justify(self.styles.text_align)
+            if self.styles.has_rule(&#34;text_align&#34;)
+            else None
+        )
         if isinstance(renderable, str):
-            justify = _get_rich_justify(self.styles.text_align)
-            renderable = Text.from_markup(renderable, justify=justify)
+            renderable = Text.from_markup(renderable, justify=text_justify)
 
         rich_style = self.rich_style
         if isinstance(renderable, Text):
             renderable.stylize(rich_style)
-            if not renderable.justify:
-                justify = _get_rich_justify(self.styles.text_align)
-                renderable.justify = justify
+            if text_justify is not None and renderable.justify is None:
+                renderable.justify = text_justify
         else:
             renderable = Styled(renderable, rich_style)
 
@@ -4579,16 +4585,19 @@ the keys will be set as the Widget's id.</p>
         RenderableType: A new renderable.
     &#34;&#34;&#34;
 
+    text_justify = (
+        _get_rich_justify(self.styles.text_align)
+        if self.styles.has_rule(&#34;text_align&#34;)
+        else None
+    )
     if isinstance(renderable, str):
-        justify = _get_rich_justify(self.styles.text_align)
-        renderable = Text.from_markup(renderable, justify=justify)
+        renderable = Text.from_markup(renderable, justify=text_justify)
 
     rich_style = self.rich_style
     if isinstance(renderable, Text):
         renderable.stylize(rich_style)
-        if not renderable.justify:
-            justify = _get_rich_justify(self.styles.text_align)
-            renderable.justify = justify
+        if text_justify is not None and renderable.justify is None:
+            renderable.justify = text_justify
     else:
         renderable = Styled(renderable, rich_style)
 
@@ -5623,6 +5632,7 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.dom.DOMNode.set_class" href="dom.html#textual.dom.DOMNode.set_class">set_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_interval" href="message_pump.html#textual.message_pump.MessagePump.set_interval">set_interval</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_styles" href="dom.html#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>

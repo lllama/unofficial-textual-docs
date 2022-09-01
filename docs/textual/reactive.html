@@ -103,6 +103,21 @@ class Reactive(Generic[ReactiveType]):
         return cls(default, layout=layout, repaint=repaint, init=True)
 
     @classmethod
+    def var(
+        cls,
+        default: ReactiveType | Callable[[], ReactiveType],
+    ) -&gt; Reactive:
+        &#34;&#34;&#34;A reactive variable that doesn&#39;t update or layout.
+
+        Args:
+            default (ReactiveType | Callable[[], ReactiveType]):  A default value or callable that returns a default.
+
+        Returns:
+            Reactive: A Reactive descriptor.
+        &#34;&#34;&#34;
+        return cls(default, layout=False, repaint=False, init=True)
+
+    @classmethod
     async def initialize_object(cls, obj: object) -&gt; None:
         &#34;&#34;&#34;Call any watchers / computes for the first time.
 
@@ -316,6 +331,21 @@ def watch(
             Reactive: A Reactive instance which calls watchers or initialize.
         &#34;&#34;&#34;
         return cls(default, layout=layout, repaint=repaint, init=True)
+
+    @classmethod
+    def var(
+        cls,
+        default: ReactiveType | Callable[[], ReactiveType],
+    ) -&gt; Reactive:
+        &#34;&#34;&#34;A reactive variable that doesn&#39;t update or layout.
+
+        Args:
+            default (ReactiveType | Callable[[], ReactiveType]):  A default value or callable that returns a default.
+
+        Returns:
+            Reactive: A Reactive descriptor.
+        &#34;&#34;&#34;
+        return cls(default, layout=False, repaint=False, init=True)
 
     @classmethod
     async def initialize_object(cls, obj: object) -&gt; None:
@@ -571,6 +601,39 @@ async def initialize_object(cls, obj: object) -&gt; None:
             setattr(obj, name, default() if callable(default) else default)</code></pre>
 </details>
 </dd>
+<dt id="textual.reactive.Reactive.var"><code class="name flex">
+<span>def <span class="ident">var</span></span>(<span>default: ReactiveType | Callable[[], ReactiveType]) ‑> <a title="textual.reactive.Reactive" href="#textual.reactive.Reactive">Reactive</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>A reactive variable that doesn't update or layout.</p>
+<h2 id="args">Args</h2>
+<p>default (ReactiveType | Callable[[], ReactiveType]):
+A default value or callable that returns a default.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.reactive.Reactive" href="#textual.reactive.Reactive">Reactive</a></code></dt>
+<dd>A Reactive descriptor.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def var(
+    cls,
+    default: ReactiveType | Callable[[], ReactiveType],
+) -&gt; Reactive:
+    &#34;&#34;&#34;A reactive variable that doesn&#39;t update or layout.
+
+    Args:
+        default (ReactiveType | Callable[[], ReactiveType]):  A default value or callable that returns a default.
+
+    Returns:
+        Reactive: A Reactive descriptor.
+    &#34;&#34;&#34;
+    return cls(default, layout=False, repaint=False, init=True)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -647,6 +710,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.reactive.Reactive.compute" href="#textual.reactive.Reactive.compute">compute</a></code></li>
 <li><code><a title="textual.reactive.Reactive.init" href="#textual.reactive.Reactive.init">init</a></code></li>
 <li><code><a title="textual.reactive.Reactive.initialize_object" href="#textual.reactive.Reactive.initialize_object">initialize_object</a></code></li>
+<li><code><a title="textual.reactive.Reactive.var" href="#textual.reactive.Reactive.var">var</a></code></li>
 </ul>
 </li>
 </ul>

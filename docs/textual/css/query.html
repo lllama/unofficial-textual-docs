@@ -286,6 +286,19 @@ class DOMQuery:
                 if isinstance(node, filter_type):
                     yield node
 
+    def set_class(self, add: bool, *class_names: str) -&gt; DOMQuery:
+        &#34;&#34;&#34;Set the given class name(s) according to a condition.
+
+        Args:
+            add (bool): Add the classes if True, otherwise remove them.
+
+        Returns:
+            DOMQuery: Self.
+        &#34;&#34;&#34;
+        for node in self:
+            node.set_class(add, *class_names)
+        return self
+
     def add_class(self, *class_names: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Add the given class name(s) to nodes.&#34;&#34;&#34;
         for node in self:
@@ -571,6 +584,19 @@ class DOMQuery:
             for node in self:
                 if isinstance(node, filter_type):
                     yield node
+
+    def set_class(self, add: bool, *class_names: str) -&gt; DOMQuery:
+        &#34;&#34;&#34;Set the given class name(s) according to a condition.
+
+        Args:
+            add (bool): Add the classes if True, otherwise remove them.
+
+        Returns:
+            DOMQuery: Self.
+        &#34;&#34;&#34;
+        for node in self:
+            node.set_class(add, *class_names)
+        return self
 
     def add_class(self, *class_names: str) -&gt; DOMQuery:
         &#34;&#34;&#34;Add the given class name(s) to nodes.&#34;&#34;&#34;
@@ -956,6 +982,39 @@ or None for no filter. Defaults to None.</p>
                 yield node</code></pre>
 </details>
 </dd>
+<dt id="textual.css.query.DOMQuery.set_class"><code class="name flex">
+<span>def <span class="ident">set_class</span></span>(<span>self, add: bool, *class_names: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the given class name(s) according to a condition.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>add</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Add the classes if True, otherwise remove them.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></code></dt>
+<dd>Self.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_class(self, add: bool, *class_names: str) -&gt; DOMQuery:
+    &#34;&#34;&#34;Set the given class name(s) according to a condition.
+
+    Args:
+        add (bool): Add the classes if True, otherwise remove them.
+
+    Returns:
+        DOMQuery: Self.
+    &#34;&#34;&#34;
+    for node in self:
+        node.set_class(add, *class_names)
+    return self</code></pre>
+</details>
+</dd>
 <dt id="textual.css.query.DOMQuery.set_styles"><code class="name flex">
 <span>def <span class="ident">set_styles</span></span>(<span>self, css: str | None = None, **update_styles) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
 </code></dt>
@@ -1150,6 +1209,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.query.DOMQuery.remove" href="#textual.css.query.DOMQuery.remove">remove</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.remove_class" href="#textual.css.query.DOMQuery.remove_class">remove_class</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.results" href="#textual.css.query.DOMQuery.results">results</a></code></li>
+<li><code><a title="textual.css.query.DOMQuery.set_class" href="#textual.css.query.DOMQuery.set_class">set_class</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.set_styles" href="#textual.css.query.DOMQuery.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.css.query.DOMQuery.toggle_class" href="#textual.css.query.DOMQuery.toggle_class">toggle_class</a></code></li>
 </ul>

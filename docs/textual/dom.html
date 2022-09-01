@@ -733,6 +733,17 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         return self._classes.issuperset(class_names)
 
+    def set_class(self, add: bool, *class_names: str) -&gt; None:
+        &#34;&#34;&#34;Add or remove class(es) based on a condition.
+
+        Args:
+            add (bool):  Add the classes if True, otherwise remove them.
+        &#34;&#34;&#34;
+        if add:
+            self.add_class(*class_names)
+        else:
+            self.remove_class(*class_names)
+
     def add_class(self, *class_names: str) -&gt; None:
         &#34;&#34;&#34;Add class names to this Node.
 
@@ -1485,6 +1496,17 @@ class DOMNode(MessagePump):
             bool: ``True`` if the node has all the given class names, otherwise ``False``.
         &#34;&#34;&#34;
         return self._classes.issuperset(class_names)
+
+    def set_class(self, add: bool, *class_names: str) -&gt; None:
+        &#34;&#34;&#34;Add or remove class(es) based on a condition.
+
+        Args:
+            add (bool):  Add the classes if True, otherwise remove them.
+        &#34;&#34;&#34;
+        if add:
+            self.add_class(*class_names)
+        else:
+            self.remove_class(*class_names)
 
     def add_class(self, *class_names: str) -&gt; None:
         &#34;&#34;&#34;Add class names to this Node.
@@ -2387,6 +2409,32 @@ and inherited from base classes.</dd>
             node._layout_required = True</code></pre>
 </details>
 </dd>
+<dt id="textual.dom.DOMNode.set_class"><code class="name flex">
+<span>def <span class="ident">set_class</span></span>(<span>self, add: bool, *class_names: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Add or remove class(es) based on a condition.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>add</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Add the classes if True, otherwise remove them.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_class(self, add: bool, *class_names: str) -&gt; None:
+    &#34;&#34;&#34;Add or remove class(es) based on a condition.
+
+    Args:
+        add (bool):  Add the classes if True, otherwise remove them.
+    &#34;&#34;&#34;
+    if add:
+        self.add_class(*class_names)
+    else:
+        self.remove_class(*class_names)</code></pre>
+</details>
+</dd>
 <dt id="textual.dom.DOMNode.set_styles"><code class="name flex">
 <span>def <span class="ident">set_styles</span></span>(<span>self, css: str | None = None, **update_styles) ‑> None</span>
 </code></dt>
@@ -2662,6 +2710,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.reset_styles" href="#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.rich_style" href="#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.screen" href="#textual.dom.DOMNode.screen">screen</a></code></li>
+<li><code><a title="textual.dom.DOMNode.set_class" href="#textual.dom.DOMNode.set_class">set_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.set_styles" href="#textual.dom.DOMNode.set_styles">set_styles</a></code></li>
 <li><code><a title="textual.dom.DOMNode.text_style" href="#textual.dom.DOMNode.text_style">text_style</a></code></li>
 <li><code><a title="textual.dom.DOMNode.toggle_class" href="#textual.dom.DOMNode.toggle_class">toggle_class</a></code></li>

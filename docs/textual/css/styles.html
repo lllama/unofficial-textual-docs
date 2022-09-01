@@ -55,6 +55,7 @@ from ._style_properties import (
     NameListProperty,
     NameProperty,
     OffsetProperty,
+    ScalarListProperty,
     ScalarProperty,
     SpacingProperty,
     StringEnumProperty,
@@ -172,6 +173,16 @@ class RulesMap(TypedDict, total=False):
     content_align_horizontal: AlignHorizontal
     content_align_vertical: AlignVertical
 
+    table_size_rows: int
+    table_size_columns: int
+    table_gutter_horizontal: int
+    table_gutter_vertical: int
+    table_rows: tuple[Scalar, ...]
+    table_columns: tuple[Scalar, ...]
+
+    row_span: int
+    column_span: int
+
     text_align: TextAlign
 
 
@@ -280,6 +291,17 @@ class StylesBase(ABC):
     content_align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     content_align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
     content_align = AlignProperty()
+
+    table_rows = ScalarListProperty()
+    table_columns = ScalarListProperty()
+
+    table_size_columns = IntegerProperty(default=1, layout=True)
+    table_size_rows = IntegerProperty(default=0, layout=True)
+    table_gutter_horizontal = IntegerProperty(default=0, layout=True)
+    table_gutter_vertical = IntegerProperty(default=0, layout=True)
+
+    row_span = IntegerProperty(default=1, layout=True)
+    column_span = IntegerProperty(default=1, layout=True)
 
     text_align = StringEnumProperty(VALID_TEXT_ALIGN, &#34;start&#34;)
 
@@ -808,6 +830,30 @@ class Styles(StylesBase):
             )
         elif has_rule(&#34;content_align_vertical&#34;):
             append_declaration(&#34;content-align-vertical&#34;, self.content_align_vertical)
+        elif has_rule(&#34;table_columns&#34;):
+            append_declaration(
+                &#34;table-columns&#34;,
+                &#34; &#34;.join(str(scalar) for scalar in self.table_columns or ()),
+            )
+        elif has_rule(&#34;table_rows&#34;):
+            append_declaration(
+                &#34;table-rows&#34;,
+                &#34; &#34;.join(str(scalar) for scalar in self.table_rows or ()),
+            )
+        elif has_rule(&#34;table_size_columns&#34;):
+            append_declaration(&#34;table-size-columns&#34;, str(self.table_size_columns))
+        elif has_rule(&#34;table_size_rows&#34;):
+            append_declaration(&#34;table-size-rows&#34;, str(self.table_size_rows))
+        elif has_rule(&#34;table_gutter_horizontal&#34;):
+            append_declaration(
+                &#34;table-gutter-horizontal&#34;, str(self.table_gutter_horizontal)
+            )
+        elif has_rule(&#34;table_gutter_vertical&#34;):
+            append_declaration(&#34;table-gutter-vertical&#34;, str(self.table_gutter_vertical))
+        elif has_rule(&#34;row_span&#34;):
+            append_declaration(&#34;row-span&#34;, str(self.row_span))
+        elif has_rule(&#34;column_span&#34;):
+            append_declaration(&#34;column-span&#34;, str(self.column_span))
 
         lines.sort()
         return lines
@@ -1325,6 +1371,16 @@ def rich_style(self) -&gt; Style:
     content_align_horizontal: AlignHorizontal
     content_align_vertical: AlignVertical
 
+    table_size_rows: int
+    table_size_columns: int
+    table_gutter_horizontal: int
+    table_gutter_vertical: int
+    table_rows: tuple[Scalar, ...]
+    table_columns: tuple[Scalar, ...]
+
+    row_span: int
+    column_span: int
+
     text_align: TextAlign</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1366,6 +1422,10 @@ def rich_style(self) -&gt; Style:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.styles.RulesMap.color"><code class="name">var <span class="ident">color</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.column_span"><code class="name">var <span class="ident">column_span</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1461,6 +1521,10 @@ def rich_style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.css.styles.RulesMap.row_span"><code class="name">var <span class="ident">row_span</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.css.styles.RulesMap.scrollbar_background"><code class="name">var <span class="ident">scrollbar_background</span> : Color</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1498,6 +1562,30 @@ def rich_style(self) -&gt; Style:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.styles.RulesMap.scrollbar_size_vertical"><code class="name">var <span class="ident">scrollbar_size_vertical</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.table_columns"><code class="name">var <span class="ident">table_columns</span> : tuple[Scalar, ...]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.table_gutter_horizontal"><code class="name">var <span class="ident">table_gutter_horizontal</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.table_gutter_vertical"><code class="name">var <span class="ident">table_gutter_vertical</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.table_rows"><code class="name">var <span class="ident">table_rows</span> : tuple[Scalar, ...]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.table_size_columns"><code class="name">var <span class="ident">table_size_columns</span> : int</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.table_size_rows"><code class="name">var <span class="ident">table_size_rows</span> : int</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1854,6 +1942,30 @@ def rich_style(self) -&gt; Style:
             )
         elif has_rule(&#34;content_align_vertical&#34;):
             append_declaration(&#34;content-align-vertical&#34;, self.content_align_vertical)
+        elif has_rule(&#34;table_columns&#34;):
+            append_declaration(
+                &#34;table-columns&#34;,
+                &#34; &#34;.join(str(scalar) for scalar in self.table_columns or ()),
+            )
+        elif has_rule(&#34;table_rows&#34;):
+            append_declaration(
+                &#34;table-rows&#34;,
+                &#34; &#34;.join(str(scalar) for scalar in self.table_rows or ()),
+            )
+        elif has_rule(&#34;table_size_columns&#34;):
+            append_declaration(&#34;table-size-columns&#34;, str(self.table_size_columns))
+        elif has_rule(&#34;table_size_rows&#34;):
+            append_declaration(&#34;table-size-rows&#34;, str(self.table_size_rows))
+        elif has_rule(&#34;table_gutter_horizontal&#34;):
+            append_declaration(
+                &#34;table-gutter-horizontal&#34;, str(self.table_gutter_horizontal)
+            )
+        elif has_rule(&#34;table_gutter_vertical&#34;):
+            append_declaration(&#34;table-gutter-vertical&#34;, str(self.table_gutter_vertical))
+        elif has_rule(&#34;row_span&#34;):
+            append_declaration(&#34;row-span&#34;, str(self.row_span))
+        elif has_rule(&#34;column_span&#34;):
+            append_declaration(&#34;column-span&#34;, str(self.column_span))
 
         lines.sort()
         return lines
@@ -2021,6 +2133,30 @@ def css_lines(self) -&gt; list[str]:
         )
     elif has_rule(&#34;content_align_vertical&#34;):
         append_declaration(&#34;content-align-vertical&#34;, self.content_align_vertical)
+    elif has_rule(&#34;table_columns&#34;):
+        append_declaration(
+            &#34;table-columns&#34;,
+            &#34; &#34;.join(str(scalar) for scalar in self.table_columns or ()),
+        )
+    elif has_rule(&#34;table_rows&#34;):
+        append_declaration(
+            &#34;table-rows&#34;,
+            &#34; &#34;.join(str(scalar) for scalar in self.table_rows or ()),
+        )
+    elif has_rule(&#34;table_size_columns&#34;):
+        append_declaration(&#34;table-size-columns&#34;, str(self.table_size_columns))
+    elif has_rule(&#34;table_size_rows&#34;):
+        append_declaration(&#34;table-size-rows&#34;, str(self.table_size_rows))
+    elif has_rule(&#34;table_gutter_horizontal&#34;):
+        append_declaration(
+            &#34;table-gutter-horizontal&#34;, str(self.table_gutter_horizontal)
+        )
+    elif has_rule(&#34;table_gutter_vertical&#34;):
+        append_declaration(&#34;table-gutter-vertical&#34;, str(self.table_gutter_vertical))
+    elif has_rule(&#34;row_span&#34;):
+        append_declaration(&#34;row-span&#34;, str(self.row_span))
+    elif has_rule(&#34;column_span&#34;):
+        append_declaration(&#34;column-span&#34;, str(self.column_span))
 
     lines.sort()
     return lines</code></pre>
@@ -2309,6 +2445,17 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
     content_align_horizontal = StringEnumProperty(VALID_ALIGN_HORIZONTAL, &#34;left&#34;)
     content_align_vertical = StringEnumProperty(VALID_ALIGN_VERTICAL, &#34;top&#34;)
     content_align = AlignProperty()
+
+    table_rows = ScalarListProperty()
+    table_columns = ScalarListProperty()
+
+    table_size_columns = IntegerProperty(default=1, layout=True)
+    table_size_rows = IntegerProperty(default=0, layout=True)
+    table_gutter_horizontal = IntegerProperty(default=0, layout=True)
+    table_gutter_vertical = IntegerProperty(default=0, layout=True)
+
+    row_span = IntegerProperty(default=1, layout=True)
+    column_span = IntegerProperty(default=1, layout=True)
 
     text_align = StringEnumProperty(VALID_TEXT_ALIGN, &#34;start&#34;)
 
@@ -2896,6 +3043,19 @@ value belongs in the set of valid values.</p></div>
         Color: The Color
     &#34;&#34;&#34;
     return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.column_span"><code class="name">var <span class="ident">column_span</span> : PropertyGetType</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.content_align"><code class="name">var <span class="ident">content_align</span> : tuple[AlignHorizontal, AlignVertical]</code></dt>
@@ -3494,6 +3654,19 @@ value belongs in the set of valid values.</p></div>
     return obj.get_rule(self.name, NULL_SPACING)</code></pre>
 </details>
 </dd>
+<dt id="textual.css.styles.StylesBase.row_span"><code class="name">var <span class="ident">row_span</span> : PropertyGetType</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.StylesBase.scrollbar_background"><code class="name">var <span class="ident">scrollbar_background</span> : Color</code></dt>
 <dd>
 <div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
@@ -3683,6 +3856,86 @@ value belongs in the set of valid values.</p></div>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.scrollbar_size_vertical"><code class="name">var <span class="ident">scrollbar_size_vertical</span> : PropertyGetType</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.table_columns"><code class="name">var <span class="ident">table_columns</span> : tuple[Scalar, ...] | None</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[Scalar, ...] | None:
+    value = obj.get_rule(self.name)
+    return value</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.table_gutter_horizontal"><code class="name">var <span class="ident">table_gutter_horizontal</span> : PropertyGetType</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.table_gutter_vertical"><code class="name">var <span class="ident">table_gutter_vertical</span> : PropertyGetType</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.table_rows"><code class="name">var <span class="ident">table_rows</span> : tuple[Scalar, ...] | None</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; tuple[Scalar, ...] | None:
+    value = obj.get_rule(self.name)
+    return value</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.table_size_columns"><code class="name">var <span class="ident">table_size_columns</span> : PropertyGetType</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.table_size_rows"><code class="name">var <span class="ident">table_size_rows</span> : PropertyGetType</code></dt>
 <dd>
 <div class="desc"></div>
 <details class="source">
@@ -4319,6 +4572,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.border_top" href="#textual.css.styles.RulesMap.border_top">border_top</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.box_sizing" href="#textual.css.styles.RulesMap.box_sizing">box_sizing</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.color" href="#textual.css.styles.RulesMap.color">color</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.column_span" href="#textual.css.styles.RulesMap.column_span">column_span</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.content_align_horizontal" href="#textual.css.styles.RulesMap.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.content_align_vertical" href="#textual.css.styles.RulesMap.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.display" href="#textual.css.styles.RulesMap.display">display</a></code></li>
@@ -4342,6 +4596,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.overflow_x" href="#textual.css.styles.RulesMap.overflow_x">overflow_x</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.overflow_y" href="#textual.css.styles.RulesMap.overflow_y">overflow_y</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.padding" href="#textual.css.styles.RulesMap.padding">padding</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.row_span" href="#textual.css.styles.RulesMap.row_span">row_span</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_background" href="#textual.css.styles.RulesMap.scrollbar_background">scrollbar_background</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_background_active" href="#textual.css.styles.RulesMap.scrollbar_background_active">scrollbar_background_active</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_background_hover" href="#textual.css.styles.RulesMap.scrollbar_background_hover">scrollbar_background_hover</a></code></li>
@@ -4352,6 +4607,12 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_gutter" href="#textual.css.styles.RulesMap.scrollbar_gutter">scrollbar_gutter</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_size_horizontal" href="#textual.css.styles.RulesMap.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.scrollbar_size_vertical" href="#textual.css.styles.RulesMap.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.table_columns" href="#textual.css.styles.RulesMap.table_columns">table_columns</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.table_gutter_horizontal" href="#textual.css.styles.RulesMap.table_gutter_horizontal">table_gutter_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.table_gutter_vertical" href="#textual.css.styles.RulesMap.table_gutter_vertical">table_gutter_vertical</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.table_rows" href="#textual.css.styles.RulesMap.table_rows">table_rows</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.table_size_columns" href="#textual.css.styles.RulesMap.table_size_columns">table_size_columns</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.table_size_rows" href="#textual.css.styles.RulesMap.table_size_rows">table_size_rows</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.text_align" href="#textual.css.styles.RulesMap.text_align">text_align</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.text_style" href="#textual.css.styles.RulesMap.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.tint" href="#textual.css.styles.RulesMap.tint">tint</a></code></li>
@@ -4392,6 +4653,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.box_sizing" href="#textual.css.styles.StylesBase.box_sizing">box_sizing</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.clear_rule" href="#textual.css.styles.StylesBase.clear_rule">clear_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.color" href="#textual.css.styles.StylesBase.color">color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.column_span" href="#textual.css.styles.StylesBase.column_span">column_span</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align" href="#textual.css.styles.StylesBase.content_align">content_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_horizontal" href="#textual.css.styles.StylesBase.content_align_horizontal">content_align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
@@ -4430,6 +4692,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.parse" href="#textual.css.styles.StylesBase.parse">parse</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.refresh" href="#textual.css.styles.StylesBase.refresh">refresh</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.reset" href="#textual.css.styles.StylesBase.reset">reset</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.row_span" href="#textual.css.styles.StylesBase.row_span">row_span</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background" href="#textual.css.styles.StylesBase.scrollbar_background">scrollbar_background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background_active" href="#textual.css.styles.StylesBase.scrollbar_background_active">scrollbar_background_active</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_background_hover" href="#textual.css.styles.StylesBase.scrollbar_background_hover">scrollbar_background_hover</a></code></li>
@@ -4441,6 +4704,12 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_size_horizontal" href="#textual.css.styles.StylesBase.scrollbar_size_horizontal">scrollbar_size_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.scrollbar_size_vertical" href="#textual.css.styles.StylesBase.scrollbar_size_vertical">scrollbar_size_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.set_rule" href="#textual.css.styles.StylesBase.set_rule">set_rule</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.table_columns" href="#textual.css.styles.StylesBase.table_columns">table_columns</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.table_gutter_horizontal" href="#textual.css.styles.StylesBase.table_gutter_horizontal">table_gutter_horizontal</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.table_gutter_vertical" href="#textual.css.styles.StylesBase.table_gutter_vertical">table_gutter_vertical</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.table_rows" href="#textual.css.styles.StylesBase.table_rows">table_rows</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.table_size_columns" href="#textual.css.styles.StylesBase.table_size_columns">table_size_columns</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.table_size_rows" href="#textual.css.styles.StylesBase.table_size_rows">table_size_rows</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_align" href="#textual.css.styles.StylesBase.text_align">text_align</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.text_style" href="#textual.css.styles.StylesBase.text_style">text_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.tint" href="#textual.css.styles.StylesBase.tint">tint</a></code></li>
