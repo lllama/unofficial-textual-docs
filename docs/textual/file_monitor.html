@@ -26,8 +26,7 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from __future__ import annotations
-import os
+<pre><code class="python">import os
 from pathlib import PurePath
 from typing import Callable
 
@@ -40,7 +39,7 @@ from ._callback import invoke
 class FileMonitor:
     &#34;&#34;&#34;Monitors a file for changes and invokes a callback when it does.&#34;&#34;&#34;
 
-    def __init__(self, path: str | PurePath, callback: Callable) -&gt; None:
+    def __init__(self, path: PurePath, callback: Callable) -&gt; None:
         self.path = path
         self.callback = callback
         self._modified = self._get_modified()
@@ -76,7 +75,7 @@ class FileMonitor:
 <dl>
 <dt id="textual.file_monitor.FileMonitor"><code class="flex name class">
 <span>class <span class="ident">FileMonitor</span></span>
-<span>(</span><span>path: str | PurePath, callback: Callable)</span>
+<span>(</span><span>path: pathlib.PurePath, callback: Callable)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Monitors a file for changes and invokes a callback when it does.</p></div>
@@ -87,7 +86,7 @@ class FileMonitor:
 <pre><code class="python">class FileMonitor:
     &#34;&#34;&#34;Monitors a file for changes and invokes a callback when it does.&#34;&#34;&#34;
 
-    def __init__(self, path: str | PurePath, callback: Callable) -&gt; None:
+    def __init__(self, path: PurePath, callback: Callable) -&gt; None:
         self.path = path
         self.callback = callback
         self._modified = self._get_modified()

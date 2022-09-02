@@ -53,8 +53,8 @@ URLS=[
 "textual/renderables/align.html",
 "textual/renderables/gradient.html",
 "textual/renderables/sparkline.html",
+"textual/renderables/text_opacity.html",
 "textual/renderables/underline_bar.html",
-"textual/renderables/opacity.html",
 "textual/renderables/blank.html",
 "textual/renderables/tint.html",
 "textual/events.html",
@@ -9546,6 +9546,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.css.styles.RulesMap.text_opacity",
+"url":46,
+"doc":""
+},
+{
 "ref":"textual.css.styles.RulesMap.padding",
 "url":46,
 "doc":""
@@ -9857,6 +9862,11 @@ INDEX=[
 },
 {
 "ref":"textual.css.styles.StylesBase.opacity",
+"url":46,
+"doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
+},
+{
+"ref":"textual.css.styles.StylesBase.text_opacity",
 "url":46,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
@@ -10358,6 +10368,11 @@ INDEX=[
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
 {
+"ref":"textual.css.styles.Styles.text_opacity",
+"url":46,
+"doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
+},
+{
 "ref":"textual.css.styles.Styles.padding",
 "url":46,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
@@ -10729,6 +10744,11 @@ INDEX=[
 },
 {
 "ref":"textual.css.styles.RenderStyles.opacity",
+"url":46,
+"doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
+},
+{
+"ref":"textual.css.styles.RenderStyles.text_opacity",
 "url":46,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
@@ -11518,30 +11538,30 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.renderables.underline_bar",
+"ref":"textual.renderables.text_opacity",
 "url":54,
+"doc":""
+},
+{
+"ref":"textual.renderables.text_opacity.TextOpacity",
+"url":54,
+"doc":"Blend foreground in to background. Wrap a renderable to blend foreground color into the background color. Args: renderable (RenderableType): The RenderableType to manipulate. opacity (float): The opacity as a float. A value of 1.0 means text is fully visible."
+},
+{
+"ref":"textual.renderables.text_opacity.TextOpacity.process_segments",
+"url":54,
+"doc":"Apply opacity to segments. Args: segments (Iterable[Segment]): Incoming segments. opacity (float): Opacity to apply. Returns: Iterable[Segment]: Segments with applied opacity.",
+"func":1
+},
+{
+"ref":"textual.renderables.underline_bar",
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.renderables.underline_bar.UnderlineBar",
-"url":54,
+"url":55,
 "doc":"Thin horizontal bar with a portion highlighted. Args: highlight_range (tuple[float, float]): The range to highlight. Defaults to  (0, 0) (no highlight) highlight_style (StyleType): The style of the highlighted range of the bar. background_style (StyleType): The style of the non-highlighted range(s) of the bar. width (int, optional): The width of the bar, or  None to fill available width."
-},
-{
-"ref":"textual.renderables.opacity",
-"url":55,
-"doc":""
-},
-{
-"ref":"textual.renderables.opacity.Opacity",
-"url":55,
-"doc":"Blend foreground in to background. Wrap a renderable to blend foreground color into the background color. Args: renderable (RenderableType): The RenderableType to manipulate. opacity (float): The opacity as a float. A value of 1.0 means text is fully visible."
-},
-{
-"ref":"textual.renderables.opacity.Opacity.process_segments",
-"url":55,
-"doc":"Apply opacity to segments. Args: segments (Iterable[Segment]): Incoming segments. opacity (float): Opacity to apply. Returns: Iterable[Segment]: Segments with applied opacity.",
-"func":1
 },
 {
 "ref":"textual.renderables.blank",
