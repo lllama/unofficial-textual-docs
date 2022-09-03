@@ -57,7 +57,7 @@ UPDATE_PERIOD: Final = 1 / 60
 class Screen(Widget):
     &#34;&#34;&#34;A widget for the root of the app.&#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     Screen {
         layout: vertical;
         overflow-y: auto;
@@ -246,7 +246,7 @@ class Screen(Widget):
                         )
                     )
         except Exception as error:
-            self.app.on_exception(error)
+            self.app._handle_exception(error)
             return
         display_update = self._compositor.render(full=full)
         if display_update is not None:
@@ -305,9 +305,9 @@ class Screen(Widget):
                 style=event.style,
             )
             mouse_event.set_forwarded()
-            await widget.forward_event(mouse_event)
+            await widget._forward_event(mouse_event)
 
-    async def forward_event(self, event: events.Event) -&gt; None:
+    async def _forward_event(self, event: events.Event) -&gt; None:
         if event.is_forwarded:
             return
         event.set_forwarded()
@@ -335,7 +335,7 @@ class Screen(Widget):
                     event.set_forwarded()
                     await self.post_message(event)
                 else:
-                    await widget.forward_event(event.offset(-region.x, -region.y))
+                    await widget._forward_event(event.offset(-region.x, -region.y))
 
         elif isinstance(event, (events.MouseScrollDown, events.MouseScrollUp)):
             try:
@@ -347,7 +347,7 @@ class Screen(Widget):
                 if scroll_widget is self:
                     await self.post_message(event)
                 else:
-                    await scroll_widget.forward_event(event)
+                    await scroll_widget._forward_event(event)
         else:
             await self.post_message(event)</code></pre>
 </details>
@@ -374,7 +374,7 @@ class Screen(Widget):
 <pre><code class="python">class Screen(Widget):
     &#34;&#34;&#34;A widget for the root of the app.&#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     Screen {
         layout: vertical;
         overflow-y: auto;
@@ -563,7 +563,7 @@ class Screen(Widget):
                         )
                     )
         except Exception as error:
-            self.app.on_exception(error)
+            self.app._handle_exception(error)
             return
         display_update = self._compositor.render(full=full)
         if display_update is not None:
@@ -622,9 +622,9 @@ class Screen(Widget):
                 style=event.style,
             )
             mouse_event.set_forwarded()
-            await widget.forward_event(mouse_event)
+            await widget._forward_event(mouse_event)
 
-    async def forward_event(self, event: events.Event) -&gt; None:
+    async def _forward_event(self, event: events.Event) -&gt; None:
         if event.is_forwarded:
             return
         event.set_forwarded()
@@ -652,7 +652,7 @@ class Screen(Widget):
                     event.set_forwarded()
                     await self.post_message(event)
                 else:
-                    await widget.forward_event(event.offset(-region.x, -region.y))
+                    await widget._forward_event(event.offset(-region.x, -region.y))
 
         elif isinstance(event, (events.MouseScrollDown, events.MouseScrollUp)):
             try:
@@ -664,7 +664,7 @@ class Screen(Widget):
                 if scroll_widget is self:
                     await self.post_message(event)
                 else:
-                    await scroll_widget.forward_event(event)
+                    await scroll_widget._forward_event(event)
         else:
             await self.post_message(event)</code></pre>
 </details>
@@ -676,7 +676,7 @@ class Screen(Widget):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.screen.Screen.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dt id="textual.screen.Screen.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -790,60 +790,6 @@ def widgets(self) -&gt; list[Widget]:
         Region: Region relative to screen.
     &#34;&#34;&#34;
     return self._compositor.find_widget(widget)</code></pre>
-</details>
-</dd>
-<dt id="textual.screen.Screen.forward_event"><code class="name flex">
-<span>async def <span class="ident">forward_event</span></span>(<span>self, event: events.Event) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def forward_event(self, event: events.Event) -&gt; None:
-    if event.is_forwarded:
-        return
-    event.set_forwarded()
-    if isinstance(event, (events.Enter, events.Leave)):
-        await self.post_message(event)
-
-    elif isinstance(event, events.MouseMove):
-        event.style = self.get_style_at(event.screen_x, event.screen_y)
-        await self._handle_mouse_move(event)
-
-    elif isinstance(event, events.MouseEvent):
-        try:
-            if self.app.mouse_captured:
-                widget = self.app.mouse_captured
-                region = self.find_widget(widget).region
-            else:
-                widget, region = self.get_widget_at(event.x, event.y)
-        except errors.NoWidget:
-            self.app.set_focus(None)
-        else:
-            if isinstance(event, events.MouseDown) and widget.can_focus:
-                self.app.set_focus(widget)
-            event.style = self.get_style_at(event.screen_x, event.screen_y)
-            if widget is self:
-                event.set_forwarded()
-                await self.post_message(event)
-            else:
-                await widget.forward_event(event.offset(-region.x, -region.y))
-
-    elif isinstance(event, (events.MouseScrollDown, events.MouseScrollUp)):
-        try:
-            widget, _region = self.get_widget_at(event.x, event.y)
-        except errors.NoWidget:
-            return
-        scroll_widget = widget
-        if scroll_widget is not None:
-            if scroll_widget is self:
-                await self.post_message(event)
-            else:
-                await scroll_widget.forward_event(event)
-    else:
-        await self.post_message(event)</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.get_offset"><code class="name flex">
@@ -1010,7 +956,6 @@ def widgets(self) -&gt; list[Widget]:
 <li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.widget.Widget.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.widget.Widget.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
-<li><code><a title="textual.widget.Widget.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
@@ -1152,12 +1097,11 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.screen.Screen" href="#textual.screen.Screen">Screen</a></code></h4>
 <ul class="two-column">
-<li><code><a title="textual.screen.Screen.CSS" href="#textual.screen.Screen.CSS">CSS</a></code></li>
+<li><code><a title="textual.screen.Screen.DEFAULT_CSS" href="#textual.screen.Screen.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.screen.Screen.can_focus" href="#textual.screen.Screen.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.screen.Screen.can_focus_children" href="#textual.screen.Screen.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.screen.Screen.dark" href="#textual.screen.Screen.dark">dark</a></code></li>
 <li><code><a title="textual.screen.Screen.find_widget" href="#textual.screen.Screen.find_widget">find_widget</a></code></li>
-<li><code><a title="textual.screen.Screen.forward_event" href="#textual.screen.Screen.forward_event">forward_event</a></code></li>
 <li><code><a title="textual.screen.Screen.get_offset" href="#textual.screen.Screen.get_offset">get_offset</a></code></li>
 <li><code><a title="textual.screen.Screen.get_style_at" href="#textual.screen.Screen.get_style_at">get_style_at</a></code></li>
 <li><code><a title="textual.screen.Screen.get_widget_at" href="#textual.screen.Screen.get_widget_at">get_widget_at</a></code></li>

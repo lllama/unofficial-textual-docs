@@ -46,15 +46,18 @@ from rich.markup import escape
 from rich.rule import Rule
 from rich.segment import Segment, Segments
 from rich.style import Style
+from rich.styled import Styled
 from rich.table import Table
 from rich.text import Text
-
-from textual._border import Border
+from textual._log import LogGroup
 
 DevConsoleMessageLevel = Literal[&#34;info&#34;, &#34;warning&#34;, &#34;error&#34;]
 
 
 class DevConsoleHeader:
+    def __init__(self, verbose: bool = False) -&gt; None:
+        self.verbose = verbose
+
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -&gt; RenderResult:
@@ -63,6 +66,8 @@ class DevConsoleHeader:
             &#34;[magenta]Run a Textual app with [reverse]textual run --dev my_app.py[/] to connect.\n&#34;
             &#34;[magenta]Press [reverse]Ctrl+C[/] to quit.&#34;
         )
+        if self.verbose:
+            preamble.append(Text.from_markup(&#34;\n[cyan]Verbose logs enabled&#34;))
         render_options = options.update(width=options.max_width - 4)
         lines = console.render_lines(preamble, render_options)
 
@@ -91,11 +96,17 @@ class DevConsoleLog:
         path: str,
         line_number: int,
         unix_timestamp: int,
+        group: int,
+        verbosity: int,
+        severity: int,
     ) -&gt; None:
         self.segments = segments
         self.path = path
         self.line_number = line_number
         self.unix_timestamp = unix_timestamp
+        self.group = group
+        self.verbosity = verbosity
+        self.severity = severity
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -105,14 +116,26 @@ class DevConsoleLog:
 
         file_link = escape(f&#34;file://{Path(self.path).absolute()}&#34;)
         file_and_line = escape(f&#34;{Path(self.path).name}:{self.line_number}&#34;)
+        group = LogGroup(self.group).name
+        time = local_time.time()
+        message = Text(
+            f&#34;:warning-emoji:  [{time}] {group}&#34;
+            if self.severity &gt; 0
+            else f&#34;[{time}] {group}&#34;
+        )
+        message.stylize(&#34;dim&#34;)
+
         table.add_row(
-            f&#34;[dim]{local_time.time()}&#34;,
+            message,
             Align.right(
                 Text(f&#34;{file_and_line}&#34;, style=Style(dim=True, link=file_link))
             ),
         )
         yield table
-        yield Segments(self.segments)
+        if group == &#34;PRINT&#34;:
+            yield Styled(Segments(self.segments), &#34;bold&#34;)
+        else:
+            yield Segments(self.segments)
 
 
 class DevConsoleNotice:
@@ -150,6 +173,7 @@ class DevConsoleNotice:
 <dl>
 <dt id="textual.devtools.renderables.DevConsoleHeader"><code class="flex name class">
 <span>class <span class="ident">DevConsoleHeader</span></span>
+<span>(</span><span>verbose: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -158,6 +182,9 @@ class DevConsoleNotice:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class DevConsoleHeader:
+    def __init__(self, verbose: bool = False) -&gt; None:
+        self.verbose = verbose
+
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
     ) -&gt; RenderResult:
@@ -166,6 +193,8 @@ class DevConsoleNotice:
             &#34;[magenta]Run a Textual app with [reverse]textual run --dev my_app.py[/] to connect.\n&#34;
             &#34;[magenta]Press [reverse]Ctrl+C[/] to quit.&#34;
         )
+        if self.verbose:
+            preamble.append(Text.from_markup(&#34;\n[cyan]Verbose logs enabled&#34;))
         render_options = options.update(width=options.max_width - 4)
         lines = console.render_lines(preamble, render_options)
 
@@ -180,7 +209,7 @@ class DevConsoleNotice:
 </dd>
 <dt id="textual.devtools.renderables.DevConsoleLog"><code class="flex name class">
 <span>class <span class="ident">DevConsoleLog</span></span>
-<span>(</span><span>segments: Iterable[Segment], path: str, line_number: int, unix_timestamp: int)</span>
+<span>(</span><span>segments: Iterable[Segment], path: str, line_number: int, unix_timestamp: int, group: int, verbosity: int, severity: int)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Renderable representing a single log message</p>
@@ -215,11 +244,17 @@ class DevConsoleNotice:
         path: str,
         line_number: int,
         unix_timestamp: int,
+        group: int,
+        verbosity: int,
+        severity: int,
     ) -&gt; None:
         self.segments = segments
         self.path = path
         self.line_number = line_number
         self.unix_timestamp = unix_timestamp
+        self.group = group
+        self.verbosity = verbosity
+        self.severity = severity
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -229,14 +264,26 @@ class DevConsoleNotice:
 
         file_link = escape(f&#34;file://{Path(self.path).absolute()}&#34;)
         file_and_line = escape(f&#34;{Path(self.path).name}:{self.line_number}&#34;)
+        group = LogGroup(self.group).name
+        time = local_time.time()
+        message = Text(
+            f&#34;:warning-emoji:  [{time}] {group}&#34;
+            if self.severity &gt; 0
+            else f&#34;[{time}] {group}&#34;
+        )
+        message.stylize(&#34;dim&#34;)
+
         table.add_row(
-            f&#34;[dim]{local_time.time()}&#34;,
+            message,
             Align.right(
                 Text(f&#34;{file_and_line}&#34;, style=Style(dim=True, link=file_link))
             ),
         )
         yield table
-        yield Segments(self.segments)</code></pre>
+        if group == &#34;PRINT&#34;:
+            yield Styled(Segments(self.segments), &#34;bold&#34;)
+        else:
+            yield Segments(self.segments)</code></pre>
 </details>
 </dd>
 <dt id="textual.devtools.renderables.DevConsoleNotice"><code class="flex name class">

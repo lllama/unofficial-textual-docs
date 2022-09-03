@@ -44,7 +44,7 @@ class ScrollView(Widget):
 
     &#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     
     ScrollView {     
         overflow-y: auto;
@@ -115,15 +115,19 @@ class ScrollView(Widget):
             width, height = self.container_size
             if self.show_vertical_scrollbar:
                 self.vertical_scrollbar.window_virtual_size = virtual_size.height
-                self.vertical_scrollbar.window_size = height
+                self.vertical_scrollbar.window_size = (
+                    height - self.scrollbar_size_horizontal
+                )
             if self.show_horizontal_scrollbar:
                 self.horizontal_scrollbar.window_virtual_size = virtual_size.width
-                self.horizontal_scrollbar.window_size = width
+                self.horizontal_scrollbar.window_size = (
+                    width - self.scrollbar_size_vertical
+                )
 
             self.scroll_x = self.validate_scroll_x(self.scroll_x)
             self.scroll_y = self.validate_scroll_y(self.scroll_y)
             self.refresh(layout=False)
-            self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
+            self.scroll_to(self.scroll_x, self.scroll_y)
 
     def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Render the scrollable region (if `render_lines` is not implemented).
@@ -173,7 +177,7 @@ on the compositor to render children).</p></div>
 
     &#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     
     ScrollView {     
         overflow-y: auto;
@@ -244,15 +248,19 @@ on the compositor to render children).</p></div>
             width, height = self.container_size
             if self.show_vertical_scrollbar:
                 self.vertical_scrollbar.window_virtual_size = virtual_size.height
-                self.vertical_scrollbar.window_size = height
+                self.vertical_scrollbar.window_size = (
+                    height - self.scrollbar_size_horizontal
+                )
             if self.show_horizontal_scrollbar:
                 self.horizontal_scrollbar.window_virtual_size = virtual_size.width
-                self.horizontal_scrollbar.window_size = width
+                self.horizontal_scrollbar.window_size = (
+                    width - self.scrollbar_size_vertical
+                )
 
             self.scroll_x = self.validate_scroll_x(self.scroll_x)
             self.scroll_y = self.validate_scroll_y(self.scroll_y)
             self.refresh(layout=False)
-            self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
+            self.scroll_to(self.scroll_x, self.scroll_y)
 
     def render(self) -&gt; RenderableType:
         &#34;&#34;&#34;Render the scrollable region (if `render_lines` is not implemented).
@@ -286,7 +294,7 @@ on the compositor to render children).</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scroll_view.ScrollView.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dt id="textual.scroll_view.ScrollView.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -405,15 +413,19 @@ def is_transparent(self) -&gt; bool:
         width, height = self.container_size
         if self.show_vertical_scrollbar:
             self.vertical_scrollbar.window_virtual_size = virtual_size.height
-            self.vertical_scrollbar.window_size = height
+            self.vertical_scrollbar.window_size = (
+                height - self.scrollbar_size_horizontal
+            )
         if self.show_horizontal_scrollbar:
             self.horizontal_scrollbar.window_virtual_size = virtual_size.width
-            self.horizontal_scrollbar.window_size = width
+            self.horizontal_scrollbar.window_size = (
+                width - self.scrollbar_size_vertical
+            )
 
         self.scroll_x = self.validate_scroll_x(self.scroll_x)
         self.scroll_y = self.validate_scroll_y(self.scroll_y)
         self.refresh(layout=False)
-        self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)</code></pre>
+        self.scroll_to(self.scroll_x, self.scroll_y)</code></pre>
 </details>
 </dd>
 <dt id="textual.scroll_view.ScrollView.watch_scroll_x"><code class="name flex">
@@ -497,7 +509,6 @@ def is_transparent(self) -&gt; bool:
 <li><code><a title="textual.widget.Widget.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
 <li><code><a title="textual.widget.Widget.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.widget.Widget.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
-<li><code><a title="textual.widget.Widget.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
@@ -639,7 +650,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scroll_view.ScrollView" href="#textual.scroll_view.ScrollView">ScrollView</a></code></h4>
 <ul class="two-column">
 <li><code><a title="textual.scroll_view.ScrollView.COMPONENT_CLASSES" href="#textual.scroll_view.ScrollView.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.scroll_view.ScrollView.CSS" href="#textual.scroll_view.ScrollView.CSS">CSS</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.DEFAULT_CSS" href="#textual.scroll_view.ScrollView.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.can_focus" href="#textual.scroll_view.ScrollView.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.can_focus_children" href="#textual.scroll_view.ScrollView.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.is_scrollable" href="#textual.scroll_view.ScrollView.is_scrollable">is_scrollable</a></code></li>

@@ -47,17 +47,17 @@ if TYPE_CHECKING:
 
 
 @rich.repr.auto
-class Event(Message, verbosity=2):
+class Event(Message):
     def __rich_repr__(self) -&gt; rich.repr.Result:
         return
         yield
 
-    def __init_subclass__(cls, bubble: bool = True, verbosity: int = 1) -&gt; None:
-        super().__init_subclass__(bubble=bubble, verbosity=verbosity)
+    def __init_subclass__(cls, bubble: bool = True, verbose: bool = False) -&gt; None:
+        super().__init_subclass__(bubble=bubble, verbose=verbose)
 
 
 @rich.repr.auto
-class Callback(Event, bubble=False, verbosity=3):
+class Callback(Event, bubble=False, verbose=True):
     def __init__(
         self, sender: MessageTarget, callback: Callable[[], Awaitable[None]]
     ) -&gt; None:
@@ -68,7 +68,7 @@ class Callback(Event, bubble=False, verbosity=3):
         yield &#34;callback&#34;, self.callback
 
 
-class InvokeCallbacks(Event, bubble=False):
+class InvokeCallbacks(Event, bubble=False, verbose=True):
     &#34;&#34;&#34;Sent after the Screen is updated&#34;&#34;&#34;
 
 
@@ -111,7 +111,7 @@ class Action(Event):
         yield &#34;action&#34;, self.action
 
 
-class Resize(Event, verbosity=2, bubble=False):
+class Resize(Event, bubble=False):
     &#34;&#34;&#34;Sent when the app or widget has been resized.
     Args:
         sender (MessageTarget): The sender of the event (the Screen).
@@ -144,12 +144,8 @@ class Resize(Event, verbosity=2, bubble=False):
         yield &#34;container_size&#34;, self.container_size, self.size
 
 
-class Mount(Event, bubble=False):
+class Mount(Event, bubble=False, verbose=True):
     &#34;&#34;&#34;Sent when a widget is *mounted* and may receive messages.&#34;&#34;&#34;
-
-
-class Unmount(Event, bubble=False):
-    &#34;&#34;&#34;Sent when a widget is unmounted, and may no longer receive messages.&#34;&#34;&#34;
 
 
 class Remove(Event, bubble=False):
@@ -245,7 +241,7 @@ class Key(InputEvent):
 
 
 @rich.repr.auto
-class MouseEvent(InputEvent, bubble=True, verbosity=2):
+class MouseEvent(InputEvent, bubble=True):
     &#34;&#34;&#34;Sent in response to a mouse event.
 
     Args:
@@ -364,21 +360,21 @@ class MouseEvent(InputEvent, bubble=True, verbosity=2):
 
 
 @rich.repr.auto
-class MouseMove(MouseEvent, verbosity=3, bubble=True):
+class MouseMove(MouseEvent, bubble=True, verbose=True):
     &#34;&#34;&#34;Sent when the mouse cursor moves.&#34;&#34;&#34;
 
 
 @rich.repr.auto
-class MouseDown(MouseEvent, bubble=True):
+class MouseDown(MouseEvent, bubble=True, verbose=True):
     pass
 
 
 @rich.repr.auto
-class MouseUp(MouseEvent, bubble=True):
+class MouseUp(MouseEvent, bubble=True, verbose=True):
     pass
 
 
-class MouseScrollDown(InputEvent, verbosity=3, bubble=True):
+class MouseScrollDown(InputEvent, bubble=True, verbose=True):
     __slots__ = [&#34;x&#34;, &#34;y&#34;]
 
     def __init__(self, sender: MessageTarget, x: int, y: int) -&gt; None:
@@ -387,7 +383,7 @@ class MouseScrollDown(InputEvent, verbosity=3, bubble=True):
         self.y = y
 
 
-class MouseScrollUp(InputEvent, verbosity=3, bubble=True):
+class MouseScrollUp(InputEvent, bubble=True, verbose=True):
     __slots__ = [&#34;x&#34;, &#34;y&#34;]
 
     def __init__(self, sender: MessageTarget, x: int, y: int) -&gt; None:
@@ -401,7 +397,7 @@ class Click(MouseEvent, bubble=True):
 
 
 @rich.repr.auto
-class Timer(Event, verbosity=3, bubble=False):
+class Timer(Event, bubble=False, verbose=True):
     __slots__ = [&#34;time&#34;, &#34;count&#34;, &#34;callback&#34;]
 
     def __init__(
@@ -423,11 +419,11 @@ class Timer(Event, verbosity=3, bubble=False):
         yield &#34;count&#34;, self.count
 
 
-class Enter(Event, bubble=False):
+class Enter(Event, bubble=False, verbose=True):
     pass
 
 
-class Leave(Event, bubble=False):
+class Leave(Event, bubble=False, verbose=True):
     pass
 
 
@@ -439,11 +435,11 @@ class Blur(Event, bubble=False):
     pass
 
 
-class DescendantFocus(Event, verbosity=2, bubble=True):
+class DescendantFocus(Event, bubble=True, verbose=True):
     pass
 
 
-class DescendantBlur(Event, verbosity=2, bubble=True):
+class DescendantBlur(Event, bubble=True, verbose=True):
     pass
 
 
@@ -528,7 +524,7 @@ class ScreenSuspend(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Action.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Action.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -592,7 +588,7 @@ class ScreenSuspend(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Blur.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Blur.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -627,7 +623,7 @@ class ScreenSuspend(Event, bubble=False):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Callback(Event, bubble=False, verbosity=3):
+<pre><code class="python">class Callback(Event, bubble=False, verbose=True):
     def __init__(
         self, sender: MessageTarget, callback: Callable[[], Awaitable[None]]
     ) -&gt; None:
@@ -656,7 +652,7 @@ class ScreenSuspend(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Callback.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Callback.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -737,7 +733,7 @@ class ScreenSuspend(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Click.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Click.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -782,7 +778,7 @@ class ScreenSuspend(Event, bubble=False):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DescendantBlur(Event, verbosity=2, bubble=True):
+<pre><code class="python">class DescendantBlur(Event, bubble=True, verbose=True):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -804,7 +800,7 @@ class ScreenSuspend(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.DescendantBlur.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.DescendantBlur.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -839,7 +835,7 @@ class ScreenSuspend(Event, bubble=False):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DescendantFocus(Event, verbosity=2, bubble=True):
+<pre><code class="python">class DescendantFocus(Event, bubble=True, verbose=True):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -861,7 +857,7 @@ class ScreenSuspend(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.DescendantFocus.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.DescendantFocus.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -896,7 +892,7 @@ class ScreenSuspend(Event, bubble=False):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Enter(Event, bubble=False):
+<pre><code class="python">class Enter(Event, bubble=False, verbose=True):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -918,7 +914,7 @@ class ScreenSuspend(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Enter.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Enter.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -953,13 +949,13 @@ class ScreenSuspend(Event, bubble=False):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Event(Message, verbosity=2):
+<pre><code class="python">class Event(Message):
     def __rich_repr__(self) -&gt; rich.repr.Result:
         return
         yield
 
-    def __init_subclass__(cls, bubble: bool = True, verbosity: int = 1) -&gt; None:
-        super().__init_subclass__(bubble=bubble, verbosity=verbosity)</code></pre>
+    def __init_subclass__(cls, bubble: bool = True, verbose: bool = False) -&gt; None:
+        super().__init_subclass__(bubble=bubble, verbose=verbose)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -992,7 +988,6 @@ class ScreenSuspend(Event, bubble=False):
 <li><a title="textual.events.Shutdown" href="#textual.events.Shutdown">Shutdown</a></li>
 <li><a title="textual.events.ShutdownRequest" href="#textual.events.ShutdownRequest">ShutdownRequest</a></li>
 <li><a title="textual.events.Timer" href="#textual.events.Timer">Timer</a></li>
-<li><a title="textual.events.Unmount" href="#textual.events.Unmount">Unmount</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -1008,7 +1003,7 @@ class ScreenSuspend(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Event.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Event.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1065,7 +1060,7 @@ class ScreenSuspend(Event, bubble=False):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Focus.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Focus.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1124,7 +1119,7 @@ or if it has been offset beyond the edges of the terminal.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Hide.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Hide.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1183,7 +1178,7 @@ through the usual message queue.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Idle.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Idle.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1247,7 +1242,7 @@ through the usual message queue.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.InputEvent.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.InputEvent.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1277,7 +1272,7 @@ through the usual message queue.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class InvokeCallbacks(Event, bubble=False):
+<pre><code class="python">class InvokeCallbacks(Event, bubble=False, verbose=True):
     &#34;&#34;&#34;Sent after the Screen is updated&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1299,7 +1294,7 @@ through the usual message queue.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.InvokeCallbacks.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.InvokeCallbacks.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1383,7 +1378,7 @@ through the usual message queue.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Key.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Key.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1449,7 +1444,7 @@ def is_printable(self) -&gt; bool:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Leave(Event, bubble=False):
+<pre><code class="python">class Leave(Event, bubble=False, verbose=True):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1471,7 +1466,7 @@ def is_printable(self) -&gt; bool:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Leave.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Leave.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1532,7 +1527,7 @@ configuration and binding keys.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Load.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Load.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1562,7 +1557,7 @@ configuration and binding keys.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Mount(Event, bubble=False):
+<pre><code class="python">class Mount(Event, bubble=False, verbose=True):
     &#34;&#34;&#34;Sent when a widget is *mounted* and may receive messages.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1584,7 +1579,7 @@ configuration and binding keys.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Mount.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Mount.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1660,7 +1655,7 @@ configuration and binding keys.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.MouseCapture.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.MouseCapture.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1717,7 +1712,7 @@ configuration and binding keys.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MouseDown(MouseEvent, bubble=True):
+<pre><code class="python">class MouseDown(MouseEvent, bubble=True, verbose=True):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1741,7 +1736,7 @@ configuration and binding keys.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.MouseDown.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.MouseDown.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1808,7 +1803,7 @@ configuration and binding keys.</p></div>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MouseEvent(InputEvent, bubble=True, verbosity=2):
+<pre><code class="python">class MouseEvent(InputEvent, bubble=True):
     &#34;&#34;&#34;Sent in response to a mouse event.
 
     Args:
@@ -1952,7 +1947,7 @@ configuration and binding keys.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.MouseEvent.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.MouseEvent.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2097,7 +2092,7 @@ def style(self) -&gt; Style:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MouseMove(MouseEvent, verbosity=3, bubble=True):
+<pre><code class="python">class MouseMove(MouseEvent, bubble=True, verbose=True):
     &#34;&#34;&#34;Sent when the mouse cursor moves.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -2121,7 +2116,7 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.MouseMove.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.MouseMove.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2202,7 +2197,7 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.MouseRelease.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.MouseRelease.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2237,7 +2232,7 @@ def style(self) -&gt; Style:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MouseScrollDown(InputEvent, verbosity=3, bubble=True):
+<pre><code class="python">class MouseScrollDown(InputEvent, bubble=True, verbose=True):
     __slots__ = [&#34;x&#34;, &#34;y&#34;]
 
     def __init__(self, sender: MessageTarget, x: int, y: int) -&gt; None:
@@ -2265,7 +2260,7 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.MouseScrollDown.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.MouseScrollDown.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2311,7 +2306,7 @@ def style(self) -&gt; Style:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MouseScrollUp(InputEvent, verbosity=3, bubble=True):
+<pre><code class="python">class MouseScrollUp(InputEvent, bubble=True, verbose=True):
     __slots__ = [&#34;x&#34;, &#34;y&#34;]
 
     def __init__(self, sender: MessageTarget, x: int, y: int) -&gt; None:
@@ -2339,7 +2334,7 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.MouseScrollUp.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.MouseScrollUp.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2407,7 +2402,7 @@ def style(self) -&gt; Style:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MouseUp(MouseEvent, bubble=True):
+<pre><code class="python">class MouseUp(MouseEvent, bubble=True, verbose=True):
     pass</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -2431,7 +2426,7 @@ def style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.MouseUp.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.MouseUp.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2518,7 +2513,7 @@ and disable it when the app shuts down.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Paste.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Paste.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2574,7 +2569,7 @@ and disable it when the app shuts down.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Remove.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Remove.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2614,7 +2609,7 @@ and disable it when the app shuts down.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Resize(Event, verbosity=2, bubble=False):
+<pre><code class="python">class Resize(Event, bubble=False):
     &#34;&#34;&#34;Sent when the app or widget has been resized.
     Args:
         sender (MessageTarget): The sender of the event (the Screen).
@@ -2665,7 +2660,7 @@ and disable it when the app shuts down.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Resize.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Resize.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2737,7 +2732,7 @@ and disable it when the app shuts down.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.ScreenResume.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.ScreenResume.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2794,7 +2789,7 @@ and disable it when the app shuts down.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.ScreenSuspend.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.ScreenSuspend.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2846,7 +2841,7 @@ and disable it when the app shuts down.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Show.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Show.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2903,7 +2898,7 @@ and disable it when the app shuts down.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Shutdown.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Shutdown.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2960,7 +2955,7 @@ and disable it when the app shuts down.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.ShutdownRequest.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.ShutdownRequest.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2995,7 +2990,7 @@ and disable it when the app shuts down.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Timer(Event, verbosity=3, bubble=False):
+<pre><code class="python">class Timer(Event, bubble=False, verbose=True):
     __slots__ = [&#34;time&#34;, &#34;count&#34;, &#34;callback&#34;]
 
     def __init__(
@@ -3035,7 +3030,7 @@ and disable it when the app shuts down.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.events.Timer.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.events.Timer.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -3049,58 +3044,6 @@ and disable it when the app shuts down.</p>
 <dt id="textual.events.Timer.count"><code class="name">var <span class="ident">count</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
-</dd>
-</dl>
-<h3>Inherited members</h3>
-<ul class="hlist">
-<li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
-<ul class="hlist">
-<li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
-<li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
-<li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
-<li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
-<li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
-<li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
-</ul>
-</li>
-</ul>
-</dd>
-<dt id="textual.events.Unmount"><code class="flex name class">
-<span>class <span class="ident">Unmount</span></span>
-<span>(</span><span>sender: MessageTarget)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Sent when a widget is unmounted, and may no longer receive messages.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Unmount(Event, bubble=False):
-    &#34;&#34;&#34;Sent when a widget is unmounted, and may no longer receive messages.&#34;&#34;&#34;</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="textual.events.Event" href="#textual.events.Event">Event</a></li>
-<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="textual.events.Unmount.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.events.Unmount.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.events.Unmount.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.events.Unmount.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
-<dd>
-<div class="desc"></div>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -3187,7 +3130,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Action.bubble" href="#textual.events.Action.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Action.namespace" href="#textual.events.Action.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Action.no_dispatch" href="#textual.events.Action.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Action.verbosity" href="#textual.events.Action.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Action.verbose" href="#textual.events.Action.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3196,7 +3139,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Blur.bubble" href="#textual.events.Blur.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Blur.namespace" href="#textual.events.Blur.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Blur.no_dispatch" href="#textual.events.Blur.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Blur.verbosity" href="#textual.events.Blur.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Blur.verbose" href="#textual.events.Blur.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3205,7 +3148,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Callback.bubble" href="#textual.events.Callback.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Callback.namespace" href="#textual.events.Callback.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Callback.no_dispatch" href="#textual.events.Callback.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Callback.verbosity" href="#textual.events.Callback.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Callback.verbose" href="#textual.events.Callback.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3214,7 +3157,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Click.bubble" href="#textual.events.Click.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Click.namespace" href="#textual.events.Click.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Click.no_dispatch" href="#textual.events.Click.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Click.verbosity" href="#textual.events.Click.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Click.verbose" href="#textual.events.Click.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3223,7 +3166,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.DescendantBlur.bubble" href="#textual.events.DescendantBlur.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.DescendantBlur.namespace" href="#textual.events.DescendantBlur.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.DescendantBlur.no_dispatch" href="#textual.events.DescendantBlur.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.DescendantBlur.verbosity" href="#textual.events.DescendantBlur.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.DescendantBlur.verbose" href="#textual.events.DescendantBlur.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3232,7 +3175,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.DescendantFocus.bubble" href="#textual.events.DescendantFocus.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.DescendantFocus.namespace" href="#textual.events.DescendantFocus.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.DescendantFocus.no_dispatch" href="#textual.events.DescendantFocus.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.DescendantFocus.verbosity" href="#textual.events.DescendantFocus.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.DescendantFocus.verbose" href="#textual.events.DescendantFocus.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3241,7 +3184,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Enter.bubble" href="#textual.events.Enter.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Enter.namespace" href="#textual.events.Enter.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Enter.no_dispatch" href="#textual.events.Enter.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Enter.verbosity" href="#textual.events.Enter.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Enter.verbose" href="#textual.events.Enter.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3250,7 +3193,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Event.bubble" href="#textual.events.Event.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Event.namespace" href="#textual.events.Event.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Event.no_dispatch" href="#textual.events.Event.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Event.verbosity" href="#textual.events.Event.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Event.verbose" href="#textual.events.Event.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3259,7 +3202,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Focus.bubble" href="#textual.events.Focus.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Focus.namespace" href="#textual.events.Focus.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Focus.no_dispatch" href="#textual.events.Focus.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Focus.verbosity" href="#textual.events.Focus.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Focus.verbose" href="#textual.events.Focus.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3268,7 +3211,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Hide.bubble" href="#textual.events.Hide.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Hide.namespace" href="#textual.events.Hide.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Hide.no_dispatch" href="#textual.events.Hide.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Hide.verbosity" href="#textual.events.Hide.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Hide.verbose" href="#textual.events.Hide.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3277,7 +3220,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Idle.bubble" href="#textual.events.Idle.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Idle.namespace" href="#textual.events.Idle.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Idle.no_dispatch" href="#textual.events.Idle.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Idle.verbosity" href="#textual.events.Idle.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Idle.verbose" href="#textual.events.Idle.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3286,7 +3229,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.InputEvent.bubble" href="#textual.events.InputEvent.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.InputEvent.namespace" href="#textual.events.InputEvent.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.InputEvent.no_dispatch" href="#textual.events.InputEvent.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.InputEvent.verbosity" href="#textual.events.InputEvent.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.InputEvent.verbose" href="#textual.events.InputEvent.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3295,7 +3238,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.InvokeCallbacks.bubble" href="#textual.events.InvokeCallbacks.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.InvokeCallbacks.namespace" href="#textual.events.InvokeCallbacks.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.InvokeCallbacks.no_dispatch" href="#textual.events.InvokeCallbacks.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.InvokeCallbacks.verbosity" href="#textual.events.InvokeCallbacks.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.InvokeCallbacks.verbose" href="#textual.events.InvokeCallbacks.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3306,7 +3249,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Key.key" href="#textual.events.Key.key">key</a></code></li>
 <li><code><a title="textual.events.Key.namespace" href="#textual.events.Key.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Key.no_dispatch" href="#textual.events.Key.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Key.verbosity" href="#textual.events.Key.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Key.verbose" href="#textual.events.Key.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3315,7 +3258,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Leave.bubble" href="#textual.events.Leave.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Leave.namespace" href="#textual.events.Leave.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Leave.no_dispatch" href="#textual.events.Leave.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Leave.verbosity" href="#textual.events.Leave.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Leave.verbose" href="#textual.events.Leave.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3324,7 +3267,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Load.bubble" href="#textual.events.Load.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Load.namespace" href="#textual.events.Load.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Load.no_dispatch" href="#textual.events.Load.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Load.verbosity" href="#textual.events.Load.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Load.verbose" href="#textual.events.Load.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3333,7 +3276,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Mount.bubble" href="#textual.events.Mount.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Mount.namespace" href="#textual.events.Mount.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Mount.no_dispatch" href="#textual.events.Mount.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Mount.verbosity" href="#textual.events.Mount.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Mount.verbose" href="#textual.events.Mount.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3342,7 +3285,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseCapture.bubble" href="#textual.events.MouseCapture.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.MouseCapture.namespace" href="#textual.events.MouseCapture.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.MouseCapture.no_dispatch" href="#textual.events.MouseCapture.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.MouseCapture.verbosity" href="#textual.events.MouseCapture.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.MouseCapture.verbose" href="#textual.events.MouseCapture.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3351,7 +3294,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseDown.bubble" href="#textual.events.MouseDown.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.MouseDown.namespace" href="#textual.events.MouseDown.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.MouseDown.no_dispatch" href="#textual.events.MouseDown.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.MouseDown.verbosity" href="#textual.events.MouseDown.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.MouseDown.verbose" href="#textual.events.MouseDown.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3371,7 +3314,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.style" href="#textual.events.MouseEvent.style">style</a></code></li>
-<li><code><a title="textual.events.MouseEvent.verbosity" href="#textual.events.MouseEvent.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.MouseEvent.verbose" href="#textual.events.MouseEvent.verbose">verbose</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
 </ul>
@@ -3382,7 +3325,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseMove.bubble" href="#textual.events.MouseMove.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.MouseMove.namespace" href="#textual.events.MouseMove.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.MouseMove.no_dispatch" href="#textual.events.MouseMove.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.MouseMove.verbosity" href="#textual.events.MouseMove.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.MouseMove.verbose" href="#textual.events.MouseMove.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3391,7 +3334,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseRelease.bubble" href="#textual.events.MouseRelease.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.MouseRelease.namespace" href="#textual.events.MouseRelease.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.MouseRelease.no_dispatch" href="#textual.events.MouseRelease.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.MouseRelease.verbosity" href="#textual.events.MouseRelease.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.MouseRelease.verbose" href="#textual.events.MouseRelease.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3400,7 +3343,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseScrollDown.bubble" href="#textual.events.MouseScrollDown.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.namespace" href="#textual.events.MouseScrollDown.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.no_dispatch" href="#textual.events.MouseScrollDown.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.MouseScrollDown.verbosity" href="#textual.events.MouseScrollDown.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.MouseScrollDown.verbose" href="#textual.events.MouseScrollDown.verbose">verbose</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.x" href="#textual.events.MouseScrollDown.x">x</a></code></li>
 <li><code><a title="textual.events.MouseScrollDown.y" href="#textual.events.MouseScrollDown.y">y</a></code></li>
 </ul>
@@ -3411,7 +3354,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseScrollUp.bubble" href="#textual.events.MouseScrollUp.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.MouseScrollUp.namespace" href="#textual.events.MouseScrollUp.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.MouseScrollUp.no_dispatch" href="#textual.events.MouseScrollUp.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.MouseScrollUp.verbosity" href="#textual.events.MouseScrollUp.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.MouseScrollUp.verbose" href="#textual.events.MouseScrollUp.verbose">verbose</a></code></li>
 <li><code><a title="textual.events.MouseScrollUp.x" href="#textual.events.MouseScrollUp.x">x</a></code></li>
 <li><code><a title="textual.events.MouseScrollUp.y" href="#textual.events.MouseScrollUp.y">y</a></code></li>
 </ul>
@@ -3422,7 +3365,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseUp.bubble" href="#textual.events.MouseUp.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.MouseUp.namespace" href="#textual.events.MouseUp.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.MouseUp.no_dispatch" href="#textual.events.MouseUp.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.MouseUp.verbosity" href="#textual.events.MouseUp.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.MouseUp.verbose" href="#textual.events.MouseUp.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3431,7 +3374,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Paste.bubble" href="#textual.events.Paste.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Paste.namespace" href="#textual.events.Paste.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Paste.no_dispatch" href="#textual.events.Paste.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Paste.verbosity" href="#textual.events.Paste.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Paste.verbose" href="#textual.events.Paste.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3440,7 +3383,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Remove.bubble" href="#textual.events.Remove.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Remove.namespace" href="#textual.events.Remove.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Remove.no_dispatch" href="#textual.events.Remove.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Remove.verbosity" href="#textual.events.Remove.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Remove.verbose" href="#textual.events.Remove.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3451,7 +3394,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Resize.namespace" href="#textual.events.Resize.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Resize.no_dispatch" href="#textual.events.Resize.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.events.Resize.size" href="#textual.events.Resize.size">size</a></code></li>
-<li><code><a title="textual.events.Resize.verbosity" href="#textual.events.Resize.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Resize.verbose" href="#textual.events.Resize.verbose">verbose</a></code></li>
 <li><code><a title="textual.events.Resize.virtual_size" href="#textual.events.Resize.virtual_size">virtual_size</a></code></li>
 </ul>
 </li>
@@ -3461,7 +3404,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.ScreenResume.bubble" href="#textual.events.ScreenResume.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.ScreenResume.namespace" href="#textual.events.ScreenResume.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.ScreenResume.no_dispatch" href="#textual.events.ScreenResume.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.ScreenResume.verbosity" href="#textual.events.ScreenResume.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.ScreenResume.verbose" href="#textual.events.ScreenResume.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3470,7 +3413,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.ScreenSuspend.bubble" href="#textual.events.ScreenSuspend.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.ScreenSuspend.namespace" href="#textual.events.ScreenSuspend.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.ScreenSuspend.no_dispatch" href="#textual.events.ScreenSuspend.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.ScreenSuspend.verbosity" href="#textual.events.ScreenSuspend.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.ScreenSuspend.verbose" href="#textual.events.ScreenSuspend.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3479,7 +3422,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Show.bubble" href="#textual.events.Show.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Show.namespace" href="#textual.events.Show.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Show.no_dispatch" href="#textual.events.Show.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Show.verbosity" href="#textual.events.Show.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Show.verbose" href="#textual.events.Show.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3488,7 +3431,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Shutdown.bubble" href="#textual.events.Shutdown.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.Shutdown.namespace" href="#textual.events.Shutdown.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Shutdown.no_dispatch" href="#textual.events.Shutdown.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Shutdown.verbosity" href="#textual.events.Shutdown.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Shutdown.verbose" href="#textual.events.Shutdown.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3497,7 +3440,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.ShutdownRequest.bubble" href="#textual.events.ShutdownRequest.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.ShutdownRequest.namespace" href="#textual.events.ShutdownRequest.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.ShutdownRequest.no_dispatch" href="#textual.events.ShutdownRequest.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.ShutdownRequest.verbosity" href="#textual.events.ShutdownRequest.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.ShutdownRequest.verbose" href="#textual.events.ShutdownRequest.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -3508,16 +3451,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Timer.count" href="#textual.events.Timer.count">count</a></code></li>
 <li><code><a title="textual.events.Timer.namespace" href="#textual.events.Timer.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Timer.no_dispatch" href="#textual.events.Timer.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Timer.verbosity" href="#textual.events.Timer.verbosity">verbosity</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="textual.events.Unmount" href="#textual.events.Unmount">Unmount</a></code></h4>
-<ul class="">
-<li><code><a title="textual.events.Unmount.bubble" href="#textual.events.Unmount.bubble">bubble</a></code></li>
-<li><code><a title="textual.events.Unmount.namespace" href="#textual.events.Unmount.namespace">namespace</a></code></li>
-<li><code><a title="textual.events.Unmount.no_dispatch" href="#textual.events.Unmount.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.events.Unmount.verbosity" href="#textual.events.Unmount.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.events.Timer.verbose" href="#textual.events.Timer.verbose">verbose</a></code></li>
 </ul>
 </li>
 </ul>

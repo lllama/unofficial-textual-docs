@@ -100,7 +100,7 @@ class Widget(DOMNode):
 
     &#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     Widget{
         scrollbar-background: $panel-darken-1;
         scrollbar-background-hover: $panel-darken-2;
@@ -458,7 +458,7 @@ class Widget(DOMNode):
         if self._scrollbar_corner is not None:
             return self._scrollbar_corner
         self._scrollbar_corner = ScrollBarCorner()
-        self.app.start_widget(self, self._scrollbar_corner)
+        self.app._start_widget(self, self._scrollbar_corner)
         return self._scrollbar_corner
 
     @property
@@ -475,7 +475,7 @@ class Widget(DOMNode):
         self._vertical_scrollbar = scroll_bar = ScrollBar(
             vertical=True, name=&#34;vertical&#34;, thickness=self.scrollbar_size_vertical
         )
-        self.app.start_widget(self, scroll_bar)
+        self.app._start_widget(self, scroll_bar)
         return scroll_bar
 
     @property
@@ -493,7 +493,7 @@ class Widget(DOMNode):
             vertical=False, name=&#34;horizontal&#34;, thickness=self.scrollbar_size_horizontal
         )
 
-        self.app.start_widget(self, scroll_bar)
+        self.app._start_widget(self, scroll_bar)
         return scroll_bar
 
     def _refresh_scrollbars(self) -&gt; None:
@@ -1276,16 +1276,19 @@ class Widget(DOMNode):
                 width, height = self.container_size
                 if self.show_vertical_scrollbar:
                     self.vertical_scrollbar.window_virtual_size = virtual_size.height
-                    self.vertical_scrollbar.window_size = height
+                    self.vertical_scrollbar.window_size = (
+                        height - self.scrollbar_size_horizontal
+                    )
                 if self.show_horizontal_scrollbar:
                     self.horizontal_scrollbar.window_virtual_size = virtual_size.width
-                    self.horizontal_scrollbar.window_size = width
+                    self.horizontal_scrollbar.window_size = (
+                        width - self.scrollbar_size_vertical
+                    )
 
                 self.scroll_x = self.validate_scroll_x(self.scroll_x)
                 self.scroll_y = self.validate_scroll_y(self.scroll_y)
                 self.refresh(layout=True)
                 self.scroll_to(self.scroll_x, self.scroll_y)
-                # self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
             else:
                 self.refresh()
 
@@ -1363,7 +1366,7 @@ class Widget(DOMNode):
         offset_x, offset_y = self.screen.get_offset(self)
         return self.screen.get_style_at(x + offset_x, y + offset_y)
 
-    async def forward_event(self, event: events.Event) -&gt; None:
+    async def _forward_event(self, event: events.Event) -&gt; None:
         event.set_forwarded()
         await self.post_message(event)
 
@@ -1424,7 +1427,7 @@ class Widget(DOMNode):
         if not self.check_message_enabled(message):
             return True
         if not self.is_running:
-            self.log(self, f&#34;IS NOT RUNNING, {message!r} not sent&#34;)
+            self.log.warning(self, f&#34;IS NOT RUNNING, {message!r} not sent&#34;)
         return await super().post_message(message)
 
     async def _on_idle(self, event: events.Idle) -&gt; None:
@@ -1710,7 +1713,7 @@ def cursor_line(self) -&gt; int | None:
 
     &#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     Widget{
         scrollbar-background: $panel-darken-1;
         scrollbar-background-hover: $panel-darken-2;
@@ -2068,7 +2071,7 @@ def cursor_line(self) -&gt; int | None:
         if self._scrollbar_corner is not None:
             return self._scrollbar_corner
         self._scrollbar_corner = ScrollBarCorner()
-        self.app.start_widget(self, self._scrollbar_corner)
+        self.app._start_widget(self, self._scrollbar_corner)
         return self._scrollbar_corner
 
     @property
@@ -2085,7 +2088,7 @@ def cursor_line(self) -&gt; int | None:
         self._vertical_scrollbar = scroll_bar = ScrollBar(
             vertical=True, name=&#34;vertical&#34;, thickness=self.scrollbar_size_vertical
         )
-        self.app.start_widget(self, scroll_bar)
+        self.app._start_widget(self, scroll_bar)
         return scroll_bar
 
     @property
@@ -2103,7 +2106,7 @@ def cursor_line(self) -&gt; int | None:
             vertical=False, name=&#34;horizontal&#34;, thickness=self.scrollbar_size_horizontal
         )
 
-        self.app.start_widget(self, scroll_bar)
+        self.app._start_widget(self, scroll_bar)
         return scroll_bar
 
     def _refresh_scrollbars(self) -&gt; None:
@@ -2886,16 +2889,19 @@ def cursor_line(self) -&gt; int | None:
                 width, height = self.container_size
                 if self.show_vertical_scrollbar:
                     self.vertical_scrollbar.window_virtual_size = virtual_size.height
-                    self.vertical_scrollbar.window_size = height
+                    self.vertical_scrollbar.window_size = (
+                        height - self.scrollbar_size_horizontal
+                    )
                 if self.show_horizontal_scrollbar:
                     self.horizontal_scrollbar.window_virtual_size = virtual_size.width
-                    self.horizontal_scrollbar.window_size = width
+                    self.horizontal_scrollbar.window_size = (
+                        width - self.scrollbar_size_vertical
+                    )
 
                 self.scroll_x = self.validate_scroll_x(self.scroll_x)
                 self.scroll_y = self.validate_scroll_y(self.scroll_y)
                 self.refresh(layout=True)
                 self.scroll_to(self.scroll_x, self.scroll_y)
-                # self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
             else:
                 self.refresh()
 
@@ -2973,7 +2979,7 @@ def cursor_line(self) -&gt; int | None:
         offset_x, offset_y = self.screen.get_offset(self)
         return self.screen.get_style_at(x + offset_x, y + offset_y)
 
-    async def forward_event(self, event: events.Event) -&gt; None:
+    async def _forward_event(self, event: events.Event) -&gt; None:
         event.set_forwarded()
         await self.post_message(event)
 
@@ -3034,7 +3040,7 @@ def cursor_line(self) -&gt; int | None:
         if not self.check_message_enabled(message):
             return True
         if not self.is_running:
-            self.log(self, f&#34;IS NOT RUNNING, {message!r} not sent&#34;)
+            self.log.warning(self, f&#34;IS NOT RUNNING, {message!r} not sent&#34;)
         return await super().post_message(message)
 
     async def _on_idle(self, event: events.Idle) -&gt; None:
@@ -3238,7 +3244,7 @@ def cursor_line(self) -&gt; int | None:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.widget.Widget.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dt id="textual.widget.Widget.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -3525,7 +3531,7 @@ def horizontal_scrollbar(self) -&gt; ScrollBar:
         vertical=False, name=&#34;horizontal&#34;, thickness=self.scrollbar_size_horizontal
     )
 
-    self.app.start_widget(self, scroll_bar)
+    self.app._start_widget(self, scroll_bar)
     return scroll_bar</code></pre>
 </details>
 </dd>
@@ -3836,7 +3842,7 @@ def scrollbar_corner(self) -&gt; ScrollBarCorner:
     if self._scrollbar_corner is not None:
         return self._scrollbar_corner
     self._scrollbar_corner = ScrollBarCorner()
-    self.app.start_widget(self, self._scrollbar_corner)
+    self.app._start_widget(self, self._scrollbar_corner)
     return self._scrollbar_corner</code></pre>
 </details>
 </dd>
@@ -4022,7 +4028,7 @@ def vertical_scrollbar(self) -&gt; ScrollBar:
     self._vertical_scrollbar = scroll_bar = ScrollBar(
         vertical=True, name=&#34;vertical&#34;, thickness=self.scrollbar_size_vertical
     )
-    self.app.start_widget(self, scroll_bar)
+    self.app._start_widget(self, scroll_bar)
     return scroll_bar</code></pre>
 </details>
 </dd>
@@ -4210,20 +4216,6 @@ def window_region(self) -&gt; Region:
 <pre><code class="python">def focus(self) -&gt; None:
     &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
     self.app.set_focus(self)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.forward_event"><code class="name flex">
-<span>async def <span class="ident">forward_event</span></span>(<span>self, event: events.Event) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def forward_event(self, event: events.Event) -&gt; None:
-    event.set_forwarded()
-    await self.post_message(event)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_content_height"><code class="name flex">
@@ -5416,16 +5408,19 @@ the scrollable area.</p>
             width, height = self.container_size
             if self.show_vertical_scrollbar:
                 self.vertical_scrollbar.window_virtual_size = virtual_size.height
-                self.vertical_scrollbar.window_size = height
+                self.vertical_scrollbar.window_size = (
+                    height - self.scrollbar_size_horizontal
+                )
             if self.show_horizontal_scrollbar:
                 self.horizontal_scrollbar.window_virtual_size = virtual_size.width
-                self.horizontal_scrollbar.window_size = width
+                self.horizontal_scrollbar.window_size = (
+                    width - self.scrollbar_size_vertical
+                )
 
             self.scroll_x = self.validate_scroll_x(self.scroll_x)
             self.scroll_y = self.validate_scroll_y(self.scroll_y)
             self.refresh(layout=True)
             self.scroll_to(self.scroll_x, self.scroll_y)
-            # self.call_later(self.scroll_to, self.scroll_x, self.scroll_y)
         else:
             self.refresh()</code></pre>
 </details>
@@ -5618,7 +5613,6 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
-<li><code><a title="textual.dom.DOMNode.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.dom.DOMNode.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.dom.DOMNode.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
@@ -5718,7 +5712,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a></code></h4>
 <ul class="">
 <li><code><a title="textual.widget.Widget.COMPONENT_CLASSES" href="#textual.widget.Widget.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.widget.Widget.CSS" href="#textual.widget.Widget.CSS">CSS</a></code></li>
+<li><code><a title="textual.widget.Widget.DEFAULT_CSS" href="#textual.widget.Widget.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.widget.Widget.action" href="#textual.widget.Widget.action">action</a></code></li>
 <li><code><a title="textual.widget.Widget.allow_horizontal_scroll" href="#textual.widget.Widget.allow_horizontal_scroll">allow_horizontal_scroll</a></code></li>
 <li><code><a title="textual.widget.Widget.allow_vertical_scroll" href="#textual.widget.Widget.allow_vertical_scroll">allow_vertical_scroll</a></code></li>
@@ -5736,7 +5730,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focusable_children" href="#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
-<li><code><a title="textual.widget.Widget.forward_event" href="#textual.widget.Widget.forward_event">forward_event</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_height" href="#textual.widget.Widget.get_content_height">get_content_height</a></code></li>
 <li><code><a title="textual.widget.Widget.get_content_width" href="#textual.widget.Widget.get_content_width">get_content_width</a></code></li>
 <li><code><a title="textual.widget.Widget.get_pseudo_classes" href="#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>

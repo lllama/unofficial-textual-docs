@@ -41,7 +41,7 @@ if TYPE_CHECKING:
 
 
 @rich.repr.auto
-class Update(Message, verbosity=3):
+class Update(Message, verbose=True):
     def __init__(self, sender: MessagePump, widget: Widget):
         super().__init__(sender)
         self.widget = widget
@@ -61,13 +61,13 @@ class Update(Message, verbosity=3):
 
 
 @rich.repr.auto
-class Layout(Message, verbosity=3):
+class Layout(Message, verbose=True):
     def can_replace(self, message: Message) -&gt; bool:
         return isinstance(message, Layout)
 
 
 @rich.repr.auto
-class InvokeLater(Message, verbosity=3):
+class InvokeLater(Message, verbose=True):
     def __init__(self, sender: MessagePump, callback: CallbackType) -&gt; None:
         self.callback = callback
         super().__init__(sender)
@@ -154,7 +154,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.CursorMove.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.messages.CursorMove.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -189,7 +189,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class InvokeLater(Message, verbosity=3):
+<pre><code class="python">class InvokeLater(Message, verbose=True):
     def __init__(self, sender: MessagePump, callback: CallbackType) -&gt; None:
         self.callback = callback
         super().__init__(sender)
@@ -215,7 +215,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.InvokeLater.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.messages.InvokeLater.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -250,7 +250,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Layout(Message, verbosity=3):
+<pre><code class="python">class Layout(Message, verbose=True):
     def can_replace(self, message: Message) -&gt; bool:
         return isinstance(message, Layout)</code></pre>
 </details>
@@ -272,7 +272,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.Layout.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.messages.Layout.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -326,7 +326,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.Prompt.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.messages.Prompt.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -386,7 +386,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.StylesUpdated.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.messages.StylesUpdated.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -441,7 +441,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.TerminalSupportsSynchronizedOutput.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.messages.TerminalSupportsSynchronizedOutput.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -476,7 +476,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Update(Message, verbosity=3):
+<pre><code class="python">class Update(Message, verbose=True):
     def __init__(self, sender: MessagePump, widget: Widget):
         super().__init__(sender)
         self.widget = widget
@@ -512,7 +512,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.messages.Update.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.messages.Update.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -600,7 +600,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.messages.CursorMove.bubble" href="#textual.messages.CursorMove.bubble">bubble</a></code></li>
 <li><code><a title="textual.messages.CursorMove.namespace" href="#textual.messages.CursorMove.namespace">namespace</a></code></li>
 <li><code><a title="textual.messages.CursorMove.no_dispatch" href="#textual.messages.CursorMove.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.messages.CursorMove.verbosity" href="#textual.messages.CursorMove.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.messages.CursorMove.verbose" href="#textual.messages.CursorMove.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -609,7 +609,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.messages.InvokeLater.bubble" href="#textual.messages.InvokeLater.bubble">bubble</a></code></li>
 <li><code><a title="textual.messages.InvokeLater.namespace" href="#textual.messages.InvokeLater.namespace">namespace</a></code></li>
 <li><code><a title="textual.messages.InvokeLater.no_dispatch" href="#textual.messages.InvokeLater.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.messages.InvokeLater.verbosity" href="#textual.messages.InvokeLater.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.messages.InvokeLater.verbose" href="#textual.messages.InvokeLater.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -618,7 +618,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.messages.Layout.bubble" href="#textual.messages.Layout.bubble">bubble</a></code></li>
 <li><code><a title="textual.messages.Layout.namespace" href="#textual.messages.Layout.namespace">namespace</a></code></li>
 <li><code><a title="textual.messages.Layout.no_dispatch" href="#textual.messages.Layout.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.messages.Layout.verbosity" href="#textual.messages.Layout.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.messages.Layout.verbose" href="#textual.messages.Layout.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -627,7 +627,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.messages.Prompt.bubble" href="#textual.messages.Prompt.bubble">bubble</a></code></li>
 <li><code><a title="textual.messages.Prompt.namespace" href="#textual.messages.Prompt.namespace">namespace</a></code></li>
 <li><code><a title="textual.messages.Prompt.no_dispatch" href="#textual.messages.Prompt.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.messages.Prompt.verbosity" href="#textual.messages.Prompt.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.messages.Prompt.verbose" href="#textual.messages.Prompt.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -636,7 +636,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.messages.StylesUpdated.bubble" href="#textual.messages.StylesUpdated.bubble">bubble</a></code></li>
 <li><code><a title="textual.messages.StylesUpdated.namespace" href="#textual.messages.StylesUpdated.namespace">namespace</a></code></li>
 <li><code><a title="textual.messages.StylesUpdated.no_dispatch" href="#textual.messages.StylesUpdated.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.messages.StylesUpdated.verbosity" href="#textual.messages.StylesUpdated.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.messages.StylesUpdated.verbose" href="#textual.messages.StylesUpdated.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -645,7 +645,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.bubble" href="#textual.messages.TerminalSupportsSynchronizedOutput.bubble">bubble</a></code></li>
 <li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.namespace" href="#textual.messages.TerminalSupportsSynchronizedOutput.namespace">namespace</a></code></li>
 <li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.no_dispatch" href="#textual.messages.TerminalSupportsSynchronizedOutput.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.verbosity" href="#textual.messages.TerminalSupportsSynchronizedOutput.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.messages.TerminalSupportsSynchronizedOutput.verbose" href="#textual.messages.TerminalSupportsSynchronizedOutput.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -654,7 +654,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.messages.Update.bubble" href="#textual.messages.Update.bubble">bubble</a></code></li>
 <li><code><a title="textual.messages.Update.namespace" href="#textual.messages.Update.namespace">namespace</a></code></li>
 <li><code><a title="textual.messages.Update.no_dispatch" href="#textual.messages.Update.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.messages.Update.verbosity" href="#textual.messages.Update.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.messages.Update.verbose" href="#textual.messages.Update.verbose">verbose</a></code></li>
 </ul>
 </li>
 </ul>

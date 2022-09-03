@@ -29,6 +29,7 @@
 <pre><code class="python">from __future__ import annotations
 
 from inspect import getfile
+import re
 from typing import (
     cast,
     ClassVar,
@@ -55,6 +56,7 @@ from .css.constants import VALID_DISPLAY, VALID_VISIBILITY
 from .css.errors import StyleValueError, DeclarationError
 from .css.parse import parse_declarations
 from .css.styles import Styles, RenderStyles
+from .css.tokenize import IDENTIFIER
 from .css.query import NoMatchingNodesError
 from .message_pump import MessagePump
 from .timer import Timer
@@ -64,6 +66,32 @@ if TYPE_CHECKING:
     from .css.query import DOMQuery
     from .screen import Screen
     from .widget import Widget
+
+
+_re_identifier = re.compile(IDENTIFIER)
+
+
+class BadIdentifier(Exception):
+    &#34;&#34;&#34;raised by check_identifiers.&#34;&#34;&#34;
+
+
+def check_identifiers(description: str, *names: str) -&gt; None:
+    &#34;&#34;&#34;Validate identifier and raise an error if it fails.
+
+    Args:
+        description (str): Description of where identifier is used for error message.
+        names (list[str]): Identifiers to check.
+
+    Returns:
+        bool: True if the name is valid.
+    &#34;&#34;&#34;
+    match = _re_identifier.match
+    for name in names:
+        if match(name) is None:
+            raise BadIdentifier(
+                f&#34;{name!r} is an invalid {description}; &#34;
+                &#34;identifiers must contain only letters, numbers, underscores, or hyphens, and must not begin with a number.&#34;
+            )
 
 
 class DOMError(Exception):
@@ -82,8 +110,8 @@ class NoParent(Exception):
 class DOMNode(MessagePump):
     &#34;&#34;&#34;The base class for object that can be in the Textual DOM (App and Widget)&#34;&#34;&#34;
 
-    # Custom CSS
-    CSS: ClassVar[str] = &#34;&#34;
+    # CSS defaults
+    DEFAULT_CSS: ClassVar[str] = &#34;&#34;
 
     # Default classes argument if not supplied
     DEFAULT_CLASSES: str = &#34;&#34;
@@ -103,9 +131,16 @@ class DOMNode(MessagePump):
         id: str | None = None,
         classes: str | None = None,
     ) -&gt; None:
+        self._classes = set()
         self._name = name
-        self._id = id
-        self._classes: set[str] = set() if classes is None else set(classes.split())
+        self._id = None
+        if id is not None:
+            self.id = id
+
+        _classes = classes.split() if classes else []
+        check_identifiers(&#34;class name&#34;, *_classes)
+        self._classes.update(_classes)
+
         self.children = NodeList()
         self._css_styles: Styles = Styles(self)
         self._inline_styles: Styles = Styles(self)
@@ -226,7 +261,7 @@ class DOMNode(MessagePump):
                 return f&#34;{base.__name__}&#34;
 
         for tie_breaker, base in enumerate(self._node_bases):
-            css = base.CSS.strip()
+            css = base.DEFAULT_CSS.strip()
             if css:
                 css_stack.append((get_path(base), css, -tie_breaker))
 
@@ -276,6 +311,8 @@ class DOMNode(MessagePump):
             ValueError: If the ID has already been set.
 
         &#34;&#34;&#34;
+        check_identifiers(&#34;id&#34;, new_id)
+
         if self._id is not None:
             raise ValueError(
                 f&#34;Node &#39;id&#39; attribute may not be changed once set (current id={self._id!r})&#34;
@@ -751,6 +788,7 @@ class DOMNode(MessagePump):
             *class_names (str): CSS class names to add.
 
         &#34;&#34;&#34;
+        check_identifiers(&#34;class name&#34;, *class_names)
         old_classes = self._classes.copy()
         self._classes.update(class_names)
         if old_classes == self._classes:
@@ -767,6 +805,7 @@ class DOMNode(MessagePump):
             *class_names (str): CSS class names to remove.
 
         &#34;&#34;&#34;
+        check_identifiers(&#34;class name&#34;, *class_names)
         old_classes = self._classes.copy()
         self._classes.difference_update(class_names)
         if old_classes == self._classes:
@@ -783,6 +822,7 @@ class DOMNode(MessagePump):
             *class_names (str): CSS class names to toggle.
 
         &#34;&#34;&#34;
+        check_identifiers(&#34;class name&#34;, *class_names)
         old_classes = self._classes.copy()
         self._classes.symmetric_difference_update(class_names)
         if old_classes == self._classes:
@@ -806,10 +846,72 @@ class DOMNode(MessagePump):
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="textual.dom.check_identifiers"><code class="name flex">
+<span>def <span class="ident">check_identifiers</span></span>(<span>description: str, *names: str) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Validate identifier and raise an error if it fails.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>description</code></strong> :&ensp;<code>str</code></dt>
+<dd>Description of where identifier is used for error message.</dd>
+<dt><strong><code>names</code></strong> :&ensp;<code>list[str]</code></dt>
+<dd>Identifiers to check.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the name is valid.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_identifiers(description: str, *names: str) -&gt; None:
+    &#34;&#34;&#34;Validate identifier and raise an error if it fails.
+
+    Args:
+        description (str): Description of where identifier is used for error message.
+        names (list[str]): Identifiers to check.
+
+    Returns:
+        bool: True if the name is valid.
+    &#34;&#34;&#34;
+    match = _re_identifier.match
+    for name in names:
+        if match(name) is None:
+            raise BadIdentifier(
+                f&#34;{name!r} is an invalid {description}; &#34;
+                &#34;identifiers must contain only letters, numbers, underscores, or hyphens, and must not begin with a number.&#34;
+            )</code></pre>
+</details>
+</dd>
+</dl>
 </section>
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="textual.dom.BadIdentifier"><code class="flex name class">
+<span>class <span class="ident">BadIdentifier</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>raised by check_identifiers.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BadIdentifier(Exception):
+    &#34;&#34;&#34;raised by check_identifiers.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
 <dt id="textual.dom.DOMError"><code class="flex name class">
 <span>class <span class="ident">DOMError</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -846,8 +948,8 @@ class DOMNode(MessagePump):
 <pre><code class="python">class DOMNode(MessagePump):
     &#34;&#34;&#34;The base class for object that can be in the Textual DOM (App and Widget)&#34;&#34;&#34;
 
-    # Custom CSS
-    CSS: ClassVar[str] = &#34;&#34;
+    # CSS defaults
+    DEFAULT_CSS: ClassVar[str] = &#34;&#34;
 
     # Default classes argument if not supplied
     DEFAULT_CLASSES: str = &#34;&#34;
@@ -867,9 +969,16 @@ class DOMNode(MessagePump):
         id: str | None = None,
         classes: str | None = None,
     ) -&gt; None:
+        self._classes = set()
         self._name = name
-        self._id = id
-        self._classes: set[str] = set() if classes is None else set(classes.split())
+        self._id = None
+        if id is not None:
+            self.id = id
+
+        _classes = classes.split() if classes else []
+        check_identifiers(&#34;class name&#34;, *_classes)
+        self._classes.update(_classes)
+
         self.children = NodeList()
         self._css_styles: Styles = Styles(self)
         self._inline_styles: Styles = Styles(self)
@@ -990,7 +1099,7 @@ class DOMNode(MessagePump):
                 return f&#34;{base.__name__}&#34;
 
         for tie_breaker, base in enumerate(self._node_bases):
-            css = base.CSS.strip()
+            css = base.DEFAULT_CSS.strip()
             if css:
                 css_stack.append((get_path(base), css, -tie_breaker))
 
@@ -1040,6 +1149,8 @@ class DOMNode(MessagePump):
             ValueError: If the ID has already been set.
 
         &#34;&#34;&#34;
+        check_identifiers(&#34;id&#34;, new_id)
+
         if self._id is not None:
             raise ValueError(
                 f&#34;Node &#39;id&#39; attribute may not be changed once set (current id={self._id!r})&#34;
@@ -1515,6 +1626,7 @@ class DOMNode(MessagePump):
             *class_names (str): CSS class names to add.
 
         &#34;&#34;&#34;
+        check_identifiers(&#34;class name&#34;, *class_names)
         old_classes = self._classes.copy()
         self._classes.update(class_names)
         if old_classes == self._classes:
@@ -1531,6 +1643,7 @@ class DOMNode(MessagePump):
             *class_names (str): CSS class names to remove.
 
         &#34;&#34;&#34;
+        check_identifiers(&#34;class name&#34;, *class_names)
         old_classes = self._classes.copy()
         self._classes.difference_update(class_names)
         if old_classes == self._classes:
@@ -1547,6 +1660,7 @@ class DOMNode(MessagePump):
             *class_names (str): CSS class names to toggle.
 
         &#34;&#34;&#34;
+        check_identifiers(&#34;class name&#34;, *class_names)
         old_classes = self._classes.copy()
         self._classes.symmetric_difference_update(class_names)
         if old_classes == self._classes:
@@ -1578,11 +1692,11 @@ class DOMNode(MessagePump):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.dom.DOMNode.CSS"><code class="name">var <span class="ident">CSS</span> : ClassVar[str]</code></dt>
+<dt id="textual.dom.DOMNode.DEFAULT_CLASSES"><code class="name">var <span class="ident">DEFAULT_CLASSES</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.dom.DOMNode.DEFAULT_CLASSES"><code class="name">var <span class="ident">DEFAULT_CLASSES</span> : str</code></dt>
+<dt id="textual.dom.DOMNode.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span> : ClassVar[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2066,6 +2180,7 @@ def visible(self) -&gt; bool:
         *class_names (str): CSS class names to add.
 
     &#34;&#34;&#34;
+    check_identifiers(&#34;class name&#34;, *class_names)
     old_classes = self._classes.copy()
     self._classes.update(class_names)
     if old_classes == self._classes:
@@ -2193,7 +2308,7 @@ and inherited from base classes.</dd>
             return f&#34;{base.__name__}&#34;
 
     for tie_breaker, base in enumerate(self._node_bases):
-        css = base.CSS.strip()
+        css = base.DEFAULT_CSS.strip()
         if css:
             css_stack.append((get_path(base), css, -tie_breaker))
 
@@ -2379,6 +2494,7 @@ and inherited from base classes.</dd>
         *class_names (str): CSS class names to remove.
 
     &#34;&#34;&#34;
+    check_identifiers(&#34;class name&#34;, *class_names)
     old_classes = self._classes.copy()
     self._classes.difference_update(class_names)
     if old_classes == self._classes:
@@ -2481,6 +2597,7 @@ and inherited from base classes.</dd>
         *class_names (str): CSS class names to toggle.
 
     &#34;&#34;&#34;
+    check_identifiers(&#34;class name&#34;, *class_names)
     old_classes = self._classes.copy()
     self._classes.symmetric_difference_update(class_names)
     if old_classes == self._classes:
@@ -2558,7 +2675,6 @@ and inherited from base classes.</dd>
 <li><code><a title="textual.message_pump.MessagePump.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.post_message" href="message_pump.html#textual.message_pump.MessagePump.post_message">post_message</a></code></li>
@@ -2669,8 +2785,16 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual" href="index.html">textual</a></code></li>
 </ul>
 </li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="textual.dom.check_identifiers" href="#textual.dom.check_identifiers">check_identifiers</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
+<li>
+<h4><code><a title="textual.dom.BadIdentifier" href="#textual.dom.BadIdentifier">BadIdentifier</a></code></h4>
+</li>
 <li>
 <h4><code><a title="textual.dom.DOMError" href="#textual.dom.DOMError">DOMError</a></code></h4>
 </li>
@@ -2678,8 +2802,8 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a></code></h4>
 <ul class="">
 <li><code><a title="textual.dom.DOMNode.COMPONENT_CLASSES" href="#textual.dom.DOMNode.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.dom.DOMNode.CSS" href="#textual.dom.DOMNode.CSS">CSS</a></code></li>
 <li><code><a title="textual.dom.DOMNode.DEFAULT_CLASSES" href="#textual.dom.DOMNode.DEFAULT_CLASSES">DEFAULT_CLASSES</a></code></li>
+<li><code><a title="textual.dom.DOMNode.DEFAULT_CSS" href="#textual.dom.DOMNode.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.dom.DOMNode.ExpectType" href="#textual.dom.DOMNode.ExpectType">ExpectType</a></code></li>
 <li><code><a title="textual.dom.DOMNode.WalkType" href="#textual.dom.DOMNode.WalkType">WalkType</a></code></li>
 <li><code><a title="textual.dom.DOMNode.add_class" href="#textual.dom.DOMNode.add_class">add_class</a></code></li>

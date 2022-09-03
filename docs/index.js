@@ -70,12 +70,6 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.log",
-"url":0,
-"doc":"",
-"func":1
-},
-{
 "ref":"textual.panic",
 "url":0,
 "doc":"",
@@ -203,7 +197,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollMessage.verbosity",
+"ref":"textual.scrollbar.ScrollMessage.verbose",
 "url":2,
 "doc":""
 },
@@ -267,7 +261,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollUp.verbosity",
+"ref":"textual.scrollbar.ScrollUp.verbose",
 "url":2,
 "doc":""
 },
@@ -331,7 +325,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollDown.verbosity",
+"ref":"textual.scrollbar.ScrollDown.verbose",
 "url":2,
 "doc":""
 },
@@ -395,7 +389,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollLeft.verbosity",
+"ref":"textual.scrollbar.ScrollLeft.verbose",
 "url":2,
 "doc":""
 },
@@ -459,7 +453,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollRight.verbosity",
+"ref":"textual.scrollbar.ScrollRight.verbose",
 "url":2,
 "doc":""
 },
@@ -523,7 +517,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollTo.verbosity",
+"ref":"textual.scrollbar.ScrollTo.verbose",
 "url":2,
 "doc":""
 },
@@ -1226,12 +1220,6 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
-"ref":"textual.scrollbar.ScrollBar.log",
-"url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
-},
-{
 "ref":"textual.scrollbar.ScrollBar.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -1913,12 +1901,6 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
-"ref":"textual.scrollbar.ScrollBarCorner.log",
-"url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
-},
-{
 "ref":"textual.scrollbar.ScrollBarCorner.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -2170,7 +2152,7 @@ INDEX=[
 "doc":"A Widget is the base class for Textual widgets. Extent this class (or a sub-class) when defining your own widgets."
 },
 {
-"ref":"textual.widget.Widget.CSS",
+"ref":"textual.widget.Widget.DEFAULT_CSS",
 "url":4,
 "doc":""
 },
@@ -2610,12 +2592,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.widget.Widget.forward_event",
-"url":4,
-"doc":"",
-"func":1
-},
-{
 "ref":"textual.widget.Widget.refresh",
 "url":4,
 "doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. By default this method will cause the content of the widget to refresh, but not change its size. You can also set  layout=True to perform a layout.  ! warning It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will do this automatically. Args:  regions (Region, optional): Additional screen regions to mark as dirty. repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
@@ -2885,12 +2861,6 @@ INDEX=[
 "ref":"textual.widget.Widget.app",
 "url":6,
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
-},
-{
-"ref":"textual.widget.Widget.log",
-"url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
 },
 {
 "ref":"textual.widget.Widget.disable_messages",
@@ -3371,7 +3341,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.layout.Container.CSS",
+"ref":"textual.layout.Container.DEFAULT_CSS",
 "url":15,
 "doc":""
 },
@@ -3975,12 +3945,6 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
-"ref":"textual.layout.Container.log",
-"url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
-},
-{
 "ref":"textual.layout.Container.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -4063,7 +4027,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.layout.Vertical.CSS",
+"ref":"textual.layout.Vertical.DEFAULT_CSS",
 "url":15,
 "doc":""
 },
@@ -4667,12 +4631,6 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
-"ref":"textual.layout.Vertical.log",
-"url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
-},
-{
 "ref":"textual.layout.Vertical.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -4755,7 +4713,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.layout.Horizontal.CSS",
+"ref":"textual.layout.Horizontal.DEFAULT_CSS",
 "url":15,
 "doc":""
 },
@@ -5359,12 +5317,6 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
-"ref":"textual.layout.Horizontal.log",
-"url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
-},
-{
 "ref":"textual.layout.Horizontal.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -5447,7 +5399,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.layout.Center.CSS",
+"ref":"textual.layout.Center.DEFAULT_CSS",
 "url":15,
 "doc":""
 },
@@ -6051,12 +6003,6 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
-"ref":"textual.layout.Center.log",
-"url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
-},
-{
 "ref":"textual.layout.Center.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -6184,6 +6130,17 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.dom.BadIdentifier",
+"url":5,
+"doc":"raised by check_identifiers."
+},
+{
+"ref":"textual.dom.check_identifiers",
+"url":5,
+"doc":"Validate identifier and raise an error if it fails. Args: description (str): Description of where identifier is used for error message. names (list[str]): Identifiers to check. Returns: bool: True if the name is valid.",
+"func":1
+},
+{
 "ref":"textual.dom.DOMError",
 "url":5,
 "doc":"Common base class for all non-exit exceptions."
@@ -6204,7 +6161,7 @@ INDEX=[
 "doc":"The base class for object that can be in the Textual DOM (App and Widget)"
 },
 {
-"ref":"textual.dom.DOMNode.CSS",
+"ref":"textual.dom.DOMNode.DEFAULT_CSS",
 "url":5,
 "doc":""
 },
@@ -6425,12 +6382,6 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
-"ref":"textual.dom.DOMNode.log",
-"url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
-},
-{
 "ref":"textual.dom.DOMNode.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -6541,7 +6492,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.message.Message.verbosity",
+"ref":"textual.message.Message.verbose",
 "url":3,
 "doc":""
 },
@@ -6660,7 +6611,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scroll_view.ScrollView.CSS",
+"ref":"textual.scroll_view.ScrollView.DEFAULT_CSS",
 "url":18,
 "doc":""
 },
@@ -7286,12 +7237,6 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.app",
 "url":6,
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
-},
-{
-"ref":"textual.scroll_view.ScrollView.log",
-"url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.disable_messages",
@@ -9497,7 +9442,7 @@ INDEX=[
 {
 "ref":"textual.css.parse.parse",
 "url":45,
-"doc":"Parse CSS by tokenizing it, performing variable substitution, and generating rule sets from it. Args: css (str): The input CSS path (str): Path to the CSS variables (dict[str, str]): Substitution variables to substitute tokens for. is_default_rules (bool): True if the rules we're extracting are default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.",
+"doc":"Parse CSS by tokenizing it, performing variable substitution, and generating rule sets from it. Args: css (str): The input CSS path (str): Path to the CSS variables (dict[str, str]): Substitution variables to substitute tokens for. is_default_rules (bool): True if the rules we're extracting are default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined CSS.",
 "func":1
 },
 {
@@ -10319,7 +10264,7 @@ INDEX=[
 {
 "ref":"textual.css.styles.Styles.extract_rules",
 "url":46,
-"doc":"Extract rules from Styles object, and apply !important css specificity as well as higher specificity of user CSS vs widget CSS. Args: specificity (Specificity3): A node specificity. is_default_rules (bool): True if the rules we're extracting are default (i.e. in Widget.CSS) rules. False if they're from user defined CSS. Returns: list[tuple[str, Specificity5, Any ]: A list containing a tuple of  ,   .",
+"doc":"Extract rules from Styles object, and apply !important css specificity as well as higher specificity of user CSS vs widget CSS. Args: specificity (Specificity3): A node specificity. is_default_rules (bool): True if the rules we're extracting are default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined CSS. Returns: list[tuple[str, Specificity5, Any ]: A list containing a tuple of  ,   .",
 "func":1
 },
 {
@@ -11040,7 +10985,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.Update.verbosity",
+"ref":"textual.messages.Update.verbose",
 "url":47,
 "doc":""
 },
@@ -11104,7 +11049,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.Layout.verbosity",
+"ref":"textual.messages.Layout.verbose",
 "url":47,
 "doc":""
 },
@@ -11162,7 +11107,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.InvokeLater.verbosity",
+"ref":"textual.messages.InvokeLater.verbose",
 "url":47,
 "doc":""
 },
@@ -11226,7 +11171,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.CursorMove.verbosity",
+"ref":"textual.messages.CursorMove.verbose",
 "url":47,
 "doc":""
 },
@@ -11296,7 +11241,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.StylesUpdated.verbosity",
+"ref":"textual.messages.StylesUpdated.verbose",
 "url":47,
 "doc":""
 },
@@ -11360,7 +11305,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.Prompt.verbosity",
+"ref":"textual.messages.Prompt.verbose",
 "url":47,
 "doc":""
 },
@@ -11418,7 +11363,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.TerminalSupportsSynchronizedOutput.verbosity",
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.verbose",
 "url":47,
 "doc":""
 },
@@ -11615,7 +11560,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Event.verbosity",
+"ref":"textual.events.Event.verbose",
 "url":58,
 "doc":""
 },
@@ -11679,7 +11624,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Callback.verbosity",
+"ref":"textual.events.Callback.verbose",
 "url":58,
 "doc":""
 },
@@ -11743,7 +11688,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.InvokeCallbacks.verbosity",
+"ref":"textual.events.InvokeCallbacks.verbose",
 "url":58,
 "doc":""
 },
@@ -11807,7 +11752,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.ShutdownRequest.verbosity",
+"ref":"textual.events.ShutdownRequest.verbose",
 "url":58,
 "doc":""
 },
@@ -11871,7 +11816,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Shutdown.verbosity",
+"ref":"textual.events.Shutdown.verbose",
 "url":58,
 "doc":""
 },
@@ -11935,7 +11880,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Load.verbosity",
+"ref":"textual.events.Load.verbose",
 "url":58,
 "doc":""
 },
@@ -11999,7 +11944,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Idle.verbosity",
+"ref":"textual.events.Idle.verbose",
 "url":58,
 "doc":""
 },
@@ -12068,7 +12013,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Action.verbosity",
+"ref":"textual.events.Action.verbose",
 "url":58,
 "doc":""
 },
@@ -12153,7 +12098,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Resize.verbosity",
+"ref":"textual.events.Resize.verbose",
 "url":58,
 "doc":""
 },
@@ -12211,7 +12156,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Mount.verbosity",
+"ref":"textual.events.Mount.verbose",
 "url":58,
 "doc":""
 },
@@ -12255,70 +12200,6 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.events.Unmount",
-"url":58,
-"doc":"Sent when a widget is unmounted, and may no longer receive messages."
-},
-{
-"ref":"textual.events.Unmount.sender",
-"url":58,
-"doc":"Return an attribute of instance, which is of type owner."
-},
-{
-"ref":"textual.events.Unmount.namespace",
-"url":58,
-"doc":""
-},
-{
-"ref":"textual.events.Unmount.bubble",
-"url":58,
-"doc":""
-},
-{
-"ref":"textual.events.Unmount.verbosity",
-"url":58,
-"doc":""
-},
-{
-"ref":"textual.events.Unmount.no_dispatch",
-"url":58,
-"doc":""
-},
-{
-"ref":"textual.events.Unmount.set_forwarded",
-"url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
-},
-{
-"ref":"textual.events.Unmount.can_replace",
-"url":3,
-"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
-"func":1
-},
-{
-"ref":"textual.events.Unmount.prevent_default",
-"url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.events.Unmount.stop",
-"url":3,
-"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.events.Unmount.name",
-"url":3,
-"doc":"Return an attribute of instance, which is of type owner."
-},
-{
-"ref":"textual.events.Unmount.time",
-"url":3,
-"doc":"Return an attribute of instance, which is of type owner."
-},
-{
 "ref":"textual.events.Remove",
 "url":58,
 "doc":"Sent to a widget to ask it to remove itself from the DOM."
@@ -12339,7 +12220,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Remove.verbosity",
+"ref":"textual.events.Remove.verbose",
 "url":58,
 "doc":""
 },
@@ -12403,7 +12284,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Show.verbosity",
+"ref":"textual.events.Show.verbose",
 "url":58,
 "doc":""
 },
@@ -12467,7 +12348,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Hide.verbosity",
+"ref":"textual.events.Hide.verbose",
 "url":58,
 "doc":""
 },
@@ -12531,7 +12412,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseCapture.verbosity",
+"ref":"textual.events.MouseCapture.verbose",
 "url":58,
 "doc":""
 },
@@ -12595,7 +12476,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseRelease.verbosity",
+"ref":"textual.events.MouseRelease.verbose",
 "url":58,
 "doc":""
 },
@@ -12659,7 +12540,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.InputEvent.verbosity",
+"ref":"textual.events.InputEvent.verbose",
 "url":58,
 "doc":""
 },
@@ -12733,7 +12614,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Key.verbosity",
+"ref":"textual.events.Key.verbose",
 "url":58,
 "doc":""
 },
@@ -12864,7 +12745,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseEvent.verbosity",
+"ref":"textual.events.MouseEvent.verbose",
 "url":58,
 "doc":""
 },
@@ -12928,7 +12809,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseMove.verbosity",
+"ref":"textual.events.MouseMove.verbose",
 "url":58,
 "doc":""
 },
@@ -13042,7 +12923,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseDown.verbosity",
+"ref":"textual.events.MouseDown.verbose",
 "url":58,
 "doc":""
 },
@@ -13156,7 +13037,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseUp.verbosity",
+"ref":"textual.events.MouseUp.verbose",
 "url":58,
 "doc":""
 },
@@ -13280,7 +13161,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseScrollDown.verbosity",
+"ref":"textual.events.MouseScrollDown.verbose",
 "url":58,
 "doc":""
 },
@@ -13354,7 +13235,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.MouseScrollUp.verbosity",
+"ref":"textual.events.MouseScrollUp.verbose",
 "url":58,
 "doc":""
 },
@@ -13418,7 +13299,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Click.verbosity",
+"ref":"textual.events.Click.verbose",
 "url":58,
 "doc":""
 },
@@ -13547,7 +13428,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Timer.verbosity",
+"ref":"textual.events.Timer.verbose",
 "url":58,
 "doc":""
 },
@@ -13606,7 +13487,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Enter.verbosity",
+"ref":"textual.events.Enter.verbose",
 "url":58,
 "doc":""
 },
@@ -13670,7 +13551,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Leave.verbosity",
+"ref":"textual.events.Leave.verbose",
 "url":58,
 "doc":""
 },
@@ -13734,7 +13615,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Focus.verbosity",
+"ref":"textual.events.Focus.verbose",
 "url":58,
 "doc":""
 },
@@ -13798,7 +13679,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Blur.verbosity",
+"ref":"textual.events.Blur.verbose",
 "url":58,
 "doc":""
 },
@@ -13862,7 +13743,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.DescendantFocus.verbosity",
+"ref":"textual.events.DescendantFocus.verbose",
 "url":58,
 "doc":""
 },
@@ -13926,7 +13807,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.DescendantBlur.verbosity",
+"ref":"textual.events.DescendantBlur.verbose",
 "url":58,
 "doc":""
 },
@@ -13990,7 +13871,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.Paste.verbosity",
+"ref":"textual.events.Paste.verbose",
 "url":58,
 "doc":""
 },
@@ -14054,7 +13935,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.ScreenResume.verbosity",
+"ref":"textual.events.ScreenResume.verbose",
 "url":58,
 "doc":""
 },
@@ -14118,7 +13999,7 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.events.ScreenSuspend.verbosity",
+"ref":"textual.events.ScreenSuspend.verbose",
 "url":58,
 "doc":""
 },
@@ -14224,8 +14105,7 @@ INDEX=[
 {
 "ref":"textual.message_pump.MessagePump.log",
 "url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
+"doc":""
 },
 {
 "ref":"textual.message_pump.MessagePump.check_message_enabled",
@@ -14397,7 +14277,7 @@ INDEX=[
 "doc":"A widget for the root of the app."
 },
 {
-"ref":"textual.screen.Screen.CSS",
+"ref":"textual.screen.Screen.DEFAULT_CSS",
 "url":62,
 "doc":""
 },
@@ -14465,12 +14345,6 @@ INDEX=[
 "ref":"textual.screen.Screen.find_widget",
 "url":62,
 "doc":"Get the screen region of a Widget. Args: widget (Widget): A Widget within the composition. Returns: Region: Region relative to screen.",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.forward_event",
-"url":62,
-"doc":"",
 "func":1
 },
 {
@@ -15054,12 +14928,6 @@ INDEX=[
 "ref":"textual.screen.Screen.app",
 "url":6,
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
-},
-{
-"ref":"textual.screen.Screen.log",
-"url":6,
-"doc":"Write to logs or devtools. Positional args will logged. Keyword args will be prefixed with the key. Example:  python data = [1,2,3] self.log(\"Hello, World\", state=data) self.log(self.tree) self.log(locals(  Args: verbosity (int, optional): Verbosity level 0-3. Defaults to 1.",
-"func":1
 },
 {
 "ref":"textual.screen.Screen.disable_messages",

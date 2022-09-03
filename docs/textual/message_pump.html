@@ -45,7 +45,7 @@ from functools import partial
 from typing import TYPE_CHECKING, Any, Awaitable, Callable, Iterable
 from weakref import WeakSet
 
-from . import events, log, messages
+from . import events, log, messages, Logger
 from ._callback import invoke
 from ._context import NoActiveAppError, active_app
 from .timer import Timer, TimerCallback
@@ -140,33 +140,9 @@ class MessagePump(metaclass=MessagePumpMeta):
     def is_running(self) -&gt; bool:
         return self._running
 
-    def log(
-        self,
-        *args: Any,
-        verbosity: int = 1,
-        **kwargs,
-    ) -&gt; None:
-        &#34;&#34;&#34;Write to logs or devtools.
-
-        Positional args will logged. Keyword args will be prefixed with the key.
-
-        Example:
-            ```python
-            data = [1,2,3]
-            self.log(&#34;Hello, World&#34;, state=data)
-            self.log(self.tree)
-            self.log(locals())
-            ```
-
-        Args:
-            verbosity (int, optional): Verbosity level 0-3. Defaults to 1.
-        &#34;&#34;&#34;
-        return self.app.log(
-            *args,
-            **kwargs,
-            verbosity=verbosity,
-            _textual_calling_frame=inspect.stack()[1],
-        )
+    @property
+    def log(self) -&gt; Logger:
+        return self.app._logger
 
     def _attach(self, parent: MessagePump) -&gt; None:
         &#34;&#34;&#34;Set the parent, and therefore attach this node to the tree.
@@ -381,7 +357,7 @@ class MessagePump(metaclass=MessagePumpMeta):
             except CancelledError:
                 raise
             except Exception as error:
-                self.app.on_exception(error)
+                self.app._handle_exception(error)
                 break
             finally:
                 self._message_queue.task_done()
@@ -394,7 +370,7 @@ class MessagePump(metaclass=MessagePumpMeta):
                             try:
                                 await invoke(method, event)
                             except Exception as error:
-                                self.app.on_exception(error)
+                                self.app._handle_exception(error)
                                 break
 
         log(&#34;CLOSED&#34;, self)
@@ -452,12 +428,11 @@ class MessagePump(metaclass=MessagePumpMeta):
 
         # Look through the MRO to find a handler
         for cls, method in self._get_dispatch_methods(handler_name, message):
-            log(
+            log.event.verbosity(message.verbose)(
                 message,
                 &#34;&gt;&gt;&gt;&#34;,
                 self,
                 f&#34;method=&lt;{cls.__name__}.{handler_name}&gt;&#34;,
-                verbosity=message.verbosity,
             )
             await invoke(method, message)
 
@@ -674,33 +649,9 @@ class MessagePump(metaclass=MessagePumpMeta):
     def is_running(self) -&gt; bool:
         return self._running
 
-    def log(
-        self,
-        *args: Any,
-        verbosity: int = 1,
-        **kwargs,
-    ) -&gt; None:
-        &#34;&#34;&#34;Write to logs or devtools.
-
-        Positional args will logged. Keyword args will be prefixed with the key.
-
-        Example:
-            ```python
-            data = [1,2,3]
-            self.log(&#34;Hello, World&#34;, state=data)
-            self.log(self.tree)
-            self.log(locals())
-            ```
-
-        Args:
-            verbosity (int, optional): Verbosity level 0-3. Defaults to 1.
-        &#34;&#34;&#34;
-        return self.app.log(
-            *args,
-            **kwargs,
-            verbosity=verbosity,
-            _textual_calling_frame=inspect.stack()[1],
-        )
+    @property
+    def log(self) -&gt; Logger:
+        return self.app._logger
 
     def _attach(self, parent: MessagePump) -&gt; None:
         &#34;&#34;&#34;Set the parent, and therefore attach this node to the tree.
@@ -915,7 +866,7 @@ class MessagePump(metaclass=MessagePumpMeta):
             except CancelledError:
                 raise
             except Exception as error:
-                self.app.on_exception(error)
+                self.app._handle_exception(error)
                 break
             finally:
                 self._message_queue.task_done()
@@ -928,7 +879,7 @@ class MessagePump(metaclass=MessagePumpMeta):
                             try:
                                 await invoke(method, event)
                             except Exception as error:
-                                self.app.on_exception(error)
+                                self.app._handle_exception(error)
                                 break
 
         log(&#34;CLOSED&#34;, self)
@@ -986,12 +937,11 @@ class MessagePump(metaclass=MessagePumpMeta):
 
         # Look through the MRO to find a handler
         for cls, method in self._get_dispatch_methods(handler_name, message):
-            log(
+            log.event.verbosity(message.verbose)(
                 message,
                 &#34;&gt;&gt;&gt;&#34;,
                 self,
                 f&#34;method=&lt;{cls.__name__}.{handler_name}&gt;&#34;,
-                verbosity=message.verbosity,
             )
             await invoke(method, message)
 
@@ -1200,6 +1150,18 @@ def is_running(self) -&gt; bool:
     return self._running</code></pre>
 </details>
 </dd>
+<dt id="textual.message_pump.MessagePump.log"><code class="name">var <span class="ident">log</span> : textual.Logger</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def log(self) -&gt; Logger:
+    return self.app._logger</code></pre>
+</details>
+</dd>
 <dt id="textual.message_pump.MessagePump.task"><code class="name">var <span class="ident">task</span> : _asyncio.Task</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1379,56 +1341,6 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
     self._disabled_messages.difference_update(messages)</code></pre>
 </details>
 </dd>
-<dt id="textual.message_pump.MessagePump.log"><code class="name flex">
-<span>def <span class="ident">log</span></span>(<span>self, *args: Any, verbosity: int = 1, **kwargs) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Write to logs or devtools.</p>
-<p>Positional args will logged. Keyword args will be prefixed with the key.</p>
-<h2 id="example">Example</h2>
-<pre><code class="language-python">data = [1,2,3]
-self.log(&quot;Hello, World&quot;, state=data)
-self.log(self.tree)
-self.log(locals())
-</code></pre>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>verbosity</code></strong> :&ensp;<code>int</code>, optional</dt>
-<dd>Verbosity level 0-3. Defaults to 1.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def log(
-    self,
-    *args: Any,
-    verbosity: int = 1,
-    **kwargs,
-) -&gt; None:
-    &#34;&#34;&#34;Write to logs or devtools.
-
-    Positional args will logged. Keyword args will be prefixed with the key.
-
-    Example:
-        ```python
-        data = [1,2,3]
-        self.log(&#34;Hello, World&#34;, state=data)
-        self.log(self.tree)
-        self.log(locals())
-        ```
-
-    Args:
-        verbosity (int, optional): Verbosity level 0-3. Defaults to 1.
-    &#34;&#34;&#34;
-    return self.app.log(
-        *args,
-        **kwargs,
-        verbosity=verbosity,
-        _textual_calling_frame=inspect.stack()[1],
-    )</code></pre>
-</details>
-</dd>
 <dt id="textual.message_pump.MessagePump.on_callback"><code class="name flex">
 <span>async def <span class="ident">on_callback</span></span>(<span>self, event: events.Callback) ‑> None</span>
 </code></dt>
@@ -1490,12 +1402,11 @@ self.log(locals())
 
     # Look through the MRO to find a handler
     for cls, method in self._get_dispatch_methods(handler_name, message):
-        log(
+        log.event.verbosity(message.verbose)(
             message,
             &#34;&gt;&gt;&gt;&#34;,
             self,
             f&#34;method=&lt;{cls.__name__}.{handler_name}&gt;&#34;,
-            verbosity=message.verbosity,
         )
         await invoke(method, message)
 

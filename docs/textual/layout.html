@@ -32,7 +32,7 @@
 class Container(Widget):
     &#34;&#34;&#34;Simple container widget, with vertical layout.&#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     Container {
         layout: vertical;       
         overflow: auto;
@@ -44,13 +44,13 @@ class Vertical(Container):
     &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;
 
     # Blank CSS is important, otherwise you get a clone of Container
-    CSS = &#34;&#34;
+    DEFAULT_CSS = &#34;&#34;
 
 
 class Horizontal(Container):
     &#34;&#34;&#34;A container widget to align children horizontally.&#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     Horizontal {
         layout: horizontal;        
     }    
@@ -60,7 +60,7 @@ class Horizontal(Container):
 class Center(Container):
     &#34;&#34;&#34;A container widget to align children in the center.&#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     Center {
         layout: center;        
     }
@@ -89,7 +89,7 @@ class Center(Container):
 <pre><code class="python">class Center(Container):
     &#34;&#34;&#34;A container widget to align children in the center.&#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     Center {
         layout: center;        
     }
@@ -108,7 +108,7 @@ class Center(Container):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Center.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dt id="textual.layout.Center.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -173,7 +173,6 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.layout.Container.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.layout.Container.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
-<li><code><a title="textual.layout.Container.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.layout.Container.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.layout.Container.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.layout.Container.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
@@ -263,7 +262,7 @@ class Center(Container):
 <pre><code class="python">class Container(Widget):
     &#34;&#34;&#34;Simple container widget, with vertical layout.&#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     Container {
         layout: vertical;       
         overflow: auto;
@@ -288,7 +287,7 @@ class Center(Container):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Container.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dt id="textual.layout.Container.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -353,7 +352,6 @@ class Center(Container):
 <li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.widget.Widget.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.widget.Widget.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
-<li><code><a title="textual.widget.Widget.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
@@ -443,7 +441,7 @@ class Center(Container):
 <pre><code class="python">class Horizontal(Container):
     &#34;&#34;&#34;A container widget to align children horizontally.&#34;&#34;&#34;
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     Horizontal {
         layout: horizontal;        
     }    
@@ -462,7 +460,7 @@ class Center(Container):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Horizontal.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dt id="textual.layout.Horizontal.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -527,7 +525,6 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.layout.Container.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.layout.Container.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
-<li><code><a title="textual.layout.Container.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.layout.Container.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.layout.Container.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.layout.Container.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
@@ -618,7 +615,7 @@ class Center(Container):
     &#34;&#34;&#34;A container widget to align children vertically.&#34;&#34;&#34;
 
     # Blank CSS is important, otherwise you get a clone of Container
-    CSS = &#34;&#34;</code></pre>
+    DEFAULT_CSS = &#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -633,7 +630,7 @@ class Center(Container):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Vertical.CSS"><code class="name">var <span class="ident">CSS</span></code></dt>
+<dt id="textual.layout.Vertical.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -698,7 +695,6 @@ class Center(Container):
 <li><code><a title="textual.layout.Container.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.layout.Container.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.layout.Container.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
-<li><code><a title="textual.layout.Container.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.layout.Container.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.layout.Container.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.layout.Container.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
@@ -841,7 +837,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.layout.Center" href="#textual.layout.Center">Center</a></code></h4>
 <ul class="">
 <li><code><a title="textual.layout.Center.COMPONENT_CLASSES" href="#textual.layout.Center.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.layout.Center.CSS" href="#textual.layout.Center.CSS">CSS</a></code></li>
+<li><code><a title="textual.layout.Center.DEFAULT_CSS" href="#textual.layout.Center.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.layout.Center.can_focus" href="#textual.layout.Center.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.layout.Center.can_focus_children" href="#textual.layout.Center.can_focus_children">can_focus_children</a></code></li>
 </ul>
@@ -850,7 +846,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.layout.Container" href="#textual.layout.Container">Container</a></code></h4>
 <ul class="">
 <li><code><a title="textual.layout.Container.COMPONENT_CLASSES" href="#textual.layout.Container.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.layout.Container.CSS" href="#textual.layout.Container.CSS">CSS</a></code></li>
+<li><code><a title="textual.layout.Container.DEFAULT_CSS" href="#textual.layout.Container.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.layout.Container.can_focus" href="#textual.layout.Container.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.layout.Container.can_focus_children" href="#textual.layout.Container.can_focus_children">can_focus_children</a></code></li>
 </ul>
@@ -859,7 +855,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.layout.Horizontal" href="#textual.layout.Horizontal">Horizontal</a></code></h4>
 <ul class="">
 <li><code><a title="textual.layout.Horizontal.COMPONENT_CLASSES" href="#textual.layout.Horizontal.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.layout.Horizontal.CSS" href="#textual.layout.Horizontal.CSS">CSS</a></code></li>
+<li><code><a title="textual.layout.Horizontal.DEFAULT_CSS" href="#textual.layout.Horizontal.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.layout.Horizontal.can_focus" href="#textual.layout.Horizontal.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.layout.Horizontal.can_focus_children" href="#textual.layout.Horizontal.can_focus_children">can_focus_children</a></code></li>
 </ul>
@@ -868,7 +864,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.layout.Vertical" href="#textual.layout.Vertical">Vertical</a></code></h4>
 <ul class="">
 <li><code><a title="textual.layout.Vertical.COMPONENT_CLASSES" href="#textual.layout.Vertical.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.layout.Vertical.CSS" href="#textual.layout.Vertical.CSS">CSS</a></code></li>
+<li><code><a title="textual.layout.Vertical.DEFAULT_CSS" href="#textual.layout.Vertical.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.layout.Vertical.can_focus" href="#textual.layout.Vertical.can_focus">can_focus</a></code></li>
 <li><code><a title="textual.layout.Vertical.can_focus_children" href="#textual.layout.Vertical.can_focus_children">can_focus_children</a></code></li>
 </ul>

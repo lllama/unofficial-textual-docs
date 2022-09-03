@@ -375,7 +375,7 @@ def parse(
         path (str): Path to the CSS
         variables (dict[str, str]): Substitution variables to substitute tokens for.
         is_default_rules (bool): True if the rules we&#39;re extracting are
-            default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
+            default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
     &#34;&#34;&#34;
     variable_tokens = tokenize_values(variables or {})
     tokens = iter(substitute_references(tokenize(css, path), variable_tokens))
@@ -438,7 +438,7 @@ and generating rule sets from it.</p>
 <dd>Substitution variables to substitute tokens for.</dd>
 <dt><strong><code>is_default_rules</code></strong> :&ensp;<code>bool</code></dt>
 <dd>True if the rules we're extracting are
-default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
+default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined CSS.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -459,7 +459,7 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
         path (str): Path to the CSS
         variables (dict[str, str]): Substitution variables to substitute tokens for.
         is_default_rules (bool): True if the rules we&#39;re extracting are
-            default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
+            default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
     &#34;&#34;&#34;
     variable_tokens = tokenize_values(variables or {})
     tokens = iter(substitute_references(tokenize(css, path), variable_tokens))

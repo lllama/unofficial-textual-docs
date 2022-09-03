@@ -58,7 +58,7 @@ class Message:
 
     sender: MessageTarget
     bubble: ClassVar[bool] = True  # Message will bubble to parent
-    verbosity: ClassVar[int] = 1  # Verbosity (higher the more verbose)
+    verbose: ClassVar[bool] = False  # Message is verbose
     no_dispatch: ClassVar[bool] = False  # Message may not be handled by client code
     namespace: ClassVar[str] = &#34;&#34;  # Namespace to disambiguate messages
 
@@ -80,15 +80,14 @@ class Message:
     def __init_subclass__(
         cls,
         bubble: bool | None = True,
-        verbosity: int | None = 1,
+        verbose: bool = False,
         no_dispatch: bool | None = False,
         namespace: str | None = None,
     ) -&gt; None:
         super().__init_subclass__()
         if bubble is not None:
             cls.bubble = bubble
-        if verbosity is not None:
-            cls.verbosity = verbosity
+        cls.verbose = verbose
         if no_dispatch is not None:
             cls.no_dispatch = no_dispatch
         if namespace is not None:
@@ -182,7 +181,7 @@ class Message:
 
     sender: MessageTarget
     bubble: ClassVar[bool] = True  # Message will bubble to parent
-    verbosity: ClassVar[int] = 1  # Verbosity (higher the more verbose)
+    verbose: ClassVar[bool] = False  # Message is verbose
     no_dispatch: ClassVar[bool] = False  # Message may not be handled by client code
     namespace: ClassVar[str] = &#34;&#34;  # Namespace to disambiguate messages
 
@@ -204,15 +203,14 @@ class Message:
     def __init_subclass__(
         cls,
         bubble: bool | None = True,
-        verbosity: int | None = 1,
+        verbose: bool = False,
         no_dispatch: bool | None = False,
         namespace: str | None = None,
     ) -&gt; None:
         super().__init_subclass__()
         if bubble is not None:
             cls.bubble = bubble
-        if verbosity is not None:
-            cls.verbosity = verbosity
+        cls.verbose = verbose
         if no_dispatch is not None:
             cls.no_dispatch = no_dispatch
         if namespace is not None:
@@ -287,7 +285,7 @@ class Message:
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.message.Message.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.message.Message.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -508,7 +506,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.message.Message.set_forwarded" href="#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="#textual.message.Message.time">time</a></code></li>
-<li><code><a title="textual.message.Message.verbosity" href="#textual.message.Message.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.message.Message.verbose" href="#textual.message.Message.verbose">verbose</a></code></li>
 </ul>
 </li>
 </ul>

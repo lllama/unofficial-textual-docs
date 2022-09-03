@@ -50,26 +50,26 @@ class ScrollMessage(Message, bubble=False):
 
 
 @rich.repr.auto
-class ScrollUp(ScrollMessage):
+class ScrollUp(ScrollMessage, verbose=True):
     &#34;&#34;&#34;Message sent when clicking above handle.&#34;&#34;&#34;
 
 
 @rich.repr.auto
-class ScrollDown(ScrollMessage):
+class ScrollDown(ScrollMessage, verbose=True):
     &#34;&#34;&#34;Message sent when clicking below handle.&#34;&#34;&#34;
 
 
 @rich.repr.auto
-class ScrollLeft(ScrollMessage):
+class ScrollLeft(ScrollMessage, verbose=True):
     &#34;&#34;&#34;Message sent when clicking above handle.&#34;&#34;&#34;
 
 
 @rich.repr.auto
-class ScrollRight(ScrollMessage):
+class ScrollRight(ScrollMessage, verbose=True):
     &#34;&#34;&#34;Message sent when clicking below handle.&#34;&#34;&#34;
 
 
-class ScrollTo(ScrollMessage):
+class ScrollTo(ScrollMessage, verbose=True):
     &#34;&#34;&#34;Message sent when click and dragging handle.&#34;&#34;&#34;
 
     def __init__(
@@ -121,9 +121,9 @@ class ScrollBarRender:
     ) -&gt; Segments:
 
         if vertical:
-            bars = [&#34; &#34;, &#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;]
+            bars = [&#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34; &#34;]
         else:
-            bars = [&#34;█&#34;, &#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;, &#34; &#34;]
+            bars = [&#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;, &#34; &#34;]
 
         back = back_color
         bar = bar_color
@@ -138,11 +138,11 @@ class ScrollBarRender:
         if window_size and size and virtual_size and size != virtual_size:
             step_size = virtual_size / size
 
-            start = int(position / step_size * 9)
-            end = start + max(9, int(ceil(window_size / step_size * 9)))
+            start = int(position / step_size * 8)
+            end = start + max(8, int(ceil(window_size / step_size * 8)))
 
-            start_index, start_bar = divmod(start, 9)
-            end_index, end_bar = divmod(end, 9)
+            start_index, start_bar = divmod(start, 8)
+            end_index, end_bar = divmod(end, 8)
 
             upper = {&#34;@click&#34;: &#34;scroll_up&#34;}
             lower = {&#34;@click&#34;: &#34;scroll_down&#34;}
@@ -158,19 +158,23 @@ class ScrollBarRender:
             ] * (end_index - start_index)
 
             if start_index &lt; len(segments):
-                segments[start_index] = _Segment(
-                    bars[8 - start_bar] * width_thickness,
-                    _Style(bgcolor=back, color=bar, meta=foreground_meta)
-                    if vertical
-                    else _Style(bgcolor=bar, color=back, meta=foreground_meta),
-                )
+                bar_character = bars[7 - start_bar]
+                if bar_character != &#34; &#34;:
+                    segments[start_index] = _Segment(
+                        bar_character * width_thickness,
+                        _Style(bgcolor=back, color=bar, meta=foreground_meta)
+                        if vertical
+                        else _Style(bgcolor=bar, color=back, meta=foreground_meta),
+                    )
             if end_index &lt; len(segments):
-                segments[end_index] = _Segment(
-                    bars[8 - end_bar] * width_thickness,
-                    _Style(bgcolor=bar, color=back, meta=foreground_meta)
-                    if vertical
-                    else _Style(bgcolor=back, color=bar, meta=foreground_meta),
-                )
+                bar_character = bars[7 - end_bar]
+                if bar_character != &#34; &#34;:
+                    segments[end_index] = _Segment(
+                        bar_character * width_thickness,
+                        _Style(bgcolor=bar, color=back, meta=foreground_meta)
+                        if vertical
+                        else _Style(bgcolor=back, color=bar, meta=foreground_meta),
+                    )
         else:
             style = _Style(bgcolor=back)
             segments = [_Segment(blank, style=style)] * int(size)
@@ -627,7 +631,6 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.widget.Widget.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.widget.Widget.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
-<li><code><a title="textual.widget.Widget.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
@@ -801,7 +804,6 @@ should they both be present.</p></div>
 <li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.widget.Widget.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.widget.Widget.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
-<li><code><a title="textual.widget.Widget.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
@@ -919,9 +921,9 @@ should they both be present.</p></div>
     ) -&gt; Segments:
 
         if vertical:
-            bars = [&#34; &#34;, &#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;]
+            bars = [&#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34; &#34;]
         else:
-            bars = [&#34;█&#34;, &#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;, &#34; &#34;]
+            bars = [&#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;, &#34; &#34;]
 
         back = back_color
         bar = bar_color
@@ -936,11 +938,11 @@ should they both be present.</p></div>
         if window_size and size and virtual_size and size != virtual_size:
             step_size = virtual_size / size
 
-            start = int(position / step_size * 9)
-            end = start + max(9, int(ceil(window_size / step_size * 9)))
+            start = int(position / step_size * 8)
+            end = start + max(8, int(ceil(window_size / step_size * 8)))
 
-            start_index, start_bar = divmod(start, 9)
-            end_index, end_bar = divmod(end, 9)
+            start_index, start_bar = divmod(start, 8)
+            end_index, end_bar = divmod(end, 8)
 
             upper = {&#34;@click&#34;: &#34;scroll_up&#34;}
             lower = {&#34;@click&#34;: &#34;scroll_down&#34;}
@@ -956,19 +958,23 @@ should they both be present.</p></div>
             ] * (end_index - start_index)
 
             if start_index &lt; len(segments):
-                segments[start_index] = _Segment(
-                    bars[8 - start_bar] * width_thickness,
-                    _Style(bgcolor=back, color=bar, meta=foreground_meta)
-                    if vertical
-                    else _Style(bgcolor=bar, color=back, meta=foreground_meta),
-                )
+                bar_character = bars[7 - start_bar]
+                if bar_character != &#34; &#34;:
+                    segments[start_index] = _Segment(
+                        bar_character * width_thickness,
+                        _Style(bgcolor=back, color=bar, meta=foreground_meta)
+                        if vertical
+                        else _Style(bgcolor=bar, color=back, meta=foreground_meta),
+                    )
             if end_index &lt; len(segments):
-                segments[end_index] = _Segment(
-                    bars[8 - end_bar] * width_thickness,
-                    _Style(bgcolor=bar, color=back, meta=foreground_meta)
-                    if vertical
-                    else _Style(bgcolor=back, color=bar, meta=foreground_meta),
-                )
+                bar_character = bars[7 - end_bar]
+                if bar_character != &#34; &#34;:
+                    segments[end_index] = _Segment(
+                        bar_character * width_thickness,
+                        _Style(bgcolor=bar, color=back, meta=foreground_meta)
+                        if vertical
+                        else _Style(bgcolor=back, color=bar, meta=foreground_meta),
+                    )
         else:
             style = _Style(bgcolor=back)
             segments = [_Segment(blank, style=style)] * int(size)
@@ -1030,9 +1036,9 @@ def render_bar(
 ) -&gt; Segments:
 
     if vertical:
-        bars = [&#34; &#34;, &#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34;█&#34;]
+        bars = [&#34;▁&#34;, &#34;▂&#34;, &#34;▃&#34;, &#34;▄&#34;, &#34;▅&#34;, &#34;▆&#34;, &#34;▇&#34;, &#34; &#34;]
     else:
-        bars = [&#34;█&#34;, &#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;, &#34; &#34;]
+        bars = [&#34;▉&#34;, &#34;▊&#34;, &#34;▋&#34;, &#34;▌&#34;, &#34;▍&#34;, &#34;▎&#34;, &#34;▏&#34;, &#34; &#34;]
 
     back = back_color
     bar = bar_color
@@ -1047,11 +1053,11 @@ def render_bar(
     if window_size and size and virtual_size and size != virtual_size:
         step_size = virtual_size / size
 
-        start = int(position / step_size * 9)
-        end = start + max(9, int(ceil(window_size / step_size * 9)))
+        start = int(position / step_size * 8)
+        end = start + max(8, int(ceil(window_size / step_size * 8)))
 
-        start_index, start_bar = divmod(start, 9)
-        end_index, end_bar = divmod(end, 9)
+        start_index, start_bar = divmod(start, 8)
+        end_index, end_bar = divmod(end, 8)
 
         upper = {&#34;@click&#34;: &#34;scroll_up&#34;}
         lower = {&#34;@click&#34;: &#34;scroll_down&#34;}
@@ -1067,19 +1073,23 @@ def render_bar(
         ] * (end_index - start_index)
 
         if start_index &lt; len(segments):
-            segments[start_index] = _Segment(
-                bars[8 - start_bar] * width_thickness,
-                _Style(bgcolor=back, color=bar, meta=foreground_meta)
-                if vertical
-                else _Style(bgcolor=bar, color=back, meta=foreground_meta),
-            )
+            bar_character = bars[7 - start_bar]
+            if bar_character != &#34; &#34;:
+                segments[start_index] = _Segment(
+                    bar_character * width_thickness,
+                    _Style(bgcolor=back, color=bar, meta=foreground_meta)
+                    if vertical
+                    else _Style(bgcolor=bar, color=back, meta=foreground_meta),
+                )
         if end_index &lt; len(segments):
-            segments[end_index] = _Segment(
-                bars[8 - end_bar] * width_thickness,
-                _Style(bgcolor=bar, color=back, meta=foreground_meta)
-                if vertical
-                else _Style(bgcolor=back, color=bar, meta=foreground_meta),
-            )
+            bar_character = bars[7 - end_bar]
+            if bar_character != &#34; &#34;:
+                segments[end_index] = _Segment(
+                    bar_character * width_thickness,
+                    _Style(bgcolor=bar, color=back, meta=foreground_meta)
+                    if vertical
+                    else _Style(bgcolor=back, color=bar, meta=foreground_meta),
+                )
     else:
         style = _Style(bgcolor=back)
         segments = [_Segment(blank, style=style)] * int(size)
@@ -1101,7 +1111,7 @@ def render_bar(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ScrollDown(ScrollMessage):
+<pre><code class="python">class ScrollDown(ScrollMessage, verbose=True):
     &#34;&#34;&#34;Message sent when clicking below handle.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1123,7 +1133,7 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollDown.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.scrollbar.ScrollDown.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1153,7 +1163,7 @@ def render_bar(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ScrollLeft(ScrollMessage):
+<pre><code class="python">class ScrollLeft(ScrollMessage, verbose=True):
     &#34;&#34;&#34;Message sent when clicking above handle.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1175,7 +1185,7 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollLeft.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.scrollbar.ScrollLeft.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1239,7 +1249,7 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollMessage.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.scrollbar.ScrollMessage.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1269,7 +1279,7 @@ def render_bar(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ScrollRight(ScrollMessage):
+<pre><code class="python">class ScrollRight(ScrollMessage, verbose=True):
     &#34;&#34;&#34;Message sent when clicking below handle.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1291,7 +1301,7 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollRight.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.scrollbar.ScrollRight.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1321,7 +1331,7 @@ def render_bar(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ScrollTo(ScrollMessage):
+<pre><code class="python">class ScrollTo(ScrollMessage, verbose=True):
     &#34;&#34;&#34;Message sent when click and dragging handle.&#34;&#34;&#34;
 
     def __init__(
@@ -1360,7 +1370,7 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollTo.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.scrollbar.ScrollTo.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1390,7 +1400,7 @@ def render_bar(
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class ScrollUp(ScrollMessage):
+<pre><code class="python">class ScrollUp(ScrollMessage, verbose=True):
     &#34;&#34;&#34;Message sent when clicking above handle.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -1412,7 +1422,7 @@ def render_bar(
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollUp.verbosity"><code class="name">var <span class="ident">verbosity</span> : ClassVar[int]</code></dt>
+<dt id="textual.scrollbar.ScrollUp.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1529,7 +1539,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scrollbar.ScrollDown.bubble" href="#textual.scrollbar.ScrollDown.bubble">bubble</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollDown.namespace" href="#textual.scrollbar.ScrollDown.namespace">namespace</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollDown.no_dispatch" href="#textual.scrollbar.ScrollDown.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollDown.verbosity" href="#textual.scrollbar.ScrollDown.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollDown.verbose" href="#textual.scrollbar.ScrollDown.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -1538,7 +1548,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scrollbar.ScrollLeft.bubble" href="#textual.scrollbar.ScrollLeft.bubble">bubble</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollLeft.namespace" href="#textual.scrollbar.ScrollLeft.namespace">namespace</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollLeft.no_dispatch" href="#textual.scrollbar.ScrollLeft.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollLeft.verbosity" href="#textual.scrollbar.ScrollLeft.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollLeft.verbose" href="#textual.scrollbar.ScrollLeft.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -1547,7 +1557,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scrollbar.ScrollMessage.bubble" href="#textual.scrollbar.ScrollMessage.bubble">bubble</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.namespace" href="#textual.scrollbar.ScrollMessage.namespace">namespace</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.no_dispatch" href="#textual.scrollbar.ScrollMessage.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollMessage.verbosity" href="#textual.scrollbar.ScrollMessage.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.verbose" href="#textual.scrollbar.ScrollMessage.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -1556,7 +1566,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scrollbar.ScrollRight.bubble" href="#textual.scrollbar.ScrollRight.bubble">bubble</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollRight.namespace" href="#textual.scrollbar.ScrollRight.namespace">namespace</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollRight.no_dispatch" href="#textual.scrollbar.ScrollRight.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollRight.verbosity" href="#textual.scrollbar.ScrollRight.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollRight.verbose" href="#textual.scrollbar.ScrollRight.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -1565,7 +1575,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scrollbar.ScrollTo.bubble" href="#textual.scrollbar.ScrollTo.bubble">bubble</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollTo.namespace" href="#textual.scrollbar.ScrollTo.namespace">namespace</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollTo.no_dispatch" href="#textual.scrollbar.ScrollTo.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollTo.verbosity" href="#textual.scrollbar.ScrollTo.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollTo.verbose" href="#textual.scrollbar.ScrollTo.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>
@@ -1574,7 +1584,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scrollbar.ScrollUp.bubble" href="#textual.scrollbar.ScrollUp.bubble">bubble</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollUp.namespace" href="#textual.scrollbar.ScrollUp.namespace">namespace</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollUp.no_dispatch" href="#textual.scrollbar.ScrollUp.no_dispatch">no_dispatch</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollUp.verbosity" href="#textual.scrollbar.ScrollUp.verbosity">verbosity</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollUp.verbose" href="#textual.scrollbar.ScrollUp.verbose">verbose</a></code></li>
 </ul>
 </li>
 </ul>

@@ -237,7 +237,7 @@ class Stylesheet:
             css (str): String containing Textual CSS.
             path (str | PurePath): Path to CSS or unique identifier
             is_default_rules (bool): True if the rules we&#39;re extracting are
-                default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
+                default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
 
         Raises:
             StylesheetError: If the CSS is invalid.
@@ -583,7 +583,7 @@ if __name__ == &#34;__main__&#34;:
     print(app.tree)
     print()
 
-    CSS = &#34;&#34;&#34;
+    DEFAULT_CSS = &#34;&#34;&#34;
     App &gt; View {
         layout: dock;
         docks: sidebar=left | widgets=top;
@@ -777,7 +777,7 @@ False if it's user CSS (which will override the defaults).</dd>
             css (str): String containing Textual CSS.
             path (str | PurePath): Path to CSS or unique identifier
             is_default_rules (bool): True if the rules we&#39;re extracting are
-                default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
+                default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
 
         Raises:
             StylesheetError: If the CSS is invalid.

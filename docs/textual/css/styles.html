@@ -599,7 +599,7 @@ class Styles(StylesBase):
         Args:
             specificity (Specificity3): A node specificity.
             is_default_rules (bool): True if the rules we&#39;re extracting are
-                default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
+                default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
 
         Returns:
             list[tuple[str, Specificity5, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
@@ -1717,7 +1717,7 @@ def rich_style(self) -&gt; Style:
         Args:
             specificity (Specificity3): A node specificity.
             is_default_rules (bool): True if the rules we&#39;re extracting are
-                default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
+                default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
 
         Returns:
             list[tuple[str, Specificity5, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
@@ -2231,7 +2231,7 @@ well as higher specificity of user CSS vs widget CSS.</p>
 <dd>A node specificity.</dd>
 <dt><strong><code>is_default_rules</code></strong> :&ensp;<code>bool</code></dt>
 <dd>True if the rules we're extracting are
-default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
+default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined CSS.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2254,7 +2254,7 @@ default (i.e. in Widget.CSS) rules. False if they're from user defined CSS.</dd>
     Args:
         specificity (Specificity3): A node specificity.
         is_default_rules (bool): True if the rules we&#39;re extracting are
-            default (i.e. in Widget.CSS) rules. False if they&#39;re from user defined CSS.
+            default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
 
     Returns:
         list[tuple[str, Specificity5, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
