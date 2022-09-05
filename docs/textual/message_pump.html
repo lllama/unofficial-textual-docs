@@ -547,7 +547,7 @@ class MessagePump(metaclass=MessagePumpMeta):
         Args:
             event (events.Key): A key event.
         &#34;&#34;&#34;
-        key_method = getattr(self, f&#34;key_{event.key}&#34;, None)
+        key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None)
         if key_method is not None:
             if await invoke(key_method, event):
                 event.prevent_default()
@@ -1056,7 +1056,7 @@ class MessagePump(metaclass=MessagePumpMeta):
         Args:
             event (events.Key): A key event.
         &#34;&#34;&#34;
-        key_method = getattr(self, f&#34;key_{event.key}&#34;, None)
+        key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None)
         if key_method is not None:
             if await invoke(key_method, event):
                 event.prevent_default()
@@ -1271,7 +1271,7 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
     Args:
         event (events.Key): A key event.
     &#34;&#34;&#34;
-    key_method = getattr(self, f&#34;key_{event.key}&#34;, None)
+    key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None)
     if key_method is not None:
         if await invoke(key_method, event):
             event.prevent_default()</code></pre>

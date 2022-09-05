@@ -216,18 +216,26 @@ class Key(InputEvent):
     &#34;&#34;&#34;Sent when the user hits a key on the keyboard.
 
     Args:
-        sender (MessageTarget): The sender of the event (the App)
-        key (str): The pressed key if a single character (or a longer string for special characters)
+        sender (MessageTarget): The sender of the event (the App).
+        key (str): A key name (textual.keys.Keys).
+        char (str | None, optional): A printable character or None if it is not printable.
     &#34;&#34;&#34;
 
-    __slots__ = [&#34;key&#34;]
+    __slots__ = [&#34;key&#34;, &#34;char&#34;]
 
-    def __init__(self, sender: MessageTarget, key: str) -&gt; None:
+    def __init__(self, sender: MessageTarget, key: str, char: str | None) -&gt; None:
         super().__init__(sender)
-        self.key = key.value if isinstance(key, Keys) else key
+        self.key = key
+        self.char = (key if len(key) == 1 else None) if char is None else char
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;key&#34;, self.key
+        yield &#34;char&#34;, self.char, None
+
+    @property
+    def key_name(self) -&gt; str | None:
+        &#34;&#34;&#34;Name of a key suitable for use as a Python identifier.&#34;&#34;&#34;
+        return self.key.replace(&#34;+&#34;, &#34;_&#34;)
 
     @property
     def is_printable(self) -&gt; bool:
@@ -237,7 +245,7 @@ class Key(InputEvent):
         Returns:
             bool: True if the key is printable.
         &#34;&#34;&#34;
-        return self.key == Keys.Space or self.key not in KEY_VALUES
+        return False if self.char is None else self.char.isprintable()
 
 
 @rich.repr.auto
@@ -1316,17 +1324,18 @@ through the usual message queue.</p></div>
 </dd>
 <dt id="textual.events.Key"><code class="flex name class">
 <span>class <span class="ident">Key</span></span>
-<span>(</span><span>sender: MessageTarget, key: str)</span>
+<span>(</span><span>sender: MessageTarget, key: str, char: str | None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Sent when the user hits a key on the keyboard.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the event (the App)</dd>
+<dd>The sender of the event (the App).</dd>
 <dt><strong><code>key</code></strong> :&ensp;<code>str</code></dt>
-<dd>The pressed key if a single character (or a longer string for special characters)</dd>
-</dl></div>
+<dd>A key name (textual.keys.Keys).</dd>
+</dl>
+<p>char (str | None, optional): A printable character or None if it is not printable.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1335,18 +1344,26 @@ through the usual message queue.</p></div>
     &#34;&#34;&#34;Sent when the user hits a key on the keyboard.
 
     Args:
-        sender (MessageTarget): The sender of the event (the App)
-        key (str): The pressed key if a single character (or a longer string for special characters)
+        sender (MessageTarget): The sender of the event (the App).
+        key (str): A key name (textual.keys.Keys).
+        char (str | None, optional): A printable character or None if it is not printable.
     &#34;&#34;&#34;
 
-    __slots__ = [&#34;key&#34;]
+    __slots__ = [&#34;key&#34;, &#34;char&#34;]
 
-    def __init__(self, sender: MessageTarget, key: str) -&gt; None:
+    def __init__(self, sender: MessageTarget, key: str, char: str | None) -&gt; None:
         super().__init__(sender)
-        self.key = key.value if isinstance(key, Keys) else key
+        self.key = key
+        self.char = (key if len(key) == 1 else None) if char is None else char
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;key&#34;, self.key
+        yield &#34;char&#34;, self.char, None
+
+    @property
+    def key_name(self) -&gt; str | None:
+        &#34;&#34;&#34;Name of a key suitable for use as a Python identifier.&#34;&#34;&#34;
+        return self.key.replace(&#34;+&#34;, &#34;_&#34;)
 
     @property
     def is_printable(self) -&gt; bool:
@@ -1356,7 +1373,7 @@ through the usual message queue.</p></div>
         Returns:
             bool: True if the key is printable.
         &#34;&#34;&#34;
-        return self.key == Keys.Space or self.key not in KEY_VALUES</code></pre>
+        return False if self.char is None else self.char.isprintable()</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1385,6 +1402,10 @@ through the usual message queue.</p></div>
 </dl>
 <h3>Instance variables</h3>
 <dl>
+<dt id="textual.events.Key.char"><code class="name">var <span class="ident">char</span></code></dt>
+<dd>
+<div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
 <dt id="textual.events.Key.is_printable"><code class="name">var <span class="ident">is_printable</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Return True if the key is printable. Currently, we assume any key event that
@@ -1406,12 +1427,25 @@ def is_printable(self) -&gt; bool:
     Returns:
         bool: True if the key is printable.
     &#34;&#34;&#34;
-    return self.key == Keys.Space or self.key not in KEY_VALUES</code></pre>
+    return False if self.char is None else self.char.isprintable()</code></pre>
 </details>
 </dd>
 <dt id="textual.events.Key.key"><code class="name">var <span class="ident">key</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="textual.events.Key.key_name"><code class="name">var <span class="ident">key_name</span> : str | None</code></dt>
+<dd>
+<div class="desc"><p>Name of a key suitable for use as a Python identifier.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def key_name(self) -&gt; str | None:
+    &#34;&#34;&#34;Name of a key suitable for use as a Python identifier.&#34;&#34;&#34;
+    return self.key.replace(&#34;+&#34;, &#34;_&#34;)</code></pre>
+</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -3245,8 +3279,10 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.events.Key" href="#textual.events.Key">Key</a></code></h4>
 <ul class="two-column">
 <li><code><a title="textual.events.Key.bubble" href="#textual.events.Key.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Key.char" href="#textual.events.Key.char">char</a></code></li>
 <li><code><a title="textual.events.Key.is_printable" href="#textual.events.Key.is_printable">is_printable</a></code></li>
 <li><code><a title="textual.events.Key.key" href="#textual.events.Key.key">key</a></code></li>
+<li><code><a title="textual.events.Key.key_name" href="#textual.events.Key.key_name">key_name</a></code></li>
 <li><code><a title="textual.events.Key.namespace" href="#textual.events.Key.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Key.no_dispatch" href="#textual.events.Key.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.events.Key.verbose" href="#textual.events.Key.verbose">verbose</a></code></li>

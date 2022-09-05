@@ -12586,7 +12586,7 @@ INDEX=[
 {
 "ref":"textual.events.Key",
 "url":58,
-"doc":"Sent when the user hits a key on the keyboard. Args: sender (MessageTarget): The sender of the event (the App) key (str): The pressed key if a single character (or a longer string for special characters)"
+"doc":"Sent when the user hits a key on the keyboard. Args: sender (MessageTarget): The sender of the event (the App). key (str): A key name (textual.keys.Keys). char (str | None, optional): A printable character or None if it is not printable."
 },
 {
 "ref":"textual.events.Key.sender",
@@ -12599,9 +12599,19 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.events.Key.key_name",
+"url":58,
+"doc":"Name of a key suitable for use as a Python identifier."
+},
+{
 "ref":"textual.events.Key.is_printable",
 "url":58,
 "doc":"Return True if the key is printable. Currently, we assume any key event that isn't defined in key bindings is printable. Returns: bool: True if the key is printable."
+},
+{
+"ref":"textual.events.Key.char",
+"url":58,
+"doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.key",
