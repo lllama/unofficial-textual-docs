@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
-<title>textual.layouts.table API documentation</title>
+<title>textual.layouts.grid API documentation</title>
 <meta name="description" content="" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
@@ -19,7 +19,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>textual.layouts.table</code></h1>
+<h1 class="title">Module <code>textual.layouts.grid</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
@@ -40,21 +40,21 @@ if TYPE_CHECKING:
     from ..widget import Widget
 
 
-class TableLayout(Layout):
-    &#34;&#34;&#34;Used to layout Widgets in to a table.&#34;&#34;&#34;
+class GridLayout(Layout):
+    &#34;&#34;&#34;Used to layout Widgets in to a grid.&#34;&#34;&#34;
 
-    name = &#34;table&#34;
+    name = &#34;grid&#34;
 
     def arrange(
         self, parent: Widget, children: list[Widget], size: Size
     ) -&gt; ArrangeResult:
         styles = parent.styles
-        row_scalars = styles.table_rows or [Scalar.parse(&#34;1fr&#34;)]
-        column_scalars = styles.table_columns or [Scalar.parse(&#34;1fr&#34;)]
-        gutter_horizontal = styles.table_gutter_horizontal
-        gutter_vertical = styles.table_gutter_vertical
-        table_size_columns = max(1, styles.table_size_columns)
-        table_size_rows = styles.table_size_rows
+        row_scalars = styles.grid_rows or [Scalar.parse(&#34;1fr&#34;)]
+        column_scalars = styles.grid_columns or [Scalar.parse(&#34;1fr&#34;)]
+        gutter_horizontal = styles.grid_gutter_horizontal
+        gutter_vertical = styles.grid_gutter_vertical
+        table_size_columns = max(1, styles.grid_size_columns)
+        table_size_rows = styles.grid_size_rows
         viewport = parent.screen.size
 
         def cell_coords(column_count: int) -&gt; Iterable[tuple[int, int]]:
@@ -197,30 +197,30 @@ class TableLayout(Layout):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="textual.layouts.table.TableLayout"><code class="flex name class">
-<span>class <span class="ident">TableLayout</span></span>
+<dt id="textual.layouts.grid.GridLayout"><code class="flex name class">
+<span>class <span class="ident">GridLayout</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Used to layout Widgets in to a table.</p></div>
+<div class="desc"><p>Used to layout Widgets in to a grid.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TableLayout(Layout):
-    &#34;&#34;&#34;Used to layout Widgets in to a table.&#34;&#34;&#34;
+<pre><code class="python">class GridLayout(Layout):
+    &#34;&#34;&#34;Used to layout Widgets in to a grid.&#34;&#34;&#34;
 
-    name = &#34;table&#34;
+    name = &#34;grid&#34;
 
     def arrange(
         self, parent: Widget, children: list[Widget], size: Size
     ) -&gt; ArrangeResult:
         styles = parent.styles
-        row_scalars = styles.table_rows or [Scalar.parse(&#34;1fr&#34;)]
-        column_scalars = styles.table_columns or [Scalar.parse(&#34;1fr&#34;)]
-        gutter_horizontal = styles.table_gutter_horizontal
-        gutter_vertical = styles.table_gutter_vertical
-        table_size_columns = max(1, styles.table_size_columns)
-        table_size_rows = styles.table_size_rows
+        row_scalars = styles.grid_rows or [Scalar.parse(&#34;1fr&#34;)]
+        column_scalars = styles.grid_columns or [Scalar.parse(&#34;1fr&#34;)]
+        gutter_horizontal = styles.grid_gutter_horizontal
+        gutter_vertical = styles.grid_gutter_vertical
+        table_size_columns = max(1, styles.grid_size_columns)
+        table_size_rows = styles.grid_size_rows
         viewport = parent.screen.size
 
         def cell_coords(column_count: int) -&gt; Iterable[tuple[int, int]]:
@@ -360,14 +360,14 @@ class TableLayout(Layout):
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="textual.layouts.table.TableLayout.name"><code class="name">var <span class="ident">name</span> : ClassVar[str]</code></dt>
+<dt id="textual.layouts.grid.GridLayout.name"><code class="name">var <span class="ident">name</span> : ClassVar[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="textual.layouts.table.TableLayout.arrange"><code class="name flex">
+<dt id="textual.layouts.grid.GridLayout.arrange"><code class="name flex">
 <span>def <span class="ident">arrange</span></span>(<span>self, parent: Widget, children: list[Widget], size: Size) ‑> ArrangeResult</span>
 </code></dt>
 <dd>
@@ -392,12 +392,12 @@ class TableLayout(Layout):
     self, parent: Widget, children: list[Widget], size: Size
 ) -&gt; ArrangeResult:
     styles = parent.styles
-    row_scalars = styles.table_rows or [Scalar.parse(&#34;1fr&#34;)]
-    column_scalars = styles.table_columns or [Scalar.parse(&#34;1fr&#34;)]
-    gutter_horizontal = styles.table_gutter_horizontal
-    gutter_vertical = styles.table_gutter_vertical
-    table_size_columns = max(1, styles.table_size_columns)
-    table_size_rows = styles.table_size_rows
+    row_scalars = styles.grid_rows or [Scalar.parse(&#34;1fr&#34;)]
+    column_scalars = styles.grid_columns or [Scalar.parse(&#34;1fr&#34;)]
+    gutter_horizontal = styles.grid_gutter_horizontal
+    gutter_vertical = styles.grid_gutter_vertical
+    table_size_columns = max(1, styles.grid_size_columns)
+    table_size_rows = styles.grid_size_rows
     viewport = parent.screen.size
 
     def cell_coords(column_count: int) -&gt; Iterable[tuple[int, int]]:
@@ -596,10 +596,10 @@ setTimeout(() => input.focus(), 100);
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="textual.layouts.table.TableLayout" href="#textual.layouts.table.TableLayout">TableLayout</a></code></h4>
+<h4><code><a title="textual.layouts.grid.GridLayout" href="#textual.layouts.grid.GridLayout">GridLayout</a></code></h4>
 <ul class="">
-<li><code><a title="textual.layouts.table.TableLayout.arrange" href="#textual.layouts.table.TableLayout.arrange">arrange</a></code></li>
-<li><code><a title="textual.layouts.table.TableLayout.name" href="#textual.layouts.table.TableLayout.name">name</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.arrange" href="#textual.layouts.grid.GridLayout.arrange">arrange</a></code></li>
+<li><code><a title="textual.layouts.grid.GridLayout.name" href="#textual.layouts.grid.GridLayout.name">name</a></code></li>
 </ul>
 </li>
 </ul>

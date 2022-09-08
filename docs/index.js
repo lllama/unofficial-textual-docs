@@ -27,7 +27,7 @@ URLS=[
 "textual/layouts/horizontal.html",
 "textual/layouts/center.html",
 "textual/layouts/factory.html",
-"textual/layouts/table.html",
+"textual/layouts/grid.html",
 "textual/layouts/vertical.html",
 "textual/case.html",
 "textual/draw.html",
@@ -579,27 +579,27 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.window_virtual_size",
 "url":2,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.window_size",
 "url":2,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.position",
 "url":2,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.mouse_over",
 "url":2,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.grabbed",
 "url":2,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.render",
@@ -644,57 +644,57 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.virtual_size",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.auto_width",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.auto_height",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.descendant_has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_target_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_target_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.show_vertical_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.show_horizontal_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.siblings",
@@ -826,6 +826,11 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.region",
 "url":4,
 "doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.container_viewport",
+"url":4,
+"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.virtual_region",
@@ -1220,6 +1225,11 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
+"ref":"textual.scrollbar.ScrollBar.log",
+"url":6,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
 "ref":"textual.scrollbar.ScrollBar.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -1320,62 +1330,62 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.virtual_size",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.auto_width",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.auto_height",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.descendant_has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.mouse_over",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_target_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_target_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.show_vertical_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.show_horizontal_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.siblings",
@@ -1507,6 +1517,11 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBarCorner.region",
 "url":4,
 "doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.scrollbar.ScrollBarCorner.container_viewport",
+"url":4,
+"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.virtual_region",
@@ -1901,6 +1916,11 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
+"ref":"textual.scrollbar.ScrollBarCorner.log",
+"url":6,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
 "ref":"textual.scrollbar.ScrollBarCorner.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -2174,62 +2194,62 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.virtual_size",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.auto_width",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.auto_height",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.descendant_has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.mouse_over",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.scroll_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.scroll_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.scroll_target_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.scroll_target_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.show_vertical_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.show_horizontal_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.widget.Widget.siblings",
@@ -2397,6 +2417,11 @@ INDEX=[
 "ref":"textual.widget.Widget.region",
 "url":4,
 "doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.widget.Widget.container_viewport",
+"url":4,
+"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.widget.Widget.virtual_region",
@@ -2646,54 +2671,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.widget.Widget.key_home",
-"url":4,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.key_end",
-"url":4,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.key_left",
-"url":4,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.key_right",
-"url":4,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.key_down",
-"url":4,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.key_up",
-"url":4,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.key_pagedown",
-"url":4,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.key_pageup",
-"url":4,
-"doc":"",
-"func":1
-},
-{
 "ref":"textual.widget.Widget.get_component_styles",
 "url":5,
 "doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
@@ -2861,6 +2838,11 @@ INDEX=[
 "ref":"textual.widget.Widget.app",
 "url":6,
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
+},
+{
+"ref":"textual.widget.Widget.log",
+"url":6,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
 },
 {
 "ref":"textual.widget.Widget.disable_messages",
@@ -3358,62 +3340,62 @@ INDEX=[
 {
 "ref":"textual.layout.Container.virtual_size",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.auto_width",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.auto_height",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.descendant_has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.mouse_over",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.scroll_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.scroll_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.scroll_target_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.scroll_target_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.show_vertical_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.show_horizontal_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Container.siblings",
@@ -3545,6 +3527,11 @@ INDEX=[
 "ref":"textual.layout.Container.region",
 "url":4,
 "doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.layout.Container.container_viewport",
+"url":4,
+"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.layout.Container.virtual_region",
@@ -3945,6 +3932,11 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
+"ref":"textual.layout.Container.log",
+"url":6,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
 "ref":"textual.layout.Container.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -4044,62 +4036,62 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.virtual_size",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.auto_width",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.auto_height",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.descendant_has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.mouse_over",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.scroll_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.scroll_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.scroll_target_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.scroll_target_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.show_vertical_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.show_horizontal_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Vertical.siblings",
@@ -4231,6 +4223,11 @@ INDEX=[
 "ref":"textual.layout.Vertical.region",
 "url":4,
 "doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.layout.Vertical.container_viewport",
+"url":4,
+"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.layout.Vertical.virtual_region",
@@ -4631,6 +4628,11 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
+"ref":"textual.layout.Vertical.log",
+"url":6,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
 "ref":"textual.layout.Vertical.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -4730,62 +4732,62 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.virtual_size",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.auto_width",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.auto_height",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.descendant_has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.mouse_over",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.scroll_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.scroll_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.scroll_target_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.scroll_target_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.show_vertical_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.show_horizontal_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Horizontal.siblings",
@@ -4917,6 +4919,11 @@ INDEX=[
 "ref":"textual.layout.Horizontal.region",
 "url":4,
 "doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.layout.Horizontal.container_viewport",
+"url":4,
+"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.layout.Horizontal.virtual_region",
@@ -5317,6 +5324,11 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
+"ref":"textual.layout.Horizontal.log",
+"url":6,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
 "ref":"textual.layout.Horizontal.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -5416,62 +5428,62 @@ INDEX=[
 {
 "ref":"textual.layout.Center.virtual_size",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.auto_width",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.auto_height",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.descendant_has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.mouse_over",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.scroll_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.scroll_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.scroll_target_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.scroll_target_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.show_vertical_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.show_horizontal_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.layout.Center.siblings",
@@ -5603,6 +5615,11 @@ INDEX=[
 "ref":"textual.layout.Center.region",
 "url":4,
 "doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.layout.Center.container_viewport",
+"url":4,
+"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.layout.Center.virtual_region",
@@ -6003,6 +6020,11 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
+"ref":"textual.layout.Center.log",
+"url":6,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
 "ref":"textual.layout.Center.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -6382,6 +6404,11 @@ INDEX=[
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
 },
 {
+"ref":"textual.dom.DOMNode.log",
+"url":6,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
 "ref":"textual.dom.DOMNode.disable_messages",
 "url":6,
 "doc":"Disable message types from being processed.",
@@ -6680,62 +6707,62 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.virtual_size",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.auto_width",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.auto_height",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.descendant_has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.mouse_over",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_target_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_target_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.show_vertical_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.show_horizontal_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.scroll_view.ScrollView.siblings",
@@ -6855,6 +6882,11 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.region",
 "url":4,
 "doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.scroll_view.ScrollView.container_viewport",
+"url":4,
+"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.scroll_view.ScrollView.virtual_region",
@@ -7237,6 +7269,11 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.app",
 "url":6,
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
+},
+{
+"ref":"textual.scroll_view.ScrollView.log",
+"url":6,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
 },
 {
 "ref":"textual.scroll_view.ScrollView.disable_messages",
@@ -8449,22 +8486,22 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layouts.table",
+"ref":"textual.layouts.grid",
 "url":28,
 "doc":""
 },
 {
-"ref":"textual.layouts.table.TableLayout",
+"ref":"textual.layouts.grid.GridLayout",
 "url":28,
-"doc":"Used to layout Widgets in to a table."
+"doc":"Used to layout Widgets in to a grid."
 },
 {
-"ref":"textual.layouts.table.TableLayout.name",
+"ref":"textual.layouts.grid.GridLayout.name",
 "url":28,
 "doc":""
 },
 {
-"ref":"textual.layouts.table.TableLayout.arrange",
+"ref":"textual.layouts.grid.GridLayout.arrange",
 "url":28,
 "doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
@@ -9696,32 +9733,32 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.css.styles.RulesMap.table_size_rows",
+"ref":"textual.css.styles.RulesMap.grid_size_rows",
 "url":46,
 "doc":""
 },
 {
-"ref":"textual.css.styles.RulesMap.table_size_columns",
+"ref":"textual.css.styles.RulesMap.grid_size_columns",
 "url":46,
 "doc":""
 },
 {
-"ref":"textual.css.styles.RulesMap.table_gutter_horizontal",
+"ref":"textual.css.styles.RulesMap.grid_gutter_horizontal",
 "url":46,
 "doc":""
 },
 {
-"ref":"textual.css.styles.RulesMap.table_gutter_vertical",
+"ref":"textual.css.styles.RulesMap.grid_gutter_vertical",
 "url":46,
 "doc":""
 },
 {
-"ref":"textual.css.styles.RulesMap.table_rows",
+"ref":"textual.css.styles.RulesMap.grid_rows",
 "url":46,
 "doc":""
 },
 {
-"ref":"textual.css.styles.RulesMap.table_columns",
+"ref":"textual.css.styles.RulesMap.grid_columns",
 "url":46,
 "doc":""
 },
@@ -10036,32 +10073,32 @@ INDEX=[
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
-"ref":"textual.css.styles.StylesBase.table_rows",
+"ref":"textual.css.styles.StylesBase.grid_rows",
 "url":46,
 "doc":""
 },
 {
-"ref":"textual.css.styles.StylesBase.table_columns",
+"ref":"textual.css.styles.StylesBase.grid_columns",
 "url":46,
 "doc":""
 },
 {
-"ref":"textual.css.styles.StylesBase.table_size_columns",
+"ref":"textual.css.styles.StylesBase.grid_size_columns",
 "url":46,
 "doc":""
 },
 {
-"ref":"textual.css.styles.StylesBase.table_size_rows",
+"ref":"textual.css.styles.StylesBase.grid_size_rows",
 "url":46,
 "doc":""
 },
 {
-"ref":"textual.css.styles.StylesBase.table_gutter_horizontal",
+"ref":"textual.css.styles.StylesBase.grid_gutter_horizontal",
 "url":46,
 "doc":""
 },
 {
-"ref":"textual.css.styles.StylesBase.table_gutter_vertical",
+"ref":"textual.css.styles.StylesBase.grid_gutter_vertical",
 "url":46,
 "doc":""
 },
@@ -11151,66 +11188,66 @@ INDEX=[
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.messages.CursorMove",
+"ref":"textual.messages.ScrollToRegion",
 "url":47,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"doc":"Ask the parent to scroll a given region in to view."
 },
 {
-"ref":"textual.messages.CursorMove.sender",
+"ref":"textual.messages.ScrollToRegion.sender",
 "url":47,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.messages.CursorMove.namespace",
+"ref":"textual.messages.ScrollToRegion.namespace",
 "url":47,
 "doc":""
 },
 {
-"ref":"textual.messages.CursorMove.bubble",
+"ref":"textual.messages.ScrollToRegion.bubble",
 "url":47,
 "doc":""
 },
 {
-"ref":"textual.messages.CursorMove.verbose",
+"ref":"textual.messages.ScrollToRegion.verbose",
 "url":47,
 "doc":""
 },
 {
-"ref":"textual.messages.CursorMove.no_dispatch",
+"ref":"textual.messages.ScrollToRegion.no_dispatch",
 "url":47,
 "doc":""
 },
 {
-"ref":"textual.messages.CursorMove.set_forwarded",
+"ref":"textual.messages.ScrollToRegion.set_forwarded",
 "url":3,
 "doc":"Mark this event as being forwarded.",
 "func":1
 },
 {
-"ref":"textual.messages.CursorMove.can_replace",
+"ref":"textual.messages.ScrollToRegion.can_replace",
 "url":3,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
-"ref":"textual.messages.CursorMove.prevent_default",
+"ref":"textual.messages.ScrollToRegion.prevent_default",
 "url":3,
 "doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
-"ref":"textual.messages.CursorMove.stop",
+"ref":"textual.messages.ScrollToRegion.stop",
 "url":3,
 "doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
 "func":1
 },
 {
-"ref":"textual.messages.CursorMove.name",
+"ref":"textual.messages.ScrollToRegion.name",
 "url":3,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.messages.CursorMove.time",
+"ref":"textual.messages.ScrollToRegion.time",
 "url":3,
 "doc":"Return an attribute of instance, which is of type owner."
 },
@@ -14115,7 +14152,7 @@ INDEX=[
 {
 "ref":"textual.message_pump.MessagePump.log",
 "url":6,
-"doc":""
+"doc":"Get a logger for this object. Returns: Logger: A logger."
 },
 {
 "ref":"textual.message_pump.MessagePump.check_message_enabled",
@@ -14238,7 +14275,7 @@ INDEX=[
 {
 "ref":"textual.reactive.Reactive",
 "url":61,
-"doc":"Reactive descriptor. Create a Reactive Widget attribute, Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.reactive.Reactive.init",
@@ -14256,18 +14293,6 @@ INDEX=[
 "ref":"textual.reactive.Reactive.initialize_object",
 "url":61,
 "doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
-"func":1
-},
-{
-"ref":"textual.reactive.Reactive.check_watchers",
-"url":61,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.reactive.Reactive.compute",
-"url":61,
-"doc":"",
 "func":1
 },
 {
@@ -14294,7 +14319,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.dark",
 "url":62,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.is_transparent",
@@ -14370,62 +14395,62 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.virtual_size",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.auto_width",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.auto_height",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.descendant_has_focus",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.mouse_over",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.scroll_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.scroll_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.scroll_target_x",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.scroll_target_y",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.show_vertical_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.show_horizontal_scrollbar",
 "url":4,
-"doc":"Reactive descriptor."
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.siblings",
@@ -14557,6 +14582,11 @@ INDEX=[
 "ref":"textual.screen.Screen.region",
 "url":4,
 "doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.screen.Screen.container_viewport",
+"url":4,
+"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.screen.Screen.virtual_region",
@@ -14938,6 +14968,11 @@ INDEX=[
 "ref":"textual.screen.Screen.app",
 "url":6,
 "doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
+},
+{
+"ref":"textual.screen.Screen.log",
+"url":6,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
 },
 {
 "ref":"textual.screen.Screen.disable_messages",

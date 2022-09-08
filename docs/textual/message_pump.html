@@ -142,6 +142,11 @@ class MessagePump(metaclass=MessagePumpMeta):
 
     @property
     def log(self) -&gt; Logger:
+        &#34;&#34;&#34;Get a logger for this object.
+
+        Returns:
+            Logger: A logger.
+        &#34;&#34;&#34;
         return self.app._logger
 
     def _attach(self, parent: MessagePump) -&gt; None:
@@ -547,10 +552,12 @@ class MessagePump(metaclass=MessagePumpMeta):
         Args:
             event (events.Key): A key event.
         &#34;&#34;&#34;
-        key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None)
+        key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None) or getattr(
+            self, f&#34;_key_{event.key_name}&#34;, None
+        )
         if key_method is not None:
-            if await invoke(key_method, event):
-                event.prevent_default()
+            await invoke(key_method, event)
+            event.prevent_default()
 
     async def on_timer(self, event: events.Timer) -&gt; None:
         event.prevent_default()
@@ -651,6 +658,11 @@ class MessagePump(metaclass=MessagePumpMeta):
 
     @property
     def log(self) -&gt; Logger:
+        &#34;&#34;&#34;Get a logger for this object.
+
+        Returns:
+            Logger: A logger.
+        &#34;&#34;&#34;
         return self.app._logger
 
     def _attach(self, parent: MessagePump) -&gt; None:
@@ -1056,10 +1068,12 @@ class MessagePump(metaclass=MessagePumpMeta):
         Args:
             event (events.Key): A key event.
         &#34;&#34;&#34;
-        key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None)
+        key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None) or getattr(
+            self, f&#34;_key_{event.key_name}&#34;, None
+        )
         if key_method is not None:
-            if await invoke(key_method, event):
-                event.prevent_default()
+            await invoke(key_method, event)
+            event.prevent_default()
 
     async def on_timer(self, event: events.Timer) -&gt; None:
         event.prevent_default()
@@ -1152,13 +1166,23 @@ def is_running(self) -&gt; bool:
 </dd>
 <dt id="textual.message_pump.MessagePump.log"><code class="name">var <span class="ident">log</span> : textual.Logger</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Get a logger for this object.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Logger</code></dt>
+<dd>A logger.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def log(self) -&gt; Logger:
+    &#34;&#34;&#34;Get a logger for this object.
+
+    Returns:
+        Logger: A logger.
+    &#34;&#34;&#34;
     return self.app._logger</code></pre>
 </details>
 </dd>
@@ -1271,10 +1295,12 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
     Args:
         event (events.Key): A key event.
     &#34;&#34;&#34;
-    key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None)
+    key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None) or getattr(
+        self, f&#34;_key_{event.key_name}&#34;, None
+    )
     if key_method is not None:
-        if await invoke(key_method, event):
-            event.prevent_default()</code></pre>
+        await invoke(key_method, event)
+        event.prevent_default()</code></pre>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.emit"><code class="name flex">

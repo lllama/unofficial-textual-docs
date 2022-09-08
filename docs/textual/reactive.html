@@ -28,20 +28,11 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from inspect import isawaitable
 from functools import partial
-from typing import (
-    Any,
-    Callable,
-    Generic,
-    Type,
-    Union,
-    TypeVar,
-    TYPE_CHECKING,
-)
+from inspect import isawaitable
+from typing import TYPE_CHECKING, Any, Callable, Generic, Type, TypeVar, Union
 
 from . import events
-
 from ._callback import count_parameters, invoke
 from ._types import MessageTarget
 
@@ -59,7 +50,15 @@ T = TypeVar(&#34;T&#34;)
 
 
 class Reactive(Generic[ReactiveType]):
-    &#34;&#34;&#34;Reactive descriptor.&#34;&#34;&#34;
+    &#34;&#34;&#34;Reactive descriptor.
+
+    Args:
+        default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+        layout (bool, optional): Perform a layout on change. Defaults to False.
+        repaint (bool, optional): Perform a repaint on change. Defaults to True.
+        init (bool, optional): Call watchers on initialize (post mount). Defaults to False.
+
+    &#34;&#34;&#34;
 
     def __init__(
         self,
@@ -69,14 +68,6 @@ class Reactive(Generic[ReactiveType]):
         repaint: bool = True,
         init: bool = False,
     ) -&gt; None:
-        &#34;&#34;&#34;Create a Reactive Widget attribute,
-
-        Args:
-            default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
-            layout (bool, optional): Perform a layout on change. Defaults to False.
-            repaint (bool, optional): Perform a repaint on change. Defaults to True.
-            init (bool, optional): Call watchers on initialize (post mount). Defaults to False.
-        &#34;&#34;&#34;
         self._default = default
         self._layout = layout
         self._repaint = repaint
@@ -166,12 +157,12 @@ class Reactive(Generic[ReactiveType]):
         if current_value != value or first_set:
             setattr(obj, f&#34;__first_set_{self.internal_name}&#34;, False)
             setattr(obj, self.internal_name, value)
-            self.check_watchers(obj, name, current_value)
+            self._check_watchers(obj, name, current_value)
             if self._layout or self._repaint:
                 obj.refresh(repaint=self._repaint, layout=self._layout)
 
     @classmethod
-    def check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
+    def _check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
 
         internal_name = f&#34;_reactive_{name}&#34;
         value = getattr(obj, internal_name)
@@ -186,7 +177,7 @@ class Reactive(Generic[ReactiveType]):
                 watch_result = watch_function(value)
             if isawaitable(watch_result):
                 await watch_result
-            await Reactive.compute(obj)
+            await Reactive._compute(obj)
 
         watch_function = getattr(obj, f&#34;watch_{name}&#34;, None)
         if callable(watch_function):
@@ -210,7 +201,7 @@ class Reactive(Generic[ReactiveType]):
             )
 
     @classmethod
-    async def compute(cls, obj: Reactable) -&gt; None:
+    async def _compute(cls, obj: Reactable) -&gt; None:
         _rich_traceback_guard = True
         computes = getattr(obj, &#34;__computes&#34;, [])
         for compute in computes:
@@ -231,7 +222,7 @@ def watch(
         setattr(obj, watcher_name, set())
     watchers = getattr(obj, watcher_name)
     watchers.add(callback)
-    Reactive.check_watchers(obj, attribute_name, current_value)</code></pre>
+    Reactive._check_watchers(obj, attribute_name, current_value)</code></pre>
 </details>
 </section>
 <section>
@@ -259,7 +250,7 @@ def watch(
         setattr(obj, watcher_name, set())
     watchers = getattr(obj, watcher_name)
     watchers.add(callback)
-    Reactive.check_watchers(obj, attribute_name, current_value)</code></pre>
+    Reactive._check_watchers(obj, attribute_name, current_value)</code></pre>
 </details>
 </dd>
 </dl>
@@ -273,7 +264,6 @@ def watch(
 </code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p>
-<p>Create a Reactive Widget attribute,</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
@@ -289,7 +279,15 @@ def watch(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Reactive(Generic[ReactiveType]):
-    &#34;&#34;&#34;Reactive descriptor.&#34;&#34;&#34;
+    &#34;&#34;&#34;Reactive descriptor.
+
+    Args:
+        default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+        layout (bool, optional): Perform a layout on change. Defaults to False.
+        repaint (bool, optional): Perform a repaint on change. Defaults to True.
+        init (bool, optional): Call watchers on initialize (post mount). Defaults to False.
+
+    &#34;&#34;&#34;
 
     def __init__(
         self,
@@ -299,14 +297,6 @@ def watch(
         repaint: bool = True,
         init: bool = False,
     ) -&gt; None:
-        &#34;&#34;&#34;Create a Reactive Widget attribute,
-
-        Args:
-            default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
-            layout (bool, optional): Perform a layout on change. Defaults to False.
-            repaint (bool, optional): Perform a repaint on change. Defaults to True.
-            init (bool, optional): Call watchers on initialize (post mount). Defaults to False.
-        &#34;&#34;&#34;
         self._default = default
         self._layout = layout
         self._repaint = repaint
@@ -396,12 +386,12 @@ def watch(
         if current_value != value or first_set:
             setattr(obj, f&#34;__first_set_{self.internal_name}&#34;, False)
             setattr(obj, self.internal_name, value)
-            self.check_watchers(obj, name, current_value)
+            self._check_watchers(obj, name, current_value)
             if self._layout or self._repaint:
                 obj.refresh(repaint=self._repaint, layout=self._layout)
 
     @classmethod
-    def check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
+    def _check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
 
         internal_name = f&#34;_reactive_{name}&#34;
         value = getattr(obj, internal_name)
@@ -416,7 +406,7 @@ def watch(
                 watch_result = watch_function(value)
             if isawaitable(watch_result):
                 await watch_result
-            await Reactive.compute(obj)
+            await Reactive._compute(obj)
 
         watch_function = getattr(obj, f&#34;watch_{name}&#34;, None)
         if callable(watch_function):
@@ -440,7 +430,7 @@ def watch(
             )
 
     @classmethod
-    async def compute(cls, obj: Reactable) -&gt; None:
+    async def _compute(cls, obj: Reactable) -&gt; None:
         _rich_traceback_guard = True
         computes = getattr(obj, &#34;__computes&#34;, [])
         for compute in computes:
@@ -457,77 +447,6 @@ def watch(
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="textual.reactive.Reactive.check_watchers"><code class="name flex">
-<span>def <span class="ident">check_watchers</span></span>(<span>obj: Reactable, name: str, old_value: Any) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-def check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
-
-    internal_name = f&#34;_reactive_{name}&#34;
-    value = getattr(obj, internal_name)
-
-    async def update_watcher(
-        obj: Reactable, watch_function: Callable, old_value: Any, value: Any
-    ) -&gt; None:
-        _rich_traceback_guard = True
-        if count_parameters(watch_function) == 2:
-            watch_result = watch_function(old_value, value)
-        else:
-            watch_result = watch_function(value)
-        if isawaitable(watch_result):
-            await watch_result
-        await Reactive.compute(obj)
-
-    watch_function = getattr(obj, f&#34;watch_{name}&#34;, None)
-    if callable(watch_function):
-        obj.post_message_no_wait(
-            events.Callback(
-                obj,
-                callback=partial(
-                    update_watcher, obj, watch_function, old_value, value
-                ),
-            )
-        )
-
-    watcher_name = f&#34;__{name}_watchers&#34;
-    watchers = getattr(obj, watcher_name, ())
-    for watcher in watchers:
-        obj.post_message_no_wait(
-            events.Callback(
-                obj,
-                callback=partial(update_watcher, obj, watcher, old_value, value),
-            )
-        )</code></pre>
-</details>
-</dd>
-<dt id="textual.reactive.Reactive.compute"><code class="name flex">
-<span>async def <span class="ident">compute</span></span>(<span>obj: Reactable) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-async def compute(cls, obj: Reactable) -&gt; None:
-    _rich_traceback_guard = True
-    computes = getattr(obj, &#34;__computes&#34;, [])
-    for compute in computes:
-        try:
-            compute_method = getattr(obj, f&#34;compute_{compute}&#34;)
-        except AttributeError:
-            continue
-        value = await invoke(compute_method)
-        setattr(obj, compute, value)</code></pre>
-</details>
-</dd>
 <dt id="textual.reactive.Reactive.init"><code class="name flex">
 <span>def <span class="ident">init</span></span>(<span>default: ReactiveType | Callable[[], ReactiveType], *, layout: bool = False, repaint: bool = True) ‑> <a title="textual.reactive.Reactive" href="#textual.reactive.Reactive">Reactive</a></span>
 </code></dt>
@@ -706,8 +625,6 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.reactive.Reactive" href="#textual.reactive.Reactive">Reactive</a></code></h4>
 <ul class="">
-<li><code><a title="textual.reactive.Reactive.check_watchers" href="#textual.reactive.Reactive.check_watchers">check_watchers</a></code></li>
-<li><code><a title="textual.reactive.Reactive.compute" href="#textual.reactive.Reactive.compute">compute</a></code></li>
 <li><code><a title="textual.reactive.Reactive.init" href="#textual.reactive.Reactive.init">init</a></code></li>
 <li><code><a title="textual.reactive.Reactive.initialize_object" href="#textual.reactive.Reactive.initialize_object">initialize_object</a></code></li>
 <li><code><a title="textual.reactive.Reactive.var" href="#textual.reactive.Reactive.var">var</a></code></li>

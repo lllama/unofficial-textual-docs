@@ -120,6 +120,11 @@ class Logger:
         &#34;&#34;&#34;An error logger.&#34;&#34;&#34;
         return Logger(LogGroup.ERROR)
 
+    @property
+    def system(self) -&gt; Logger:
+        &#34;&#34;&#34;A system logger.&#34;&#34;&#34;
+        return Logger(LogGroup.SYSTEM)
+
 
 log = Logger()
 

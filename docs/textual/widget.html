@@ -32,16 +32,10 @@ from asyncio import Lock
 from fractions import Fraction
 from itertools import islice
 from operator import attrgetter
-from typing import (
-    TYPE_CHECKING,
-    ClassVar,
-    Collection,
-    Iterable,
-    NamedTuple,
-)
+from typing import TYPE_CHECKING, ClassVar, Collection, Iterable, NamedTuple
 
 import rich.repr
-from rich.console import Console, RenderableType, JustifyMethod
+from rich.console import Console, JustifyMethod, RenderableType
 from rich.measure import Measurement
 from rich.segment import Segment
 from rich.style import Style
@@ -50,7 +44,7 @@ from rich.text import Text
 
 from . import errors, events, messages
 from ._animator import BoundAnimator
-from ._arrange import arrange, DockArrangeResult
+from ._arrange import DockArrangeResult, arrange
 from ._context import active_app
 from ._layout import Layout
 from ._segment_tools import align_lines
@@ -58,8 +52,7 @@ from ._styles_cache import StylesCache
 from ._types import Lines
 from .box_model import BoxModel, get_box_model
 from .css.constants import VALID_TEXT_ALIGN
-from .dom import DOMNode
-from .dom import NoScreen
+from .dom import DOMNode, NoScreen
 from .geometry import Offset, Region, Size, Spacing, clamp
 from .layouts.vertical import VerticalLayout
 from .message import Message
@@ -69,12 +62,12 @@ if TYPE_CHECKING:
     from .app import App, ComposeResult
     from .scrollbar import (
         ScrollBar,
+        ScrollBarCorner,
         ScrollDown,
         ScrollLeft,
         ScrollRight,
         ScrollTo,
         ScrollUp,
-        ScrollBarCorner,
     )
 
 
@@ -646,6 +639,18 @@ class Widget(DOMNode):
             return Region()
 
     @property
+    def container_viewport(self) -&gt; Region:
+        &#34;&#34;&#34;The viewport region (parent window)
+
+        Returns:
+            Region: The region that contains this widget.
+        &#34;&#34;&#34;
+        if self.parent is None:
+            return self.size.region
+        assert isinstance(self.parent, Widget)
+        return self.parent.region
+
+    @property
     def virtual_region(self) -&gt; Region:
         &#34;&#34;&#34;The widget region relative to it&#39;s container. Which may not be visible,
         depending on scroll offset.
@@ -1114,7 +1119,7 @@ class Widget(DOMNode):
             self.scroll_relative(
                 delta.x or None,
                 delta.y or None,
-                animate=animate,
+                animate=animate if (abs(delta_y) &gt; 1 or delta_x) else False,
                 duration=0.2,
             )
         return delta
@@ -1127,13 +1132,19 @@ class Widget(DOMNode):
 
     def __init_subclass__(
         cls,
-        can_focus: bool = False,
-        can_focus_children: bool = True,
+        can_focus: bool | None = None,
+        can_focus_children: bool | None = None,
         inherit_css: bool = True,
     ) -&gt; None:
+        base = cls.__mro__[0]
         super().__init_subclass__(inherit_css=inherit_css)
-        cls.can_focus = can_focus
-        cls.can_focus_children = can_focus_children
+        if issubclass(base, Widget):
+            cls.can_focus = base.can_focus if can_focus is None else can_focus
+            cls.can_focus_children = (
+                base.can_focus_children
+                if can_focus_children is None
+                else can_focus_children
+            )
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;id&#34;, self.id, None
@@ -1486,10 +1497,9 @@ class Widget(DOMNode):
         await self.dispatch_key(event)
 
     def _on_mount(self, event: events.Mount) -&gt; None:
-        widgets = list(self.compose())
-        if widgets:
-            self.mount(*widgets)
-            self.screen.refresh(repaint=False, layout=True)
+        widgets = self.compose()
+        self.mount(*widgets)
+        self.screen.refresh(repaint=False, layout=True)
 
     def _on_leave(self, event: events.Leave) -&gt; None:
         self.mouse_over = False
@@ -1564,49 +1574,52 @@ class Widget(DOMNode):
         if self.has_focus:
             self.app._reset_focus(self)
 
-    def key_home(self) -&gt; bool:
+    def _on_scroll_to_region(self, message: messages.ScrollToRegion) -&gt; None:
+        self.scroll_to_region(message.region, animate=True)
+
+    def _key_home(self) -&gt; bool:
         if self._allow_scroll:
             self.scroll_home()
             return True
         return False
 
-    def key_end(self) -&gt; bool:
+    def _key_end(self) -&gt; bool:
         if self._allow_scroll:
             self.scroll_end()
             return True
         return False
 
-    def key_left(self) -&gt; bool:
+    def _key_left(self) -&gt; bool:
         if self.allow_horizontal_scroll:
             self.scroll_left()
             return True
         return False
 
-    def key_right(self) -&gt; bool:
+    def _key_right(self) -&gt; bool:
         if self.allow_horizontal_scroll:
             self.scroll_right()
             return True
         return False
 
-    def key_down(self) -&gt; bool:
+    def _key_down(self) -&gt; bool:
         if self.allow_vertical_scroll:
             self.scroll_down()
             return True
         return False
 
-    def key_up(self) -&gt; bool:
+    def _key_up(self) -&gt; bool:
         if self.allow_vertical_scroll:
             self.scroll_up()
             return True
         return False
 
-    def key_pagedown(self) -&gt; bool:
+    def _key_pagedown(self) -&gt; bool:
         if self.allow_vertical_scroll:
             self.scroll_page_down()
             return True
         return False
 
-    def key_pageup(self) -&gt; bool:
+    def _key_pageup(self) -&gt; bool:
         if self.allow_vertical_scroll:
             self.scroll_page_up()
             return True
@@ -2259,6 +2272,18 @@ def cursor_line(self) -&gt; int | None:
             return Region()
 
     @property
+    def container_viewport(self) -&gt; Region:
+        &#34;&#34;&#34;The viewport region (parent window)
+
+        Returns:
+            Region: The region that contains this widget.
+        &#34;&#34;&#34;
+        if self.parent is None:
+            return self.size.region
+        assert isinstance(self.parent, Widget)
+        return self.parent.region
+
+    @property
     def virtual_region(self) -&gt; Region:
         &#34;&#34;&#34;The widget region relative to it&#39;s container. Which may not be visible,
         depending on scroll offset.
@@ -2727,7 +2752,7 @@ def cursor_line(self) -&gt; int | None:
             self.scroll_relative(
                 delta.x or None,
                 delta.y or None,
-                animate=animate,
+                animate=animate if (abs(delta_y) &gt; 1 or delta_x) else False,
                 duration=0.2,
             )
         return delta
@@ -2740,13 +2765,19 @@ def cursor_line(self) -&gt; int | None:
 
     def __init_subclass__(
         cls,
-        can_focus: bool = False,
-        can_focus_children: bool = True,
+        can_focus: bool | None = None,
+        can_focus_children: bool | None = None,
         inherit_css: bool = True,
     ) -&gt; None:
+        base = cls.__mro__[0]
         super().__init_subclass__(inherit_css=inherit_css)
-        cls.can_focus = can_focus
-        cls.can_focus_children = can_focus_children
+        if issubclass(base, Widget):
+            cls.can_focus = base.can_focus if can_focus is None else can_focus
+            cls.can_focus_children = (
+                base.can_focus_children
+                if can_focus_children is None
+                else can_focus_children
+            )
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield &#34;id&#34;, self.id, None
@@ -3099,10 +3130,9 @@ def cursor_line(self) -&gt; int | None:
         await self.dispatch_key(event)
 
     def _on_mount(self, event: events.Mount) -&gt; None:
-        widgets = list(self.compose())
-        if widgets:
-            self.mount(*widgets)
-            self.screen.refresh(repaint=False, layout=True)
+        widgets = self.compose()
+        self.mount(*widgets)
+        self.screen.refresh(repaint=False, layout=True)
 
     def _on_leave(self, event: events.Leave) -&gt; None:
         self.mouse_over = False
@@ -3177,49 +3207,52 @@ def cursor_line(self) -&gt; int | None:
         if self.has_focus:
             self.app._reset_focus(self)
 
-    def key_home(self) -&gt; bool:
+    def _on_scroll_to_region(self, message: messages.ScrollToRegion) -&gt; None:
+        self.scroll_to_region(message.region, animate=True)
+
+    def _key_home(self) -&gt; bool:
         if self._allow_scroll:
             self.scroll_home()
             return True
         return False
 
-    def key_end(self) -&gt; bool:
+    def _key_end(self) -&gt; bool:
         if self._allow_scroll:
             self.scroll_end()
             return True
         return False
 
-    def key_left(self) -&gt; bool:
+    def _key_left(self) -&gt; bool:
         if self.allow_horizontal_scroll:
             self.scroll_left()
             return True
         return False
 
-    def key_right(self) -&gt; bool:
+    def _key_right(self) -&gt; bool:
         if self.allow_horizontal_scroll:
             self.scroll_right()
             return True
         return False
 
-    def key_down(self) -&gt; bool:
+    def _key_down(self) -&gt; bool:
         if self.allow_vertical_scroll:
             self.scroll_down()
             return True
         return False
 
-    def key_up(self) -&gt; bool:
+    def _key_up(self) -&gt; bool:
         if self.allow_vertical_scroll:
             self.scroll_up()
             return True
         return False
 
-    def key_pagedown(self) -&gt; bool:
+    def _key_pagedown(self) -&gt; bool:
         if self.allow_vertical_scroll:
             self.scroll_page_down()
             return True
         return False
 
-    def key_pageup(self) -&gt; bool:
+    def _key_pageup(self) -&gt; bool:
         if self.allow_vertical_scroll:
             self.scroll_page_up()
             return True
@@ -3344,7 +3377,17 @@ def animate(self) -&gt; BoundAnimator:
 </dd>
 <dt id="textual.widget.Widget.auto_height"><code class="name">var <span class="ident">auto_height</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3355,7 +3398,17 @@ def animate(self) -&gt; BoundAnimator:
 </dd>
 <dt id="textual.widget.Widget.auto_width"><code class="name">var <span class="ident">auto_width</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3384,6 +3437,31 @@ def container_size(self) -&gt; Size:
         Size: Container size.
     &#34;&#34;&#34;
     return self._container_size</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.container_viewport"><code class="name">var <span class="ident">container_viewport</span> : <a title="textual.geometry.Region" href="geometry.html#textual.geometry.Region">Region</a></code></dt>
+<dd>
+<div class="desc"><p>The viewport region (parent window)</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Region</code></dt>
+<dd>The region that contains this widget.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def container_viewport(self) -&gt; Region:
+    &#34;&#34;&#34;The viewport region (parent window)
+
+    Returns:
+        Region: The region that contains this widget.
+    &#34;&#34;&#34;
+    if self.parent is None:
+        return self.size.region
+    assert isinstance(self.parent, Widget)
+    return self.parent.region</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.content_offset"><code class="name">var <span class="ident">content_offset</span> : <a title="textual.geometry.Offset" href="geometry.html#textual.geometry.Offset">Offset</a></code></dt>
@@ -3435,7 +3513,17 @@ def content_region(self) -&gt; Region:
 </dd>
 <dt id="textual.widget.Widget.descendant_has_focus"><code class="name">var <span class="ident">descendant_has_focus</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3495,7 +3583,17 @@ def gutter(self) -&gt; Spacing:
 </dd>
 <dt id="textual.widget.Widget.has_focus"><code class="name">var <span class="ident">has_focus</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3689,7 +3787,17 @@ def max_scroll_y(self) -&gt; int:
 </dd>
 <dt id="textual.widget.Widget.mouse_over"><code class="name">var <span class="ident">mouse_over</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3782,7 +3890,17 @@ def scroll_offset(self) -&gt; Offset:
 </dd>
 <dt id="textual.widget.Widget.scroll_target_x"><code class="name">var <span class="ident">scroll_target_x</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3793,7 +3911,17 @@ def scroll_offset(self) -&gt; Offset:
 </dd>
 <dt id="textual.widget.Widget.scroll_target_y"><code class="name">var <span class="ident">scroll_target_y</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3804,7 +3932,17 @@ def scroll_offset(self) -&gt; Offset:
 </dd>
 <dt id="textual.widget.Widget.scroll_x"><code class="name">var <span class="ident">scroll_x</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3815,7 +3953,17 @@ def scroll_offset(self) -&gt; Offset:
 </dd>
 <dt id="textual.widget.Widget.scroll_y"><code class="name">var <span class="ident">scroll_y</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3932,7 +4080,17 @@ def scrollbars_enabled(self) -&gt; tuple[bool, bool]:
 </dd>
 <dt id="textual.widget.Widget.show_horizontal_scrollbar"><code class="name">var <span class="ident">show_horizontal_scrollbar</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3943,7 +4101,17 @@ def scrollbars_enabled(self) -&gt; tuple[bool, bool]:
 </dd>
 <dt id="textual.widget.Widget.show_vertical_scrollbar"><code class="name">var <span class="ident">show_vertical_scrollbar</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4079,7 +4247,17 @@ def virtual_region_with_margin(self) -&gt; Region:
 </dd>
 <dt id="textual.widget.Widget.virtual_size"><code class="name">var <span class="ident">virtual_size</span> : ReactiveType</code></dt>
 <dd>
-<div class="desc"><p>Reactive descriptor.</p></div>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -4396,134 +4574,6 @@ def window_region(self) -&gt; Region:
     &#34;&#34;&#34;
     offset_x, offset_y = self.screen.get_offset(self)
     return self.screen.get_style_at(x + offset_x, y + offset_y)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.key_down"><code class="name flex">
-<span>def <span class="ident">key_down</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def key_down(self) -&gt; bool:
-    if self.allow_vertical_scroll:
-        self.scroll_down()
-        return True
-    return False</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.key_end"><code class="name flex">
-<span>def <span class="ident">key_end</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def key_end(self) -&gt; bool:
-    if self._allow_scroll:
-        self.scroll_end()
-        return True
-    return False</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.key_home"><code class="name flex">
-<span>def <span class="ident">key_home</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def key_home(self) -&gt; bool:
-    if self._allow_scroll:
-        self.scroll_home()
-        return True
-    return False</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.key_left"><code class="name flex">
-<span>def <span class="ident">key_left</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def key_left(self) -&gt; bool:
-    if self.allow_horizontal_scroll:
-        self.scroll_left()
-        return True
-    return False</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.key_pagedown"><code class="name flex">
-<span>def <span class="ident">key_pagedown</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def key_pagedown(self) -&gt; bool:
-    if self.allow_vertical_scroll:
-        self.scroll_page_down()
-        return True
-    return False</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.key_pageup"><code class="name flex">
-<span>def <span class="ident">key_pageup</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def key_pageup(self) -&gt; bool:
-    if self.allow_vertical_scroll:
-        self.scroll_page_up()
-        return True
-    return False</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.key_right"><code class="name flex">
-<span>def <span class="ident">key_right</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def key_right(self) -&gt; bool:
-    if self.allow_horizontal_scroll:
-        self.scroll_right()
-        return True
-    return False</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.key_up"><code class="name flex">
-<span>def <span class="ident">key_up</span></span>(<span>self) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def key_up(self) -&gt; bool:
-    if self.allow_vertical_scroll:
-        self.scroll_up()
-        return True
-    return False</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.mount"><code class="name flex">
@@ -5276,7 +5326,7 @@ the scrollable area.</p>
         self.scroll_relative(
             delta.x or None,
             delta.y or None,
-            animate=animate,
+            animate=animate if (abs(delta_y) &gt; 1 or delta_x) else False,
             duration=0.2,
         )
     return delta</code></pre>
@@ -5613,6 +5663,7 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.has_class" href="dom.html#textual.dom.DOMNode.has_class">has_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
 <li><code><a title="textual.dom.DOMNode.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
+<li><code><a title="textual.dom.DOMNode.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.dom.DOMNode.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.dom.DOMNode.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
@@ -5725,6 +5776,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.capture_mouse" href="#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.compose" href="#textual.widget.Widget.compose">compose</a></code></li>
 <li><code><a title="textual.widget.Widget.container_size" href="#textual.widget.Widget.container_size">container_size</a></code></li>
+<li><code><a title="textual.widget.Widget.container_viewport" href="#textual.widget.Widget.container_viewport">container_viewport</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="#textual.widget.Widget.content_region">content_region</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
@@ -5740,14 +5792,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.is_container" href="#textual.widget.Widget.is_container">is_container</a></code></li>
 <li><code><a title="textual.widget.Widget.is_scrollable" href="#textual.widget.Widget.is_scrollable">is_scrollable</a></code></li>
 <li><code><a title="textual.widget.Widget.is_transparent" href="#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
-<li><code><a title="textual.widget.Widget.key_down" href="#textual.widget.Widget.key_down">key_down</a></code></li>
-<li><code><a title="textual.widget.Widget.key_end" href="#textual.widget.Widget.key_end">key_end</a></code></li>
-<li><code><a title="textual.widget.Widget.key_home" href="#textual.widget.Widget.key_home">key_home</a></code></li>
-<li><code><a title="textual.widget.Widget.key_left" href="#textual.widget.Widget.key_left">key_left</a></code></li>
-<li><code><a title="textual.widget.Widget.key_pagedown" href="#textual.widget.Widget.key_pagedown">key_pagedown</a></code></li>
-<li><code><a title="textual.widget.Widget.key_pageup" href="#textual.widget.Widget.key_pageup">key_pageup</a></code></li>
-<li><code><a title="textual.widget.Widget.key_right" href="#textual.widget.Widget.key_right">key_right</a></code></li>
-<li><code><a title="textual.widget.Widget.key_up" href="#textual.widget.Widget.key_up">key_up</a></code></li>
 <li><code><a title="textual.widget.Widget.layer" href="#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.widget.Widget.layers" href="#textual.widget.Widget.layers">layers</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>

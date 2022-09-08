@@ -516,7 +516,8 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;Get a Rich Style object for this DOMNode.&#34;&#34;&#34;
         _, _, background, color = self.colors
         style = (
-            Style.from_color(color.rich_color, background.rich_color) + self.text_style
+            Style.from_color((background + color).rich_color, background.rich_color)
+            + self.text_style
         )
         return style
 
@@ -1354,7 +1355,8 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;Get a Rich Style object for this DOMNode.&#34;&#34;&#34;
         _, _, background, color = self.colors
         style = (
-            Style.from_color(color.rich_color, background.rich_color) + self.text_style
+            Style.from_color((background + color).rich_color, background.rich_color)
+            + self.text_style
         )
         return style
 
@@ -2019,7 +2021,8 @@ def rich_style(self) -&gt; Style:
     &#34;&#34;&#34;Get a Rich Style object for this DOMNode.&#34;&#34;&#34;
     _, _, background, color = self.colors
     style = (
-        Style.from_color(color.rich_color, background.rich_color) + self.text_style
+        Style.from_color((background + color).rich_color, background.rich_color)
+        + self.text_style
     )
     return style</code></pre>
 </details>
@@ -2675,6 +2678,7 @@ and inherited from base classes.</dd>
 <li><code><a title="textual.message_pump.MessagePump.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.message_pump.MessagePump.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.post_message" href="message_pump.html#textual.message_pump.MessagePump.post_message">post_message</a></code></li>
