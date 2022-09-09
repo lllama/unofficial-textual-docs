@@ -572,7 +572,7 @@ class DOMNode(MessagePump):
         return nodes
 
     @property
-    def displayed_children(self) -&gt; list[DOMNode]:
+    def displayed_children(self) -&gt; list[Widget]:
         &#34;&#34;&#34;The children which don&#39;t have display: none set.
 
         Returns:
@@ -1411,7 +1411,7 @@ class DOMNode(MessagePump):
         return nodes
 
     @property
-    def displayed_children(self) -&gt; list[DOMNode]:
+    def displayed_children(self) -&gt; list[Widget]:
         &#34;&#34;&#34;The children which don&#39;t have display: none set.
 
         Returns:
@@ -1921,7 +1921,7 @@ def display(self) -&gt; bool:
     return self.styles.display != &#34;none&#34; and not (self._closing or self._closed)</code></pre>
 </details>
 </dd>
-<dt id="textual.dom.DOMNode.displayed_children"><code class="name">var <span class="ident">displayed_children</span> : list[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>]</code></dt>
+<dt id="textual.dom.DOMNode.displayed_children"><code class="name">var <span class="ident">displayed_children</span> : list[Widget]</code></dt>
 <dd>
 <div class="desc"><p>The children which don't have display: none set.</p>
 <h2 id="returns">Returns</h2>
@@ -1934,7 +1934,7 @@ def display(self) -&gt; bool:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def displayed_children(self) -&gt; list[DOMNode]:
+def displayed_children(self) -&gt; list[Widget]:
     &#34;&#34;&#34;The children which don&#39;t have display: none set.
 
     Returns:

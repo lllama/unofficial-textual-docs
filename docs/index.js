@@ -59,6 +59,7 @@ URLS=[
 "textual/renderables/tint.html",
 "textual/events.html",
 "textual/cli/index.html",
+"textual/cli/previews/index.html",
 "textual/features.html",
 "textual/reactive.html",
 "textual/screen.html"
@@ -1040,7 +1041,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.focus",
 "url":4,
-"doc":"Give input focus to this widget.",
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
 "func":1
 },
 {
@@ -1731,7 +1732,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.focus",
 "url":4,
-"doc":"Give input focus to this widget.",
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
 "func":1
 },
 {
@@ -2649,7 +2650,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.focus",
 "url":4,
-"doc":"Give input focus to this widget.",
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
 "func":1
 },
 {
@@ -3747,7 +3748,7 @@ INDEX=[
 {
 "ref":"textual.layout.Container.focus",
 "url":4,
-"doc":"Give input focus to this widget.",
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
 "func":1
 },
 {
@@ -4443,7 +4444,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.focus",
 "url":4,
-"doc":"Give input focus to this widget.",
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
 "func":1
 },
 {
@@ -5139,7 +5140,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.focus",
 "url":4,
-"doc":"Give input focus to this widget.",
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
 "func":1
 },
 {
@@ -5835,7 +5836,7 @@ INDEX=[
 {
 "ref":"textual.layout.Center.focus",
 "url":4,
-"doc":"Give input focus to this widget.",
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
 "func":1
 },
 {
@@ -7086,7 +7087,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.focus",
 "url":4,
-"doc":"Give input focus to this widget.",
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
 "func":1
 },
 {
@@ -14095,6 +14096,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.cli.previews",
+"url":60,
+"doc":""
+},
+{
 "ref":"textual.message_pump",
 "url":6,
 "doc":"A message pump is a class that processes messages. It is a base class for the App, Screen, and Widgets."
@@ -14258,138 +14264,138 @@ INDEX=[
 },
 {
 "ref":"textual.features",
-"url":60,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.features.parse_features",
-"url":60,
+"url":61,
 "doc":"Parse features env var Args: features (str): Comma separated feature flags Returns: frozenset[FeatureFlag]: A frozen set of known features.",
 "func":1
 },
 {
 "ref":"textual.reactive",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.reactive.Reactive",
-"url":61,
+"url":62,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.reactive.Reactive.init",
-"url":61,
+"url":62,
 "doc":"A reactive variable that calls watchers and compute on initialize (post mount). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. Returns: Reactive: A Reactive instance which calls watchers or initialize.",
 "func":1
 },
 {
 "ref":"textual.reactive.Reactive.var",
-"url":61,
+"url":62,
 "doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
 "func":1
 },
 {
 "ref":"textual.reactive.Reactive.initialize_object",
-"url":61,
+"url":62,
 "doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
 "func":1
 },
 {
 "ref":"textual.reactive.watch",
-"url":61,
+"url":62,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.screen",
-"url":62,
+"url":63,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen",
-"url":62,
+"url":63,
 "doc":"A widget for the root of the app."
 },
 {
 "ref":"textual.screen.Screen.DEFAULT_CSS",
-"url":62,
+"url":63,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen.dark",
-"url":62,
+"url":63,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.is_transparent",
-"url":62,
+"url":63,
 "doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
 },
 {
 "ref":"textual.screen.Screen.is_current",
-"url":62,
+"url":63,
 "doc":"Check if this screen is current (i.e. visible to user)."
 },
 {
 "ref":"textual.screen.Screen.update_timer",
-"url":62,
+"url":63,
 "doc":"Timer used to perform updates."
 },
 {
 "ref":"textual.screen.Screen.widgets",
-"url":62,
+"url":63,
 "doc":"Get all widgets."
 },
 {
 "ref":"textual.screen.Screen.visible_widgets",
-"url":62,
+"url":63,
 "doc":"Get a list of visible widgets."
 },
 {
 "ref":"textual.screen.Screen.watch_dark",
-"url":62,
+"url":63,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.render",
-"url":62,
+"url":63,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_offset",
-"url":62,
+"url":63,
 "doc":"Get the absolute offset of a given Widget. Args: widget (Widget): A widget Returns: Offset: The widget's offset relative to the top left of the terminal.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_widget_at",
-"url":62,
+"url":63,
 "doc":"Get the widget at a given coordinate. Args: x (int): X Coordinate. y (int): Y Coordinate. Returns: tuple[Widget, Region]: Widget and screen region.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_style_at",
-"url":62,
+"url":63,
 "doc":"Get the style under a given coordinate. Args: x (int): X Coordinate. y (int): Y Coordinate. Returns: Style: Rich Style object",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.find_widget",
-"url":62,
+"url":63,
 "doc":"Get the screen region of a Widget. Args: widget (Widget): A Widget within the composition. Returns: Region: Region relative to screen.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.can_focus",
-"url":62,
+"url":63,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen.can_focus_children",
-"url":62,
+"url":63,
 "doc":""
 },
 {
@@ -14785,7 +14791,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.focus",
 "url":4,
-"doc":"Give input focus to this widget.",
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
 "func":1
 },
 {

@@ -35,8 +35,13 @@ from operator import attrgetter
 from typing import TYPE_CHECKING, ClassVar, Collection, Iterable, NamedTuple
 
 import rich.repr
-from rich.console import Console, JustifyMethod, RenderableType
-from rich.measure import Measurement
+from rich.console import (
+    Console,
+    ConsoleRenderable,
+    Measurement,
+    JustifyMethod,
+    RenderableType,
+)
 from rich.segment import Segment
 from rich.style import Style
 from rich.styled import Styled
@@ -341,17 +346,15 @@ class Widget(DOMNode):
         &#34;&#34;&#34;
         if self.is_container:
             assert self._layout is not None
-            return (
-                self._layout.get_content_width(self, container, viewport)
-                + self.scrollbar_size_vertical
-            )
+            return self._layout.get_content_width(self, container, viewport)
 
         cache_key = container.width
         if self._content_width_cache[0] == cache_key:
             return self._content_width_cache[1]
 
         console = self.app.console
-        renderable = self.render()
+        renderable = self.post_render(self.render())
+
         measurement = Measurement.get(
             console,
             console.options.update_width(container.width),
@@ -537,18 +540,18 @@ class Widget(DOMNode):
     @property
     def scrollbar_size_vertical(self) -&gt; int:
         &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
-        return (
-            self.styles.scrollbar_size_vertical if self.show_vertical_scrollbar else 0
-        )
+        styles = self.styles
+        if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_y == &#34;auto&#34;:
+            return styles.scrollbar_size_vertical
+        return styles.scrollbar_size_vertical if self.show_vertical_scrollbar else 0
 
     @property
     def scrollbar_size_horizontal(self) -&gt; int:
         &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
-        return (
-            self.styles.scrollbar_size_horizontal
-            if self.show_horizontal_scrollbar
-            else 0
-        )
+        styles = self.styles
+        if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_x == &#34;auto&#34;:
+            return self.styles.scrollbar_size_horizontal
+        return styles.scrollbar_size_horizontal if self.show_horizontal_scrollbar else 0
 
     @property
     def scrollbar_gutter(self) -&gt; Spacing:
@@ -606,7 +609,7 @@ class Widget(DOMNode):
         Returns:
             Region: Screen region that contains a widget&#39;s content.
         &#34;&#34;&#34;
-        content_region = self.region.shrink(self.gutter)
+        content_region = self.region.shrink(self.styles.gutter)
         return content_region
 
     @property
@@ -1242,7 +1245,7 @@ class Widget(DOMNode):
         if self.descendant_has_focus:
             yield &#34;focus-within&#34;
 
-    def post_render(self, renderable: RenderableType) -&gt; RenderableType:
+    def post_render(self, renderable: RenderableType) -&gt; ConsoleRenderable:
         &#34;&#34;&#34;Applies style attributes to the default renderable.
 
         Returns:
@@ -1460,9 +1463,14 @@ class Widget(DOMNode):
                     self._layout_required = False
                     screen.post_message_no_wait(messages.Layout(self))
 
-    def focus(self) -&gt; None:
-        &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
-        self.app.set_focus(self)
+    def focus(self, scroll_visible: bool = True) -&gt; None:
+        &#34;&#34;&#34;Give focus to this widget.
+
+        Args:
+            scroll_visible (bool, optional): Scroll parent to make this widget
+                visible. Defaults to True.
+        &#34;&#34;&#34;
+        self.app.set_focus(self, scroll_visible=scroll_visible)
 
     def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
@@ -1974,17 +1982,15 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;
         if self.is_container:
             assert self._layout is not None
-            return (
-                self._layout.get_content_width(self, container, viewport)
-                + self.scrollbar_size_vertical
-            )
+            return self._layout.get_content_width(self, container, viewport)
 
         cache_key = container.width
         if self._content_width_cache[0] == cache_key:
             return self._content_width_cache[1]
 
         console = self.app.console
-        renderable = self.render()
+        renderable = self.post_render(self.render())
+
         measurement = Measurement.get(
             console,
             console.options.update_width(container.width),
@@ -2170,18 +2176,18 @@ def cursor_line(self) -&gt; int | None:
     @property
     def scrollbar_size_vertical(self) -&gt; int:
         &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
-        return (
-            self.styles.scrollbar_size_vertical if self.show_vertical_scrollbar else 0
-        )
+        styles = self.styles
+        if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_y == &#34;auto&#34;:
+            return styles.scrollbar_size_vertical
+        return styles.scrollbar_size_vertical if self.show_vertical_scrollbar else 0
 
     @property
     def scrollbar_size_horizontal(self) -&gt; int:
         &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
-        return (
-            self.styles.scrollbar_size_horizontal
-            if self.show_horizontal_scrollbar
-            else 0
-        )
+        styles = self.styles
+        if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_x == &#34;auto&#34;:
+            return self.styles.scrollbar_size_horizontal
+        return styles.scrollbar_size_horizontal if self.show_horizontal_scrollbar else 0
 
     @property
     def scrollbar_gutter(self) -&gt; Spacing:
@@ -2239,7 +2245,7 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             Region: Screen region that contains a widget&#39;s content.
         &#34;&#34;&#34;
-        content_region = self.region.shrink(self.gutter)
+        content_region = self.region.shrink(self.styles.gutter)
         return content_region
 
     @property
@@ -2875,7 +2881,7 @@ def cursor_line(self) -&gt; int | None:
         if self.descendant_has_focus:
             yield &#34;focus-within&#34;
 
-    def post_render(self, renderable: RenderableType) -&gt; RenderableType:
+    def post_render(self, renderable: RenderableType) -&gt; ConsoleRenderable:
         &#34;&#34;&#34;Applies style attributes to the default renderable.
 
         Returns:
@@ -3093,9 +3099,14 @@ def cursor_line(self) -&gt; int | None:
                     self._layout_required = False
                     screen.post_message_no_wait(messages.Layout(self))
 
-    def focus(self) -&gt; None:
-        &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
-        self.app.set_focus(self)
+    def focus(self, scroll_visible: bool = True) -&gt; None:
+        &#34;&#34;&#34;Give focus to this widget.
+
+        Args:
+            scroll_visible (bool, optional): Scroll parent to make this widget
+                visible. Defaults to True.
+        &#34;&#34;&#34;
+        self.app.set_focus(self, scroll_visible=scroll_visible)
 
     def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
@@ -3507,7 +3518,7 @@ def content_region(self) -&gt; Region:
     Returns:
         Region: Screen region that contains a widget&#39;s content.
     &#34;&#34;&#34;
-    content_region = self.region.shrink(self.gutter)
+    content_region = self.region.shrink(self.styles.gutter)
     return content_region</code></pre>
 </details>
 </dd>
@@ -4029,11 +4040,10 @@ def scrollbar_gutter(self) -&gt; Spacing:
 <pre><code class="python">@property
 def scrollbar_size_horizontal(self) -&gt; int:
     &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
-    return (
-        self.styles.scrollbar_size_horizontal
-        if self.show_horizontal_scrollbar
-        else 0
-    )</code></pre>
+    styles = self.styles
+    if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_x == &#34;auto&#34;:
+        return self.styles.scrollbar_size_horizontal
+    return styles.scrollbar_size_horizontal if self.show_horizontal_scrollbar else 0</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scrollbar_size_vertical"><code class="name">var <span class="ident">scrollbar_size_vertical</span> : int</code></dt>
@@ -4046,9 +4056,10 @@ def scrollbar_size_horizontal(self) -&gt; int:
 <pre><code class="python">@property
 def scrollbar_size_vertical(self) -&gt; int:
     &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
-    return (
-        self.styles.scrollbar_size_vertical if self.show_vertical_scrollbar else 0
-    )</code></pre>
+    styles = self.styles
+    if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_y == &#34;auto&#34;:
+        return styles.scrollbar_size_vertical
+    return styles.scrollbar_size_vertical if self.show_vertical_scrollbar else 0</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scrollbars_enabled"><code class="name">var <span class="ident">scrollbars_enabled</span> : tuple[bool, bool]</code></dt>
@@ -4383,17 +4394,28 @@ def window_region(self) -&gt; Region:
 </details>
 </dd>
 <dt id="textual.widget.Widget.focus"><code class="name flex">
-<span>def <span class="ident">focus</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">focus</span></span>(<span>self, scroll_visible: bool = True) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Give input focus to this widget.</p></div>
+<div class="desc"><p>Give focus to this widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>scroll_visible</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Scroll parent to make this widget
+visible. Defaults to True.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def focus(self) -&gt; None:
-    &#34;&#34;&#34;Give input focus to this widget.&#34;&#34;&#34;
-    self.app.set_focus(self)</code></pre>
+<pre><code class="python">def focus(self, scroll_visible: bool = True) -&gt; None:
+    &#34;&#34;&#34;Give focus to this widget.
+
+    Args:
+        scroll_visible (bool, optional): Scroll parent to make this widget
+            visible. Defaults to True.
+    &#34;&#34;&#34;
+    self.app.set_focus(self, scroll_visible=scroll_visible)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_content_height"><code class="name flex">
@@ -4491,17 +4513,15 @@ def window_region(self) -&gt; Region:
     &#34;&#34;&#34;
     if self.is_container:
         assert self._layout is not None
-        return (
-            self._layout.get_content_width(self, container, viewport)
-            + self.scrollbar_size_vertical
-        )
+        return self._layout.get_content_width(self, container, viewport)
 
     cache_key = container.width
     if self._content_width_cache[0] == cache_key:
         return self._content_width_cache[1]
 
     console = self.app.console
-    renderable = self.render()
+    renderable = self.post_render(self.render())
+
     measurement = Measurement.get(
         console,
         console.options.update_width(container.width),
@@ -4607,7 +4627,7 @@ the keys will be set as the Widget's id.</p>
 </details>
 </dd>
 <dt id="textual.widget.Widget.post_render"><code class="name flex">
-<span>def <span class="ident">post_render</span></span>(<span>self, renderable: RenderableType) ‑> Union[rich.console.ConsoleRenderable, rich.console.RichCast, str]</span>
+<span>def <span class="ident">post_render</span></span>(<span>self, renderable: RenderableType) ‑> rich.console.ConsoleRenderable</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Applies style attributes to the default renderable.</p>
@@ -4620,7 +4640,7 @@ the keys will be set as the Widget's id.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def post_render(self, renderable: RenderableType) -&gt; RenderableType:
+<pre><code class="python">def post_render(self, renderable: RenderableType) -&gt; ConsoleRenderable:
     &#34;&#34;&#34;Applies style attributes to the default renderable.
 
     Returns:
