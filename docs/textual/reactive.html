@@ -31,6 +31,8 @@
 from functools import partial
 from inspect import isawaitable
 from typing import TYPE_CHECKING, Any, Callable, Generic, Type, TypeVar, Union
+from weakref import WeakSet
+
 
 from . import events
 from ._callback import count_parameters, invoke
@@ -213,13 +215,53 @@ class Reactive(Generic[ReactiveType]):
             setattr(obj, compute, value)
 
 
+class reactive(Reactive[ReactiveType]):
+    &#34;&#34;&#34;Create a reactive attribute.
+
+    Args:
+        default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+        layout (bool, optional): Perform a layout on change. Defaults to False.
+        repaint (bool, optional): Perform a repaint on change. Defaults to True.
+        init (bool, optional): Call watchers on initialize (post mount). Defaults to False.
+
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        default: ReactiveType | Callable[[], ReactiveType],
+        *,
+        layout: bool = False,
+        repaint: bool = True,
+        init: bool = True,
+    ) -&gt; None:
+        super().__init__(default, layout=layout, repaint=repaint, init=init)
+
+
+class var(Reactive[ReactiveType]):
+    &#34;&#34;&#34;Create a reactive attribute (with no auto-refresh).
+
+    Args:
+        default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+    &#34;&#34;&#34;
+
+    def __init__(self, default: ReactiveType | Callable[[], ReactiveType]) -&gt; None:
+        super().__init__(default, layout=False, repaint=False, init=True)
+
+
 def watch(
     obj: Reactable, attribute_name: str, callback: Callable[[Any], object]
 ) -&gt; None:
+    &#34;&#34;&#34;Watch a reactive variable on an object.
+
+    Args:
+        obj (Reactable): The parent object.
+        attribute_name (str): The attribute to watch.
+        callback (Callable[[Any], object]): A callable to call when the attribute changes.
+    &#34;&#34;&#34;
     watcher_name = f&#34;__{attribute_name}_watchers&#34;
     current_value = getattr(obj, attribute_name, None)
     if not hasattr(obj, watcher_name):
-        setattr(obj, watcher_name, set())
+        setattr(obj, watcher_name, WeakSet())
     watchers = getattr(obj, watcher_name)
     watchers.add(callback)
     Reactive._check_watchers(obj, attribute_name, current_value)</code></pre>
@@ -236,7 +278,16 @@ def watch(
 <span>def <span class="ident">watch</span></span>(<span>obj: Reactable, attribute_name: str, callback: Callable[[Any], object]) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Watch a reactive variable on an object.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>obj</code></strong> :&ensp;<code>Reactable</code></dt>
+<dd>The parent object.</dd>
+<dt><strong><code>attribute_name</code></strong> :&ensp;<code>str</code></dt>
+<dd>The attribute to watch.</dd>
+<dt><strong><code>callback</code></strong> :&ensp;<code>Callable[[Any], object]</code></dt>
+<dd>A callable to call when the attribute changes.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -244,10 +295,17 @@ def watch(
 <pre><code class="python">def watch(
     obj: Reactable, attribute_name: str, callback: Callable[[Any], object]
 ) -&gt; None:
+    &#34;&#34;&#34;Watch a reactive variable on an object.
+
+    Args:
+        obj (Reactable): The parent object.
+        attribute_name (str): The attribute to watch.
+        callback (Callable[[Any], object]): A callable to call when the attribute changes.
+    &#34;&#34;&#34;
     watcher_name = f&#34;__{attribute_name}_watchers&#34;
     current_value = getattr(obj, attribute_name, None)
     if not hasattr(obj, watcher_name):
-        setattr(obj, watcher_name, set())
+        setattr(obj, watcher_name, WeakSet())
     watchers = getattr(obj, watcher_name)
     watchers.add(callback)
     Reactive._check_watchers(obj, attribute_name, current_value)</code></pre>
@@ -445,6 +503,11 @@ def watch(
 <ul class="hlist">
 <li>typing.Generic</li>
 </ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="textual.reactive.reactive" href="#textual.reactive.reactive">reactive</a></li>
+<li><a title="textual.reactive.var" href="#textual.reactive.var">var</a></li>
+</ul>
 <h3>Static methods</h3>
 <dl>
 <dt id="textual.reactive.Reactive.init"><code class="name flex">
@@ -555,6 +618,101 @@ def var(
 </dd>
 </dl>
 </dd>
+<dt id="textual.reactive.reactive"><code class="flex name class">
+<span>class <span class="ident">reactive</span></span>
+<span>(</span><span>default: ReactiveType | Callable[[], ReactiveType], *, layout: bool = False, repaint: bool = True, init: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a reactive attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class reactive(Reactive[ReactiveType]):
+    &#34;&#34;&#34;Create a reactive attribute.
+
+    Args:
+        default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+        layout (bool, optional): Perform a layout on change. Defaults to False.
+        repaint (bool, optional): Perform a repaint on change. Defaults to True.
+        init (bool, optional): Call watchers on initialize (post mount). Defaults to False.
+
+    &#34;&#34;&#34;
+
+    def __init__(
+        self,
+        default: ReactiveType | Callable[[], ReactiveType],
+        *,
+        layout: bool = False,
+        repaint: bool = True,
+        init: bool = True,
+    ) -&gt; None:
+        super().__init__(default, layout=layout, repaint=repaint, init=init)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.reactive.Reactive" href="#textual.reactive.Reactive">Reactive</a></li>
+<li>typing.Generic</li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.reactive.Reactive" href="#textual.reactive.Reactive">Reactive</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.reactive.Reactive.init" href="#textual.reactive.Reactive.init">init</a></code></li>
+<li><code><a title="textual.reactive.Reactive.initialize_object" href="#textual.reactive.Reactive.initialize_object">initialize_object</a></code></li>
+<li><code><a title="textual.reactive.Reactive.var" href="#textual.reactive.Reactive.var">var</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+<dt id="textual.reactive.var"><code class="flex name class">
+<span>class <span class="ident">var</span></span>
+<span>(</span><span>default: ReactiveType | Callable[[], ReactiveType])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a reactive attribute (with no auto-refresh).</p>
+<h2 id="args">Args</h2>
+<p>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class var(Reactive[ReactiveType]):
+    &#34;&#34;&#34;Create a reactive attribute (with no auto-refresh).
+
+    Args:
+        default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
+    &#34;&#34;&#34;
+
+    def __init__(self, default: ReactiveType | Callable[[], ReactiveType]) -&gt; None:
+        super().__init__(default, layout=False, repaint=False, init=True)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.reactive.Reactive" href="#textual.reactive.Reactive">Reactive</a></li>
+<li>typing.Generic</li>
+</ul>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.reactive.Reactive" href="#textual.reactive.Reactive">Reactive</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.reactive.Reactive.init" href="#textual.reactive.Reactive.init">init</a></code></li>
+<li><code><a title="textual.reactive.Reactive.initialize_object" href="#textual.reactive.Reactive.initialize_object">initialize_object</a></code></li>
+<li><code><a title="textual.reactive.Reactive.var" href="#textual.reactive.Reactive.var">var</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 </dl>
 </section>
 </article>
@@ -629,6 +787,12 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.reactive.Reactive.initialize_object" href="#textual.reactive.Reactive.initialize_object">initialize_object</a></code></li>
 <li><code><a title="textual.reactive.Reactive.var" href="#textual.reactive.Reactive.var">var</a></code></li>
 </ul>
+</li>
+<li>
+<h4><code><a title="textual.reactive.reactive" href="#textual.reactive.reactive">reactive</a></code></h4>
+</li>
+<li>
+<h4><code><a title="textual.reactive.var" href="#textual.reactive.var">var</a></code></h4>
 </li>
 </ul>
 </li>

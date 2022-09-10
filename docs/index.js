@@ -82,6 +82,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.binding.BindingError",
+"url":1,
+"doc":"A binding related error."
+},
+{
 "ref":"textual.binding.NoBinding",
 "url":1,
 "doc":"A binding was not found."
@@ -89,7 +94,7 @@ INDEX=[
 {
 "ref":"textual.binding.Binding",
 "url":1,
-"doc":"Binding(key: 'str', action: 'str', description: 'str', show: 'bool' = False, key_display: 'str | None' = None, allow_forward: 'bool' = True)"
+"doc":"Binding(key: 'str', action: 'str', description: 'str', show: 'bool' = True, key_display: 'str | None' = None, allow_forward: 'bool' = True)"
 },
 {
 "ref":"textual.binding.Binding.key",
@@ -127,6 +132,12 @@ INDEX=[
 "doc":"Manage a set of bindings."
 },
 {
+"ref":"textual.binding.Bindings.merge",
+"url":1,
+"doc":"Merge a bindings. Subsequence bound keys override initial keys. Args: bindings (Iterable[Bindings]): A number of bindings. Returns: Bindings: New bindings.",
+"func":1
+},
+{
 "ref":"textual.binding.Bindings.shown_keys",
 "url":1,
 "doc":""
@@ -145,29 +156,6 @@ INDEX=[
 },
 {
 "ref":"textual.binding.Bindings.allow_forward",
-"url":1,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.binding.BindingStack",
-"url":1,
-"doc":"Manage a stack of bindings."
-},
-{
-"ref":"textual.binding.BindingStack.push",
-"url":1,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.binding.BindingStack.pop",
-"url":1,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.binding.BindingStack.get_key",
 "url":1,
 "doc":"",
 "func":1
@@ -713,6 +701,12 @@ INDEX=[
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.get_component_rich_style",
+"url":4,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.watch_show_horizontal_scrollbar",
 "url":4,
 "doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
@@ -1169,13 +1163,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.query",
 "url":5,
-"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.query_one",
 "url":5,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -1402,6 +1396,12 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBarCorner.allow_horizontal_scroll",
 "url":4,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.scrollbar.ScrollBarCorner.get_component_rich_style",
+"url":4,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.watch_show_horizontal_scrollbar",
@@ -1860,13 +1860,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.query",
 "url":5,
-"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.query_one",
 "url":5,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -2266,6 +2266,12 @@ INDEX=[
 "ref":"textual.widget.Widget.allow_horizontal_scroll",
 "url":4,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.widget.Widget.get_component_rich_style",
+"url":4,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
 },
 {
 "ref":"textual.widget.Widget.watch_show_horizontal_scrollbar",
@@ -2784,13 +2790,13 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.query",
 "url":5,
-"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.query_one",
 "url":5,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -3414,6 +3420,12 @@ INDEX=[
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
 },
 {
+"ref":"textual.layout.Container.get_component_rich_style",
+"url":4,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
+},
+{
 "ref":"textual.layout.Container.watch_show_horizontal_scrollbar",
 "url":4,
 "doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
@@ -3876,13 +3888,13 @@ INDEX=[
 {
 "ref":"textual.layout.Container.query",
 "url":5,
-"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.query_one",
 "url":5,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -4108,6 +4120,12 @@ INDEX=[
 "ref":"textual.layout.Vertical.allow_horizontal_scroll",
 "url":4,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.layout.Vertical.get_component_rich_style",
+"url":4,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
 },
 {
 "ref":"textual.layout.Vertical.watch_show_horizontal_scrollbar",
@@ -4572,13 +4590,13 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.query",
 "url":5,
-"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.query_one",
 "url":5,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -4804,6 +4822,12 @@ INDEX=[
 "ref":"textual.layout.Horizontal.allow_horizontal_scroll",
 "url":4,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.layout.Horizontal.get_component_rich_style",
+"url":4,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
 },
 {
 "ref":"textual.layout.Horizontal.watch_show_horizontal_scrollbar",
@@ -5268,13 +5292,13 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.query",
 "url":5,
-"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.query_one",
 "url":5,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -5500,6 +5524,12 @@ INDEX=[
 "ref":"textual.layout.Center.allow_horizontal_scroll",
 "url":4,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.layout.Center.get_component_rich_style",
+"url":4,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
 },
 {
 "ref":"textual.layout.Center.watch_show_horizontal_scrollbar",
@@ -5964,13 +5994,13 @@ INDEX=[
 {
 "ref":"textual.layout.Center.query",
 "url":5,
-"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.query_one",
 "url":5,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -6199,6 +6229,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.dom.DOMNode.BINDINGS",
+"url":5,
+"doc":""
+},
+{
 "ref":"textual.dom.DOMNode.auto_refresh",
 "url":5,
 "doc":""
@@ -6337,7 +6372,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.query",
 "url":5,
-"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
@@ -6348,7 +6383,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.query_one",
 "url":5,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -6779,6 +6814,12 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.allow_horizontal_scroll",
 "url":4,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.scroll_view.ScrollView.get_component_rich_style",
+"url":4,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar",
@@ -7215,13 +7256,13 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.query",
 "url":5,
-"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.query_one",
 "url":5,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -14302,9 +14343,55 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.reactive.reactive",
+"url":62,
+"doc":"Create a reactive attribute. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.reactive.reactive.init",
+"url":62,
+"doc":"A reactive variable that calls watchers and compute on initialize (post mount). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. Returns: Reactive: A Reactive instance which calls watchers or initialize.",
+"func":1
+},
+{
+"ref":"textual.reactive.reactive.var",
+"url":62,
+"doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
+"func":1
+},
+{
+"ref":"textual.reactive.reactive.initialize_object",
+"url":62,
+"doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
+"func":1
+},
+{
+"ref":"textual.reactive.var",
+"url":62,
+"doc":"Create a reactive attribute (with no auto-refresh). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default."
+},
+{
+"ref":"textual.reactive.var.init",
+"url":62,
+"doc":"A reactive variable that calls watchers and compute on initialize (post mount). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. Returns: Reactive: A Reactive instance which calls watchers or initialize.",
+"func":1
+},
+{
+"ref":"textual.reactive.var.var",
+"url":62,
+"doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
+"func":1
+},
+{
+"ref":"textual.reactive.var.initialize_object",
+"url":62,
+"doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
+"func":1
+},
+{
 "ref":"textual.reactive.watch",
 "url":62,
-"doc":"",
+"doc":"Watch a reactive variable on an object. Args: obj (Reactable): The parent object. attribute_name (str): The attribute to watch. callback (Callable Any], object]): A callable to call when the attribute changes.",
 "func":1
 },
 {
@@ -14472,6 +14559,12 @@ INDEX=[
 "ref":"textual.screen.Screen.allow_horizontal_scroll",
 "url":4,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.screen.Screen.get_component_rich_style",
+"url":4,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
 },
 {
 "ref":"textual.screen.Screen.watch_show_horizontal_scrollbar",
@@ -14919,13 +15012,13 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.query",
 "url":5,
-"doc":"Get a DOM query. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.query_one",
 "url":5,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. Returns: Widget: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {

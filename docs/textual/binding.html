@@ -27,7 +27,24 @@
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">from __future__ import annotations
+
+import sys
+import rich.repr
+
 from dataclasses import dataclass
+from typing import Iterable, MutableMapping
+
+if sys.version_info &gt;= (3, 10):
+    from typing import TypeAlias
+else:  # pragma: no cover
+    from typing_extensions import TypeAlias
+
+
+BindingType: TypeAlias = &#34;Binding | tuple[str, str, str]&#34;
+
+
+class BindingError(Exception):
+    &#34;&#34;&#34;A binding related error.&#34;&#34;&#34;
 
 
 class NoBinding(Exception):
@@ -39,220 +56,50 @@ class Binding:
     key: str
     action: str
     description: str
-    show: bool = False
+    show: bool = True
     key_display: str | None = None
     allow_forward: bool = True
 
 
+@rich.repr.auto
 class Bindings:
     &#34;&#34;&#34;Manage a set of bindings.&#34;&#34;&#34;
 
-    def __init__(self) -&gt; None:
-        self.keys: dict[str, Binding] = {}
+    def __init__(self, bindings: Iterable[BindingType] | None = None) -&gt; None:
+        def make_bindings(bindings: Iterable[BindingType]) -&gt; Iterable[Binding]:
+            for binding in bindings:
+                if isinstance(binding, Binding):
+                    yield binding
+                else:
+                    if len(binding) != 3:
+                        raise BindingError(
+                            f&#34;BINDINGS must contain a tuple of three strings, not {binding!r}&#34;
+                        )
+                    yield Binding(*binding)
 
-    @property
-    def shown_keys(self) -&gt; list[Binding]:
-        keys = [binding for binding in self.keys.values() if binding.show]
-        return keys
+        self.keys: MutableMapping[str, Binding] = (
+            {binding.key: binding for binding in make_bindings(bindings)}
+            if bindings
+            else {}
+        )
 
-    def bind(
-        self,
-        keys: str,
-        action: str,
-        description: str = &#34;&#34;,
-        show: bool = True,
-        key_display: str | None = None,
-        allow_forward: bool = True,
-    ) -&gt; None:
-        all_keys = [key.strip() for key in keys.split(&#34;,&#34;)]
-        for key in all_keys:
-            self.keys[key] = Binding(
-                key,
-                action,
-                description,
-                show=show,
-                key_display=key_display,
-                allow_forward=allow_forward,
-            )
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        yield self.keys
 
-    def get_key(self, key: str) -&gt; Binding:
-        try:
-            return self.keys[key]
-        except KeyError:
-            raise NoBinding(f&#34;No binding for {key}&#34;) from None
+    @classmethod
+    def merge(cls, bindings: Iterable[Bindings]) -&gt; Bindings:
+        &#34;&#34;&#34;Merge a bindings. Subsequence bound keys override initial keys.
 
-    def allow_forward(self, key: str) -&gt; bool:
-        binding = self.keys.get(key, None)
-        if binding is None:
-            return True
-        return binding.allow_forward
+        Args:
+            bindings (Iterable[Bindings]): A number of bindings.
 
-
-class BindingStack:
-    &#34;&#34;&#34;Manage a stack of bindings.&#34;&#34;&#34;
-
-    def __init__(self, *bindings: Bindings) -&gt; None:
-        self._stack: list[Bindings] = list(bindings)
-
-    def push(self, bindings: Bindings) -&gt; None:
-        self._stack.append(bindings)
-
-    def pop(self) -&gt; Bindings:
-        return self._stack.pop()
-
-    def get_key(self, key: str) -&gt; Binding:
-        for bindings in reversed(self._stack):
-            binding = bindings.keys.get(key, None)
-            if binding is not None:
-                return binding
-        raise NoBinding(f&#34;No binding for {key}&#34;) from None</code></pre>
-</details>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
-</section>
-<section>
-<h2 class="section-title" id="header-classes">Classes</h2>
-<dl>
-<dt id="textual.binding.Binding"><code class="flex name class">
-<span>class <span class="ident">Binding</span></span>
-<span>(</span><span>key: str, action: str, description: str, show: bool = False, key_display: str | None = None, allow_forward: bool = True)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Binding(key: 'str', action: 'str', description: 'str', show: 'bool' = False, key_display: 'str | None' = None, allow_forward: 'bool' = True)</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Binding:
-    key: str
-    action: str
-    description: str
-    show: bool = False
-    key_display: str | None = None
-    allow_forward: bool = True</code></pre>
-</details>
-<h3>Class variables</h3>
-<dl>
-<dt id="textual.binding.Binding.action"><code class="name">var <span class="ident">action</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.binding.Binding.allow_forward"><code class="name">var <span class="ident">allow_forward</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.binding.Binding.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.binding.Binding.key"><code class="name">var <span class="ident">key</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.binding.Binding.key_display"><code class="name">var <span class="ident">key_display</span> : str | None</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.binding.Binding.show"><code class="name">var <span class="ident">show</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-</dd>
-<dt id="textual.binding.BindingStack"><code class="flex name class">
-<span>class <span class="ident">BindingStack</span></span>
-<span>(</span><span>*bindings: <a title="textual.binding.Bindings" href="#textual.binding.Bindings">Bindings</a>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Manage a stack of bindings.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class BindingStack:
-    &#34;&#34;&#34;Manage a stack of bindings.&#34;&#34;&#34;
-
-    def __init__(self, *bindings: Bindings) -&gt; None:
-        self._stack: list[Bindings] = list(bindings)
-
-    def push(self, bindings: Bindings) -&gt; None:
-        self._stack.append(bindings)
-
-    def pop(self) -&gt; Bindings:
-        return self._stack.pop()
-
-    def get_key(self, key: str) -&gt; Binding:
-        for bindings in reversed(self._stack):
-            binding = bindings.keys.get(key, None)
-            if binding is not None:
-                return binding
-        raise NoBinding(f&#34;No binding for {key}&#34;) from None</code></pre>
-</details>
-<h3>Methods</h3>
-<dl>
-<dt id="textual.binding.BindingStack.get_key"><code class="name flex">
-<span>def <span class="ident">get_key</span></span>(<span>self, key: str) ‑> <a title="textual.binding.Binding" href="#textual.binding.Binding">Binding</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_key(self, key: str) -&gt; Binding:
-    for bindings in reversed(self._stack):
-        binding = bindings.keys.get(key, None)
-        if binding is not None:
-            return binding
-    raise NoBinding(f&#34;No binding for {key}&#34;) from None</code></pre>
-</details>
-</dd>
-<dt id="textual.binding.BindingStack.pop"><code class="name flex">
-<span>def <span class="ident">pop</span></span>(<span>self) ‑> <a title="textual.binding.Bindings" href="#textual.binding.Bindings">Bindings</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def pop(self) -&gt; Bindings:
-    return self._stack.pop()</code></pre>
-</details>
-</dd>
-<dt id="textual.binding.BindingStack.push"><code class="name flex">
-<span>def <span class="ident">push</span></span>(<span>self, bindings: <a title="textual.binding.Bindings" href="#textual.binding.Bindings">Bindings</a>) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def push(self, bindings: Bindings) -&gt; None:
-    self._stack.append(bindings)</code></pre>
-</details>
-</dd>
-</dl>
-</dd>
-<dt id="textual.binding.Bindings"><code class="flex name class">
-<span>class <span class="ident">Bindings</span></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Manage a set of bindings.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class Bindings:
-    &#34;&#34;&#34;Manage a set of bindings.&#34;&#34;&#34;
-
-    def __init__(self) -&gt; None:
-        self.keys: dict[str, Binding] = {}
+        Returns:
+            Bindings: New bindings.
+        &#34;&#34;&#34;
+        keys: dict[str, Binding] = {}
+        for _bindings in bindings:
+            keys.update(_bindings.keys)
+        return Bindings(keys.values())
 
     @property
     def shown_keys(self) -&gt; list[Binding]:
@@ -291,6 +138,205 @@ class BindingStack:
             return True
         return binding.allow_forward</code></pre>
 </details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="textual.binding.Binding"><code class="flex name class">
+<span>class <span class="ident">Binding</span></span>
+<span>(</span><span>key: str, action: str, description: str, show: bool = True, key_display: str | None = None, allow_forward: bool = True)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Binding(key: 'str', action: 'str', description: 'str', show: 'bool' = True, key_display: 'str | None' = None, allow_forward: 'bool' = True)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Binding:
+    key: str
+    action: str
+    description: str
+    show: bool = True
+    key_display: str | None = None
+    allow_forward: bool = True</code></pre>
+</details>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.binding.Binding.action"><code class="name">var <span class="ident">action</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.binding.Binding.allow_forward"><code class="name">var <span class="ident">allow_forward</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.binding.Binding.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.binding.Binding.key"><code class="name">var <span class="ident">key</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.binding.Binding.key_display"><code class="name">var <span class="ident">key_display</span> : str | None</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.binding.Binding.show"><code class="name">var <span class="ident">show</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="textual.binding.BindingError"><code class="flex name class">
+<span>class <span class="ident">BindingError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A binding related error.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class BindingError(Exception):
+    &#34;&#34;&#34;A binding related error.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="textual.binding.Bindings"><code class="flex name class">
+<span>class <span class="ident">Bindings</span></span>
+<span>(</span><span>bindings: Iterable[BindingType] | None = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Manage a set of bindings.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Bindings:
+    &#34;&#34;&#34;Manage a set of bindings.&#34;&#34;&#34;
+
+    def __init__(self, bindings: Iterable[BindingType] | None = None) -&gt; None:
+        def make_bindings(bindings: Iterable[BindingType]) -&gt; Iterable[Binding]:
+            for binding in bindings:
+                if isinstance(binding, Binding):
+                    yield binding
+                else:
+                    if len(binding) != 3:
+                        raise BindingError(
+                            f&#34;BINDINGS must contain a tuple of three strings, not {binding!r}&#34;
+                        )
+                    yield Binding(*binding)
+
+        self.keys: MutableMapping[str, Binding] = (
+            {binding.key: binding for binding in make_bindings(bindings)}
+            if bindings
+            else {}
+        )
+
+    def __rich_repr__(self) -&gt; rich.repr.Result:
+        yield self.keys
+
+    @classmethod
+    def merge(cls, bindings: Iterable[Bindings]) -&gt; Bindings:
+        &#34;&#34;&#34;Merge a bindings. Subsequence bound keys override initial keys.
+
+        Args:
+            bindings (Iterable[Bindings]): A number of bindings.
+
+        Returns:
+            Bindings: New bindings.
+        &#34;&#34;&#34;
+        keys: dict[str, Binding] = {}
+        for _bindings in bindings:
+            keys.update(_bindings.keys)
+        return Bindings(keys.values())
+
+    @property
+    def shown_keys(self) -&gt; list[Binding]:
+        keys = [binding for binding in self.keys.values() if binding.show]
+        return keys
+
+    def bind(
+        self,
+        keys: str,
+        action: str,
+        description: str = &#34;&#34;,
+        show: bool = True,
+        key_display: str | None = None,
+        allow_forward: bool = True,
+    ) -&gt; None:
+        all_keys = [key.strip() for key in keys.split(&#34;,&#34;)]
+        for key in all_keys:
+            self.keys[key] = Binding(
+                key,
+                action,
+                description,
+                show=show,
+                key_display=key_display,
+                allow_forward=allow_forward,
+            )
+
+    def get_key(self, key: str) -&gt; Binding:
+        try:
+            return self.keys[key]
+        except KeyError:
+            raise NoBinding(f&#34;No binding for {key}&#34;) from None
+
+    def allow_forward(self, key: str) -&gt; bool:
+        binding = self.keys.get(key, None)
+        if binding is None:
+            return True
+        return binding.allow_forward</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="textual.binding.Bindings.merge"><code class="name flex">
+<span>def <span class="ident">merge</span></span>(<span>bindings: Iterable[<a title="textual.binding.Bindings" href="#textual.binding.Bindings">Bindings</a>]) ‑> <a title="textual.binding.Bindings" href="#textual.binding.Bindings">Bindings</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Merge a bindings. Subsequence bound keys override initial keys.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>bindings</code></strong> :&ensp;<code>Iterable[<a title="textual.binding.Bindings" href="#textual.binding.Bindings">Bindings</a>]</code></dt>
+<dd>A number of bindings.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.binding.Bindings" href="#textual.binding.Bindings">Bindings</a></code></dt>
+<dd>New bindings.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def merge(cls, bindings: Iterable[Bindings]) -&gt; Bindings:
+    &#34;&#34;&#34;Merge a bindings. Subsequence bound keys override initial keys.
+
+    Args:
+        bindings (Iterable[Bindings]): A number of bindings.
+
+    Returns:
+        Bindings: New bindings.
+    &#34;&#34;&#34;
+    keys: dict[str, Binding] = {}
+    for _bindings in bindings:
+        keys.update(_bindings.keys)
+    return Bindings(keys.values())</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="textual.binding.Bindings.shown_keys"><code class="name">var <span class="ident">shown_keys</span> : list[<a title="textual.binding.Binding" href="#textual.binding.Binding">Binding</a>]</code></dt>
@@ -466,12 +512,7 @@ setTimeout(() => input.focus(), 100);
 </ul>
 </li>
 <li>
-<h4><code><a title="textual.binding.BindingStack" href="#textual.binding.BindingStack">BindingStack</a></code></h4>
-<ul class="">
-<li><code><a title="textual.binding.BindingStack.get_key" href="#textual.binding.BindingStack.get_key">get_key</a></code></li>
-<li><code><a title="textual.binding.BindingStack.pop" href="#textual.binding.BindingStack.pop">pop</a></code></li>
-<li><code><a title="textual.binding.BindingStack.push" href="#textual.binding.BindingStack.push">push</a></code></li>
-</ul>
+<h4><code><a title="textual.binding.BindingError" href="#textual.binding.BindingError">BindingError</a></code></h4>
 </li>
 <li>
 <h4><code><a title="textual.binding.Bindings" href="#textual.binding.Bindings">Bindings</a></code></h4>
@@ -479,6 +520,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.binding.Bindings.allow_forward" href="#textual.binding.Bindings.allow_forward">allow_forward</a></code></li>
 <li><code><a title="textual.binding.Bindings.bind" href="#textual.binding.Bindings.bind">bind</a></code></li>
 <li><code><a title="textual.binding.Bindings.get_key" href="#textual.binding.Bindings.get_key">get_key</a></code></li>
+<li><code><a title="textual.binding.Bindings.merge" href="#textual.binding.Bindings.merge">merge</a></code></li>
 <li><code><a title="textual.binding.Bindings.shown_keys" href="#textual.binding.Bindings.shown_keys">shown_keys</a></code></li>
 </ul>
 </li>
