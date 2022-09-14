@@ -8392,6 +8392,11 @@ INDEX=[
 "doc":"The color in CSS hex form, with 6 digits for RGB, and 8 digits for RGBA. Returns: str: A CSS hex-style color, e.g. \" 46b3de\" or \" 3342457f\""
 },
 {
+"ref":"textual.color.Color.hex6",
+"url":23,
+"doc":"The color in CSS hex form, with 6 digits for RGB. Alpha is ignored. Returns: str: A CSS hex-style color, e.g. \" 46b3de\""
+},
+{
 "ref":"textual.color.Color.css",
 "url":23,
 "doc":"The color in CSS rgb or rgba form. Returns: str: A CSS style color, e.g. \"rgb(10,20,30)\" or \"rgb(50,70,80,0.5)\""
@@ -8405,7 +8410,7 @@ INDEX=[
 {
 "ref":"textual.color.Color.blend",
 "url":23,
-"doc":"Generate a new color between two colors. Args: destination (Color): Another color. factor (float): A blend factor, 0 -> 1 Returns: Color: A new color.",
+"doc":"Generate a new color between two colors. Args: destination (Color): Another color. factor (float): A blend factor, 0 -> 1. alpha (float | None): New alpha for result. Defaults to 1. Returns: Color: A new color.",
 "func":1
 },
 {
@@ -8417,13 +8422,13 @@ INDEX=[
 {
 "ref":"textual.color.Color.darken",
 "url":23,
-"doc":"Darken the color by a given amount. Args: amount (float): Value between 0-1 to reduce luminance by. Returns: Color: New color.",
+"doc":"Darken the color by a given amount. Args: amount (float): Value between 0-1 to reduce luminance by. alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None. Returns: Color: New color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.lighten",
 "url":23,
-"doc":"Lighten the color by a given amount. Args: amount (float): Value between 0-1 to increase luminance by. Returns: Color: New color.",
+"doc":"Lighten the color by a given amount. Args: amount (float): Value between 0-1 to increase luminance by. alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None. Returns: Color: New color.",
 "func":1
 },
 {
@@ -9550,6 +9555,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.css.styles.RulesMap.auto_color",
+"url":46,
+"doc":""
+},
+{
 "ref":"textual.css.styles.RulesMap.color",
 "url":46,
 "doc":""
@@ -9868,6 +9878,11 @@ INDEX=[
 "ref":"textual.css.styles.StylesBase.layout",
 "url":46,
 "doc":"Descriptor for getting and setting layout."
+},
+{
+"ref":"textual.css.styles.StylesBase.auto_color",
+"url":46,
+"doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.StylesBase.color",
@@ -10372,6 +10387,11 @@ INDEX=[
 "doc":"Descriptor for getting and setting layout."
 },
 {
+"ref":"textual.css.styles.Styles.auto_color",
+"url":46,
+"doc":"A property that requires a True or False value."
+},
+{
 "ref":"textual.css.styles.Styles.color",
 "url":46,
 "doc":"Descriptor for getting and setting color properties."
@@ -10750,6 +10770,11 @@ INDEX=[
 "ref":"textual.css.styles.RenderStyles.layout",
 "url":46,
 "doc":"Descriptor for getting and setting layout."
+},
+{
+"ref":"textual.css.styles.RenderStyles.auto_color",
+"url":46,
+"doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.RenderStyles.color",

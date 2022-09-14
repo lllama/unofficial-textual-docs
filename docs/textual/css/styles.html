@@ -44,6 +44,7 @@ from ..color import Color
 from ..geometry import Offset, Spacing
 from ._style_properties import (
     AlignProperty,
+    BooleanProperty,
     BorderProperty,
     BoxProperty,
     ColorProperty,
@@ -111,6 +112,7 @@ class RulesMap(TypedDict, total=False):
     visibility: Visibility
     layout: &#34;Layout&#34;
 
+    auto_color: bool
     color: Color
     background: Color
     text_style: Style
@@ -211,6 +213,7 @@ class StylesBase(ABC):
         &#34;min_height&#34;,
         &#34;max_width&#34;,
         &#34;max_height&#34;,
+        &#34;auto_color&#34;,
         &#34;color&#34;,
         &#34;background&#34;,
         &#34;opacity&#34;,
@@ -230,6 +233,7 @@ class StylesBase(ABC):
     visibility = StringEnumProperty(VALID_VISIBILITY, &#34;visible&#34;)
     layout = LayoutProperty()
 
+    auto_color = BooleanProperty(default=False)
     color = ColorProperty(Color(255, 255, 255))
     background = ColorProperty(Color(0, 0, 0, 0), background=True)
     text_style = StyleFlagsProperty()
@@ -1227,6 +1231,7 @@ def rich_style(self) -&gt; Style:
 <li><code><a title="textual.css.styles.StylesBase.align_size" href="#textual.css.styles.StylesBase.align_size">align_size</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_color" href="#textual.css.styles.StylesBase.auto_color">auto_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
@@ -1313,6 +1318,7 @@ def rich_style(self) -&gt; Style:
     visibility: Visibility
     layout: &#34;Layout&#34;
 
+    auto_color: bool
     color: Color
     background: Color
     text_style: Style
@@ -1399,6 +1405,10 @@ def rich_style(self) -&gt; Style:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.styles.RulesMap.align_vertical"><code class="name">var <span class="ident">align_vertical</span> : AlignVertical</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.auto_color"><code class="name">var <span class="ident">auto_color</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2288,6 +2298,7 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
 <li><code><a title="textual.css.styles.StylesBase.align_size" href="#textual.css.styles.StylesBase.align_size">align_size</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_color" href="#textual.css.styles.StylesBase.auto_color">auto_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
@@ -2374,6 +2385,7 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
         &#34;min_height&#34;,
         &#34;max_width&#34;,
         &#34;max_height&#34;,
+        &#34;auto_color&#34;,
         &#34;color&#34;,
         &#34;background&#34;,
         &#34;opacity&#34;,
@@ -2393,6 +2405,7 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
     visibility = StringEnumProperty(VALID_VISIBILITY, &#34;visible&#34;)
     layout = LayoutProperty()
 
+    auto_color = BooleanProperty(default=False)
     color = ColorProperty(Color(255, 255, 255))
     background = ColorProperty(Color(0, 0, 0, 0), background=True)
     text_style = StyleFlagsProperty()
@@ -2831,6 +2844,19 @@ value belongs in the set of valid values.</p></div>
         str: The string property value
     &#34;&#34;&#34;
     return obj.get_rule(self.name, self._default)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.auto_color"><code class="name">var <span class="ident">auto_color</span> : PropertyGetType</code></dt>
+<dd>
+<div class="desc"><p>A property that requires a True or False value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.auto_dimensions"><code class="name">var <span class="ident">auto_dimensions</span> : bool</code></dt>
@@ -4598,6 +4624,7 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.css.styles.RulesMap.align_horizontal" href="#textual.css.styles.RulesMap.align_horizontal">align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.align_vertical" href="#textual.css.styles.RulesMap.align_vertical">align_vertical</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.auto_color" href="#textual.css.styles.RulesMap.auto_color">auto_color</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.background" href="#textual.css.styles.RulesMap.background">background</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.border_bottom" href="#textual.css.styles.RulesMap.border_bottom">border_bottom</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.border_left" href="#textual.css.styles.RulesMap.border_left">border_left</a></code></li>
@@ -4677,6 +4704,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.align_size" href="#textual.css.styles.StylesBase.align_size">align_size</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_color" href="#textual.css.styles.StylesBase.auto_color">auto_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>

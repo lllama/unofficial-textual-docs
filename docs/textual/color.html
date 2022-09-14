@@ -282,6 +282,17 @@ class Color(NamedTuple):
         )
 
     @property
+    def hex6(self) -&gt; str:
+        &#34;&#34;&#34;The color in CSS hex form, with 6 digits for RGB. Alpha is ignored.
+
+        Returns:
+            str: A CSS hex-style color, e.g. &#34;#46b3de&#34;
+
+        &#34;&#34;&#34;
+        r, g, b, a = self.clamped
+        return f&#34;#{r:02X}{g:02X}{b:02X}&#34;
+
+    @property
     def css(self) -&gt; str:
         &#34;&#34;&#34;The color in CSS rgb or rgba form.
 
@@ -311,12 +322,13 @@ class Color(NamedTuple):
         r, g, b, _ = self
         return Color(r, g, b, alpha)
 
-    def blend(self, destination: Color, factor: float) -&gt; Color:
+    def blend(self, destination: Color, factor: float, alpha: float = 1) -&gt; Color:
         &#34;&#34;&#34;Generate a new color between two colors.
 
         Args:
             destination (Color): Another color.
-            factor (float): A blend factor, 0 -&gt; 1
+            factor (float): A blend factor, 0 -&gt; 1.
+            alpha (float | None): New alpha for result. Defaults to 1.
 
         Returns:
             Color: A new color.
@@ -331,6 +343,7 @@ class Color(NamedTuple):
             int(r1 + (r2 - r1) * factor),
             int(g1 + (g2 - g1) * factor),
             int(b1 + (b2 - b1) * factor),
+            alpha,
         )
 
     def __add__(self, other: object) -&gt; Color:
@@ -428,29 +441,31 @@ class Color(NamedTuple):
         return color
 
     @lru_cache(maxsize=1024)
-    def darken(self, amount: float) -&gt; Color:
+    def darken(self, amount: float, alpha: float | None = None) -&gt; Color:
         &#34;&#34;&#34;Darken the color by a given amount.
 
         Args:
             amount (float): Value between 0-1 to reduce luminance by.
+            alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None.
 
         Returns:
             Color: New color.
         &#34;&#34;&#34;
         l, a, b = rgb_to_lab(self)
         l -= amount * 100
-        return lab_to_rgb(Lab(l, a, b)).clamped
+        return lab_to_rgb(Lab(l, a, b), self.a if alpha is None else alpha).clamped
 
-    def lighten(self, amount: float) -&gt; Color:
+    def lighten(self, amount: float, alpha: float | None = None) -&gt; Color:
         &#34;&#34;&#34;Lighten the color by a given amount.
 
         Args:
             amount (float): Value between 0-1 to increase luminance by.
+            alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None.
 
         Returns:
             Color: New color.
         &#34;&#34;&#34;
-        return self.darken(-amount)
+        return self.darken(-amount, alpha)
 
     @lru_cache(maxsize=1024)
     def get_contrast_text(self, alpha=0.95) -&gt; Color:
@@ -540,7 +555,7 @@ def rgb_to_lab(rgb: Color) -&gt; Lab:
     return Lab(116 * y - 16, 500 * (x - y), 200 * (y - z))
 
 
-def lab_to_rgb(lab: Lab) -&gt; Color:
+def lab_to_rgb(lab: Lab, alpha: float = 1.0) -&gt; Color:
     &#34;&#34;&#34;Convert a CIE-L*ab color to RGB.
 
     Uses the standard RGB color space with a D65/2⁰ standard illuminant.
@@ -565,7 +580,7 @@ def lab_to_rgb(lab: Lab) -&gt; Color:
     g = 1.055 * pow(g, 1 / 2.4) - 0.055 if g &gt; 0.0031308 else 12.92 * g
     b = 1.055 * pow(b, 1 / 2.4) - 0.055 if b &gt; 0.0031308 else 12.92 * b
 
-    return Color(int(r * 255), int(g * 255), int(b * 255))
+    return Color(int(r * 255), int(g * 255), int(b * 255), alpha)
 
 
 if __name__ == &#34;__main__&#34;:
@@ -600,7 +615,7 @@ if __name__ == &#34;__main__&#34;:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="textual.color.lab_to_rgb"><code class="name flex">
-<span>def <span class="ident">lab_to_rgb</span></span>(<span>lab: <a title="textual.color.Lab" href="#textual.color.Lab">Lab</a>) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+<span>def <span class="ident">lab_to_rgb</span></span>(<span>lab: <a title="textual.color.Lab" href="#textual.color.Lab">Lab</a>, alpha: float = 1.0) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Convert a CIE-L*ab color to RGB.</p>
@@ -611,7 +626,7 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def lab_to_rgb(lab: Lab) -&gt; Color:
+<pre><code class="python">def lab_to_rgb(lab: Lab, alpha: float = 1.0) -&gt; Color:
     &#34;&#34;&#34;Convert a CIE-L*ab color to RGB.
 
     Uses the standard RGB color space with a D65/2⁰ standard illuminant.
@@ -636,7 +651,7 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
     g = 1.055 * pow(g, 1 / 2.4) - 0.055 if g &gt; 0.0031308 else 12.92 * g
     b = 1.055 * pow(b, 1 / 2.4) - 0.055 if b &gt; 0.0031308 else 12.92 * b
 
-    return Color(int(r * 255), int(g * 255), int(b * 255))</code></pre>
+    return Color(int(r * 255), int(g * 255), int(b * 255), alpha)</code></pre>
 </details>
 </dd>
 <dt id="textual.color.rgb_to_lab"><code class="name flex">
@@ -840,6 +855,17 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         )
 
     @property
+    def hex6(self) -&gt; str:
+        &#34;&#34;&#34;The color in CSS hex form, with 6 digits for RGB. Alpha is ignored.
+
+        Returns:
+            str: A CSS hex-style color, e.g. &#34;#46b3de&#34;
+
+        &#34;&#34;&#34;
+        r, g, b, a = self.clamped
+        return f&#34;#{r:02X}{g:02X}{b:02X}&#34;
+
+    @property
     def css(self) -&gt; str:
         &#34;&#34;&#34;The color in CSS rgb or rgba form.
 
@@ -869,12 +895,13 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         r, g, b, _ = self
         return Color(r, g, b, alpha)
 
-    def blend(self, destination: Color, factor: float) -&gt; Color:
+    def blend(self, destination: Color, factor: float, alpha: float = 1) -&gt; Color:
         &#34;&#34;&#34;Generate a new color between two colors.
 
         Args:
             destination (Color): Another color.
-            factor (float): A blend factor, 0 -&gt; 1
+            factor (float): A blend factor, 0 -&gt; 1.
+            alpha (float | None): New alpha for result. Defaults to 1.
 
         Returns:
             Color: A new color.
@@ -889,6 +916,7 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
             int(r1 + (r2 - r1) * factor),
             int(g1 + (g2 - g1) * factor),
             int(b1 + (b2 - b1) * factor),
+            alpha,
         )
 
     def __add__(self, other: object) -&gt; Color:
@@ -986,29 +1014,31 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         return color
 
     @lru_cache(maxsize=1024)
-    def darken(self, amount: float) -&gt; Color:
+    def darken(self, amount: float, alpha: float | None = None) -&gt; Color:
         &#34;&#34;&#34;Darken the color by a given amount.
 
         Args:
             amount (float): Value between 0-1 to reduce luminance by.
+            alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None.
 
         Returns:
             Color: New color.
         &#34;&#34;&#34;
         l, a, b = rgb_to_lab(self)
         l -= amount * 100
-        return lab_to_rgb(Lab(l, a, b)).clamped
+        return lab_to_rgb(Lab(l, a, b), self.a if alpha is None else alpha).clamped
 
-    def lighten(self, amount: float) -&gt; Color:
+    def lighten(self, amount: float, alpha: float | None = None) -&gt; Color:
         &#34;&#34;&#34;Lighten the color by a given amount.
 
         Args:
             amount (float): Value between 0-1 to increase luminance by.
+            alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None.
 
         Returns:
             Color: New color.
         &#34;&#34;&#34;
-        return self.darken(-amount)
+        return self.darken(-amount, alpha)
 
     @lru_cache(maxsize=1024)
     def get_contrast_text(self, alpha=0.95) -&gt; Color:
@@ -1340,6 +1370,30 @@ def hex(self) -&gt; str:
     )</code></pre>
 </details>
 </dd>
+<dt id="textual.color.Color.hex6"><code class="name">var <span class="ident">hex6</span> : str</code></dt>
+<dd>
+<div class="desc"><p>The color in CSS hex form, with 6 digits for RGB. Alpha is ignored.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>A CSS hex-style color, e.g. "#46b3de"</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def hex6(self) -&gt; str:
+    &#34;&#34;&#34;The color in CSS hex form, with 6 digits for RGB. Alpha is ignored.
+
+    Returns:
+        str: A CSS hex-style color, e.g. &#34;#46b3de&#34;
+
+    &#34;&#34;&#34;
+    r, g, b, a = self.clamped
+    return f&#34;#{r:02X}{g:02X}{b:02X}&#34;</code></pre>
+</details>
+</dd>
 <dt id="textual.color.Color.hls"><code class="name">var <span class="ident">hls</span> : <a title="textual.color.HLS" href="#textual.color.HLS">HLS</a></code></dt>
 <dd>
 <div class="desc"><p>Get the color as HLS.</p>
@@ -1463,7 +1517,7 @@ def rich_color(self) -&gt; RichColor:
 <h3>Methods</h3>
 <dl>
 <dt id="textual.color.Color.blend"><code class="name flex">
-<span>def <span class="ident">blend</span></span>(<span>self, destination: <a title="textual.color.Color" href="#textual.color.Color">Color</a>, factor: float) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+<span>def <span class="ident">blend</span></span>(<span>self, destination: <a title="textual.color.Color" href="#textual.color.Color">Color</a>, factor: float, alpha: float = 1) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate a new color between two colors.</p>
@@ -1472,8 +1526,9 @@ def rich_color(self) -&gt; RichColor:
 <dt><strong><code>destination</code></strong> :&ensp;<code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
 <dd>Another color.</dd>
 <dt><strong><code>factor</code></strong> :&ensp;<code>float</code></dt>
-<dd>A blend factor, 0 -&gt; 1</dd>
+<dd>A blend factor, 0 -&gt; 1.</dd>
 </dl>
+<p>alpha (float | None): New alpha for result. Defaults to 1.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
@@ -1483,12 +1538,13 @@ def rich_color(self) -&gt; RichColor:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def blend(self, destination: Color, factor: float) -&gt; Color:
+<pre><code class="python">def blend(self, destination: Color, factor: float, alpha: float = 1) -&gt; Color:
     &#34;&#34;&#34;Generate a new color between two colors.
 
     Args:
         destination (Color): Another color.
-        factor (float): A blend factor, 0 -&gt; 1
+        factor (float): A blend factor, 0 -&gt; 1.
+        alpha (float | None): New alpha for result. Defaults to 1.
 
     Returns:
         Color: A new color.
@@ -1503,11 +1559,12 @@ def rich_color(self) -&gt; RichColor:
         int(r1 + (r2 - r1) * factor),
         int(g1 + (g2 - g1) * factor),
         int(b1 + (b2 - b1) * factor),
+        alpha,
     )</code></pre>
 </details>
 </dd>
 <dt id="textual.color.Color.darken"><code class="name flex">
-<span>def <span class="ident">darken</span></span>(<span>self, amount: float) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+<span>def <span class="ident">darken</span></span>(<span>self, amount: float, alpha: float | None = None) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Darken the color by a given amount.</p>
@@ -1516,6 +1573,7 @@ def rich_color(self) -&gt; RichColor:
 <dt><strong><code>amount</code></strong> :&ensp;<code>float</code></dt>
 <dd>Value between 0-1 to reduce luminance by.</dd>
 </dl>
+<p>alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
@@ -1526,18 +1584,19 @@ def rich_color(self) -&gt; RichColor:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@lru_cache(maxsize=1024)
-def darken(self, amount: float) -&gt; Color:
+def darken(self, amount: float, alpha: float | None = None) -&gt; Color:
     &#34;&#34;&#34;Darken the color by a given amount.
 
     Args:
         amount (float): Value between 0-1 to reduce luminance by.
+        alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None.
 
     Returns:
         Color: New color.
     &#34;&#34;&#34;
     l, a, b = rgb_to_lab(self)
     l -= amount * 100
-    return lab_to_rgb(Lab(l, a, b)).clamped</code></pre>
+    return lab_to_rgb(Lab(l, a, b), self.a if alpha is None else alpha).clamped</code></pre>
 </details>
 </dd>
 <dt id="textual.color.Color.get_contrast_text"><code class="name flex">
@@ -1580,7 +1639,7 @@ def get_contrast_text(self, alpha=0.95) -&gt; Color:
 </details>
 </dd>
 <dt id="textual.color.Color.lighten"><code class="name flex">
-<span>def <span class="ident">lighten</span></span>(<span>self, amount: float) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+<span>def <span class="ident">lighten</span></span>(<span>self, amount: float, alpha: float | None = None) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Lighten the color by a given amount.</p>
@@ -1589,6 +1648,7 @@ def get_contrast_text(self, alpha=0.95) -&gt; Color:
 <dt><strong><code>amount</code></strong> :&ensp;<code>float</code></dt>
 <dd>Value between 0-1 to increase luminance by.</dd>
 </dl>
+<p>alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
@@ -1598,16 +1658,17 @@ def get_contrast_text(self, alpha=0.95) -&gt; Color:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def lighten(self, amount: float) -&gt; Color:
+<pre><code class="python">def lighten(self, amount: float, alpha: float | None = None) -&gt; Color:
     &#34;&#34;&#34;Lighten the color by a given amount.
 
     Args:
         amount (float): Value between 0-1 to increase luminance by.
+        alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None.
 
     Returns:
         Color: New color.
     &#34;&#34;&#34;
-    return self.darken(-amount)</code></pre>
+    return self.darken(-amount, alpha)</code></pre>
 </details>
 </dd>
 <dt id="textual.color.Color.with_alpha"><code class="name flex">
@@ -1956,6 +2017,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.color.Color.g" href="#textual.color.Color.g">g</a></code></li>
 <li><code><a title="textual.color.Color.get_contrast_text" href="#textual.color.Color.get_contrast_text">get_contrast_text</a></code></li>
 <li><code><a title="textual.color.Color.hex" href="#textual.color.Color.hex">hex</a></code></li>
+<li><code><a title="textual.color.Color.hex6" href="#textual.color.Color.hex6">hex6</a></code></li>
 <li><code><a title="textual.color.Color.hls" href="#textual.color.Color.hls">hls</a></code></li>
 <li><code><a title="textual.color.Color.is_transparent" href="#textual.color.Color.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.color.Color.lighten" href="#textual.color.Color.lighten">lighten</a></code></li>
