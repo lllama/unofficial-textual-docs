@@ -329,9 +329,7 @@ def substitute_references(
                         for _token in reference_tokens:
                             yield _token.with_reference(
                                 ReferencedBy(
-                                    name=ref_name,
-                                    location=ref_location,
-                                    length=ref_length,
+                                    ref_name, ref_location, ref_length, token.code
                                 )
                             )
                     else:
@@ -346,13 +344,10 @@ def substitute_references(
                 variable_tokens = variables[variable_name]
                 ref_location = token.location
                 ref_length = len(token.value)
-                for token in variable_tokens:
-                    yield token.with_reference(
-                        ReferencedBy(
-                            name=variable_name,
-                            location=ref_location,
-                            length=ref_length,
-                        )
+                ref_code = token.code
+                for _token in variable_tokens:
+                    yield _token.with_reference(
+                        ReferencedBy(variable_name, ref_location, ref_length, ref_code)
                     )
             else:
                 _unresolved(variable_name, variables.keys(), token)
@@ -364,6 +359,7 @@ def parse(
     css: str,
     path: str | PurePath,
     variables: dict[str, str] | None = None,
+    variable_tokens: dict[str, list[Token]] | None = None,
     is_default_rules: bool = False,
     tie_breaker: int = 0,
 ) -&gt; Iterable[RuleSet]:
@@ -377,7 +373,11 @@ def parse(
         is_default_rules (bool): True if the rules we&#39;re extracting are
             default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
     &#34;&#34;&#34;
-    variable_tokens = tokenize_values(variables or {})
+
+    reference_tokens = tokenize_values(variables) if variables is not None else {}
+    if variable_tokens:
+        reference_tokens.update(variable_tokens)
+
     tokens = iter(substitute_references(tokenize(css, path), variable_tokens))
     while True:
         token = next(tokens, None)
@@ -423,7 +423,7 @@ if __name__ == &#34;__main__&#34;:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="textual.css.parse.parse"><code class="name flex">
-<span>def <span class="ident">parse</span></span>(<span>css: str, path: str | PurePath, variables: dict[str, str] | None = None, is_default_rules: bool = False, tie_breaker: int = 0) ‑> Iterable[RuleSet]</span>
+<span>def <span class="ident">parse</span></span>(<span>css: str, path: str | PurePath, variables: dict[str, str] | None = None, variable_tokens: dict[str, list[Token]] | None = None, is_default_rules: bool = False, tie_breaker: int = 0) ‑> Iterable[RuleSet]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Parse CSS by tokenizing it, performing variable substitution,
@@ -448,6 +448,7 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
     css: str,
     path: str | PurePath,
     variables: dict[str, str] | None = None,
+    variable_tokens: dict[str, list[Token]] | None = None,
     is_default_rules: bool = False,
     tie_breaker: int = 0,
 ) -&gt; Iterable[RuleSet]:
@@ -461,7 +462,11 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
         is_default_rules (bool): True if the rules we&#39;re extracting are
             default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
     &#34;&#34;&#34;
-    variable_tokens = tokenize_values(variables or {})
+
+    reference_tokens = tokenize_values(variables) if variables is not None else {}
+    if variable_tokens:
+        reference_tokens.update(variable_tokens)
+
     tokens = iter(substitute_references(tokenize(css, path), variable_tokens))
     while True:
         token = next(tokens, None)
@@ -781,9 +786,7 @@ attribute populated with information about where the tokens are being substitute
                         for _token in reference_tokens:
                             yield _token.with_reference(
                                 ReferencedBy(
-                                    name=ref_name,
-                                    location=ref_location,
-                                    length=ref_length,
+                                    ref_name, ref_location, ref_length, token.code
                                 )
                             )
                     else:
@@ -798,13 +801,10 @@ attribute populated with information about where the tokens are being substitute
                 variable_tokens = variables[variable_name]
                 ref_location = token.location
                 ref_length = len(token.value)
-                for token in variable_tokens:
-                    yield token.with_reference(
-                        ReferencedBy(
-                            name=variable_name,
-                            location=ref_location,
-                            length=ref_length,
-                        )
+                ref_code = token.code
+                for _token in variable_tokens:
+                    yield _token.with_reference(
+                        ReferencedBy(variable_name, ref_location, ref_length, ref_code)
                     )
             else:
                 _unresolved(variable_name, variables.keys(), token)

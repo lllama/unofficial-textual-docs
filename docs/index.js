@@ -8715,7 +8715,7 @@ INDEX=[
 {
 "ref":"textual.css.tokenizer.ReferencedBy",
 "url":37,
-"doc":"ReferencedBy(name, location, length)"
+"doc":"ReferencedBy(name, location, length, code)"
 },
 {
 "ref":"textual.css.tokenizer.ReferencedBy.name",
@@ -8731,6 +8731,11 @@ INDEX=[
 "ref":"textual.css.tokenizer.ReferencedBy.length",
 "url":37,
 "doc":"Alias for field number 2"
+},
+{
+"ref":"textual.css.tokenizer.ReferencedBy.code",
+"url":37,
+"doc":"Alias for field number 3"
 },
 {
 "ref":"textual.css.tokenizer.Token",
@@ -9032,12 +9037,6 @@ INDEX=[
 "ref":"textual.css.stylesheet.StylesheetErrors",
 "url":40,
 "doc":""
-},
-{
-"ref":"textual.css.stylesheet.StylesheetErrors.set_variables",
-"url":40,
-"doc":"Pre-populate CSS variables.",
-"func":1
 },
 {
 "ref":"textual.css.stylesheet.CssSource",

@@ -30,7 +30,6 @@
 
 import os
 from collections import defaultdict
-from functools import partial
 from operator import itemgetter
 from pathlib import Path, PurePath
 from typing import Iterable, NamedTuple, cast
@@ -67,14 +66,9 @@ class StylesheetParseError(StylesheetError):
 
 
 class StylesheetErrors:
-    def __init__(
-        self, rules: list[RuleSet], variables: dict[str, str] | None = None
-    ) -&gt; None:
+    def __init__(self, rules: list[RuleSet]) -&gt; None:
         self.rules = rules
         self.variables: dict[str, str] = {}
-        self._css_variables: dict[str, list[Token]] = {}
-        if variables:
-            self.set_variables(variables)
 
     @classmethod
     def _get_snippet(cls, code: str, line_no: int) -&gt; RenderableType:
@@ -88,11 +82,6 @@ class StylesheetErrors:
             highlight_lines={line_no},
         )
         return syntax
-
-    def set_variables(self, variable_map: dict[str, str]) -&gt; None:
-        &#34;&#34;&#34;Pre-populate CSS variables.&#34;&#34;&#34;
-        self.variables.update(variable_map)
-        self._css_variables = tokenize_values(self.variables)
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -133,7 +122,10 @@ class StylesheetErrors:
                 title = Text.assemble(Text(&#34;Error at &#34;, style=&#34;bold red&#34;), path_text)
                 yield &#34;&#34;
                 yield Panel(
-                    self._get_snippet(token.code, line_no),
+                    self._get_snippet(
+                        token.referenced_by.code if token.referenced_by else token.code,
+                        line_no,
+                    ),
                     title=title,
                     title_align=&#34;left&#34;,
                     border_style=&#34;red&#34;,
@@ -166,12 +158,19 @@ class Stylesheet:
     def __init__(self, *, variables: dict[str, str] | None = None) -&gt; None:
         self._rules: list[RuleSet] = []
         self._rules_map: dict[str, list[RuleSet]] | None = None
-        self.variables = variables or {}
+        self._variables = variables or {}
+        self.__variable_tokens: dict[str, list[Token]] | None = None
         self.source: dict[str, CssSource] = {}
         self._require_parse = False
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield list(self.source.keys())
+
+    @property
+    def _variable_tokens(self) -&gt; dict[str, list[Token]]:
+        if self.__variable_tokens is None:
+            self.__variable_tokens = tokenize_values(self._variables)
+        return self.__variable_tokens
 
     @property
     def rules(self) -&gt; list[RuleSet]:
@@ -211,7 +210,7 @@ class Stylesheet:
         Returns:
             Stylesheet: New stylesheet.
         &#34;&#34;&#34;
-        stylesheet = Stylesheet(variables=self.variables.copy())
+        stylesheet = Stylesheet(variables=self._variables.copy())
         stylesheet.source = self.source.copy()
         return stylesheet
 
@@ -221,7 +220,8 @@ class Stylesheet:
         Args:
             variables (dict[str, str]): A mapping of name to variable.
         &#34;&#34;&#34;
-        self.variables = variables
+        self._variables = variables
+        self._variables_tokens = None
 
     def _parse_rules(
         self,
@@ -250,7 +250,7 @@ class Stylesheet:
                 parse(
                     css,
                     path,
-                    variables=self.variables,
+                    variable_tokens=self._variable_tokens,
                     is_default_rules=is_default_rules,
                     tie_breaker=tie_breaker,
                 )
@@ -345,7 +345,7 @@ class Stylesheet:
 
         &#34;&#34;&#34;
         # Do this in a fresh Stylesheet so if there are errors we don&#39;t break self.
-        stylesheet = Stylesheet(variables=self.variables)
+        stylesheet = Stylesheet(variables=self._variables)
         for path, (css, is_defaults, tie_breaker) in self.source.items():
             stylesheet.add_source(
                 css, path, is_default_css=is_defaults, tie_breaker=tie_breaker
@@ -706,12 +706,19 @@ False if it's user CSS (which will override the defaults).</dd>
     def __init__(self, *, variables: dict[str, str] | None = None) -&gt; None:
         self._rules: list[RuleSet] = []
         self._rules_map: dict[str, list[RuleSet]] | None = None
-        self.variables = variables or {}
+        self._variables = variables or {}
+        self.__variable_tokens: dict[str, list[Token]] | None = None
         self.source: dict[str, CssSource] = {}
         self._require_parse = False
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield list(self.source.keys())
+
+    @property
+    def _variable_tokens(self) -&gt; dict[str, list[Token]]:
+        if self.__variable_tokens is None:
+            self.__variable_tokens = tokenize_values(self._variables)
+        return self.__variable_tokens
 
     @property
     def rules(self) -&gt; list[RuleSet]:
@@ -751,7 +758,7 @@ False if it's user CSS (which will override the defaults).</dd>
         Returns:
             Stylesheet: New stylesheet.
         &#34;&#34;&#34;
-        stylesheet = Stylesheet(variables=self.variables.copy())
+        stylesheet = Stylesheet(variables=self._variables.copy())
         stylesheet.source = self.source.copy()
         return stylesheet
 
@@ -761,7 +768,8 @@ False if it's user CSS (which will override the defaults).</dd>
         Args:
             variables (dict[str, str]): A mapping of name to variable.
         &#34;&#34;&#34;
-        self.variables = variables
+        self._variables = variables
+        self._variables_tokens = None
 
     def _parse_rules(
         self,
@@ -790,7 +798,7 @@ False if it's user CSS (which will override the defaults).</dd>
                 parse(
                     css,
                     path,
-                    variables=self.variables,
+                    variable_tokens=self._variable_tokens,
                     is_default_rules=is_default_rules,
                     tie_breaker=tie_breaker,
                 )
@@ -885,7 +893,7 @@ False if it's user CSS (which will override the defaults).</dd>
 
         &#34;&#34;&#34;
         # Do this in a fresh Stylesheet so if there are errors we don&#39;t break self.
-        stylesheet = Stylesheet(variables=self.variables)
+        stylesheet = Stylesheet(variables=self._variables)
         for path, (css, is_defaults, tie_breaker) in self.source.items():
             stylesheet.add_source(
                 css, path, is_default_css=is_defaults, tie_breaker=tie_breaker
@@ -1401,7 +1409,7 @@ rule will be applied.</dd>
     Returns:
         Stylesheet: New stylesheet.
     &#34;&#34;&#34;
-    stylesheet = Stylesheet(variables=self.variables.copy())
+    stylesheet = Stylesheet(variables=self._variables.copy())
     stylesheet.source = self.source.copy()
     return stylesheet</code></pre>
 </details>
@@ -1505,7 +1513,7 @@ rule will be applied.</dd>
 
     &#34;&#34;&#34;
     # Do this in a fresh Stylesheet so if there are errors we don&#39;t break self.
-    stylesheet = Stylesheet(variables=self.variables)
+    stylesheet = Stylesheet(variables=self._variables)
     for path, (css, is_defaults, tie_breaker) in self.source.items():
         stylesheet.add_source(
             css, path, is_default_css=is_defaults, tie_breaker=tie_breaker
@@ -1536,7 +1544,8 @@ rule will be applied.</dd>
     Args:
         variables (dict[str, str]): A mapping of name to variable.
     &#34;&#34;&#34;
-    self.variables = variables</code></pre>
+    self._variables = variables
+    self._variables_tokens = None</code></pre>
 </details>
 </dd>
 <dt id="textual.css.stylesheet.Stylesheet.update"><code class="name flex">
@@ -1614,7 +1623,7 @@ rule will be applied.</dd>
 </dd>
 <dt id="textual.css.stylesheet.StylesheetErrors"><code class="flex name class">
 <span>class <span class="ident">StylesheetErrors</span></span>
-<span>(</span><span>rules: list[RuleSet], variables: dict[str, str] | None = None)</span>
+<span>(</span><span>rules: list[RuleSet])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1623,14 +1632,9 @@ rule will be applied.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class StylesheetErrors:
-    def __init__(
-        self, rules: list[RuleSet], variables: dict[str, str] | None = None
-    ) -&gt; None:
+    def __init__(self, rules: list[RuleSet]) -&gt; None:
         self.rules = rules
         self.variables: dict[str, str] = {}
-        self._css_variables: dict[str, list[Token]] = {}
-        if variables:
-            self.set_variables(variables)
 
     @classmethod
     def _get_snippet(cls, code: str, line_no: int) -&gt; RenderableType:
@@ -1644,11 +1648,6 @@ rule will be applied.</dd>
             highlight_lines={line_no},
         )
         return syntax
-
-    def set_variables(self, variable_map: dict[str, str]) -&gt; None:
-        &#34;&#34;&#34;Pre-populate CSS variables.&#34;&#34;&#34;
-        self.variables.update(variable_map)
-        self._css_variables = tokenize_values(self.variables)
 
     def __rich_console__(
         self, console: Console, options: ConsoleOptions
@@ -1689,7 +1688,10 @@ rule will be applied.</dd>
                 title = Text.assemble(Text(&#34;Error at &#34;, style=&#34;bold red&#34;), path_text)
                 yield &#34;&#34;
                 yield Panel(
-                    self._get_snippet(token.code, line_no),
+                    self._get_snippet(
+                        token.referenced_by.code if token.referenced_by else token.code,
+                        line_no,
+                    ),
                     title=title,
                     title_align=&#34;left&#34;,
                     border_style=&#34;red&#34;,
@@ -1701,24 +1703,6 @@ rule will be applied.</dd>
             f&#34; [b][red]CSS parsing failed:[/] {error_count} error{&#39;s&#39; if error_count != 1 else &#39;&#39;}[/] found in stylesheet&#34;
         )</code></pre>
 </details>
-<h3>Methods</h3>
-<dl>
-<dt id="textual.css.stylesheet.StylesheetErrors.set_variables"><code class="name flex">
-<span>def <span class="ident">set_variables</span></span>(<span>self, variable_map: dict[str, str]) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Pre-populate CSS variables.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_variables(self, variable_map: dict[str, str]) -&gt; None:
-    &#34;&#34;&#34;Pre-populate CSS variables.&#34;&#34;&#34;
-    self.variables.update(variable_map)
-    self._css_variables = tokenize_values(self.variables)</code></pre>
-</details>
-</dd>
-</dl>
 </dd>
 <dt id="textual.css.stylesheet.StylesheetParseError"><code class="flex name class">
 <span>class <span class="ident">StylesheetParseError</span></span>
@@ -1834,9 +1818,6 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="textual.css.stylesheet.StylesheetErrors" href="#textual.css.stylesheet.StylesheetErrors">StylesheetErrors</a></code></h4>
-<ul class="">
-<li><code><a title="textual.css.stylesheet.StylesheetErrors.set_variables" href="#textual.css.stylesheet.StylesheetErrors.set_variables">set_variables</a></code></li>
-</ul>
 </li>
 <li>
 <h4><code><a title="textual.css.stylesheet.StylesheetParseError" href="#textual.css.stylesheet.StylesheetParseError">StylesheetParseError</a></code></h4>
