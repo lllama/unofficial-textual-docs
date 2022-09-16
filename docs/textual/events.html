@@ -144,6 +144,10 @@ class Resize(Event, bubble=False):
         yield &#34;container_size&#34;, self.container_size, self.size
 
 
+class Compose(Event, bubble=False, verbose=True):
+    &#34;&#34;&#34;Sent to a widget to request it to compose and mount children.&#34;&#34;&#34;
+
+
 class Mount(Event, bubble=False, verbose=True):
     &#34;&#34;&#34;Sent when a widget is *mounted* and may receive messages.&#34;&#34;&#34;
 
@@ -771,6 +775,58 @@ class ScreenSuspend(Event, bubble=False):
 </li>
 </ul>
 </dd>
+<dt id="textual.events.Compose"><code class="flex name class">
+<span>class <span class="ident">Compose</span></span>
+<span>(</span><span>sender: MessageTarget)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sent to a widget to request it to compose and mount children.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Compose(Event, bubble=False, verbose=True):
+    &#34;&#34;&#34;Sent to a widget to request it to compose and mount children.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.events.Event" href="#textual.events.Event">Event</a></li>
+<li><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.events.Compose.bubble"><code class="name">var <span class="ident">bubble</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.Compose.namespace"><code class="name">var <span class="ident">namespace</span> : ClassVar[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.Compose.no_dispatch"><code class="name">var <span class="ident">no_dispatch</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.events.Compose.verbose"><code class="name">var <span class="ident">verbose</span> : ClassVar[bool]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
+<ul class="hlist">
+<li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
+<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
+<li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
 <dt id="textual.events.DescendantBlur"><code class="flex name class">
 <span>class <span class="ident">DescendantBlur</span></span>
 <span>(</span><span>sender: MessageTarget)</span>
@@ -974,6 +1030,7 @@ class ScreenSuspend(Event, bubble=False):
 <li><a title="textual.events.Action" href="#textual.events.Action">Action</a></li>
 <li><a title="textual.events.Blur" href="#textual.events.Blur">Blur</a></li>
 <li><a title="textual.events.Callback" href="#textual.events.Callback">Callback</a></li>
+<li><a title="textual.events.Compose" href="#textual.events.Compose">Compose</a></li>
 <li><a title="textual.events.DescendantBlur" href="#textual.events.DescendantBlur">DescendantBlur</a></li>
 <li><a title="textual.events.DescendantFocus" href="#textual.events.DescendantFocus">DescendantFocus</a></li>
 <li><a title="textual.events.Enter" href="#textual.events.Enter">Enter</a></li>
@@ -3192,6 +3249,15 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.Click.namespace" href="#textual.events.Click.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.Click.no_dispatch" href="#textual.events.Click.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.events.Click.verbose" href="#textual.events.Click.verbose">verbose</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="textual.events.Compose" href="#textual.events.Compose">Compose</a></code></h4>
+<ul class="">
+<li><code><a title="textual.events.Compose.bubble" href="#textual.events.Compose.bubble">bubble</a></code></li>
+<li><code><a title="textual.events.Compose.namespace" href="#textual.events.Compose.namespace">namespace</a></code></li>
+<li><code><a title="textual.events.Compose.no_dispatch" href="#textual.events.Compose.no_dispatch">no_dispatch</a></code></li>
+<li><code><a title="textual.events.Compose.verbose" href="#textual.events.Compose.verbose">verbose</a></code></li>
 </ul>
 </li>
 <li>

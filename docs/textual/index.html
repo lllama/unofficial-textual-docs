@@ -39,7 +39,7 @@ __all__ = [&#34;log&#34;, &#34;panic&#34;]
 
 
 from ._context import active_app
-from ._log import LogGroup, LogVerbosity, LogSeverity
+from ._log import LogGroup, LogVerbosity
 
 if TYPE_CHECKING:
     from .app import App
@@ -66,12 +66,10 @@ class Logger:
         log_callable: LogCallable | None,
         group: LogGroup = LogGroup.INFO,
         verbosity: LogVerbosity = LogVerbosity.NORMAL,
-        severity: LogSeverity = LogSeverity.NORMAL,
     ) -&gt; None:
         self._log = log_callable
         self._group = group
         self._verbosity = verbosity
-        self._severity = severity
 
     @property
     def log(self) -&gt; LogCallable:
@@ -86,7 +84,6 @@ class Logger:
     def __rich_repr__(self) -&gt; rich.repr.Result:
         yield self._group, LogGroup.INFO
         yield self._verbosity, LogVerbosity.NORMAL
-        yield self._severity, LogSeverity.NORMAL
 
     def __call__(self, *args: object, **kwargs) -&gt; None:
         caller = inspect.stack()[1]
@@ -94,7 +91,6 @@ class Logger:
             self.log(
                 self._group,
                 self._verbosity,
-                self._severity,
                 *args,
                 _textual_calling_frame=caller,
                 **kwargs,
@@ -114,7 +110,7 @@ class Logger:
             Logger: New logger.
         &#34;&#34;&#34;
         verbosity = LogVerbosity.HIGH if verbose else LogVerbosity.NORMAL
-        return Logger(self._log, self._group, verbosity, LogSeverity.NORMAL)
+        return Logger(self._log, self._group, verbosity)
 
     @property
     def verbose(self) -&gt; Logger:
@@ -122,38 +118,33 @@ class Logger:
         return Logger(self._log, self._group, LogVerbosity.HIGH)
 
     @property
-    def critical(self) -&gt; Logger:
-        &#34;&#34;&#34;A critical logger.&#34;&#34;&#34;
-        return Logger(self._log, self._group, self._verbosity, LogSeverity.CRITICAL)
-
-    @property
     def event(self) -&gt; Logger:
-        &#34;&#34;&#34;An event logger.&#34;&#34;&#34;
+        &#34;&#34;&#34;Logs events.&#34;&#34;&#34;
         return Logger(self._log, LogGroup.EVENT)
 
     @property
     def debug(self) -&gt; Logger:
-        &#34;&#34;&#34;A debug logger.&#34;&#34;&#34;
+        &#34;&#34;&#34;Logs debug messages.&#34;&#34;&#34;
         return Logger(self._log, LogGroup.DEBUG)
 
     @property
     def info(self) -&gt; Logger:
-        &#34;&#34;&#34;An info logger.&#34;&#34;&#34;
+        &#34;&#34;&#34;Logs information.&#34;&#34;&#34;
         return Logger(self._log, LogGroup.INFO)
 
     @property
     def warning(self) -&gt; Logger:
-        &#34;&#34;&#34;An info logger.&#34;&#34;&#34;
+        &#34;&#34;&#34;Logs warnings.&#34;&#34;&#34;
         return Logger(self._log, LogGroup.WARNING)
 
     @property
     def error(self) -&gt; Logger:
-        &#34;&#34;&#34;An error logger.&#34;&#34;&#34;
+        &#34;&#34;&#34;Logs errors.&#34;&#34;&#34;
         return Logger(self._log, LogGroup.ERROR)
 
     @property
     def system(self) -&gt; Logger:
-        &#34;&#34;&#34;A system logger.&#34;&#34;&#34;
+        &#34;&#34;&#34;Logs system information.&#34;&#34;&#34;
         return Logger(self._log, LogGroup.SYSTEM)
 
 
@@ -192,7 +183,7 @@ def panic(*args: RenderableType) -&gt; None:
 </dd>
 <dt><code class="name"><a title="textual.color" href="color.html">textual.color</a></code></dt>
 <dd>
-<div class="desc"><p>Manages Color in Textual …</p></div>
+<div class="desc"><p>This module contains a powerful Color class which Textual uses to expose colors …</p></div>
 </dd>
 <dt><code class="name"><a title="textual.constants" href="constants.html">textual.constants</a></code></dt>
 <dd>

@@ -278,14 +278,7 @@ class Region(NamedTuple):
     &#34;&#34;&#34;The height of the region.&#34;&#34;&#34;
 
     @classmethod
-    def from_union(
-        cls,
-        regions: Collection[Region],
-        _get_x=itemgetter(0),
-        _get_y=itemgetter(1),
-        _get_right=attrgetter(&#34;right&#34;),
-        _get_bottom=attrgetter(&#34;bottom&#34;),
-    ) -&gt; Region:
+    def from_union(cls, regions: Collection[Region]) -&gt; Region:
         &#34;&#34;&#34;Create a Region from the union of other regions.
 
         Args:
@@ -296,10 +289,10 @@ class Region(NamedTuple):
         &#34;&#34;&#34;
         if not regions:
             raise ValueError(&#34;At least one region expected&#34;)
-        min_x = min(regions, key=_get_x).x
-        max_x = max(regions, key=_get_right).right
-        min_y = min(regions, key=_get_y).y
-        max_y = max(regions, key=_get_bottom).bottom
+        min_x = min(regions, key=itemgetter(0)).x
+        max_x = max(regions, key=attrgetter(&#34;right&#34;)).right
+        min_y = min(regions, key=itemgetter(1)).y
+        max_y = max(regions, key=attrgetter(&#34;bottom&#34;)).bottom
         return cls(min_x, min_y, max_x - min_x, max_y - min_y)
 
     @classmethod
@@ -1390,14 +1383,7 @@ def is_origin(self) -&gt; bool:
     &#34;&#34;&#34;The height of the region.&#34;&#34;&#34;
 
     @classmethod
-    def from_union(
-        cls,
-        regions: Collection[Region],
-        _get_x=itemgetter(0),
-        _get_y=itemgetter(1),
-        _get_right=attrgetter(&#34;right&#34;),
-        _get_bottom=attrgetter(&#34;bottom&#34;),
-    ) -&gt; Region:
+    def from_union(cls, regions: Collection[Region]) -&gt; Region:
         &#34;&#34;&#34;Create a Region from the union of other regions.
 
         Args:
@@ -1408,10 +1394,10 @@ def is_origin(self) -&gt; bool:
         &#34;&#34;&#34;
         if not regions:
             raise ValueError(&#34;At least one region expected&#34;)
-        min_x = min(regions, key=_get_x).x
-        max_x = max(regions, key=_get_right).right
-        min_y = min(regions, key=_get_y).y
-        max_y = max(regions, key=_get_bottom).bottom
+        min_x = min(regions, key=itemgetter(0)).x
+        max_x = max(regions, key=attrgetter(&#34;right&#34;)).right
+        min_y = min(regions, key=itemgetter(1)).y
+        max_y = max(regions, key=attrgetter(&#34;bottom&#34;)).bottom
         return cls(min_x, min_y, max_x - min_x, max_y - min_y)
 
     @classmethod
@@ -2099,14 +2085,7 @@ def from_offset(cls, offset: tuple[int, int], size: tuple[int, int]) -&gt; Regio
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def from_union(
-    cls,
-    regions: Collection[Region],
-    _get_x=itemgetter(0),
-    _get_y=itemgetter(1),
-    _get_right=attrgetter(&#34;right&#34;),
-    _get_bottom=attrgetter(&#34;bottom&#34;),
-) -&gt; Region:
+def from_union(cls, regions: Collection[Region]) -&gt; Region:
     &#34;&#34;&#34;Create a Region from the union of other regions.
 
     Args:
@@ -2117,10 +2096,10 @@ def from_union(
     &#34;&#34;&#34;
     if not regions:
         raise ValueError(&#34;At least one region expected&#34;)
-    min_x = min(regions, key=_get_x).x
-    max_x = max(regions, key=_get_right).right
-    min_y = min(regions, key=_get_y).y
-    max_y = max(regions, key=_get_bottom).bottom
+    min_x = min(regions, key=itemgetter(0)).x
+    max_x = max(regions, key=attrgetter(&#34;right&#34;)).right
+    min_y = min(regions, key=itemgetter(1)).y
+    max_y = max(regions, key=attrgetter(&#34;bottom&#34;)).bottom
     return cls(min_x, min_y, max_x - min_x, max_y - min_y)</code></pre>
 </details>
 </dd>

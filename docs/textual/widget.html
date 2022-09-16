@@ -32,7 +32,7 @@ from asyncio import Lock
 from fractions import Fraction
 from itertools import islice
 from operator import attrgetter
-from typing import TYPE_CHECKING, ClassVar, Collection, Iterable, NamedTuple
+from typing import TYPE_CHECKING, ClassVar, Collection, Iterable, NamedTuple, cast
 
 import rich.repr
 from rich.console import Console, ConsoleRenderable, JustifyMethod, RenderableType
@@ -72,19 +72,18 @@ if TYPE_CHECKING:
     )
 
 
+_JUSTIFY_MAP: dict[str, JustifyMethod] = {
+    &#34;start&#34;: &#34;left&#34;,
+    &#34;end&#34;: &#34;right&#34;,
+    &#34;justify&#34;: &#34;full&#34;,
+}
+
+
 class RenderCache(NamedTuple):
     &#34;&#34;&#34;Stores results of a previous render.&#34;&#34;&#34;
 
     size: Size
     lines: Lines
-
-    @property
-    def cursor_line(self) -&gt; int | None:
-        for index, line in enumerate(self.lines):
-            for _text, style, _control in line:
-                if style and style._meta and style.meta.get(&#34;cursor&#34;, False):
-                    return index
-        return None
 
 
 @rich.repr.auto
@@ -349,6 +348,8 @@ class Widget(DOMNode):
     def get_content_width(self, container: Size, viewport: Size) -&gt; int:
         &#34;&#34;&#34;Gets the width of the content area.
 
+        May be overridden in a subclass.
+
         Args:
             container (Size): Size of the container (immediate parent) widget.
             viewport (Size): Size of the viewport.
@@ -378,6 +379,8 @@ class Widget(DOMNode):
 
     def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
         &#34;&#34;&#34;Gets the height (number of lines) in the content area.
+
+        May be overridden in a subclass.
 
         Args:
             container (Size): Size of the container (immediate parent) widget.
@@ -471,7 +474,7 @@ class Widget(DOMNode):
 
     @property
     def vertical_scrollbar(self) -&gt; ScrollBar:
-        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary).
 
         Returns:
             ScrollBar: ScrollBar Widget.
@@ -488,7 +491,7 @@ class Widget(DOMNode):
 
     @property
     def horizontal_scrollbar(self) -&gt; ScrollBar:
-        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary).
 
         Returns:
             ScrollBar: ScrollBar Widget.
@@ -551,7 +554,11 @@ class Widget(DOMNode):
 
     @property
     def scrollbar_size_vertical(self) -&gt; int:
-        &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.
+
+        Returns:
+            int: Number of columns in the vertical scrollbar.
+        &#34;&#34;&#34;
         styles = self.styles
         if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_y == &#34;auto&#34;:
             return styles.scrollbar_size_vertical
@@ -559,7 +566,11 @@ class Widget(DOMNode):
 
     @property
     def scrollbar_size_horizontal(self) -&gt; int:
-        &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.
+
+        Returns:
+            int: Number of rows in the horizontal scrollbar.
+        &#34;&#34;&#34;
         styles = self.styles
         if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_x == &#34;auto&#34;:
             return styles.scrollbar_size_horizontal
@@ -567,7 +578,7 @@ class Widget(DOMNode):
 
     @property
     def scrollbar_gutter(self) -&gt; Spacing:
-        &#34;&#34;&#34;Spacing required to fit scrollbar(s)
+        &#34;&#34;&#34;Spacing required to fit scrollbar(s).
 
         Returns:
             Spacing: Scrollbar gutter spacing.
@@ -655,7 +666,7 @@ class Widget(DOMNode):
 
     @property
     def container_viewport(self) -&gt; Region:
-        &#34;&#34;&#34;The viewport region (parent window)
+        &#34;&#34;&#34;The viewport region (parent window).
 
         Returns:
             Region: The region that contains this widget.
@@ -1117,6 +1128,7 @@ class Widget(DOMNode):
 
         Args:
             region (Region): A region that should be visible.
+            spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None.
             animate (bool, optional): Enable animation. Defaults to True.
             spacing (Spacing): Space to subtract from the window region.
 
@@ -1269,12 +1281,11 @@ class Widget(DOMNode):
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
+        text_justify: JustifyMethod | None = None
+        if self.styles.has_rule(&#34;text_align&#34;):
+            text_align: JustifyMethod = cast(JustifyMethod, self.styles.text_align)
+            text_justify = _JUSTIFY_MAP.get(text_align, text_align)
 
-        text_justify = (
-            _get_rich_justify(self.styles.text_align)
-            if self.styles.has_rule(&#34;text_align&#34;)
-            else None
-        )
         if isinstance(renderable, str):
             renderable = Text.from_markup(renderable, justify=text_justify)
 
@@ -1296,9 +1307,16 @@ class Widget(DOMNode):
         &#34;&#34;&#34;Update from CSS if has focus state changes.&#34;&#34;&#34;
         self.app.update_styles(self)
 
-    def size_updated(
+    def _size_updated(
         self, size: Size, virtual_size: Size, container_size: Size
     ) -&gt; None:
+        &#34;&#34;&#34;Called when the widget&#39;s size is updated.
+
+        Args:
+            size (Size): Screen size.
+            virtual_size (Size): Virtual (scrollable) size.
+            container_size (Size): Container size (size of parent).
+        &#34;&#34;&#34;
         if self._size != size or self.virtual_size != virtual_size:
             self._size = size
             self.virtual_size = virtual_size
@@ -1453,10 +1471,23 @@ class Widget(DOMNode):
         render = &#34;&#34; if self.is_container else self.css_identifier_styled
         return render
 
-    async def action(self, action: str, *params) -&gt; None:
+    async def action(self, action: str) -&gt; None:
+        &#34;&#34;&#34;Perform a given action, with this widget as the default namespace.
+
+        Args:
+            action (str): Action encoded as a string.
+        &#34;&#34;&#34;
         await self.app.action(action, self)
 
     async def post_message(self, message: Message) -&gt; bool:
+        &#34;&#34;&#34;Post a message to this widget.
+
+        Args:
+            message (Message): Message to post.
+
+        Returns:
+            bool: True if the message was posted, False if this widget was closed / closing.
+        &#34;&#34;&#34;
         if not self.check_message_enabled(message):
             return True
         if not self.is_running:
@@ -1494,7 +1525,7 @@ class Widget(DOMNode):
     def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
 
-        When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.
+        When captured, mouse events will go to this widget even when the pointer is not directly over the widget.
 
         Args:
             capture (bool, optional): True to capture or False to release. Defaults to True.
@@ -1530,6 +1561,10 @@ class Widget(DOMNode):
             await self.dispatch_key(event)
         else:
             await self.action(binding.action)
+
+    def _on_compose(self, event: events.Compose) -&gt; None:
+        widgets = self.compose()
+        self.app.mount_all(widgets)
 
     def _on_mount(self, event: events.Mount) -&gt; None:
         widgets = self.compose()
@@ -1658,26 +1693,7 @@ class Widget(DOMNode):
         if self.allow_vertical_scroll:
             self.scroll_page_up()
             return True
-        return False
-
-
-def _get_rich_justify(css_align: str) -&gt; JustifyMethod:
-    &#34;&#34;&#34;Given the value for CSS text-align, return the analogous argument
-    for the Rich text `justify` parameter.
-
-    Args:
-        css_align: The value of text-align CSS property.
-
-    Returns:
-        JustifyMethod: The Rich JustifyMethod that corresponds to the text-align
-            value
-    &#34;&#34;&#34;
-    assert css_align in VALID_TEXT_ALIGN
-    return {
-        &#34;start&#34;: &#34;left&#34;,
-        &#34;end&#34;: &#34;right&#34;,
-        &#34;justify&#34;: &#34;full&#34;,
-    }.get(css_align, css_align)</code></pre>
+        return False</code></pre>
 </details>
 </section>
 <section>
@@ -1703,15 +1719,7 @@ def _get_rich_justify(css_align: str) -&gt; JustifyMethod:
     &#34;&#34;&#34;Stores results of a previous render.&#34;&#34;&#34;
 
     size: Size
-    lines: Lines
-
-    @property
-    def cursor_line(self) -&gt; int | None:
-        for index, line in enumerate(self.lines):
-            for _text, style, _control in line:
-                if style and style._meta and style.meta.get(&#34;cursor&#34;, False):
-                    return index
-        return None</code></pre>
+    lines: Lines</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1719,22 +1727,6 @@ def _get_rich_justify(css_align: str) -&gt; JustifyMethod:
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.widget.RenderCache.cursor_line"><code class="name">var <span class="ident">cursor_line</span> : int | None</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def cursor_line(self) -&gt; int | None:
-    for index, line in enumerate(self.lines):
-        for _text, style, _control in line:
-            if style and style._meta and style.meta.get(&#34;cursor&#34;, False):
-                return index
-    return None</code></pre>
-</details>
-</dd>
 <dt id="textual.widget.RenderCache.lines"><code class="name">var <span class="ident">lines</span> : List[List[rich.segment.Segment]]</code></dt>
 <dd>
 <div class="desc"><p>Alias for field number 1</p></div>
@@ -2016,6 +2008,8 @@ def cursor_line(self) -&gt; int | None:
     def get_content_width(self, container: Size, viewport: Size) -&gt; int:
         &#34;&#34;&#34;Gets the width of the content area.
 
+        May be overridden in a subclass.
+
         Args:
             container (Size): Size of the container (immediate parent) widget.
             viewport (Size): Size of the viewport.
@@ -2045,6 +2039,8 @@ def cursor_line(self) -&gt; int | None:
 
     def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
         &#34;&#34;&#34;Gets the height (number of lines) in the content area.
+
+        May be overridden in a subclass.
 
         Args:
             container (Size): Size of the container (immediate parent) widget.
@@ -2138,7 +2134,7 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def vertical_scrollbar(self) -&gt; ScrollBar:
-        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary).
 
         Returns:
             ScrollBar: ScrollBar Widget.
@@ -2155,7 +2151,7 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def horizontal_scrollbar(self) -&gt; ScrollBar:
-        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+        &#34;&#34;&#34;Get a vertical scrollbar (create if necessary).
 
         Returns:
             ScrollBar: ScrollBar Widget.
@@ -2218,7 +2214,11 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def scrollbar_size_vertical(self) -&gt; int:
-        &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.
+
+        Returns:
+            int: Number of columns in the vertical scrollbar.
+        &#34;&#34;&#34;
         styles = self.styles
         if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_y == &#34;auto&#34;:
             return styles.scrollbar_size_vertical
@@ -2226,7 +2226,11 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def scrollbar_size_horizontal(self) -&gt; int:
-        &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
+        &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.
+
+        Returns:
+            int: Number of rows in the horizontal scrollbar.
+        &#34;&#34;&#34;
         styles = self.styles
         if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_x == &#34;auto&#34;:
             return styles.scrollbar_size_horizontal
@@ -2234,7 +2238,7 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def scrollbar_gutter(self) -&gt; Spacing:
-        &#34;&#34;&#34;Spacing required to fit scrollbar(s)
+        &#34;&#34;&#34;Spacing required to fit scrollbar(s).
 
         Returns:
             Spacing: Scrollbar gutter spacing.
@@ -2322,7 +2326,7 @@ def cursor_line(self) -&gt; int | None:
 
     @property
     def container_viewport(self) -&gt; Region:
-        &#34;&#34;&#34;The viewport region (parent window)
+        &#34;&#34;&#34;The viewport region (parent window).
 
         Returns:
             Region: The region that contains this widget.
@@ -2784,6 +2788,7 @@ def cursor_line(self) -&gt; int | None:
 
         Args:
             region (Region): A region that should be visible.
+            spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None.
             animate (bool, optional): Enable animation. Defaults to True.
             spacing (Spacing): Space to subtract from the window region.
 
@@ -2936,12 +2941,11 @@ def cursor_line(self) -&gt; int | None:
         Returns:
             RenderableType: A new renderable.
         &#34;&#34;&#34;
+        text_justify: JustifyMethod | None = None
+        if self.styles.has_rule(&#34;text_align&#34;):
+            text_align: JustifyMethod = cast(JustifyMethod, self.styles.text_align)
+            text_justify = _JUSTIFY_MAP.get(text_align, text_align)
 
-        text_justify = (
-            _get_rich_justify(self.styles.text_align)
-            if self.styles.has_rule(&#34;text_align&#34;)
-            else None
-        )
         if isinstance(renderable, str):
             renderable = Text.from_markup(renderable, justify=text_justify)
 
@@ -2963,9 +2967,16 @@ def cursor_line(self) -&gt; int | None:
         &#34;&#34;&#34;Update from CSS if has focus state changes.&#34;&#34;&#34;
         self.app.update_styles(self)
 
-    def size_updated(
+    def _size_updated(
         self, size: Size, virtual_size: Size, container_size: Size
     ) -&gt; None:
+        &#34;&#34;&#34;Called when the widget&#39;s size is updated.
+
+        Args:
+            size (Size): Screen size.
+            virtual_size (Size): Virtual (scrollable) size.
+            container_size (Size): Container size (size of parent).
+        &#34;&#34;&#34;
         if self._size != size or self.virtual_size != virtual_size:
             self._size = size
             self.virtual_size = virtual_size
@@ -3120,10 +3131,23 @@ def cursor_line(self) -&gt; int | None:
         render = &#34;&#34; if self.is_container else self.css_identifier_styled
         return render
 
-    async def action(self, action: str, *params) -&gt; None:
+    async def action(self, action: str) -&gt; None:
+        &#34;&#34;&#34;Perform a given action, with this widget as the default namespace.
+
+        Args:
+            action (str): Action encoded as a string.
+        &#34;&#34;&#34;
         await self.app.action(action, self)
 
     async def post_message(self, message: Message) -&gt; bool:
+        &#34;&#34;&#34;Post a message to this widget.
+
+        Args:
+            message (Message): Message to post.
+
+        Returns:
+            bool: True if the message was posted, False if this widget was closed / closing.
+        &#34;&#34;&#34;
         if not self.check_message_enabled(message):
             return True
         if not self.is_running:
@@ -3161,7 +3185,7 @@ def cursor_line(self) -&gt; int | None:
     def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
 
-        When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.
+        When captured, mouse events will go to this widget even when the pointer is not directly over the widget.
 
         Args:
             capture (bool, optional): True to capture or False to release. Defaults to True.
@@ -3197,6 +3221,10 @@ def cursor_line(self) -&gt; int | None:
             await self.dispatch_key(event)
         else:
             await self.action(binding.action)
+
+    def _on_compose(self, event: events.Compose) -&gt; None:
+        widgets = self.compose()
+        self.app.mount_all(widgets)
 
     def _on_mount(self, event: events.Mount) -&gt; None:
         widgets = self.compose()
@@ -3334,7 +3362,10 @@ def cursor_line(self) -&gt; int | None:
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="textual.layout.Center" href="layout.html#textual.layout.Center">Center</a></li>
 <li><a title="textual.layout.Container" href="layout.html#textual.layout.Container">Container</a></li>
+<li><a title="textual.layout.Horizontal" href="layout.html#textual.layout.Horizontal">Horizontal</a></li>
+<li><a title="textual.layout.Vertical" href="layout.html#textual.layout.Vertical">Vertical</a></li>
 <li><a title="textual.screen.Screen" href="screen.html#textual.screen.Screen">Screen</a></li>
 <li><a title="textual.scroll_view.ScrollView" href="scroll_view.html#textual.scroll_view.ScrollView">ScrollView</a></li>
 <li><a title="textual.scrollbar.ScrollBar" href="scrollbar.html#textual.scrollbar.ScrollBar">ScrollBar</a></li>
@@ -3510,7 +3541,7 @@ def container_size(self) -&gt; Size:
 </dd>
 <dt id="textual.widget.Widget.container_viewport"><code class="name">var <span class="ident">container_viewport</span> : <a title="textual.geometry.Region" href="geometry.html#textual.geometry.Region">Region</a></code></dt>
 <dd>
-<div class="desc"><p>The viewport region (parent window)</p>
+<div class="desc"><p>The viewport region (parent window).</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Region</code></dt>
@@ -3522,7 +3553,7 @@ def container_size(self) -&gt; Size:
 </summary>
 <pre><code class="python">@property
 def container_viewport(self) -&gt; Region:
-    &#34;&#34;&#34;The viewport region (parent window)
+    &#34;&#34;&#34;The viewport region (parent window).
 
     Returns:
         Region: The region that contains this widget.
@@ -3673,7 +3704,7 @@ def gutter(self) -&gt; Spacing:
 </dd>
 <dt id="textual.widget.Widget.horizontal_scrollbar"><code class="name">var <span class="ident">horizontal_scrollbar</span> : ScrollBar</code></dt>
 <dd>
-<div class="desc"><p>Get a vertical scrollbar (create if necessary)</p>
+<div class="desc"><p>Get a vertical scrollbar (create if necessary).</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>ScrollBar</code></dt>
@@ -3685,7 +3716,7 @@ def gutter(self) -&gt; Spacing:
 </summary>
 <pre><code class="python">@property
 def horizontal_scrollbar(self) -&gt; ScrollBar:
-    &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+    &#34;&#34;&#34;Get a vertical scrollbar (create if necessary).
 
     Returns:
         ScrollBar: ScrollBar Widget.
@@ -4065,7 +4096,7 @@ def scrollbar_corner(self) -&gt; ScrollBarCorner:
 </dd>
 <dt id="textual.widget.Widget.scrollbar_gutter"><code class="name">var <span class="ident">scrollbar_gutter</span> : <a title="textual.geometry.Spacing" href="geometry.html#textual.geometry.Spacing">Spacing</a></code></dt>
 <dd>
-<div class="desc"><p>Spacing required to fit scrollbar(s)</p>
+<div class="desc"><p>Spacing required to fit scrollbar(s).</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>Spacing</code></dt>
@@ -4077,7 +4108,7 @@ def scrollbar_corner(self) -&gt; ScrollBarCorner:
 </summary>
 <pre><code class="python">@property
 def scrollbar_gutter(self) -&gt; Spacing:
-    &#34;&#34;&#34;Spacing required to fit scrollbar(s)
+    &#34;&#34;&#34;Spacing required to fit scrollbar(s).
 
     Returns:
         Spacing: Scrollbar gutter spacing.
@@ -4090,14 +4121,23 @@ def scrollbar_gutter(self) -&gt; Spacing:
 </dd>
 <dt id="textual.widget.Widget.scrollbar_size_horizontal"><code class="name">var <span class="ident">scrollbar_size_horizontal</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Get the height used by the <em>horizontal</em> scrollbar.</p></div>
+<div class="desc"><p>Get the height used by the <em>horizontal</em> scrollbar.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>Number of rows in the horizontal scrollbar.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def scrollbar_size_horizontal(self) -&gt; int:
-    &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get the height used by the *horizontal* scrollbar.
+
+    Returns:
+        int: Number of rows in the horizontal scrollbar.
+    &#34;&#34;&#34;
     styles = self.styles
     if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_x == &#34;auto&#34;:
         return styles.scrollbar_size_horizontal
@@ -4106,14 +4146,23 @@ def scrollbar_size_horizontal(self) -&gt; int:
 </dd>
 <dt id="textual.widget.Widget.scrollbar_size_vertical"><code class="name">var <span class="ident">scrollbar_size_vertical</span> : int</code></dt>
 <dd>
-<div class="desc"><p>Get the width used by the <em>vertical</em> scrollbar.</p></div>
+<div class="desc"><p>Get the width used by the <em>vertical</em> scrollbar.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>Number of columns in the vertical scrollbar.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def scrollbar_size_vertical(self) -&gt; int:
-    &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.&#34;&#34;&#34;
+    &#34;&#34;&#34;Get the width used by the *vertical* scrollbar.
+
+    Returns:
+        int: Number of columns in the vertical scrollbar.
+    &#34;&#34;&#34;
     styles = self.styles
     if styles.scrollbar_gutter == &#34;stable&#34; and styles.overflow_y == &#34;auto&#34;:
         return styles.scrollbar_size_vertical
@@ -4241,7 +4290,7 @@ def size(self) -&gt; Size:
 </dd>
 <dt id="textual.widget.Widget.vertical_scrollbar"><code class="name">var <span class="ident">vertical_scrollbar</span> : ScrollBar</code></dt>
 <dd>
-<div class="desc"><p>Get a vertical scrollbar (create if necessary)</p>
+<div class="desc"><p>Get a vertical scrollbar (create if necessary).</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>ScrollBar</code></dt>
@@ -4253,7 +4302,7 @@ def size(self) -&gt; Size:
 </summary>
 <pre><code class="python">@property
 def vertical_scrollbar(self) -&gt; ScrollBar:
-    &#34;&#34;&#34;Get a vertical scrollbar (create if necessary)
+    &#34;&#34;&#34;Get a vertical scrollbar (create if necessary).
 
     Returns:
         ScrollBar: ScrollBar Widget.
@@ -4362,15 +4411,25 @@ def window_region(self) -&gt; Region:
 <h3>Methods</h3>
 <dl>
 <dt id="textual.widget.Widget.action"><code class="name flex">
-<span>async def <span class="ident">action</span></span>(<span>self, action: str, *params) ‑> None</span>
+<span>async def <span class="ident">action</span></span>(<span>self, action: str) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Perform a given action, with this widget as the default namespace.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>action</code></strong> :&ensp;<code>str</code></dt>
+<dd>Action encoded as a string.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def action(self, action: str, *params) -&gt; None:
+<pre><code class="python">async def action(self, action: str) -&gt; None:
+    &#34;&#34;&#34;Perform a given action, with this widget as the default namespace.
+
+    Args:
+        action (str): Action encoded as a string.
+    &#34;&#34;&#34;
     await self.app.action(action, self)</code></pre>
 </details>
 </dd>
@@ -4392,7 +4451,7 @@ def window_region(self) -&gt; Region:
 </code></dt>
 <dd>
 <div class="desc"><p>Capture (or release) the mouse.</p>
-<p>When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.</p>
+<p>When captured, mouse events will go to this widget even when the pointer is not directly over the widget.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>capture</code></strong> :&ensp;<code>bool</code>, optional</dt>
@@ -4405,7 +4464,7 @@ def window_region(self) -&gt; Region:
 <pre><code class="python">def capture_mouse(self, capture: bool = True) -&gt; None:
     &#34;&#34;&#34;Capture (or release) the mouse.
 
-    When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget.
+    When captured, mouse events will go to this widget even when the pointer is not directly over the widget.
 
     Args:
         capture (bool, optional): True to capture or False to release. Defaults to True.
@@ -4516,6 +4575,7 @@ visible. Defaults to True.</dd>
 </code></dt>
 <dd>
 <div class="desc"><p>Gets the height (number of lines) in the content area.</p>
+<p>May be overridden in a subclass.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>container</code></strong> :&ensp;<code>Size</code></dt>
@@ -4536,6 +4596,8 @@ visible. Defaults to True.</dd>
 </summary>
 <pre><code class="python">def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
     &#34;&#34;&#34;Gets the height (number of lines) in the content area.
+
+    May be overridden in a subclass.
 
     Args:
         container (Size): Size of the container (immediate parent) widget.
@@ -4578,6 +4640,7 @@ visible. Defaults to True.</dd>
 </code></dt>
 <dd>
 <div class="desc"><p>Gets the width of the content area.</p>
+<p>May be overridden in a subclass.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>container</code></strong> :&ensp;<code>Size</code></dt>
@@ -4596,6 +4659,8 @@ visible. Defaults to True.</dd>
 </summary>
 <pre><code class="python">def get_content_width(self, container: Size, viewport: Size) -&gt; int:
     &#34;&#34;&#34;Gets the width of the content area.
+
+    May be overridden in a subclass.
 
     Args:
         container (Size): Size of the container (immediate parent) widget.
@@ -4719,6 +4784,41 @@ the keys will be set as the Widget's id.</p>
     self.screen.refresh(layout=True)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.post_message"><code class="name flex">
+<span>async def <span class="ident">post_message</span></span>(<span>self, message: Message) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Post a message to this widget.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>message</code></strong> :&ensp;<code>Message</code></dt>
+<dd>Message to post.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the message was posted, False if this widget was closed / closing.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def post_message(self, message: Message) -&gt; bool:
+    &#34;&#34;&#34;Post a message to this widget.
+
+    Args:
+        message (Message): Message to post.
+
+    Returns:
+        bool: True if the message was posted, False if this widget was closed / closing.
+    &#34;&#34;&#34;
+    if not self.check_message_enabled(message):
+        return True
+    if not self.is_running:
+        self.log.warning(self, f&#34;IS NOT RUNNING, {message!r} not sent&#34;)
+    return await super().post_message(message)</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.post_render"><code class="name flex">
 <span>def <span class="ident">post_render</span></span>(<span>self, renderable: RenderableType) ‑> rich.console.ConsoleRenderable</span>
 </code></dt>
@@ -4739,12 +4839,11 @@ the keys will be set as the Widget's id.</p>
     Returns:
         RenderableType: A new renderable.
     &#34;&#34;&#34;
+    text_justify: JustifyMethod | None = None
+    if self.styles.has_rule(&#34;text_align&#34;):
+        text_align: JustifyMethod = cast(JustifyMethod, self.styles.text_align)
+        text_justify = _JUSTIFY_MAP.get(text_align, text_align)
 
-    text_justify = (
-        _get_rich_justify(self.styles.text_align)
-        if self.styles.has_rule(&#34;text_align&#34;)
-        else None
-    )
     if isinstance(renderable, str):
         renderable = Text.from_markup(renderable, justify=text_justify)
 
@@ -5397,6 +5496,7 @@ the scrollable area.</p>
 <dl>
 <dt><strong><code>region</code></strong> :&ensp;<code>Region</code></dt>
 <dd>A region that should be visible.</dd>
+<dt>spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None.</dt>
 <dt><strong><code>animate</code></strong> :&ensp;<code>bool</code>, optional</dt>
 <dd>Enable animation. Defaults to True.</dd>
 <dt><strong><code>spacing</code></strong> :&ensp;<code>Spacing</code></dt>
@@ -5421,6 +5521,7 @@ the scrollable area.</p>
 
     Args:
         region (Region): A region that should be visible.
+        spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None.
         animate (bool, optional): Enable animation. Defaults to True.
         spacing (Spacing): Space to subtract from the window region.
 
@@ -5555,44 +5656,6 @@ the scrollable area.</p>
     parent = self.parent
     if isinstance(parent, Widget):
         self.call_later(parent.scroll_to_widget, self)</code></pre>
-</details>
-</dd>
-<dt id="textual.widget.Widget.size_updated"><code class="name flex">
-<span>def <span class="ident">size_updated</span></span>(<span>self, size: Size, virtual_size: Size, container_size: Size) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def size_updated(
-    self, size: Size, virtual_size: Size, container_size: Size
-) -&gt; None:
-    if self._size != size or self.virtual_size != virtual_size:
-        self._size = size
-        self.virtual_size = virtual_size
-        self._container_size = container_size
-        if self.is_scrollable:
-            self._refresh_scrollbars()
-            width, height = self.container_size
-            if self.show_vertical_scrollbar:
-                self.vertical_scrollbar.window_virtual_size = virtual_size.height
-                self.vertical_scrollbar.window_size = (
-                    height - self.scrollbar_size_horizontal
-                )
-            if self.show_horizontal_scrollbar:
-                self.horizontal_scrollbar.window_virtual_size = virtual_size.width
-                self.horizontal_scrollbar.window_size = (
-                    width - self.scrollbar_size_vertical
-                )
-
-            self.scroll_x = self.validate_scroll_x(self.scroll_x)
-            self.scroll_y = self.validate_scroll_y(self.scroll_y)
-            self.refresh(layout=True)
-            self.scroll_to(self.scroll_x, self.scroll_y)
-        else:
-            self.refresh()</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.validate_scroll_target_x"><code class="name flex">
@@ -5787,7 +5850,6 @@ the scrollable area.</p>
 <li><code><a title="textual.dom.DOMNode.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.dom.DOMNode.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
-<li><code><a title="textual.dom.DOMNode.post_message" href="message_pump.html#textual.message_pump.MessagePump.post_message">post_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
 <li><code><a title="textual.dom.DOMNode.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.dom.DOMNode.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
@@ -5874,7 +5936,6 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.widget.RenderCache" href="#textual.widget.RenderCache">RenderCache</a></code></h4>
 <ul class="">
-<li><code><a title="textual.widget.RenderCache.cursor_line" href="#textual.widget.RenderCache.cursor_line">cursor_line</a></code></li>
 <li><code><a title="textual.widget.RenderCache.lines" href="#textual.widget.RenderCache.lines">lines</a></code></li>
 <li><code><a title="textual.widget.RenderCache.size" href="#textual.widget.RenderCache.size">size</a></code></li>
 </ul>
@@ -5920,6 +5981,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.mount" href="#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="#textual.widget.Widget.outer_size">outer_size</a></code></li>
+<li><code><a title="textual.widget.Widget.post_message" href="#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_render" href="#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.refresh" href="#textual.widget.Widget.refresh">refresh</a></code></li>
 <li><code><a title="textual.widget.Widget.region" href="#textual.widget.Widget.region">region</a></code></li>
@@ -5957,7 +6019,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.siblings" href="#textual.widget.Widget.siblings">siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="#textual.widget.Widget.size">size</a></code></li>
-<li><code><a title="textual.widget.Widget.size_updated" href="#textual.widget.Widget.size_updated">size_updated</a></code></li>
 <li><code><a title="textual.widget.Widget.validate_scroll_target_x" href="#textual.widget.Widget.validate_scroll_target_x">validate_scroll_target_x</a></code></li>
 <li><code><a title="textual.widget.Widget.validate_scroll_target_y" href="#textual.widget.Widget.validate_scroll_target_y">validate_scroll_target_y</a></code></li>
 <li><code><a title="textual.widget.Widget.validate_scroll_x" href="#textual.widget.Widget.validate_scroll_x">validate_scroll_x</a></code></li>

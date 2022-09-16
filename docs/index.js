@@ -733,13 +733,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.get_content_width",
 "url":4,
-"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.get_content_height",
 "url":4,
-"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -760,12 +760,12 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.vertical_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.horizontal_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scrollbars_enabled",
@@ -775,17 +775,17 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.scrollbar_size_vertical",
 "url":4,
-"doc":"Get the width used by the  vertical scrollbar."
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scrollbar_size_horizontal",
 "url":4,
-"doc":"Get the height used by the  horizontal scrollbar."
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scrollbar_gutter",
 "url":4,
-"doc":"Spacing required to fit scrollbar(s) Returns: Spacing: Scrollbar gutter spacing."
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.gutter",
@@ -825,7 +825,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.container_viewport",
 "url":4,
-"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.virtual_region",
@@ -963,7 +963,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -1027,9 +1027,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.action",
+"url":4,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.post_message",
 "url":4,
-"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
 "func":1
 },
 {
@@ -1041,7 +1047,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.capture_mouse",
 "url":4,
-"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
 "func":1
 },
 {
@@ -1430,13 +1436,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.get_content_width",
 "url":4,
-"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.get_content_height",
 "url":4,
-"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -1457,12 +1463,12 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.vertical_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.horizontal_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scrollbars_enabled",
@@ -1472,17 +1478,17 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scrollbar_size_vertical",
 "url":4,
-"doc":"Get the width used by the  vertical scrollbar."
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scrollbar_size_horizontal",
 "url":4,
-"doc":"Get the height used by the  horizontal scrollbar."
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scrollbar_gutter",
 "url":4,
-"doc":"Spacing required to fit scrollbar(s) Returns: Spacing: Scrollbar gutter spacing."
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.gutter",
@@ -1522,7 +1528,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.container_viewport",
 "url":4,
-"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.virtual_region",
@@ -1660,7 +1666,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -1724,9 +1730,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBarCorner.action",
+"url":4,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBarCorner.post_message",
 "url":4,
-"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
 "func":1
 },
 {
@@ -1738,7 +1750,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.capture_mouse",
 "url":4,
-"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
 "func":1
 },
 {
@@ -2163,11 +2175,6 @@ INDEX=[
 "doc":"Alias for field number 1"
 },
 {
-"ref":"textual.widget.RenderCache.cursor_line",
-"url":4,
-"doc":""
-},
-{
 "ref":"textual.widget.Widget",
 "url":4,
 "doc":"A Widget is the base class for Textual widgets. Extent this class (or a sub-class) when defining your own widgets."
@@ -2300,13 +2307,13 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.get_content_width",
 "url":4,
-"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.get_content_height",
 "url":4,
-"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -2363,12 +2370,12 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.vertical_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.widget.Widget.horizontal_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.widget.Widget.scrollbars_enabled",
@@ -2378,17 +2385,17 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.scrollbar_size_vertical",
 "url":4,
-"doc":"Get the width used by the  vertical scrollbar."
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
 },
 {
 "ref":"textual.widget.Widget.scrollbar_size_horizontal",
 "url":4,
-"doc":"Get the height used by the  horizontal scrollbar."
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
 },
 {
 "ref":"textual.widget.Widget.scrollbar_gutter",
 "url":4,
-"doc":"Spacing required to fit scrollbar(s) Returns: Spacing: Scrollbar gutter spacing."
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
 },
 {
 "ref":"textual.widget.Widget.gutter",
@@ -2428,7 +2435,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.container_viewport",
 "url":4,
-"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.widget.Widget.virtual_region",
@@ -2566,7 +2573,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -2597,12 +2604,6 @@ INDEX=[
 "ref":"textual.widget.Widget.watch_has_focus",
 "url":4,
 "doc":"Update from CSS if has focus state changes.",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.size_updated",
-"url":4,
-"doc":"",
 "func":1
 },
 {
@@ -2644,13 +2645,13 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.action",
 "url":4,
-"doc":"",
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.post_message",
 "url":4,
-"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
 "func":1
 },
 {
@@ -2662,7 +2663,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.capture_mouse",
 "url":4,
-"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
 "func":1
 },
 {
@@ -3452,13 +3453,13 @@ INDEX=[
 {
 "ref":"textual.layout.Container.get_content_width",
 "url":4,
-"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.get_content_height",
 "url":4,
-"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -3479,12 +3480,12 @@ INDEX=[
 {
 "ref":"textual.layout.Container.vertical_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.layout.Container.horizontal_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.layout.Container.scrollbars_enabled",
@@ -3494,17 +3495,17 @@ INDEX=[
 {
 "ref":"textual.layout.Container.scrollbar_size_vertical",
 "url":4,
-"doc":"Get the width used by the  vertical scrollbar."
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
 },
 {
 "ref":"textual.layout.Container.scrollbar_size_horizontal",
 "url":4,
-"doc":"Get the height used by the  horizontal scrollbar."
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
 },
 {
 "ref":"textual.layout.Container.scrollbar_gutter",
 "url":4,
-"doc":"Spacing required to fit scrollbar(s) Returns: Spacing: Scrollbar gutter spacing."
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
 },
 {
 "ref":"textual.layout.Container.gutter",
@@ -3544,7 +3545,7 @@ INDEX=[
 {
 "ref":"textual.layout.Container.container_viewport",
 "url":4,
-"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.layout.Container.virtual_region",
@@ -3682,7 +3683,7 @@ INDEX=[
 {
 "ref":"textual.layout.Container.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -3752,9 +3753,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Container.action",
+"url":4,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
 "ref":"textual.layout.Container.post_message",
 "url":4,
-"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
 "func":1
 },
 {
@@ -3766,7 +3773,7 @@ INDEX=[
 {
 "ref":"textual.layout.Container.capture_mouse",
 "url":4,
-"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
 "func":1
 },
 {
@@ -4154,13 +4161,13 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.get_content_width",
 "url":4,
-"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.get_content_height",
 "url":4,
-"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -4181,12 +4188,12 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.vertical_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.layout.Vertical.horizontal_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.layout.Vertical.scrollbars_enabled",
@@ -4196,17 +4203,17 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.scrollbar_size_vertical",
 "url":4,
-"doc":"Get the width used by the  vertical scrollbar."
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
 },
 {
 "ref":"textual.layout.Vertical.scrollbar_size_horizontal",
 "url":4,
-"doc":"Get the height used by the  horizontal scrollbar."
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
 },
 {
 "ref":"textual.layout.Vertical.scrollbar_gutter",
 "url":4,
-"doc":"Spacing required to fit scrollbar(s) Returns: Spacing: Scrollbar gutter spacing."
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
 },
 {
 "ref":"textual.layout.Vertical.gutter",
@@ -4246,7 +4253,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.container_viewport",
 "url":4,
-"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.layout.Vertical.virtual_region",
@@ -4384,7 +4391,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -4454,9 +4461,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Vertical.action",
+"url":4,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
 "ref":"textual.layout.Vertical.post_message",
 "url":4,
-"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
 "func":1
 },
 {
@@ -4468,7 +4481,7 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.capture_mouse",
 "url":4,
-"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
 "func":1
 },
 {
@@ -4856,13 +4869,13 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.get_content_width",
 "url":4,
-"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.get_content_height",
 "url":4,
-"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -4883,12 +4896,12 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.vertical_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.layout.Horizontal.horizontal_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.layout.Horizontal.scrollbars_enabled",
@@ -4898,17 +4911,17 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.scrollbar_size_vertical",
 "url":4,
-"doc":"Get the width used by the  vertical scrollbar."
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
 },
 {
 "ref":"textual.layout.Horizontal.scrollbar_size_horizontal",
 "url":4,
-"doc":"Get the height used by the  horizontal scrollbar."
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
 },
 {
 "ref":"textual.layout.Horizontal.scrollbar_gutter",
 "url":4,
-"doc":"Spacing required to fit scrollbar(s) Returns: Spacing: Scrollbar gutter spacing."
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
 },
 {
 "ref":"textual.layout.Horizontal.gutter",
@@ -4948,7 +4961,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.container_viewport",
 "url":4,
-"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.layout.Horizontal.virtual_region",
@@ -5086,7 +5099,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -5156,9 +5169,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Horizontal.action",
+"url":4,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.post_message",
 "url":4,
-"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
 "func":1
 },
 {
@@ -5170,7 +5189,7 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.capture_mouse",
 "url":4,
-"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
 "func":1
 },
 {
@@ -5558,13 +5577,13 @@ INDEX=[
 {
 "ref":"textual.layout.Center.get_content_width",
 "url":4,
-"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.get_content_height",
 "url":4,
-"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -5585,12 +5604,12 @@ INDEX=[
 {
 "ref":"textual.layout.Center.vertical_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.layout.Center.horizontal_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.layout.Center.scrollbars_enabled",
@@ -5600,17 +5619,17 @@ INDEX=[
 {
 "ref":"textual.layout.Center.scrollbar_size_vertical",
 "url":4,
-"doc":"Get the width used by the  vertical scrollbar."
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
 },
 {
 "ref":"textual.layout.Center.scrollbar_size_horizontal",
 "url":4,
-"doc":"Get the height used by the  horizontal scrollbar."
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
 },
 {
 "ref":"textual.layout.Center.scrollbar_gutter",
 "url":4,
-"doc":"Spacing required to fit scrollbar(s) Returns: Spacing: Scrollbar gutter spacing."
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
 },
 {
 "ref":"textual.layout.Center.gutter",
@@ -5650,7 +5669,7 @@ INDEX=[
 {
 "ref":"textual.layout.Center.container_viewport",
 "url":4,
-"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.layout.Center.virtual_region",
@@ -5788,7 +5807,7 @@ INDEX=[
 {
 "ref":"textual.layout.Center.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -5858,9 +5877,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Center.action",
+"url":4,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
 "ref":"textual.layout.Center.post_message",
 "url":4,
-"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
 "func":1
 },
 {
@@ -5872,7 +5897,7 @@ INDEX=[
 {
 "ref":"textual.layout.Center.capture_mouse",
 "url":4,
-"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
 "func":1
 },
 {
@@ -6707,12 +6732,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.scroll_view.ScrollView.size_updated",
-"url":18,
-"doc":"Called when size is updated. Args: size (Size): New size. virtual_size (Size): New virtual size. container_size (Size): New container size.",
-"func":1
-},
-{
 "ref":"textual.scroll_view.ScrollView.render",
 "url":18,
 "doc":"Render the scrollable region (if  render_lines is not implemented). Returns: RenderableType: Renderable object.",
@@ -6863,12 +6882,12 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.vertical_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.scroll_view.ScrollView.horizontal_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.scroll_view.ScrollView.scrollbars_enabled",
@@ -6878,17 +6897,17 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.scrollbar_size_vertical",
 "url":4,
-"doc":"Get the width used by the  vertical scrollbar."
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
 },
 {
 "ref":"textual.scroll_view.ScrollView.scrollbar_size_horizontal",
 "url":4,
-"doc":"Get the height used by the  horizontal scrollbar."
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
 },
 {
 "ref":"textual.scroll_view.ScrollView.scrollbar_gutter",
 "url":4,
-"doc":"Spacing required to fit scrollbar(s) Returns: Spacing: Scrollbar gutter spacing."
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
 },
 {
 "ref":"textual.scroll_view.ScrollView.gutter",
@@ -6928,7 +6947,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.container_viewport",
 "url":4,
-"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.scroll_view.ScrollView.virtual_region",
@@ -7056,7 +7075,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -7120,9 +7139,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scroll_view.ScrollView.action",
+"url":4,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
 "ref":"textual.scroll_view.ScrollView.post_message",
 "url":4,
-"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
 "func":1
 },
 {
@@ -7134,7 +7159,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.capture_mouse",
 "url":4,
-"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
 "func":1
 },
 {
@@ -8247,27 +8272,32 @@ INDEX=[
 {
 "ref":"textual.color",
 "url":23,
-"doc":"Manages Color in Textual. All instances where the developer is presented with a color will use this class. The only exception should be when passing things to a Rich renderable, which will need to use the  rich_color attribute to perform a conversion."
+"doc":"This module contains a powerful Color class which Textual uses to expose colors. The only exception would be for Rich renderables, which require a rich.color.Color instance. You can convert from a Textual color to a Rich color with the [rich_color][textual.color.Color.rich_color] property.  Named colors The following named colors are used by the [parse][textual.color.Color.parse] method.  {.rich title=\"colors\"} from textual._color_constants import COLOR_NAME_TO_RGB from textual.color import Color from rich.table import Table from rich.text import Text table = Table(\"Name\", \"hex\", \"RGB\", \"Color\", expand=True, highlight=True) for name, triplet in sorted(COLOR_NAME_TO_RGB.items( : if len(triplet) != 3: continue color = Color( triplet) r, g, b = triplet table.add_row( f'\"{name}\"', Text(f\"{color.hex}\", \"bold green\"), f\"rgb({r}, {g}, {b})\", Text(\" \", style=f\"on rgb({r},{g},{b})\") ) output = table  "
 },
 {
-"ref":"textual.color.HLS",
+"ref":"textual.color.HSL",
 "url":23,
 "doc":"A color in HLS format."
 },
 {
-"ref":"textual.color.HLS.h",
+"ref":"textual.color.HSL.h",
 "url":23,
 "doc":"Hue"
 },
 {
-"ref":"textual.color.HLS.l",
+"ref":"textual.color.HSL.s",
+"url":23,
+"doc":"Saturation"
+},
+{
+"ref":"textual.color.HSL.l",
 "url":23,
 "doc":"Lightness"
 },
 {
-"ref":"textual.color.HLS.s",
+"ref":"textual.color.HSL.css",
 "url":23,
-"doc":"Saturation"
+"doc":"HSL in css format."
 },
 {
 "ref":"textual.color.HSV",
@@ -8312,12 +8342,12 @@ INDEX=[
 {
 "ref":"textual.color.ColorParseError",
 "url":23,
-"doc":"A color failed to parse Creates a new ColorParseError Args: message (str): the error message suggested_color (str | None): a close color we can suggest. Defaults to None."
+"doc":"A color failed to parse. Args: message (str): the error message suggested_color (str | None): a close color we can suggest. Defaults to None."
 },
 {
 "ref":"textual.color.Color",
 "url":23,
-"doc":"A class to represent a single RGB color with alpha."
+"doc":"A class to represent a RGB color with an alpha component."
 },
 {
 "ref":"textual.color.Color.r",
@@ -8346,7 +8376,7 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.color.Color.from_hls",
+"ref":"textual.color.Color.from_hsl",
 "url":23,
 "doc":"Create a color from HLS components. Args: h (float): Hue. l (float): Lightness. s (float): Saturation. Returns: Color: A new color.",
 "func":1
@@ -8377,9 +8407,9 @@ INDEX=[
 "doc":"Get just the red, green, and blue components. Returns: tuple[int, int, int]: Color components"
 },
 {
-"ref":"textual.color.Color.hls",
+"ref":"textual.color.Color.hsl",
 "url":23,
-"doc":"Get the color as HLS. Returns: HLS:"
+"doc":"Get the color as HSL. Returns: HSL: Color in HSL format."
 },
 {
 "ref":"textual.color.Color.brightness",
@@ -8389,7 +8419,7 @@ INDEX=[
 {
 "ref":"textual.color.Color.hex",
 "url":23,
-"doc":"The color in CSS hex form, with 6 digits for RGB, and 8 digits for RGBA. Returns: str: A CSS hex-style color, e.g. \" 46b3de\" or \" 3342457f\""
+"doc":"The color in CSS hex form, with 6 digits for RGB, and 8 digits for RGBA. Returns: str: A CSS hex-style color, e.g.  \" 46b3de\" or  \" 3342457f\" "
 },
 {
 "ref":"textual.color.Color.hex6",
@@ -8399,7 +8429,7 @@ INDEX=[
 {
 "ref":"textual.color.Color.css",
 "url":23,
-"doc":"The color in CSS rgb or rgba form. Returns: str: A CSS style color, e.g. \"rgb(10,20,30)\" or \"rgb(50,70,80,0.5)\""
+"doc":"The color in CSS rgb or rgba form. Returns: str: A CSS style color, e.g.  \"rgb(10,20,30)\" or  \"rgb(50,70,80,0.5)\" "
 },
 {
 "ref":"textual.color.Color.with_alpha",
@@ -8416,7 +8446,7 @@ INDEX=[
 {
 "ref":"textual.color.Color.parse",
 "url":23,
-"doc":"Parse a string containing a CSS-style color. Args: color_text (str | Color): Text with a valid color format. Color objects will be returned unmodified. Raises: ColorParseError: If the color is not encoded correctly. Returns: Color: New color object.",
+"doc":"Parse a string containing a named color or CSS-style color. Colors may be parsed from the following formats: Text beginning with a  is parsed as hex: R, G, and B must be hex digits (0-9A-F) -  RGB -  RRGGBB -  RRGGBBAA Text in the following formats is parsed as decimal values: RED, GREEN, and BLUE must be numbers between 0 and 255. ALPHA should ba a value between 0 and 1. -  rgb(RED,GREEN,BLUE) -  rgba(RED,GREEN,BLUE,ALPHA) -  hsl(RED,GREEN,BLUE) -  hsla(RED,GREEN,BLUE,ALPHA) All other text will raise a  ColorParseError . Args: color_text (str | Color): Text with a valid color format. Color objects will be returned unmodified. Raises: ColorParseError: If the color is not encoded correctly. Returns: Color: New color object.",
 "func":1
 },
 {
@@ -8436,26 +8466,6 @@ INDEX=[
 "url":23,
 "doc":"Get a light or dark color that best contrasts this color, for use with text. Args: alpha (float, optional): An alpha value to adjust the pure white / black by. Defaults to 0.95. Returns: Color: A new color, either an off-white or off-black",
 "func":1
-},
-{
-"ref":"textual.color.ColorPair",
-"url":23,
-"doc":"A pair of colors for foreground and background."
-},
-{
-"ref":"textual.color.ColorPair.foreground",
-"url":23,
-"doc":"Alias for field number 0"
-},
-{
-"ref":"textual.color.ColorPair.background",
-"url":23,
-"doc":"Alias for field number 1"
-},
-{
-"ref":"textual.color.ColorPair.style",
-"url":23,
-"doc":"A Rich style with foreground and background."
 },
 {
 "ref":"textual.color.rgb_to_lab",
@@ -10011,7 +10021,7 @@ INDEX=[
 {
 "ref":"textual.css.styles.StylesBase.dock",
 "url":46,
-"doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which dock you wish a Widget to be attached to. This should be used in conjunction with the \"docks\" property which lets you define the docks themselves, and where they are located on screen."
+"doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which edge you want to fix a Widget to."
 },
 {
 "ref":"textual.css.styles.StylesBase.docks",
@@ -10518,7 +10528,7 @@ INDEX=[
 {
 "ref":"textual.css.styles.Styles.dock",
 "url":46,
-"doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which dock you wish a Widget to be attached to. This should be used in conjunction with the \"docks\" property which lets you define the docks themselves, and where they are located on screen."
+"doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which edge you want to fix a Widget to."
 },
 {
 "ref":"textual.css.styles.Styles.docks",
@@ -10903,7 +10913,7 @@ INDEX=[
 {
 "ref":"textual.css.styles.RenderStyles.dock",
 "url":46,
-"doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which dock you wish a Widget to be attached to. This should be used in conjunction with the \"docks\" property which lets you define the docks themselves, and where they are located on screen."
+"doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which edge you want to fix a Widget to."
 },
 {
 "ref":"textual.css.styles.RenderStyles.docks",
@@ -12235,6 +12245,70 @@ INDEX=[
 },
 {
 "ref":"textual.events.Resize.time",
+"url":3,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.Compose",
+"url":58,
+"doc":"Sent to a widget to request it to compose and mount children."
+},
+{
+"ref":"textual.events.Compose.sender",
+"url":58,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.Compose.namespace",
+"url":58,
+"doc":""
+},
+{
+"ref":"textual.events.Compose.bubble",
+"url":58,
+"doc":""
+},
+{
+"ref":"textual.events.Compose.verbose",
+"url":58,
+"doc":""
+},
+{
+"ref":"textual.events.Compose.no_dispatch",
+"url":58,
+"doc":""
+},
+{
+"ref":"textual.events.Compose.set_forwarded",
+"url":3,
+"doc":"Mark this event as being forwarded.",
+"func":1
+},
+{
+"ref":"textual.events.Compose.can_replace",
+"url":3,
+"doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
+"func":1
+},
+{
+"ref":"textual.events.Compose.prevent_default",
+"url":3,
+"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.Compose.stop",
+"url":3,
+"doc":"Stop propagation of the message to parent. Args: stop (bool, optional): The stop flag. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.events.Compose.name",
+"url":3,
+"doc":"Return an attribute of instance, which is of type owner."
+},
+{
+"ref":"textual.events.Compose.time",
 "url":3,
 "doc":"Return an attribute of instance, which is of type owner."
 },
@@ -14617,13 +14691,13 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.get_content_width",
 "url":4,
-"doc":"Gets the width of the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"doc":"Gets the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_content_height",
 "url":4,
-"doc":"Gets the height (number of lines) in the content area. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"doc":"Gets the height (number of lines) in the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
 "func":1
 },
 {
@@ -14644,12 +14718,12 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.vertical_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.screen.Screen.horizontal_scrollbar",
 "url":4,
-"doc":"Get a vertical scrollbar (create if necessary) Returns: ScrollBar: ScrollBar Widget."
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
 },
 {
 "ref":"textual.screen.Screen.scrollbars_enabled",
@@ -14659,17 +14733,17 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.scrollbar_size_vertical",
 "url":4,
-"doc":"Get the width used by the  vertical scrollbar."
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
 },
 {
 "ref":"textual.screen.Screen.scrollbar_size_horizontal",
 "url":4,
-"doc":"Get the height used by the  horizontal scrollbar."
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
 },
 {
 "ref":"textual.screen.Screen.scrollbar_gutter",
 "url":4,
-"doc":"Spacing required to fit scrollbar(s) Returns: Spacing: Scrollbar gutter spacing."
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
 },
 {
 "ref":"textual.screen.Screen.gutter",
@@ -14709,7 +14783,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.container_viewport",
 "url":4,
-"doc":"The viewport region (parent window) Returns: Region: The region that contains this widget."
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
 },
 {
 "ref":"textual.screen.Screen.virtual_region",
@@ -14842,7 +14916,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
@@ -14900,9 +14974,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.action",
+"url":4,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.post_message",
 "url":4,
-"doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
 "func":1
 },
 {
@@ -14914,7 +14994,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.capture_mouse",
 "url":4,
-"doc":"Capture (or release) the mouse. When captured, all mouse coordinates will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
 "func":1
 },
 {

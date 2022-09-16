@@ -118,24 +118,29 @@ class DevConsoleLog:
         file_and_line = escape(f&#34;{Path(self.path).name}:{self.line_number}&#34;)
         group = LogGroup(self.group).name
         time = local_time.time()
-        message = Text(
-            f&#34;:warning-emoji:  [{time}] {group}&#34;
-            if self.severity &gt; 0
-            else f&#34;[{time}] {group}&#34;
-        )
-        message.stylize(&#34;dim&#34;)
+
+        group_text = Text(group)
+        if group == &#34;WARNING&#34;:
+            group_text.stylize(&#34;bold yellow reverse&#34;)
+        elif group == &#34;ERROR&#34;:
+            group_text.stylize(&#34;bold red reverse&#34;)
+        else:
+            group_text.stylize(&#34;dim&#34;)
+
+        log_message = Text.assemble((f&#34;[{time}]&#34;, &#34;dim&#34;), &#34; &#34;, group_text)
 
         table.add_row(
-            message,
+            log_message,
             Align.right(
                 Text(f&#34;{file_and_line}&#34;, style=Style(dim=True, link=file_link))
             ),
         )
         yield table
+
         if group == &#34;PRINT&#34;:
             yield Styled(Segments(self.segments), &#34;bold&#34;)
         else:
-            yield Segments(self.segments)
+            yield from self.segments
 
 
 class DevConsoleNotice:
@@ -266,24 +271,29 @@ class DevConsoleNotice:
         file_and_line = escape(f&#34;{Path(self.path).name}:{self.line_number}&#34;)
         group = LogGroup(self.group).name
         time = local_time.time()
-        message = Text(
-            f&#34;:warning-emoji:  [{time}] {group}&#34;
-            if self.severity &gt; 0
-            else f&#34;[{time}] {group}&#34;
-        )
-        message.stylize(&#34;dim&#34;)
+
+        group_text = Text(group)
+        if group == &#34;WARNING&#34;:
+            group_text.stylize(&#34;bold yellow reverse&#34;)
+        elif group == &#34;ERROR&#34;:
+            group_text.stylize(&#34;bold red reverse&#34;)
+        else:
+            group_text.stylize(&#34;dim&#34;)
+
+        log_message = Text.assemble((f&#34;[{time}]&#34;, &#34;dim&#34;), &#34; &#34;, group_text)
 
         table.add_row(
-            message,
+            log_message,
             Align.right(
                 Text(f&#34;{file_and_line}&#34;, style=Style(dim=True, link=file_link))
             ),
         )
         yield table
+
         if group == &#34;PRINT&#34;:
             yield Styled(Segments(self.segments), &#34;bold&#34;)
         else:
-            yield Segments(self.segments)</code></pre>
+            yield from self.segments</code></pre>
 </details>
 </dd>
 <dt id="textual.devtools.renderables.DevConsoleNotice"><code class="flex name class">

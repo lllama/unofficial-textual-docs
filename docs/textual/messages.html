@@ -87,7 +87,7 @@ class ScrollToRegion(Message, bubble=False):
 
 
 @rich.repr.auto
-class StylesUpdated(Message):
+class StylesUpdated(Message, verbose=True):
     def __init__(self, sender: MessagePump) -&gt; None:
         super().__init__(sender)
 
@@ -360,7 +360,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class StylesUpdated(Message):
+<pre><code class="python">class StylesUpdated(Message, verbose=True):
     def __init__(self, sender: MessagePump) -&gt; None:
         super().__init__(sender)
 
