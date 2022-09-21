@@ -394,7 +394,7 @@ class MessagePump(metaclass=MessagePumpMeta):
         if isinstance(message, Event):
             await self.on_event(message)
         else:
-            await self.on_message(message)
+            await self._on_message(message)
 
     def _get_dispatch_methods(
         self, method_name: str, message: Message
@@ -420,9 +420,9 @@ class MessagePump(metaclass=MessagePumpMeta):
         Args:
             event (events.Event): An Event object.
         &#34;&#34;&#34;
-        await self.on_message(event)
+        await self._on_message(event)
 
-    async def on_message(self, message: Message) -&gt; None:
+    async def _on_message(self, message: Message) -&gt; None:
         &#34;&#34;&#34;Called to process a message.
 
         Args:
@@ -474,7 +474,7 @@ class MessagePump(metaclass=MessagePumpMeta):
 
     # TODO: This may not be needed, or may only be needed by the timer
     # Consider removing or making private
-    async def post_priority_message(self, message: Message) -&gt; bool:
+    async def _post_priority_message(self, message: Message) -&gt; bool:
         &#34;&#34;&#34;Post a &#34;priority&#34; messages which will be processes prior to regular messages.
 
         Note that you should rarely need this in a regular app. It exists primarily to allow
@@ -524,6 +524,14 @@ class MessagePump(metaclass=MessagePumpMeta):
         await invoke(event.callback)
 
     def emit_no_wait(self, message: Message) -&gt; bool:
+        &#34;&#34;&#34;Send a message to the _parent_, non async version.
+
+        Args:
+            message (Message): A message object.
+
+        Returns:
+            bool: True if the message was posted successfully.
+        &#34;&#34;&#34;
         if self._parent:
             return self._parent._post_message_from_child_no_wait(message)
         else:
@@ -536,7 +544,7 @@ class MessagePump(metaclass=MessagePumpMeta):
             message (Message): A message object.
 
         Returns:
-            bool: _True if the message was posted successfully.
+            bool: True if the message was posted successfully.
         &#34;&#34;&#34;
         if self._parent:
             return await self._parent._post_message_from_child(message)
@@ -910,7 +918,7 @@ class MessagePump(metaclass=MessagePumpMeta):
         if isinstance(message, Event):
             await self.on_event(message)
         else:
-            await self.on_message(message)
+            await self._on_message(message)
 
     def _get_dispatch_methods(
         self, method_name: str, message: Message
@@ -936,9 +944,9 @@ class MessagePump(metaclass=MessagePumpMeta):
         Args:
             event (events.Event): An Event object.
         &#34;&#34;&#34;
-        await self.on_message(event)
+        await self._on_message(event)
 
-    async def on_message(self, message: Message) -&gt; None:
+    async def _on_message(self, message: Message) -&gt; None:
         &#34;&#34;&#34;Called to process a message.
 
         Args:
@@ -990,7 +998,7 @@ class MessagePump(metaclass=MessagePumpMeta):
 
     # TODO: This may not be needed, or may only be needed by the timer
     # Consider removing or making private
-    async def post_priority_message(self, message: Message) -&gt; bool:
+    async def _post_priority_message(self, message: Message) -&gt; bool:
         &#34;&#34;&#34;Post a &#34;priority&#34; messages which will be processes prior to regular messages.
 
         Note that you should rarely need this in a regular app. It exists primarily to allow
@@ -1040,6 +1048,14 @@ class MessagePump(metaclass=MessagePumpMeta):
         await invoke(event.callback)
 
     def emit_no_wait(self, message: Message) -&gt; bool:
+        &#34;&#34;&#34;Send a message to the _parent_, non async version.
+
+        Args:
+            message (Message): A message object.
+
+        Returns:
+            bool: True if the message was posted successfully.
+        &#34;&#34;&#34;
         if self._parent:
             return self._parent._post_message_from_child_no_wait(message)
         else:
@@ -1052,7 +1068,7 @@ class MessagePump(metaclass=MessagePumpMeta):
             message (Message): A message object.
 
         Returns:
-            bool: _True if the message was posted successfully.
+            bool: True if the message was posted successfully.
         &#34;&#34;&#34;
         if self._parent:
             return await self._parent._post_message_from_child(message)
@@ -1316,7 +1332,7 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>bool</code></dt>
-<dd>_True if the message was posted successfully.</dd>
+<dd>True if the message was posted successfully.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1329,7 +1345,7 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
         message (Message): A message object.
 
     Returns:
-        bool: _True if the message was posted successfully.
+        bool: True if the message was posted successfully.
     &#34;&#34;&#34;
     if self._parent:
         return await self._parent._post_message_from_child(message)
@@ -1341,12 +1357,30 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
 <span>def <span class="ident">emit_no_wait</span></span>(<span>self, message: Message) ‑> bool</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Send a message to the <em>parent</em>, non async version.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>message</code></strong> :&ensp;<code>Message</code></dt>
+<dd>A message object.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the message was posted successfully.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def emit_no_wait(self, message: Message) -&gt; bool:
+    &#34;&#34;&#34;Send a message to the _parent_, non async version.
+
+    Args:
+        message (Message): A message object.
+
+    Returns:
+        bool: True if the message was posted successfully.
+    &#34;&#34;&#34;
     if self._parent:
         return self._parent._post_message_from_child_no_wait(message)
     else:
@@ -1400,49 +1434,7 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
     Args:
         event (events.Event): An Event object.
     &#34;&#34;&#34;
-    await self.on_message(event)</code></pre>
-</details>
-</dd>
-<dt id="textual.message_pump.MessagePump.on_message"><code class="name flex">
-<span>async def <span class="ident">on_message</span></span>(<span>self, message: Message) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Called to process a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>message</code></strong> :&ensp;<code>Message</code></dt>
-<dd>A Message object.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def on_message(self, message: Message) -&gt; None:
-    &#34;&#34;&#34;Called to process a message.
-
-    Args:
-        message (Message): A Message object.
-    &#34;&#34;&#34;
-    _rich_traceback_guard = True
-    handler_name = message._handler_name
-
-    # Look through the MRO to find a handler
-    for cls, method in self._get_dispatch_methods(handler_name, message):
-        log.event.verbosity(message.verbose)(
-            message,
-            &#34;&gt;&gt;&gt;&#34;,
-            self,
-            f&#34;method=&lt;{cls.__name__}.{handler_name}&gt;&#34;,
-        )
-        await invoke(method, message)
-
-    # Bubble messages up the DOM (if enabled on the message)
-    if message.bubble and self._parent and not message._stop_propagation:
-        if message.sender == self._parent:
-            # parent is sender, so we stop propagation after parent
-            message.stop()
-        if self.is_parent_active and not self._parent._closing:
-            await self._parent.post_message(message)</code></pre>
+    await self._on_message(event)</code></pre>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.on_timer"><code class="name flex">
@@ -1538,48 +1530,6 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
     if not self.check_message_enabled(message):
         return False
     self._message_queue.put_nowait(message)
-    return True</code></pre>
-</details>
-</dd>
-<dt id="textual.message_pump.MessagePump.post_priority_message"><code class="name flex">
-<span>async def <span class="ident">post_priority_message</span></span>(<span>self, message: Message) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Post a "priority" messages which will be processes prior to regular messages.</p>
-<p>Note that you should rarely need this in a regular app. It exists primarily to allow
-timer messages to skip the queue, so that they can be more regular.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>message</code></strong> :&ensp;<code>Message</code></dt>
-<dd>A message.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>bool</code></dt>
-<dd>True if the messages was processed, False if it wasn't.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">async def post_priority_message(self, message: Message) -&gt; bool:
-    &#34;&#34;&#34;Post a &#34;priority&#34; messages which will be processes prior to regular messages.
-
-    Note that you should rarely need this in a regular app. It exists primarily to allow
-    timer messages to skip the queue, so that they can be more regular.
-
-    Args:
-        message (Message): A message.
-
-    Returns:
-        bool: True if the messages was processed, False if it wasn&#39;t.
-    &#34;&#34;&#34;
-    # TODO: Allow priority messages to jump the queue
-    if self._closing or self._closed:
-        return False
-    if not self.check_message_enabled(message):
-        return False
-    await self._message_queue.put(message)
     return True</code></pre>
 </details>
 </dd>
@@ -1860,11 +1810,9 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.message_pump.MessagePump.log" href="#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_callback" href="#textual.message_pump.MessagePump.on_callback">on_callback</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_event" href="#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.on_message" href="#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.on_timer" href="#textual.message_pump.MessagePump.on_timer">on_timer</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.post_message" href="#textual.message_pump.MessagePump.post_message">post_message</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.post_message_no_wait" href="#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
-<li><code><a title="textual.message_pump.MessagePump.post_priority_message" href="#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.set_interval" href="#textual.message_pump.MessagePump.set_interval">set_interval</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.set_timer" href="#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.message_pump.MessagePump.task" href="#textual.message_pump.MessagePump.task">task</a></code></li>

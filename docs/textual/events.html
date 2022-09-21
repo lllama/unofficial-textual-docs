@@ -48,12 +48,11 @@ if TYPE_CHECKING:
 
 @rich.repr.auto
 class Event(Message):
+    &#34;&#34;&#34;The base class for all events.&#34;&#34;&#34;
+
     def __rich_repr__(self) -&gt; rich.repr.Result:
         return
         yield
-
-    def __init_subclass__(cls, bubble: bool = True, verbose: bool = False) -&gt; None:
-        super().__init_subclass__(bubble=bubble, verbose=verbose)
 
 
 @rich.repr.auto
@@ -497,12 +496,7 @@ class ScreenSuspend(Event, bubble=False):
 <span>(</span><span>sender: MessageTarget, action: str)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -553,10 +547,10 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -568,12 +562,7 @@ class ScreenSuspend(Event, bubble=False):
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -610,10 +599,10 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -625,12 +614,7 @@ class ScreenSuspend(Event, bubble=False):
 <span>(</span><span>sender: MessageTarget, callback: Callable[[], Awaitable[None]])</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -674,10 +658,10 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -759,13 +743,13 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><a title="textual.events.MouseEvent.ctrl" href="#textual.events.MouseEvent.ctrl">ctrl</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
+<li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_x" href="#textual.events.MouseEvent.screen_x">screen_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.MouseEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
@@ -817,10 +801,10 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -832,12 +816,7 @@ class ScreenSuspend(Event, bubble=False):
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -874,10 +853,10 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -889,12 +868,7 @@ class ScreenSuspend(Event, bubble=False):
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -931,10 +905,10 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -946,12 +920,7 @@ class ScreenSuspend(Event, bubble=False):
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -988,10 +957,10 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1003,23 +972,17 @@ class ScreenSuspend(Event, bubble=False):
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class Event(Message):
+    &#34;&#34;&#34;The base class for all events.&#34;&#34;&#34;
+
     def __rich_repr__(self) -&gt; rich.repr.Result:
         return
-        yield
-
-    def __init_subclass__(cls, bubble: bool = True, verbose: bool = False) -&gt; None:
-        super().__init_subclass__(bubble=bubble, verbose=verbose)</code></pre>
+        yield</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1078,10 +1041,10 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1093,12 +1056,7 @@ class ScreenSuspend(Event, bubble=False):
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1135,10 +1093,10 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1194,10 +1152,10 @@ or if it has been offset beyond the edges of the terminal.</p></div>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1253,10 +1211,10 @@ through the usual message queue.</p></div>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1268,12 +1226,7 @@ through the usual message queue.</p></div>
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1317,10 +1270,10 @@ through the usual message queue.</p></div>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1369,10 +1322,10 @@ through the usual message queue.</p></div>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1510,10 +1463,10 @@ def key_name(self) -&gt; str | None:
 <li><code><b><a title="textual.events.InputEvent" href="#textual.events.InputEvent">InputEvent</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.InputEvent.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.InputEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.InputEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.InputEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.InputEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.InputEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.InputEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.InputEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1525,12 +1478,7 @@ def key_name(self) -&gt; str | None:
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -1567,10 +1515,10 @@ def key_name(self) -&gt; str | None:
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1628,10 +1576,10 @@ configuration and binding keys.</p></div>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1680,10 +1628,10 @@ configuration and binding keys.</p></div>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1756,10 +1704,10 @@ configuration and binding keys.</p></div>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1841,13 +1789,13 @@ configuration and binding keys.</p></div>
 <li><code><a title="textual.events.MouseEvent.ctrl" href="#textual.events.MouseEvent.ctrl">ctrl</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
+<li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_x" href="#textual.events.MouseEvent.screen_x">screen_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.MouseEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
@@ -2163,10 +2111,10 @@ def style(self) -&gt; Style:
 <li><code><b><a title="textual.events.InputEvent" href="#textual.events.InputEvent">InputEvent</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.InputEvent.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.InputEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.InputEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.InputEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.InputEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.InputEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.InputEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.InputEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -2221,13 +2169,13 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.MouseEvent.ctrl" href="#textual.events.MouseEvent.ctrl">ctrl</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
+<li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_x" href="#textual.events.MouseEvent.screen_x">screen_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.MouseEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
@@ -2298,10 +2246,10 @@ def style(self) -&gt; Style:
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -2313,12 +2261,7 @@ def style(self) -&gt; Style:
 <span>(</span><span>sender: MessageTarget, x: int, y: int)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2372,10 +2315,10 @@ def style(self) -&gt; Style:
 <li><code><b><a title="textual.events.InputEvent" href="#textual.events.InputEvent">InputEvent</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.InputEvent.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.InputEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.InputEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.InputEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.InputEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.InputEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.InputEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.InputEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -2387,12 +2330,7 @@ def style(self) -&gt; Style:
 <span>(</span><span>sender: MessageTarget, x: int, y: int)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2446,10 +2384,10 @@ def style(self) -&gt; Style:
 <li><code><b><a title="textual.events.InputEvent" href="#textual.events.InputEvent">InputEvent</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.InputEvent.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.InputEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.InputEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.InputEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.InputEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.InputEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.InputEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.InputEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -2531,13 +2469,13 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.MouseEvent.ctrl" href="#textual.events.MouseEvent.ctrl">ctrl</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
+<li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_x" href="#textual.events.MouseEvent.screen_x">screen_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.MouseEvent.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
@@ -2614,10 +2552,10 @@ and disable it when the app shuts down.</p>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -2670,10 +2608,10 @@ and disable it when the app shuts down.</p>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -2776,10 +2714,10 @@ and disable it when the app shuts down.</p>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -2791,12 +2729,7 @@ and disable it when the app shuts down.</p>
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2833,10 +2766,10 @@ and disable it when the app shuts down.</p>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -2848,12 +2781,7 @@ and disable it when the app shuts down.</p>
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2890,10 +2818,10 @@ and disable it when the app shuts down.</p>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -2942,10 +2870,10 @@ and disable it when the app shuts down.</p>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -2957,12 +2885,7 @@ and disable it when the app shuts down.</p>
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2999,10 +2922,10 @@ and disable it when the app shuts down.</p>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -3014,12 +2937,7 @@ and disable it when the app shuts down.</p>
 <span>(</span><span>sender: MessageTarget)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3056,10 +2974,10 @@ and disable it when the app shuts down.</p>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -3071,12 +2989,7 @@ and disable it when the app shuts down.</p>
 <span>(</span><span>sender: MessageTarget, timer: "'TimerClass'", time: float, count: int = 0, callback: TimerCallback | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Base class for a message.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>sender</code></strong> :&ensp;<code>MessageTarget</code></dt>
-<dd>The sender of the message / event.</dd>
-</dl></div>
+<div class="desc"><p>The base class for all events.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -3142,10 +3055,10 @@ and disable it when the app shuts down.</p>
 <li><code><b><a title="textual.events.Event" href="#textual.events.Event">Event</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.events.Event.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.events.Event.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.Event.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.events.Event.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.events.Event.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.events.Event.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.events.Event.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.events.Event.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>

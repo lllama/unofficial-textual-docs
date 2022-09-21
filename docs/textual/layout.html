@@ -116,14 +116,6 @@ class Center(Widget):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Center.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.layout.Center.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -140,6 +132,8 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus" href="widget.html#textual.widget.Widget.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus_children" href="widget.html#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.classes" href="dom.html#textual.dom.DOMNode.classes">classes</a></code></li>
@@ -158,7 +152,9 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
+<li><code><a title="textual.widget.Widget.emit_no_wait" href="message_pump.html#textual.message_pump.MessagePump.emit_no_wait">emit_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.expand" href="widget.html#textual.widget.Widget.expand">expand</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
@@ -186,12 +182,10 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
-<li><code><a title="textual.widget.Widget.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="widget.html#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
-<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_render" href="widget.html#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -238,6 +232,7 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.shrink" href="widget.html#textual.widget.Widget.shrink">shrink</a></code></li>
 <li><code><a title="textual.widget.Widget.siblings" href="widget.html#textual.widget.Widget.siblings">siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
 <li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
@@ -250,8 +245,6 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
 </ul>
 </li>
@@ -293,14 +286,6 @@ class Center(Widget):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Container.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.layout.Container.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -317,6 +302,8 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus" href="widget.html#textual.widget.Widget.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus_children" href="widget.html#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.classes" href="dom.html#textual.dom.DOMNode.classes">classes</a></code></li>
@@ -335,7 +322,9 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
+<li><code><a title="textual.widget.Widget.emit_no_wait" href="message_pump.html#textual.message_pump.MessagePump.emit_no_wait">emit_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.expand" href="widget.html#textual.widget.Widget.expand">expand</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
@@ -363,12 +352,10 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
-<li><code><a title="textual.widget.Widget.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="widget.html#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
-<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_render" href="widget.html#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -415,6 +402,7 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.shrink" href="widget.html#textual.widget.Widget.shrink">shrink</a></code></li>
 <li><code><a title="textual.widget.Widget.siblings" href="widget.html#textual.widget.Widget.siblings">siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
 <li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
@@ -427,8 +415,6 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
 </ul>
 </li>
@@ -470,14 +456,6 @@ class Center(Widget):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Horizontal.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.layout.Horizontal.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -494,6 +472,8 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus" href="widget.html#textual.widget.Widget.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus_children" href="widget.html#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.classes" href="dom.html#textual.dom.DOMNode.classes">classes</a></code></li>
@@ -512,7 +492,9 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
+<li><code><a title="textual.widget.Widget.emit_no_wait" href="message_pump.html#textual.message_pump.MessagePump.emit_no_wait">emit_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.expand" href="widget.html#textual.widget.Widget.expand">expand</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
@@ -540,12 +522,10 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
-<li><code><a title="textual.widget.Widget.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="widget.html#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
-<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_render" href="widget.html#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -592,6 +572,7 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.shrink" href="widget.html#textual.widget.Widget.shrink">shrink</a></code></li>
 <li><code><a title="textual.widget.Widget.siblings" href="widget.html#textual.widget.Widget.siblings">siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
 <li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
@@ -604,8 +585,6 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
 </ul>
 </li>
@@ -647,14 +626,6 @@ class Center(Widget):
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.layout.Vertical.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.layout.Vertical.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -671,6 +642,8 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus" href="widget.html#textual.widget.Widget.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus_children" href="widget.html#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.classes" href="dom.html#textual.dom.DOMNode.classes">classes</a></code></li>
@@ -689,7 +662,9 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
+<li><code><a title="textual.widget.Widget.emit_no_wait" href="message_pump.html#textual.message_pump.MessagePump.emit_no_wait">emit_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.expand" href="widget.html#textual.widget.Widget.expand">expand</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
@@ -717,12 +692,10 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
-<li><code><a title="textual.widget.Widget.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="widget.html#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
-<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_render" href="widget.html#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -769,6 +742,7 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.shrink" href="widget.html#textual.widget.Widget.shrink">shrink</a></code></li>
 <li><code><a title="textual.widget.Widget.siblings" href="widget.html#textual.widget.Widget.siblings">siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
 <li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
@@ -781,8 +755,6 @@ class Center(Widget):
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
 </ul>
 </li>
@@ -855,8 +827,6 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.layout.Center.COMPONENT_CLASSES" href="#textual.layout.Center.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
 <li><code><a title="textual.layout.Center.DEFAULT_CSS" href="#textual.layout.Center.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
-<li><code><a title="textual.layout.Center.can_focus" href="#textual.layout.Center.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.layout.Center.can_focus_children" href="#textual.layout.Center.can_focus_children">can_focus_children</a></code></li>
 </ul>
 </li>
 <li>
@@ -864,8 +834,6 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.layout.Container.COMPONENT_CLASSES" href="#textual.layout.Container.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
 <li><code><a title="textual.layout.Container.DEFAULT_CSS" href="#textual.layout.Container.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
-<li><code><a title="textual.layout.Container.can_focus" href="#textual.layout.Container.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.layout.Container.can_focus_children" href="#textual.layout.Container.can_focus_children">can_focus_children</a></code></li>
 </ul>
 </li>
 <li>
@@ -873,8 +841,6 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.layout.Horizontal.COMPONENT_CLASSES" href="#textual.layout.Horizontal.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
 <li><code><a title="textual.layout.Horizontal.DEFAULT_CSS" href="#textual.layout.Horizontal.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
-<li><code><a title="textual.layout.Horizontal.can_focus" href="#textual.layout.Horizontal.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.layout.Horizontal.can_focus_children" href="#textual.layout.Horizontal.can_focus_children">can_focus_children</a></code></li>
 </ul>
 </li>
 <li>
@@ -882,8 +848,6 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.layout.Vertical.COMPONENT_CLASSES" href="#textual.layout.Vertical.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
 <li><code><a title="textual.layout.Vertical.DEFAULT_CSS" href="#textual.layout.Vertical.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
-<li><code><a title="textual.layout.Vertical.can_focus" href="#textual.layout.Vertical.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.layout.Vertical.can_focus_children" href="#textual.layout.Vertical.can_focus_children">can_focus_children</a></code></li>
 </ul>
 </li>
 </ul>

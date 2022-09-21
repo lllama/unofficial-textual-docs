@@ -38,8 +38,8 @@ from typing import TYPE_CHECKING, Any, Iterable, NamedTuple, cast
 import rich.repr
 from rich.style import Style
 
-from textual._types import CallbackType
-from .._animator import Animation, EasingFunction
+from .._types import CallbackType
+from .._animator import Animation, EasingFunction, BoundAnimator
 from ..color import Color
 from ..geometry import Offset, Spacing
 from ._style_properties import (
@@ -878,6 +878,7 @@ class RenderStyles(StylesBase):
         self.node = node
         self._base_styles = base
         self._inline_styles = inline_styles
+        self._animate: BoundAnimator | None = None
 
     @property
     def base(self) -&gt; Styles:
@@ -894,6 +895,23 @@ class RenderStyles(StylesBase):
         &#34;&#34;&#34;Get a Rich style for this Styles object.&#34;&#34;&#34;
         assert self.node is not None
         return self.node.rich_style
+
+    @property
+    def animate(self) -&gt; BoundAnimator:
+        &#34;&#34;&#34;Get an animator to animate style.
+
+        Example:
+            ```python
+            self.animate(&#34;brightness&#34;, 0.5)
+            ```
+
+        Returns:
+            BoundAnimator: An animator bound to this widget.
+        &#34;&#34;&#34;
+        if self._animate is None:
+            self._animate = self.node.app.animator.bind(self)
+        assert self._animate is not None
+        return self._animate
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         for rule_name in RULE_NAMES:
@@ -1033,6 +1051,7 @@ if __name__ == &#34;__main__&#34;:
         self.node = node
         self._base_styles = base
         self._inline_styles = inline_styles
+        self._animate: BoundAnimator | None = None
 
     @property
     def base(self) -&gt; Styles:
@@ -1049,6 +1068,23 @@ if __name__ == &#34;__main__&#34;:
         &#34;&#34;&#34;Get a Rich style for this Styles object.&#34;&#34;&#34;
         assert self.node is not None
         return self.node.rich_style
+
+    @property
+    def animate(self) -&gt; BoundAnimator:
+        &#34;&#34;&#34;Get an animator to animate style.
+
+        Example:
+            ```python
+            self.animate(&#34;brightness&#34;, 0.5)
+            ```
+
+        Returns:
+            BoundAnimator: An animator bound to this widget.
+        &#34;&#34;&#34;
+        if self._animate is None:
+            self._animate = self.node.app.animator.bind(self)
+        assert self._animate is not None
+        return self._animate
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         for rule_name in RULE_NAMES:
@@ -1117,6 +1153,39 @@ if __name__ == &#34;__main__&#34;:
 </dl>
 <h3>Instance variables</h3>
 <dl>
+<dt id="textual.css.styles.RenderStyles.animate"><code class="name">var <span class="ident">animate</span> : textual._animator.BoundAnimator</code></dt>
+<dd>
+<div class="desc"><p>Get an animator to animate style.</p>
+<h2 id="example">Example</h2>
+<pre><code class="language-python">self.animate(&quot;brightness&quot;, 0.5)
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>BoundAnimator</code></dt>
+<dd>An animator bound to this widget.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def animate(self) -&gt; BoundAnimator:
+    &#34;&#34;&#34;Get an animator to animate style.
+
+    Example:
+        ```python
+        self.animate(&#34;brightness&#34;, 0.5)
+        ```
+
+    Returns:
+        BoundAnimator: An animator bound to this widget.
+    &#34;&#34;&#34;
+    if self._animate is None:
+        self._animate = self.node.app.animator.bind(self)
+    assert self._animate is not None
+    return self._animate</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.RenderStyles.base"><code class="name">var <span class="ident">base</span> : <a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></code></dt>
 <dd>
 <div class="desc"><p>Quick access to base (css) style.</p></div>
@@ -4607,6 +4676,7 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.css.styles.RenderStyles" href="#textual.css.styles.RenderStyles">RenderStyles</a></code></h4>
 <ul class="two-column">
+<li><code><a title="textual.css.styles.RenderStyles.animate" href="#textual.css.styles.RenderStyles.animate">animate</a></code></li>
 <li><code><a title="textual.css.styles.RenderStyles.base" href="#textual.css.styles.RenderStyles.base">base</a></code></li>
 <li><code><a title="textual.css.styles.RenderStyles.clear_rule" href="#textual.css.styles.RenderStyles.clear_rule">clear_rule</a></code></li>
 <li><code><a title="textual.css.styles.RenderStyles.css" href="#textual.css.styles.RenderStyles.css">css</a></code></li>

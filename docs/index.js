@@ -57,6 +57,7 @@ URLS=[
 "textual/renderables/underline_bar.html",
 "textual/renderables/blank.html",
 "textual/renderables/tint.html",
+"textual/render.html",
 "textual/events.html",
 "textual/cli/index.html",
 "textual/cli/previews/index.html",
@@ -196,10 +197,9 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollMessage.set_forwarded",
+"ref":"textual.scrollbar.ScrollMessage.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.scrollbar.ScrollMessage.can_replace",
@@ -210,7 +210,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollMessage.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -260,10 +260,9 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollUp.set_forwarded",
+"ref":"textual.scrollbar.ScrollUp.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.scrollbar.ScrollUp.can_replace",
@@ -274,7 +273,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollUp.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -324,10 +323,9 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollDown.set_forwarded",
+"ref":"textual.scrollbar.ScrollDown.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.scrollbar.ScrollDown.can_replace",
@@ -338,7 +336,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollDown.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -388,10 +386,9 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollLeft.set_forwarded",
+"ref":"textual.scrollbar.ScrollLeft.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.scrollbar.ScrollLeft.can_replace",
@@ -402,7 +399,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollLeft.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -452,10 +449,9 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollRight.set_forwarded",
+"ref":"textual.scrollbar.ScrollRight.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.scrollbar.ScrollRight.can_replace",
@@ -466,7 +462,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollRight.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -516,10 +512,9 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.scrollbar.ScrollTo.set_forwarded",
+"ref":"textual.scrollbar.ScrollTo.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.scrollbar.ScrollTo.can_replace",
@@ -530,7 +525,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollTo.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -563,7 +558,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar",
 "url":2,
-"doc":"A Widget is the base class for Textual widgets. Extent this class (or a sub-class) when defining your own widgets."
+"doc":"A Widget is the base class for Textual widgets. See also [static][textual.widgets._static.Static] for starting point for your own widgets."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.window_virtual_size",
@@ -623,12 +618,22 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.can_focus",
 "url":2,
-"doc":""
+"doc":"Widget may receive focus."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.can_focus_children",
 "url":2,
-"doc":""
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.expand",
+"url":4,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.shrink",
+"url":4,
+"doc":"Rich renderable may shrink."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.virtual_size",
@@ -704,18 +709,6 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.get_component_rich_style",
 "url":4,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBar.watch_show_horizontal_scrollbar",
-"url":4,
-"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBar.watch_show_vertical_scrollbar",
-"url":4,
-"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
 "func":1
 },
 {
@@ -885,91 +878,91 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_to",
 "url":4,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_relative",
 "url":4,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_home",
 "url":4,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_end",
 "url":4,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_left",
 "url":4,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_right",
 "url":4,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_down",
 "url":4,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_up",
 "url":4,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_page_up",
 "url":4,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_page_down",
 "url":4,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_page_left",
 "url":4,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_page_right",
 "url":4,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_to_widget",
 "url":4,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_visible",
 "url":4,
-"doc":"Scroll the container to make this widget visible.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
 "func":1
 },
 {
@@ -1267,21 +1260,9 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.scrollbar.ScrollBar.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.scrollbar.ScrollBar.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBar.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -1291,9 +1272,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.emit_no_wait",
+"url":6,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
@@ -1321,12 +1308,22 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.can_focus",
 "url":2,
-"doc":""
+"doc":"Widget may receive focus."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.can_focus_children",
 "url":2,
-"doc":""
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.scrollbar.ScrollBarCorner.expand",
+"url":4,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.scrollbar.ScrollBarCorner.shrink",
+"url":4,
+"doc":"Rich renderable may shrink."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.virtual_size",
@@ -1407,18 +1404,6 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBarCorner.get_component_rich_style",
 "url":4,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBarCorner.watch_show_horizontal_scrollbar",
-"url":4,
-"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBarCorner.watch_show_vertical_scrollbar",
-"url":4,
-"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
 "func":1
 },
 {
@@ -1588,91 +1573,91 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_to",
 "url":4,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_relative",
 "url":4,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_home",
 "url":4,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_end",
 "url":4,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_left",
 "url":4,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_right",
 "url":4,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_down",
 "url":4,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_up",
 "url":4,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_page_up",
 "url":4,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_page_down",
 "url":4,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_page_left",
 "url":4,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_page_right",
 "url":4,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_to_widget",
 "url":4,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_visible",
 "url":4,
-"doc":"Scroll the container to make this widget visible.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
 "func":1
 },
 {
@@ -1970,21 +1955,9 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.scrollbar.ScrollBarCorner.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.scrollbar.ScrollBarCorner.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.scrollbar.ScrollBarCorner.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -1994,9 +1967,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBarCorner.emit_no_wait",
+"url":6,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBarCorner.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
@@ -2177,7 +2156,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget",
 "url":4,
-"doc":"A Widget is the base class for Textual widgets. Extent this class (or a sub-class) when defining your own widgets."
+"doc":"A Widget is the base class for Textual widgets. See also [static][textual.widgets._static.Static] for starting point for your own widgets."
 },
 {
 "ref":"textual.widget.Widget.DEFAULT_CSS",
@@ -2192,12 +2171,22 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.can_focus",
 "url":4,
-"doc":""
+"doc":"Widget may receive focus."
 },
 {
 "ref":"textual.widget.Widget.can_focus_children",
 "url":4,
-"doc":""
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.widget.Widget.expand",
+"url":4,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.widget.Widget.shrink",
+"url":4,
+"doc":"Rich renderable may shrink."
 },
 {
 "ref":"textual.widget.Widget.virtual_size",
@@ -2278,18 +2267,6 @@ INDEX=[
 "ref":"textual.widget.Widget.get_component_rich_style",
 "url":4,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.watch_show_horizontal_scrollbar",
-"url":4,
-"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.watch_show_vertical_scrollbar",
-"url":4,
-"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
 "func":1
 },
 {
@@ -2495,91 +2472,91 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.scroll_to",
 "url":4,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_relative",
 "url":4,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_home",
 "url":4,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_end",
 "url":4,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_left",
 "url":4,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_right",
 "url":4,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_down",
 "url":4,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_up",
 "url":4,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_page_up",
 "url":4,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_page_down",
 "url":4,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_page_left",
 "url":4,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_page_right",
 "url":4,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_to_widget",
 "url":4,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_visible",
 "url":4,
-"doc":"Scroll the container to make this widget visible.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
 "func":1
 },
 {
@@ -2889,21 +2866,9 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.widget.Widget.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.widget.Widget.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -2913,9 +2878,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.emit_no_wait",
+"url":6,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
@@ -3338,12 +3309,22 @@ INDEX=[
 {
 "ref":"textual.layout.Container.can_focus",
 "url":15,
-"doc":""
+"doc":"Widget may receive focus."
 },
 {
 "ref":"textual.layout.Container.can_focus_children",
 "url":15,
-"doc":""
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.layout.Container.expand",
+"url":4,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.layout.Container.shrink",
+"url":4,
+"doc":"Rich renderable may shrink."
 },
 {
 "ref":"textual.layout.Container.virtual_size",
@@ -3424,18 +3405,6 @@ INDEX=[
 "ref":"textual.layout.Container.get_component_rich_style",
 "url":4,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.watch_show_horizontal_scrollbar",
-"url":4,
-"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.watch_show_vertical_scrollbar",
-"url":4,
-"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
 "func":1
 },
 {
@@ -3605,91 +3574,91 @@ INDEX=[
 {
 "ref":"textual.layout.Container.scroll_to",
 "url":4,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_relative",
 "url":4,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_home",
 "url":4,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_end",
 "url":4,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_left",
 "url":4,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_right",
 "url":4,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_down",
 "url":4,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_up",
 "url":4,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_page_up",
 "url":4,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_page_down",
 "url":4,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_page_left",
 "url":4,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_page_right",
 "url":4,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_to_widget",
 "url":4,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.layout.Container.scroll_visible",
 "url":4,
-"doc":"Scroll the container to make this widget visible.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
 "func":1
 },
 {
@@ -3993,21 +3962,9 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Container.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.layout.Container.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -4017,9 +3974,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Container.emit_no_wait",
+"url":6,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
 "ref":"textual.layout.Container.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
@@ -4046,12 +4009,22 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.can_focus",
 "url":15,
-"doc":""
+"doc":"Widget may receive focus."
 },
 {
 "ref":"textual.layout.Vertical.can_focus_children",
 "url":15,
-"doc":""
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.layout.Vertical.expand",
+"url":4,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.layout.Vertical.shrink",
+"url":4,
+"doc":"Rich renderable may shrink."
 },
 {
 "ref":"textual.layout.Vertical.virtual_size",
@@ -4132,18 +4105,6 @@ INDEX=[
 "ref":"textual.layout.Vertical.get_component_rich_style",
 "url":4,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.watch_show_horizontal_scrollbar",
-"url":4,
-"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.watch_show_vertical_scrollbar",
-"url":4,
-"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
 "func":1
 },
 {
@@ -4313,91 +4274,91 @@ INDEX=[
 {
 "ref":"textual.layout.Vertical.scroll_to",
 "url":4,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_relative",
 "url":4,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_home",
 "url":4,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_end",
 "url":4,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_left",
 "url":4,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_right",
 "url":4,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_down",
 "url":4,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_up",
 "url":4,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_page_up",
 "url":4,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_page_down",
 "url":4,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_page_left",
 "url":4,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_page_right",
 "url":4,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_to_widget",
 "url":4,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.layout.Vertical.scroll_visible",
 "url":4,
-"doc":"Scroll the container to make this widget visible.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
 "func":1
 },
 {
@@ -4701,21 +4662,9 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Vertical.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.layout.Vertical.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -4725,9 +4674,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Vertical.emit_no_wait",
+"url":6,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
 "ref":"textual.layout.Vertical.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
@@ -4754,12 +4709,22 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.can_focus",
 "url":15,
-"doc":""
+"doc":"Widget may receive focus."
 },
 {
 "ref":"textual.layout.Horizontal.can_focus_children",
 "url":15,
-"doc":""
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.layout.Horizontal.expand",
+"url":4,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.layout.Horizontal.shrink",
+"url":4,
+"doc":"Rich renderable may shrink."
 },
 {
 "ref":"textual.layout.Horizontal.virtual_size",
@@ -4840,18 +4805,6 @@ INDEX=[
 "ref":"textual.layout.Horizontal.get_component_rich_style",
 "url":4,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.watch_show_horizontal_scrollbar",
-"url":4,
-"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.watch_show_vertical_scrollbar",
-"url":4,
-"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
 "func":1
 },
 {
@@ -5021,91 +4974,91 @@ INDEX=[
 {
 "ref":"textual.layout.Horizontal.scroll_to",
 "url":4,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_relative",
 "url":4,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_home",
 "url":4,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_end",
 "url":4,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_left",
 "url":4,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_right",
 "url":4,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_down",
 "url":4,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_up",
 "url":4,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_page_up",
 "url":4,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_page_down",
 "url":4,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_page_left",
 "url":4,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_page_right",
 "url":4,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_to_widget",
 "url":4,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.layout.Horizontal.scroll_visible",
 "url":4,
-"doc":"Scroll the container to make this widget visible.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
 "func":1
 },
 {
@@ -5409,21 +5362,9 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Horizontal.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.layout.Horizontal.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -5433,9 +5374,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Horizontal.emit_no_wait",
+"url":6,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
 "ref":"textual.layout.Horizontal.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
@@ -5462,12 +5409,22 @@ INDEX=[
 {
 "ref":"textual.layout.Center.can_focus",
 "url":15,
-"doc":""
+"doc":"Widget may receive focus."
 },
 {
 "ref":"textual.layout.Center.can_focus_children",
 "url":15,
-"doc":""
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.layout.Center.expand",
+"url":4,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.layout.Center.shrink",
+"url":4,
+"doc":"Rich renderable may shrink."
 },
 {
 "ref":"textual.layout.Center.virtual_size",
@@ -5548,18 +5505,6 @@ INDEX=[
 "ref":"textual.layout.Center.get_component_rich_style",
 "url":4,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.watch_show_horizontal_scrollbar",
-"url":4,
-"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.watch_show_vertical_scrollbar",
-"url":4,
-"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
 "func":1
 },
 {
@@ -5729,91 +5674,91 @@ INDEX=[
 {
 "ref":"textual.layout.Center.scroll_to",
 "url":4,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_relative",
 "url":4,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_home",
 "url":4,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_end",
 "url":4,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_left",
 "url":4,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_right",
 "url":4,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_down",
 "url":4,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_up",
 "url":4,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_page_up",
 "url":4,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_page_down",
 "url":4,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_page_left",
 "url":4,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_page_right",
 "url":4,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_to_widget",
 "url":4,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.layout.Center.scroll_visible",
 "url":4,
-"doc":"Scroll the container to make this widget visible.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
 "func":1
 },
 {
@@ -6117,21 +6062,9 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layout.Center.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.layout.Center.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -6141,9 +6074,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.layout.Center.emit_no_wait",
+"url":6,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
 "ref":"textual.layout.Center.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
@@ -6506,12 +6445,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.dom.DOMNode.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.dom.DOMNode.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
@@ -6524,21 +6457,21 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.dom.DOMNode.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
-"func":1
-},
-{
 "ref":"textual.dom.DOMNode.post_message_no_wait",
 "url":6,
 "doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
+"ref":"textual.dom.DOMNode.emit_no_wait",
+"url":6,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
 "ref":"textual.dom.DOMNode.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
@@ -6602,13 +6535,7 @@ INDEX=[
 {
 "ref":"textual.message.Message.handler_name",
 "url":3,
-"doc":""
-},
-{
-"ref":"textual.message.Message.set_forwarded",
-"url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.message.Message.can_replace",
@@ -6619,7 +6546,7 @@ INDEX=[
 {
 "ref":"textual.message.Message.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -6732,6 +6659,24 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scroll_view.ScrollView.watch_virtual_size",
+"url":18,
+"doc":"",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar",
+"url":18,
+"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
+"func":1
+},
+{
+"ref":"textual.scroll_view.ScrollView.watch_show_vertical_scrollbar",
+"url":18,
+"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
+"func":1
+},
+{
 "ref":"textual.scroll_view.ScrollView.render",
 "url":18,
 "doc":"Render the scrollable region (if  render_lines is not implemented). Returns: RenderableType: Renderable object.",
@@ -6752,12 +6697,22 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.can_focus",
 "url":18,
-"doc":""
+"doc":"Widget may receive focus."
 },
 {
 "ref":"textual.scroll_view.ScrollView.can_focus_children",
 "url":18,
-"doc":""
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.scroll_view.ScrollView.expand",
+"url":4,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.scroll_view.ScrollView.shrink",
+"url":4,
+"doc":"Rich renderable may shrink."
 },
 {
 "ref":"textual.scroll_view.ScrollView.virtual_size",
@@ -6838,18 +6793,6 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.get_component_rich_style",
 "url":4,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar",
-"url":4,
-"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
-"func":1
-},
-{
-"ref":"textual.scroll_view.ScrollView.watch_show_vertical_scrollbar",
-"url":4,
-"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
 "func":1
 },
 {
@@ -6997,91 +6940,91 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.scroll_to",
 "url":4,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_relative",
 "url":4,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_home",
 "url":4,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_end",
 "url":4,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_left",
 "url":4,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_right",
 "url":4,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_down",
 "url":4,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_up",
 "url":4,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_page_up",
 "url":4,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_page_down",
 "url":4,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_page_left",
 "url":4,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_page_right",
 "url":4,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_to_widget",
 "url":4,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_visible",
 "url":4,
-"doc":"Scroll the container to make this widget visible.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
 "func":1
 },
 {
@@ -7379,21 +7322,9 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.scroll_view.ScrollView.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.scroll_view.ScrollView.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.scroll_view.ScrollView.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -7403,9 +7334,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scroll_view.ScrollView.emit_no_wait",
+"url":6,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
 "ref":"textual.scroll_view.ScrollView.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
@@ -10707,6 +10644,11 @@ INDEX=[
 "doc":"Get a Rich style for this Styles object."
 },
 {
+"ref":"textual.css.styles.RenderStyles.animate",
+"url":46,
+"doc":"Get an animator to animate style. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+},
+{
 "ref":"textual.css.styles.RenderStyles.refresh",
 "url":46,
 "doc":"Mark the styles as requiring a refresh. Args: layout (bool, optional): Also require a layout. Defaults to False. children (bool, opional): Also refresh children. Defaults to False.",
@@ -11108,15 +11050,14 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.Update.set_forwarded",
+"ref":"textual.messages.Update.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.messages.Update.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11172,15 +11113,14 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.Layout.set_forwarded",
+"ref":"textual.messages.Layout.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.messages.Layout.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11230,10 +11170,9 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.InvokeLater.set_forwarded",
+"ref":"textual.messages.InvokeLater.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.messages.InvokeLater.can_replace",
@@ -11244,7 +11183,7 @@ INDEX=[
 {
 "ref":"textual.messages.InvokeLater.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11294,10 +11233,9 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.ScrollToRegion.set_forwarded",
+"ref":"textual.messages.ScrollToRegion.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.messages.ScrollToRegion.can_replace",
@@ -11308,7 +11246,7 @@ INDEX=[
 {
 "ref":"textual.messages.ScrollToRegion.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11364,15 +11302,14 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.StylesUpdated.set_forwarded",
+"ref":"textual.messages.StylesUpdated.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.messages.StylesUpdated.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11428,15 +11365,14 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.Prompt.set_forwarded",
+"ref":"textual.messages.Prompt.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.messages.Prompt.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11486,10 +11422,9 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.messages.TerminalSupportsSynchronizedOutput.set_forwarded",
+"ref":"textual.messages.TerminalSupportsSynchronizedOutput.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.messages.TerminalSupportsSynchronizedOutput.can_replace",
@@ -11500,7 +11435,7 @@ INDEX=[
 {
 "ref":"textual.messages.TerminalSupportsSynchronizedOutput.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11648,45 +11583,55 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.events",
+"ref":"textual.render",
 "url":58,
+"doc":""
+},
+{
+"ref":"textual.render.measure",
+"url":58,
+"doc":"Measure a rich renderable. Args: console (Console): A console object. renderable (RenderableType): Rich renderable. default (int): Default width to use if renderable does not expose dimensions. Returns: int: Width in cells",
+"func":1
+},
+{
+"ref":"textual.events",
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Event",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Event.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Event.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Event.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Event.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Event.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Event.set_forwarded",
+"ref":"textual.events.Event.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Event.can_replace",
@@ -11697,7 +11642,7 @@ INDEX=[
 {
 "ref":"textual.events.Event.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11718,39 +11663,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Callback",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Callback.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Callback.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Callback.set_forwarded",
+"ref":"textual.events.Callback.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Callback.can_replace",
@@ -11761,7 +11705,7 @@ INDEX=[
 {
 "ref":"textual.events.Callback.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11782,39 +11726,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.InvokeCallbacks",
-"url":58,
+"url":59,
 "doc":"Sent after the Screen is updated"
 },
 {
 "ref":"textual.events.InvokeCallbacks.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.InvokeCallbacks.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.InvokeCallbacks.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.InvokeCallbacks.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.InvokeCallbacks.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.InvokeCallbacks.set_forwarded",
+"ref":"textual.events.InvokeCallbacks.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.InvokeCallbacks.can_replace",
@@ -11825,7 +11768,7 @@ INDEX=[
 {
 "ref":"textual.events.InvokeCallbacks.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11846,39 +11789,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.ShutdownRequest",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.ShutdownRequest.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.ShutdownRequest.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.ShutdownRequest.set_forwarded",
+"ref":"textual.events.ShutdownRequest.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.ShutdownRequest.can_replace",
@@ -11889,7 +11831,7 @@ INDEX=[
 {
 "ref":"textual.events.ShutdownRequest.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11910,39 +11852,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Shutdown",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Shutdown.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Shutdown.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Shutdown.set_forwarded",
+"ref":"textual.events.Shutdown.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Shutdown.can_replace",
@@ -11953,7 +11894,7 @@ INDEX=[
 {
 "ref":"textual.events.Shutdown.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -11974,39 +11915,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Load",
-"url":58,
+"url":59,
 "doc":"Sent when the App is running but  before the terminal is in application mode. Use this event to run any set up that doesn't require any visuals such as loading configuration and binding keys."
 },
 {
 "ref":"textual.events.Load.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Load.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Load.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Load.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Load.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Load.set_forwarded",
+"ref":"textual.events.Load.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Load.can_replace",
@@ -12017,7 +11957,7 @@ INDEX=[
 {
 "ref":"textual.events.Load.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12038,39 +11978,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Idle",
-"url":58,
+"url":59,
 "doc":"Sent when there are no more items in the message queue. This is a pseudo-event in that it is created by the Textual system and doesn't go through the usual message queue."
 },
 {
 "ref":"textual.events.Idle.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Idle.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Idle.set_forwarded",
+"ref":"textual.events.Idle.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Idle.can_replace",
@@ -12081,7 +12020,7 @@ INDEX=[
 {
 "ref":"textual.events.Idle.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12102,44 +12041,43 @@ INDEX=[
 },
 {
 "ref":"textual.events.Action",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Action.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Action.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Action.action",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Action.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Action.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Action.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Action.set_forwarded",
+"ref":"textual.events.Action.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Action.can_replace",
@@ -12150,7 +12088,7 @@ INDEX=[
 {
 "ref":"textual.events.Action.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12171,65 +12109,64 @@ INDEX=[
 },
 {
 "ref":"textual.events.Resize",
-"url":58,
+"url":59,
 "doc":"Sent when the app or widget has been resized. Args: sender (MessageTarget): The sender of the event (the Screen). size (Size): The new size of the Widget. virtual_size (Size): The virtual size (scrollable size) of the Widget. container_size (Size | None, optional): The size of the Widget's container widget. Defaults to None."
 },
 {
 "ref":"textual.events.Resize.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.can_replace",
-"url":58,
+"url":59,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.events.Resize.container_size",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.size",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.virtual_size",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Resize.set_forwarded",
+"ref":"textual.events.Resize.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Resize.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12250,39 +12187,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Compose",
-"url":58,
+"url":59,
 "doc":"Sent to a widget to request it to compose and mount children."
 },
 {
 "ref":"textual.events.Compose.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Compose.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Compose.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Compose.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Compose.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Compose.set_forwarded",
+"ref":"textual.events.Compose.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Compose.can_replace",
@@ -12293,7 +12229,7 @@ INDEX=[
 {
 "ref":"textual.events.Compose.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12314,39 +12250,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Mount",
-"url":58,
+"url":59,
 "doc":"Sent when a widget is  mounted and may receive messages."
 },
 {
 "ref":"textual.events.Mount.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Mount.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Mount.set_forwarded",
+"ref":"textual.events.Mount.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Mount.can_replace",
@@ -12357,7 +12292,7 @@ INDEX=[
 {
 "ref":"textual.events.Mount.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12378,39 +12313,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Remove",
-"url":58,
+"url":59,
 "doc":"Sent to a widget to ask it to remove itself from the DOM."
 },
 {
 "ref":"textual.events.Remove.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Remove.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Remove.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Remove.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Remove.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Remove.set_forwarded",
+"ref":"textual.events.Remove.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Remove.can_replace",
@@ -12421,7 +12355,7 @@ INDEX=[
 {
 "ref":"textual.events.Remove.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12442,39 +12376,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Show",
-"url":58,
+"url":59,
 "doc":"Sent when a widget has become visible."
 },
 {
 "ref":"textual.events.Show.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Show.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Show.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Show.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Show.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Show.set_forwarded",
+"ref":"textual.events.Show.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Show.can_replace",
@@ -12485,7 +12418,7 @@ INDEX=[
 {
 "ref":"textual.events.Show.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12506,39 +12439,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Hide",
-"url":58,
+"url":59,
 "doc":"Sent when a widget has been hidden. A widget may be hidden by setting its  visible flag to  False , if it is no longer in a layout, or if it has been offset beyond the edges of the terminal."
 },
 {
 "ref":"textual.events.Hide.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Hide.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Hide.set_forwarded",
+"ref":"textual.events.Hide.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Hide.can_replace",
@@ -12549,7 +12481,7 @@ INDEX=[
 {
 "ref":"textual.events.Hide.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12570,39 +12502,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseCapture",
-"url":58,
+"url":59,
 "doc":"Sent when the mouse has been captured. When a mouse has been captures, all further mouse events will be sent to the capturing widget. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when captured."
 },
 {
 "ref":"textual.events.MouseCapture.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseCapture.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.MouseCapture.set_forwarded",
+"ref":"textual.events.MouseCapture.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.MouseCapture.can_replace",
@@ -12613,7 +12544,7 @@ INDEX=[
 {
 "ref":"textual.events.MouseCapture.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12634,39 +12565,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseRelease",
-"url":58,
+"url":59,
 "doc":"Mouse has been released. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when released."
 },
 {
 "ref":"textual.events.MouseRelease.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseRelease.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.MouseRelease.set_forwarded",
+"ref":"textual.events.MouseRelease.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.MouseRelease.can_replace",
@@ -12677,7 +12607,7 @@ INDEX=[
 {
 "ref":"textual.events.MouseRelease.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12698,39 +12628,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.InputEvent",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.InputEvent.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.InputEvent.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.InputEvent.set_forwarded",
+"ref":"textual.events.InputEvent.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.InputEvent.can_replace",
@@ -12741,7 +12670,7 @@ INDEX=[
 {
 "ref":"textual.events.InputEvent.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12762,59 +12691,58 @@ INDEX=[
 },
 {
 "ref":"textual.events.Key",
-"url":58,
+"url":59,
 "doc":"Sent when the user hits a key on the keyboard. Args: sender (MessageTarget): The sender of the event (the App). key (str): A key name (textual.keys.Keys). char (str | None, optional): A printable character or None if it is not printable."
 },
 {
 "ref":"textual.events.Key.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Key.key_name",
-"url":58,
+"url":59,
 "doc":"Name of a key suitable for use as a Python identifier."
 },
 {
 "ref":"textual.events.Key.is_printable",
-"url":58,
+"url":59,
 "doc":"Return True if the key is printable. Currently, we assume any key event that isn't defined in key bindings is printable. Returns: bool: True if the key is printable."
 },
 {
 "ref":"textual.events.Key.char",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.key",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Key.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Key.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Key.set_forwarded",
+"ref":"textual.events.Key.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Key.can_replace",
@@ -12825,7 +12753,7 @@ INDEX=[
 {
 "ref":"textual.events.Key.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12846,106 +12774,105 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseEvent",
-"url":58,
+"url":59,
 "doc":"Sent in response to a mouse event. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseEvent.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.from_event",
-"url":58,
+"url":59,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events.MouseEvent.style",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.offset",
-"url":58,
+"url":59,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events.MouseEvent.button",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.ctrl",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.delta_x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.delta_y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.meta",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.screen_x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.screen_y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.shift",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.MouseEvent.set_forwarded",
+"ref":"textual.events.MouseEvent.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.MouseEvent.can_replace",
@@ -12956,7 +12883,7 @@ INDEX=[
 {
 "ref":"textual.events.MouseEvent.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -12977,89 +12904,88 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseMove",
-"url":58,
+"url":59,
 "doc":"Sent when the mouse cursor moves."
 },
 {
 "ref":"textual.events.MouseMove.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.button",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.ctrl",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.delta_x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.delta_y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.meta",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.screen_x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.screen_y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.shift",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.events.MouseMove.set_forwarded",
+"ref":"textual.events.MouseMove.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.MouseMove.can_replace",
@@ -13070,7 +12996,7 @@ INDEX=[
 {
 "ref":"textual.events.MouseMove.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13091,89 +13017,88 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseDown",
-"url":58,
+"url":59,
 "doc":"Sent in response to a mouse event. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseDown.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.button",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.ctrl",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.delta_x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.delta_y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.meta",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.screen_x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.screen_y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.shift",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.events.MouseDown.set_forwarded",
+"ref":"textual.events.MouseDown.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.MouseDown.can_replace",
@@ -13184,7 +13109,7 @@ INDEX=[
 {
 "ref":"textual.events.MouseDown.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13205,89 +13130,88 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseUp",
-"url":58,
+"url":59,
 "doc":"Sent in response to a mouse event. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseUp.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.button",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.ctrl",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.delta_x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.delta_y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.meta",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.screen_x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.screen_y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.shift",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.events.MouseUp.set_forwarded",
+"ref":"textual.events.MouseUp.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.MouseUp.can_replace",
@@ -13298,7 +13222,7 @@ INDEX=[
 {
 "ref":"textual.events.MouseUp.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13319,49 +13243,48 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseScrollDown",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.MouseScrollDown.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.MouseScrollDown.set_forwarded",
+"ref":"textual.events.MouseScrollDown.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.MouseScrollDown.can_replace",
@@ -13372,7 +13295,7 @@ INDEX=[
 {
 "ref":"textual.events.MouseScrollDown.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13393,49 +13316,48 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseScrollUp",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.MouseScrollUp.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.MouseScrollUp.set_forwarded",
+"ref":"textual.events.MouseScrollUp.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.MouseScrollUp.can_replace",
@@ -13446,7 +13368,7 @@ INDEX=[
 {
 "ref":"textual.events.MouseScrollUp.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13467,89 +13389,88 @@ INDEX=[
 },
 {
 "ref":"textual.events.Click",
-"url":58,
+"url":59,
 "doc":"Sent in response to a mouse event. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.Click.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Click.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Click.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Click.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Click.button",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.ctrl",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.delta_x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.delta_y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.meta",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.screen_x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.screen_y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.shift",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.x",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.y",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
-"ref":"textual.events.Click.set_forwarded",
+"ref":"textual.events.Click.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Click.can_replace",
@@ -13560,7 +13481,7 @@ INDEX=[
 {
 "ref":"textual.events.Click.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13581,54 +13502,53 @@ INDEX=[
 },
 {
 "ref":"textual.events.Timer",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Timer.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.callback",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.count",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.time",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Timer.set_forwarded",
+"ref":"textual.events.Timer.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Timer.can_replace",
@@ -13639,7 +13559,7 @@ INDEX=[
 {
 "ref":"textual.events.Timer.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13655,39 +13575,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Enter",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Enter.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Enter.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Enter.set_forwarded",
+"ref":"textual.events.Enter.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Enter.can_replace",
@@ -13698,7 +13617,7 @@ INDEX=[
 {
 "ref":"textual.events.Enter.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13719,39 +13638,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Leave",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Leave.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Leave.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Leave.set_forwarded",
+"ref":"textual.events.Leave.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Leave.can_replace",
@@ -13762,7 +13680,7 @@ INDEX=[
 {
 "ref":"textual.events.Leave.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13783,39 +13701,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Focus",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Focus.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Focus.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Focus.set_forwarded",
+"ref":"textual.events.Focus.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Focus.can_replace",
@@ -13826,7 +13743,7 @@ INDEX=[
 {
 "ref":"textual.events.Focus.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13847,39 +13764,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Blur",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Blur.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Blur.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Blur.set_forwarded",
+"ref":"textual.events.Blur.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Blur.can_replace",
@@ -13890,7 +13806,7 @@ INDEX=[
 {
 "ref":"textual.events.Blur.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13911,39 +13827,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.DescendantFocus",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.DescendantFocus.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DescendantFocus.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantFocus.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantFocus.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantFocus.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.DescendantFocus.set_forwarded",
+"ref":"textual.events.DescendantFocus.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.DescendantFocus.can_replace",
@@ -13954,7 +13869,7 @@ INDEX=[
 {
 "ref":"textual.events.DescendantFocus.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -13975,39 +13890,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.DescendantBlur",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.DescendantBlur.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DescendantBlur.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantBlur.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantBlur.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantBlur.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.DescendantBlur.set_forwarded",
+"ref":"textual.events.DescendantBlur.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.DescendantBlur.can_replace",
@@ -14018,7 +13932,7 @@ INDEX=[
 {
 "ref":"textual.events.DescendantBlur.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -14039,39 +13953,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.Paste",
-"url":58,
+"url":59,
 "doc":"Event containing text that was pasted into the Textual application. This event will only appear when running in a terminal emulator that supports bracketed paste mode. Textual will enable bracketed pastes when an app starts, and disable it when the app shuts down. Args: sender (MessageTarget): The sender of the event, (in this case the app). text: The text that has been pasted."
 },
 {
 "ref":"textual.events.Paste.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Paste.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Paste.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Paste.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.Paste.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.Paste.set_forwarded",
+"ref":"textual.events.Paste.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.Paste.can_replace",
@@ -14082,7 +13995,7 @@ INDEX=[
 {
 "ref":"textual.events.Paste.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -14103,39 +14016,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.ScreenResume",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.ScreenResume.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.ScreenResume.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenResume.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenResume.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenResume.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.ScreenResume.set_forwarded",
+"ref":"textual.events.ScreenResume.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.ScreenResume.can_replace",
@@ -14146,7 +14058,7 @@ INDEX=[
 {
 "ref":"textual.events.ScreenResume.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -14167,39 +14079,38 @@ INDEX=[
 },
 {
 "ref":"textual.events.ScreenSuspend",
-"url":58,
-"doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
+"url":59,
+"doc":"The base class for all events."
 },
 {
 "ref":"textual.events.ScreenSuspend.sender",
-"url":58,
+"url":59,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.ScreenSuspend.namespace",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenSuspend.bubble",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenSuspend.verbose",
-"url":58,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenSuspend.no_dispatch",
-"url":58,
+"url":59,
 "doc":""
 },
 {
-"ref":"textual.events.ScreenSuspend.set_forwarded",
+"ref":"textual.events.ScreenSuspend.handler_name",
 "url":3,
-"doc":"Mark this event as being forwarded.",
-"func":1
+"doc":"The name of the handler associated with this message."
 },
 {
 "ref":"textual.events.ScreenSuspend.can_replace",
@@ -14210,7 +14121,7 @@ INDEX=[
 {
 "ref":"textual.events.ScreenSuspend.prevent_default",
 "url":3,
-"doc":"Suppress the default action. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
+"doc":"Suppress the default action(s). This will prevent handlers in any base classes from being called. Args: prevent (bool, optional): True if the default action should be suppressed, or False if the default actions should be performed. Defaults to True.",
 "func":1
 },
 {
@@ -14231,12 +14142,12 @@ INDEX=[
 },
 {
 "ref":"textual.cli",
-"url":59,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.cli.previews",
-"url":60,
+"url":61,
 "doc":""
 },
 {
@@ -14342,12 +14253,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.message_pump.MessagePump.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.message_pump.MessagePump.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
@@ -14357,12 +14262,6 @@ INDEX=[
 "ref":"textual.message_pump.MessagePump.post_message",
 "url":6,
 "doc":"Post a message or an event to this message pump. Args: message (Message): A message object. Returns: bool: True if the messages was posted successfully, False if the message was not posted (because the message pump was in the process of closing).",
-"func":1
-},
-{
-"ref":"textual.message_pump.MessagePump.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -14380,13 +14279,13 @@ INDEX=[
 {
 "ref":"textual.message_pump.MessagePump.emit_no_wait",
 "url":6,
-"doc":"",
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
 "ref":"textual.message_pump.MessagePump.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {
@@ -14403,185 +14302,195 @@ INDEX=[
 },
 {
 "ref":"textual.features",
-"url":61,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.features.parse_features",
-"url":61,
+"url":62,
 "doc":"Parse features env var Args: features (str): Comma separated feature flags Returns: frozenset[FeatureFlag]: A frozen set of known features.",
 "func":1
 },
 {
 "ref":"textual.reactive",
-"url":62,
+"url":63,
 "doc":""
 },
 {
 "ref":"textual.reactive.Reactive",
-"url":62,
+"url":63,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.reactive.Reactive.init",
-"url":62,
+"url":63,
 "doc":"A reactive variable that calls watchers and compute on initialize (post mount). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. Returns: Reactive: A Reactive instance which calls watchers or initialize.",
 "func":1
 },
 {
 "ref":"textual.reactive.Reactive.var",
-"url":62,
+"url":63,
 "doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
 "func":1
 },
 {
 "ref":"textual.reactive.Reactive.initialize_object",
-"url":62,
+"url":63,
 "doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
 "func":1
 },
 {
 "ref":"textual.reactive.reactive",
-"url":62,
+"url":63,
 "doc":"Create a reactive attribute. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.reactive.reactive.init",
-"url":62,
+"url":63,
 "doc":"A reactive variable that calls watchers and compute on initialize (post mount). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. Returns: Reactive: A Reactive instance which calls watchers or initialize.",
 "func":1
 },
 {
 "ref":"textual.reactive.reactive.var",
-"url":62,
+"url":63,
 "doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
 "func":1
 },
 {
 "ref":"textual.reactive.reactive.initialize_object",
-"url":62,
+"url":63,
 "doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
 "func":1
 },
 {
 "ref":"textual.reactive.var",
-"url":62,
+"url":63,
 "doc":"Create a reactive attribute (with no auto-refresh). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default."
 },
 {
 "ref":"textual.reactive.var.init",
-"url":62,
+"url":63,
 "doc":"A reactive variable that calls watchers and compute on initialize (post mount). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. Returns: Reactive: A Reactive instance which calls watchers or initialize.",
 "func":1
 },
 {
 "ref":"textual.reactive.var.var",
-"url":62,
+"url":63,
 "doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
 "func":1
 },
 {
 "ref":"textual.reactive.var.initialize_object",
-"url":62,
+"url":63,
 "doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
 "func":1
 },
 {
 "ref":"textual.reactive.watch",
-"url":62,
+"url":63,
 "doc":"Watch a reactive variable on an object. Args: obj (Reactable): The parent object. attribute_name (str): The attribute to watch. callback (Callable Any], object]): A callable to call when the attribute changes.",
 "func":1
 },
 {
 "ref":"textual.screen",
-"url":63,
+"url":64,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen",
-"url":63,
+"url":64,
 "doc":"A widget for the root of the app."
 },
 {
 "ref":"textual.screen.Screen.DEFAULT_CSS",
-"url":63,
+"url":64,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen.dark",
-"url":63,
+"url":64,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.is_transparent",
-"url":63,
+"url":64,
 "doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
 },
 {
 "ref":"textual.screen.Screen.is_current",
-"url":63,
+"url":64,
 "doc":"Check if this screen is current (i.e. visible to user)."
 },
 {
 "ref":"textual.screen.Screen.update_timer",
-"url":63,
+"url":64,
 "doc":"Timer used to perform updates."
 },
 {
 "ref":"textual.screen.Screen.widgets",
-"url":63,
+"url":64,
 "doc":"Get all widgets."
 },
 {
 "ref":"textual.screen.Screen.visible_widgets",
-"url":63,
+"url":64,
 "doc":"Get a list of visible widgets."
 },
 {
 "ref":"textual.screen.Screen.watch_dark",
-"url":63,
+"url":64,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.render",
-"url":63,
+"url":64,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_offset",
-"url":63,
+"url":64,
 "doc":"Get the absolute offset of a given Widget. Args: widget (Widget): A widget Returns: Offset: The widget's offset relative to the top left of the terminal.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_widget_at",
-"url":63,
+"url":64,
 "doc":"Get the widget at a given coordinate. Args: x (int): X Coordinate. y (int): Y Coordinate. Returns: tuple[Widget, Region]: Widget and screen region.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_style_at",
-"url":63,
+"url":64,
 "doc":"Get the style under a given coordinate. Args: x (int): X Coordinate. y (int): Y Coordinate. Returns: Style: Rich Style object",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.find_widget",
-"url":63,
+"url":64,
 "doc":"Get the screen region of a Widget. Args: widget (Widget): A Widget within the composition. Returns: Region: Region relative to screen.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.can_focus",
-"url":63,
-"doc":""
+"url":64,
+"doc":"Widget may receive focus."
 },
 {
 "ref":"textual.screen.Screen.can_focus_children",
-"url":63,
-"doc":""
+"url":64,
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.screen.Screen.expand",
+"url":4,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.screen.Screen.shrink",
+"url":4,
+"doc":"Rich renderable may shrink."
 },
 {
 "ref":"textual.screen.Screen.virtual_size",
@@ -14662,18 +14571,6 @@ INDEX=[
 "ref":"textual.screen.Screen.get_component_rich_style",
 "url":4,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.watch_show_horizontal_scrollbar",
-"url":4,
-"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.watch_show_vertical_scrollbar",
-"url":4,
-"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
 "func":1
 },
 {
@@ -14838,91 +14735,91 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.scroll_to",
 "url":4,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_relative",
 "url":4,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is False. Returns: bool: True if the scroll position changed, otherwise False.",
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_home",
 "url":4,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_end",
 "url":4,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_left",
 "url":4,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_right",
 "url":4,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_down",
 "url":4,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_up",
 "url":4,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_page_up",
 "url":4,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_page_down",
 "url":4,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_page_left",
 "url":4,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_page_right",
 "url":4,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. Returns: bool: True if any scrolling was done.",
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_to_widget",
 "url":4,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_to_region",
 "url":4,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): Enable animation. Defaults to True. spacing (Spacing): Space to subtract from the window region. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_visible",
 "url":4,
-"doc":"Scroll the container to make this widget visible.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
 "func":1
 },
 {
@@ -15214,21 +15111,9 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.screen.Screen.on_message",
-"url":6,
-"doc":"Called to process a message. Args: message (Message): A Message object.",
-"func":1
-},
-{
 "ref":"textual.screen.Screen.check_idle",
 "url":6,
 "doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.screen.Screen.post_priority_message",
-"url":6,
-"doc":"Post a \"priority\" messages which will be processes prior to regular messages. Note that you should rarely need this in a regular app. It exists primarily to allow timer messages to skip the queue, so that they can be more regular. Args: message (Message): A message. Returns: bool: True if the messages was processed, False if it wasn't.",
 "func":1
 },
 {
@@ -15238,9 +15123,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.emit_no_wait",
+"url":6,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.emit",
 "url":6,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: _True if the message was posted successfully.",
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
 "func":1
 },
 {

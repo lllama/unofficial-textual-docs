@@ -58,7 +58,7 @@ class Update(Message, verbose=True):
 
     def can_replace(self, message: Message) -&gt; bool:
         # Update messages can replace update for the same widget
-        return isinstance(message, Update) and self == message
+        return isinstance(message, Update) and self.widget == message.widget
 
 
 @rich.repr.auto
@@ -169,10 +169,10 @@ class TerminalSupportsSynchronizedOutput(Message):
 <li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -226,10 +226,10 @@ class TerminalSupportsSynchronizedOutput(Message):
 <li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -280,10 +280,10 @@ class TerminalSupportsSynchronizedOutput(Message):
 <li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -335,10 +335,10 @@ class TerminalSupportsSynchronizedOutput(Message):
 <li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -395,10 +395,10 @@ class TerminalSupportsSynchronizedOutput(Message):
 <li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -450,10 +450,10 @@ class TerminalSupportsSynchronizedOutput(Message):
 <li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -491,7 +491,7 @@ class TerminalSupportsSynchronizedOutput(Message):
 
     def can_replace(self, message: Message) -&gt; bool:
         # Update messages can replace update for the same widget
-        return isinstance(message, Update) and self == message</code></pre>
+        return isinstance(message, Update) and self.widget == message.widget</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -521,10 +521,10 @@ class TerminalSupportsSynchronizedOutput(Message):
 <li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>

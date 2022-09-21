@@ -248,6 +248,7 @@ class Screen(Widget):
                             self, unclipped_region.size, virtual_size, container_size
                         )
                     )
+
         except Exception as error:
             self.app._handle_exception(error)
             return
@@ -307,13 +308,13 @@ class Screen(Widget):
                 screen_y=event.screen_y,
                 style=event.style,
             )
-            mouse_event.set_forwarded()
+            mouse_event._set_forwarded()
             await widget._forward_event(mouse_event)
 
     async def _forward_event(self, event: events.Event) -&gt; None:
         if event.is_forwarded:
             return
-        event.set_forwarded()
+        event._set_forwarded()
         if isinstance(event, (events.Enter, events.Leave)):
             await self.post_message(event)
 
@@ -338,7 +339,7 @@ class Screen(Widget):
                         return
                 event.style = self.get_style_at(event.screen_x, event.screen_y)
                 if widget is self:
-                    event.set_forwarded()
+                    event._set_forwarded()
                     await self.post_message(event)
                 else:
                     await widget._forward_event(event.offset(-region.x, -region.y))
@@ -571,6 +572,7 @@ class Screen(Widget):
                             self, unclipped_region.size, virtual_size, container_size
                         )
                     )
+
         except Exception as error:
             self.app._handle_exception(error)
             return
@@ -630,13 +632,13 @@ class Screen(Widget):
                 screen_y=event.screen_y,
                 style=event.style,
             )
-            mouse_event.set_forwarded()
+            mouse_event._set_forwarded()
             await widget._forward_event(mouse_event)
 
     async def _forward_event(self, event: events.Event) -&gt; None:
         if event.is_forwarded:
             return
-        event.set_forwarded()
+        event._set_forwarded()
         if isinstance(event, (events.Enter, events.Leave)):
             await self.post_message(event)
 
@@ -661,7 +663,7 @@ class Screen(Widget):
                         return
                 event.style = self.get_style_at(event.screen_x, event.screen_y)
                 if widget is self:
-                    event.set_forwarded()
+                    event._set_forwarded()
                     await self.post_message(event)
                 else:
                     await widget._forward_event(event.offset(-region.x, -region.y))
@@ -689,14 +691,6 @@ class Screen(Widget):
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.screen.Screen.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.screen.Screen.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.screen.Screen.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -942,6 +936,8 @@ def widgets(self) -&gt; list[Widget]:
 <li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus" href="widget.html#textual.widget.Widget.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus_children" href="widget.html#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.classes" href="dom.html#textual.dom.DOMNode.classes">classes</a></code></li>
@@ -960,7 +956,9 @@ def widgets(self) -&gt; list[Widget]:
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
+<li><code><a title="textual.widget.Widget.emit_no_wait" href="message_pump.html#textual.message_pump.MessagePump.emit_no_wait">emit_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.expand" href="widget.html#textual.widget.Widget.expand">expand</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
@@ -987,12 +985,10 @@ def widgets(self) -&gt; list[Widget]:
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
-<li><code><a title="textual.widget.Widget.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="widget.html#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
-<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_render" href="widget.html#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -1039,6 +1035,7 @@ def widgets(self) -&gt; list[Widget]:
 <li><code><a title="textual.widget.Widget.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.shrink" href="widget.html#textual.widget.Widget.shrink">shrink</a></code></li>
 <li><code><a title="textual.widget.Widget.siblings" href="widget.html#textual.widget.Widget.siblings">siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
 <li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
@@ -1051,8 +1048,6 @@ def widgets(self) -&gt; list[Widget]:
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
 </ul>
 </li>
@@ -1124,8 +1119,6 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.screen.Screen" href="#textual.screen.Screen">Screen</a></code></h4>
 <ul class="two-column">
 <li><code><a title="textual.screen.Screen.DEFAULT_CSS" href="#textual.screen.Screen.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
-<li><code><a title="textual.screen.Screen.can_focus" href="#textual.screen.Screen.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.screen.Screen.can_focus_children" href="#textual.screen.Screen.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.screen.Screen.dark" href="#textual.screen.Screen.dark">dark</a></code></li>
 <li><code><a title="textual.screen.Screen.find_widget" href="#textual.screen.Screen.find_widget">find_widget</a></code></li>
 <li><code><a title="textual.screen.Screen.get_offset" href="#textual.screen.Screen.get_offset">get_offset</a></code></li>

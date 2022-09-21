@@ -122,8 +122,9 @@ class Reactive(Generic[ReactiveType]):
         for key in obj.__class__.__dict__.keys():
             if startswith(key, &#34;_init_&#34;):
                 name = key[6:]
-                default = getattr(obj, key)
-                setattr(obj, name, default() if callable(default) else default)
+                if not hasattr(obj, name):
+                    default = getattr(obj, key)
+                    setattr(obj, name, default() if callable(default) else default)
 
     def __set_name__(self, owner: Type[MessageTarget], name: str) -&gt; None:
 
@@ -407,8 +408,9 @@ def watch(
         for key in obj.__class__.__dict__.keys():
             if startswith(key, &#34;_init_&#34;):
                 name = key[6:]
-                default = getattr(obj, key)
-                setattr(obj, name, default() if callable(default) else default)
+                if not hasattr(obj, name):
+                    default = getattr(obj, key)
+                    setattr(obj, name, default() if callable(default) else default)
 
     def __set_name__(self, owner: Type[MessageTarget], name: str) -&gt; None:
 
@@ -579,8 +581,9 @@ async def initialize_object(cls, obj: object) -&gt; None:
     for key in obj.__class__.__dict__.keys():
         if startswith(key, &#34;_init_&#34;):
             name = key[6:]
-            default = getattr(obj, key)
-            setattr(obj, name, default() if callable(default) else default)</code></pre>
+            if not hasattr(obj, name):
+                default = getattr(obj, key)
+                setattr(obj, name, default() if callable(default) else default)</code></pre>
 </details>
 </dd>
 <dt id="textual.reactive.Reactive.var"><code class="name flex">

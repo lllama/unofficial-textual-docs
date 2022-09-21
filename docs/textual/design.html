@@ -202,8 +202,6 @@ class ColorSystem:
         for name, color in COLORS:
             is_dark_shade = dark and name in DARK_SHADES
             spread = luminosity_spread
-            if name == &#34;panel&#34;:
-                spread /= 2
             for shade_name, luminosity_delta in luminosity_range(spread):
                 if is_dark_shade:
                     dark_background = background.blend(color, 0.15)
@@ -216,8 +214,8 @@ class ColorSystem:
                     colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
 
         colors[&#34;text&#34;] = &#34;auto 95%&#34;
-        colors[&#34;text-muted&#34;] = &#34;auto 80%&#34;
-        colors[&#34;text-disabled&#34;] = &#34;auto 60%&#34;
+        colors[&#34;text-muted&#34;] = &#34;auto 50%&#34;
+        colors[&#34;text-disabled&#34;] = &#34;auto 30%&#34;
 
         return colors
 
@@ -488,8 +486,6 @@ Secondary is a second theme color</p></div>
         for name, color in COLORS:
             is_dark_shade = dark and name in DARK_SHADES
             spread = luminosity_spread
-            if name == &#34;panel&#34;:
-                spread /= 2
             for shade_name, luminosity_delta in luminosity_range(spread):
                 if is_dark_shade:
                     dark_background = background.blend(color, 0.15)
@@ -502,8 +498,8 @@ Secondary is a second theme color</p></div>
                     colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
 
         colors[&#34;text&#34;] = &#34;auto 95%&#34;
-        colors[&#34;text-muted&#34;] = &#34;auto 80%&#34;
-        colors[&#34;text-disabled&#34;] = &#34;auto 60%&#34;
+        colors[&#34;text-muted&#34;] = &#34;auto 50%&#34;
+        colors[&#34;text-disabled&#34;] = &#34;auto 30%&#34;
 
         return colors</code></pre>
 </details>
@@ -645,8 +641,6 @@ shades. Defaults to 0.2.</dd>
     for name, color in COLORS:
         is_dark_shade = dark and name in DARK_SHADES
         spread = luminosity_spread
-        if name == &#34;panel&#34;:
-            spread /= 2
         for shade_name, luminosity_delta in luminosity_range(spread):
             if is_dark_shade:
                 dark_background = background.blend(color, 0.15)
@@ -659,8 +653,8 @@ shades. Defaults to 0.2.</dd>
                 colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
 
     colors[&#34;text&#34;] = &#34;auto 95%&#34;
-    colors[&#34;text-muted&#34;] = &#34;auto 80%&#34;
-    colors[&#34;text-disabled&#34;] = &#34;auto 60%&#34;
+    colors[&#34;text-muted&#34;] = &#34;auto 50%&#34;
+    colors[&#34;text-disabled&#34;] = &#34;auto 30%&#34;
 
     return colors</code></pre>
 </details>

@@ -34,7 +34,7 @@ import rich.repr
 
 from . import _clock
 from .case import camel_to_snake
-from ._types import MessageTarget
+from ._types import MessageTarget as MessageTarget
 
 
 @rich.repr.auto
@@ -64,7 +64,7 @@ class Message:
 
     def __init__(self, sender: MessageTarget) -&gt; None:
         self.sender = sender
-        self.name = camel_to_snake(self.__class__.__name__.replace(&#34;Message&#34;, &#34;&#34;))
+        self.name = camel_to_snake(self.__class__.__name__)
         self.time = _clock.get_time_no_wait()
         self._forwarded = False
         self._no_default_action = False
@@ -99,10 +99,11 @@ class Message:
 
     @property
     def handler_name(self) -&gt; str:
+        &#34;&#34;&#34;The name of the handler associated with this message.&#34;&#34;&#34;
         # Property to make it read only
         return self._handler_name
 
-    def set_forwarded(self) -&gt; None:
+    def _set_forwarded(self) -&gt; None:
         &#34;&#34;&#34;Mark this event as being forwarded.&#34;&#34;&#34;
         self._forwarded = True
 
@@ -118,7 +119,8 @@ class Message:
         return False
 
     def prevent_default(self, prevent: bool = True) -&gt; Message:
-        &#34;&#34;&#34;Suppress the default action.
+        &#34;&#34;&#34;Suppress the default action(s). This will prevent handlers in any base classes
+        from being called.
 
         Args:
             prevent (bool, optional): True if the default action should be suppressed,
@@ -187,7 +189,7 @@ class Message:
 
     def __init__(self, sender: MessageTarget) -&gt; None:
         self.sender = sender
-        self.name = camel_to_snake(self.__class__.__name__.replace(&#34;Message&#34;, &#34;&#34;))
+        self.name = camel_to_snake(self.__class__.__name__)
         self.time = _clock.get_time_no_wait()
         self._forwarded = False
         self._no_default_action = False
@@ -222,10 +224,11 @@ class Message:
 
     @property
     def handler_name(self) -&gt; str:
+        &#34;&#34;&#34;The name of the handler associated with this message.&#34;&#34;&#34;
         # Property to make it read only
         return self._handler_name
 
-    def set_forwarded(self) -&gt; None:
+    def _set_forwarded(self) -&gt; None:
         &#34;&#34;&#34;Mark this event as being forwarded.&#34;&#34;&#34;
         self._forwarded = True
 
@@ -241,7 +244,8 @@ class Message:
         return False
 
     def prevent_default(self, prevent: bool = True) -&gt; Message:
-        &#34;&#34;&#34;Suppress the default action.
+        &#34;&#34;&#34;Suppress the default action(s). This will prevent handlers in any base classes
+        from being called.
 
         Args:
             prevent (bool, optional): True if the default action should be suppressed,
@@ -294,13 +298,14 @@ class Message:
 <dl>
 <dt id="textual.message.Message.handler_name"><code class="name">var <span class="ident">handler_name</span> : str</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The name of the handler associated with this message.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def handler_name(self) -&gt; str:
+    &#34;&#34;&#34;The name of the handler associated with this message.&#34;&#34;&#34;
     # Property to make it read only
     return self._handler_name</code></pre>
 </details>
@@ -367,7 +372,8 @@ def is_forwarded(self) -&gt; bool:
 <span>def <span class="ident">prevent_default</span></span>(<span>self, prevent: bool = True) ‑> <a title="textual.message.Message" href="#textual.message.Message">Message</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Suppress the default action.</p>
+<div class="desc"><p>Suppress the default action(s). This will prevent handlers in any base classes
+from being called.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>prevent</code></strong> :&ensp;<code>bool</code>, optional</dt>
@@ -379,7 +385,8 @@ or False if the default actions should be performed. Defaults to True.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def prevent_default(self, prevent: bool = True) -&gt; Message:
-    &#34;&#34;&#34;Suppress the default action.
+    &#34;&#34;&#34;Suppress the default action(s). This will prevent handlers in any base classes
+    from being called.
 
     Args:
         prevent (bool, optional): True if the default action should be suppressed,
@@ -387,20 +394,6 @@ or False if the default actions should be performed. Defaults to True.</dd>
     &#34;&#34;&#34;
     self._no_default_action = prevent
     return self</code></pre>
-</details>
-</dd>
-<dt id="textual.message.Message.set_forwarded"><code class="name flex">
-<span>def <span class="ident">set_forwarded</span></span>(<span>self) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Mark this event as being forwarded.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_forwarded(self) -&gt; None:
-    &#34;&#34;&#34;Mark this event as being forwarded.&#34;&#34;&#34;
-    self._forwarded = True</code></pre>
 </details>
 </dd>
 <dt id="textual.message.Message.stop"><code class="name flex">
@@ -503,7 +496,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.message.Message.no_dispatch" href="#textual.message.Message.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="#textual.message.Message.time">time</a></code></li>
 <li><code><a title="textual.message.Message.verbose" href="#textual.message.Message.verbose">verbose</a></code></li>

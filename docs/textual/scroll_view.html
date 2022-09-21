@@ -96,6 +96,25 @@ class ScrollView(Widget):
         &#34;&#34;&#34;
         return self.virtual_size.height
 
+    def watch_virtual_size(self, virtual_size: Size) -&gt; None:
+        self._scroll_update(virtual_size)
+
+    def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
+
+        Args:
+            value (bool): Show horizontal scrollbar flag.
+        &#34;&#34;&#34;
+        self.refresh(layout=True)
+
+    def watch_show_vertical_scrollbar(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Watch function for show_vertical_scrollbar attribute.
+
+        Args:
+            value (bool): Show vertical scrollbar flag.
+        &#34;&#34;&#34;
+        self.refresh(layout=True)
+
     def _size_updated(
         self, size: Size, virtual_size: Size, container_size: Size
     ) -&gt; None:
@@ -106,27 +125,12 @@ class ScrollView(Widget):
             virtual_size (Size): New virtual size.
             container_size (Size): New container size.
         &#34;&#34;&#34;
+
         virtual_size = self.virtual_size
         if self._size != size:
             self._size = size
-            self._container_size = container_size
-
-            self._refresh_scrollbars()
-            width, height = self.container_size
-            if self.show_vertical_scrollbar:
-                self.vertical_scrollbar.window_virtual_size = virtual_size.height
-                self.vertical_scrollbar.window_size = (
-                    height - self.scrollbar_size_horizontal
-                )
-            if self.show_horizontal_scrollbar:
-                self.horizontal_scrollbar.window_virtual_size = virtual_size.width
-                self.horizontal_scrollbar.window_size = (
-                    width - self.scrollbar_size_vertical
-                )
-
-            self.scroll_x = self.validate_scroll_x(self.scroll_x)
-            self.scroll_y = self.validate_scroll_y(self.scroll_y)
-            self.refresh(layout=False)
+            self._container_size = size
+            self._scroll_update(virtual_size)
             self.scroll_to(self.scroll_x, self.scroll_y)
 
     def render(self) -&gt; RenderableType:
@@ -229,6 +233,25 @@ on the compositor to render children).</p></div>
         &#34;&#34;&#34;
         return self.virtual_size.height
 
+    def watch_virtual_size(self, virtual_size: Size) -&gt; None:
+        self._scroll_update(virtual_size)
+
+    def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
+
+        Args:
+            value (bool): Show horizontal scrollbar flag.
+        &#34;&#34;&#34;
+        self.refresh(layout=True)
+
+    def watch_show_vertical_scrollbar(self, value: bool) -&gt; None:
+        &#34;&#34;&#34;Watch function for show_vertical_scrollbar attribute.
+
+        Args:
+            value (bool): Show vertical scrollbar flag.
+        &#34;&#34;&#34;
+        self.refresh(layout=True)
+
     def _size_updated(
         self, size: Size, virtual_size: Size, container_size: Size
     ) -&gt; None:
@@ -239,27 +262,12 @@ on the compositor to render children).</p></div>
             virtual_size (Size): New virtual size.
             container_size (Size): New container size.
         &#34;&#34;&#34;
+
         virtual_size = self.virtual_size
         if self._size != size:
             self._size = size
-            self._container_size = container_size
-
-            self._refresh_scrollbars()
-            width, height = self.container_size
-            if self.show_vertical_scrollbar:
-                self.vertical_scrollbar.window_virtual_size = virtual_size.height
-                self.vertical_scrollbar.window_size = (
-                    height - self.scrollbar_size_horizontal
-                )
-            if self.show_horizontal_scrollbar:
-                self.horizontal_scrollbar.window_virtual_size = virtual_size.width
-                self.horizontal_scrollbar.window_size = (
-                    width - self.scrollbar_size_vertical
-                )
-
-            self.scroll_x = self.validate_scroll_x(self.scroll_x)
-            self.scroll_y = self.validate_scroll_y(self.scroll_y)
-            self.refresh(layout=False)
+            self._container_size = size
+            self._scroll_update(virtual_size)
             self.scroll_to(self.scroll_x, self.scroll_y)
 
     def render(self) -&gt; RenderableType:
@@ -295,14 +303,6 @@ on the compositor to render children).</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="textual.scroll_view.ScrollView.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.scroll_view.ScrollView.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.scroll_view.ScrollView.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -477,6 +477,65 @@ def is_transparent(self) -&gt; bool:
     self.refresh(layout=False)</code></pre>
 </details>
 </dd>
+<dt id="textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar"><code class="name flex">
+<span>def <span class="ident">watch_show_horizontal_scrollbar</span></span>(<span>self, value: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Watch function for show_horizontal_scrollbar attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Show horizontal scrollbar flag.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
+    &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
+
+    Args:
+        value (bool): Show horizontal scrollbar flag.
+    &#34;&#34;&#34;
+    self.refresh(layout=True)</code></pre>
+</details>
+</dd>
+<dt id="textual.scroll_view.ScrollView.watch_show_vertical_scrollbar"><code class="name flex">
+<span>def <span class="ident">watch_show_vertical_scrollbar</span></span>(<span>self, value: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Watch function for show_vertical_scrollbar attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>value</code></strong> :&ensp;<code>bool</code></dt>
+<dd>Show vertical scrollbar flag.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_show_vertical_scrollbar(self, value: bool) -&gt; None:
+    &#34;&#34;&#34;Watch function for show_vertical_scrollbar attribute.
+
+    Args:
+        value (bool): Show vertical scrollbar flag.
+    &#34;&#34;&#34;
+    self.refresh(layout=True)</code></pre>
+</details>
+</dd>
+<dt id="textual.scroll_view.ScrollView.watch_virtual_size"><code class="name flex">
+<span>def <span class="ident">watch_virtual_size</span></span>(<span>self, virtual_size: Size) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_virtual_size(self, virtual_size: Size) -&gt; None:
+    self._scroll_update(virtual_size)</code></pre>
+</details>
+</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -493,6 +552,8 @@ def is_transparent(self) -&gt; bool:
 <li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus" href="widget.html#textual.widget.Widget.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus_children" href="widget.html#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.classes" href="dom.html#textual.dom.DOMNode.classes">classes</a></code></li>
@@ -511,7 +572,9 @@ def is_transparent(self) -&gt; bool:
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
+<li><code><a title="textual.widget.Widget.emit_no_wait" href="message_pump.html#textual.message_pump.MessagePump.emit_no_wait">emit_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.expand" href="widget.html#textual.widget.Widget.expand">expand</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
@@ -535,12 +598,10 @@ def is_transparent(self) -&gt; bool:
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
-<li><code><a title="textual.widget.Widget.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="widget.html#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
-<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_render" href="widget.html#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -586,6 +647,7 @@ def is_transparent(self) -&gt; bool:
 <li><code><a title="textual.widget.Widget.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.shrink" href="widget.html#textual.widget.Widget.shrink">shrink</a></code></li>
 <li><code><a title="textual.widget.Widget.siblings" href="widget.html#textual.widget.Widget.siblings">siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
 <li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
@@ -598,8 +660,6 @@ def is_transparent(self) -&gt; bool:
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
 </ul>
 </li>
@@ -669,11 +729,9 @@ setTimeout(() => input.focus(), 100);
 <ul>
 <li>
 <h4><code><a title="textual.scroll_view.ScrollView" href="#textual.scroll_view.ScrollView">ScrollView</a></code></h4>
-<ul class="two-column">
+<ul class="">
 <li><code><a title="textual.scroll_view.ScrollView.COMPONENT_CLASSES" href="#textual.scroll_view.ScrollView.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.DEFAULT_CSS" href="#textual.scroll_view.ScrollView.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
-<li><code><a title="textual.scroll_view.ScrollView.can_focus" href="#textual.scroll_view.ScrollView.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.scroll_view.ScrollView.can_focus_children" href="#textual.scroll_view.ScrollView.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.get_content_height" href="#textual.scroll_view.ScrollView.get_content_height">get_content_height</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.get_content_width" href="#textual.scroll_view.ScrollView.get_content_width">get_content_width</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.is_scrollable" href="#textual.scroll_view.ScrollView.is_scrollable">is_scrollable</a></code></li>
@@ -682,6 +740,9 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scroll_view.ScrollView.render" href="#textual.scroll_view.ScrollView.render">render</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.watch_scroll_x" href="#textual.scroll_view.ScrollView.watch_scroll_x">watch_scroll_x</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.watch_scroll_y" href="#textual.scroll_view.ScrollView.watch_scroll_y">watch_scroll_y</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar" href="#textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.watch_show_vertical_scrollbar" href="#textual.scroll_view.ScrollView.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.scroll_view.ScrollView.watch_virtual_size" href="#textual.scroll_view.ScrollView.watch_virtual_size">watch_virtual_size</a></code></li>
 </ul>
 </li>
 </ul>

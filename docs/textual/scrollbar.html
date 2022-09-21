@@ -253,7 +253,9 @@ class ScrollBar(Widget):
         scrollbar_style = Style.from_color(color.rich_color, background.rich_color)
         return ScrollBarRender(
             virtual_size=self.window_virtual_size,
-            window_size=self.window_size,
+            window_size=(
+                self.window_size if self.window_size &lt; self.window_virtual_size else 0
+            ),
             position=self.position,
             thickness=self.thickness,
             vertical=self.vertical,
@@ -359,7 +361,8 @@ if __name__ == &#34;__main__&#34;:
 <span>(</span><span>vertical: bool = True, name: str | None = None, *, thickness: int = 1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A Widget is the base class for Textual widgets. Extent this class (or a sub-class) when defining your own widgets.</p></div>
+<div class="desc"><p>A Widget is the base class for Textual widgets.</p>
+<p>See also [static][textual.widgets._static.Static] for starting point for your own widgets.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -401,7 +404,9 @@ if __name__ == &#34;__main__&#34;:
         scrollbar_style = Style.from_color(color.rich_color, background.rich_color)
         return ScrollBarRender(
             virtual_size=self.window_virtual_size,
-            window_size=self.window_size,
+            window_size=(
+                self.window_size if self.window_size &lt; self.window_virtual_size else 0
+            ),
             position=self.position,
             thickness=self.thickness,
             vertical=self.vertical,
@@ -469,17 +474,6 @@ if __name__ == &#34;__main__&#34;:
 <li><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="textual.scrollbar.ScrollBar.can_focus"><code class="name">var <span class="ident">can_focus</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.scrollbar.ScrollBar.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="textual.scrollbar.ScrollBar.grabbed"><code class="name">var <span class="ident">grabbed</span> : ReactiveType</code></dt>
@@ -637,6 +631,8 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus" href="widget.html#textual.widget.Widget.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus_children" href="widget.html#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.classes" href="dom.html#textual.dom.DOMNode.classes">classes</a></code></li>
@@ -655,7 +651,9 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
+<li><code><a title="textual.widget.Widget.emit_no_wait" href="message_pump.html#textual.message_pump.MessagePump.emit_no_wait">emit_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.expand" href="widget.html#textual.widget.Widget.expand">expand</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
@@ -683,12 +681,10 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
-<li><code><a title="textual.widget.Widget.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="widget.html#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
-<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_render" href="widget.html#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -735,6 +731,7 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.shrink" href="widget.html#textual.widget.Widget.shrink">shrink</a></code></li>
 <li><code><a title="textual.widget.Widget.siblings" href="widget.html#textual.widget.Widget.siblings">siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
 <li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
@@ -747,8 +744,6 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
 </ul>
 </li>
@@ -790,14 +785,6 @@ should they both be present.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.scrollbar.ScrollBarCorner.can_focus"><code class="name">var <span class="ident">can_focus</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.scrollbar.ScrollBarCorner.can_focus_children"><code class="name">var <span class="ident">can_focus_children</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
@@ -814,6 +801,8 @@ should they both be present.</p></div>
 <li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus" href="widget.html#textual.widget.Widget.can_focus">can_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.can_focus_children" href="widget.html#textual.widget.Widget.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.widget.Widget.capture_mouse" href="widget.html#textual.widget.Widget.capture_mouse">capture_mouse</a></code></li>
 <li><code><a title="textual.widget.Widget.check_idle" href="message_pump.html#textual.message_pump.MessagePump.check_idle">check_idle</a></code></li>
 <li><code><a title="textual.widget.Widget.classes" href="dom.html#textual.dom.DOMNode.classes">classes</a></code></li>
@@ -832,7 +821,9 @@ should they both be present.</p></div>
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
 <li><code><a title="textual.widget.Widget.displayed_children" href="dom.html#textual.dom.DOMNode.displayed_children">displayed_children</a></code></li>
 <li><code><a title="textual.widget.Widget.emit" href="message_pump.html#textual.message_pump.MessagePump.emit">emit</a></code></li>
+<li><code><a title="textual.widget.Widget.emit_no_wait" href="message_pump.html#textual.message_pump.MessagePump.emit_no_wait">emit_no_wait</a></code></li>
 <li><code><a title="textual.widget.Widget.enable_messages" href="message_pump.html#textual.message_pump.MessagePump.enable_messages">enable_messages</a></code></li>
+<li><code><a title="textual.widget.Widget.expand" href="widget.html#textual.widget.Widget.expand">expand</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="widget.html#textual.widget.Widget.focus">focus</a></code></li>
 <li><code><a title="textual.widget.Widget.focusable_children" href="widget.html#textual.widget.Widget.focusable_children">focusable_children</a></code></li>
 <li><code><a title="textual.widget.Widget.get_child" href="dom.html#textual.dom.DOMNode.get_child">get_child</a></code></li>
@@ -860,12 +851,10 @@ should they both be present.</p></div>
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
-<li><code><a title="textual.widget.Widget.on_message" href="message_pump.html#textual.message_pump.MessagePump.on_message">on_message</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message" href="widget.html#textual.widget.Widget.post_message">post_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_message_no_wait" href="message_pump.html#textual.message_pump.MessagePump.post_message_no_wait">post_message_no_wait</a></code></li>
-<li><code><a title="textual.widget.Widget.post_priority_message" href="message_pump.html#textual.message_pump.MessagePump.post_priority_message">post_priority_message</a></code></li>
 <li><code><a title="textual.widget.Widget.post_render" href="widget.html#textual.widget.Widget.post_render">post_render</a></code></li>
 <li><code><a title="textual.widget.Widget.pseudo_classes" href="dom.html#textual.dom.DOMNode.pseudo_classes">pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.query" href="dom.html#textual.dom.DOMNode.query">query</a></code></li>
@@ -912,6 +901,7 @@ should they both be present.</p></div>
 <li><code><a title="textual.widget.Widget.set_timer" href="message_pump.html#textual.message_pump.MessagePump.set_timer">set_timer</a></code></li>
 <li><code><a title="textual.widget.Widget.show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.show_horizontal_scrollbar">show_horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.show_vertical_scrollbar" href="widget.html#textual.widget.Widget.show_vertical_scrollbar">show_vertical_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.shrink" href="widget.html#textual.widget.Widget.shrink">shrink</a></code></li>
 <li><code><a title="textual.widget.Widget.siblings" href="widget.html#textual.widget.Widget.siblings">siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.size" href="widget.html#textual.widget.Widget.size">size</a></code></li>
 <li><code><a title="textual.widget.Widget.text_style" href="dom.html#textual.dom.DOMNode.text_style">text_style</a></code></li>
@@ -924,8 +914,6 @@ should they both be present.</p></div>
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_horizontal_scrollbar" href="widget.html#textual.widget.Widget.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.widget.Widget.watch_show_vertical_scrollbar" href="widget.html#textual.widget.Widget.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.window_region" href="widget.html#textual.widget.Widget.window_region">window_region</a></code></li>
 </ul>
 </li>
@@ -1200,10 +1188,10 @@ def render_bar(
 <li><code><b><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.scrollbar.ScrollMessage.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollMessage.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1252,10 +1240,10 @@ def render_bar(
 <li><code><b><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.scrollbar.ScrollMessage.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollMessage.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1316,10 +1304,10 @@ def render_bar(
 <li><code><b><a title="textual.message.Message" href="message.html#textual.message.Message">Message</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.message.Message.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.message.Message.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.message.Message.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.message.Message.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.message.Message.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.message.Message.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.message.Message.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.message.Message.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1368,10 +1356,10 @@ def render_bar(
 <li><code><b><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.scrollbar.ScrollMessage.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollMessage.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1437,10 +1425,10 @@ def render_bar(
 <li><code><b><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.scrollbar.ScrollMessage.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollMessage.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1489,10 +1477,10 @@ def render_bar(
 <li><code><b><a title="textual.scrollbar.ScrollMessage" href="#textual.scrollbar.ScrollMessage">ScrollMessage</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.scrollbar.ScrollMessage.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
+<li><code><a title="textual.scrollbar.ScrollMessage.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.name" href="message.html#textual.message.Message.name">name</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollMessage.set_forwarded" href="message.html#textual.message.Message.set_forwarded">set_forwarded</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollMessage.time" href="message.html#textual.message.Message.time">time</a></code></li>
 </ul>
@@ -1568,8 +1556,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scrollbar.ScrollBar.action_released" href="#textual.scrollbar.ScrollBar.action_released">action_released</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.action_scroll_down" href="#textual.scrollbar.ScrollBar.action_scroll_down">action_scroll_down</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.action_scroll_up" href="#textual.scrollbar.ScrollBar.action_scroll_up">action_scroll_up</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollBar.can_focus" href="#textual.scrollbar.ScrollBar.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollBar.can_focus_children" href="#textual.scrollbar.ScrollBar.can_focus_children">can_focus_children</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.grabbed" href="#textual.scrollbar.ScrollBar.grabbed">grabbed</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.position" href="#textual.scrollbar.ScrollBar.position">position</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.window_size" href="#textual.scrollbar.ScrollBar.window_size">window_size</a></code></li>
@@ -1580,8 +1566,6 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.scrollbar.ScrollBarCorner" href="#textual.scrollbar.ScrollBarCorner">ScrollBarCorner</a></code></h4>
 <ul class="">
 <li><code><a title="textual.scrollbar.ScrollBarCorner.COMPONENT_CLASSES" href="#textual.scrollbar.ScrollBarCorner.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollBarCorner.can_focus" href="#textual.scrollbar.ScrollBarCorner.can_focus">can_focus</a></code></li>
-<li><code><a title="textual.scrollbar.ScrollBarCorner.can_focus_children" href="#textual.scrollbar.ScrollBarCorner.can_focus_children">can_focus_children</a></code></li>
 </ul>
 </li>
 <li>
