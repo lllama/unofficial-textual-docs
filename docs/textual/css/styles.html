@@ -49,7 +49,6 @@ from ._style_properties import (
     BoxProperty,
     ColorProperty,
     DockProperty,
-    DocksProperty,
     FractionalProperty,
     IntegerProperty,
     LayoutProperty,
@@ -143,7 +142,6 @@ class RulesMap(TypedDict, total=False):
     max_height: Scalar
 
     dock: str
-    docks: tuple[DockGroup, ...]
 
     overflow_x: Overflow
     overflow_y: Overflow
@@ -266,7 +264,6 @@ class StylesBase(ABC):
     max_height = ScalarProperty(percent_unit=Unit.HEIGHT, allow_auto=False)
 
     dock = DockProperty()
-    docks = DocksProperty()
 
     overflow_x = StringEnumProperty(VALID_OVERFLOW, &#34;hidden&#34;)
     overflow_y = StringEnumProperty(VALID_OVERFLOW, &#34;hidden&#34;)
@@ -750,14 +747,6 @@ class Styles(StylesBase):
             append_declaration(&#34;offset&#34;, f&#34;{x} {y}&#34;)
         if has_rule(&#34;dock&#34;):
             append_declaration(&#34;dock&#34;, rules[&#34;dock&#34;])
-        if has_rule(&#34;docks&#34;):
-            append_declaration(
-                &#34;docks&#34;,
-                &#34; &#34;.join(
-                    (f&#34;{name}={edge}/{z}&#34; if z else f&#34;{name}={edge}&#34;)
-                    for name, edge, z in rules[&#34;docks&#34;]
-                ),
-            )
         if has_rule(&#34;layers&#34;):
             append_declaration(&#34;layers&#34;, &#34; &#34;.join(self.layers))
         if has_rule(&#34;layer&#34;):
@@ -974,7 +963,6 @@ if __name__ == &#34;__main__&#34;:
     styles.visibility = &#34;hidden&#34;
     styles.border = (&#34;solid&#34;, &#34;rgb(10,20,30)&#34;)
     styles.outline_right = (&#34;solid&#34;, &#34;red&#34;)
-    styles.docks = &#34;foo bar&#34;
     styles.text_style = &#34;italic&#34;
     styles.dock = &#34;bar&#34;
     styles.layers = &#34;foo bar&#34;
@@ -1315,7 +1303,6 @@ def rich_style(self) -&gt; Style:
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.get_render_rules" href="#textual.css.styles.StylesBase.get_render_rules">get_render_rules</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.get_rule" href="#textual.css.styles.StylesBase.get_rule">get_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.gutter" href="#textual.css.styles.StylesBase.gutter">gutter</a></code></li>
@@ -1418,7 +1405,6 @@ def rich_style(self) -&gt; Style:
     max_height: Scalar
 
     dock: str
-    docks: tuple[DockGroup, ...]
 
     overflow_x: Overflow
     overflow_y: Overflow
@@ -1526,10 +1512,6 @@ def rich_style(self) -&gt; Style:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.styles.RulesMap.dock"><code class="name">var <span class="ident">dock</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.css.styles.RulesMap.docks"><code class="name">var <span class="ident">docks</span> : tuple[<a title="textual.css.styles.DockGroup" href="#textual.css.styles.DockGroup">DockGroup</a>, ...]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1943,14 +1925,6 @@ def rich_style(self) -&gt; Style:
             append_declaration(&#34;offset&#34;, f&#34;{x} {y}&#34;)
         if has_rule(&#34;dock&#34;):
             append_declaration(&#34;dock&#34;, rules[&#34;dock&#34;])
-        if has_rule(&#34;docks&#34;):
-            append_declaration(
-                &#34;docks&#34;,
-                &#34; &#34;.join(
-                    (f&#34;{name}={edge}/{z}&#34; if z else f&#34;{name}={edge}&#34;)
-                    for name, edge, z in rules[&#34;docks&#34;]
-                ),
-            )
         if has_rule(&#34;layers&#34;):
             append_declaration(&#34;layers&#34;, &#34; &#34;.join(self.layers))
         if has_rule(&#34;layer&#34;):
@@ -2134,14 +2108,6 @@ def css_lines(self) -&gt; list[str]:
         append_declaration(&#34;offset&#34;, f&#34;{x} {y}&#34;)
     if has_rule(&#34;dock&#34;):
         append_declaration(&#34;dock&#34;, rules[&#34;dock&#34;])
-    if has_rule(&#34;docks&#34;):
-        append_declaration(
-            &#34;docks&#34;,
-            &#34; &#34;.join(
-                (f&#34;{name}={edge}/{z}&#34; if z else f&#34;{name}={edge}&#34;)
-                for name, edge, z in rules[&#34;docks&#34;]
-            ),
-        )
     if has_rule(&#34;layers&#34;):
         append_declaration(&#34;layers&#34;, &#34; &#34;.join(self.layers))
     if has_rule(&#34;layer&#34;):
@@ -2382,7 +2348,6 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.get_render_rules" href="#textual.css.styles.StylesBase.get_render_rules">get_render_rules</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.get_rule" href="#textual.css.styles.StylesBase.get_rule">get_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.get_rules" href="#textual.css.styles.StylesBase.get_rules">get_rules</a></code></li>
@@ -2507,7 +2472,6 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
     max_height = ScalarProperty(percent_unit=Unit.HEIGHT, allow_auto=False)
 
     dock = DockProperty()
-    docks = DocksProperty()
 
     overflow_x = StringEnumProperty(VALID_OVERFLOW, &#34;hidden&#34;)
     overflow_y = StringEnumProperty(VALID_OVERFLOW, &#34;hidden&#34;)
@@ -3264,33 +3228,6 @@ allows you to specify which edge you want to fix a Widget to.</p></div>
         str: The dock name as a string, or &#34;&#34; if the rule is not set.
     &#34;&#34;&#34;
     return cast(DockEdge, obj.get_rule(&#34;dock&#34;, &#34;&#34;))</code></pre>
-</details>
-</dd>
-<dt id="textual.css.styles.StylesBase.docks"><code class="name">var <span class="ident">docks</span> : tuple[<a title="textual.css.styles.DockGroup" href="#textual.css.styles.DockGroup">DockGroup</a>, ...]</code></dt>
-<dd>
-<div class="desc"><p>Descriptor for getting and setting the docks property. This property
-is used to define docks and their location on screen.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(
-    self, obj: StylesBase, objtype: type[StylesBase] | None = None
-) -&gt; tuple[DockGroup, ...]:
-    &#34;&#34;&#34;Get the Docks property
-
-    Args:
-        obj (Styles): The ``Styles`` object.
-        objtype (type[Styles]): The ``Styles`` class.
-
-    Returns:
-        tuple[DockGroup, ...]: A ``tuple`` containing the defined docks.
-    &#34;&#34;&#34;
-    if obj.has_rule(&#34;docks&#34;):
-        return obj.get_rule(&#34;docks&#34;)
-    from .styles import DockGroup
-
-    return (DockGroup(&#34;_default&#34;, &#34;top&#34;, 1),)</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.grid_columns"><code class="name">var <span class="ident">grid_columns</span> : tuple[Scalar, ...] | None</code></dt>
@@ -4705,7 +4642,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.content_align_vertical" href="#textual.css.styles.RulesMap.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.display" href="#textual.css.styles.RulesMap.display">display</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.dock" href="#textual.css.styles.RulesMap.dock">dock</a></code></li>
-<li><code><a title="textual.css.styles.RulesMap.docks" href="#textual.css.styles.RulesMap.docks">docks</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.grid_columns" href="#textual.css.styles.RulesMap.grid_columns">grid_columns</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.grid_gutter_horizontal" href="#textual.css.styles.RulesMap.grid_gutter_horizontal">grid_gutter_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.grid_gutter_vertical" href="#textual.css.styles.RulesMap.grid_gutter_vertical">grid_gutter_vertical</a></code></li>
@@ -4789,7 +4725,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.content_align_vertical" href="#textual.css.styles.StylesBase.content_align_vertical">content_align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.display" href="#textual.css.styles.StylesBase.display">display</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.dock" href="#textual.css.styles.StylesBase.dock">dock</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.docks" href="#textual.css.styles.StylesBase.docks">docks</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.get_render_rules" href="#textual.css.styles.StylesBase.get_render_rules">get_render_rules</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.get_rule" href="#textual.css.styles.StylesBase.get_rule">get_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.get_rules" href="#textual.css.styles.StylesBase.get_rules">get_rules</a></code></li>
