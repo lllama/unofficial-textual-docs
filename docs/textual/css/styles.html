@@ -186,6 +186,16 @@ class RulesMap(TypedDict, total=False):
 
     text_align: TextAlign
 
+    link_color: Color
+    auto_link_color: bool
+    link_background: Color
+    link_style: Style
+
+    hover_color: Color
+    auto_hover_color: bool
+    hover_background: Color
+    hover_style: Style
+
 
 RULE_NAMES = list(RulesMap.__annotations__.keys())
 RULE_NAMES_SET = frozenset(RULE_NAMES)
@@ -223,6 +233,10 @@ class StylesBase(ABC):
         &#34;scrollbar_background&#34;,
         &#34;scrollbar_background_hover&#34;,
         &#34;scrollbar_background_active&#34;,
+        &#34;link_color&#34;,
+        &#34;link_background&#34;,
+        &#34;hover_color&#34;,
+        &#34;hover_background&#34;,
     }
 
     node: DOMNode | None = None
@@ -308,6 +322,16 @@ class StylesBase(ABC):
     column_span = IntegerProperty(default=1, layout=True)
 
     text_align = StringEnumProperty(VALID_TEXT_ALIGN, &#34;start&#34;)
+
+    link_color = ColorProperty(&#34;transparent&#34;)
+    auto_link_color = BooleanProperty(False)
+    link_background = ColorProperty(&#34;transparent&#34;)
+    link_style = StyleFlagsProperty()
+
+    hover_color = ColorProperty(&#34;transparent&#34;)
+    auto_hover_color = BooleanProperty(False)
+    hover_background = ColorProperty(&#34;transparent&#34;)
+    hover_style = StyleFlagsProperty()
 
     def __eq__(self, styles: object) -&gt; bool:
         &#34;&#34;&#34;Check that Styles contains the same rules.&#34;&#34;&#34;
@@ -1290,6 +1314,8 @@ def rich_style(self) -&gt; Style:
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_color" href="#textual.css.styles.StylesBase.auto_color">auto_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_hover_color" href="#textual.css.styles.StylesBase.auto_hover_color">auto_hover_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_link_color" href="#textual.css.styles.StylesBase.auto_link_color">auto_link_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border_bottom" href="#textual.css.styles.StylesBase.border_bottom">border_bottom</a></code></li>
@@ -1307,9 +1333,15 @@ def rich_style(self) -&gt; Style:
 <li><code><a title="textual.css.styles.StylesBase.get_rule" href="#textual.css.styles.StylesBase.get_rule">get_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.gutter" href="#textual.css.styles.StylesBase.gutter">gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.height" href="#textual.css.styles.StylesBase.height">height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.hover_background" href="#textual.css.styles.StylesBase.hover_background">hover_background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.hover_color" href="#textual.css.styles.StylesBase.hover_color">hover_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.hover_style" href="#textual.css.styles.StylesBase.hover_style">hover_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.is_animatable" href="#textual.css.styles.StylesBase.is_animatable">is_animatable</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.layer" href="#textual.css.styles.StylesBase.layer">layer</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.layout" href="#textual.css.styles.StylesBase.layout">layout</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.link_background" href="#textual.css.styles.StylesBase.link_background">link_background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.link_color" href="#textual.css.styles.StylesBase.link_color">link_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.link_style" href="#textual.css.styles.StylesBase.link_style">link_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.margin" href="#textual.css.styles.StylesBase.margin">margin</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.max_height" href="#textual.css.styles.StylesBase.max_height">max_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.max_width" href="#textual.css.styles.StylesBase.max_width">max_width</a></code></li>
@@ -1447,7 +1479,17 @@ def rich_style(self) -&gt; Style:
     row_span: int
     column_span: int
 
-    text_align: TextAlign</code></pre>
+    text_align: TextAlign
+
+    link_color: Color
+    auto_link_color: bool
+    link_background: Color
+    link_style: Style
+
+    hover_color: Color
+    auto_hover_color: bool
+    hover_background: Color
+    hover_style: Style</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1464,6 +1506,14 @@ def rich_style(self) -&gt; Style:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.styles.RulesMap.auto_color"><code class="name">var <span class="ident">auto_color</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.auto_hover_color"><code class="name">var <span class="ident">auto_hover_color</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.auto_link_color"><code class="name">var <span class="ident">auto_link_color</span> : bool</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1543,6 +1593,18 @@ def rich_style(self) -&gt; Style:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="textual.css.styles.RulesMap.hover_background"><code class="name">var <span class="ident">hover_background</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.hover_color"><code class="name">var <span class="ident">hover_color</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.hover_style"><code class="name">var <span class="ident">hover_style</span> : Style</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="textual.css.styles.RulesMap.layer"><code class="name">var <span class="ident">layer</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
@@ -1552,6 +1614,18 @@ def rich_style(self) -&gt; Style:
 <div class="desc"></div>
 </dd>
 <dt id="textual.css.styles.RulesMap.layout"><code class="name">var <span class="ident">layout</span> : 'Layout'</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.link_background"><code class="name">var <span class="ident">link_background</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.link_color"><code class="name">var <span class="ident">link_color</span> : Color</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="textual.css.styles.RulesMap.link_style"><code class="name">var <span class="ident">link_style</span> : Style</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -2335,6 +2409,8 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_color" href="#textual.css.styles.StylesBase.auto_color">auto_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_hover_color" href="#textual.css.styles.StylesBase.auto_hover_color">auto_hover_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_link_color" href="#textual.css.styles.StylesBase.auto_link_color">auto_link_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border_bottom" href="#textual.css.styles.StylesBase.border_bottom">border_bottom</a></code></li>
@@ -2354,9 +2430,15 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
 <li><code><a title="textual.css.styles.StylesBase.gutter" href="#textual.css.styles.StylesBase.gutter">gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.has_rule" href="#textual.css.styles.StylesBase.has_rule">has_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.height" href="#textual.css.styles.StylesBase.height">height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.hover_background" href="#textual.css.styles.StylesBase.hover_background">hover_background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.hover_color" href="#textual.css.styles.StylesBase.hover_color">hover_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.hover_style" href="#textual.css.styles.StylesBase.hover_style">hover_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.is_animatable" href="#textual.css.styles.StylesBase.is_animatable">is_animatable</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.layer" href="#textual.css.styles.StylesBase.layer">layer</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.layout" href="#textual.css.styles.StylesBase.layout">layout</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.link_background" href="#textual.css.styles.StylesBase.link_background">link_background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.link_color" href="#textual.css.styles.StylesBase.link_color">link_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.link_style" href="#textual.css.styles.StylesBase.link_style">link_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.margin" href="#textual.css.styles.StylesBase.margin">margin</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.max_height" href="#textual.css.styles.StylesBase.max_height">max_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.max_width" href="#textual.css.styles.StylesBase.max_width">max_width</a></code></li>
@@ -2431,6 +2513,10 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
         &#34;scrollbar_background&#34;,
         &#34;scrollbar_background_hover&#34;,
         &#34;scrollbar_background_active&#34;,
+        &#34;link_color&#34;,
+        &#34;link_background&#34;,
+        &#34;hover_color&#34;,
+        &#34;hover_background&#34;,
     }
 
     node: DOMNode | None = None
@@ -2516,6 +2602,16 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
     column_span = IntegerProperty(default=1, layout=True)
 
     text_align = StringEnumProperty(VALID_TEXT_ALIGN, &#34;start&#34;)
+
+    link_color = ColorProperty(&#34;transparent&#34;)
+    auto_link_color = BooleanProperty(False)
+    link_background = ColorProperty(&#34;transparent&#34;)
+    link_style = StyleFlagsProperty()
+
+    hover_color = ColorProperty(&#34;transparent&#34;)
+    auto_hover_color = BooleanProperty(False)
+    hover_background = ColorProperty(&#34;transparent&#34;)
+    hover_style = StyleFlagsProperty()
 
     def __eq__(self, styles: object) -&gt; bool:
         &#34;&#34;&#34;Check that Styles contains the same rules.&#34;&#34;&#34;
@@ -2906,6 +3002,32 @@ def auto_dimensions(self) -&gt; bool:
     return (has_rule(&#34;width&#34;) and self.width.is_auto) or (
         has_rule(&#34;height&#34;) and self.height.is_auto
     )</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.auto_hover_color"><code class="name">var <span class="ident">auto_hover_color</span> : PropertyGetType</code></dt>
+<dd>
+<div class="desc"><p>A property that requires a True or False value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.auto_link_color"><code class="name">var <span class="ident">auto_link_color</span> : PropertyGetType</code></dt>
+<dd>
+<div class="desc"><p>A property that requires a True or False value.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; PropertyGetType:
+    return cast(PropertyGetType, obj.get_rule(self.name, self.default))</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.background"><code class="name">var <span class="ident">background</span> : Color</code></dt>
@@ -3356,6 +3478,72 @@ def gutter(self) -&gt; Spacing:
     return value</code></pre>
 </details>
 </dd>
+<dt id="textual.css.styles.StylesBase.hover_background"><code class="name">var <span class="ident">hover_background</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.hover_color"><code class="name">var <span class="ident">hover_color</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.hover_style"><code class="name">var <span class="ident">hover_style</span> : Style</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and set style flag properties (e.g. <code>bold italic underline</code>).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Style:
+    &#34;&#34;&#34;Get the ``Style``
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Style: The ``Style`` object
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, Style.null())</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.StylesBase.layer"><code class="name">var <span class="ident">layer</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Descriptor for getting and setting name properties.</p></div>
@@ -3407,6 +3595,72 @@ def gutter(self) -&gt; Spacing:
         The ``Layout`` object.
     &#34;&#34;&#34;
     return obj.get_rule(self.name)</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.link_background"><code class="name">var <span class="ident">link_background</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.link_color"><code class="name">var <span class="ident">link_color</span> : Color</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and setting color properties.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Color:
+    &#34;&#34;&#34;Get a ``Color``.
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Color: The Color
+    &#34;&#34;&#34;
+    return cast(Color, obj.get_rule(self.name, self._default_color))</code></pre>
+</details>
+</dd>
+<dt id="textual.css.styles.StylesBase.link_style"><code class="name">var <span class="ident">link_style</span> : Style</code></dt>
+<dd>
+<div class="desc"><p>Descriptor for getting and set style flag properties (e.g. <code>bold italic underline</code>).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(
+    self, obj: StylesBase, objtype: type[StylesBase] | None = None
+) -&gt; Style:
+    &#34;&#34;&#34;Get the ``Style``
+
+    Args:
+        obj (Styles): The ``Styles`` object.
+        objtype (type[Styles]): The ``Styles`` class.
+
+    Returns:
+        Style: The ``Style`` object
+    &#34;&#34;&#34;
+    return obj.get_rule(self.name, Style.null())</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.margin"><code class="name">var <span class="ident">margin</span> : Spacing</code></dt>
@@ -4630,6 +4884,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.align_horizontal" href="#textual.css.styles.RulesMap.align_horizontal">align_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.align_vertical" href="#textual.css.styles.RulesMap.align_vertical">align_vertical</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.auto_color" href="#textual.css.styles.RulesMap.auto_color">auto_color</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.auto_hover_color" href="#textual.css.styles.RulesMap.auto_hover_color">auto_hover_color</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.auto_link_color" href="#textual.css.styles.RulesMap.auto_link_color">auto_link_color</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.background" href="#textual.css.styles.RulesMap.background">background</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.border_bottom" href="#textual.css.styles.RulesMap.border_bottom">border_bottom</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.border_left" href="#textual.css.styles.RulesMap.border_left">border_left</a></code></li>
@@ -4649,9 +4905,15 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.RulesMap.grid_size_columns" href="#textual.css.styles.RulesMap.grid_size_columns">grid_size_columns</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.grid_size_rows" href="#textual.css.styles.RulesMap.grid_size_rows">grid_size_rows</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.height" href="#textual.css.styles.RulesMap.height">height</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.hover_background" href="#textual.css.styles.RulesMap.hover_background">hover_background</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.hover_color" href="#textual.css.styles.RulesMap.hover_color">hover_color</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.hover_style" href="#textual.css.styles.RulesMap.hover_style">hover_style</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.layer" href="#textual.css.styles.RulesMap.layer">layer</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.layers" href="#textual.css.styles.RulesMap.layers">layers</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.layout" href="#textual.css.styles.RulesMap.layout">layout</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.link_background" href="#textual.css.styles.RulesMap.link_background">link_background</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.link_color" href="#textual.css.styles.RulesMap.link_color">link_color</a></code></li>
+<li><code><a title="textual.css.styles.RulesMap.link_style" href="#textual.css.styles.RulesMap.link_style">link_style</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.margin" href="#textual.css.styles.RulesMap.margin">margin</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.max_height" href="#textual.css.styles.RulesMap.max_height">max_height</a></code></li>
 <li><code><a title="textual.css.styles.RulesMap.max_width" href="#textual.css.styles.RulesMap.max_width">max_width</a></code></li>
@@ -4710,6 +4972,8 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_color" href="#textual.css.styles.StylesBase.auto_color">auto_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_hover_color" href="#textual.css.styles.StylesBase.auto_hover_color">auto_hover_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.auto_link_color" href="#textual.css.styles.StylesBase.auto_link_color">auto_link_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.background" href="#textual.css.styles.StylesBase.background">background</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border" href="#textual.css.styles.StylesBase.border">border</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.border_bottom" href="#textual.css.styles.StylesBase.border_bottom">border_bottom</a></code></li>
@@ -4738,10 +5002,16 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.gutter" href="#textual.css.styles.StylesBase.gutter">gutter</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.has_rule" href="#textual.css.styles.StylesBase.has_rule">has_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.height" href="#textual.css.styles.StylesBase.height">height</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.hover_background" href="#textual.css.styles.StylesBase.hover_background">hover_background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.hover_color" href="#textual.css.styles.StylesBase.hover_color">hover_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.hover_style" href="#textual.css.styles.StylesBase.hover_style">hover_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.is_animatable" href="#textual.css.styles.StylesBase.is_animatable">is_animatable</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.layer" href="#textual.css.styles.StylesBase.layer">layer</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.layers" href="#textual.css.styles.StylesBase.layers">layers</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.layout" href="#textual.css.styles.StylesBase.layout">layout</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.link_background" href="#textual.css.styles.StylesBase.link_background">link_background</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.link_color" href="#textual.css.styles.StylesBase.link_color">link_color</a></code></li>
+<li><code><a title="textual.css.styles.StylesBase.link_style" href="#textual.css.styles.StylesBase.link_style">link_style</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.margin" href="#textual.css.styles.StylesBase.margin">margin</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.max_height" href="#textual.css.styles.StylesBase.max_height">max_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.max_width" href="#textual.css.styles.StylesBase.max_width">max_width</a></code></li>

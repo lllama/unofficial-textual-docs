@@ -34,7 +34,7 @@ import rich.repr
 from rich.color import Color
 from rich.console import ConsoleOptions, RenderableType, RenderResult
 from rich.segment import Segment, Segments
-from rich.style import Style, StyleType
+from rich.style import NULL_STYLE, Style, StyleType
 
 from . import events
 from ._types import MessageTarget
@@ -146,8 +146,8 @@ class ScrollBarRender:
             start_index, start_bar = divmod(max(0, start), len_bars)
             end_index, end_bar = divmod(max(0, end), len_bars)
 
-            upper = {&#34;@click&#34;: &#34;scroll_up&#34;}
-            lower = {&#34;@click&#34;: &#34;scroll_down&#34;}
+            upper = {&#34;@mouse.up&#34;: &#34;scroll_up&#34;}
+            lower = {&#34;@mouse.up&#34;: &#34;scroll_down&#34;}
 
             upper_back_segment = Segment(blank, _Style(bgcolor=back, meta=upper))
             lower_back_segment = Segment(blank, _Style(bgcolor=back, meta=lower))
@@ -217,6 +217,17 @@ class ScrollBarRender:
 
 @rich.repr.auto
 class ScrollBar(Widget):
+
+    DEFAULT_CSS = &#34;&#34;&#34;
+    ScrollBar {
+        hover-color: ;
+        hover-background:;
+        hover-style: ;
+        link-color: transparent;
+        link-background: transparent;
+    }
+    &#34;&#34;&#34;
+
     def __init__(
         self, vertical: bool = True, name: str | None = None, *, thickness: int = 1
     ) -&gt; None:
@@ -224,6 +235,7 @@ class ScrollBar(Widget):
         self.thickness = thickness
         self.grabbed_position: float = 0
         super().__init__(name=name)
+        self.auto_links = False
 
     window_virtual_size: Reactive[int] = Reactive(100)
     window_size: Reactive[int] = Reactive(0)
@@ -368,6 +380,17 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class ScrollBar(Widget):
+
+    DEFAULT_CSS = &#34;&#34;&#34;
+    ScrollBar {
+        hover-color: ;
+        hover-background:;
+        hover-style: ;
+        link-color: transparent;
+        link-background: transparent;
+    }
+    &#34;&#34;&#34;
+
     def __init__(
         self, vertical: bool = True, name: str | None = None, *, thickness: int = 1
     ) -&gt; None:
@@ -375,6 +398,7 @@ if __name__ == &#34;__main__&#34;:
         self.thickness = thickness
         self.grabbed_position: float = 0
         super().__init__(name=name)
+        self.auto_links = False
 
     window_virtual_size: Reactive[int] = Reactive(100)
     window_size: Reactive[int] = Reactive(0)
@@ -474,6 +498,13 @@ if __name__ == &#34;__main__&#34;:
 <li><a title="textual.dom.DOMNode" href="dom.html#textual.dom.DOMNode">DOMNode</a></li>
 <li><a title="textual.message_pump.MessagePump" href="message_pump.html#textual.message_pump.MessagePump">MessagePump</a></li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="textual.scrollbar.ScrollBar.DEFAULT_CSS"><code class="name">var <span class="ident">DEFAULT_CSS</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Instance variables</h3>
 <dl>
 <dt id="textual.scrollbar.ScrollBar.grabbed"><code class="name">var <span class="ident">grabbed</span> : ReactiveType</code></dt>
@@ -628,6 +659,7 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.animate" href="widget.html#textual.widget.Widget.animate">animate</a></code></li>
 <li><code><a title="textual.widget.Widget.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
 <li><code><a title="textual.widget.Widget.auto_height" href="widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_links" href="widget.html#textual.widget.Widget.auto_links">auto_links</a></code></li>
 <li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
@@ -669,12 +701,15 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.has_focus" href="widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
 <li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.hover_style" href="widget.html#textual.widget.Widget.hover_style">hover_style</a></code></li>
 <li><code><a title="textual.widget.Widget.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
 <li><code><a title="textual.widget.Widget.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
 <li><code><a title="textual.widget.Widget.is_scrollable" href="widget.html#textual.widget.Widget.is_scrollable">is_scrollable</a></code></li>
 <li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.widget.Widget.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.widget.Widget.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
+<li><code><a title="textual.widget.Widget.link_hover_style" href="widget.html#textual.widget.Widget.link_hover_style">link_hover_style</a></code></li>
+<li><code><a title="textual.widget.Widget.link_style" href="widget.html#textual.widget.Widget.link_style">link_style</a></code></li>
 <li><code><a title="textual.widget.Widget.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
@@ -798,6 +833,7 @@ should they both be present.</p></div>
 <li><code><a title="textual.widget.Widget.animate" href="widget.html#textual.widget.Widget.animate">animate</a></code></li>
 <li><code><a title="textual.widget.Widget.app" href="message_pump.html#textual.message_pump.MessagePump.app">app</a></code></li>
 <li><code><a title="textual.widget.Widget.auto_height" href="widget.html#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_links" href="widget.html#textual.widget.Widget.auto_links">auto_links</a></code></li>
 <li><code><a title="textual.widget.Widget.auto_width" href="widget.html#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.background_colors" href="dom.html#textual.dom.DOMNode.background_colors">background_colors</a></code></li>
 <li><code><a title="textual.widget.Widget.call_later" href="message_pump.html#textual.message_pump.MessagePump.call_later">call_later</a></code></li>
@@ -839,12 +875,15 @@ should they both be present.</p></div>
 <li><code><a title="textual.widget.Widget.has_focus" href="widget.html#textual.widget.Widget.has_focus">has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.has_pseudo_class" href="dom.html#textual.dom.DOMNode.has_pseudo_class">has_pseudo_class</a></code></li>
 <li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="widget.html#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.hover_style" href="widget.html#textual.widget.Widget.hover_style">hover_style</a></code></li>
 <li><code><a title="textual.widget.Widget.id" href="dom.html#textual.dom.DOMNode.id">id</a></code></li>
 <li><code><a title="textual.widget.Widget.is_container" href="widget.html#textual.widget.Widget.is_container">is_container</a></code></li>
 <li><code><a title="textual.widget.Widget.is_scrollable" href="widget.html#textual.widget.Widget.is_scrollable">is_scrollable</a></code></li>
 <li><code><a title="textual.widget.Widget.is_transparent" href="widget.html#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.widget.Widget.layer" href="widget.html#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.widget.Widget.layers" href="widget.html#textual.widget.Widget.layers">layers</a></code></li>
+<li><code><a title="textual.widget.Widget.link_hover_style" href="widget.html#textual.widget.Widget.link_hover_style">link_hover_style</a></code></li>
+<li><code><a title="textual.widget.Widget.link_style" href="widget.html#textual.widget.Widget.link_style">link_style</a></code></li>
 <li><code><a title="textual.widget.Widget.log" href="message_pump.html#textual.message_pump.MessagePump.log">log</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="widget.html#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
@@ -985,8 +1024,8 @@ should they both be present.</p></div>
             start_index, start_bar = divmod(max(0, start), len_bars)
             end_index, end_bar = divmod(max(0, end), len_bars)
 
-            upper = {&#34;@click&#34;: &#34;scroll_up&#34;}
-            lower = {&#34;@click&#34;: &#34;scroll_down&#34;}
+            upper = {&#34;@mouse.up&#34;: &#34;scroll_up&#34;}
+            lower = {&#34;@mouse.up&#34;: &#34;scroll_down&#34;}
 
             upper_back_segment = Segment(blank, _Style(bgcolor=back, meta=upper))
             lower_back_segment = Segment(blank, _Style(bgcolor=back, meta=lower))
@@ -1103,8 +1142,8 @@ def render_bar(
         start_index, start_bar = divmod(max(0, start), len_bars)
         end_index, end_bar = divmod(max(0, end), len_bars)
 
-        upper = {&#34;@click&#34;: &#34;scroll_up&#34;}
-        lower = {&#34;@click&#34;: &#34;scroll_down&#34;}
+        upper = {&#34;@mouse.up&#34;: &#34;scroll_up&#34;}
+        lower = {&#34;@mouse.up&#34;: &#34;scroll_down&#34;}
 
         upper_back_segment = Segment(blank, _Style(bgcolor=back, meta=upper))
         lower_back_segment = Segment(blank, _Style(bgcolor=back, meta=lower))
@@ -1552,6 +1591,7 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.scrollbar.ScrollBar" href="#textual.scrollbar.ScrollBar">ScrollBar</a></code></h4>
 <ul class="two-column">
+<li><code><a title="textual.scrollbar.ScrollBar.DEFAULT_CSS" href="#textual.scrollbar.ScrollBar.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.action_grab" href="#textual.scrollbar.ScrollBar.action_grab">action_grab</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.action_released" href="#textual.scrollbar.ScrollBar.action_released">action_released</a></code></li>
 <li><code><a title="textual.scrollbar.ScrollBar.action_scroll_down" href="#textual.scrollbar.ScrollBar.action_scroll_down">action_scroll_down</a></code></li>

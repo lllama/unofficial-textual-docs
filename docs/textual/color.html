@@ -237,6 +237,12 @@ class Color(NamedTuple):
         )
 
     @property
+    def inverse(self) -&gt; Color:
+        &#34;&#34;&#34;The inverse of this color.&#34;&#34;&#34;
+        r, g, b, a = self
+        return Color(255 - r, 255 - g, 255 - b, a)
+
+    @property
     def is_transparent(self) -&gt; bool:
         &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.
 
@@ -554,12 +560,10 @@ class Color(NamedTuple):
         Returns:
             Color: A new color, either an off-white or off-black
         &#34;&#34;&#34;
-        white = self.blend(WHITE, alpha)
-        black = self.blend(BLACK, alpha)
         brightness = self.brightness
-        white_contrast = abs(brightness - white.brightness)
-        black_contrast = abs(brightness - black.brightness)
-        return white if white_contrast &gt; black_contrast else black
+        white_contrast = abs(brightness - WHITE.brightness)
+        black_contrast = abs(brightness - BLACK.brightness)
+        return (WHITE if white_contrast &gt; black_contrast else BLACK).with_alpha(alpha)
 
 
 # Color constants
@@ -772,6 +776,12 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         )
 
     @property
+    def inverse(self) -&gt; Color:
+        &#34;&#34;&#34;The inverse of this color.&#34;&#34;&#34;
+        r, g, b, a = self
+        return Color(255 - r, 255 - g, 255 - b, a)
+
+    @property
     def is_transparent(self) -&gt; bool:
         &#34;&#34;&#34;Check if the color is transparent, i.e. has 0 alpha.
 
@@ -1089,12 +1099,10 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         Returns:
             Color: A new color, either an off-white or off-black
         &#34;&#34;&#34;
-        white = self.blend(WHITE, alpha)
-        black = self.blend(BLACK, alpha)
         brightness = self.brightness
-        white_contrast = abs(brightness - white.brightness)
-        black_contrast = abs(brightness - black.brightness)
-        return white if white_contrast &gt; black_contrast else black</code></pre>
+        white_contrast = abs(brightness - WHITE.brightness)
+        black_contrast = abs(brightness - BLACK.brightness)
+        return (WHITE if white_contrast &gt; black_contrast else BLACK).with_alpha(alpha)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1496,6 +1504,20 @@ def hsl(self) -&gt; HSL:
     return HSL(h, s, l)</code></pre>
 </details>
 </dd>
+<dt id="textual.color.Color.inverse"><code class="name">var <span class="ident">inverse</span> : <a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>
+<div class="desc"><p>The inverse of this color.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def inverse(self) -&gt; Color:
+    &#34;&#34;&#34;The inverse of this color.&#34;&#34;&#34;
+    r, g, b, a = self
+    return Color(255 - r, 255 - g, 255 - b, a)</code></pre>
+</details>
+</dd>
 <dt id="textual.color.Color.is_transparent"><code class="name">var <span class="ident">is_transparent</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Check if the color is transparent, i.e. has 0 alpha.</p>
@@ -1712,12 +1734,10 @@ def get_contrast_text(self, alpha=0.95) -&gt; Color:
     Returns:
         Color: A new color, either an off-white or off-black
     &#34;&#34;&#34;
-    white = self.blend(WHITE, alpha)
-    black = self.blend(BLACK, alpha)
     brightness = self.brightness
-    white_contrast = abs(brightness - white.brightness)
-    black_contrast = abs(brightness - black.brightness)
-    return white if white_contrast &gt; black_contrast else black</code></pre>
+    white_contrast = abs(brightness - WHITE.brightness)
+    black_contrast = abs(brightness - BLACK.brightness)
+    return (WHITE if white_contrast &gt; black_contrast else BLACK).with_alpha(alpha)</code></pre>
 </details>
 </dd>
 <dt id="textual.color.Color.lighten"><code class="name flex">
@@ -2053,6 +2073,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.color.Color.hex" href="#textual.color.Color.hex">hex</a></code></li>
 <li><code><a title="textual.color.Color.hex6" href="#textual.color.Color.hex6">hex6</a></code></li>
 <li><code><a title="textual.color.Color.hsl" href="#textual.color.Color.hsl">hsl</a></code></li>
+<li><code><a title="textual.color.Color.inverse" href="#textual.color.Color.inverse">inverse</a></code></li>
 <li><code><a title="textual.color.Color.is_transparent" href="#textual.color.Color.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.color.Color.lighten" href="#textual.color.Color.lighten">lighten</a></code></li>
 <li><code><a title="textual.color.Color.normalized" href="#textual.color.Color.normalized">normalized</a></code></li>

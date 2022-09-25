@@ -38,13 +38,14 @@ import rich.repr
 from rich.console import (
     Console,
     ConsoleRenderable,
+    ConsoleOptions,
     RichCast,
     JustifyMethod,
     RenderableType,
+    RenderResult,
 )
 from rich.segment import Segment
 from rich.style import Style
-from rich.styled import Styled
 from rich.text import Text
 
 from . import errors, events, messages
@@ -57,7 +58,6 @@ from ._styles_cache import StylesCache
 from ._types import Lines
 from .binding import NoBinding
 from .box_model import BoxModel, get_box_model
-from .css.constants import VALID_TEXT_ALIGN
 from .dom import DOMNode, NoScreen
 from .geometry import Offset, Region, Size, Spacing, clamp
 from .layouts.vertical import VerticalLayout
@@ -85,6 +85,49 @@ _JUSTIFY_MAP: dict[str, JustifyMethod] = {
 }
 
 
+class _Styled:
+    &#34;&#34;&#34;Apply a style to a renderable.
+
+    Args:
+        renderable (RenderableType): Any renderable.
+        style (StyleType): A style to apply across the entire renderable.
+    &#34;&#34;&#34;
+
+    def __init__(
+        self, renderable: &#34;RenderableType&#34;, style: Style, link_style: Style | None
+    ) -&gt; None:
+        self.renderable = renderable
+        self.style = style
+        self.link_style = link_style
+
+    def __rich_console__(
+        self, console: &#34;Console&#34;, options: &#34;ConsoleOptions&#34;
+    ) -&gt; &#34;RenderResult&#34;:
+        style = console.get_style(self.style)
+        result_segments = console.render(self.renderable, options)
+
+        _Segment = Segment
+        if style:
+            apply = style.__add__
+            result_segments = (
+                _Segment(text, apply(_style), control)
+                for text, _style, control in result_segments
+            )
+        link_style = self.link_style
+        if link_style:
+            result_segments = (
+                _Segment(
+                    text,
+                    style
+                    if style._meta is None
+                    else (style + link_style if &#34;@click&#34; in style.meta else style),
+                    control,
+                )
+                for text, style, control in result_segments
+            )
+        return result_segments
+
+
 class RenderCache(NamedTuple):
     &#34;&#34;&#34;Stores results of a previous render.&#34;&#34;&#34;
 
@@ -110,6 +153,12 @@ class Widget(DOMNode):
         scrollbar-corner-color: $panel-darken-1;
         scrollbar-size-vertical: 2;
         scrollbar-size-horizontal: 1;
+        link-background:;        
+        link-color: $text;
+        link-style: underline;
+        hover-background: $accent;   
+        hover-color: $text;     
+        hover-style: bold not underline;
     }
     &#34;&#34;&#34;
     COMPONENT_CLASSES: ClassVar[set[str]] = set()
@@ -122,6 +171,10 @@ class Widget(DOMNode):
     &#34;&#34;&#34;Rich renderable may expand.&#34;&#34;&#34;
     shrink = Reactive(True)
     &#34;&#34;&#34;Rich renderable may shrink.&#34;&#34;&#34;
+    auto_links = Reactive(True)
+    &#34;&#34;&#34;Widget will highlight links automatically.&#34;&#34;&#34;
+
+    hover_style: Reactive[Style] = Reactive(Style)
 
     def __init__(
         self,
@@ -159,7 +212,7 @@ class Widget(DOMNode):
 
         self._styles_cache = StylesCache()
         self._rich_style_cache: dict[str, Style] = {}
-
+        self._stabilized_scrollbar_size: Size | None = None
         self._lock = Lock()
 
         super().__init__(
@@ -340,9 +393,7 @@ class Widget(DOMNode):
         return box_model
 
     def get_content_width(self, container: Size, viewport: Size) -&gt; int:
-        &#34;&#34;&#34;Gets the width of the content area.
-
-        May be overridden in a subclass.
+        &#34;&#34;&#34;Called by textual to get the width of the content area. May be overridden in a subclass.
 
         Args:
             container (Size): Size of the container (immediate parent) widget.
@@ -372,9 +423,7 @@ class Widget(DOMNode):
         return width
 
     def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
-        &#34;&#34;&#34;Gets the height (number of lines) in the content area.
-
-        May be overridden in a subclass.
+        &#34;&#34;&#34;Called by Textual to get the height of the content area. May be overridden in a subclass.
 
         Args:
             container (Size): Size of the container (immediate parent) widget.
@@ -529,10 +578,16 @@ class Widget(DOMNode):
         elif overflow_y == &#34;auto&#34;:
             show_vertical = self.virtual_size.height &gt; height
 
-        if overflow_x == &#34;auto&#34; and show_vertical and not show_horizontal:
+        if (
+            overflow_x == &#34;auto&#34;
+            and show_vertical
+            and not show_horizontal
+            and self._stabilized_scrollbar_size != self.container_size
+        ):
             show_horizontal = (
                 self.virtual_size.width + styles.scrollbar_size_vertical &gt; width
             )
+            self._stabilized_scrollbar_size = self.container_size
 
         self.show_horizontal_scrollbar = show_horizontal
         self.show_vertical_scrollbar = show_vertical
@@ -825,6 +880,40 @@ class Widget(DOMNode):
             if node.styles.has_rule(&#34;layers&#34;):
                 return node.styles.layers
         return (&#34;default&#34;,)
+
+    @property
+    def link_style(self) -&gt; Style:
+        &#34;&#34;&#34;Style of links.&#34;&#34;&#34;
+        styles = self.styles
+        _, background = self.background_colors
+        link_background = background + styles.link_background
+        link_color = link_background + (
+            link_background.get_contrast_text(styles.link_color.a)
+            if styles.auto_link_color
+            else styles.link_color
+        )
+        style = styles.link_style + Style.from_color(
+            link_color.rich_color,
+            link_background.rich_color,
+        )
+        return style
+
+    @property
+    def link_hover_style(self) -&gt; Style:
+        &#34;&#34;&#34;Style of links with mouse hover.&#34;&#34;&#34;
+        styles = self.styles
+        _, background = self.background_colors
+        hover_background = background + styles.hover_background
+        hover_color = hover_background + (
+            hover_background.get_contrast_text(styles.hover_color.a)
+            if styles.auto_hover_color
+            else styles.hover_color
+        )
+        style = styles.hover_style + Style.from_color(
+            hover_color.rich_color,
+            hover_background.rich_color,
+        )
+        return style
 
     def _set_dirty(self, *regions: Region) -&gt; None:
         &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-paint).
@@ -1441,7 +1530,9 @@ class Widget(DOMNode):
         ):
             renderable.justify = text_justify
 
-        renderable = Styled(renderable, self.rich_style)
+        renderable = _Styled(
+            renderable, self.rich_style, self.link_style if self.auto_links else None
+        )
 
         return renderable
 
@@ -1741,6 +1832,7 @@ class Widget(DOMNode):
 
     def _on_leave(self, event: events.Leave) -&gt; None:
         self.mouse_over = False
+        self.hover_style = Style()
 
     def _on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
@@ -1933,6 +2025,12 @@ class Widget(DOMNode):
         scrollbar-corner-color: $panel-darken-1;
         scrollbar-size-vertical: 2;
         scrollbar-size-horizontal: 1;
+        link-background:;        
+        link-color: $text;
+        link-style: underline;
+        hover-background: $accent;   
+        hover-color: $text;     
+        hover-style: bold not underline;
     }
     &#34;&#34;&#34;
     COMPONENT_CLASSES: ClassVar[set[str]] = set()
@@ -1945,6 +2043,10 @@ class Widget(DOMNode):
     &#34;&#34;&#34;Rich renderable may expand.&#34;&#34;&#34;
     shrink = Reactive(True)
     &#34;&#34;&#34;Rich renderable may shrink.&#34;&#34;&#34;
+    auto_links = Reactive(True)
+    &#34;&#34;&#34;Widget will highlight links automatically.&#34;&#34;&#34;
+
+    hover_style: Reactive[Style] = Reactive(Style)
 
     def __init__(
         self,
@@ -1982,7 +2084,7 @@ class Widget(DOMNode):
 
         self._styles_cache = StylesCache()
         self._rich_style_cache: dict[str, Style] = {}
-
+        self._stabilized_scrollbar_size: Size | None = None
         self._lock = Lock()
 
         super().__init__(
@@ -2163,9 +2265,7 @@ class Widget(DOMNode):
         return box_model
 
     def get_content_width(self, container: Size, viewport: Size) -&gt; int:
-        &#34;&#34;&#34;Gets the width of the content area.
-
-        May be overridden in a subclass.
+        &#34;&#34;&#34;Called by textual to get the width of the content area. May be overridden in a subclass.
 
         Args:
             container (Size): Size of the container (immediate parent) widget.
@@ -2195,9 +2295,7 @@ class Widget(DOMNode):
         return width
 
     def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
-        &#34;&#34;&#34;Gets the height (number of lines) in the content area.
-
-        May be overridden in a subclass.
+        &#34;&#34;&#34;Called by Textual to get the height of the content area. May be overridden in a subclass.
 
         Args:
             container (Size): Size of the container (immediate parent) widget.
@@ -2352,10 +2450,16 @@ class Widget(DOMNode):
         elif overflow_y == &#34;auto&#34;:
             show_vertical = self.virtual_size.height &gt; height
 
-        if overflow_x == &#34;auto&#34; and show_vertical and not show_horizontal:
+        if (
+            overflow_x == &#34;auto&#34;
+            and show_vertical
+            and not show_horizontal
+            and self._stabilized_scrollbar_size != self.container_size
+        ):
             show_horizontal = (
                 self.virtual_size.width + styles.scrollbar_size_vertical &gt; width
             )
+            self._stabilized_scrollbar_size = self.container_size
 
         self.show_horizontal_scrollbar = show_horizontal
         self.show_vertical_scrollbar = show_vertical
@@ -2648,6 +2752,40 @@ class Widget(DOMNode):
             if node.styles.has_rule(&#34;layers&#34;):
                 return node.styles.layers
         return (&#34;default&#34;,)
+
+    @property
+    def link_style(self) -&gt; Style:
+        &#34;&#34;&#34;Style of links.&#34;&#34;&#34;
+        styles = self.styles
+        _, background = self.background_colors
+        link_background = background + styles.link_background
+        link_color = link_background + (
+            link_background.get_contrast_text(styles.link_color.a)
+            if styles.auto_link_color
+            else styles.link_color
+        )
+        style = styles.link_style + Style.from_color(
+            link_color.rich_color,
+            link_background.rich_color,
+        )
+        return style
+
+    @property
+    def link_hover_style(self) -&gt; Style:
+        &#34;&#34;&#34;Style of links with mouse hover.&#34;&#34;&#34;
+        styles = self.styles
+        _, background = self.background_colors
+        hover_background = background + styles.hover_background
+        hover_color = hover_background + (
+            hover_background.get_contrast_text(styles.hover_color.a)
+            if styles.auto_hover_color
+            else styles.hover_color
+        )
+        style = styles.hover_style + Style.from_color(
+            hover_color.rich_color,
+            hover_background.rich_color,
+        )
+        return style
 
     def _set_dirty(self, *regions: Region) -&gt; None:
         &#34;&#34;&#34;Set the Widget as &#39;dirty&#39; (requiring re-paint).
@@ -3264,7 +3402,9 @@ class Widget(DOMNode):
         ):
             renderable.justify = text_justify
 
-        renderable = Styled(renderable, self.rich_style)
+        renderable = _Styled(
+            renderable, self.rich_style, self.link_style if self.auto_links else None
+        )
 
         return renderable
 
@@ -3564,6 +3704,7 @@ class Widget(DOMNode):
 
     def _on_leave(self, event: events.Leave) -&gt; None:
         self.mouse_over = False
+        self.hover_style = Style()
 
     def _on_enter(self, event: events.Enter) -&gt; None:
         self.mouse_over = True
@@ -3827,6 +3968,17 @@ def animate(self) -&gt; BoundAnimator:
     return getattr(obj, self.internal_name)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.auto_links"><code class="name">var <span class="ident">auto_links</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Widget will highlight links automatically.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.auto_width"><code class="name">var <span class="ident">auto_width</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p>
@@ -4076,6 +4228,27 @@ def horizontal_scrollbar(self) -&gt; ScrollBar:
     return scroll_bar</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.hover_style"><code class="name">var <span class="ident">hover_style</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.is_container"><code class="name">var <span class="ident">is_container</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Check if this widget is a container (contains other widgets).</p>
@@ -4190,6 +4363,56 @@ def layers(self) -&gt; tuple[str, ...]:
         if node.styles.has_rule(&#34;layers&#34;):
             return node.styles.layers
     return (&#34;default&#34;,)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.link_hover_style"><code class="name">var <span class="ident">link_hover_style</span> : rich.style.Style</code></dt>
+<dd>
+<div class="desc"><p>Style of links with mouse hover.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def link_hover_style(self) -&gt; Style:
+    &#34;&#34;&#34;Style of links with mouse hover.&#34;&#34;&#34;
+    styles = self.styles
+    _, background = self.background_colors
+    hover_background = background + styles.hover_background
+    hover_color = hover_background + (
+        hover_background.get_contrast_text(styles.hover_color.a)
+        if styles.auto_hover_color
+        else styles.hover_color
+    )
+    style = styles.hover_style + Style.from_color(
+        hover_color.rich_color,
+        hover_background.rich_color,
+    )
+    return style</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.link_style"><code class="name">var <span class="ident">link_style</span> : rich.style.Style</code></dt>
+<dd>
+<div class="desc"><p>Style of links.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def link_style(self) -&gt; Style:
+    &#34;&#34;&#34;Style of links.&#34;&#34;&#34;
+    styles = self.styles
+    _, background = self.background_colors
+    link_background = background + styles.link_background
+    link_color = link_background + (
+        link_background.get_contrast_text(styles.link_color.a)
+        if styles.auto_link_color
+        else styles.link_color
+    )
+    style = styles.link_style + Style.from_color(
+        link_color.rich_color,
+        link_background.rich_color,
+    )
+    return style</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.max_scroll_x"><code class="name">var <span class="ident">max_scroll_x</span> : int</code></dt>
@@ -4929,8 +5152,7 @@ visible. Defaults to True.</dd>
 <span>def <span class="ident">get_content_height</span></span>(<span>self, container: Size, viewport: Size, width: int) ‑> int</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Gets the height (number of lines) in the content area.</p>
-<p>May be overridden in a subclass.</p>
+<div class="desc"><p>Called by Textual to get the height of the content area. May be overridden in a subclass.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>container</code></strong> :&ensp;<code>Size</code></dt>
@@ -4950,9 +5172,7 @@ visible. Defaults to True.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_content_height(self, container: Size, viewport: Size, width: int) -&gt; int:
-    &#34;&#34;&#34;Gets the height (number of lines) in the content area.
-
-    May be overridden in a subclass.
+    &#34;&#34;&#34;Called by Textual to get the height of the content area. May be overridden in a subclass.
 
     Args:
         container (Size): Size of the container (immediate parent) widget.
@@ -4994,8 +5214,7 @@ visible. Defaults to True.</dd>
 <span>def <span class="ident">get_content_width</span></span>(<span>self, container: Size, viewport: Size) ‑> int</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Gets the width of the content area.</p>
-<p>May be overridden in a subclass.</p>
+<div class="desc"><p>Called by textual to get the width of the content area. May be overridden in a subclass.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>container</code></strong> :&ensp;<code>Size</code></dt>
@@ -5013,9 +5232,7 @@ visible. Defaults to True.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_content_width(self, container: Size, viewport: Size) -&gt; int:
-    &#34;&#34;&#34;Gets the width of the content area.
-
-    May be overridden in a subclass.
+    &#34;&#34;&#34;Called by textual to get the width of the content area. May be overridden in a subclass.
 
     Args:
         container (Size): Size of the container (immediate parent) widget.
@@ -5209,7 +5426,9 @@ the keys will be set as the Widget's id.</p>
     ):
         renderable.justify = text_justify
 
-    renderable = Styled(renderable, self.rich_style)
+    renderable = _Styled(
+        renderable, self.rich_style, self.link_style if self.auto_links else None
+    )
 
     return renderable</code></pre>
 </details>
@@ -6431,6 +6650,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.allow_vertical_scroll" href="#textual.widget.Widget.allow_vertical_scroll">allow_vertical_scroll</a></code></li>
 <li><code><a title="textual.widget.Widget.animate" href="#textual.widget.Widget.animate">animate</a></code></li>
 <li><code><a title="textual.widget.Widget.auto_height" href="#textual.widget.Widget.auto_height">auto_height</a></code></li>
+<li><code><a title="textual.widget.Widget.auto_links" href="#textual.widget.Widget.auto_links">auto_links</a></code></li>
 <li><code><a title="textual.widget.Widget.auto_width" href="#textual.widget.Widget.auto_width">auto_width</a></code></li>
 <li><code><a title="textual.widget.Widget.broker_event" href="#textual.widget.Widget.broker_event">broker_event</a></code></li>
 <li><code><a title="textual.widget.Widget.can_focus" href="#textual.widget.Widget.can_focus">can_focus</a></code></li>
@@ -6453,11 +6673,14 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.gutter" href="#textual.widget.Widget.gutter">gutter</a></code></li>
 <li><code><a title="textual.widget.Widget.has_focus" href="#textual.widget.Widget.has_focus">has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
+<li><code><a title="textual.widget.Widget.hover_style" href="#textual.widget.Widget.hover_style">hover_style</a></code></li>
 <li><code><a title="textual.widget.Widget.is_container" href="#textual.widget.Widget.is_container">is_container</a></code></li>
 <li><code><a title="textual.widget.Widget.is_scrollable" href="#textual.widget.Widget.is_scrollable">is_scrollable</a></code></li>
 <li><code><a title="textual.widget.Widget.is_transparent" href="#textual.widget.Widget.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.widget.Widget.layer" href="#textual.widget.Widget.layer">layer</a></code></li>
 <li><code><a title="textual.widget.Widget.layers" href="#textual.widget.Widget.layers">layers</a></code></li>
+<li><code><a title="textual.widget.Widget.link_hover_style" href="#textual.widget.Widget.link_hover_style">link_hover_style</a></code></li>
+<li><code><a title="textual.widget.Widget.link_style" href="#textual.widget.Widget.link_style">link_style</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_x" href="#textual.widget.Widget.max_scroll_x">max_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="#textual.widget.Widget.mount">mount</a></code></li>

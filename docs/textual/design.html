@@ -143,7 +143,6 @@ class ColorSystem:
 
         dark = self._dark
         luminosity_spread = self._luminosity_spread
-        text_alpha = self._text_alpha
 
         if dark:
             background = self.background or Color.parse(DEFAULT_DARK_BACKGROUND)
@@ -151,6 +150,8 @@ class ColorSystem:
         else:
             background = self.background or Color.parse(DEFAULT_LIGHT_BACKGROUND)
             surface = self.surface or Color.parse(DEFAULT_LIGHT_SURFACE)
+
+        foreground = background.inverse
 
         boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.07)
 
@@ -187,6 +188,7 @@ class ColorSystem:
             (&#34;primary-background&#34;, primary),
             (&#34;secondary-background&#34;, secondary),
             (&#34;background&#34;, background),
+            (&#34;foregroud&#34;, foreground),
             (&#34;panel&#34;, panel),
             (&#34;boost&#34;, boost),
             (&#34;surface&#34;, surface),
@@ -213,7 +215,7 @@ class ColorSystem:
                     shade_color = color.lighten(luminosity_delta)
                     colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
 
-        colors[&#34;text&#34;] = &#34;auto 95%&#34;
+        colors[&#34;text&#34;] = &#34;auto 90%&#34;
         colors[&#34;text-muted&#34;] = &#34;auto 50%&#34;
         colors[&#34;text-disabled&#34;] = &#34;auto 30%&#34;
 
@@ -427,7 +429,6 @@ Secondary is a second theme color</p></div>
 
         dark = self._dark
         luminosity_spread = self._luminosity_spread
-        text_alpha = self._text_alpha
 
         if dark:
             background = self.background or Color.parse(DEFAULT_DARK_BACKGROUND)
@@ -435,6 +436,8 @@ Secondary is a second theme color</p></div>
         else:
             background = self.background or Color.parse(DEFAULT_LIGHT_BACKGROUND)
             surface = self.surface or Color.parse(DEFAULT_LIGHT_SURFACE)
+
+        foreground = background.inverse
 
         boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.07)
 
@@ -471,6 +474,7 @@ Secondary is a second theme color</p></div>
             (&#34;primary-background&#34;, primary),
             (&#34;secondary-background&#34;, secondary),
             (&#34;background&#34;, background),
+            (&#34;foregroud&#34;, foreground),
             (&#34;panel&#34;, panel),
             (&#34;boost&#34;, boost),
             (&#34;surface&#34;, surface),
@@ -497,7 +501,7 @@ Secondary is a second theme color</p></div>
                     shade_color = color.lighten(luminosity_delta)
                     colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
 
-        colors[&#34;text&#34;] = &#34;auto 95%&#34;
+        colors[&#34;text&#34;] = &#34;auto 90%&#34;
         colors[&#34;text-muted&#34;] = &#34;auto 50%&#34;
         colors[&#34;text-disabled&#34;] = &#34;auto 30%&#34;
 
@@ -582,7 +586,6 @@ shades. Defaults to 0.2.</dd>
 
     dark = self._dark
     luminosity_spread = self._luminosity_spread
-    text_alpha = self._text_alpha
 
     if dark:
         background = self.background or Color.parse(DEFAULT_DARK_BACKGROUND)
@@ -590,6 +593,8 @@ shades. Defaults to 0.2.</dd>
     else:
         background = self.background or Color.parse(DEFAULT_LIGHT_BACKGROUND)
         surface = self.surface or Color.parse(DEFAULT_LIGHT_SURFACE)
+
+    foreground = background.inverse
 
     boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.07)
 
@@ -626,6 +631,7 @@ shades. Defaults to 0.2.</dd>
         (&#34;primary-background&#34;, primary),
         (&#34;secondary-background&#34;, secondary),
         (&#34;background&#34;, background),
+        (&#34;foregroud&#34;, foreground),
         (&#34;panel&#34;, panel),
         (&#34;boost&#34;, boost),
         (&#34;surface&#34;, surface),
@@ -652,7 +658,7 @@ shades. Defaults to 0.2.</dd>
                 shade_color = color.lighten(luminosity_delta)
                 colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
 
-    colors[&#34;text&#34;] = &#34;auto 95%&#34;
+    colors[&#34;text&#34;] = &#34;auto 90%&#34;
     colors[&#34;text-muted&#34;] = &#34;auto 50%&#34;
     colors[&#34;text-disabled&#34;] = &#34;auto 30%&#34;
 
