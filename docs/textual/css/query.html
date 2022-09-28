@@ -51,7 +51,7 @@ a method which evaluates the query, such as first() and last().
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Iterator, TypeVar, overload
+from typing import Generic, TYPE_CHECKING, Iterator, TypeVar, overload
 
 import rich.repr
 
@@ -77,8 +77,11 @@ class WrongType(QueryError):
     pass
 
 
+QueryType = TypeVar(&#34;QueryType&#34;, bound=&#34;Widget&#34;)
+
+
 @rich.repr.auto(angular=True)
-class DOMQuery:
+class DOMQuery(Generic[QueryType]):
     __slots__ = [
         &#34;_node&#34;,
         &#34;_nodes&#34;,
@@ -113,7 +116,7 @@ class DOMQuery:
         return self._node
 
     @property
-    def nodes(self) -&gt; list[Widget]:
+    def nodes(self) -&gt; list[QueryType]:
         &#34;&#34;&#34;Lazily evaluate nodes.&#34;&#34;&#34;
         from ..widget import Widget
 
@@ -138,21 +141,21 @@ class DOMQuery:
         &#34;&#34;&#34;True if non-empty, otherwise False.&#34;&#34;&#34;
         return bool(self.nodes)
 
-    def __iter__(self) -&gt; Iterator[Widget]:
+    def __iter__(self) -&gt; Iterator[QueryType]:
         return iter(self.nodes)
 
-    def __reversed__(self) -&gt; Iterator[Widget]:
+    def __reversed__(self) -&gt; Iterator[QueryType]:
         return reversed(self.nodes)
 
     @overload
-    def __getitem__(self, index: int) -&gt; Widget:
+    def __getitem__(self, index: int) -&gt; QueryType:
         ...
 
     @overload
-    def __getitem__(self, index: slice) -&gt; list[Widget]:
+    def __getitem__(self, index: slice) -&gt; list[QueryType]:
         ...
 
-    def __getitem__(self, index: int | slice) -&gt; Widget | list[Widget]:
+    def __getitem__(self, index: int | slice) -&gt; QueryType | list[QueryType]:
         return self.nodes[index]
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
@@ -168,7 +171,7 @@ class DOMQuery:
                 for selectors in self._excludes
             )
 
-    def filter(self, selector: str) -&gt; DOMQuery:
+    def filter(self, selector: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Filter this set by the given CSS selector.
 
         Args:
@@ -180,7 +183,7 @@ class DOMQuery:
 
         return DOMQuery(self.node, filter=selector, parent=self)
 
-    def exclude(self, selector: str) -&gt; DOMQuery:
+    def exclude(self, selector: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Exclude nodes that match a given selector.
 
         Args:
@@ -201,7 +204,9 @@ class DOMQuery:
     def first(self, expect_type: type[ExpectType]) -&gt; ExpectType:
         ...
 
-    def first(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+    def first(
+        self, expect_type: type[ExpectType] | None = None
+    ) -&gt; QueryType | ExpectType:
         &#34;&#34;&#34;Get the *first* match node.
 
         Args:
@@ -234,7 +239,9 @@ class DOMQuery:
     def last(self, expect_type: type[ExpectType]) -&gt; ExpectType:
         ...
 
-    def last(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+    def last(
+        self, expect_type: type[ExpectType] | None = None
+    ) -&gt; QueryType | ExpectType:
         &#34;&#34;&#34;Get the *last* match node.
 
         Args:
@@ -286,7 +293,7 @@ class DOMQuery:
                 if isinstance(node, filter_type):
                     yield node
 
-    def set_class(self, add: bool, *class_names: str) -&gt; DOMQuery:
+    def set_class(self, add: bool, *class_names: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Set the given class name(s) according to a condition.
 
         Args:
@@ -299,31 +306,33 @@ class DOMQuery:
             node.set_class(add, *class_names)
         return self
 
-    def add_class(self, *class_names: str) -&gt; DOMQuery:
+    def add_class(self, *class_names: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Add the given class name(s) to nodes.&#34;&#34;&#34;
         for node in self:
             node.add_class(*class_names)
         return self
 
-    def remove_class(self, *class_names: str) -&gt; DOMQuery:
+    def remove_class(self, *class_names: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Remove the given class names from the nodes.&#34;&#34;&#34;
         for node in self:
             node.remove_class(*class_names)
         return self
 
-    def toggle_class(self, *class_names: str) -&gt; DOMQuery:
+    def toggle_class(self, *class_names: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Toggle the given class names from matched nodes.&#34;&#34;&#34;
         for node in self:
             node.toggle_class(*class_names)
         return self
 
-    def remove(self) -&gt; DOMQuery:
+    def remove(self) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Remove matched nodes from the DOM&#34;&#34;&#34;
         for node in self:
             node.remove()
         return self
 
-    def set_styles(self, css: str | None = None, **update_styles) -&gt; DOMQuery:
+    def set_styles(
+        self, css: str | None = None, **update_styles
+    ) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Set styles on matched nodes.
 
         Args:
@@ -343,7 +352,9 @@ class DOMQuery:
                 node.refresh(layout=True)
         return self
 
-    def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; DOMQuery:
+    def refresh(
+        self, *, repaint: bool = True, layout: bool = False
+    ) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Refresh matched nodes.
 
         Args:
@@ -372,12 +383,25 @@ class DOMQuery:
 <span>(</span><span>node: DOMNode, *, filter: str | None = None, exclude: str | None = None, parent: <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a> | None = None)</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Abstract base class for generic types.</p>
+<p>A generic type is typically declared by inheriting from
+this class parameterized with one or more type variables.
+For example, a generic mapping type might be defined as::</p>
+<p>class Mapping(Generic[KT, VT]):
+def <strong>getitem</strong>(self, key: KT) -&gt; VT:
+&hellip;
+# Etc.</p>
+<p>This class can then be used as follows::</p>
+<p>def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -&gt; VT:
+try:
+return mapping[key]
+except KeyError:
+return default</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class DOMQuery:
+<pre><code class="python">class DOMQuery(Generic[QueryType]):
     __slots__ = [
         &#34;_node&#34;,
         &#34;_nodes&#34;,
@@ -412,7 +436,7 @@ class DOMQuery:
         return self._node
 
     @property
-    def nodes(self) -&gt; list[Widget]:
+    def nodes(self) -&gt; list[QueryType]:
         &#34;&#34;&#34;Lazily evaluate nodes.&#34;&#34;&#34;
         from ..widget import Widget
 
@@ -437,21 +461,21 @@ class DOMQuery:
         &#34;&#34;&#34;True if non-empty, otherwise False.&#34;&#34;&#34;
         return bool(self.nodes)
 
-    def __iter__(self) -&gt; Iterator[Widget]:
+    def __iter__(self) -&gt; Iterator[QueryType]:
         return iter(self.nodes)
 
-    def __reversed__(self) -&gt; Iterator[Widget]:
+    def __reversed__(self) -&gt; Iterator[QueryType]:
         return reversed(self.nodes)
 
     @overload
-    def __getitem__(self, index: int) -&gt; Widget:
+    def __getitem__(self, index: int) -&gt; QueryType:
         ...
 
     @overload
-    def __getitem__(self, index: slice) -&gt; list[Widget]:
+    def __getitem__(self, index: slice) -&gt; list[QueryType]:
         ...
 
-    def __getitem__(self, index: int | slice) -&gt; Widget | list[Widget]:
+    def __getitem__(self, index: int | slice) -&gt; QueryType | list[QueryType]:
         return self.nodes[index]
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
@@ -467,7 +491,7 @@ class DOMQuery:
                 for selectors in self._excludes
             )
 
-    def filter(self, selector: str) -&gt; DOMQuery:
+    def filter(self, selector: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Filter this set by the given CSS selector.
 
         Args:
@@ -479,7 +503,7 @@ class DOMQuery:
 
         return DOMQuery(self.node, filter=selector, parent=self)
 
-    def exclude(self, selector: str) -&gt; DOMQuery:
+    def exclude(self, selector: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Exclude nodes that match a given selector.
 
         Args:
@@ -500,7 +524,9 @@ class DOMQuery:
     def first(self, expect_type: type[ExpectType]) -&gt; ExpectType:
         ...
 
-    def first(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+    def first(
+        self, expect_type: type[ExpectType] | None = None
+    ) -&gt; QueryType | ExpectType:
         &#34;&#34;&#34;Get the *first* match node.
 
         Args:
@@ -533,7 +559,9 @@ class DOMQuery:
     def last(self, expect_type: type[ExpectType]) -&gt; ExpectType:
         ...
 
-    def last(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+    def last(
+        self, expect_type: type[ExpectType] | None = None
+    ) -&gt; QueryType | ExpectType:
         &#34;&#34;&#34;Get the *last* match node.
 
         Args:
@@ -585,7 +613,7 @@ class DOMQuery:
                 if isinstance(node, filter_type):
                     yield node
 
-    def set_class(self, add: bool, *class_names: str) -&gt; DOMQuery:
+    def set_class(self, add: bool, *class_names: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Set the given class name(s) according to a condition.
 
         Args:
@@ -598,31 +626,33 @@ class DOMQuery:
             node.set_class(add, *class_names)
         return self
 
-    def add_class(self, *class_names: str) -&gt; DOMQuery:
+    def add_class(self, *class_names: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Add the given class name(s) to nodes.&#34;&#34;&#34;
         for node in self:
             node.add_class(*class_names)
         return self
 
-    def remove_class(self, *class_names: str) -&gt; DOMQuery:
+    def remove_class(self, *class_names: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Remove the given class names from the nodes.&#34;&#34;&#34;
         for node in self:
             node.remove_class(*class_names)
         return self
 
-    def toggle_class(self, *class_names: str) -&gt; DOMQuery:
+    def toggle_class(self, *class_names: str) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Toggle the given class names from matched nodes.&#34;&#34;&#34;
         for node in self:
             node.toggle_class(*class_names)
         return self
 
-    def remove(self) -&gt; DOMQuery:
+    def remove(self) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Remove matched nodes from the DOM&#34;&#34;&#34;
         for node in self:
             node.remove()
         return self
 
-    def set_styles(self, css: str | None = None, **update_styles) -&gt; DOMQuery:
+    def set_styles(
+        self, css: str | None = None, **update_styles
+    ) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Set styles on matched nodes.
 
         Args:
@@ -642,7 +672,9 @@ class DOMQuery:
                 node.refresh(layout=True)
         return self
 
-    def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; DOMQuery:
+    def refresh(
+        self, *, repaint: bool = True, layout: bool = False
+    ) -&gt; DOMQuery[QueryType]:
         &#34;&#34;&#34;Refresh matched nodes.
 
         Args:
@@ -656,6 +688,10 @@ class DOMQuery:
             node.refresh(repaint=repaint, layout=layout)
         return self</code></pre>
 </details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>typing.Generic</li>
+</ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.css.query.DOMQuery.ExpectType"><code class="name">var <span class="ident">ExpectType</span></code></dt>
@@ -677,7 +713,7 @@ def node(self) -&gt; DOMNode:
     return self._node</code></pre>
 </details>
 </dd>
-<dt id="textual.css.query.DOMQuery.nodes"><code class="name">var <span class="ident">nodes</span> : list[Widget]</code></dt>
+<dt id="textual.css.query.DOMQuery.nodes"><code class="name">var <span class="ident">nodes</span> : list[QueryType]</code></dt>
 <dd>
 <div class="desc"><p>Lazily evaluate nodes.</p></div>
 <details class="source">
@@ -685,7 +721,7 @@ def node(self) -&gt; DOMNode:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def nodes(self) -&gt; list[Widget]:
+def nodes(self) -&gt; list[QueryType]:
     &#34;&#34;&#34;Lazily evaluate nodes.&#34;&#34;&#34;
     from ..widget import Widget
 
@@ -708,7 +744,7 @@ def nodes(self) -&gt; list[Widget]:
 <h3>Methods</h3>
 <dl>
 <dt id="textual.css.query.DOMQuery.add_class"><code class="name flex">
-<span>def <span class="ident">add_class</span></span>(<span>self, *class_names: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+<span>def <span class="ident">add_class</span></span>(<span>self, *class_names: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a>[~QueryType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add the given class name(s) to nodes.</p></div>
@@ -716,7 +752,7 @@ def nodes(self) -&gt; list[Widget]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def add_class(self, *class_names: str) -&gt; DOMQuery:
+<pre><code class="python">def add_class(self, *class_names: str) -&gt; DOMQuery[QueryType]:
     &#34;&#34;&#34;Add the given class name(s) to nodes.&#34;&#34;&#34;
     for node in self:
         node.add_class(*class_names)
@@ -724,7 +760,7 @@ def nodes(self) -&gt; list[Widget]:
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.exclude"><code class="name flex">
-<span>def <span class="ident">exclude</span></span>(<span>self, selector: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+<span>def <span class="ident">exclude</span></span>(<span>self, selector: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a>[~QueryType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Exclude nodes that match a given selector.</p>
@@ -742,7 +778,7 @@ def nodes(self) -&gt; list[Widget]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def exclude(self, selector: str) -&gt; DOMQuery:
+<pre><code class="python">def exclude(self, selector: str) -&gt; DOMQuery[QueryType]:
     &#34;&#34;&#34;Exclude nodes that match a given selector.
 
     Args:
@@ -755,7 +791,7 @@ def nodes(self) -&gt; list[Widget]:
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.filter"><code class="name flex">
-<span>def <span class="ident">filter</span></span>(<span>self, selector: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+<span>def <span class="ident">filter</span></span>(<span>self, selector: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a>[~QueryType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Filter this set by the given CSS selector.</p>
@@ -773,7 +809,7 @@ def nodes(self) -&gt; list[Widget]:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def filter(self, selector: str) -&gt; DOMQuery:
+<pre><code class="python">def filter(self, selector: str) -&gt; DOMQuery[QueryType]:
     &#34;&#34;&#34;Filter this set by the given CSS selector.
 
     Args:
@@ -787,7 +823,7 @@ def nodes(self) -&gt; list[Widget]:
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.first"><code class="name flex">
-<span>def <span class="ident">first</span></span>(<span>self, expect_type: type[ExpectType] | None = None) ‑> Widget | ExpectType</span>
+<span>def <span class="ident">first</span></span>(<span>self, expect_type: type[ExpectType] | None = None) ‑> QueryType | ExpectType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get the <em>first</em> match node.</p>
@@ -807,7 +843,9 @@ or None for any type. Defaults to None.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def first(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+<pre><code class="python">def first(
+    self, expect_type: type[ExpectType] | None = None
+) -&gt; QueryType | ExpectType:
     &#34;&#34;&#34;Get the *first* match node.
 
     Args:
@@ -834,7 +872,7 @@ or None for any type. Defaults to None.</p>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.last"><code class="name flex">
-<span>def <span class="ident">last</span></span>(<span>self, expect_type: type[ExpectType] | None = None) ‑> Widget | ExpectType</span>
+<span>def <span class="ident">last</span></span>(<span>self, expect_type: type[ExpectType] | None = None) ‑> QueryType | ExpectType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get the <em>last</em> match node.</p>
@@ -854,7 +892,9 @@ or None for any type. Defaults to None.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def last(self, expect_type: type[ExpectType] | None = None) -&gt; Widget | ExpectType:
+<pre><code class="python">def last(
+    self, expect_type: type[ExpectType] | None = None
+) -&gt; QueryType | ExpectType:
     &#34;&#34;&#34;Get the *last* match node.
 
     Args:
@@ -881,7 +921,7 @@ or None for any type. Defaults to None.</p>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.refresh"><code class="name flex">
-<span>def <span class="ident">refresh</span></span>(<span>self, *, repaint: bool = True, layout: bool = False) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+<span>def <span class="ident">refresh</span></span>(<span>self, *, repaint: bool = True, layout: bool = False) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a>[~QueryType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Refresh matched nodes.</p>
@@ -901,7 +941,9 @@ or None for any type. Defaults to None.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def refresh(self, *, repaint: bool = True, layout: bool = False) -&gt; DOMQuery:
+<pre><code class="python">def refresh(
+    self, *, repaint: bool = True, layout: bool = False
+) -&gt; DOMQuery[QueryType]:
     &#34;&#34;&#34;Refresh matched nodes.
 
     Args:
@@ -917,7 +959,7 @@ or None for any type. Defaults to None.</p>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.remove"><code class="name flex">
-<span>def <span class="ident">remove</span></span>(<span>self) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+<span>def <span class="ident">remove</span></span>(<span>self) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a>[~QueryType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Remove matched nodes from the DOM</p></div>
@@ -925,7 +967,7 @@ or None for any type. Defaults to None.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def remove(self) -&gt; DOMQuery:
+<pre><code class="python">def remove(self) -&gt; DOMQuery[QueryType]:
     &#34;&#34;&#34;Remove matched nodes from the DOM&#34;&#34;&#34;
     for node in self:
         node.remove()
@@ -933,7 +975,7 @@ or None for any type. Defaults to None.</p>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.remove_class"><code class="name flex">
-<span>def <span class="ident">remove_class</span></span>(<span>self, *class_names: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+<span>def <span class="ident">remove_class</span></span>(<span>self, *class_names: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a>[~QueryType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Remove the given class names from the nodes.</p></div>
@@ -941,7 +983,7 @@ or None for any type. Defaults to None.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def remove_class(self, *class_names: str) -&gt; DOMQuery:
+<pre><code class="python">def remove_class(self, *class_names: str) -&gt; DOMQuery[QueryType]:
     &#34;&#34;&#34;Remove the given class names from the nodes.&#34;&#34;&#34;
     for node in self:
         node.remove_class(*class_names)
@@ -983,7 +1025,7 @@ or None for no filter. Defaults to None.</p>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.set_class"><code class="name flex">
-<span>def <span class="ident">set_class</span></span>(<span>self, add: bool, *class_names: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+<span>def <span class="ident">set_class</span></span>(<span>self, add: bool, *class_names: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a>[~QueryType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Set the given class name(s) according to a condition.</p>
@@ -1001,7 +1043,7 @@ or None for no filter. Defaults to None.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def set_class(self, add: bool, *class_names: str) -&gt; DOMQuery:
+<pre><code class="python">def set_class(self, add: bool, *class_names: str) -&gt; DOMQuery[QueryType]:
     &#34;&#34;&#34;Set the given class name(s) according to a condition.
 
     Args:
@@ -1016,7 +1058,7 @@ or None for no filter. Defaults to None.</p>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.set_styles"><code class="name flex">
-<span>def <span class="ident">set_styles</span></span>(<span>self, css: str | None = None, **update_styles) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+<span>def <span class="ident">set_styles</span></span>(<span>self, css: str | None = None, **update_styles) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a>[QueryType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Set styles on matched nodes.</p>
@@ -1029,7 +1071,9 @@ or None for no filter. Defaults to None.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def set_styles(self, css: str | None = None, **update_styles) -&gt; DOMQuery:
+<pre><code class="python">def set_styles(
+    self, css: str | None = None, **update_styles
+) -&gt; DOMQuery[QueryType]:
     &#34;&#34;&#34;Set styles on matched nodes.
 
     Args:
@@ -1051,7 +1095,7 @@ or None for no filter. Defaults to None.</p>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.toggle_class"><code class="name flex">
-<span>def <span class="ident">toggle_class</span></span>(<span>self, *class_names: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a></span>
+<span>def <span class="ident">toggle_class</span></span>(<span>self, *class_names: str) ‑> <a title="textual.css.query.DOMQuery" href="#textual.css.query.DOMQuery">DOMQuery</a>[~QueryType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Toggle the given class names from matched nodes.</p></div>
@@ -1059,7 +1103,7 @@ or None for no filter. Defaults to None.</p>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def toggle_class(self, *class_names: str) -&gt; DOMQuery:
+<pre><code class="python">def toggle_class(self, *class_names: str) -&gt; DOMQuery[QueryType]:
     &#34;&#34;&#34;Toggle the given class names from matched nodes.&#34;&#34;&#34;
     for node in self:
         node.toggle_class(*class_names)

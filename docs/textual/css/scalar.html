@@ -355,6 +355,22 @@ class ScalarOffset(NamedTuple):
         &#34;&#34;&#34;Get a null scalar offset (0, 0).&#34;&#34;&#34;
         return NULL_SCALAR
 
+    @classmethod
+    def from_offset(cls, offset: tuple[int, int]) -&gt; ScalarOffset:
+        &#34;&#34;&#34;Create a Scalar offset from a tuple of integers.
+
+        Args:
+            offset (tuple[int, int]): Offset in cells.
+
+        Returns:
+            ScalarOffset: New offset.
+        &#34;&#34;&#34;
+        x, y = offset
+        return cls(
+            Scalar(x, Unit.CELLS, Unit.WIDTH),
+            Scalar(y, Unit.CELLS, Unit.HEIGHT),
+        )
+
     def __bool__(self) -&gt; bool:
         x, y = self
         return bool(x.value or y.value)
@@ -364,6 +380,15 @@ class ScalarOffset(NamedTuple):
         yield None, str(self.y)
 
     def resolve(self, size: Size, viewport: Size) -&gt; Offset:
+        &#34;&#34;&#34;Resolve the offset in to cells.
+
+        Args:
+            size (Size): Size of container.
+            viewport (Size): Size of viewport.
+
+        Returns:
+            Offset: Offset in cells.
+        &#34;&#34;&#34;
         x, y = self
         return Offset(
             round(x.resolve_dimension(size, viewport)),
@@ -382,8 +407,7 @@ def percentage_string_to_float(string: str) -&gt; float:
     &#34;&#34;&#34;
     string = string.strip()
     if string.endswith(&#34;%&#34;):
-        percentage = string[:-1]
-        float_percentage = clamp(float(percentage) / 100, 0, 1)
+        float_percentage = clamp(float(string[:-1]) / 100.0, 0.0, 1.0)
     else:
         float_percentage = float(string)
     return float_percentage
@@ -456,8 +480,7 @@ if __name__ == &#34;__main__&#34;:
     &#34;&#34;&#34;
     string = string.strip()
     if string.endswith(&#34;%&#34;):
-        percentage = string[:-1]
-        float_percentage = clamp(float(percentage) / 100, 0, 1)
+        float_percentage = clamp(float(string[:-1]) / 100.0, 0.0, 1.0)
     else:
         float_percentage = float(string)
     return float_percentage</code></pre>
@@ -958,6 +981,22 @@ def resolve_dimension(
         &#34;&#34;&#34;Get a null scalar offset (0, 0).&#34;&#34;&#34;
         return NULL_SCALAR
 
+    @classmethod
+    def from_offset(cls, offset: tuple[int, int]) -&gt; ScalarOffset:
+        &#34;&#34;&#34;Create a Scalar offset from a tuple of integers.
+
+        Args:
+            offset (tuple[int, int]): Offset in cells.
+
+        Returns:
+            ScalarOffset: New offset.
+        &#34;&#34;&#34;
+        x, y = offset
+        return cls(
+            Scalar(x, Unit.CELLS, Unit.WIDTH),
+            Scalar(y, Unit.CELLS, Unit.HEIGHT),
+        )
+
     def __bool__(self) -&gt; bool:
         x, y = self
         return bool(x.value or y.value)
@@ -967,6 +1006,15 @@ def resolve_dimension(
         yield None, str(self.y)
 
     def resolve(self, size: Size, viewport: Size) -&gt; Offset:
+        &#34;&#34;&#34;Resolve the offset in to cells.
+
+        Args:
+            size (Size): Size of container.
+            viewport (Size): Size of viewport.
+
+        Returns:
+            Offset: Offset in cells.
+        &#34;&#34;&#34;
         x, y = self
         return Offset(
             round(x.resolve_dimension(size, viewport)),
@@ -979,6 +1027,42 @@ def resolve_dimension(
 </ul>
 <h3>Static methods</h3>
 <dl>
+<dt id="textual.css.scalar.ScalarOffset.from_offset"><code class="name flex">
+<span>def <span class="ident">from_offset</span></span>(<span>offset: tuple[int, int]) ‑> <a title="textual.css.scalar.ScalarOffset" href="#textual.css.scalar.ScalarOffset">ScalarOffset</a></span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a Scalar offset from a tuple of integers.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>offset</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
+<dd>Offset in cells.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.css.scalar.ScalarOffset" href="#textual.css.scalar.ScalarOffset">ScalarOffset</a></code></dt>
+<dd>New offset.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+def from_offset(cls, offset: tuple[int, int]) -&gt; ScalarOffset:
+    &#34;&#34;&#34;Create a Scalar offset from a tuple of integers.
+
+    Args:
+        offset (tuple[int, int]): Offset in cells.
+
+    Returns:
+        ScalarOffset: New offset.
+    &#34;&#34;&#34;
+    x, y = offset
+    return cls(
+        Scalar(x, Unit.CELLS, Unit.WIDTH),
+        Scalar(y, Unit.CELLS, Unit.HEIGHT),
+    )</code></pre>
+</details>
+</dd>
 <dt id="textual.css.scalar.ScalarOffset.null"><code class="name flex">
 <span>def <span class="ident">null</span></span>(<span>) ‑> <a title="textual.css.scalar.ScalarOffset" href="#textual.css.scalar.ScalarOffset">ScalarOffset</a></span>
 </code></dt>
@@ -1012,12 +1096,33 @@ def null(cls) -&gt; ScalarOffset:
 <span>def <span class="ident">resolve</span></span>(<span>self, size: Size, viewport: Size) ‑> <a title="textual.geometry.Offset" href="../geometry.html#textual.geometry.Offset">Offset</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Resolve the offset in to cells.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>size</code></strong> :&ensp;<code>Size</code></dt>
+<dd>Size of container.</dd>
+<dt><strong><code>viewport</code></strong> :&ensp;<code>Size</code></dt>
+<dd>Size of viewport.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Offset</code></dt>
+<dd>Offset in cells.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def resolve(self, size: Size, viewport: Size) -&gt; Offset:
+    &#34;&#34;&#34;Resolve the offset in to cells.
+
+    Args:
+        size (Size): Size of container.
+        viewport (Size): Size of viewport.
+
+    Returns:
+        Offset: Offset in cells.
+    &#34;&#34;&#34;
     x, y = self
     return Offset(
         round(x.resolve_dimension(size, viewport)),
@@ -1223,6 +1328,7 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.css.scalar.ScalarOffset" href="#textual.css.scalar.ScalarOffset">ScalarOffset</a></code></h4>
 <ul class="">
+<li><code><a title="textual.css.scalar.ScalarOffset.from_offset" href="#textual.css.scalar.ScalarOffset.from_offset">from_offset</a></code></li>
 <li><code><a title="textual.css.scalar.ScalarOffset.null" href="#textual.css.scalar.ScalarOffset.null">null</a></code></li>
 <li><code><a title="textual.css.scalar.ScalarOffset.resolve" href="#textual.css.scalar.ScalarOffset.resolve">resolve</a></code></li>
 <li><code><a title="textual.css.scalar.ScalarOffset.x" href="#textual.css.scalar.ScalarOffset.x">x</a></code></li>

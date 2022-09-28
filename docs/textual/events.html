@@ -35,7 +35,6 @@ from rich.style import Style
 
 from ._types import MessageTarget
 from .geometry import Offset, Size
-from .keys import KEY_VALUES, Keys
 from .message import Message
 
 MouseEventT = TypeVar(&#34;MouseEventT&#34;, bound=&#34;MouseEvent&#34;)
@@ -346,14 +345,44 @@ class MouseEvent(InputEvent, bubble=True):
         yield &#34;ctrl&#34;, self.ctrl, False
 
     @property
+    def offset(self) -&gt; Offset:
+        &#34;&#34;&#34;The mouse coordinate as an offset.
+
+        Returns:
+            Offset: Mouse coordinate.
+
+        &#34;&#34;&#34;
+        return Offset(self.x, self.y)
+
+    @property
+    def screen_offset(self) -&gt; Offset:
+        &#34;&#34;&#34;Mouse coordinate relative to the screen.
+
+        Returns:
+            Offset: Mouse coordinate.
+        &#34;&#34;&#34;
+        return Offset(self.screen_x, self.screen_y)
+
+    @property
+    def delta(self) -&gt; Offset:
+        &#34;&#34;&#34;Mouse coordinate delta (change since last event).
+
+        Returns:
+            Offset: Mouse coordinate.
+
+        &#34;&#34;&#34;
+        return Offset(self.delta_x, self.delta_y)
+
+    @property
     def style(self) -&gt; Style:
+        &#34;&#34;&#34;The (Rich) Style under the cursor.&#34;&#34;&#34;
         return self._style or Style()
 
     @style.setter
     def style(self, style: Style) -&gt; None:
         self._style = style
 
-    def offset(self, x: int, y: int) -&gt; MouseEvent:
+    def _apply_offset(self, x: int, y: int) -&gt; MouseEvent:
         return self.__class__(
             self.sender,
             x=self.x + x,
@@ -371,7 +400,7 @@ class MouseEvent(InputEvent, bubble=True):
 
 
 @rich.repr.auto
-class MouseMove(MouseEvent, bubble=True, verbose=True):
+class MouseMove(MouseEvent, bubble=False, verbose=True):
     &#34;&#34;&#34;Sent when the mouse cursor moves.&#34;&#34;&#34;
 
 
@@ -741,17 +770,21 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><a title="textual.events.MouseEvent.button" href="#textual.events.MouseEvent.button">button</a></code></li>
 <li><code><a title="textual.events.MouseEvent.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
 <li><code><a title="textual.events.MouseEvent.ctrl" href="#textual.events.MouseEvent.ctrl">ctrl</a></code></li>
+<li><code><a title="textual.events.MouseEvent.delta" href="#textual.events.MouseEvent.delta">delta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.MouseEvent.offset" href="#textual.events.MouseEvent.offset">offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.MouseEvent.screen_offset" href="#textual.events.MouseEvent.screen_offset">screen_offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_x" href="#textual.events.MouseEvent.screen_x">screen_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.MouseEvent.style" href="#textual.events.MouseEvent.style">style</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
@@ -1787,17 +1820,21 @@ configuration and binding keys.</p></div>
 <li><code><a title="textual.events.MouseEvent.button" href="#textual.events.MouseEvent.button">button</a></code></li>
 <li><code><a title="textual.events.MouseEvent.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
 <li><code><a title="textual.events.MouseEvent.ctrl" href="#textual.events.MouseEvent.ctrl">ctrl</a></code></li>
+<li><code><a title="textual.events.MouseEvent.delta" href="#textual.events.MouseEvent.delta">delta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.MouseEvent.offset" href="#textual.events.MouseEvent.offset">offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.MouseEvent.screen_offset" href="#textual.events.MouseEvent.screen_offset">screen_offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_x" href="#textual.events.MouseEvent.screen_x">screen_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.MouseEvent.style" href="#textual.events.MouseEvent.style">style</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
@@ -1936,14 +1973,44 @@ configuration and binding keys.</p></div>
         yield &#34;ctrl&#34;, self.ctrl, False
 
     @property
+    def offset(self) -&gt; Offset:
+        &#34;&#34;&#34;The mouse coordinate as an offset.
+
+        Returns:
+            Offset: Mouse coordinate.
+
+        &#34;&#34;&#34;
+        return Offset(self.x, self.y)
+
+    @property
+    def screen_offset(self) -&gt; Offset:
+        &#34;&#34;&#34;Mouse coordinate relative to the screen.
+
+        Returns:
+            Offset: Mouse coordinate.
+        &#34;&#34;&#34;
+        return Offset(self.screen_x, self.screen_y)
+
+    @property
+    def delta(self) -&gt; Offset:
+        &#34;&#34;&#34;Mouse coordinate delta (change since last event).
+
+        Returns:
+            Offset: Mouse coordinate.
+
+        &#34;&#34;&#34;
+        return Offset(self.delta_x, self.delta_y)
+
+    @property
     def style(self) -&gt; Style:
+        &#34;&#34;&#34;The (Rich) Style under the cursor.&#34;&#34;&#34;
         return self._style or Style()
 
     @style.setter
     def style(self, style: Style) -&gt; None:
         self._style = style
 
-    def offset(self, x: int, y: int) -&gt; MouseEvent:
+    def _apply_offset(self, x: int, y: int) -&gt; MouseEvent:
         return self.__class__(
             self.sender,
             x=self.x + x,
@@ -2032,6 +2099,29 @@ def from_event(cls: Type[MouseEventT], event: MouseEvent) -&gt; MouseEventT:
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
+<dt id="textual.events.MouseEvent.delta"><code class="name">var <span class="ident">delta</span> : <a title="textual.geometry.Offset" href="geometry.html#textual.geometry.Offset">Offset</a></code></dt>
+<dd>
+<div class="desc"><p>Mouse coordinate delta (change since last event).</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Offset</code></dt>
+<dd>Mouse coordinate.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def delta(self) -&gt; Offset:
+    &#34;&#34;&#34;Mouse coordinate delta (change since last event).
+
+    Returns:
+        Offset: Mouse coordinate.
+
+    &#34;&#34;&#34;
+    return Offset(self.delta_x, self.delta_y)</code></pre>
+</details>
+</dd>
 <dt id="textual.events.MouseEvent.delta_x"><code class="name">var <span class="ident">delta_x</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
@@ -2043,6 +2133,51 @@ def from_event(cls: Type[MouseEventT], event: MouseEvent) -&gt; MouseEventT:
 <dt id="textual.events.MouseEvent.meta"><code class="name">var <span class="ident">meta</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
+</dd>
+<dt id="textual.events.MouseEvent.offset"><code class="name">var <span class="ident">offset</span> : <a title="textual.geometry.Offset" href="geometry.html#textual.geometry.Offset">Offset</a></code></dt>
+<dd>
+<div class="desc"><p>The mouse coordinate as an offset.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Offset</code></dt>
+<dd>Mouse coordinate.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def offset(self) -&gt; Offset:
+    &#34;&#34;&#34;The mouse coordinate as an offset.
+
+    Returns:
+        Offset: Mouse coordinate.
+
+    &#34;&#34;&#34;
+    return Offset(self.x, self.y)</code></pre>
+</details>
+</dd>
+<dt id="textual.events.MouseEvent.screen_offset"><code class="name">var <span class="ident">screen_offset</span> : <a title="textual.geometry.Offset" href="geometry.html#textual.geometry.Offset">Offset</a></code></dt>
+<dd>
+<div class="desc"><p>Mouse coordinate relative to the screen.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Offset</code></dt>
+<dd>Mouse coordinate.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def screen_offset(self) -&gt; Offset:
+    &#34;&#34;&#34;Mouse coordinate relative to the screen.
+
+    Returns:
+        Offset: Mouse coordinate.
+    &#34;&#34;&#34;
+    return Offset(self.screen_x, self.screen_y)</code></pre>
+</details>
 </dd>
 <dt id="textual.events.MouseEvent.screen_x"><code class="name">var <span class="ident">screen_x</span></code></dt>
 <dd>
@@ -2058,13 +2193,14 @@ def from_event(cls: Type[MouseEventT], event: MouseEvent) -&gt; MouseEventT:
 </dd>
 <dt id="textual.events.MouseEvent.style"><code class="name">var <span class="ident">style</span> : rich.style.Style</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>The (Rich) Style under the cursor.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def style(self) -&gt; Style:
+    &#34;&#34;&#34;The (Rich) Style under the cursor.&#34;&#34;&#34;
     return self._style or Style()</code></pre>
 </details>
 </dd>
@@ -2075,35 +2211,6 @@ def style(self) -&gt; Style:
 <dt id="textual.events.MouseEvent.y"><code class="name">var <span class="ident">y</span></code></dt>
 <dd>
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="textual.events.MouseEvent.offset"><code class="name flex">
-<span>def <span class="ident">offset</span></span>(<span>self, x: int, y: int) ‑> <a title="textual.events.MouseEvent" href="#textual.events.MouseEvent">MouseEvent</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def offset(self, x: int, y: int) -&gt; MouseEvent:
-    return self.__class__(
-        self.sender,
-        x=self.x + x,
-        y=self.y + y,
-        delta_x=self.delta_x,
-        delta_y=self.delta_y,
-        button=self.button,
-        shift=self.shift,
-        meta=self.meta,
-        ctrl=self.ctrl,
-        screen_x=self.screen_x,
-        screen_y=self.screen_y,
-        style=self.style,
-    )</code></pre>
-</details>
 </dd>
 </dl>
 <h3>Inherited members</h3>
@@ -2131,7 +2238,7 @@ def style(self) -&gt; Style:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class MouseMove(MouseEvent, bubble=True, verbose=True):
+<pre><code class="python">class MouseMove(MouseEvent, bubble=False, verbose=True):
     &#34;&#34;&#34;Sent when the mouse cursor moves.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -2167,17 +2274,21 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.MouseEvent.button" href="#textual.events.MouseEvent.button">button</a></code></li>
 <li><code><a title="textual.events.MouseEvent.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
 <li><code><a title="textual.events.MouseEvent.ctrl" href="#textual.events.MouseEvent.ctrl">ctrl</a></code></li>
+<li><code><a title="textual.events.MouseEvent.delta" href="#textual.events.MouseEvent.delta">delta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.MouseEvent.offset" href="#textual.events.MouseEvent.offset">offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.MouseEvent.screen_offset" href="#textual.events.MouseEvent.screen_offset">screen_offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_x" href="#textual.events.MouseEvent.screen_x">screen_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.MouseEvent.style" href="#textual.events.MouseEvent.style">style</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
@@ -2467,17 +2578,21 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.MouseEvent.button" href="#textual.events.MouseEvent.button">button</a></code></li>
 <li><code><a title="textual.events.MouseEvent.can_replace" href="message.html#textual.message.Message.can_replace">can_replace</a></code></li>
 <li><code><a title="textual.events.MouseEvent.ctrl" href="#textual.events.MouseEvent.ctrl">ctrl</a></code></li>
+<li><code><a title="textual.events.MouseEvent.delta" href="#textual.events.MouseEvent.delta">delta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
+<li><code><a title="textual.events.MouseEvent.offset" href="#textual.events.MouseEvent.offset">offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.prevent_default" href="message.html#textual.message.Message.prevent_default">prevent_default</a></code></li>
+<li><code><a title="textual.events.MouseEvent.screen_offset" href="#textual.events.MouseEvent.screen_offset">screen_offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_x" href="#textual.events.MouseEvent.screen_x">screen_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.sender" href="message.html#textual.message.Message.sender">sender</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>
 <li><code><a title="textual.events.MouseEvent.stop" href="message.html#textual.message.Message.stop">stop</a></code></li>
+<li><code><a title="textual.events.MouseEvent.style" href="#textual.events.MouseEvent.style">style</a></code></li>
 <li><code><a title="textual.events.MouseEvent.time" href="message.html#textual.message.Message.time">time</a></code></li>
 <li><code><a title="textual.events.MouseEvent.x" href="#textual.events.MouseEvent.x">x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.y" href="#textual.events.MouseEvent.y">y</a></code></li>
@@ -3318,6 +3433,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseEvent.bubble" href="#textual.events.MouseEvent.bubble">bubble</a></code></li>
 <li><code><a title="textual.events.MouseEvent.button" href="#textual.events.MouseEvent.button">button</a></code></li>
 <li><code><a title="textual.events.MouseEvent.ctrl" href="#textual.events.MouseEvent.ctrl">ctrl</a></code></li>
+<li><code><a title="textual.events.MouseEvent.delta" href="#textual.events.MouseEvent.delta">delta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.from_event" href="#textual.events.MouseEvent.from_event">from_event</a></code></li>
@@ -3325,6 +3441,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseEvent.namespace" href="#textual.events.MouseEvent.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.MouseEvent.no_dispatch" href="#textual.events.MouseEvent.no_dispatch">no_dispatch</a></code></li>
 <li><code><a title="textual.events.MouseEvent.offset" href="#textual.events.MouseEvent.offset">offset</a></code></li>
+<li><code><a title="textual.events.MouseEvent.screen_offset" href="#textual.events.MouseEvent.screen_offset">screen_offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_x" href="#textual.events.MouseEvent.screen_x">screen_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.screen_y" href="#textual.events.MouseEvent.screen_y">screen_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.shift" href="#textual.events.MouseEvent.shift">shift</a></code></li>

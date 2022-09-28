@@ -637,6 +637,11 @@ INDEX=[
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
+},
+{
 "ref":"textual.scrollbar.ScrollBar.get_component_rich_style",
 "url":3,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
@@ -1350,6 +1355,11 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBarCorner.allow_horizontal_scroll",
 "url":3,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.scrollbar.ScrollBarCorner.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.get_component_rich_style",
@@ -2864,6 +2874,11 @@ INDEX=[
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
 },
 {
+"ref":"textual.scroll_view.ScrollView.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
+},
+{
 "ref":"textual.scroll_view.ScrollView.get_component_rich_style",
 "url":3,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
@@ -3643,15 +3658,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.dom.DOMNode.ExpectType",
+"url":4,
+"doc":""
+},
+{
 "ref":"textual.dom.DOMNode.query",
 "url":4,
 "doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
-},
-{
-"ref":"textual.dom.DOMNode.ExpectType",
-"url":4,
-"doc":""
 },
 {
 "ref":"textual.dom.DOMNode.query_one",
@@ -4235,6 +4250,11 @@ INDEX=[
 "ref":"textual.widget.Widget.allow_horizontal_scroll",
 "url":3,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.widget.Widget.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
 },
 {
 "ref":"textual.widget.Widget.get_component_rich_style",
@@ -5347,32 +5367,32 @@ INDEX=[
 {
 "ref":"textual.binding.Binding.key",
 "url":31,
-"doc":""
+"doc":"Key to bind."
 },
 {
 "ref":"textual.binding.Binding.action",
 "url":31,
-"doc":""
+"doc":"Action to bind to."
 },
 {
 "ref":"textual.binding.Binding.description",
 "url":31,
-"doc":""
+"doc":"Description of action."
 },
 {
 "ref":"textual.binding.Binding.show",
 "url":31,
-"doc":""
+"doc":"Show the action in Footer, or False to hide."
 },
 {
 "ref":"textual.binding.Binding.key_display",
 "url":31,
-"doc":""
+"doc":"How the key should be shown in footer."
 },
 {
 "ref":"textual.binding.Binding.allow_forward",
 "url":31,
-"doc":""
+"doc":"Allow forwarding from app to focused widget."
 },
 {
 "ref":"textual.binding.Bindings",
@@ -6680,15 +6700,24 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.events.MouseEvent.style",
-"url":34,
-"doc":""
-},
-{
 "ref":"textual.events.MouseEvent.offset",
 "url":34,
-"doc":"",
-"func":1
+"doc":"The mouse coordinate as an offset. Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseEvent.screen_offset",
+"url":34,
+"doc":"Mouse coordinate relative to the screen. Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseEvent.delta",
+"url":34,
+"doc":"Mouse coordinate delta (change since last event). Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseEvent.style",
+"url":34,
+"doc":"The (Rich) Style under the cursor."
 },
 {
 "ref":"textual.events.MouseEvent.button",
@@ -6819,6 +6848,26 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.events.MouseMove.offset",
+"url":34,
+"doc":"The mouse coordinate as an offset. Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseMove.screen_offset",
+"url":34,
+"doc":"Mouse coordinate relative to the screen. Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseMove.delta",
+"url":34,
+"doc":"Mouse coordinate delta (change since last event). Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseMove.style",
+"url":34,
+"doc":"The (Rich) Style under the cursor."
+},
+{
 "ref":"textual.events.MouseMove.button",
 "url":34,
 "doc":"Return an attribute of instance, which is of type owner."
@@ -6932,6 +6981,26 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.events.MouseDown.offset",
+"url":34,
+"doc":"The mouse coordinate as an offset. Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseDown.screen_offset",
+"url":34,
+"doc":"Mouse coordinate relative to the screen. Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseDown.delta",
+"url":34,
+"doc":"Mouse coordinate delta (change since last event). Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseDown.style",
+"url":34,
+"doc":"The (Rich) Style under the cursor."
+},
+{
 "ref":"textual.events.MouseDown.button",
 "url":34,
 "doc":"Return an attribute of instance, which is of type owner."
@@ -7043,6 +7112,26 @@ INDEX=[
 "ref":"textual.events.MouseUp.no_dispatch",
 "url":34,
 "doc":""
+},
+{
+"ref":"textual.events.MouseUp.offset",
+"url":34,
+"doc":"The mouse coordinate as an offset. Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseUp.screen_offset",
+"url":34,
+"doc":"Mouse coordinate relative to the screen. Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseUp.delta",
+"url":34,
+"doc":"Mouse coordinate delta (change since last event). Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.MouseUp.style",
+"url":34,
+"doc":"The (Rich) Style under the cursor."
 },
 {
 "ref":"textual.events.MouseUp.button",
@@ -7302,6 +7391,26 @@ INDEX=[
 "ref":"textual.events.Click.no_dispatch",
 "url":34,
 "doc":""
+},
+{
+"ref":"textual.events.Click.offset",
+"url":34,
+"doc":"The mouse coordinate as an offset. Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.Click.screen_offset",
+"url":34,
+"doc":"Mouse coordinate relative to the screen. Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.Click.delta",
+"url":34,
+"doc":"Mouse coordinate delta (change since last event). Returns: Offset: Mouse coordinate."
+},
+{
+"ref":"textual.events.Click.style",
+"url":34,
+"doc":"The (Rich) Style under the cursor."
 },
 {
 "ref":"textual.events.Click.button",
@@ -8096,6 +8205,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.get_widgets_at",
+"url":35,
+"doc":"Get all widgets under a given coordinate. Args: x (int): X coordinate. y (int): Y coordinate. Returns: Iterable[tuple[Widget, Region : Sequence of (WIDGET, REGION) tuples.",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.get_style_at",
 "url":35,
 "doc":"Get the style under a given coordinate. Args: x (int): X Coordinate. y (int): Y Coordinate. Returns: Style: Rich Style object",
@@ -8211,6 +8326,11 @@ INDEX=[
 "ref":"textual.screen.Screen.allow_horizontal_scroll",
 "url":3,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.screen.Screen.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
 },
 {
 "ref":"textual.screen.Screen.get_component_rich_style",
@@ -9960,6 +10080,11 @@ INDEX=[
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
 },
 {
+"ref":"textual.layout.Container.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
+},
+{
 "ref":"textual.layout.Container.get_component_rich_style",
 "url":3,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
@@ -10678,6 +10803,11 @@ INDEX=[
 "ref":"textual.layout.Vertical.allow_horizontal_scroll",
 "url":3,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.layout.Vertical.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
 },
 {
 "ref":"textual.layout.Vertical.get_component_rich_style",
@@ -11400,6 +11530,11 @@ INDEX=[
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
 },
 {
+"ref":"textual.layout.Horizontal.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
+},
+{
 "ref":"textual.layout.Horizontal.get_component_rich_style",
 "url":3,
 "doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
@@ -12118,6 +12253,11 @@ INDEX=[
 "ref":"textual.layout.Center.allow_horizontal_scroll",
 "url":3,
 "doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.layout.Center.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
 },
 {
 "ref":"textual.layout.Center.get_component_rich_style",
@@ -13076,9 +13216,15 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.css.scalar.ScalarOffset.from_offset",
+"url":51,
+"doc":"Create a Scalar offset from a tuple of integers. Args: offset (tuple[int, int]): Offset in cells. Returns: ScalarOffset: New offset.",
+"func":1
+},
+{
 "ref":"textual.css.scalar.ScalarOffset.resolve",
 "url":51,
-"doc":"",
+"doc":"Resolve the offset in to cells. Args: size (Size): Size of container. viewport (Size): Size of viewport. Returns: Offset: Offset in cells.",
 "func":1
 },
 {
@@ -15062,7 +15208,7 @@ INDEX=[
 {
 "ref":"textual.css.query.DOMQuery",
 "url":58,
-"doc":""
+"doc":"Abstract base class for generic types. A generic type is typically declared by inheriting from this class parameterized with one or more type variables. For example, a generic mapping type might be defined as class Mapping(Generic[KT, VT]): def __getitem__(self, key: KT) -> VT:  .  Etc. This class can then be used as follows def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT: try: return mapping[key] except KeyError: return default"
 },
 {
 "ref":"textual.css.query.DOMQuery.node",

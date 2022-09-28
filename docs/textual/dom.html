@@ -703,7 +703,17 @@ class DOMNode(MessagePump):
                 return child
         raise NoMatchingNodesError(f&#34;No child found with id={id!r}&#34;)
 
-    def query(self, selector: str | None = None) -&gt; DOMQuery:
+    ExpectType = TypeVar(&#34;ExpectType&#34;, bound=&#34;Widget&#34;)
+
+    @overload
+    def query(self, selector: str | None) -&gt; DOMQuery:
+        ...
+
+    @overload
+    def query(self, selector: type[ExpectType]) -&gt; DOMQuery[ExpectType]:
+        ...
+
+    def query(self, selector: str | type | None = None) -&gt; DOMQuery:
         &#34;&#34;&#34;Get a DOM query matching a selector.
 
         Args:
@@ -714,9 +724,13 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         from .css.query import DOMQuery
 
-        return DOMQuery(self, filter=selector)
+        query: str | None
+        if isinstance(selector, str) or selector is None:
+            query = selector
+        else:
+            query = selector.__name__
 
-    ExpectType = TypeVar(&#34;ExpectType&#34;)
+        return DOMQuery(self, filter=query)
 
     @overload
     def query_one(self, selector: str) -&gt; Widget:
@@ -751,7 +765,7 @@ class DOMNode(MessagePump):
             query_selector = selector
         else:
             query_selector = selector.__name__
-        query = DOMQuery(self, filter=query_selector)
+        query: DOMQuery[Widget] = DOMQuery(self, filter=query_selector)
 
         if expect_type is None:
             return query.first()
@@ -1554,7 +1568,17 @@ class DOMNode(MessagePump):
                 return child
         raise NoMatchingNodesError(f&#34;No child found with id={id!r}&#34;)
 
-    def query(self, selector: str | None = None) -&gt; DOMQuery:
+    ExpectType = TypeVar(&#34;ExpectType&#34;, bound=&#34;Widget&#34;)
+
+    @overload
+    def query(self, selector: str | None) -&gt; DOMQuery:
+        ...
+
+    @overload
+    def query(self, selector: type[ExpectType]) -&gt; DOMQuery[ExpectType]:
+        ...
+
+    def query(self, selector: str | type | None = None) -&gt; DOMQuery:
         &#34;&#34;&#34;Get a DOM query matching a selector.
 
         Args:
@@ -1565,9 +1589,13 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;
         from .css.query import DOMQuery
 
-        return DOMQuery(self, filter=selector)
+        query: str | None
+        if isinstance(selector, str) or selector is None:
+            query = selector
+        else:
+            query = selector.__name__
 
-    ExpectType = TypeVar(&#34;ExpectType&#34;)
+        return DOMQuery(self, filter=query)
 
     @overload
     def query_one(self, selector: str) -&gt; Widget:
@@ -1602,7 +1630,7 @@ class DOMNode(MessagePump):
             query_selector = selector
         else:
             query_selector = selector.__name__
-        query = DOMQuery(self, filter=query_selector)
+        query: DOMQuery[Widget] = DOMQuery(self, filter=query_selector)
 
         if expect_type is None:
             return query.first()
@@ -2423,7 +2451,7 @@ and inherited from base classes.</dd>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.query"><code class="name flex">
-<span>def <span class="ident">query</span></span>(<span>self, selector: str | None = None) ‑> DOMQuery</span>
+<span>def <span class="ident">query</span></span>(<span>self, selector: str | type | None = None) ‑> DOMQuery</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get a DOM query matching a selector.</p>
@@ -2441,7 +2469,7 @@ and inherited from base classes.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def query(self, selector: str | None = None) -&gt; DOMQuery:
+<pre><code class="python">def query(self, selector: str | type | None = None) -&gt; DOMQuery:
     &#34;&#34;&#34;Get a DOM query matching a selector.
 
     Args:
@@ -2452,7 +2480,13 @@ and inherited from base classes.</dd>
     &#34;&#34;&#34;
     from .css.query import DOMQuery
 
-    return DOMQuery(self, filter=selector)</code></pre>
+    query: str | None
+    if isinstance(selector, str) or selector is None:
+        query = selector
+    else:
+        query = selector.__name__
+
+    return DOMQuery(self, filter=query)</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.query_one"><code class="name flex">
@@ -2494,7 +2528,7 @@ Defaults to None.</dd>
         query_selector = selector
     else:
         query_selector = selector.__name__
-    query = DOMQuery(self, filter=query_selector)
+    query: DOMQuery[Widget] = DOMQuery(self, filter=query_selector)
 
     if expect_type is None:
         return query.first()

@@ -28,13 +28,16 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from typing import ClassVar
+from typing import ClassVar, TYPE_CHECKING
 
 import rich.repr
 
 from . import _clock
 from .case import camel_to_snake
 from ._types import MessageTarget as MessageTarget
+
+if TYPE_CHECKING:
+    from .widget import Widget
 
 
 @rich.repr.auto
@@ -136,7 +139,15 @@ class Message:
             stop (bool, optional): The stop flag. Defaults to True.
         &#34;&#34;&#34;
         self._stop_propagation = stop
-        return self</code></pre>
+        return self
+
+    async def _bubble_to(self, widget: Widget) -&gt; None:
+        &#34;&#34;&#34;Bubble to a widget (typically the parent).
+
+        Args:
+            widget (Widget): Target of bubble.
+        &#34;&#34;&#34;
+        await widget.post_message(self)</code></pre>
 </details>
 </section>
 <section>
@@ -261,7 +272,15 @@ class Message:
             stop (bool, optional): The stop flag. Defaults to True.
         &#34;&#34;&#34;
         self._stop_propagation = stop
-        return self</code></pre>
+        return self
+
+    async def _bubble_to(self, widget: Widget) -&gt; None:
+        &#34;&#34;&#34;Bubble to a widget (typically the parent).
+
+        Args:
+            widget (Widget): Target of bubble.
+        &#34;&#34;&#34;
+        await widget.post_message(self)</code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">

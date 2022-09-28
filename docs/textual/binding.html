@@ -54,11 +54,17 @@ class NoBinding(Exception):
 @dataclass
 class Binding:
     key: str
+    &#34;&#34;&#34;Key to bind.&#34;&#34;&#34;
     action: str
+    &#34;&#34;&#34;Action to bind to.&#34;&#34;&#34;
     description: str
+    &#34;&#34;&#34;Description of action.&#34;&#34;&#34;
     show: bool = True
+    &#34;&#34;&#34;Show the action in Footer, or False to hide.&#34;&#34;&#34;
     key_display: str | None = None
+    &#34;&#34;&#34;How the key should be shown in footer.&#34;&#34;&#34;
     allow_forward: bool = True
+    &#34;&#34;&#34;Allow forwarding from app to focused widget.&#34;&#34;&#34;
 
 
 @rich.repr.auto
@@ -160,37 +166,43 @@ class Bindings:
 </summary>
 <pre><code class="python">class Binding:
     key: str
+    &#34;&#34;&#34;Key to bind.&#34;&#34;&#34;
     action: str
+    &#34;&#34;&#34;Action to bind to.&#34;&#34;&#34;
     description: str
+    &#34;&#34;&#34;Description of action.&#34;&#34;&#34;
     show: bool = True
+    &#34;&#34;&#34;Show the action in Footer, or False to hide.&#34;&#34;&#34;
     key_display: str | None = None
-    allow_forward: bool = True</code></pre>
+    &#34;&#34;&#34;How the key should be shown in footer.&#34;&#34;&#34;
+    allow_forward: bool = True
+    &#34;&#34;&#34;Allow forwarding from app to focused widget.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Class variables</h3>
 <dl>
 <dt id="textual.binding.Binding.action"><code class="name">var <span class="ident">action</span> : str</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Action to bind to.</p></div>
 </dd>
 <dt id="textual.binding.Binding.allow_forward"><code class="name">var <span class="ident">allow_forward</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Allow forwarding from app to focused widget.</p></div>
 </dd>
 <dt id="textual.binding.Binding.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Description of action.</p></div>
 </dd>
 <dt id="textual.binding.Binding.key"><code class="name">var <span class="ident">key</span> : str</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Key to bind.</p></div>
 </dd>
 <dt id="textual.binding.Binding.key_display"><code class="name">var <span class="ident">key_display</span> : str | None</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>How the key should be shown in footer.</p></div>
 </dd>
 <dt id="textual.binding.Binding.show"><code class="name">var <span class="ident">show</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Show the action in Footer, or False to hide.</p></div>
 </dd>
 </dl>
 </dd>

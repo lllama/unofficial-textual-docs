@@ -29,6 +29,7 @@
 <pre><code class="python">from __future__ import annotations
 
 import sys
+from typing import Iterable
 
 import rich.repr
 from rich.console import RenderableType
@@ -133,6 +134,18 @@ class Screen(Widget):
             tuple[Widget, Region]: Widget and screen region.
         &#34;&#34;&#34;
         return self._compositor.get_widget_at(x, y)
+
+    def get_widgets_at(self, x: int, y: int) -&gt; Iterable[tuple[Widget, Region]]:
+        &#34;&#34;&#34;Get all widgets under a given coordinate.
+
+        Args:
+            x (int): X coordinate.
+            y (int): Y coordinate.
+
+        Returns:
+            Iterable[tuple[Widget, Region]]: Sequence of (WIDGET, REGION) tuples.
+        &#34;&#34;&#34;
+        return self._compositor.get_widgets_at(x, y)
 
     def get_style_at(self, x: int, y: int) -&gt; Style:
         &#34;&#34;&#34;Get the style under a given coordinate.
@@ -343,7 +356,9 @@ class Screen(Widget):
                     event._set_forwarded()
                     await self.post_message(event)
                 else:
-                    await widget._forward_event(event.offset(-region.x, -region.y))
+                    await widget._forward_event(
+                        event._apply_offset(-region.x, -region.y)
+                    )
 
         elif isinstance(event, (events.MouseScrollDown, events.MouseScrollUp)):
             try:
@@ -459,6 +474,18 @@ class Screen(Widget):
         &#34;&#34;&#34;
         return self._compositor.get_widget_at(x, y)
 
+    def get_widgets_at(self, x: int, y: int) -&gt; Iterable[tuple[Widget, Region]]:
+        &#34;&#34;&#34;Get all widgets under a given coordinate.
+
+        Args:
+            x (int): X coordinate.
+            y (int): Y coordinate.
+
+        Returns:
+            Iterable[tuple[Widget, Region]]: Sequence of (WIDGET, REGION) tuples.
+        &#34;&#34;&#34;
+        return self._compositor.get_widgets_at(x, y)
+
     def get_style_at(self, x: int, y: int) -&gt; Style:
         &#34;&#34;&#34;Get the style under a given coordinate.
 
@@ -668,7 +695,9 @@ class Screen(Widget):
                     event._set_forwarded()
                     await self.post_message(event)
                 else:
-                    await widget._forward_event(event.offset(-region.x, -region.y))
+                    await widget._forward_event(
+                        event._apply_offset(-region.x, -region.y)
+                    )
 
         elif isinstance(event, (events.MouseScrollDown, events.MouseScrollUp)):
             try:
@@ -909,6 +938,40 @@ def widgets(self) -&gt; list[Widget]:
     return self._compositor.get_widget_at(x, y)</code></pre>
 </details>
 </dd>
+<dt id="textual.screen.Screen.get_widgets_at"><code class="name flex">
+<span>def <span class="ident">get_widgets_at</span></span>(<span>self, x: int, y: int) ‑> Iterable[tuple[Widget, Region]]</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get all widgets under a given coordinate.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
+<dd>X coordinate.</dd>
+<dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
+<dd>Y coordinate.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>Iterable[tuple[Widget, Region]]</code></dt>
+<dd>Sequence of (WIDGET, REGION) tuples.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_widgets_at(self, x: int, y: int) -&gt; Iterable[tuple[Widget, Region]]:
+    &#34;&#34;&#34;Get all widgets under a given coordinate.
+
+    Args:
+        x (int): X coordinate.
+        y (int): Y coordinate.
+
+    Returns:
+        Iterable[tuple[Widget, Region]]: Sequence of (WIDGET, REGION) tuples.
+    &#34;&#34;&#34;
+    return self._compositor.get_widgets_at(x, y)</code></pre>
+</details>
+</dd>
 <dt id="textual.screen.Screen.watch_dark"><code class="name flex">
 <span>def <span class="ident">watch_dark</span></span>(<span>self, dark: bool) ‑> None</span>
 </code></dt>
@@ -990,6 +1053,7 @@ def widgets(self) -&gt; list[Widget]:
 <li><code><a title="textual.widget.Widget.max_scroll_y" href="widget.html#textual.widget.Widget.max_scroll_y">max_scroll_y</a></code></li>
 <li><code><a title="textual.widget.Widget.mount" href="widget.html#textual.widget.Widget.mount">mount</a></code></li>
 <li><code><a title="textual.widget.Widget.mouse_over" href="widget.html#textual.widget.Widget.mouse_over">mouse_over</a></code></li>
+<li><code><a title="textual.widget.Widget.offset" href="widget.html#textual.widget.Widget.offset">offset</a></code></li>
 <li><code><a title="textual.widget.Widget.on_event" href="message_pump.html#textual.message_pump.MessagePump.on_event">on_event</a></code></li>
 <li><code><a title="textual.widget.Widget.outer_size" href="widget.html#textual.widget.Widget.outer_size">outer_size</a></code></li>
 <li><code><a title="textual.widget.Widget.parent" href="dom.html#textual.dom.DOMNode.parent">parent</a></code></li>
@@ -1130,6 +1194,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.screen.Screen.get_offset" href="#textual.screen.Screen.get_offset">get_offset</a></code></li>
 <li><code><a title="textual.screen.Screen.get_style_at" href="#textual.screen.Screen.get_style_at">get_style_at</a></code></li>
 <li><code><a title="textual.screen.Screen.get_widget_at" href="#textual.screen.Screen.get_widget_at">get_widget_at</a></code></li>
+<li><code><a title="textual.screen.Screen.get_widgets_at" href="#textual.screen.Screen.get_widgets_at">get_widgets_at</a></code></li>
 <li><code><a title="textual.screen.Screen.is_current" href="#textual.screen.Screen.is_current">is_current</a></code></li>
 <li><code><a title="textual.screen.Screen.update_timer" href="#textual.screen.Screen.update_timer">update_timer</a></code></li>
 <li><code><a title="textual.screen.Screen.visible_widgets" href="#textual.screen.Screen.visible_widgets">visible_widgets</a></code></li>
