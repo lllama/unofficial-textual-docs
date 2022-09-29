@@ -477,13 +477,21 @@ class StylesBase(ABC):
         styles.node = node
         return styles
 
-    def get_transition(self, key: str) -&gt; Transition | None:
+    def _get_transition(self, key: str) -&gt; Transition | None:
+        &#34;&#34;&#34;Get a transition.
+
+        Args:
+            key (str): Transition key.
+
+        Returns:
+            Transition | None: Transition object or None it no transition exists.
+        &#34;&#34;&#34;
         if key in self.ANIMATABLE:
             return self.transitions.get(key, None)
         else:
             return None
 
-    def align_width(self, width: int, parent_width: int) -&gt; int:
+    def _align_width(self, width: int, parent_width: int) -&gt; int:
         &#34;&#34;&#34;Align the width dimension.
 
         Args:
@@ -502,7 +510,7 @@ class StylesBase(ABC):
                 offset_x = parent_width - width
         return offset_x
 
-    def align_height(self, height: int, parent_height: int) -&gt; int:
+    def _align_height(self, height: int, parent_height: int) -&gt; int:
         &#34;&#34;&#34;Align the height dimensions
 
         Args:
@@ -521,7 +529,7 @@ class StylesBase(ABC):
                 offset_y = parent_height - height
         return offset_y
 
-    def align_size(self, child: tuple[int, int], parent: tuple[int, int]) -&gt; Offset:
+    def _align_size(self, child: tuple[int, int], parent: tuple[int, int]) -&gt; Offset:
         &#34;&#34;&#34;Align a size according to alignment rules.
 
         Args:
@@ -534,8 +542,8 @@ class StylesBase(ABC):
         width, height = child
         parent_width, parent_height = parent
         return Offset(
-            self.align_width(width, parent_width),
-            self.align_height(height, parent_height),
+            self._align_width(width, parent_width),
+            self._align_height(height, parent_height),
         )
 
 
@@ -1307,11 +1315,8 @@ def rich_style(self) -&gt; Style:
 <li><code><b><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.css.styles.StylesBase.align" href="#textual.css.styles.StylesBase.align">align</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.align_size" href="#textual.css.styles.StylesBase.align_size">align_size</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_color" href="#textual.css.styles.StylesBase.auto_color">auto_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_hover_color" href="#textual.css.styles.StylesBase.auto_hover_color">auto_hover_color</a></code></li>
@@ -2402,11 +2407,8 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
 <li><code><b><a title="textual.css.styles.StylesBase" href="#textual.css.styles.StylesBase">StylesBase</a></b></code>:
 <ul class="hlist">
 <li><code><a title="textual.css.styles.StylesBase.align" href="#textual.css.styles.StylesBase.align">align</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.align_size" href="#textual.css.styles.StylesBase.align_size">align_size</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_color" href="#textual.css.styles.StylesBase.auto_color">auto_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_hover_color" href="#textual.css.styles.StylesBase.auto_hover_color">auto_hover_color</a></code></li>
@@ -2757,13 +2759,21 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
         styles.node = node
         return styles
 
-    def get_transition(self, key: str) -&gt; Transition | None:
+    def _get_transition(self, key: str) -&gt; Transition | None:
+        &#34;&#34;&#34;Get a transition.
+
+        Args:
+            key (str): Transition key.
+
+        Returns:
+            Transition | None: Transition object or None it no transition exists.
+        &#34;&#34;&#34;
         if key in self.ANIMATABLE:
             return self.transitions.get(key, None)
         else:
             return None
 
-    def align_width(self, width: int, parent_width: int) -&gt; int:
+    def _align_width(self, width: int, parent_width: int) -&gt; int:
         &#34;&#34;&#34;Align the width dimension.
 
         Args:
@@ -2782,7 +2792,7 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
                 offset_x = parent_width - width
         return offset_x
 
-    def align_height(self, height: int, parent_height: int) -&gt; int:
+    def _align_height(self, height: int, parent_height: int) -&gt; int:
         &#34;&#34;&#34;Align the height dimensions
 
         Args:
@@ -2801,7 +2811,7 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
                 offset_y = parent_height - height
         return offset_y
 
-    def align_size(self, child: tuple[int, int], parent: tuple[int, int]) -&gt; Offset:
+    def _align_size(self, child: tuple[int, int], parent: tuple[int, int]) -&gt; Offset:
         &#34;&#34;&#34;Align a size according to alignment rules.
 
         Args:
@@ -2814,8 +2824,8 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
         width, height = child
         parent_width, parent_height = parent
         return Offset(
-            self.align_width(width, parent_width),
-            self.align_height(height, parent_height),
+            self._align_width(width, parent_width),
+            self._align_height(height, parent_height),
         )</code></pre>
 </details>
 <h3>Ancestors</h3>
@@ -4401,127 +4411,6 @@ value belongs in the set of valid values.</p></div>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="textual.css.styles.StylesBase.align_height"><code class="name flex">
-<span>def <span class="ident">align_height</span></span>(<span>self, height: int, parent_height: int) ‑> int</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Align the height dimensions</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>height</code></strong> :&ensp;<code>int</code></dt>
-<dd>Height of the content.</dd>
-<dt><strong><code>parent_height</code></strong> :&ensp;<code>int</code></dt>
-<dd>Height of the parent container.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>An offset to add to the Y coordinate.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def align_height(self, height: int, parent_height: int) -&gt; int:
-    &#34;&#34;&#34;Align the height dimensions
-
-    Args:
-        height (int): Height of the content.
-        parent_height (int): Height of the parent container.
-
-    Returns:
-        int: An offset to add to the Y coordinate.
-    &#34;&#34;&#34;
-    offset_y = 0
-    align_vertical = self.align_vertical
-    if align_vertical != &#34;top&#34;:
-        if align_vertical == &#34;middle&#34;:
-            offset_y = (parent_height - height) // 2
-        else:
-            offset_y = parent_height - height
-    return offset_y</code></pre>
-</details>
-</dd>
-<dt id="textual.css.styles.StylesBase.align_size"><code class="name flex">
-<span>def <span class="ident">align_size</span></span>(<span>self, child: tuple[int, int], parent: tuple[int, int]) ‑> Offset</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Align a size according to alignment rules.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>child</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
-<dd>The size of the child (width, height)</dd>
-<dt><strong><code>parent</code></strong> :&ensp;<code>tuple[int, int]</code></dt>
-<dd>The size of the parent (width, height)</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Offset</code></dt>
-<dd>Offset required to align the child.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def align_size(self, child: tuple[int, int], parent: tuple[int, int]) -&gt; Offset:
-    &#34;&#34;&#34;Align a size according to alignment rules.
-
-    Args:
-        child (tuple[int, int]): The size of the child (width, height)
-        parent (tuple[int, int]): The size of the parent (width, height)
-
-    Returns:
-        Offset: Offset required to align the child.
-    &#34;&#34;&#34;
-    width, height = child
-    parent_width, parent_height = parent
-    return Offset(
-        self.align_width(width, parent_width),
-        self.align_height(height, parent_height),
-    )</code></pre>
-</details>
-</dd>
-<dt id="textual.css.styles.StylesBase.align_width"><code class="name flex">
-<span>def <span class="ident">align_width</span></span>(<span>self, width: int, parent_width: int) ‑> int</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Align the width dimension.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>width</code></strong> :&ensp;<code>int</code></dt>
-<dd>Width of the content.</dd>
-<dt><strong><code>parent_width</code></strong> :&ensp;<code>int</code></dt>
-<dd>Width of the parent container.</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>int</code></dt>
-<dd>An offset to add to the X coordinate.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def align_width(self, width: int, parent_width: int) -&gt; int:
-    &#34;&#34;&#34;Align the width dimension.
-
-    Args:
-        width (int): Width of the content.
-        parent_width (int): Width of the parent container.
-
-    Returns:
-        int: An offset to add to the X coordinate.
-    &#34;&#34;&#34;
-    offset_x = 0
-    align_horizontal = self.align_horizontal
-    if align_horizontal != &#34;left&#34;:
-        if align_horizontal == &#34;center&#34;:
-            offset_x = (parent_width - width) // 2
-        else:
-            offset_x = parent_width - width
-    return offset_x</code></pre>
-</details>
-</dd>
 <dt id="textual.css.styles.StylesBase.clear_rule"><code class="name flex">
 <span>def <span class="ident">clear_rule</span></span>(<span>self, rule: str) ‑> bool</span>
 </code></dt>
@@ -4624,22 +4513,6 @@ def get_rules(self) -&gt; RulesMap:
     Returns:
         RulesMap: A TypedDict of the rules.
     &#34;&#34;&#34;</code></pre>
-</details>
-</dd>
-<dt id="textual.css.styles.StylesBase.get_transition"><code class="name flex">
-<span>def <span class="ident">get_transition</span></span>(<span>self, key: str) ‑> Transition | None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_transition(self, key: str) -&gt; Transition | None:
-    if key in self.ANIMATABLE:
-        return self.transitions.get(key, None)
-    else:
-        return None</code></pre>
 </details>
 </dd>
 <dt id="textual.css.styles.StylesBase.has_rule"><code class="name flex">
@@ -4965,11 +4838,8 @@ setTimeout(() => input.focus(), 100);
 <ul class="">
 <li><code><a title="textual.css.styles.StylesBase.ANIMATABLE" href="#textual.css.styles.StylesBase.ANIMATABLE">ANIMATABLE</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align" href="#textual.css.styles.StylesBase.align">align</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.align_height" href="#textual.css.styles.StylesBase.align_height">align_height</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_horizontal" href="#textual.css.styles.StylesBase.align_horizontal">align_horizontal</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.align_size" href="#textual.css.styles.StylesBase.align_size">align_size</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.align_vertical" href="#textual.css.styles.StylesBase.align_vertical">align_vertical</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.align_width" href="#textual.css.styles.StylesBase.align_width">align_width</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_color" href="#textual.css.styles.StylesBase.auto_color">auto_color</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_dimensions" href="#textual.css.styles.StylesBase.auto_dimensions">auto_dimensions</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.auto_hover_color" href="#textual.css.styles.StylesBase.auto_hover_color">auto_hover_color</a></code></li>
@@ -4992,7 +4862,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.css.styles.StylesBase.get_render_rules" href="#textual.css.styles.StylesBase.get_render_rules">get_render_rules</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.get_rule" href="#textual.css.styles.StylesBase.get_rule">get_rule</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.get_rules" href="#textual.css.styles.StylesBase.get_rules">get_rules</a></code></li>
-<li><code><a title="textual.css.styles.StylesBase.get_transition" href="#textual.css.styles.StylesBase.get_transition">get_transition</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.grid_columns" href="#textual.css.styles.StylesBase.grid_columns">grid_columns</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.grid_gutter_horizontal" href="#textual.css.styles.StylesBase.grid_gutter_horizontal">grid_gutter_horizontal</a></code></li>
 <li><code><a title="textual.css.styles.StylesBase.grid_gutter_vertical" href="#textual.css.styles.StylesBase.grid_gutter_vertical">grid_gutter_vertical</a></code></li>

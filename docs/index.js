@@ -17,6 +17,7 @@ URLS=[
 "textual/design.html",
 "textual/features.html",
 "textual/scroll_view.html",
+"textual/containers.html",
 "textual/constants.html",
 "textual/cli/index.html",
 "textual/cli/previews/index.html",
@@ -40,13 +41,11 @@ URLS=[
 "textual/keys.html",
 "textual/reactive.html",
 "textual/case.html",
-"textual/layout.html",
 "textual/timer.html",
 "textual/errors.html",
 "textual/layouts/index.html",
 "textual/layouts/horizontal.html",
 "textual/layouts/factory.html",
-"textual/layouts/center.html",
 "textual/layouts/vertical.html",
 "textual/layouts/grid.html",
 "textual/css/index.html",
@@ -563,6 +562,11 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollBar.hover_style",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.highlight_link_id",
 "url":3,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
@@ -1247,6 +1251,11 @@ INDEX=[
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.hover_style",
+"url":1,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.scrollbar.ScrollBarCorner.highlight_link_id",
 "url":1,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
@@ -2705,6 +2714,11 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
+"ref":"textual.scroll_view.ScrollView.highlight_link_id",
+"url":17,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
 "ref":"textual.scroll_view.ScrollView.DEFAULT_CSS",
 "url":17,
 "doc":""
@@ -3451,18 +3465,2943 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.constants",
+"ref":"textual.containers",
 "url":18,
+"doc":""
+},
+{
+"ref":"textual.containers.Container",
+"url":18,
+"doc":"Simple container widget, with vertical layout."
+},
+{
+"ref":"textual.containers.Container.COMPONENT_CLASSES",
+"url":18,
+"doc":""
+},
+{
+"ref":"textual.containers.Container.hover_style",
+"url":18,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.highlight_link_id",
+"url":18,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.DEFAULT_CSS",
+"url":18,
+"doc":""
+},
+{
+"ref":"textual.containers.Container.can_focus",
+"url":18,
+"doc":"Widget may receive focus."
+},
+{
+"ref":"textual.containers.Container.can_focus_children",
+"url":18,
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.containers.Container.expand",
+"url":3,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.containers.Container.shrink",
+"url":3,
+"doc":"Rich renderable may shrink."
+},
+{
+"ref":"textual.containers.Container.auto_links",
+"url":3,
+"doc":"Widget will highlight links automatically."
+},
+{
+"ref":"textual.containers.Container.virtual_size",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.auto_width",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.auto_height",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.has_focus",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.descendant_has_focus",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.mouse_over",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.scroll_x",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.scroll_y",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.scroll_target_x",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.scroll_target_y",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.show_vertical_scrollbar",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.show_horizontal_scrollbar",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Container.siblings",
+"url":3,
+"doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.containers.Container.allow_vertical_scroll",
+"url":3,
+"doc":"Check if vertical scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _vertically_."
+},
+{
+"ref":"textual.containers.Container.allow_horizontal_scroll",
+"url":3,
+"doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.containers.Container.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
+},
+{
+"ref":"textual.containers.Container.get_component_rich_style",
+"url":3,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.mount",
+"url":3,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"func":1
+},
+{
+"ref":"textual.containers.Container.compose",
+"url":3,
+"doc":"Called by Textual to create child widgets. Extend this to build a UI. Example:  python def compose(self) -> ComposeResult: yield Header() yield Container( TreeControl(), Viewer() ) yield Footer()  ",
+"func":1
+},
+{
+"ref":"textual.containers.Container.get_content_width",
+"url":3,
+"doc":"Called by textual to get the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.get_content_height",
+"url":3,
+"doc":"Called by Textual to get the height of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.max_scroll_x",
+"url":3,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.containers.Container.max_scroll_y",
+"url":3,
+"doc":"The maximum value of  scroll_y ."
+},
+{
+"ref":"textual.containers.Container.scrollbar_corner",
+"url":3,
+"doc":"Return the ScrollBarCorner - the cells that appear between the horizontal and vertical scrollbars (only when both are visible)."
+},
+{
+"ref":"textual.containers.Container.vertical_scrollbar",
+"url":3,
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.containers.Container.horizontal_scrollbar",
+"url":3,
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.containers.Container.scrollbars_enabled",
+"url":3,
+"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.containers.Container.scrollbar_size_vertical",
+"url":3,
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
+},
+{
+"ref":"textual.containers.Container.scrollbar_size_horizontal",
+"url":3,
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
+},
+{
+"ref":"textual.containers.Container.scrollbar_gutter",
+"url":3,
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
+},
+{
+"ref":"textual.containers.Container.gutter",
+"url":3,
+"doc":"Spacing for padding / border / scrollbars. Returns: Spacing: Additional spacing around content area."
+},
+{
+"ref":"textual.containers.Container.size",
+"url":3,
+"doc":"The size of the content area. Returns: Size: Content area size."
+},
+{
+"ref":"textual.containers.Container.outer_size",
+"url":3,
+"doc":"The size of the widget (including padding and border). Returns: Size: Outer size."
+},
+{
+"ref":"textual.containers.Container.container_size",
+"url":3,
+"doc":"The size of the container (parent widget). Returns: Size: Container size."
+},
+{
+"ref":"textual.containers.Container.content_region",
+"url":3,
+"doc":"Gets an absolute region containing the content (minus padding and border). Returns: Region: Screen region that contains a widget's content."
+},
+{
+"ref":"textual.containers.Container.content_offset",
+"url":3,
+"doc":"An offset from the Widget origin where the content begins. Returns: Offset: Offset from widget's origin."
+},
+{
+"ref":"textual.containers.Container.region",
+"url":3,
+"doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.containers.Container.container_viewport",
+"url":3,
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
+},
+{
+"ref":"textual.containers.Container.virtual_region",
+"url":3,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
+"ref":"textual.containers.Container.window_region",
+"url":3,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
+},
+{
+"ref":"textual.containers.Container.virtual_region_with_margin",
+"url":3,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.containers.Container.focusable_children",
+"url":3,
+"doc":"Get the children which may be focused. Returns: list[Widget]: List of widgets that can receive focus."
+},
+{
+"ref":"textual.containers.Container.scroll_offset",
+"url":3,
+"doc":"Get the current scroll offset. Returns: Offset: Offset a container has been scrolled by."
+},
+{
+"ref":"textual.containers.Container.is_transparent",
+"url":3,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
+},
+{
+"ref":"textual.containers.Container.animate",
+"url":3,
+"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+},
+{
+"ref":"textual.containers.Container.is_container",
+"url":3,
+"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
+},
+{
+"ref":"textual.containers.Container.is_scrollable",
+"url":3,
+"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
+},
+{
+"ref":"textual.containers.Container.layer",
+"url":3,
+"doc":"Get the name of this widgets layer. Returns: str: Name of layer."
+},
+{
+"ref":"textual.containers.Container.layers",
+"url":3,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
+"ref":"textual.containers.Container.link_style",
+"url":3,
+"doc":"Style of links."
+},
+{
+"ref":"textual.containers.Container.link_hover_style",
+"url":3,
+"doc":"Style of links with mouse hover."
+},
+{
+"ref":"textual.containers.Container.scroll_to",
+"url":3,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_relative",
+"url":3,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_home",
+"url":3,
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_end",
+"url":3,
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_left",
+"url":3,
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_right",
+"url":3,
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_down",
+"url":3,
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_up",
+"url":3,
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_page_up",
+"url":3,
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_page_down",
+"url":3,
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_page_left",
+"url":3,
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_page_right",
+"url":3,
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_to_widget",
+"url":3,
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_to_region",
+"url":3,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.scroll_visible",
+"url":3,
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.get_pseudo_classes",
+"url":3,
+"doc":"Pseudo classes for a widget. Returns: Iterable[str]: Names of the pseudo classes.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.post_render",
+"url":3,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.watch_mouse_over",
+"url":3,
+"doc":"Update from CSS if mouse over state changes.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.watch_has_focus",
+"url":3,
+"doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.render_line",
+"url":3,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.render_lines",
+"url":3,
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.get_style_at",
+"url":3,
+"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.refresh",
+"url":3,
+"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. By default this method will cause the content of the widget to refresh, but not change its size. You can also set  layout=True to perform a layout.  ! warning It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will do this automatically. Args:  regions (Region, optional): Additional screen regions to mark as dirty. repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.remove",
+"url":3,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
+"func":1
+},
+{
+"ref":"textual.containers.Container.render",
+"url":3,
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"func":1
+},
+{
+"ref":"textual.containers.Container.action",
+"url":3,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.post_message",
+"url":3,
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.focus",
+"url":3,
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.capture_mouse",
+"url":3,
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.release_mouse",
+"url":3,
+"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.get_component_styles",
+"url":4,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.get_default_css",
+"url":4,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.parent",
+"url":4,
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
+},
+{
+"ref":"textual.containers.Container.screen",
+"url":4,
+"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
+},
+{
+"ref":"textual.containers.Container.id",
+"url":4,
+"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
+},
+{
+"ref":"textual.containers.Container.css_identifier",
+"url":4,
+"doc":"A CSS selector that identifies this DOM node."
+},
+{
+"ref":"textual.containers.Container.css_identifier_styled",
+"url":4,
+"doc":"A stylized CSS identifier."
+},
+{
+"ref":"textual.containers.Container.classes",
+"url":4,
+"doc":"A frozenset of the current classes set on the widget. Returns: frozenset[str]: Set of class names."
+},
+{
+"ref":"textual.containers.Container.pseudo_classes",
+"url":4,
+"doc":"Get a set of all pseudo classes"
+},
+{
+"ref":"textual.containers.Container.css_path_nodes",
+"url":4,
+"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
+},
+{
+"ref":"textual.containers.Container.display",
+"url":4,
+"doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
+},
+{
+"ref":"textual.containers.Container.tree",
+"url":4,
+"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.containers.Container.text_style",
+"url":4,
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.containers.Container.rich_style",
+"url":4,
+"doc":"Get a Rich Style object for this DOMNode."
+},
+{
+"ref":"textual.containers.Container.background_colors",
+"url":4,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
+"ref":"textual.containers.Container.colors",
+"url":4,
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
+},
+{
+"ref":"textual.containers.Container.ancestors",
+"url":4,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
+},
+{
+"ref":"textual.containers.Container.displayed_children",
+"url":4,
+"doc":"The children which don't have display: none set. Returns: list[DOMNode]: Children of this widget which will be displayed."
+},
+{
+"ref":"textual.containers.Container.reset_styles",
+"url":4,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
+"ref":"textual.containers.Container.walk_children",
+"url":4,
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.get_child",
+"url":4,
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"func":1
+},
+{
+"ref":"textual.containers.Container.query",
+"url":4,
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.query_one",
+"url":4,
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.set_styles",
+"url":4,
+"doc":"Set custom styles on this object.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.has_class",
+"url":4,
+"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.containers.Container.set_class",
+"url":4,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.add_class",
+"url":4,
+"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.remove_class",
+"url":4,
+"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.toggle_class",
+"url":4,
+"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.has_pseudo_class",
+"url":4,
+"doc":"Check for pseudo class (such as hover, focus etc)",
+"func":1
+},
+{
+"ref":"textual.containers.Container.app",
+"url":5,
+"doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
+},
+{
+"ref":"textual.containers.Container.log",
+"url":5,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
+"ref":"textual.containers.Container.disable_messages",
+"url":5,
+"doc":"Disable message types from being processed.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.enable_messages",
+"url":5,
+"doc":"Enable processing of messages types.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.set_timer",
+"url":5,
+"doc":"Make a function call after a delay. Args: delay (float): Time to wait before invoking callback. callback (TimerCallback | None, optional): Callback to call after time has expired. Defaults to None. name (str | None, optional): Name of the timer (for debug). Defaults to None. pause (bool, optional): Start timer paused. Defaults to False. Returns: Timer: A timer object.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.set_interval",
+"url":5,
+"doc":"Call a function at periodic intervals. Args: interval (float): Time between calls. callback (TimerCallback | None, optional): Function to call. Defaults to None. name (str | None, optional): Name of the timer object. Defaults to None. repeat (int, optional): Number of times to repeat the call or 0 for continuous. Defaults to 0. pause (bool, optional): Start the timer paused. Defaults to False. Returns: Timer: A timer object.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.call_later",
+"url":5,
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Positional and keyword arguments are passed to the callable. Args: callback (Callable): A callable.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.on_event",
+"url":5,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.check_idle",
+"url":5,
+"doc":"Prompt the message pump to call idle if the queue is empty.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.post_message_no_wait",
+"url":5,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.emit_no_wait",
+"url":5,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.emit",
+"url":5,
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
+"ref":"textual.containers.Container.dispatch_key",
+"url":5,
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical",
+"url":18,
+"doc":"A container widget which aligns children vertically."
+},
+{
+"ref":"textual.containers.Vertical.COMPONENT_CLASSES",
+"url":18,
+"doc":""
+},
+{
+"ref":"textual.containers.Vertical.hover_style",
+"url":18,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.highlight_link_id",
+"url":18,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.DEFAULT_CSS",
+"url":18,
+"doc":""
+},
+{
+"ref":"textual.containers.Vertical.can_focus",
+"url":18,
+"doc":"Widget may receive focus."
+},
+{
+"ref":"textual.containers.Vertical.can_focus_children",
+"url":18,
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.containers.Vertical.expand",
+"url":3,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.containers.Vertical.shrink",
+"url":3,
+"doc":"Rich renderable may shrink."
+},
+{
+"ref":"textual.containers.Vertical.auto_links",
+"url":3,
+"doc":"Widget will highlight links automatically."
+},
+{
+"ref":"textual.containers.Vertical.virtual_size",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.auto_width",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.auto_height",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.has_focus",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.descendant_has_focus",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.mouse_over",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.scroll_x",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.scroll_y",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.scroll_target_x",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.scroll_target_y",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.show_vertical_scrollbar",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.show_horizontal_scrollbar",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Vertical.siblings",
+"url":3,
+"doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.containers.Vertical.allow_vertical_scroll",
+"url":3,
+"doc":"Check if vertical scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _vertically_."
+},
+{
+"ref":"textual.containers.Vertical.allow_horizontal_scroll",
+"url":3,
+"doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.containers.Vertical.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
+},
+{
+"ref":"textual.containers.Vertical.get_component_rich_style",
+"url":3,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.mount",
+"url":3,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.compose",
+"url":3,
+"doc":"Called by Textual to create child widgets. Extend this to build a UI. Example:  python def compose(self) -> ComposeResult: yield Header() yield Container( TreeControl(), Viewer() ) yield Footer()  ",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.get_content_width",
+"url":3,
+"doc":"Called by textual to get the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.get_content_height",
+"url":3,
+"doc":"Called by Textual to get the height of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.max_scroll_x",
+"url":3,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.containers.Vertical.max_scroll_y",
+"url":3,
+"doc":"The maximum value of  scroll_y ."
+},
+{
+"ref":"textual.containers.Vertical.scrollbar_corner",
+"url":3,
+"doc":"Return the ScrollBarCorner - the cells that appear between the horizontal and vertical scrollbars (only when both are visible)."
+},
+{
+"ref":"textual.containers.Vertical.vertical_scrollbar",
+"url":3,
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.containers.Vertical.horizontal_scrollbar",
+"url":3,
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.containers.Vertical.scrollbars_enabled",
+"url":3,
+"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.containers.Vertical.scrollbar_size_vertical",
+"url":3,
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
+},
+{
+"ref":"textual.containers.Vertical.scrollbar_size_horizontal",
+"url":3,
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
+},
+{
+"ref":"textual.containers.Vertical.scrollbar_gutter",
+"url":3,
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
+},
+{
+"ref":"textual.containers.Vertical.gutter",
+"url":3,
+"doc":"Spacing for padding / border / scrollbars. Returns: Spacing: Additional spacing around content area."
+},
+{
+"ref":"textual.containers.Vertical.size",
+"url":3,
+"doc":"The size of the content area. Returns: Size: Content area size."
+},
+{
+"ref":"textual.containers.Vertical.outer_size",
+"url":3,
+"doc":"The size of the widget (including padding and border). Returns: Size: Outer size."
+},
+{
+"ref":"textual.containers.Vertical.container_size",
+"url":3,
+"doc":"The size of the container (parent widget). Returns: Size: Container size."
+},
+{
+"ref":"textual.containers.Vertical.content_region",
+"url":3,
+"doc":"Gets an absolute region containing the content (minus padding and border). Returns: Region: Screen region that contains a widget's content."
+},
+{
+"ref":"textual.containers.Vertical.content_offset",
+"url":3,
+"doc":"An offset from the Widget origin where the content begins. Returns: Offset: Offset from widget's origin."
+},
+{
+"ref":"textual.containers.Vertical.region",
+"url":3,
+"doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.containers.Vertical.container_viewport",
+"url":3,
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
+},
+{
+"ref":"textual.containers.Vertical.virtual_region",
+"url":3,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
+"ref":"textual.containers.Vertical.window_region",
+"url":3,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
+},
+{
+"ref":"textual.containers.Vertical.virtual_region_with_margin",
+"url":3,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.containers.Vertical.focusable_children",
+"url":3,
+"doc":"Get the children which may be focused. Returns: list[Widget]: List of widgets that can receive focus."
+},
+{
+"ref":"textual.containers.Vertical.scroll_offset",
+"url":3,
+"doc":"Get the current scroll offset. Returns: Offset: Offset a container has been scrolled by."
+},
+{
+"ref":"textual.containers.Vertical.is_transparent",
+"url":3,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
+},
+{
+"ref":"textual.containers.Vertical.animate",
+"url":3,
+"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+},
+{
+"ref":"textual.containers.Vertical.is_container",
+"url":3,
+"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
+},
+{
+"ref":"textual.containers.Vertical.is_scrollable",
+"url":3,
+"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
+},
+{
+"ref":"textual.containers.Vertical.layer",
+"url":3,
+"doc":"Get the name of this widgets layer. Returns: str: Name of layer."
+},
+{
+"ref":"textual.containers.Vertical.layers",
+"url":3,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
+"ref":"textual.containers.Vertical.link_style",
+"url":3,
+"doc":"Style of links."
+},
+{
+"ref":"textual.containers.Vertical.link_hover_style",
+"url":3,
+"doc":"Style of links with mouse hover."
+},
+{
+"ref":"textual.containers.Vertical.scroll_to",
+"url":3,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_relative",
+"url":3,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_home",
+"url":3,
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_end",
+"url":3,
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_left",
+"url":3,
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_right",
+"url":3,
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_down",
+"url":3,
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_up",
+"url":3,
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_page_up",
+"url":3,
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_page_down",
+"url":3,
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_page_left",
+"url":3,
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_page_right",
+"url":3,
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_to_widget",
+"url":3,
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_to_region",
+"url":3,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.scroll_visible",
+"url":3,
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.get_pseudo_classes",
+"url":3,
+"doc":"Pseudo classes for a widget. Returns: Iterable[str]: Names of the pseudo classes.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.post_render",
+"url":3,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.watch_mouse_over",
+"url":3,
+"doc":"Update from CSS if mouse over state changes.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.watch_has_focus",
+"url":3,
+"doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.render_line",
+"url":3,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.render_lines",
+"url":3,
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.get_style_at",
+"url":3,
+"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.refresh",
+"url":3,
+"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. By default this method will cause the content of the widget to refresh, but not change its size. You can also set  layout=True to perform a layout.  ! warning It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will do this automatically. Args:  regions (Region, optional): Additional screen regions to mark as dirty. repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.remove",
+"url":3,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.render",
+"url":3,
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.action",
+"url":3,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.post_message",
+"url":3,
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.focus",
+"url":3,
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.capture_mouse",
+"url":3,
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.release_mouse",
+"url":3,
+"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.get_component_styles",
+"url":4,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.get_default_css",
+"url":4,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.parent",
+"url":4,
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
+},
+{
+"ref":"textual.containers.Vertical.screen",
+"url":4,
+"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
+},
+{
+"ref":"textual.containers.Vertical.id",
+"url":4,
+"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
+},
+{
+"ref":"textual.containers.Vertical.css_identifier",
+"url":4,
+"doc":"A CSS selector that identifies this DOM node."
+},
+{
+"ref":"textual.containers.Vertical.css_identifier_styled",
+"url":4,
+"doc":"A stylized CSS identifier."
+},
+{
+"ref":"textual.containers.Vertical.classes",
+"url":4,
+"doc":"A frozenset of the current classes set on the widget. Returns: frozenset[str]: Set of class names."
+},
+{
+"ref":"textual.containers.Vertical.pseudo_classes",
+"url":4,
+"doc":"Get a set of all pseudo classes"
+},
+{
+"ref":"textual.containers.Vertical.css_path_nodes",
+"url":4,
+"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
+},
+{
+"ref":"textual.containers.Vertical.display",
+"url":4,
+"doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
+},
+{
+"ref":"textual.containers.Vertical.tree",
+"url":4,
+"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.containers.Vertical.text_style",
+"url":4,
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.containers.Vertical.rich_style",
+"url":4,
+"doc":"Get a Rich Style object for this DOMNode."
+},
+{
+"ref":"textual.containers.Vertical.background_colors",
+"url":4,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
+"ref":"textual.containers.Vertical.colors",
+"url":4,
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
+},
+{
+"ref":"textual.containers.Vertical.ancestors",
+"url":4,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
+},
+{
+"ref":"textual.containers.Vertical.displayed_children",
+"url":4,
+"doc":"The children which don't have display: none set. Returns: list[DOMNode]: Children of this widget which will be displayed."
+},
+{
+"ref":"textual.containers.Vertical.reset_styles",
+"url":4,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.walk_children",
+"url":4,
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.get_child",
+"url":4,
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.query",
+"url":4,
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.query_one",
+"url":4,
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.set_styles",
+"url":4,
+"doc":"Set custom styles on this object.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.has_class",
+"url":4,
+"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.set_class",
+"url":4,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.add_class",
+"url":4,
+"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.remove_class",
+"url":4,
+"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.toggle_class",
+"url":4,
+"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.has_pseudo_class",
+"url":4,
+"doc":"Check for pseudo class (such as hover, focus etc)",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.app",
+"url":5,
+"doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
+},
+{
+"ref":"textual.containers.Vertical.log",
+"url":5,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
+"ref":"textual.containers.Vertical.disable_messages",
+"url":5,
+"doc":"Disable message types from being processed.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.enable_messages",
+"url":5,
+"doc":"Enable processing of messages types.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.set_timer",
+"url":5,
+"doc":"Make a function call after a delay. Args: delay (float): Time to wait before invoking callback. callback (TimerCallback | None, optional): Callback to call after time has expired. Defaults to None. name (str | None, optional): Name of the timer (for debug). Defaults to None. pause (bool, optional): Start timer paused. Defaults to False. Returns: Timer: A timer object.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.set_interval",
+"url":5,
+"doc":"Call a function at periodic intervals. Args: interval (float): Time between calls. callback (TimerCallback | None, optional): Function to call. Defaults to None. name (str | None, optional): Name of the timer object. Defaults to None. repeat (int, optional): Number of times to repeat the call or 0 for continuous. Defaults to 0. pause (bool, optional): Start the timer paused. Defaults to False. Returns: Timer: A timer object.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.call_later",
+"url":5,
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Positional and keyword arguments are passed to the callable. Args: callback (Callable): A callable.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.on_event",
+"url":5,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.check_idle",
+"url":5,
+"doc":"Prompt the message pump to call idle if the queue is empty.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.post_message_no_wait",
+"url":5,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.emit_no_wait",
+"url":5,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.emit",
+"url":5,
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
+"ref":"textual.containers.Vertical.dispatch_key",
+"url":5,
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal",
+"url":18,
+"doc":"A container widget which aligns children horizontally."
+},
+{
+"ref":"textual.containers.Horizontal.COMPONENT_CLASSES",
+"url":18,
+"doc":""
+},
+{
+"ref":"textual.containers.Horizontal.hover_style",
+"url":18,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.highlight_link_id",
+"url":18,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.DEFAULT_CSS",
+"url":18,
+"doc":""
+},
+{
+"ref":"textual.containers.Horizontal.can_focus",
+"url":18,
+"doc":"Widget may receive focus."
+},
+{
+"ref":"textual.containers.Horizontal.can_focus_children",
+"url":18,
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.containers.Horizontal.expand",
+"url":3,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.containers.Horizontal.shrink",
+"url":3,
+"doc":"Rich renderable may shrink."
+},
+{
+"ref":"textual.containers.Horizontal.auto_links",
+"url":3,
+"doc":"Widget will highlight links automatically."
+},
+{
+"ref":"textual.containers.Horizontal.virtual_size",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.auto_width",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.auto_height",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.has_focus",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.descendant_has_focus",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.mouse_over",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.scroll_x",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.scroll_y",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.scroll_target_x",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.scroll_target_y",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.show_vertical_scrollbar",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.show_horizontal_scrollbar",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Horizontal.siblings",
+"url":3,
+"doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.containers.Horizontal.allow_vertical_scroll",
+"url":3,
+"doc":"Check if vertical scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _vertically_."
+},
+{
+"ref":"textual.containers.Horizontal.allow_horizontal_scroll",
+"url":3,
+"doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.containers.Horizontal.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
+},
+{
+"ref":"textual.containers.Horizontal.get_component_rich_style",
+"url":3,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.mount",
+"url":3,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.compose",
+"url":3,
+"doc":"Called by Textual to create child widgets. Extend this to build a UI. Example:  python def compose(self) -> ComposeResult: yield Header() yield Container( TreeControl(), Viewer() ) yield Footer()  ",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.get_content_width",
+"url":3,
+"doc":"Called by textual to get the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.get_content_height",
+"url":3,
+"doc":"Called by Textual to get the height of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.max_scroll_x",
+"url":3,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.containers.Horizontal.max_scroll_y",
+"url":3,
+"doc":"The maximum value of  scroll_y ."
+},
+{
+"ref":"textual.containers.Horizontal.scrollbar_corner",
+"url":3,
+"doc":"Return the ScrollBarCorner - the cells that appear between the horizontal and vertical scrollbars (only when both are visible)."
+},
+{
+"ref":"textual.containers.Horizontal.vertical_scrollbar",
+"url":3,
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.containers.Horizontal.horizontal_scrollbar",
+"url":3,
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.containers.Horizontal.scrollbars_enabled",
+"url":3,
+"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.containers.Horizontal.scrollbar_size_vertical",
+"url":3,
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
+},
+{
+"ref":"textual.containers.Horizontal.scrollbar_size_horizontal",
+"url":3,
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
+},
+{
+"ref":"textual.containers.Horizontal.scrollbar_gutter",
+"url":3,
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
+},
+{
+"ref":"textual.containers.Horizontal.gutter",
+"url":3,
+"doc":"Spacing for padding / border / scrollbars. Returns: Spacing: Additional spacing around content area."
+},
+{
+"ref":"textual.containers.Horizontal.size",
+"url":3,
+"doc":"The size of the content area. Returns: Size: Content area size."
+},
+{
+"ref":"textual.containers.Horizontal.outer_size",
+"url":3,
+"doc":"The size of the widget (including padding and border). Returns: Size: Outer size."
+},
+{
+"ref":"textual.containers.Horizontal.container_size",
+"url":3,
+"doc":"The size of the container (parent widget). Returns: Size: Container size."
+},
+{
+"ref":"textual.containers.Horizontal.content_region",
+"url":3,
+"doc":"Gets an absolute region containing the content (minus padding and border). Returns: Region: Screen region that contains a widget's content."
+},
+{
+"ref":"textual.containers.Horizontal.content_offset",
+"url":3,
+"doc":"An offset from the Widget origin where the content begins. Returns: Offset: Offset from widget's origin."
+},
+{
+"ref":"textual.containers.Horizontal.region",
+"url":3,
+"doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.containers.Horizontal.container_viewport",
+"url":3,
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
+},
+{
+"ref":"textual.containers.Horizontal.virtual_region",
+"url":3,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
+"ref":"textual.containers.Horizontal.window_region",
+"url":3,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
+},
+{
+"ref":"textual.containers.Horizontal.virtual_region_with_margin",
+"url":3,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.containers.Horizontal.focusable_children",
+"url":3,
+"doc":"Get the children which may be focused. Returns: list[Widget]: List of widgets that can receive focus."
+},
+{
+"ref":"textual.containers.Horizontal.scroll_offset",
+"url":3,
+"doc":"Get the current scroll offset. Returns: Offset: Offset a container has been scrolled by."
+},
+{
+"ref":"textual.containers.Horizontal.is_transparent",
+"url":3,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
+},
+{
+"ref":"textual.containers.Horizontal.animate",
+"url":3,
+"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+},
+{
+"ref":"textual.containers.Horizontal.is_container",
+"url":3,
+"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
+},
+{
+"ref":"textual.containers.Horizontal.is_scrollable",
+"url":3,
+"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
+},
+{
+"ref":"textual.containers.Horizontal.layer",
+"url":3,
+"doc":"Get the name of this widgets layer. Returns: str: Name of layer."
+},
+{
+"ref":"textual.containers.Horizontal.layers",
+"url":3,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
+"ref":"textual.containers.Horizontal.link_style",
+"url":3,
+"doc":"Style of links."
+},
+{
+"ref":"textual.containers.Horizontal.link_hover_style",
+"url":3,
+"doc":"Style of links with mouse hover."
+},
+{
+"ref":"textual.containers.Horizontal.scroll_to",
+"url":3,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_relative",
+"url":3,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_home",
+"url":3,
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_end",
+"url":3,
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_left",
+"url":3,
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_right",
+"url":3,
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_down",
+"url":3,
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_up",
+"url":3,
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_page_up",
+"url":3,
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_page_down",
+"url":3,
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_page_left",
+"url":3,
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_page_right",
+"url":3,
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_to_widget",
+"url":3,
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_to_region",
+"url":3,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.scroll_visible",
+"url":3,
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.get_pseudo_classes",
+"url":3,
+"doc":"Pseudo classes for a widget. Returns: Iterable[str]: Names of the pseudo classes.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.post_render",
+"url":3,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.watch_mouse_over",
+"url":3,
+"doc":"Update from CSS if mouse over state changes.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.watch_has_focus",
+"url":3,
+"doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.render_line",
+"url":3,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.render_lines",
+"url":3,
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.get_style_at",
+"url":3,
+"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.refresh",
+"url":3,
+"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. By default this method will cause the content of the widget to refresh, but not change its size. You can also set  layout=True to perform a layout.  ! warning It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will do this automatically. Args:  regions (Region, optional): Additional screen regions to mark as dirty. repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.remove",
+"url":3,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.render",
+"url":3,
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.action",
+"url":3,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.post_message",
+"url":3,
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.focus",
+"url":3,
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.capture_mouse",
+"url":3,
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.release_mouse",
+"url":3,
+"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.get_component_styles",
+"url":4,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.get_default_css",
+"url":4,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.parent",
+"url":4,
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
+},
+{
+"ref":"textual.containers.Horizontal.screen",
+"url":4,
+"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
+},
+{
+"ref":"textual.containers.Horizontal.id",
+"url":4,
+"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
+},
+{
+"ref":"textual.containers.Horizontal.css_identifier",
+"url":4,
+"doc":"A CSS selector that identifies this DOM node."
+},
+{
+"ref":"textual.containers.Horizontal.css_identifier_styled",
+"url":4,
+"doc":"A stylized CSS identifier."
+},
+{
+"ref":"textual.containers.Horizontal.classes",
+"url":4,
+"doc":"A frozenset of the current classes set on the widget. Returns: frozenset[str]: Set of class names."
+},
+{
+"ref":"textual.containers.Horizontal.pseudo_classes",
+"url":4,
+"doc":"Get a set of all pseudo classes"
+},
+{
+"ref":"textual.containers.Horizontal.css_path_nodes",
+"url":4,
+"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
+},
+{
+"ref":"textual.containers.Horizontal.display",
+"url":4,
+"doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
+},
+{
+"ref":"textual.containers.Horizontal.tree",
+"url":4,
+"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.containers.Horizontal.text_style",
+"url":4,
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.containers.Horizontal.rich_style",
+"url":4,
+"doc":"Get a Rich Style object for this DOMNode."
+},
+{
+"ref":"textual.containers.Horizontal.background_colors",
+"url":4,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
+"ref":"textual.containers.Horizontal.colors",
+"url":4,
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
+},
+{
+"ref":"textual.containers.Horizontal.ancestors",
+"url":4,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
+},
+{
+"ref":"textual.containers.Horizontal.displayed_children",
+"url":4,
+"doc":"The children which don't have display: none set. Returns: list[DOMNode]: Children of this widget which will be displayed."
+},
+{
+"ref":"textual.containers.Horizontal.reset_styles",
+"url":4,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.walk_children",
+"url":4,
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.get_child",
+"url":4,
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.query",
+"url":4,
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.query_one",
+"url":4,
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.set_styles",
+"url":4,
+"doc":"Set custom styles on this object.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.has_class",
+"url":4,
+"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.set_class",
+"url":4,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.add_class",
+"url":4,
+"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.remove_class",
+"url":4,
+"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.toggle_class",
+"url":4,
+"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.has_pseudo_class",
+"url":4,
+"doc":"Check for pseudo class (such as hover, focus etc)",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.app",
+"url":5,
+"doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
+},
+{
+"ref":"textual.containers.Horizontal.log",
+"url":5,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
+"ref":"textual.containers.Horizontal.disable_messages",
+"url":5,
+"doc":"Disable message types from being processed.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.enable_messages",
+"url":5,
+"doc":"Enable processing of messages types.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.set_timer",
+"url":5,
+"doc":"Make a function call after a delay. Args: delay (float): Time to wait before invoking callback. callback (TimerCallback | None, optional): Callback to call after time has expired. Defaults to None. name (str | None, optional): Name of the timer (for debug). Defaults to None. pause (bool, optional): Start timer paused. Defaults to False. Returns: Timer: A timer object.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.set_interval",
+"url":5,
+"doc":"Call a function at periodic intervals. Args: interval (float): Time between calls. callback (TimerCallback | None, optional): Function to call. Defaults to None. name (str | None, optional): Name of the timer object. Defaults to None. repeat (int, optional): Number of times to repeat the call or 0 for continuous. Defaults to 0. pause (bool, optional): Start the timer paused. Defaults to False. Returns: Timer: A timer object.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.call_later",
+"url":5,
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Positional and keyword arguments are passed to the callable. Args: callback (Callable): A callable.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.on_event",
+"url":5,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.check_idle",
+"url":5,
+"doc":"Prompt the message pump to call idle if the queue is empty.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.post_message_no_wait",
+"url":5,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.emit_no_wait",
+"url":5,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.emit",
+"url":5,
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
+"ref":"textual.containers.Horizontal.dispatch_key",
+"url":5,
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid",
+"url":18,
+"doc":"A container widget with grid alignment."
+},
+{
+"ref":"textual.containers.Grid.COMPONENT_CLASSES",
+"url":18,
+"doc":""
+},
+{
+"ref":"textual.containers.Grid.hover_style",
+"url":18,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.highlight_link_id",
+"url":18,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.DEFAULT_CSS",
+"url":18,
+"doc":""
+},
+{
+"ref":"textual.containers.Grid.can_focus",
+"url":18,
+"doc":"Widget may receive focus."
+},
+{
+"ref":"textual.containers.Grid.can_focus_children",
+"url":18,
+"doc":"Widget's children may receive focus."
+},
+{
+"ref":"textual.containers.Grid.expand",
+"url":3,
+"doc":"Rich renderable may expand."
+},
+{
+"ref":"textual.containers.Grid.shrink",
+"url":3,
+"doc":"Rich renderable may shrink."
+},
+{
+"ref":"textual.containers.Grid.auto_links",
+"url":3,
+"doc":"Widget will highlight links automatically."
+},
+{
+"ref":"textual.containers.Grid.virtual_size",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.auto_width",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.auto_height",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.has_focus",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.descendant_has_focus",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.mouse_over",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.scroll_x",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.scroll_y",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.scroll_target_x",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.scroll_target_y",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.show_vertical_scrollbar",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.show_horizontal_scrollbar",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.containers.Grid.siblings",
+"url":3,
+"doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.containers.Grid.allow_vertical_scroll",
+"url":3,
+"doc":"Check if vertical scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _vertically_."
+},
+{
+"ref":"textual.containers.Grid.allow_horizontal_scroll",
+"url":3,
+"doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
+},
+{
+"ref":"textual.containers.Grid.offset",
+"url":3,
+"doc":"Widget offset from origin. Returns: Offset: Relative offset."
+},
+{
+"ref":"textual.containers.Grid.get_component_rich_style",
+"url":3,
+"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.mount",
+"url":3,
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.compose",
+"url":3,
+"doc":"Called by Textual to create child widgets. Extend this to build a UI. Example:  python def compose(self) -> ComposeResult: yield Header() yield Container( TreeControl(), Viewer() ) yield Footer()  ",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.get_content_width",
+"url":3,
+"doc":"Called by textual to get the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.get_content_height",
+"url":3,
+"doc":"Called by Textual to get the height of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.max_scroll_x",
+"url":3,
+"doc":"The maximum value of  scroll_x ."
+},
+{
+"ref":"textual.containers.Grid.max_scroll_y",
+"url":3,
+"doc":"The maximum value of  scroll_y ."
+},
+{
+"ref":"textual.containers.Grid.scrollbar_corner",
+"url":3,
+"doc":"Return the ScrollBarCorner - the cells that appear between the horizontal and vertical scrollbars (only when both are visible)."
+},
+{
+"ref":"textual.containers.Grid.vertical_scrollbar",
+"url":3,
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.containers.Grid.horizontal_scrollbar",
+"url":3,
+"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
+},
+{
+"ref":"textual.containers.Grid.scrollbars_enabled",
+"url":3,
+"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
+},
+{
+"ref":"textual.containers.Grid.scrollbar_size_vertical",
+"url":3,
+"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
+},
+{
+"ref":"textual.containers.Grid.scrollbar_size_horizontal",
+"url":3,
+"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
+},
+{
+"ref":"textual.containers.Grid.scrollbar_gutter",
+"url":3,
+"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
+},
+{
+"ref":"textual.containers.Grid.gutter",
+"url":3,
+"doc":"Spacing for padding / border / scrollbars. Returns: Spacing: Additional spacing around content area."
+},
+{
+"ref":"textual.containers.Grid.size",
+"url":3,
+"doc":"The size of the content area. Returns: Size: Content area size."
+},
+{
+"ref":"textual.containers.Grid.outer_size",
+"url":3,
+"doc":"The size of the widget (including padding and border). Returns: Size: Outer size."
+},
+{
+"ref":"textual.containers.Grid.container_size",
+"url":3,
+"doc":"The size of the container (parent widget). Returns: Size: Container size."
+},
+{
+"ref":"textual.containers.Grid.content_region",
+"url":3,
+"doc":"Gets an absolute region containing the content (minus padding and border). Returns: Region: Screen region that contains a widget's content."
+},
+{
+"ref":"textual.containers.Grid.content_offset",
+"url":3,
+"doc":"An offset from the Widget origin where the content begins. Returns: Offset: Offset from widget's origin."
+},
+{
+"ref":"textual.containers.Grid.region",
+"url":3,
+"doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
+},
+{
+"ref":"textual.containers.Grid.container_viewport",
+"url":3,
+"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
+},
+{
+"ref":"textual.containers.Grid.virtual_region",
+"url":3,
+"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
+},
+{
+"ref":"textual.containers.Grid.window_region",
+"url":3,
+"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
+},
+{
+"ref":"textual.containers.Grid.virtual_region_with_margin",
+"url":3,
+"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
+},
+{
+"ref":"textual.containers.Grid.focusable_children",
+"url":3,
+"doc":"Get the children which may be focused. Returns: list[Widget]: List of widgets that can receive focus."
+},
+{
+"ref":"textual.containers.Grid.scroll_offset",
+"url":3,
+"doc":"Get the current scroll offset. Returns: Offset: Offset a container has been scrolled by."
+},
+{
+"ref":"textual.containers.Grid.is_transparent",
+"url":3,
+"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
+},
+{
+"ref":"textual.containers.Grid.animate",
+"url":3,
+"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+},
+{
+"ref":"textual.containers.Grid.is_container",
+"url":3,
+"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
+},
+{
+"ref":"textual.containers.Grid.is_scrollable",
+"url":3,
+"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
+},
+{
+"ref":"textual.containers.Grid.layer",
+"url":3,
+"doc":"Get the name of this widgets layer. Returns: str: Name of layer."
+},
+{
+"ref":"textual.containers.Grid.layers",
+"url":3,
+"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
+},
+{
+"ref":"textual.containers.Grid.link_style",
+"url":3,
+"doc":"Style of links."
+},
+{
+"ref":"textual.containers.Grid.link_hover_style",
+"url":3,
+"doc":"Style of links with mouse hover."
+},
+{
+"ref":"textual.containers.Grid.scroll_to",
+"url":3,
+"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_relative",
+"url":3,
+"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_home",
+"url":3,
+"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_end",
+"url":3,
+"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_left",
+"url":3,
+"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_right",
+"url":3,
+"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_down",
+"url":3,
+"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_up",
+"url":3,
+"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_page_up",
+"url":3,
+"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_page_down",
+"url":3,
+"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_page_left",
+"url":3,
+"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_page_right",
+"url":3,
+"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_to_widget",
+"url":3,
+"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_to_region",
+"url":3,
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.scroll_visible",
+"url":3,
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.get_pseudo_classes",
+"url":3,
+"doc":"Pseudo classes for a widget. Returns: Iterable[str]: Names of the pseudo classes.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.post_render",
+"url":3,
+"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.watch_mouse_over",
+"url":3,
+"doc":"Update from CSS if mouse over state changes.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.watch_has_focus",
+"url":3,
+"doc":"Update from CSS if has focus state changes.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.render_line",
+"url":3,
+"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.render_lines",
+"url":3,
+"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.get_style_at",
+"url":3,
+"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.refresh",
+"url":3,
+"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. By default this method will cause the content of the widget to refresh, but not change its size. You can also set  layout=True to perform a layout.  ! warning It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will do this automatically. Args:  regions (Region, optional): Additional screen regions to mark as dirty. repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.remove",
+"url":3,
+"doc":"Remove the Widget from the DOM (effectively deleting it)",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.render",
+"url":3,
+"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.action",
+"url":3,
+"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.post_message",
+"url":3,
+"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.focus",
+"url":3,
+"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.capture_mouse",
+"url":3,
+"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.release_mouse",
+"url":3,
+"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.get_component_styles",
+"url":4,
+"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.get_default_css",
+"url":4,
+"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.parent",
+"url":4,
+"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
+},
+{
+"ref":"textual.containers.Grid.screen",
+"url":4,
+"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
+},
+{
+"ref":"textual.containers.Grid.id",
+"url":4,
+"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
+},
+{
+"ref":"textual.containers.Grid.css_identifier",
+"url":4,
+"doc":"A CSS selector that identifies this DOM node."
+},
+{
+"ref":"textual.containers.Grid.css_identifier_styled",
+"url":4,
+"doc":"A stylized CSS identifier."
+},
+{
+"ref":"textual.containers.Grid.classes",
+"url":4,
+"doc":"A frozenset of the current classes set on the widget. Returns: frozenset[str]: Set of class names."
+},
+{
+"ref":"textual.containers.Grid.pseudo_classes",
+"url":4,
+"doc":"Get a set of all pseudo classes"
+},
+{
+"ref":"textual.containers.Grid.css_path_nodes",
+"url":4,
+"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
+},
+{
+"ref":"textual.containers.Grid.display",
+"url":4,
+"doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
+},
+{
+"ref":"textual.containers.Grid.tree",
+"url":4,
+"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
+},
+{
+"ref":"textual.containers.Grid.text_style",
+"url":4,
+"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
+},
+{
+"ref":"textual.containers.Grid.rich_style",
+"url":4,
+"doc":"Get a Rich Style object for this DOMNode."
+},
+{
+"ref":"textual.containers.Grid.background_colors",
+"url":4,
+"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
+},
+{
+"ref":"textual.containers.Grid.colors",
+"url":4,
+"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
+},
+{
+"ref":"textual.containers.Grid.ancestors",
+"url":4,
+"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
+},
+{
+"ref":"textual.containers.Grid.displayed_children",
+"url":4,
+"doc":"The children which don't have display: none set. Returns: list[DOMNode]: Children of this widget which will be displayed."
+},
+{
+"ref":"textual.containers.Grid.reset_styles",
+"url":4,
+"doc":"Reset styles back to their initial state",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.walk_children",
+"url":4,
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.get_child",
+"url":4,
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.query",
+"url":4,
+"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.query_one",
+"url":4,
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.set_styles",
+"url":4,
+"doc":"Set custom styles on this object.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.has_class",
+"url":4,
+"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.set_class",
+"url":4,
+"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.add_class",
+"url":4,
+"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.remove_class",
+"url":4,
+"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.toggle_class",
+"url":4,
+"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.has_pseudo_class",
+"url":4,
+"doc":"Check for pseudo class (such as hover, focus etc)",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.app",
+"url":5,
+"doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
+},
+{
+"ref":"textual.containers.Grid.log",
+"url":5,
+"doc":"Get a logger for this object. Returns: Logger: A logger."
+},
+{
+"ref":"textual.containers.Grid.disable_messages",
+"url":5,
+"doc":"Disable message types from being processed.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.enable_messages",
+"url":5,
+"doc":"Enable processing of messages types.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.set_timer",
+"url":5,
+"doc":"Make a function call after a delay. Args: delay (float): Time to wait before invoking callback. callback (TimerCallback | None, optional): Callback to call after time has expired. Defaults to None. name (str | None, optional): Name of the timer (for debug). Defaults to None. pause (bool, optional): Start timer paused. Defaults to False. Returns: Timer: A timer object.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.set_interval",
+"url":5,
+"doc":"Call a function at periodic intervals. Args: interval (float): Time between calls. callback (TimerCallback | None, optional): Function to call. Defaults to None. name (str | None, optional): Name of the timer object. Defaults to None. repeat (int, optional): Number of times to repeat the call or 0 for continuous. Defaults to 0. pause (bool, optional): Start the timer paused. Defaults to False. Returns: Timer: A timer object.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.call_later",
+"url":5,
+"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Positional and keyword arguments are passed to the callable. Args: callback (Callable): A callable.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.on_event",
+"url":5,
+"doc":"Called to process an event. Args: event (events.Event): An Event object.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.check_idle",
+"url":5,
+"doc":"Prompt the message pump to call idle if the queue is empty.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.post_message_no_wait",
+"url":5,
+"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.emit_no_wait",
+"url":5,
+"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.emit",
+"url":5,
+"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
+"func":1
+},
+{
+"ref":"textual.containers.Grid.dispatch_key",
+"url":5,
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
+"func":1
+},
+{
+"ref":"textual.constants",
+"url":19,
 "doc":"Constants that we might want to expose via the public API."
 },
 {
 "ref":"textual.cli",
-"url":19,
+"url":20,
 "doc":""
 },
 {
 "ref":"textual.cli.previews",
-"url":20,
+"url":21,
 "doc":""
 },
 {
@@ -3806,308 +6745,308 @@ INDEX=[
 },
 {
 "ref":"textual.renderables",
-"url":21,
+"url":22,
 "doc":""
 },
 {
 "ref":"textual.renderables.tint",
-"url":22,
+"url":23,
 "doc":""
 },
 {
 "ref":"textual.renderables.tint.Tint",
-"url":22,
+"url":23,
 "doc":"Applies a color on top of an existing renderable. Wrap a renderable to apply a tint color. Args: renderable (RenderableType): A renderable. color (Color): A color (presumably with alpha)."
 },
 {
 "ref":"textual.renderables.tint.Tint.process_segments",
-"url":22,
+"url":23,
 "doc":"Apply tint to segments. Args: segments (Iterable[Segment]): Incoming segments. color (Color): Color of tint. Returns: Iterable[Segment]: Segments with applied tint.",
 "func":1
 },
 {
 "ref":"textual.renderables.sparkline",
-"url":23,
+"url":24,
 "doc":""
 },
 {
 "ref":"textual.renderables.sparkline.Sparkline",
-"url":23,
+"url":24,
 "doc":"A sparkline representing a series of data. Args: data (Sequence[T]): The sequence of data to render. width (int, optional): The width of the sparkline/the number of buckets to partition the data into. min_color (Color, optional): The color of values equal to the min value in data. max_color (Color, optional): The color of values equal to the max value in data. summary_function (Callable[list[T ): Function that will be applied to each bucket."
 },
 {
 "ref":"textual.renderables.sparkline.Sparkline.BARS",
-"url":23,
+"url":24,
 "doc":""
 },
 {
 "ref":"textual.renderables.align",
-"url":24,
+"url":25,
 "doc":""
 },
 {
 "ref":"textual.renderables.align.Align",
-"url":24,
+"url":25,
 "doc":"Align a child renderable Args: renderable (RenderableType): Renderable to align. size (Size): Size of container. style (Style): Style of any padding. horizontal (AlignHorizontal): Horizontal alignment. vertical (AlignVertical): Vertical alignment."
 },
 {
 "ref":"textual.renderables.underline_bar",
-"url":25,
+"url":26,
 "doc":""
 },
 {
 "ref":"textual.renderables.underline_bar.UnderlineBar",
-"url":25,
+"url":26,
 "doc":"Thin horizontal bar with a portion highlighted. Args: highlight_range (tuple[float, float]): The range to highlight. Defaults to  (0, 0) (no highlight) highlight_style (StyleType): The style of the highlighted range of the bar. background_style (StyleType): The style of the non-highlighted range(s) of the bar. width (int, optional): The width of the bar, or  None to fill available width."
 },
 {
 "ref":"textual.renderables.gradient",
-"url":26,
+"url":27,
 "doc":""
 },
 {
 "ref":"textual.renderables.gradient.VerticalGradient",
-"url":26,
+"url":27,
 "doc":"Draw a vertical gradient."
 },
 {
 "ref":"textual.renderables.blank",
-"url":27,
+"url":28,
 "doc":""
 },
 {
 "ref":"textual.renderables.blank.Blank",
-"url":27,
+"url":28,
 "doc":"Draw solid background color."
 },
 {
 "ref":"textual.renderables.text_opacity",
-"url":28,
+"url":29,
 "doc":""
 },
 {
 "ref":"textual.renderables.text_opacity.TextOpacity",
-"url":28,
+"url":29,
 "doc":"Blend foreground in to background. Wrap a renderable to blend foreground color into the background color. Args: renderable (RenderableType): The RenderableType to manipulate. opacity (float): The opacity as a float. A value of 1.0 means text is fully visible."
 },
 {
 "ref":"textual.renderables.text_opacity.TextOpacity.process_segments",
-"url":28,
+"url":29,
 "doc":"Apply opacity to segments. Args: segments (Iterable[Segment]): Incoming segments. opacity (float): Opacity to apply. Returns: Iterable[Segment]: Segments with applied opacity.",
 "func":1
 },
 {
 "ref":"textual.color",
-"url":29,
+"url":30,
 "doc":"This module contains a powerful Color class which Textual uses to expose colors. The only exception would be for Rich renderables, which require a rich.color.Color instance. You can convert from a Textual color to a Rich color with the [rich_color][textual.color.Color.rich_color] property.  Named colors The following named colors are used by the [parse][textual.color.Color.parse] method.  {.rich title=\"colors\"} from textual._color_constants import COLOR_NAME_TO_RGB from textual.color import Color from rich.table import Table from rich.text import Text table = Table(\"Name\", \"hex\", \"RGB\", \"Color\", expand=True, highlight=True) for name, triplet in sorted(COLOR_NAME_TO_RGB.items( : if len(triplet) != 3: continue color = Color( triplet) r, g, b = triplet table.add_row( f'\"{name}\"', Text(f\"{color.hex}\", \"bold green\"), f\"rgb({r}, {g}, {b})\", Text(\" \", style=f\"on rgb({r},{g},{b})\") ) output = table  "
 },
 {
 "ref":"textual.color.HSL",
-"url":29,
+"url":30,
 "doc":"A color in HLS format."
 },
 {
 "ref":"textual.color.HSL.h",
-"url":29,
+"url":30,
 "doc":"Hue"
 },
 {
 "ref":"textual.color.HSL.s",
-"url":29,
+"url":30,
 "doc":"Saturation"
 },
 {
 "ref":"textual.color.HSL.l",
-"url":29,
+"url":30,
 "doc":"Lightness"
 },
 {
 "ref":"textual.color.HSL.css",
-"url":29,
+"url":30,
 "doc":"HSL in css format."
 },
 {
 "ref":"textual.color.HSV",
-"url":29,
+"url":30,
 "doc":"A color in HSV format."
 },
 {
 "ref":"textual.color.HSV.h",
-"url":29,
+"url":30,
 "doc":"Hue"
 },
 {
 "ref":"textual.color.HSV.s",
-"url":29,
+"url":30,
 "doc":"Saturation"
 },
 {
 "ref":"textual.color.HSV.v",
-"url":29,
+"url":30,
 "doc":"Value"
 },
 {
 "ref":"textual.color.Lab",
-"url":29,
+"url":30,
 "doc":"A color in CIE-L ab format."
 },
 {
 "ref":"textual.color.Lab.L",
-"url":29,
+"url":30,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.color.Lab.a",
-"url":29,
+"url":30,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.color.Lab.b",
-"url":29,
+"url":30,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.color.ColorParseError",
-"url":29,
+"url":30,
 "doc":"A color failed to parse. Args: message (str): the error message suggested_color (str | None): a close color we can suggest. Defaults to None."
 },
 {
 "ref":"textual.color.Color",
-"url":29,
+"url":30,
 "doc":"A class to represent a RGB color with an alpha component."
 },
 {
 "ref":"textual.color.Color.r",
-"url":29,
+"url":30,
 "doc":"Red component (0-255)"
 },
 {
 "ref":"textual.color.Color.g",
-"url":29,
+"url":30,
 "doc":"Green component (0-255)"
 },
 {
 "ref":"textual.color.Color.b",
-"url":29,
+"url":30,
 "doc":"Blue component (0-255)"
 },
 {
 "ref":"textual.color.Color.a",
-"url":29,
+"url":30,
 "doc":"Alpha component (0-1)"
 },
 {
 "ref":"textual.color.Color.from_rich_color",
-"url":29,
+"url":30,
 "doc":"Create a new color from Rich's Color class. Args: rich_color (RichColor): An instance of rich.color.Color. Returns: Color: A new Color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.from_hsl",
-"url":29,
+"url":30,
 "doc":"Create a color from HLS components. Args: h (float): Hue. l (float): Lightness. s (float): Saturation. Returns: Color: A new color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.inverse",
-"url":29,
+"url":30,
 "doc":"The inverse of this color."
 },
 {
 "ref":"textual.color.Color.is_transparent",
-"url":29,
+"url":30,
 "doc":"Check if the color is transparent, i.e. has 0 alpha. Returns: bool: True if transparent, otherwise False."
 },
 {
 "ref":"textual.color.Color.clamped",
-"url":29,
+"url":30,
 "doc":"Get a color with all components saturated to maximum and minimum values. Returns: Color: A color object."
 },
 {
 "ref":"textual.color.Color.rich_color",
-"url":29,
+"url":30,
 "doc":"This color encoded in Rich's Color class. Returns: RichColor: A color object as used by Rich."
 },
 {
 "ref":"textual.color.Color.normalized",
-"url":29,
+"url":30,
 "doc":"A tuple of the color components normalized to between 0 and 1. Returns: tuple[float, float, float]: Normalized components."
 },
 {
 "ref":"textual.color.Color.rgb",
-"url":29,
+"url":30,
 "doc":"Get just the red, green, and blue components. Returns: tuple[int, int, int]: Color components"
 },
 {
 "ref":"textual.color.Color.hsl",
-"url":29,
+"url":30,
 "doc":"Get the color as HSL. Returns: HSL: Color in HSL format."
 },
 {
 "ref":"textual.color.Color.brightness",
-"url":29,
+"url":30,
 "doc":"Get the human perceptual brightness. Returns: float: Brightness value (0-1)."
 },
 {
 "ref":"textual.color.Color.hex",
-"url":29,
+"url":30,
 "doc":"The color in CSS hex form, with 6 digits for RGB, and 8 digits for RGBA. Returns: str: A CSS hex-style color, e.g.  \" 46b3de\" or  \" 3342457f\" "
 },
 {
 "ref":"textual.color.Color.hex6",
-"url":29,
+"url":30,
 "doc":"The color in CSS hex form, with 6 digits for RGB. Alpha is ignored. Returns: str: A CSS hex-style color, e.g. \" 46b3de\""
 },
 {
 "ref":"textual.color.Color.css",
-"url":29,
+"url":30,
 "doc":"The color in CSS rgb or rgba form. Returns: str: A CSS style color, e.g.  \"rgb(10,20,30)\" or  \"rgb(50,70,80,0.5)\" "
 },
 {
 "ref":"textual.color.Color.with_alpha",
-"url":29,
+"url":30,
 "doc":"Create a new color with the given alpha. Args: alpha (float): New value for alpha. Returns: Color: A new color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.blend",
-"url":29,
+"url":30,
 "doc":"Generate a new color between two colors. Args: destination (Color): Another color. factor (float): A blend factor, 0 -> 1. alpha (float | None): New alpha for result. Defaults to 1. Returns: Color: A new color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.parse",
-"url":29,
+"url":30,
 "doc":"Parse a string containing a named color or CSS-style color. Colors may be parsed from the following formats: Text beginning with a  is parsed as hex: R, G, and B must be hex digits (0-9A-F) -  RGB -  RRGGBB -  RRGGBBAA Text in the following formats is parsed as decimal values: RED, GREEN, and BLUE must be numbers between 0 and 255. ALPHA should ba a value between 0 and 1. -  rgb(RED,GREEN,BLUE) -  rgba(RED,GREEN,BLUE,ALPHA) -  hsl(RED,GREEN,BLUE) -  hsla(RED,GREEN,BLUE,ALPHA) All other text will raise a  ColorParseError . Args: color_text (str | Color): Text with a valid color format. Color objects will be returned unmodified. Raises: ColorParseError: If the color is not encoded correctly. Returns: Color: New color object.",
 "func":1
 },
 {
 "ref":"textual.color.Color.darken",
-"url":29,
+"url":30,
 "doc":"Darken the color by a given amount. Args: amount (float): Value between 0-1 to reduce luminance by. alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None. Returns: Color: New color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.lighten",
-"url":29,
+"url":30,
 "doc":"Lighten the color by a given amount. Args: amount (float): Value between 0-1 to increase luminance by. alpha (float | None, optional): Alpha component for new color or None to copy alpha. Defaults to None. Returns: Color: New color.",
 "func":1
 },
 {
 "ref":"textual.color.Color.get_contrast_text",
-"url":29,
+"url":30,
 "doc":"Get a light or dark color that best contrasts this color, for use with text. Args: alpha (float, optional): An alpha value to adjust the pure white / black by. Defaults to 0.95. Returns: Color: A new color, either an off-white or off-black",
 "func":1
 },
 {
 "ref":"textual.color.rgb_to_lab",
-"url":29,
+"url":30,
 "doc":"Convert an RGB color to the CIE-L ab format. Uses the standard RGB color space with a D65/2\u2070 standard illuminant. Conversion passes through the XYZ color space. Cf. http: www.easyrgb.com/en/math.php.",
 "func":1
 },
 {
 "ref":"textual.color.lab_to_rgb",
-"url":29,
+"url":30,
 "doc":"Convert a CIE-L ab color to RGB. Uses the standard RGB color space with a D65/2\u2070 standard illuminant. Conversion passes through the XYZ color space. Cf. http: www.easyrgb.com/en/math.php.",
 "func":1
 },
@@ -4173,6 +7112,11 @@ INDEX=[
 },
 {
 "ref":"textual.widget.Widget.hover_style",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.widget.Widget.highlight_link_id",
 "url":3,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
@@ -4284,6 +7228,12 @@ INDEX=[
 "ref":"textual.widget.Widget.get_content_height",
 "url":3,
 "doc":"Called by Textual to get the height of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
+"func":1
+},
+{
+"ref":"textual.widget.Widget.watch_hover_style",
+"url":3,
+"doc":"",
 "func":1
 },
 {
@@ -4900,43 +7850,43 @@ INDEX=[
 },
 {
 "ref":"textual.messages",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.Update",
-"url":30,
+"url":31,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.Update.sender",
-"url":30,
+"url":31,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.Update.namespace",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.Update.can_replace",
-"url":30,
+"url":31,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.Update.bubble",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.Update.verbose",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.Update.no_dispatch",
-"url":30,
+"url":31,
 "doc":""
 },
 {
@@ -4968,38 +7918,38 @@ INDEX=[
 },
 {
 "ref":"textual.messages.Layout",
-"url":30,
+"url":31,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.Layout.sender",
-"url":30,
+"url":31,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.Layout.namespace",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.Layout.can_replace",
-"url":30,
+"url":31,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.Layout.bubble",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.Layout.verbose",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.Layout.no_dispatch",
-"url":30,
+"url":31,
 "doc":""
 },
 {
@@ -5031,32 +7981,32 @@ INDEX=[
 },
 {
 "ref":"textual.messages.InvokeLater",
-"url":30,
+"url":31,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.InvokeLater.sender",
-"url":30,
+"url":31,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.InvokeLater.namespace",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.InvokeLater.bubble",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.InvokeLater.verbose",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.InvokeLater.no_dispatch",
-"url":30,
+"url":31,
 "doc":""
 },
 {
@@ -5094,32 +8044,32 @@ INDEX=[
 },
 {
 "ref":"textual.messages.ScrollToRegion",
-"url":30,
+"url":31,
 "doc":"Ask the parent to scroll a given region in to view."
 },
 {
 "ref":"textual.messages.ScrollToRegion.sender",
-"url":30,
+"url":31,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.ScrollToRegion.namespace",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.ScrollToRegion.bubble",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.ScrollToRegion.verbose",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.ScrollToRegion.no_dispatch",
-"url":30,
+"url":31,
 "doc":""
 },
 {
@@ -5157,38 +8107,38 @@ INDEX=[
 },
 {
 "ref":"textual.messages.StylesUpdated",
-"url":30,
+"url":31,
 "doc":"Base class for a message. Args: sender (MessageTarget): The sender of the message / event."
 },
 {
 "ref":"textual.messages.StylesUpdated.sender",
-"url":30,
+"url":31,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.StylesUpdated.namespace",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.StylesUpdated.can_replace",
-"url":30,
+"url":31,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.StylesUpdated.bubble",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.StylesUpdated.verbose",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.StylesUpdated.no_dispatch",
-"url":30,
+"url":31,
 "doc":""
 },
 {
@@ -5220,38 +8170,38 @@ INDEX=[
 },
 {
 "ref":"textual.messages.Prompt",
-"url":30,
+"url":31,
 "doc":"Used to 'wake up' an event loop."
 },
 {
 "ref":"textual.messages.Prompt.sender",
-"url":30,
+"url":31,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.Prompt.namespace",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.Prompt.can_replace",
-"url":30,
+"url":31,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.messages.Prompt.bubble",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.Prompt.verbose",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.Prompt.no_dispatch",
-"url":30,
+"url":31,
 "doc":""
 },
 {
@@ -5283,32 +8233,32 @@ INDEX=[
 },
 {
 "ref":"textual.messages.TerminalSupportsSynchronizedOutput",
-"url":30,
+"url":31,
 "doc":"Used to make the App aware that the terminal emulator supports synchronised output. @link https: gist.github.com/christianparpart/d8a62cc1ab659194337d73e399004036"
 },
 {
 "ref":"textual.messages.TerminalSupportsSynchronizedOutput.sender",
-"url":30,
+"url":31,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.messages.TerminalSupportsSynchronizedOutput.namespace",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.TerminalSupportsSynchronizedOutput.bubble",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.TerminalSupportsSynchronizedOutput.verbose",
-"url":30,
+"url":31,
 "doc":""
 },
 {
 "ref":"textual.messages.TerminalSupportsSynchronizedOutput.no_dispatch",
-"url":30,
+"url":31,
 "doc":""
 },
 {
@@ -5346,192 +8296,192 @@ INDEX=[
 },
 {
 "ref":"textual.binding",
-"url":31,
+"url":32,
 "doc":""
 },
 {
 "ref":"textual.binding.BindingError",
-"url":31,
+"url":32,
 "doc":"A binding related error."
 },
 {
 "ref":"textual.binding.NoBinding",
-"url":31,
+"url":32,
 "doc":"A binding was not found."
 },
 {
 "ref":"textual.binding.Binding",
-"url":31,
+"url":32,
 "doc":"Binding(key: 'str', action: 'str', description: 'str', show: 'bool' = True, key_display: 'str | None' = None, allow_forward: 'bool' = True)"
 },
 {
 "ref":"textual.binding.Binding.key",
-"url":31,
+"url":32,
 "doc":"Key to bind."
 },
 {
 "ref":"textual.binding.Binding.action",
-"url":31,
+"url":32,
 "doc":"Action to bind to."
 },
 {
 "ref":"textual.binding.Binding.description",
-"url":31,
+"url":32,
 "doc":"Description of action."
 },
 {
 "ref":"textual.binding.Binding.show",
-"url":31,
+"url":32,
 "doc":"Show the action in Footer, or False to hide."
 },
 {
 "ref":"textual.binding.Binding.key_display",
-"url":31,
+"url":32,
 "doc":"How the key should be shown in footer."
 },
 {
 "ref":"textual.binding.Binding.allow_forward",
-"url":31,
+"url":32,
 "doc":"Allow forwarding from app to focused widget."
 },
 {
 "ref":"textual.binding.Bindings",
-"url":31,
+"url":32,
 "doc":"Manage a set of bindings."
 },
 {
 "ref":"textual.binding.Bindings.merge",
-"url":31,
+"url":32,
 "doc":"Merge a bindings. Subsequence bound keys override initial keys. Args: bindings (Iterable[Bindings]): A number of bindings. Returns: Bindings: New bindings.",
 "func":1
 },
 {
 "ref":"textual.binding.Bindings.shown_keys",
-"url":31,
+"url":32,
 "doc":""
 },
 {
 "ref":"textual.binding.Bindings.bind",
-"url":31,
+"url":32,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.binding.Bindings.get_key",
-"url":31,
+"url":32,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.binding.Bindings.allow_forward",
-"url":31,
+"url":32,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.box_model",
-"url":32,
+"url":33,
 "doc":""
 },
 {
 "ref":"textual.box_model.BoxModel",
-"url":32,
+"url":33,
 "doc":"The result of  get_box_model ."
 },
 {
 "ref":"textual.box_model.BoxModel.width",
-"url":32,
+"url":33,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.box_model.BoxModel.height",
-"url":32,
+"url":33,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.box_model.BoxModel.margin",
-"url":32,
+"url":33,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.box_model.get_box_model",
-"url":32,
+"url":33,
 "doc":"Resolve the box model for this Styles. Args: styles (StylesBase): Styles object. container (Size): The size of the widget container. viewport (Size): The viewport size. get_auto_width (Callable): A callable which accepts container size and parent size and returns a width. get_auto_height (Callable): A callable which accepts container size and parent size and returns a height. Returns: BoxModel: A tuple with the size of the content area and margin.",
 "func":1
 },
 {
 "ref":"textual.draw",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle",
-"url":33,
+"url":34,
 "doc":"An enumeration."
 },
 {
 "ref":"textual.draw.DrawStyle.NONE",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.ASCII",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.SQUARE",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.HEAVY",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.ROUNDED",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.draw.DrawStyle.DOUBLE",
-"url":33,
+"url":34,
 "doc":""
 },
 {
 "ref":"textual.events",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Event",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Event.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Event.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Event.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Event.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Event.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -5569,32 +8519,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Callback",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Callback.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Callback.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Callback.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -5632,32 +8582,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.InvokeCallbacks",
-"url":34,
+"url":35,
 "doc":"Sent after the Screen is updated"
 },
 {
 "ref":"textual.events.InvokeCallbacks.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.InvokeCallbacks.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.InvokeCallbacks.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.InvokeCallbacks.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.InvokeCallbacks.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -5695,32 +8645,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.ShutdownRequest",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.ShutdownRequest.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.ShutdownRequest.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.ShutdownRequest.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -5758,32 +8708,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Shutdown",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Shutdown.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Shutdown.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Shutdown.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -5821,32 +8771,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Load",
-"url":34,
+"url":35,
 "doc":"Sent when the App is running but  before the terminal is in application mode. Use this event to run any set up that doesn't require any visuals such as loading configuration and binding keys."
 },
 {
 "ref":"textual.events.Load.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Load.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Load.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Load.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Load.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -5884,32 +8834,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Idle",
-"url":34,
+"url":35,
 "doc":"Sent when there are no more items in the message queue. This is a pseudo-event in that it is created by the Textual system and doesn't go through the usual message queue."
 },
 {
 "ref":"textual.events.Idle.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Idle.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Idle.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -5947,37 +8897,37 @@ INDEX=[
 },
 {
 "ref":"textual.events.Action",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Action.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Action.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Action.action",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Action.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Action.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Action.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6015,53 +8965,53 @@ INDEX=[
 },
 {
 "ref":"textual.events.Resize",
-"url":34,
+"url":35,
 "doc":"Sent when the app or widget has been resized. Args: sender (MessageTarget): The sender of the event (the Screen). size (Size): The new size of the Widget. virtual_size (Size): The virtual size (scrollable size) of the Widget. container_size (Size | None, optional): The size of the Widget's container widget. Defaults to None."
 },
 {
 "ref":"textual.events.Resize.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.can_replace",
-"url":34,
+"url":35,
 "doc":"Check if another message may supersede this one. Args: message (Message): Another message. Returns: bool: True if this message may replace the given message",
 "func":1
 },
 {
 "ref":"textual.events.Resize.container_size",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.size",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.virtual_size",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Resize.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Resize.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6093,32 +9043,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Compose",
-"url":34,
+"url":35,
 "doc":"Sent to a widget to request it to compose and mount children."
 },
 {
 "ref":"textual.events.Compose.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Compose.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Compose.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Compose.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Compose.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6156,32 +9106,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Mount",
-"url":34,
+"url":35,
 "doc":"Sent when a widget is  mounted and may receive messages."
 },
 {
 "ref":"textual.events.Mount.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Mount.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Mount.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6219,32 +9169,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Remove",
-"url":34,
+"url":35,
 "doc":"Sent to a widget to ask it to remove itself from the DOM."
 },
 {
 "ref":"textual.events.Remove.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Remove.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Remove.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Remove.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Remove.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6282,32 +9232,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Show",
-"url":34,
+"url":35,
 "doc":"Sent when a widget has become visible."
 },
 {
 "ref":"textual.events.Show.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Show.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Show.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Show.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Show.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6345,32 +9295,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Hide",
-"url":34,
+"url":35,
 "doc":"Sent when a widget has been hidden. A widget may be hidden by setting its  visible flag to  False , if it is no longer in a layout, or if it has been offset beyond the edges of the terminal."
 },
 {
 "ref":"textual.events.Hide.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Hide.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Hide.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6408,32 +9358,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseCapture",
-"url":34,
+"url":35,
 "doc":"Sent when the mouse has been captured. When a mouse has been captures, all further mouse events will be sent to the capturing widget. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when captured."
 },
 {
 "ref":"textual.events.MouseCapture.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseCapture.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseCapture.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6471,32 +9421,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseRelease",
-"url":34,
+"url":35,
 "doc":"Mouse has been released. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when released."
 },
 {
 "ref":"textual.events.MouseRelease.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseRelease.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseRelease.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6534,32 +9484,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.InputEvent",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.InputEvent.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.InputEvent.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.InputEvent.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6597,52 +9547,52 @@ INDEX=[
 },
 {
 "ref":"textual.events.Key",
-"url":34,
+"url":35,
 "doc":"Sent when the user hits a key on the keyboard. Args: sender (MessageTarget): The sender of the event (the App). key (str): A key name (textual.keys.Keys). char (str | None, optional): A printable character or None if it is not printable."
 },
 {
 "ref":"textual.events.Key.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Key.key_name",
-"url":34,
+"url":35,
 "doc":"Name of a key suitable for use as a Python identifier."
 },
 {
 "ref":"textual.events.Key.is_printable",
-"url":34,
+"url":35,
 "doc":"Return True if the key is printable. Currently, we assume any key event that isn't defined in key bindings is printable. Returns: bool: True if the key is printable."
 },
 {
 "ref":"textual.events.Key.char",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.key",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Key.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Key.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Key.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6680,108 +9630,108 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseEvent",
-"url":34,
+"url":35,
 "doc":"Sent in response to a mouse event. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseEvent.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.from_event",
-"url":34,
+"url":35,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.events.MouseEvent.offset",
-"url":34,
+"url":35,
 "doc":"The mouse coordinate as an offset. Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseEvent.screen_offset",
-"url":34,
+"url":35,
 "doc":"Mouse coordinate relative to the screen. Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseEvent.delta",
-"url":34,
+"url":35,
 "doc":"Mouse coordinate delta (change since last event). Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseEvent.style",
-"url":34,
+"url":35,
 "doc":"The (Rich) Style under the cursor."
 },
 {
 "ref":"textual.events.MouseEvent.button",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.ctrl",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.delta_x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.delta_y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.meta",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.screen_x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.screen_y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.shift",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseEvent.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseEvent.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -6819,102 +9769,102 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseMove",
-"url":34,
+"url":35,
 "doc":"Sent when the mouse cursor moves."
 },
 {
 "ref":"textual.events.MouseMove.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseMove.offset",
-"url":34,
+"url":35,
 "doc":"The mouse coordinate as an offset. Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseMove.screen_offset",
-"url":34,
+"url":35,
 "doc":"Mouse coordinate relative to the screen. Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseMove.delta",
-"url":34,
+"url":35,
 "doc":"Mouse coordinate delta (change since last event). Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseMove.style",
-"url":34,
+"url":35,
 "doc":"The (Rich) Style under the cursor."
 },
 {
 "ref":"textual.events.MouseMove.button",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.ctrl",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.delta_x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.delta_y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.meta",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.screen_x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.screen_y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.shift",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseMove.y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -6952,102 +9902,102 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseDown",
-"url":34,
+"url":35,
 "doc":"Sent in response to a mouse event. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseDown.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseDown.offset",
-"url":34,
+"url":35,
 "doc":"The mouse coordinate as an offset. Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseDown.screen_offset",
-"url":34,
+"url":35,
 "doc":"Mouse coordinate relative to the screen. Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseDown.delta",
-"url":34,
+"url":35,
 "doc":"Mouse coordinate delta (change since last event). Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseDown.style",
-"url":34,
+"url":35,
 "doc":"The (Rich) Style under the cursor."
 },
 {
 "ref":"textual.events.MouseDown.button",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.ctrl",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.delta_x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.delta_y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.meta",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.screen_x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.screen_y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.shift",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseDown.y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -7085,102 +10035,102 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseUp",
-"url":34,
+"url":35,
 "doc":"Sent in response to a mouse event. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.MouseUp.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseUp.offset",
-"url":34,
+"url":35,
 "doc":"The mouse coordinate as an offset. Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseUp.screen_offset",
-"url":34,
+"url":35,
 "doc":"Mouse coordinate relative to the screen. Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseUp.delta",
-"url":34,
+"url":35,
 "doc":"Mouse coordinate delta (change since last event). Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.MouseUp.style",
-"url":34,
+"url":35,
 "doc":"The (Rich) Style under the cursor."
 },
 {
 "ref":"textual.events.MouseUp.button",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.ctrl",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.delta_x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.delta_y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.meta",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.screen_x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.screen_y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.shift",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseUp.y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -7218,42 +10168,42 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseScrollDown",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.MouseScrollDown.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollDown.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollDown.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -7291,42 +10241,42 @@ INDEX=[
 },
 {
 "ref":"textual.events.MouseScrollUp",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.MouseScrollUp.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.MouseScrollUp.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.MouseScrollUp.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -7364,102 +10314,102 @@ INDEX=[
 },
 {
 "ref":"textual.events.Click",
-"url":34,
+"url":35,
 "doc":"Sent in response to a mouse event. Args: sender (MessageTarget): The sender of the event. x (int): The relative x coordinate. y (int): The relative y coordinate. delta_x (int): Change in x since the last message. delta_y (int): Change in y since the last message. button (int): Indexed of the pressed button. shift (bool): True if the shift key is pressed. meta (bool): True if the meta key is pressed. ctrl (bool): True if the ctrl key is pressed. screen_x (int, optional): The absolute x coordinate. screen_y (int, optional): The absolute y coordinate. style (Style, optional): The Rich Style under the mouse cursor."
 },
 {
 "ref":"textual.events.Click.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Click.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Click.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Click.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Click.offset",
-"url":34,
+"url":35,
 "doc":"The mouse coordinate as an offset. Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.Click.screen_offset",
-"url":34,
+"url":35,
 "doc":"Mouse coordinate relative to the screen. Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.Click.delta",
-"url":34,
+"url":35,
 "doc":"Mouse coordinate delta (change since last event). Returns: Offset: Mouse coordinate."
 },
 {
 "ref":"textual.events.Click.style",
-"url":34,
+"url":35,
 "doc":"The (Rich) Style under the cursor."
 },
 {
 "ref":"textual.events.Click.button",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.ctrl",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.delta_x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.delta_y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.meta",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.screen_x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.screen_y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.shift",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.x",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Click.y",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
@@ -7497,47 +10447,47 @@ INDEX=[
 },
 {
 "ref":"textual.events.Timer",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Timer.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.callback",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.count",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.time",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Timer.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Timer.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -7570,32 +10520,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Enter",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Enter.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Enter.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Enter.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -7633,32 +10583,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Leave",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Leave.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Leave.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Leave.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -7696,32 +10646,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Focus",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Focus.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Focus.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Focus.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -7759,32 +10709,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Blur",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.Blur.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Blur.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Blur.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -7822,32 +10772,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.DescendantFocus",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.DescendantFocus.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DescendantFocus.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantFocus.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantFocus.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantFocus.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -7885,32 +10835,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.DescendantBlur",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.DescendantBlur.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.DescendantBlur.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantBlur.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantBlur.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.DescendantBlur.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -7948,32 +10898,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.Paste",
-"url":34,
+"url":35,
 "doc":"Event containing text that was pasted into the Textual application. This event will only appear when running in a terminal emulator that supports bracketed paste mode. Textual will enable bracketed pastes when an app starts, and disable it when the app shuts down. Args: sender (MessageTarget): The sender of the event, (in this case the app). text: The text that has been pasted."
 },
 {
 "ref":"textual.events.Paste.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.Paste.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Paste.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Paste.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.Paste.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -8011,32 +10961,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.ScreenResume",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.ScreenResume.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.ScreenResume.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenResume.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenResume.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenResume.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -8074,32 +11024,32 @@ INDEX=[
 },
 {
 "ref":"textual.events.ScreenSuspend",
-"url":34,
+"url":35,
 "doc":"The base class for all events."
 },
 {
 "ref":"textual.events.ScreenSuspend.sender",
-"url":34,
+"url":35,
 "doc":"Return an attribute of instance, which is of type owner."
 },
 {
 "ref":"textual.events.ScreenSuspend.namespace",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenSuspend.bubble",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenSuspend.verbose",
-"url":34,
+"url":35,
 "doc":""
 },
 {
 "ref":"textual.events.ScreenSuspend.no_dispatch",
-"url":34,
+"url":35,
 "doc":""
 },
 {
@@ -8137,99 +11087,99 @@ INDEX=[
 },
 {
 "ref":"textual.screen",
-"url":35,
+"url":36,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen",
-"url":35,
+"url":36,
 "doc":"A widget for the root of the app."
 },
 {
 "ref":"textual.screen.Screen.DEFAULT_CSS",
-"url":35,
+"url":36,
 "doc":""
 },
 {
 "ref":"textual.screen.Screen.dark",
-"url":35,
+"url":36,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.screen.Screen.is_transparent",
-"url":35,
+"url":36,
 "doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
 },
 {
 "ref":"textual.screen.Screen.is_current",
-"url":35,
+"url":36,
 "doc":"Check if this screen is current (i.e. visible to user)."
 },
 {
 "ref":"textual.screen.Screen.update_timer",
-"url":35,
+"url":36,
 "doc":"Timer used to perform updates."
 },
 {
 "ref":"textual.screen.Screen.widgets",
-"url":35,
+"url":36,
 "doc":"Get all widgets."
 },
 {
 "ref":"textual.screen.Screen.visible_widgets",
-"url":35,
+"url":36,
 "doc":"Get a list of visible widgets."
 },
 {
 "ref":"textual.screen.Screen.watch_dark",
-"url":35,
+"url":36,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.render",
-"url":35,
+"url":36,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_offset",
-"url":35,
+"url":36,
 "doc":"Get the absolute offset of a given Widget. Args: widget (Widget): A widget Returns: Offset: The widget's offset relative to the top left of the terminal.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_widget_at",
-"url":35,
+"url":36,
 "doc":"Get the widget at a given coordinate. Args: x (int): X Coordinate. y (int): Y Coordinate. Returns: tuple[Widget, Region]: Widget and screen region.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_widgets_at",
-"url":35,
+"url":36,
 "doc":"Get all widgets under a given coordinate. Args: x (int): X coordinate. y (int): Y coordinate. Returns: Iterable[tuple[Widget, Region : Sequence of (WIDGET, REGION) tuples.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.get_style_at",
-"url":35,
+"url":36,
 "doc":"Get the style under a given coordinate. Args: x (int): X Coordinate. y (int): Y Coordinate. Returns: Style: Rich Style object",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.find_widget",
-"url":35,
+"url":36,
 "doc":"Get the screen region of a Widget. Args: widget (Widget): A Widget within the composition. Returns: Region: Region relative to screen.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.can_focus",
-"url":35,
+"url":36,
 "doc":"Widget may receive focus."
 },
 {
 "ref":"textual.screen.Screen.can_focus_children",
-"url":35,
+"url":36,
 "doc":"Widget's children may receive focus."
 },
 {
@@ -8249,6 +11199,11 @@ INDEX=[
 },
 {
 "ref":"textual.screen.Screen.hover_style",
+"url":3,
+"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+},
+{
+"ref":"textual.screen.Screen.highlight_link_id",
 "url":3,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
@@ -8990,27 +11945,27 @@ INDEX=[
 },
 {
 "ref":"textual.devtools",
-"url":36,
+"url":37,
 "doc":""
 },
 {
 "ref":"textual.devtools.renderables",
-"url":37,
+"url":38,
 "doc":""
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleHeader",
-"url":37,
+"url":38,
 "doc":""
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleLog",
-"url":37,
+"url":38,
 "doc":"Renderable representing a single log message Args: segments (Iterable[Segment]): The segments to display path (str): The path of the file on the client that the log call was made from line_number (int): The line number of the file on the client the log call was made from unix_timestamp (int): Seconds since January 1st 1970"
 },
 {
 "ref":"textual.devtools.renderables.DevConsoleNotice",
-"url":37,
+"url":38,
 "doc":"Renderable for messages written by the devtools console itself Args: message (str): The message to display level (DevtoolsMessageLevel): The message level (\"info\", \"warning\", or \"error\"). Determines colors used to render the message and the perceived importance."
 },
 {
@@ -9055,3808 +12010,903 @@ INDEX=[
 },
 {
 "ref":"textual.keys",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys",
-"url":38,
+"url":39,
 "doc":"List of keys for use in key bindings. Note that this is an \"StrEnum\", all values can be compared against strings."
 },
 {
 "ref":"textual.keys.Keys.value",
-"url":38,
+"url":39,
 "doc":"The value of the Enum member."
 },
 {
 "ref":"textual.keys.Keys.Space",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Escape",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftEscape",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Return",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlAt",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlA",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlB",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlC",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlD",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlE",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlG",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlH",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlI",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlJ",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlK",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlL",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlM",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlN",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlO",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlP",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlQ",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlR",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlS",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlT",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlU",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlV",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlW",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlX",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlY",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlZ",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control1",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control2",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control3",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control4",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control5",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control6",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control7",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control8",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control9",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Control0",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift1",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift2",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift3",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift4",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift5",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift6",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift7",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift8",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift9",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShift0",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlBackslash",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlSquareClose",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlCircumflex",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlUnderscore",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Left",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Right",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Up",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Down",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Home",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.End",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Insert",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Delete",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.PageUp",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.PageDown",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlLeft",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlRight",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlUp",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlDown",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlHome",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlEnd",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlInsert",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlDelete",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlPageUp",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlPageDown",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftLeft",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftRight",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftUp",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftDown",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftHome",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftEnd",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftInsert",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftDelete",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftPageUp",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftPageDown",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftLeft",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftRight",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftUp",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftDown",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftHome",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftEnd",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftInsert",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftDelete",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftPageUp",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlShiftPageDown",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.BackTab",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F1",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F2",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F3",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F4",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F5",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F6",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F7",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F8",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F9",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F10",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F11",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F12",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F13",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F14",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F15",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F16",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F17",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F18",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F19",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F20",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F21",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F22",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F23",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.F24",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF1",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF2",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF3",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF4",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF5",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF6",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF7",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF8",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF9",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF10",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF11",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF12",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF13",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF14",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF15",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF16",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF17",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF18",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF19",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF20",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF21",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF22",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF23",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlF24",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Any",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ScrollUp",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ScrollDown",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.CPRResponse",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Vt100MouseEvent",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.WindowsMouseEvent",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Ignore",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ControlSpace",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Tab",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Enter",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.Backspace",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftControlLeft",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftControlRight",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftControlHome",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.keys.Keys.ShiftControlEnd",
-"url":38,
+"url":39,
 "doc":""
 },
 {
 "ref":"textual.reactive",
-"url":39,
+"url":40,
 "doc":""
 },
 {
 "ref":"textual.reactive.Reactive",
-"url":39,
+"url":40,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.reactive.Reactive.init",
-"url":39,
+"url":40,
 "doc":"A reactive variable that calls watchers and compute on initialize (post mount). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. Returns: Reactive: A Reactive instance which calls watchers or initialize.",
 "func":1
 },
 {
 "ref":"textual.reactive.Reactive.var",
-"url":39,
+"url":40,
 "doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
 "func":1
 },
 {
 "ref":"textual.reactive.Reactive.initialize_object",
-"url":39,
+"url":40,
 "doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
 "func":1
 },
 {
 "ref":"textual.reactive.reactive",
-"url":39,
+"url":40,
 "doc":"Create a reactive attribute. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
 "ref":"textual.reactive.reactive.init",
-"url":39,
+"url":40,
 "doc":"A reactive variable that calls watchers and compute on initialize (post mount). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. Returns: Reactive: A Reactive instance which calls watchers or initialize.",
 "func":1
 },
 {
 "ref":"textual.reactive.reactive.var",
-"url":39,
+"url":40,
 "doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
 "func":1
 },
 {
 "ref":"textual.reactive.reactive.initialize_object",
-"url":39,
+"url":40,
 "doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
 "func":1
 },
 {
 "ref":"textual.reactive.var",
-"url":39,
+"url":40,
 "doc":"Create a reactive attribute (with no auto-refresh). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default."
 },
 {
 "ref":"textual.reactive.var.init",
-"url":39,
+"url":40,
 "doc":"A reactive variable that calls watchers and compute on initialize (post mount). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. Returns: Reactive: A Reactive instance which calls watchers or initialize.",
 "func":1
 },
 {
 "ref":"textual.reactive.var.var",
-"url":39,
+"url":40,
 "doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
 "func":1
 },
 {
 "ref":"textual.reactive.var.initialize_object",
-"url":39,
+"url":40,
 "doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
 "func":1
 },
 {
 "ref":"textual.reactive.watch",
-"url":39,
+"url":40,
 "doc":"Watch a reactive variable on an object. Args: obj (Reactable): The parent object. attribute_name (str): The attribute to watch. callback (Callable Any], object]): A callable to call when the attribute changes.",
 "func":1
 },
 {
 "ref":"textual.case",
-"url":40,
+"url":41,
 "doc":""
 },
 {
 "ref":"textual.case.camel_to_snake",
-"url":40,
+"url":41,
 "doc":"Convert name from CamelCase to snake_case. Args: name (str): A symbol name, such as a class name. Returns: str: Name in camel case.",
-"func":1
-},
-{
-"ref":"textual.layout",
-"url":41,
-"doc":""
-},
-{
-"ref":"textual.layout.Container",
-"url":41,
-"doc":"Simple container widget, with vertical layout."
-},
-{
-"ref":"textual.layout.Container.COMPONENT_CLASSES",
-"url":41,
-"doc":""
-},
-{
-"ref":"textual.layout.Container.hover_style",
-"url":41,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.DEFAULT_CSS",
-"url":41,
-"doc":""
-},
-{
-"ref":"textual.layout.Container.can_focus",
-"url":41,
-"doc":"Widget may receive focus."
-},
-{
-"ref":"textual.layout.Container.can_focus_children",
-"url":41,
-"doc":"Widget's children may receive focus."
-},
-{
-"ref":"textual.layout.Container.expand",
-"url":3,
-"doc":"Rich renderable may expand."
-},
-{
-"ref":"textual.layout.Container.shrink",
-"url":3,
-"doc":"Rich renderable may shrink."
-},
-{
-"ref":"textual.layout.Container.auto_links",
-"url":3,
-"doc":"Widget will highlight links automatically."
-},
-{
-"ref":"textual.layout.Container.virtual_size",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.auto_width",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.auto_height",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.has_focus",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.descendant_has_focus",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.mouse_over",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.scroll_x",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.scroll_y",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.scroll_target_x",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.scroll_target_y",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.show_vertical_scrollbar",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.show_horizontal_scrollbar",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Container.siblings",
-"url":3,
-"doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
-},
-{
-"ref":"textual.layout.Container.allow_vertical_scroll",
-"url":3,
-"doc":"Check if vertical scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _vertically_."
-},
-{
-"ref":"textual.layout.Container.allow_horizontal_scroll",
-"url":3,
-"doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
-},
-{
-"ref":"textual.layout.Container.offset",
-"url":3,
-"doc":"Widget offset from origin. Returns: Offset: Relative offset."
-},
-{
-"ref":"textual.layout.Container.get_component_rich_style",
-"url":3,
-"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.mount",
-"url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
-"func":1
-},
-{
-"ref":"textual.layout.Container.compose",
-"url":3,
-"doc":"Called by Textual to create child widgets. Extend this to build a UI. Example:  python def compose(self) -> ComposeResult: yield Header() yield Container( TreeControl(), Viewer() ) yield Footer()  ",
-"func":1
-},
-{
-"ref":"textual.layout.Container.get_content_width",
-"url":3,
-"doc":"Called by textual to get the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.get_content_height",
-"url":3,
-"doc":"Called by Textual to get the height of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.max_scroll_x",
-"url":3,
-"doc":"The maximum value of  scroll_x ."
-},
-{
-"ref":"textual.layout.Container.max_scroll_y",
-"url":3,
-"doc":"The maximum value of  scroll_y ."
-},
-{
-"ref":"textual.layout.Container.scrollbar_corner",
-"url":3,
-"doc":"Return the ScrollBarCorner - the cells that appear between the horizontal and vertical scrollbars (only when both are visible)."
-},
-{
-"ref":"textual.layout.Container.vertical_scrollbar",
-"url":3,
-"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
-},
-{
-"ref":"textual.layout.Container.horizontal_scrollbar",
-"url":3,
-"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
-},
-{
-"ref":"textual.layout.Container.scrollbars_enabled",
-"url":3,
-"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
-},
-{
-"ref":"textual.layout.Container.scrollbar_size_vertical",
-"url":3,
-"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
-},
-{
-"ref":"textual.layout.Container.scrollbar_size_horizontal",
-"url":3,
-"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
-},
-{
-"ref":"textual.layout.Container.scrollbar_gutter",
-"url":3,
-"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
-},
-{
-"ref":"textual.layout.Container.gutter",
-"url":3,
-"doc":"Spacing for padding / border / scrollbars. Returns: Spacing: Additional spacing around content area."
-},
-{
-"ref":"textual.layout.Container.size",
-"url":3,
-"doc":"The size of the content area. Returns: Size: Content area size."
-},
-{
-"ref":"textual.layout.Container.outer_size",
-"url":3,
-"doc":"The size of the widget (including padding and border). Returns: Size: Outer size."
-},
-{
-"ref":"textual.layout.Container.container_size",
-"url":3,
-"doc":"The size of the container (parent widget). Returns: Size: Container size."
-},
-{
-"ref":"textual.layout.Container.content_region",
-"url":3,
-"doc":"Gets an absolute region containing the content (minus padding and border). Returns: Region: Screen region that contains a widget's content."
-},
-{
-"ref":"textual.layout.Container.content_offset",
-"url":3,
-"doc":"An offset from the Widget origin where the content begins. Returns: Offset: Offset from widget's origin."
-},
-{
-"ref":"textual.layout.Container.region",
-"url":3,
-"doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
-},
-{
-"ref":"textual.layout.Container.container_viewport",
-"url":3,
-"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
-},
-{
-"ref":"textual.layout.Container.virtual_region",
-"url":3,
-"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
-},
-{
-"ref":"textual.layout.Container.window_region",
-"url":3,
-"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
-},
-{
-"ref":"textual.layout.Container.virtual_region_with_margin",
-"url":3,
-"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
-},
-{
-"ref":"textual.layout.Container.focusable_children",
-"url":3,
-"doc":"Get the children which may be focused. Returns: list[Widget]: List of widgets that can receive focus."
-},
-{
-"ref":"textual.layout.Container.scroll_offset",
-"url":3,
-"doc":"Get the current scroll offset. Returns: Offset: Offset a container has been scrolled by."
-},
-{
-"ref":"textual.layout.Container.is_transparent",
-"url":3,
-"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
-},
-{
-"ref":"textual.layout.Container.animate",
-"url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
-},
-{
-"ref":"textual.layout.Container.is_container",
-"url":3,
-"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
-},
-{
-"ref":"textual.layout.Container.is_scrollable",
-"url":3,
-"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
-},
-{
-"ref":"textual.layout.Container.layer",
-"url":3,
-"doc":"Get the name of this widgets layer. Returns: str: Name of layer."
-},
-{
-"ref":"textual.layout.Container.layers",
-"url":3,
-"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
-},
-{
-"ref":"textual.layout.Container.link_style",
-"url":3,
-"doc":"Style of links."
-},
-{
-"ref":"textual.layout.Container.link_hover_style",
-"url":3,
-"doc":"Style of links with mouse hover."
-},
-{
-"ref":"textual.layout.Container.scroll_to",
-"url":3,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_relative",
-"url":3,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_home",
-"url":3,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_end",
-"url":3,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_left",
-"url":3,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_right",
-"url":3,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_down",
-"url":3,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_up",
-"url":3,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_page_up",
-"url":3,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_page_down",
-"url":3,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_page_left",
-"url":3,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_page_right",
-"url":3,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_to_widget",
-"url":3,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_to_region",
-"url":3,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.scroll_visible",
-"url":3,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.get_pseudo_classes",
-"url":3,
-"doc":"Pseudo classes for a widget. Returns: Iterable[str]: Names of the pseudo classes.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.post_render",
-"url":3,
-"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.watch_mouse_over",
-"url":3,
-"doc":"Update from CSS if mouse over state changes.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.watch_has_focus",
-"url":3,
-"doc":"Update from CSS if has focus state changes.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.render_line",
-"url":3,
-"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.render_lines",
-"url":3,
-"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.get_style_at",
-"url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.refresh",
-"url":3,
-"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. By default this method will cause the content of the widget to refresh, but not change its size. You can also set  layout=True to perform a layout.  ! warning It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will do this automatically. Args:  regions (Region, optional): Additional screen regions to mark as dirty. repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.remove",
-"url":3,
-"doc":"Remove the Widget from the DOM (effectively deleting it)",
-"func":1
-},
-{
-"ref":"textual.layout.Container.render",
-"url":3,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
-"func":1
-},
-{
-"ref":"textual.layout.Container.action",
-"url":3,
-"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.post_message",
-"url":3,
-"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.focus",
-"url":3,
-"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.capture_mouse",
-"url":3,
-"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.release_mouse",
-"url":3,
-"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.get_component_styles",
-"url":4,
-"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.get_default_css",
-"url":4,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.parent",
-"url":4,
-"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
-},
-{
-"ref":"textual.layout.Container.screen",
-"url":4,
-"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
-},
-{
-"ref":"textual.layout.Container.id",
-"url":4,
-"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
-},
-{
-"ref":"textual.layout.Container.css_identifier",
-"url":4,
-"doc":"A CSS selector that identifies this DOM node."
-},
-{
-"ref":"textual.layout.Container.css_identifier_styled",
-"url":4,
-"doc":"A stylized CSS identifier."
-},
-{
-"ref":"textual.layout.Container.classes",
-"url":4,
-"doc":"A frozenset of the current classes set on the widget. Returns: frozenset[str]: Set of class names."
-},
-{
-"ref":"textual.layout.Container.pseudo_classes",
-"url":4,
-"doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.layout.Container.css_path_nodes",
-"url":4,
-"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
-},
-{
-"ref":"textual.layout.Container.display",
-"url":4,
-"doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
-},
-{
-"ref":"textual.layout.Container.tree",
-"url":4,
-"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
-},
-{
-"ref":"textual.layout.Container.text_style",
-"url":4,
-"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
-},
-{
-"ref":"textual.layout.Container.rich_style",
-"url":4,
-"doc":"Get a Rich Style object for this DOMNode."
-},
-{
-"ref":"textual.layout.Container.background_colors",
-"url":4,
-"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
-},
-{
-"ref":"textual.layout.Container.colors",
-"url":4,
-"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
-},
-{
-"ref":"textual.layout.Container.ancestors",
-"url":4,
-"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
-},
-{
-"ref":"textual.layout.Container.displayed_children",
-"url":4,
-"doc":"The children which don't have display: none set. Returns: list[DOMNode]: Children of this widget which will be displayed."
-},
-{
-"ref":"textual.layout.Container.reset_styles",
-"url":4,
-"doc":"Reset styles back to their initial state",
-"func":1
-},
-{
-"ref":"textual.layout.Container.walk_children",
-"url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.get_child",
-"url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
-"func":1
-},
-{
-"ref":"textual.layout.Container.query",
-"url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.query_one",
-"url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.set_styles",
-"url":4,
-"doc":"Set custom styles on this object.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.has_class",
-"url":4,
-"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
-"func":1
-},
-{
-"ref":"textual.layout.Container.set_class",
-"url":4,
-"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.add_class",
-"url":4,
-"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.remove_class",
-"url":4,
-"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.toggle_class",
-"url":4,
-"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.has_pseudo_class",
-"url":4,
-"doc":"Check for pseudo class (such as hover, focus etc)",
-"func":1
-},
-{
-"ref":"textual.layout.Container.app",
-"url":5,
-"doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
-},
-{
-"ref":"textual.layout.Container.log",
-"url":5,
-"doc":"Get a logger for this object. Returns: Logger: A logger."
-},
-{
-"ref":"textual.layout.Container.disable_messages",
-"url":5,
-"doc":"Disable message types from being processed.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.enable_messages",
-"url":5,
-"doc":"Enable processing of messages types.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.set_timer",
-"url":5,
-"doc":"Make a function call after a delay. Args: delay (float): Time to wait before invoking callback. callback (TimerCallback | None, optional): Callback to call after time has expired. Defaults to None. name (str | None, optional): Name of the timer (for debug). Defaults to None. pause (bool, optional): Start timer paused. Defaults to False. Returns: Timer: A timer object.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.set_interval",
-"url":5,
-"doc":"Call a function at periodic intervals. Args: interval (float): Time between calls. callback (TimerCallback | None, optional): Function to call. Defaults to None. name (str | None, optional): Name of the timer object. Defaults to None. repeat (int, optional): Number of times to repeat the call or 0 for continuous. Defaults to 0. pause (bool, optional): Start the timer paused. Defaults to False. Returns: Timer: A timer object.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.call_later",
-"url":5,
-"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Positional and keyword arguments are passed to the callable. Args: callback (Callable): A callable.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.on_event",
-"url":5,
-"doc":"Called to process an event. Args: event (events.Event): An Event object.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.check_idle",
-"url":5,
-"doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.post_message_no_wait",
-"url":5,
-"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.emit_no_wait",
-"url":5,
-"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.emit",
-"url":5,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
-"func":1
-},
-{
-"ref":"textual.layout.Container.dispatch_key",
-"url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical",
-"url":41,
-"doc":"A container widget to align children vertically."
-},
-{
-"ref":"textual.layout.Vertical.COMPONENT_CLASSES",
-"url":41,
-"doc":""
-},
-{
-"ref":"textual.layout.Vertical.hover_style",
-"url":41,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.DEFAULT_CSS",
-"url":41,
-"doc":""
-},
-{
-"ref":"textual.layout.Vertical.can_focus",
-"url":41,
-"doc":"Widget may receive focus."
-},
-{
-"ref":"textual.layout.Vertical.can_focus_children",
-"url":41,
-"doc":"Widget's children may receive focus."
-},
-{
-"ref":"textual.layout.Vertical.expand",
-"url":3,
-"doc":"Rich renderable may expand."
-},
-{
-"ref":"textual.layout.Vertical.shrink",
-"url":3,
-"doc":"Rich renderable may shrink."
-},
-{
-"ref":"textual.layout.Vertical.auto_links",
-"url":3,
-"doc":"Widget will highlight links automatically."
-},
-{
-"ref":"textual.layout.Vertical.virtual_size",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.auto_width",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.auto_height",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.has_focus",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.descendant_has_focus",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.mouse_over",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.scroll_x",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.scroll_y",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.scroll_target_x",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.scroll_target_y",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.show_vertical_scrollbar",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.show_horizontal_scrollbar",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Vertical.siblings",
-"url":3,
-"doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
-},
-{
-"ref":"textual.layout.Vertical.allow_vertical_scroll",
-"url":3,
-"doc":"Check if vertical scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _vertically_."
-},
-{
-"ref":"textual.layout.Vertical.allow_horizontal_scroll",
-"url":3,
-"doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
-},
-{
-"ref":"textual.layout.Vertical.offset",
-"url":3,
-"doc":"Widget offset from origin. Returns: Offset: Relative offset."
-},
-{
-"ref":"textual.layout.Vertical.get_component_rich_style",
-"url":3,
-"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.mount",
-"url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.compose",
-"url":3,
-"doc":"Called by Textual to create child widgets. Extend this to build a UI. Example:  python def compose(self) -> ComposeResult: yield Header() yield Container( TreeControl(), Viewer() ) yield Footer()  ",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.get_content_width",
-"url":3,
-"doc":"Called by textual to get the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.get_content_height",
-"url":3,
-"doc":"Called by Textual to get the height of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.max_scroll_x",
-"url":3,
-"doc":"The maximum value of  scroll_x ."
-},
-{
-"ref":"textual.layout.Vertical.max_scroll_y",
-"url":3,
-"doc":"The maximum value of  scroll_y ."
-},
-{
-"ref":"textual.layout.Vertical.scrollbar_corner",
-"url":3,
-"doc":"Return the ScrollBarCorner - the cells that appear between the horizontal and vertical scrollbars (only when both are visible)."
-},
-{
-"ref":"textual.layout.Vertical.vertical_scrollbar",
-"url":3,
-"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
-},
-{
-"ref":"textual.layout.Vertical.horizontal_scrollbar",
-"url":3,
-"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
-},
-{
-"ref":"textual.layout.Vertical.scrollbars_enabled",
-"url":3,
-"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
-},
-{
-"ref":"textual.layout.Vertical.scrollbar_size_vertical",
-"url":3,
-"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
-},
-{
-"ref":"textual.layout.Vertical.scrollbar_size_horizontal",
-"url":3,
-"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
-},
-{
-"ref":"textual.layout.Vertical.scrollbar_gutter",
-"url":3,
-"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
-},
-{
-"ref":"textual.layout.Vertical.gutter",
-"url":3,
-"doc":"Spacing for padding / border / scrollbars. Returns: Spacing: Additional spacing around content area."
-},
-{
-"ref":"textual.layout.Vertical.size",
-"url":3,
-"doc":"The size of the content area. Returns: Size: Content area size."
-},
-{
-"ref":"textual.layout.Vertical.outer_size",
-"url":3,
-"doc":"The size of the widget (including padding and border). Returns: Size: Outer size."
-},
-{
-"ref":"textual.layout.Vertical.container_size",
-"url":3,
-"doc":"The size of the container (parent widget). Returns: Size: Container size."
-},
-{
-"ref":"textual.layout.Vertical.content_region",
-"url":3,
-"doc":"Gets an absolute region containing the content (minus padding and border). Returns: Region: Screen region that contains a widget's content."
-},
-{
-"ref":"textual.layout.Vertical.content_offset",
-"url":3,
-"doc":"An offset from the Widget origin where the content begins. Returns: Offset: Offset from widget's origin."
-},
-{
-"ref":"textual.layout.Vertical.region",
-"url":3,
-"doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
-},
-{
-"ref":"textual.layout.Vertical.container_viewport",
-"url":3,
-"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
-},
-{
-"ref":"textual.layout.Vertical.virtual_region",
-"url":3,
-"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
-},
-{
-"ref":"textual.layout.Vertical.window_region",
-"url":3,
-"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
-},
-{
-"ref":"textual.layout.Vertical.virtual_region_with_margin",
-"url":3,
-"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
-},
-{
-"ref":"textual.layout.Vertical.focusable_children",
-"url":3,
-"doc":"Get the children which may be focused. Returns: list[Widget]: List of widgets that can receive focus."
-},
-{
-"ref":"textual.layout.Vertical.scroll_offset",
-"url":3,
-"doc":"Get the current scroll offset. Returns: Offset: Offset a container has been scrolled by."
-},
-{
-"ref":"textual.layout.Vertical.is_transparent",
-"url":3,
-"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
-},
-{
-"ref":"textual.layout.Vertical.animate",
-"url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
-},
-{
-"ref":"textual.layout.Vertical.is_container",
-"url":3,
-"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
-},
-{
-"ref":"textual.layout.Vertical.is_scrollable",
-"url":3,
-"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
-},
-{
-"ref":"textual.layout.Vertical.layer",
-"url":3,
-"doc":"Get the name of this widgets layer. Returns: str: Name of layer."
-},
-{
-"ref":"textual.layout.Vertical.layers",
-"url":3,
-"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
-},
-{
-"ref":"textual.layout.Vertical.link_style",
-"url":3,
-"doc":"Style of links."
-},
-{
-"ref":"textual.layout.Vertical.link_hover_style",
-"url":3,
-"doc":"Style of links with mouse hover."
-},
-{
-"ref":"textual.layout.Vertical.scroll_to",
-"url":3,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_relative",
-"url":3,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_home",
-"url":3,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_end",
-"url":3,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_left",
-"url":3,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_right",
-"url":3,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_down",
-"url":3,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_up",
-"url":3,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_page_up",
-"url":3,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_page_down",
-"url":3,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_page_left",
-"url":3,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_page_right",
-"url":3,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_to_widget",
-"url":3,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_to_region",
-"url":3,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.scroll_visible",
-"url":3,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.get_pseudo_classes",
-"url":3,
-"doc":"Pseudo classes for a widget. Returns: Iterable[str]: Names of the pseudo classes.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.post_render",
-"url":3,
-"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.watch_mouse_over",
-"url":3,
-"doc":"Update from CSS if mouse over state changes.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.watch_has_focus",
-"url":3,
-"doc":"Update from CSS if has focus state changes.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.render_line",
-"url":3,
-"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.render_lines",
-"url":3,
-"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.get_style_at",
-"url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.refresh",
-"url":3,
-"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. By default this method will cause the content of the widget to refresh, but not change its size. You can also set  layout=True to perform a layout.  ! warning It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will do this automatically. Args:  regions (Region, optional): Additional screen regions to mark as dirty. repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.remove",
-"url":3,
-"doc":"Remove the Widget from the DOM (effectively deleting it)",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.render",
-"url":3,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.action",
-"url":3,
-"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.post_message",
-"url":3,
-"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.focus",
-"url":3,
-"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.capture_mouse",
-"url":3,
-"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.release_mouse",
-"url":3,
-"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.get_component_styles",
-"url":4,
-"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.get_default_css",
-"url":4,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.parent",
-"url":4,
-"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
-},
-{
-"ref":"textual.layout.Vertical.screen",
-"url":4,
-"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
-},
-{
-"ref":"textual.layout.Vertical.id",
-"url":4,
-"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
-},
-{
-"ref":"textual.layout.Vertical.css_identifier",
-"url":4,
-"doc":"A CSS selector that identifies this DOM node."
-},
-{
-"ref":"textual.layout.Vertical.css_identifier_styled",
-"url":4,
-"doc":"A stylized CSS identifier."
-},
-{
-"ref":"textual.layout.Vertical.classes",
-"url":4,
-"doc":"A frozenset of the current classes set on the widget. Returns: frozenset[str]: Set of class names."
-},
-{
-"ref":"textual.layout.Vertical.pseudo_classes",
-"url":4,
-"doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.layout.Vertical.css_path_nodes",
-"url":4,
-"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
-},
-{
-"ref":"textual.layout.Vertical.display",
-"url":4,
-"doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
-},
-{
-"ref":"textual.layout.Vertical.tree",
-"url":4,
-"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
-},
-{
-"ref":"textual.layout.Vertical.text_style",
-"url":4,
-"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
-},
-{
-"ref":"textual.layout.Vertical.rich_style",
-"url":4,
-"doc":"Get a Rich Style object for this DOMNode."
-},
-{
-"ref":"textual.layout.Vertical.background_colors",
-"url":4,
-"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
-},
-{
-"ref":"textual.layout.Vertical.colors",
-"url":4,
-"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
-},
-{
-"ref":"textual.layout.Vertical.ancestors",
-"url":4,
-"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
-},
-{
-"ref":"textual.layout.Vertical.displayed_children",
-"url":4,
-"doc":"The children which don't have display: none set. Returns: list[DOMNode]: Children of this widget which will be displayed."
-},
-{
-"ref":"textual.layout.Vertical.reset_styles",
-"url":4,
-"doc":"Reset styles back to their initial state",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.walk_children",
-"url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.get_child",
-"url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.query",
-"url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.query_one",
-"url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.set_styles",
-"url":4,
-"doc":"Set custom styles on this object.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.has_class",
-"url":4,
-"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.set_class",
-"url":4,
-"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.add_class",
-"url":4,
-"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.remove_class",
-"url":4,
-"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.toggle_class",
-"url":4,
-"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.has_pseudo_class",
-"url":4,
-"doc":"Check for pseudo class (such as hover, focus etc)",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.app",
-"url":5,
-"doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
-},
-{
-"ref":"textual.layout.Vertical.log",
-"url":5,
-"doc":"Get a logger for this object. Returns: Logger: A logger."
-},
-{
-"ref":"textual.layout.Vertical.disable_messages",
-"url":5,
-"doc":"Disable message types from being processed.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.enable_messages",
-"url":5,
-"doc":"Enable processing of messages types.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.set_timer",
-"url":5,
-"doc":"Make a function call after a delay. Args: delay (float): Time to wait before invoking callback. callback (TimerCallback | None, optional): Callback to call after time has expired. Defaults to None. name (str | None, optional): Name of the timer (for debug). Defaults to None. pause (bool, optional): Start timer paused. Defaults to False. Returns: Timer: A timer object.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.set_interval",
-"url":5,
-"doc":"Call a function at periodic intervals. Args: interval (float): Time between calls. callback (TimerCallback | None, optional): Function to call. Defaults to None. name (str | None, optional): Name of the timer object. Defaults to None. repeat (int, optional): Number of times to repeat the call or 0 for continuous. Defaults to 0. pause (bool, optional): Start the timer paused. Defaults to False. Returns: Timer: A timer object.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.call_later",
-"url":5,
-"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Positional and keyword arguments are passed to the callable. Args: callback (Callable): A callable.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.on_event",
-"url":5,
-"doc":"Called to process an event. Args: event (events.Event): An Event object.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.check_idle",
-"url":5,
-"doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.post_message_no_wait",
-"url":5,
-"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.emit_no_wait",
-"url":5,
-"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.emit",
-"url":5,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
-"func":1
-},
-{
-"ref":"textual.layout.Vertical.dispatch_key",
-"url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal",
-"url":41,
-"doc":"A container widget to align children horizontally."
-},
-{
-"ref":"textual.layout.Horizontal.COMPONENT_CLASSES",
-"url":41,
-"doc":""
-},
-{
-"ref":"textual.layout.Horizontal.hover_style",
-"url":41,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.DEFAULT_CSS",
-"url":41,
-"doc":""
-},
-{
-"ref":"textual.layout.Horizontal.can_focus",
-"url":41,
-"doc":"Widget may receive focus."
-},
-{
-"ref":"textual.layout.Horizontal.can_focus_children",
-"url":41,
-"doc":"Widget's children may receive focus."
-},
-{
-"ref":"textual.layout.Horizontal.expand",
-"url":3,
-"doc":"Rich renderable may expand."
-},
-{
-"ref":"textual.layout.Horizontal.shrink",
-"url":3,
-"doc":"Rich renderable may shrink."
-},
-{
-"ref":"textual.layout.Horizontal.auto_links",
-"url":3,
-"doc":"Widget will highlight links automatically."
-},
-{
-"ref":"textual.layout.Horizontal.virtual_size",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.auto_width",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.auto_height",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.has_focus",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.descendant_has_focus",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.mouse_over",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.scroll_x",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.scroll_y",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.scroll_target_x",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.scroll_target_y",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.show_vertical_scrollbar",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.show_horizontal_scrollbar",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Horizontal.siblings",
-"url":3,
-"doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
-},
-{
-"ref":"textual.layout.Horizontal.allow_vertical_scroll",
-"url":3,
-"doc":"Check if vertical scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _vertically_."
-},
-{
-"ref":"textual.layout.Horizontal.allow_horizontal_scroll",
-"url":3,
-"doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
-},
-{
-"ref":"textual.layout.Horizontal.offset",
-"url":3,
-"doc":"Widget offset from origin. Returns: Offset: Relative offset."
-},
-{
-"ref":"textual.layout.Horizontal.get_component_rich_style",
-"url":3,
-"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.mount",
-"url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.compose",
-"url":3,
-"doc":"Called by Textual to create child widgets. Extend this to build a UI. Example:  python def compose(self) -> ComposeResult: yield Header() yield Container( TreeControl(), Viewer() ) yield Footer()  ",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.get_content_width",
-"url":3,
-"doc":"Called by textual to get the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.get_content_height",
-"url":3,
-"doc":"Called by Textual to get the height of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.max_scroll_x",
-"url":3,
-"doc":"The maximum value of  scroll_x ."
-},
-{
-"ref":"textual.layout.Horizontal.max_scroll_y",
-"url":3,
-"doc":"The maximum value of  scroll_y ."
-},
-{
-"ref":"textual.layout.Horizontal.scrollbar_corner",
-"url":3,
-"doc":"Return the ScrollBarCorner - the cells that appear between the horizontal and vertical scrollbars (only when both are visible)."
-},
-{
-"ref":"textual.layout.Horizontal.vertical_scrollbar",
-"url":3,
-"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
-},
-{
-"ref":"textual.layout.Horizontal.horizontal_scrollbar",
-"url":3,
-"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
-},
-{
-"ref":"textual.layout.Horizontal.scrollbars_enabled",
-"url":3,
-"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
-},
-{
-"ref":"textual.layout.Horizontal.scrollbar_size_vertical",
-"url":3,
-"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
-},
-{
-"ref":"textual.layout.Horizontal.scrollbar_size_horizontal",
-"url":3,
-"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
-},
-{
-"ref":"textual.layout.Horizontal.scrollbar_gutter",
-"url":3,
-"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
-},
-{
-"ref":"textual.layout.Horizontal.gutter",
-"url":3,
-"doc":"Spacing for padding / border / scrollbars. Returns: Spacing: Additional spacing around content area."
-},
-{
-"ref":"textual.layout.Horizontal.size",
-"url":3,
-"doc":"The size of the content area. Returns: Size: Content area size."
-},
-{
-"ref":"textual.layout.Horizontal.outer_size",
-"url":3,
-"doc":"The size of the widget (including padding and border). Returns: Size: Outer size."
-},
-{
-"ref":"textual.layout.Horizontal.container_size",
-"url":3,
-"doc":"The size of the container (parent widget). Returns: Size: Container size."
-},
-{
-"ref":"textual.layout.Horizontal.content_region",
-"url":3,
-"doc":"Gets an absolute region containing the content (minus padding and border). Returns: Region: Screen region that contains a widget's content."
-},
-{
-"ref":"textual.layout.Horizontal.content_offset",
-"url":3,
-"doc":"An offset from the Widget origin where the content begins. Returns: Offset: Offset from widget's origin."
-},
-{
-"ref":"textual.layout.Horizontal.region",
-"url":3,
-"doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
-},
-{
-"ref":"textual.layout.Horizontal.container_viewport",
-"url":3,
-"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
-},
-{
-"ref":"textual.layout.Horizontal.virtual_region",
-"url":3,
-"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
-},
-{
-"ref":"textual.layout.Horizontal.window_region",
-"url":3,
-"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
-},
-{
-"ref":"textual.layout.Horizontal.virtual_region_with_margin",
-"url":3,
-"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
-},
-{
-"ref":"textual.layout.Horizontal.focusable_children",
-"url":3,
-"doc":"Get the children which may be focused. Returns: list[Widget]: List of widgets that can receive focus."
-},
-{
-"ref":"textual.layout.Horizontal.scroll_offset",
-"url":3,
-"doc":"Get the current scroll offset. Returns: Offset: Offset a container has been scrolled by."
-},
-{
-"ref":"textual.layout.Horizontal.is_transparent",
-"url":3,
-"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
-},
-{
-"ref":"textual.layout.Horizontal.animate",
-"url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
-},
-{
-"ref":"textual.layout.Horizontal.is_container",
-"url":3,
-"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
-},
-{
-"ref":"textual.layout.Horizontal.is_scrollable",
-"url":3,
-"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
-},
-{
-"ref":"textual.layout.Horizontal.layer",
-"url":3,
-"doc":"Get the name of this widgets layer. Returns: str: Name of layer."
-},
-{
-"ref":"textual.layout.Horizontal.layers",
-"url":3,
-"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
-},
-{
-"ref":"textual.layout.Horizontal.link_style",
-"url":3,
-"doc":"Style of links."
-},
-{
-"ref":"textual.layout.Horizontal.link_hover_style",
-"url":3,
-"doc":"Style of links with mouse hover."
-},
-{
-"ref":"textual.layout.Horizontal.scroll_to",
-"url":3,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_relative",
-"url":3,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_home",
-"url":3,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_end",
-"url":3,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_left",
-"url":3,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_right",
-"url":3,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_down",
-"url":3,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_up",
-"url":3,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_page_up",
-"url":3,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_page_down",
-"url":3,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_page_left",
-"url":3,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_page_right",
-"url":3,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_to_widget",
-"url":3,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_to_region",
-"url":3,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.scroll_visible",
-"url":3,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.get_pseudo_classes",
-"url":3,
-"doc":"Pseudo classes for a widget. Returns: Iterable[str]: Names of the pseudo classes.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.post_render",
-"url":3,
-"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.watch_mouse_over",
-"url":3,
-"doc":"Update from CSS if mouse over state changes.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.watch_has_focus",
-"url":3,
-"doc":"Update from CSS if has focus state changes.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.render_line",
-"url":3,
-"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.render_lines",
-"url":3,
-"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.get_style_at",
-"url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.refresh",
-"url":3,
-"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. By default this method will cause the content of the widget to refresh, but not change its size. You can also set  layout=True to perform a layout.  ! warning It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will do this automatically. Args:  regions (Region, optional): Additional screen regions to mark as dirty. repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.remove",
-"url":3,
-"doc":"Remove the Widget from the DOM (effectively deleting it)",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.render",
-"url":3,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.action",
-"url":3,
-"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.post_message",
-"url":3,
-"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.focus",
-"url":3,
-"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.capture_mouse",
-"url":3,
-"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.release_mouse",
-"url":3,
-"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.get_component_styles",
-"url":4,
-"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.get_default_css",
-"url":4,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.parent",
-"url":4,
-"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
-},
-{
-"ref":"textual.layout.Horizontal.screen",
-"url":4,
-"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
-},
-{
-"ref":"textual.layout.Horizontal.id",
-"url":4,
-"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
-},
-{
-"ref":"textual.layout.Horizontal.css_identifier",
-"url":4,
-"doc":"A CSS selector that identifies this DOM node."
-},
-{
-"ref":"textual.layout.Horizontal.css_identifier_styled",
-"url":4,
-"doc":"A stylized CSS identifier."
-},
-{
-"ref":"textual.layout.Horizontal.classes",
-"url":4,
-"doc":"A frozenset of the current classes set on the widget. Returns: frozenset[str]: Set of class names."
-},
-{
-"ref":"textual.layout.Horizontal.pseudo_classes",
-"url":4,
-"doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.layout.Horizontal.css_path_nodes",
-"url":4,
-"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
-},
-{
-"ref":"textual.layout.Horizontal.display",
-"url":4,
-"doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
-},
-{
-"ref":"textual.layout.Horizontal.tree",
-"url":4,
-"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
-},
-{
-"ref":"textual.layout.Horizontal.text_style",
-"url":4,
-"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
-},
-{
-"ref":"textual.layout.Horizontal.rich_style",
-"url":4,
-"doc":"Get a Rich Style object for this DOMNode."
-},
-{
-"ref":"textual.layout.Horizontal.background_colors",
-"url":4,
-"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
-},
-{
-"ref":"textual.layout.Horizontal.colors",
-"url":4,
-"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
-},
-{
-"ref":"textual.layout.Horizontal.ancestors",
-"url":4,
-"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
-},
-{
-"ref":"textual.layout.Horizontal.displayed_children",
-"url":4,
-"doc":"The children which don't have display: none set. Returns: list[DOMNode]: Children of this widget which will be displayed."
-},
-{
-"ref":"textual.layout.Horizontal.reset_styles",
-"url":4,
-"doc":"Reset styles back to their initial state",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.walk_children",
-"url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.get_child",
-"url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.query",
-"url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.query_one",
-"url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.set_styles",
-"url":4,
-"doc":"Set custom styles on this object.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.has_class",
-"url":4,
-"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.set_class",
-"url":4,
-"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.add_class",
-"url":4,
-"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.remove_class",
-"url":4,
-"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.toggle_class",
-"url":4,
-"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.has_pseudo_class",
-"url":4,
-"doc":"Check for pseudo class (such as hover, focus etc)",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.app",
-"url":5,
-"doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
-},
-{
-"ref":"textual.layout.Horizontal.log",
-"url":5,
-"doc":"Get a logger for this object. Returns: Logger: A logger."
-},
-{
-"ref":"textual.layout.Horizontal.disable_messages",
-"url":5,
-"doc":"Disable message types from being processed.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.enable_messages",
-"url":5,
-"doc":"Enable processing of messages types.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.set_timer",
-"url":5,
-"doc":"Make a function call after a delay. Args: delay (float): Time to wait before invoking callback. callback (TimerCallback | None, optional): Callback to call after time has expired. Defaults to None. name (str | None, optional): Name of the timer (for debug). Defaults to None. pause (bool, optional): Start timer paused. Defaults to False. Returns: Timer: A timer object.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.set_interval",
-"url":5,
-"doc":"Call a function at periodic intervals. Args: interval (float): Time between calls. callback (TimerCallback | None, optional): Function to call. Defaults to None. name (str | None, optional): Name of the timer object. Defaults to None. repeat (int, optional): Number of times to repeat the call or 0 for continuous. Defaults to 0. pause (bool, optional): Start the timer paused. Defaults to False. Returns: Timer: A timer object.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.call_later",
-"url":5,
-"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Positional and keyword arguments are passed to the callable. Args: callback (Callable): A callable.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.on_event",
-"url":5,
-"doc":"Called to process an event. Args: event (events.Event): An Event object.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.check_idle",
-"url":5,
-"doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.post_message_no_wait",
-"url":5,
-"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.emit_no_wait",
-"url":5,
-"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.emit",
-"url":5,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
-"func":1
-},
-{
-"ref":"textual.layout.Horizontal.dispatch_key",
-"url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
-"func":1
-},
-{
-"ref":"textual.layout.Center",
-"url":41,
-"doc":"A container widget to align children in the center."
-},
-{
-"ref":"textual.layout.Center.COMPONENT_CLASSES",
-"url":41,
-"doc":""
-},
-{
-"ref":"textual.layout.Center.hover_style",
-"url":41,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.DEFAULT_CSS",
-"url":41,
-"doc":""
-},
-{
-"ref":"textual.layout.Center.can_focus",
-"url":41,
-"doc":"Widget may receive focus."
-},
-{
-"ref":"textual.layout.Center.can_focus_children",
-"url":41,
-"doc":"Widget's children may receive focus."
-},
-{
-"ref":"textual.layout.Center.expand",
-"url":3,
-"doc":"Rich renderable may expand."
-},
-{
-"ref":"textual.layout.Center.shrink",
-"url":3,
-"doc":"Rich renderable may shrink."
-},
-{
-"ref":"textual.layout.Center.auto_links",
-"url":3,
-"doc":"Widget will highlight links automatically."
-},
-{
-"ref":"textual.layout.Center.virtual_size",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.auto_width",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.auto_height",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.has_focus",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.descendant_has_focus",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.mouse_over",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.scroll_x",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.scroll_y",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.scroll_target_x",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.scroll_target_y",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.show_vertical_scrollbar",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.show_horizontal_scrollbar",
-"url":3,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
-"ref":"textual.layout.Center.siblings",
-"url":3,
-"doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
-},
-{
-"ref":"textual.layout.Center.allow_vertical_scroll",
-"url":3,
-"doc":"Check if vertical scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _vertically_."
-},
-{
-"ref":"textual.layout.Center.allow_horizontal_scroll",
-"url":3,
-"doc":"Check if horizontal scroll is permitted. May be overridden if you want different logic regarding allowing scrolling. Returns: bool: True if the widget may scroll _horizontally_."
-},
-{
-"ref":"textual.layout.Center.offset",
-"url":3,
-"doc":"Widget offset from origin. Returns: Offset: Relative offset."
-},
-{
-"ref":"textual.layout.Center.get_component_rich_style",
-"url":3,
-"doc":"Get a  Rich style for a component. Args: name (str): Name of component. Returns: Style: A Rich style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.mount",
-"url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
-"func":1
-},
-{
-"ref":"textual.layout.Center.compose",
-"url":3,
-"doc":"Called by Textual to create child widgets. Extend this to build a UI. Example:  python def compose(self) -> ComposeResult: yield Header() yield Container( TreeControl(), Viewer() ) yield Footer()  ",
-"func":1
-},
-{
-"ref":"textual.layout.Center.get_content_width",
-"url":3,
-"doc":"Called by textual to get the width of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. Returns: int: The optimal width of the content.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.get_content_height",
-"url":3,
-"doc":"Called by Textual to get the height of the content area. May be overridden in a subclass. Args: container (Size): Size of the container (immediate parent) widget. viewport (Size): Size of the viewport. width (int): Width of renderable. Returns: int: The height of the content.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.max_scroll_x",
-"url":3,
-"doc":"The maximum value of  scroll_x ."
-},
-{
-"ref":"textual.layout.Center.max_scroll_y",
-"url":3,
-"doc":"The maximum value of  scroll_y ."
-},
-{
-"ref":"textual.layout.Center.scrollbar_corner",
-"url":3,
-"doc":"Return the ScrollBarCorner - the cells that appear between the horizontal and vertical scrollbars (only when both are visible)."
-},
-{
-"ref":"textual.layout.Center.vertical_scrollbar",
-"url":3,
-"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
-},
-{
-"ref":"textual.layout.Center.horizontal_scrollbar",
-"url":3,
-"doc":"Get a vertical scrollbar (create if necessary). Returns: ScrollBar: ScrollBar Widget."
-},
-{
-"ref":"textual.layout.Center.scrollbars_enabled",
-"url":3,
-"doc":"A tuple of booleans that indicate if scrollbars are enabled. Returns: tuple[bool, bool]: A tuple of ( ,  )"
-},
-{
-"ref":"textual.layout.Center.scrollbar_size_vertical",
-"url":3,
-"doc":"Get the width used by the  vertical scrollbar. Returns: int: Number of columns in the vertical scrollbar."
-},
-{
-"ref":"textual.layout.Center.scrollbar_size_horizontal",
-"url":3,
-"doc":"Get the height used by the  horizontal scrollbar. Returns: int: Number of rows in the horizontal scrollbar."
-},
-{
-"ref":"textual.layout.Center.scrollbar_gutter",
-"url":3,
-"doc":"Spacing required to fit scrollbar(s). Returns: Spacing: Scrollbar gutter spacing."
-},
-{
-"ref":"textual.layout.Center.gutter",
-"url":3,
-"doc":"Spacing for padding / border / scrollbars. Returns: Spacing: Additional spacing around content area."
-},
-{
-"ref":"textual.layout.Center.size",
-"url":3,
-"doc":"The size of the content area. Returns: Size: Content area size."
-},
-{
-"ref":"textual.layout.Center.outer_size",
-"url":3,
-"doc":"The size of the widget (including padding and border). Returns: Size: Outer size."
-},
-{
-"ref":"textual.layout.Center.container_size",
-"url":3,
-"doc":"The size of the container (parent widget). Returns: Size: Container size."
-},
-{
-"ref":"textual.layout.Center.content_region",
-"url":3,
-"doc":"Gets an absolute region containing the content (minus padding and border). Returns: Region: Screen region that contains a widget's content."
-},
-{
-"ref":"textual.layout.Center.content_offset",
-"url":3,
-"doc":"An offset from the Widget origin where the content begins. Returns: Offset: Offset from widget's origin."
-},
-{
-"ref":"textual.layout.Center.region",
-"url":3,
-"doc":"The region occupied by this widget, relative to the Screen. Raises: NoScreen: If there is no screen. errors.NoWidget: If the widget is not on the screen. Returns: Region: Region within screen occupied by widget."
-},
-{
-"ref":"textual.layout.Center.container_viewport",
-"url":3,
-"doc":"The viewport region (parent window). Returns: Region: The region that contains this widget."
-},
-{
-"ref":"textual.layout.Center.virtual_region",
-"url":3,
-"doc":"The widget region relative to it's container. Which may not be visible, depending on scroll offset."
-},
-{
-"ref":"textual.layout.Center.window_region",
-"url":3,
-"doc":"The region within the scrollable area that is currently visible. Returns: Region: New region."
-},
-{
-"ref":"textual.layout.Center.virtual_region_with_margin",
-"url":3,
-"doc":"The widget region relative to its container ( including margin ), which may not be visible, depending on the scroll offset. Returns: Region: The virtual region of the Widget, inclusive of its margin."
-},
-{
-"ref":"textual.layout.Center.focusable_children",
-"url":3,
-"doc":"Get the children which may be focused. Returns: list[Widget]: List of widgets that can receive focus."
-},
-{
-"ref":"textual.layout.Center.scroll_offset",
-"url":3,
-"doc":"Get the current scroll offset. Returns: Offset: Offset a container has been scrolled by."
-},
-{
-"ref":"textual.layout.Center.is_transparent",
-"url":3,
-"doc":"Check if the background styles is not set. Returns: bool:  True if there is background color, otherwise  False ."
-},
-{
-"ref":"textual.layout.Center.animate",
-"url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
-},
-{
-"ref":"textual.layout.Center.is_container",
-"url":3,
-"doc":"Check if this widget is a container (contains other widgets). Returns: bool: True if this widget is a container."
-},
-{
-"ref":"textual.layout.Center.is_scrollable",
-"url":3,
-"doc":"Check if this Widget may be scrolled. Returns: bool: True if this widget may be scrolled."
-},
-{
-"ref":"textual.layout.Center.layer",
-"url":3,
-"doc":"Get the name of this widgets layer. Returns: str: Name of layer."
-},
-{
-"ref":"textual.layout.Center.layers",
-"url":3,
-"doc":"Layers of from parent. Returns: tuple[str,  .]: Tuple of layer names."
-},
-{
-"ref":"textual.layout.Center.link_style",
-"url":3,
-"doc":"Style of links."
-},
-{
-"ref":"textual.layout.Center.link_hover_style",
-"url":3,
-"doc":"Style of links with mouse hover."
-},
-{
-"ref":"textual.layout.Center.scroll_to",
-"url":3,
-"doc":"Scroll to a given (absolute) coordinate, optionally animating. Args: x (int | None, optional): X coordinate (column) to scroll to, or None for no change. Defaults to None. y (int | None, optional): Y coordinate (row) to scroll to, or None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_relative",
-"url":3,
-"doc":"Scroll relative to current position. Args: x (int | None, optional): X distance (columns) to scroll, or  None for no change. Defaults to None. y (int | None, optional): Y distance (rows) to scroll, or  None for no change. Defaults to None. animate (bool, optional): Animate to new scroll position. Defaults to False. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if the scroll position changed, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_home",
-"url":3,
-"doc":"Scroll to home position. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_end",
-"url":3,
-"doc":"Scroll to the end of the container. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_left",
-"url":3,
-"doc":"Scroll one cell left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_right",
-"url":3,
-"doc":"Scroll on cell right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_down",
-"url":3,
-"doc":"Scroll one line down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_up",
-"url":3,
-"doc":"Scroll one line up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_page_up",
-"url":3,
-"doc":"Scroll one page up. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_page_down",
-"url":3,
-"doc":"Scroll one page down. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_page_left",
-"url":3,
-"doc":"Scroll one page left. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_page_right",
-"url":3,
-"doc":"Scroll one page right. Args: animate (bool, optional): Animate scroll. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling was done.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_to_widget",
-"url":3,
-"doc":"Scroll scrolling to bring a widget in to view. Args: widget (Widget): A descendant widget. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: bool: True if any scrolling has occurred in any descendant, otherwise False.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_to_region",
-"url":3,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.scroll_visible",
-"url":3,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.get_pseudo_classes",
-"url":3,
-"doc":"Pseudo classes for a widget. Returns: Iterable[str]: Names of the pseudo classes.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.post_render",
-"url":3,
-"doc":"Applies style attributes to the default renderable. Returns: RenderableType: A new renderable.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.watch_mouse_over",
-"url":3,
-"doc":"Update from CSS if mouse over state changes.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.watch_has_focus",
-"url":3,
-"doc":"Update from CSS if has focus state changes.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.render_line",
-"url":3,
-"doc":"Render a line of content. Args: y (int): Y Coordinate of line. Returns: list[Segment]: A rendered line.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.render_lines",
-"url":3,
-"doc":"Render the widget in to lines. Args: crop (Region): Region within visible area to render. Returns: Lines: A list of list of segments.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.get_style_at",
-"url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.refresh",
-"url":3,
-"doc":"Initiate a refresh of the widget. This method sets an internal flag to perform a refresh, which will be done on the next idle event. Only one refresh will be done even if this method is called multiple times. By default this method will cause the content of the widget to refresh, but not change its size. You can also set  layout=True to perform a layout.  ! warning It is rarely necessary to call this method explicitly. Updating styles or reactive attributes will do this automatically. Args:  regions (Region, optional): Additional screen regions to mark as dirty. repaint (bool, optional): Repaint the widget (will call render() again). Defaults to True. layout (bool, optional): Also layout widgets in the view. Defaults to False.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.remove",
-"url":3,
-"doc":"Remove the Widget from the DOM (effectively deleting it)",
-"func":1
-},
-{
-"ref":"textual.layout.Center.render",
-"url":3,
-"doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
-"func":1
-},
-{
-"ref":"textual.layout.Center.action",
-"url":3,
-"doc":"Perform a given action, with this widget as the default namespace. Args: action (str): Action encoded as a string.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.post_message",
-"url":3,
-"doc":"Post a message to this widget. Args: message (Message): Message to post. Returns: bool: True if the message was posted, False if this widget was closed / closing.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.focus",
-"url":3,
-"doc":"Give focus to this widget. Args: scroll_visible (bool, optional): Scroll parent to make this widget visible. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.capture_mouse",
-"url":3,
-"doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.release_mouse",
-"url":3,
-"doc":"Release the mouse. Mouse events will only be sent when the mouse is over the widget.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.get_component_styles",
-"url":4,
-"doc":"Get a \"component\" styles object (must be defined in COMPONENT_CLASSES classvar). Args: name (str): Name of the component. Raises: KeyError: If the component class doesn't exist. Returns: RenderStyles: A Styles object.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.get_default_css",
-"url":4,
-"doc":"Gets the CSS for this class and inherited from bases. Returns: list[tuple[str, str : a list of tuples containing (PATH, SOURCE) for this and inherited from base classes.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.parent",
-"url":4,
-"doc":"Get the parent node. Returns: DOMNode | None: The node which is the direct parent of this node."
-},
-{
-"ref":"textual.layout.Center.screen",
-"url":4,
-"doc":"Get the screen that this node is contained within. Note that this may not be the currently active screen within the app."
-},
-{
-"ref":"textual.layout.Center.id",
-"url":4,
-"doc":"The ID of this node, or None if the node has no ID. Returns: (str | None): A Node ID or None."
-},
-{
-"ref":"textual.layout.Center.css_identifier",
-"url":4,
-"doc":"A CSS selector that identifies this DOM node."
-},
-{
-"ref":"textual.layout.Center.css_identifier_styled",
-"url":4,
-"doc":"A stylized CSS identifier."
-},
-{
-"ref":"textual.layout.Center.classes",
-"url":4,
-"doc":"A frozenset of the current classes set on the widget. Returns: frozenset[str]: Set of class names."
-},
-{
-"ref":"textual.layout.Center.pseudo_classes",
-"url":4,
-"doc":"Get a set of all pseudo classes"
-},
-{
-"ref":"textual.layout.Center.css_path_nodes",
-"url":4,
-"doc":"A list of nodes from the root to this node, forming a \"path\". Returns: list[DOMNode]: List of Nodes, starting with the root and ending with this node."
-},
-{
-"ref":"textual.layout.Center.display",
-"url":4,
-"doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
-},
-{
-"ref":"textual.layout.Center.tree",
-"url":4,
-"doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
-},
-{
-"ref":"textual.layout.Center.text_style",
-"url":4,
-"doc":"Get the text style object. A widget's style is influenced by its parent. for instance if a parent is bold, then the child will also be bold. Returns: Style: Rich Style object."
-},
-{
-"ref":"textual.layout.Center.rich_style",
-"url":4,
-"doc":"Get a Rich Style object for this DOMNode."
-},
-{
-"ref":"textual.layout.Center.background_colors",
-"url":4,
-"doc":"Get the background color and the color of the parent's background. Returns: tuple[Color, Color]: Tuple of (base background, background)"
-},
-{
-"ref":"textual.layout.Center.colors",
-"url":4,
-"doc":"Gets the Widgets foreground and background colors, and its parent's (base) colors. Returns: tuple[Color, Color, Color, Color]: Tuple of (base background, base color, background, color)"
-},
-{
-"ref":"textual.layout.Center.ancestors",
-"url":4,
-"doc":"Get a list of Nodes by tracing ancestors all the way back to App."
-},
-{
-"ref":"textual.layout.Center.displayed_children",
-"url":4,
-"doc":"The children which don't have display: none set. Returns: list[DOMNode]: Children of this widget which will be displayed."
-},
-{
-"ref":"textual.layout.Center.reset_styles",
-"url":4,
-"doc":"Reset styles back to their initial state",
-"func":1
-},
-{
-"ref":"textual.layout.Center.walk_children",
-"url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.get_child",
-"url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
-"func":1
-},
-{
-"ref":"textual.layout.Center.query",
-"url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.query_one",
-"url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.set_styles",
-"url":4,
-"doc":"Set custom styles on this object.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.has_class",
-"url":4,
-"doc":"Check if the Node has all the given class names. Args:  class_names (str): CSS class names to check. Returns: bool:  True if the node has all the given class names, otherwise  False .",
-"func":1
-},
-{
-"ref":"textual.layout.Center.set_class",
-"url":4,
-"doc":"Add or remove class(es) based on a condition. Args: add (bool): Add the classes if True, otherwise remove them.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.add_class",
-"url":4,
-"doc":"Add class names to this Node. Args:  class_names (str): CSS class names to add.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.remove_class",
-"url":4,
-"doc":"Remove class names from this Node. Args:  class_names (str): CSS class names to remove.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.toggle_class",
-"url":4,
-"doc":"Toggle class names on this Node. Args:  class_names (str): CSS class names to toggle.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.has_pseudo_class",
-"url":4,
-"doc":"Check for pseudo class (such as hover, focus etc)",
-"func":1
-},
-{
-"ref":"textual.layout.Center.app",
-"url":5,
-"doc":"Get the current app. Returns: App: The current app. Raises: NoActiveAppError: if no active app could be found for the current asyncio context"
-},
-{
-"ref":"textual.layout.Center.log",
-"url":5,
-"doc":"Get a logger for this object. Returns: Logger: A logger."
-},
-{
-"ref":"textual.layout.Center.disable_messages",
-"url":5,
-"doc":"Disable message types from being processed.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.enable_messages",
-"url":5,
-"doc":"Enable processing of messages types.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.set_timer",
-"url":5,
-"doc":"Make a function call after a delay. Args: delay (float): Time to wait before invoking callback. callback (TimerCallback | None, optional): Callback to call after time has expired. Defaults to None. name (str | None, optional): Name of the timer (for debug). Defaults to None. pause (bool, optional): Start timer paused. Defaults to False. Returns: Timer: A timer object.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.set_interval",
-"url":5,
-"doc":"Call a function at periodic intervals. Args: interval (float): Time between calls. callback (TimerCallback | None, optional): Function to call. Defaults to None. name (str | None, optional): Name of the timer object. Defaults to None. repeat (int, optional): Number of times to repeat the call or 0 for continuous. Defaults to 0. pause (bool, optional): Start the timer paused. Defaults to False. Returns: Timer: A timer object.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.call_later",
-"url":5,
-"doc":"Schedule a callback to run after all messages are processed and the screen has been refreshed. Positional and keyword arguments are passed to the callable. Args: callback (Callable): A callable.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.on_event",
-"url":5,
-"doc":"Called to process an event. Args: event (events.Event): An Event object.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.check_idle",
-"url":5,
-"doc":"Prompt the message pump to call idle if the queue is empty.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.post_message_no_wait",
-"url":5,
-"doc":"Posts a message on the queue. Args: message (Message): A message (or Event). Returns: bool: True if the messages was processed, False if it wasn't.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.emit_no_wait",
-"url":5,
-"doc":"Send a message to the _parent_, non async version. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.emit",
-"url":5,
-"doc":"Send a message to the _parent_. Args: message (Message): A message object. Returns: bool: True if the message was posted successfully.",
-"func":1
-},
-{
-"ref":"textual.layout.Center.dispatch_key",
-"url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event.",
 "func":1
 },
 {
@@ -12972,2648 +13022,2567 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.layouts.center",
-"url":47,
-"doc":""
-},
-{
-"ref":"textual.layouts.center.CenterLayout",
-"url":47,
-"doc":"Positions widgets in the center of the screen."
-},
-{
-"ref":"textual.layouts.center.CenterLayout.name",
-"url":47,
-"doc":""
-},
-{
-"ref":"textual.layouts.center.CenterLayout.arrange",
-"url":47,
-"doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
-"func":1
-},
-{
 "ref":"textual.layouts.vertical",
-"url":48,
+"url":47,
 "doc":""
 },
 {
 "ref":"textual.layouts.vertical.VerticalLayout",
-"url":48,
+"url":47,
 "doc":"Used to layout Widgets vertically on screen, from top to bottom."
 },
 {
 "ref":"textual.layouts.vertical.VerticalLayout.name",
-"url":48,
+"url":47,
 "doc":""
 },
 {
 "ref":"textual.layouts.vertical.VerticalLayout.arrange",
-"url":48,
+"url":47,
 "doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 },
 {
 "ref":"textual.layouts.grid",
-"url":49,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridLayout",
-"url":49,
+"url":48,
 "doc":"Used to layout Widgets in to a grid."
 },
 {
 "ref":"textual.layouts.grid.GridLayout.name",
-"url":49,
+"url":48,
 "doc":""
 },
 {
 "ref":"textual.layouts.grid.GridLayout.arrange",
-"url":49,
+"url":48,
 "doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
 "func":1
 },
 {
 "ref":"textual.css",
-"url":50,
+"url":49,
 "doc":""
 },
 {
 "ref":"textual.css.scalar",
-"url":51,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.ScalarError",
-"url":51,
+"url":50,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.scalar.ScalarResolveError",
-"url":51,
+"url":50,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.scalar.ScalarParseError",
-"url":51,
+"url":50,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.scalar.Unit",
-"url":51,
+"url":50,
 "doc":"Enumeration of the various units inherited from CSS."
 },
 {
 "ref":"textual.css.scalar.Unit.CELLS",
-"url":51,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.FRACTION",
-"url":51,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.PERCENT",
-"url":51,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.WIDTH",
-"url":51,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.HEIGHT",
-"url":51,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.VIEW_WIDTH",
-"url":51,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.VIEW_HEIGHT",
-"url":51,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Unit.AUTO",
-"url":51,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.get_symbols",
-"url":51,
+"url":50,
 "doc":"Get symbols for an iterable of units. Args: units (Iterable[Unit]): A number of units. Returns: list[str]: List of symbols.",
 "func":1
 },
 {
 "ref":"textual.css.scalar.Scalar",
-"url":51,
+"url":50,
 "doc":"A numeric value and a unit."
 },
 {
 "ref":"textual.css.scalar.Scalar.value",
-"url":51,
+"url":50,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.scalar.Scalar.unit",
-"url":51,
+"url":50,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.scalar.Scalar.percent_unit",
-"url":51,
+"url":50,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.scalar.Scalar.is_cells",
-"url":51,
+"url":50,
 "doc":"Check if the Scalar is explicit cells."
 },
 {
 "ref":"textual.css.scalar.Scalar.is_percent",
-"url":51,
+"url":50,
 "doc":"Check if the Scalar is a percentage unit."
 },
 {
 "ref":"textual.css.scalar.Scalar.is_fraction",
-"url":51,
+"url":50,
 "doc":"Check if the unit is a fraction."
 },
 {
 "ref":"textual.css.scalar.Scalar.excludes_border",
-"url":51,
+"url":50,
 "doc":""
 },
 {
 "ref":"textual.css.scalar.Scalar.cells",
-"url":51,
+"url":50,
 "doc":"Check if the unit is explicit cells."
 },
 {
 "ref":"textual.css.scalar.Scalar.fraction",
-"url":51,
+"url":50,
 "doc":"Get the fraction value, or None if not a value."
 },
 {
 "ref":"textual.css.scalar.Scalar.symbol",
-"url":51,
+"url":50,
 "doc":"Get the symbol of this unit."
 },
 {
 "ref":"textual.css.scalar.Scalar.is_auto",
-"url":51,
+"url":50,
 "doc":"Check if this is an auto unit."
 },
 {
 "ref":"textual.css.scalar.Scalar.from_number",
-"url":51,
+"url":50,
 "doc":"Create a scalar with cells unit. Args: value (float): A number of cells. Returns: Scalar: New Scalar.",
 "func":1
 },
 {
 "ref":"textual.css.scalar.Scalar.parse",
-"url":51,
+"url":50,
 "doc":"Parse a string in to a Scalar Args: token (str): A string containing a scalar, e.g. \"3.14fr\" Raises: ScalarParseError: If the value is not a valid scalar Returns: Scalar: New scalar",
 "func":1
 },
 {
 "ref":"textual.css.scalar.Scalar.resolve_dimension",
-"url":51,
+"url":50,
 "doc":"Resolve scalar with units in to a dimensions. Args: size (tuple[int, int]): Size of the container. viewport (tuple[int, int]): Size of the viewport (typically terminal size) Raises: ScalarResolveError: If the unit is unknown. Returns: int: A size (in cells)",
 "func":1
 },
 {
 "ref":"textual.css.scalar.Scalar.copy_with",
-"url":51,
+"url":50,
 "doc":"Get a copy of this Scalar, with values optionally modified Args: value (float | None): The new value, or None to keep the same value unit (Unit | None): The new unit, or None to keep the same unit percent_unit (Unit | None): The new percent_unit, or None to keep the same percent_unit",
 "func":1
 },
 {
 "ref":"textual.css.scalar.ScalarOffset",
-"url":51,
+"url":50,
 "doc":"An Offset with two scalars, used to animate between to Scalars."
 },
 {
 "ref":"textual.css.scalar.ScalarOffset.x",
-"url":51,
+"url":50,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.scalar.ScalarOffset.y",
-"url":51,
+"url":50,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.scalar.ScalarOffset.null",
-"url":51,
+"url":50,
 "doc":"Get a null scalar offset (0, 0).",
 "func":1
 },
 {
 "ref":"textual.css.scalar.ScalarOffset.from_offset",
-"url":51,
+"url":50,
 "doc":"Create a Scalar offset from a tuple of integers. Args: offset (tuple[int, int]): Offset in cells. Returns: ScalarOffset: New offset.",
 "func":1
 },
 {
 "ref":"textual.css.scalar.ScalarOffset.resolve",
-"url":51,
+"url":50,
 "doc":"Resolve the offset in to cells. Args: size (Size): Size of container. viewport (Size): Size of viewport. Returns: Offset: Offset in cells.",
 "func":1
 },
 {
 "ref":"textual.css.scalar.percentage_string_to_float",
-"url":51,
+"url":50,
 "doc":"Convert a string percentage e.g. '20%' to a float e.g. 20.0. Args: string (str): The percentage string to convert.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet",
-"url":52,
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.css.stylesheet.StylesheetParseError",
-"url":52,
+"url":51,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.stylesheet.StylesheetErrors",
-"url":52,
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.css.stylesheet.CssSource",
-"url":52,
+"url":51,
 "doc":"Contains the CSS content and whether or not the CSS comes from user defined stylesheets vs widget-level stylesheets. Args: content (str): The CSS as a string. is_defaults (bool): True if the CSS is default (i.e. that defined at the widget level). False if it's user CSS (which will override the defaults)."
 },
 {
 "ref":"textual.css.stylesheet.CssSource.content",
-"url":52,
+"url":51,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.stylesheet.CssSource.is_defaults",
-"url":52,
+"url":51,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.stylesheet.CssSource.tie_breaker",
-"url":52,
+"url":51,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet",
-"url":52,
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.rules",
-"url":52,
+"url":51,
 "doc":"List of rule sets. Returns: list[RuleSet]: List of rules sets for this stylesheet."
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.rules_map",
-"url":52,
+"url":51,
 "doc":"Structure that maps a selector on to a list of rules. Returns: dict[str, list[RuleSet : Mapping of selector to rule sets."
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.css",
-"url":52,
+"url":51,
 "doc":""
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.copy",
-"url":52,
+"url":51,
 "doc":"Create a copy of this stylesheet. Returns: Stylesheet: New stylesheet.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.set_variables",
-"url":52,
+"url":51,
 "doc":"Set CSS variables. Args: variables (dict[str, str]): A mapping of name to variable.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.read",
-"url":52,
+"url":51,
 "doc":"Read Textual CSS file. Args: filename (str | PurePath): filename of CSS. Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.add_source",
-"url":52,
+"url":51,
 "doc":"Parse CSS from a string. Args: css (str): String with CSS source. path (str | PurePath, optional): The path of the source if a file, or some other identifier. Defaults to None. is_default_css (bool): True if the CSS is defined in the Widget, False if the CSS is defined in a user stylesheet. Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.parse",
-"url":52,
+"url":51,
 "doc":"Parse the source in the stylesheet. Raises: StylesheetParseError: If there are any CSS related errors.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.reparse",
-"url":52,
+"url":51,
 "doc":"Re-parse source, applying new variables. Raises: StylesheetError: If the CSS could not be read. StylesheetParseError: If the CSS is invalid.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.apply",
-"url":52,
+"url":51,
 "doc":"Apply the stylesheet to a DOM node. Args: node (DOMNode): The  DOMNode to apply the stylesheet to. Applies the styles defined in this  Stylesheet to the node. If the same rule is defined multiple times for the node (e.g. multiple classes modifying the same CSS property), then only the most specific rule will be applied. animate (bool, optional): Animate changed rules. Defaults to  False .",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.replace_rules",
-"url":52,
+"url":51,
 "doc":"Replace style rules on a node, animating as required. Args: node (DOMNode): A DOM node. rules (RulesMap): Mapping of rules. animate (bool, optional): Enable animation. Defaults to False.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.update",
-"url":52,
+"url":51,
 "doc":"Update styles on node and its children. Args: root (DOMNode): Root note to update. animate (bool, optional): Enable CSS animation. Defaults to False.",
 "func":1
 },
 {
 "ref":"textual.css.stylesheet.Stylesheet.update_nodes",
-"url":52,
+"url":51,
 "doc":"Update styles for nodes. Args: nodes (DOMNode): Nodes to update. animate (bool, optional): Enable CSS animation. Defaults to False.",
 "func":1
 },
 {
 "ref":"textual.css.styles",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap",
-"url":53,
+"url":52,
 "doc":"A typed dict for CSS rules. Any key may be absent, indicating that rule has not been set. Does not define composite rules, that is a rule that is made of a combination of other rules."
 },
 {
 "ref":"textual.css.styles.RulesMap.display",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.visibility",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.layout",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.auto_color",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.color",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.background",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.text_style",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.opacity",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.text_opacity",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.padding",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.margin",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.offset",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.border_top",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.border_right",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.border_bottom",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.border_left",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.outline_top",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.outline_right",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.outline_bottom",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.outline_left",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.box_sizing",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.width",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.height",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.min_width",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.min_height",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.max_width",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.max_height",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.dock",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.overflow_x",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.overflow_y",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.layers",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.layer",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.transitions",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.tint",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_color",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_color_hover",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_color_active",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_corner_color",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_background",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_background_hover",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_background_active",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_gutter",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_size_vertical",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.scrollbar_size_horizontal",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.align_horizontal",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.align_vertical",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.content_align_horizontal",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.content_align_vertical",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.grid_size_rows",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.grid_size_columns",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.grid_gutter_horizontal",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.grid_gutter_vertical",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.grid_rows",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.grid_columns",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.row_span",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.column_span",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.text_align",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.link_color",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.auto_link_color",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.link_background",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.link_style",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.hover_color",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.auto_hover_color",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.hover_background",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RulesMap.hover_style",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.DockGroup",
-"url":53,
+"url":52,
 "doc":"DockGroup(name, edge, z)"
 },
 {
 "ref":"textual.css.styles.DockGroup.name",
-"url":53,
+"url":52,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.styles.DockGroup.edge",
-"url":53,
+"url":52,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.styles.DockGroup.z",
-"url":53,
+"url":52,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.styles.StylesBase",
-"url":53,
+"url":52,
 "doc":"A common base class for Styles and RenderStyles"
 },
 {
 "ref":"textual.css.styles.StylesBase.ANIMATABLE",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.node",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.display",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.visibility",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.layout",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting layout."
 },
 {
 "ref":"textual.css.styles.StylesBase.auto_color",
-"url":53,
+"url":52,
 "doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.StylesBase.color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.text_style",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.StylesBase.opacity",
-"url":53,
+"url":52,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
 {
 "ref":"textual.css.styles.StylesBase.text_opacity",
-"url":53,
+"url":52,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
 {
 "ref":"textual.css.styles.StylesBase.padding",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.StylesBase.margin",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.StylesBase.offset",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting the offset property. Offset consists of two values, x and y, that a widget's position will be adjusted by before it is rendered."
 },
 {
 "ref":"textual.css.styles.StylesBase.border",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.StylesBase.border_top",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.border_right",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.border_bottom",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.border_left",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.outline",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.StylesBase.outline_top",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.outline_right",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.outline_bottom",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.outline_left",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.StylesBase.box_sizing",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.width",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.height",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.min_width",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.min_height",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.max_width",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.max_height",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.StylesBase.dock",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which edge you want to fix a Widget to."
 },
 {
 "ref":"textual.css.styles.StylesBase.overflow_x",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.overflow_y",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.layer",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting name properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.layers",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.transitions",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting transitions properties"
 },
 {
 "ref":"textual.css.styles.StylesBase.tint",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_color_hover",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_color_active",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_corner_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_background_hover",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_background_active",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_gutter",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_size_vertical",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.scrollbar_size_horizontal",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.align_horizontal",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.align_vertical",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.align",
-"url":53,
+"url":52,
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
 "ref":"textual.css.styles.StylesBase.content_align_horizontal",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.content_align_vertical",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.content_align",
-"url":53,
+"url":52,
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
 "ref":"textual.css.styles.StylesBase.grid_rows",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.grid_columns",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.grid_size_columns",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.grid_size_rows",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.grid_gutter_horizontal",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.grid_gutter_vertical",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.row_span",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.column_span",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.StylesBase.text_align",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.StylesBase.link_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.auto_link_color",
-"url":53,
+"url":52,
 "doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.StylesBase.link_background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.link_style",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.StylesBase.hover_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.auto_hover_color",
-"url":53,
+"url":52,
 "doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.StylesBase.hover_background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.StylesBase.hover_style",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.StylesBase.gutter",
-"url":53,
+"url":52,
 "doc":"Get space around widget. Returns: Spacing: Space around widget content."
 },
 {
 "ref":"textual.css.styles.StylesBase.auto_dimensions",
-"url":53,
+"url":52,
 "doc":"Check if width or height are set to 'auto'."
 },
 {
 "ref":"textual.css.styles.StylesBase.has_rule",
-"url":53,
+"url":52,
 "doc":"Check if a rule is set on this Styles object. Args: rule (str): Rule name. Returns: bool:  True if the rules is present, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.clear_rule",
-"url":53,
+"url":52,
 "doc":"Removes the rule from the Styles object, as if it had never been set. Args: rule (str): Rule name. Returns: bool:  True if a rule was cleared, or  False if the rule is already not set.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.get_rules",
-"url":53,
+"url":52,
 "doc":"Get the rules in a mapping. Returns: RulesMap: A TypedDict of the rules.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.set_rule",
-"url":53,
+"url":52,
 "doc":"Set a rule. Args: rule (str): Rule name. value (object | None): New rule value. Returns: bool:  True if the rule changed, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.get_rule",
-"url":53,
+"url":52,
 "doc":"Get an individual rule. Args: rule (str): Name of rule. default (object, optional): Default if rule does not exists. Defaults to None. Returns: object: Rule value or default.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.refresh",
-"url":53,
+"url":52,
 "doc":"Mark the styles as requiring a refresh. Args: layout (bool, optional): Also require a layout. Defaults to False. children (bool, opional): Also refresh children. Defaults to False.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.reset",
-"url":53,
+"url":52,
 "doc":"Reset the rules to initial state.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.merge",
-"url":53,
+"url":52,
 "doc":"Merge values from another Styles. Args: other (Styles): A Styles object.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.merge_rules",
-"url":53,
+"url":52,
 "doc":"Merge rules in to Styles. Args: rules (RulesMap): A mapping of rules.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.get_render_rules",
-"url":53,
+"url":52,
 "doc":"Get rules map with defaults.",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.is_animatable",
-"url":53,
+"url":52,
 "doc":"Check if a given rule may be animated. Args: rule (str): Name of the rule. Returns: bool:  True if the rule may be animated, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.StylesBase.parse",
-"url":53,
+"url":52,
 "doc":"Parse CSS and return a Styles object. Args: css (str): Textual CSS. path (str): Path or string indicating source of CSS. node (DOMNode, optional): Node to associate with the Styles. Defaults to None. Returns: Styles: A Styles instance containing result of parsing CSS.",
 "func":1
 },
 {
-"ref":"textual.css.styles.StylesBase.get_transition",
-"url":53,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.css.styles.StylesBase.align_width",
-"url":53,
-"doc":"Align the width dimension. Args: width (int): Width of the content. parent_width (int): Width of the parent container. Returns: int: An offset to add to the X coordinate.",
-"func":1
-},
-{
-"ref":"textual.css.styles.StylesBase.align_height",
-"url":53,
-"doc":"Align the height dimensions Args: height (int): Height of the content. parent_height (int): Height of the parent container. Returns: int: An offset to add to the Y coordinate.",
-"func":1
-},
-{
-"ref":"textual.css.styles.StylesBase.align_size",
-"url":53,
-"doc":"Align a size according to alignment rules. Args: child (tuple[int, int]): The size of the child (width, height) parent (tuple[int, int]): The size of the parent (width, height) Returns: Offset: Offset required to align the child.",
-"func":1
-},
-{
 "ref":"textual.css.styles.Styles",
-"url":53,
+"url":52,
 "doc":"Styles(node: 'DOMNode | None' = None, _rules: 'RulesMap' =  , important: 'set[str]' =  )"
 },
 {
 "ref":"textual.css.styles.Styles.important",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.Styles.node",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.Styles.copy",
-"url":53,
+"url":52,
 "doc":"Get a copy of this Styles object.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.has_rule",
-"url":53,
+"url":52,
 "doc":"Check if a rule is set on this Styles object. Args: rule (str): Rule name. Returns: bool:  True if the rules is present, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.clear_rule",
-"url":53,
+"url":52,
 "doc":"Removes the rule from the Styles object, as if it had never been set. Args: rule (str): Rule name. Returns: bool:  True if a rule was cleared, or  False if it was already not set.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.get_rules",
-"url":53,
+"url":52,
 "doc":"Get the rules in a mapping. Returns: RulesMap: A TypedDict of the rules.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.set_rule",
-"url":53,
+"url":52,
 "doc":"Set a rule. Args: rule (str): Rule name. value (object | None): New rule value. Returns: bool:  True if the rule changed, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.get_rule",
-"url":53,
+"url":52,
 "doc":"Get an individual rule. Args: rule (str): Name of rule. default (object, optional): Default if rule does not exists. Defaults to None. Returns: object: Rule value or default.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.refresh",
-"url":53,
+"url":52,
 "doc":"Mark the styles as requiring a refresh. Args: layout (bool, optional): Also require a layout. Defaults to False. children (bool, opional): Also refresh children. Defaults to False.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.reset",
-"url":53,
+"url":52,
 "doc":"Reset the rules to initial state.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.merge",
-"url":53,
+"url":52,
 "doc":"Merge values from another Styles. Args: other (Styles): A Styles object.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.merge_rules",
-"url":53,
+"url":52,
 "doc":"Merge rules in to Styles. Args: rules (RulesMap): A mapping of rules.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.extract_rules",
-"url":53,
+"url":52,
 "doc":"Extract rules from Styles object, and apply !important css specificity as well as higher specificity of user CSS vs widget CSS. Args: specificity (Specificity3): A node specificity. is_default_rules (bool): True if the rules we're extracting are default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined CSS. Returns: list[tuple[str, Specificity5, Any ]: A list containing a tuple of  ,   .",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.css_lines",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.Styles.css",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.Styles.display",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.visibility",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.layout",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting layout."
 },
 {
 "ref":"textual.css.styles.Styles.auto_color",
-"url":53,
+"url":52,
 "doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.Styles.color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.text_style",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.Styles.opacity",
-"url":53,
+"url":52,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
 {
 "ref":"textual.css.styles.Styles.text_opacity",
-"url":53,
+"url":52,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
 {
 "ref":"textual.css.styles.Styles.padding",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.Styles.margin",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.Styles.offset",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting the offset property. Offset consists of two values, x and y, that a widget's position will be adjusted by before it is rendered."
 },
 {
 "ref":"textual.css.styles.Styles.border",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.Styles.border_top",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.border_right",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.border_bottom",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.border_left",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.outline",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.Styles.outline_top",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.outline_right",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.outline_bottom",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.outline_left",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.Styles.box_sizing",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.width",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.height",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.min_width",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.min_height",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.max_width",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.max_height",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.Styles.dock",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which edge you want to fix a Widget to."
 },
 {
 "ref":"textual.css.styles.Styles.overflow_x",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.overflow_y",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.layer",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting name properties."
 },
 {
 "ref":"textual.css.styles.Styles.transitions",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting transitions properties"
 },
 {
 "ref":"textual.css.styles.Styles.tint",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_color_hover",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_color_active",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_corner_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_background_hover",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_background_active",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.scrollbar_gutter",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.align_horizontal",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.align_vertical",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.align",
-"url":53,
+"url":52,
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
 "ref":"textual.css.styles.Styles.content_align_horizontal",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.content_align_vertical",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.content_align",
-"url":53,
+"url":52,
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
 "ref":"textual.css.styles.Styles.text_align",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.Styles.link_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.auto_link_color",
-"url":53,
+"url":52,
 "doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.Styles.link_background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.link_style",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.Styles.hover_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.auto_hover_color",
-"url":53,
+"url":52,
 "doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.Styles.hover_background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.Styles.hover_style",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.Styles.gutter",
-"url":53,
+"url":52,
 "doc":"Get space around widget. Returns: Spacing: Space around widget content."
 },
 {
 "ref":"textual.css.styles.Styles.auto_dimensions",
-"url":53,
+"url":52,
 "doc":"Check if width or height are set to 'auto'."
 },
 {
 "ref":"textual.css.styles.Styles.get_render_rules",
-"url":53,
+"url":52,
 "doc":"Get rules map with defaults.",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.is_animatable",
-"url":53,
+"url":52,
 "doc":"Check if a given rule may be animated. Args: rule (str): Name of the rule. Returns: bool:  True if the rule may be animated, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.Styles.parse",
-"url":53,
+"url":52,
 "doc":"Parse CSS and return a Styles object. Args: css (str): Textual CSS. path (str): Path or string indicating source of CSS. node (DOMNode, optional): Node to associate with the Styles. Defaults to None. Returns: Styles: A Styles instance containing result of parsing CSS.",
 "func":1
 },
 {
-"ref":"textual.css.styles.Styles.align_width",
-"url":53,
-"doc":"Align the width dimension. Args: width (int): Width of the content. parent_width (int): Width of the parent container. Returns: int: An offset to add to the X coordinate.",
-"func":1
-},
-{
-"ref":"textual.css.styles.Styles.align_height",
-"url":53,
-"doc":"Align the height dimensions Args: height (int): Height of the content. parent_height (int): Height of the parent container. Returns: int: An offset to add to the Y coordinate.",
-"func":1
-},
-{
-"ref":"textual.css.styles.Styles.align_size",
-"url":53,
-"doc":"Align a size according to alignment rules. Args: child (tuple[int, int]): The size of the child (width, height) parent (tuple[int, int]): The size of the parent (width, height) Returns: Offset: Offset required to align the child.",
-"func":1
-},
-{
 "ref":"textual.css.styles.RenderStyles",
-"url":53,
+"url":52,
 "doc":"Presents a combined view of two Styles object: a base Styles and inline Styles."
 },
 {
 "ref":"textual.css.styles.RenderStyles.node",
-"url":53,
+"url":52,
 "doc":""
 },
 {
 "ref":"textual.css.styles.RenderStyles.base",
-"url":53,
+"url":52,
 "doc":"Quick access to base (css) style."
 },
 {
 "ref":"textual.css.styles.RenderStyles.inline",
-"url":53,
+"url":52,
 "doc":"Quick access to the inline styles."
 },
 {
 "ref":"textual.css.styles.RenderStyles.rich_style",
-"url":53,
+"url":52,
 "doc":"Get a Rich style for this Styles object."
 },
 {
 "ref":"textual.css.styles.RenderStyles.animate",
-"url":53,
+"url":52,
 "doc":"Get an animator to animate style. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
 },
 {
 "ref":"textual.css.styles.RenderStyles.refresh",
-"url":53,
+"url":52,
 "doc":"Mark the styles as requiring a refresh. Args: layout (bool, optional): Also require a layout. Defaults to False. children (bool, opional): Also refresh children. Defaults to False.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.merge",
-"url":53,
+"url":52,
 "doc":"Merge values from another Styles. Args: other (Styles): A Styles object.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.merge_rules",
-"url":53,
+"url":52,
 "doc":"Merge rules in to Styles. Args: rules (RulesMap): A mapping of rules.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.reset",
-"url":53,
+"url":52,
 "doc":"Reset the rules to initial state.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.has_rule",
-"url":53,
+"url":52,
 "doc":"Check if a rule has been set.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.set_rule",
-"url":53,
+"url":52,
 "doc":"Set a rule. Args: rule (str): Rule name. value (object | None): New rule value. Returns: bool:  True if the rule changed, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.get_rule",
-"url":53,
+"url":52,
 "doc":"Get an individual rule. Args: rule (str): Name of rule. default (object, optional): Default if rule does not exists. Defaults to None. Returns: object: Rule value or default.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.clear_rule",
-"url":53,
+"url":52,
 "doc":"Clear a rule (from inline).",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.get_rules",
-"url":53,
+"url":52,
 "doc":"Get rules as a dictionary",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.css",
-"url":53,
+"url":52,
 "doc":"Get the CSS for the combined styles."
 },
 {
 "ref":"textual.css.styles.RenderStyles.display",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.visibility",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.layout",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting layout."
 },
 {
 "ref":"textual.css.styles.RenderStyles.auto_color",
-"url":53,
+"url":52,
 "doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.RenderStyles.color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.text_style",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.RenderStyles.opacity",
-"url":53,
+"url":52,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
 {
 "ref":"textual.css.styles.RenderStyles.text_opacity",
-"url":53,
+"url":52,
 "doc":"Property that can be set either as a float (e.g. 0.1) or a string percentage (e.g. '10%'). Values will be clamped to the range (0, 1)."
 },
 {
 "ref":"textual.css.styles.RenderStyles.padding",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.RenderStyles.margin",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting spacing properties (e.g. padding and margin)."
 },
 {
 "ref":"textual.css.styles.RenderStyles.offset",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting the offset property. Offset consists of two values, x and y, that a widget's position will be adjusted by before it is rendered."
 },
 {
 "ref":"textual.css.styles.RenderStyles.border",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.RenderStyles.border_top",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.border_right",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.border_bottom",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.border_left",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.outline",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting full borders and outlines. Args: layout (bool): True if the layout should be refreshed after setting, False otherwise."
 },
 {
 "ref":"textual.css.styles.RenderStyles.outline_top",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.outline_right",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.outline_bottom",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.outline_left",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting outlines and borders along a single edge. For example \"border-right\", \"outline-bottom\", etc."
 },
 {
 "ref":"textual.css.styles.RenderStyles.box_sizing",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.width",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.height",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.min_width",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.min_height",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.max_width",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.max_height",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting scalar properties. Scalars are numeric values with a unit, e.g. \"50vh\"."
 },
 {
 "ref":"textual.css.styles.RenderStyles.dock",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting the dock property. The dock property allows you to specify which edge you want to fix a Widget to."
 },
 {
 "ref":"textual.css.styles.RenderStyles.overflow_x",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.overflow_y",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.layer",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting name properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.transitions",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting transitions properties"
 },
 {
 "ref":"textual.css.styles.RenderStyles.tint",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_color_hover",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_color_active",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_corner_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_background_hover",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_background_active",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.scrollbar_gutter",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.align_horizontal",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.align_vertical",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.align",
-"url":53,
+"url":52,
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
 "ref":"textual.css.styles.RenderStyles.content_align_horizontal",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.content_align_vertical",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.content_align",
-"url":53,
+"url":52,
 "doc":"Combines the horizontal and vertical alignment properties in to a single property."
 },
 {
 "ref":"textual.css.styles.RenderStyles.text_align",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting string properties and ensuring that the set value belongs in the set of valid values."
 },
 {
 "ref":"textual.css.styles.RenderStyles.link_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.auto_link_color",
-"url":53,
+"url":52,
 "doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.RenderStyles.link_background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.link_style",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.RenderStyles.hover_color",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.auto_hover_color",
-"url":53,
+"url":52,
 "doc":"A property that requires a True or False value."
 },
 {
 "ref":"textual.css.styles.RenderStyles.hover_background",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
 "ref":"textual.css.styles.RenderStyles.hover_style",
-"url":53,
+"url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
 "ref":"textual.css.styles.RenderStyles.gutter",
-"url":53,
+"url":52,
 "doc":"Get space around widget. Returns: Spacing: Space around widget content."
 },
 {
 "ref":"textual.css.styles.RenderStyles.auto_dimensions",
-"url":53,
+"url":52,
 "doc":"Check if width or height are set to 'auto'."
 },
 {
 "ref":"textual.css.styles.RenderStyles.get_render_rules",
-"url":53,
+"url":52,
 "doc":"Get rules map with defaults.",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.is_animatable",
-"url":53,
+"url":52,
 "doc":"Check if a given rule may be animated. Args: rule (str): Name of the rule. Returns: bool:  True if the rule may be animated, otherwise  False .",
 "func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.parse",
-"url":53,
+"url":52,
 "doc":"Parse CSS and return a Styles object. Args: css (str): Textual CSS. path (str): Path or string indicating source of CSS. node (DOMNode, optional): Node to associate with the Styles. Defaults to None. Returns: Styles: A Styles instance containing result of parsing CSS.",
 "func":1
 },
 {
-"ref":"textual.css.styles.RenderStyles.align_width",
-"url":53,
-"doc":"Align the width dimension. Args: width (int): Width of the content. parent_width (int): Width of the parent container. Returns: int: An offset to add to the X coordinate.",
-"func":1
-},
-{
-"ref":"textual.css.styles.RenderStyles.align_height",
-"url":53,
-"doc":"Align the height dimensions Args: height (int): Height of the content. parent_height (int): Height of the parent container. Returns: int: An offset to add to the Y coordinate.",
-"func":1
-},
-{
-"ref":"textual.css.styles.RenderStyles.align_size",
-"url":53,
-"doc":"Align a size according to alignment rules. Args: child (tuple[int, int]): The size of the child (width, height) parent (tuple[int, int]): The size of the parent (width, height) Returns: Offset: Offset required to align the child.",
-"func":1
-},
-{
 "ref":"textual.css.parse",
-"url":54,
+"url":53,
 "doc":""
 },
 {
 "ref":"textual.css.parse.parse_selectors",
-"url":54,
+"url":53,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.parse.parse_rule_set",
-"url":54,
+"url":53,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.parse.parse_declarations",
-"url":54,
+"url":53,
 "doc":"Parse declarations and return a Styles object. Args: css (str): String containing CSS. path (str): Path to the CSS, or something else to identify the location. Returns: Styles: A styles object.",
 "func":1
 },
 {
 "ref":"textual.css.parse.substitute_references",
-"url":54,
+"url":53,
 "doc":"Replace variable references with values by substituting variable reference tokens with the tokens representing their values. Args: tokens (Iterable[Token]): Iterator of Tokens which may contain tokens with the name \"variable_ref\". Returns: Iterable[Token]: Yields Tokens such that any variable references (tokens where token.name  \"variable_ref\") have been replaced with the tokens representing the value. In other words, an Iterable of Tokens similar to the original input, but with variables resolved. Substituted tokens will have their referenced_by attribute populated with information about where the tokens are being substituted to.",
 "func":1
 },
 {
 "ref":"textual.css.parse.parse",
-"url":54,
+"url":53,
 "doc":"Parse CSS by tokenizing it, performing variable substitution, and generating rule sets from it. Args: css (str): The input CSS path (str): Path to the CSS variables (dict[str, str]): Substitution variables to substitute tokens for. is_default_rules (bool): True if the rules we're extracting are default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined CSS.",
 "func":1
 },
 {
 "ref":"textual.css.constants",
-"url":55,
+"url":54,
 "doc":""
 },
 {
 "ref":"textual.css.types",
-"url":56,
+"url":55,
 "doc":""
 },
 {
 "ref":"textual.css.tokenizer",
-"url":57,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.css.tokenizer.TokenError",
-"url":57,
+"url":56,
 "doc":"Error raised when the CSS cannot be tokenized (syntax error). Args: path (str): Path to source or \" \" if source is parsed from a literal. code (str): The code being parsed. start (tuple[int, int]): Line number of the error. message (str): A message associated with the error. end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None."
 },
 {
 "ref":"textual.css.tokenizer.EOFError",
-"url":57,
+"url":56,
 "doc":"Error raised when the CSS cannot be tokenized (syntax error). Args: path (str): Path to source or \" \" if source is parsed from a literal. code (str): The code being parsed. start (tuple[int, int]): Line number of the error. message (str): A message associated with the error. end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None."
 },
 {
 "ref":"textual.css.tokenizer.Expect",
-"url":57,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.css.tokenizer.Expect.expect_eof",
-"url":57,
+"url":56,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.tokenizer.ReferencedBy",
-"url":57,
+"url":56,
 "doc":"ReferencedBy(name, location, length, code)"
 },
 {
 "ref":"textual.css.tokenizer.ReferencedBy.name",
-"url":57,
+"url":56,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.tokenizer.ReferencedBy.location",
-"url":57,
+"url":56,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.tokenizer.ReferencedBy.length",
-"url":57,
+"url":56,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.tokenizer.ReferencedBy.code",
-"url":57,
+"url":56,
 "doc":"Alias for field number 3"
 },
 {
 "ref":"textual.css.tokenizer.Token",
-"url":57,
+"url":56,
 "doc":"Token(name, value, path, code, location, referenced_by)"
 },
 {
 "ref":"textual.css.tokenizer.Token.name",
-"url":57,
+"url":56,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.tokenizer.Token.value",
-"url":57,
+"url":56,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.tokenizer.Token.path",
-"url":57,
+"url":56,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.tokenizer.Token.code",
-"url":57,
+"url":56,
 "doc":"Alias for field number 3"
 },
 {
 "ref":"textual.css.tokenizer.Token.location",
-"url":57,
+"url":56,
 "doc":"Alias for field number 4"
 },
 {
 "ref":"textual.css.tokenizer.Token.referenced_by",
-"url":57,
+"url":56,
 "doc":"Alias for field number 5"
 },
 {
 "ref":"textual.css.tokenizer.Token.start",
-"url":57,
+"url":56,
 "doc":"Start line and column (1 indexed)."
 },
 {
 "ref":"textual.css.tokenizer.Token.end",
-"url":57,
+"url":56,
 "doc":"End line and column (1 indexed)."
 },
 {
 "ref":"textual.css.tokenizer.Token.with_reference",
-"url":57,
+"url":56,
 "doc":"Return a copy of the Token, with reference information attached. This is used for variable substitution, where a variable reference can refer to tokens which were defined elsewhere. With the additional ReferencedBy data attached, we can track where the token we are referring to is used.",
 "func":1
 },
 {
 "ref":"textual.css.tokenizer.Tokenizer",
-"url":57,
+"url":56,
 "doc":""
 },
 {
 "ref":"textual.css.tokenizer.Tokenizer.get_token",
-"url":57,
+"url":56,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.tokenizer.Tokenizer.skip_to",
-"url":57,
+"url":56,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.query",
-"url":58,
+"url":57,
 "doc":"A DOMQuery is a set of DOM nodes associated with a given CSS selector. This set of nodes may be further filtered with the filter method. Additional methods apply actions to the nodes in the query. If this sounds like JQuery, a (once) popular JS library, it is no coincidence. DOMQuery objects are typically created by Widget.query method. Queries are  lazy . Results will be calculated at the point you iterate over the query, or call a method which evaluates the query, such as first() and last()."
 },
 {
 "ref":"textual.css.query.QueryError",
-"url":58,
+"url":57,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.query.NoMatchingNodesError",
-"url":58,
+"url":57,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.query.WrongType",
-"url":58,
+"url":57,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.query.DOMQuery",
-"url":58,
+"url":57,
 "doc":"Abstract base class for generic types. A generic type is typically declared by inheriting from this class parameterized with one or more type variables. For example, a generic mapping type might be defined as class Mapping(Generic[KT, VT]): def __getitem__(self, key: KT) -> VT:  .  Etc. This class can then be used as follows def lookup_name(mapping: Mapping[KT, VT], key: KT, default: VT) -> VT: try: return mapping[key] except KeyError: return default"
 },
 {
 "ref":"textual.css.query.DOMQuery.node",
-"url":58,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.css.query.DOMQuery.nodes",
-"url":58,
+"url":57,
 "doc":"Lazily evaluate nodes."
 },
 {
 "ref":"textual.css.query.DOMQuery.filter",
-"url":58,
+"url":57,
 "doc":"Filter this set by the given CSS selector. Args: selector (str): A CSS selector. Returns: DOMQuery: New DOM Query.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.exclude",
-"url":58,
+"url":57,
 "doc":"Exclude nodes that match a given selector. Args: selector (str): A CSS selector. Returns: DOMQuery: New DOM query.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.ExpectType",
-"url":58,
+"url":57,
 "doc":""
 },
 {
 "ref":"textual.css.query.DOMQuery.first",
-"url":58,
+"url":57,
 "doc":"Get the  first match node. Args: expect_type (type[ExpectType] | None, optional): Require matched node is of this type, or None for any type. Defaults to None. Raises: WrongType: If the wrong type was found. NoMatchingNodesError: If there are no matching nodes in the query. Returns: Widget | ExpectType: The matching Widget.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.last",
-"url":58,
+"url":57,
 "doc":"Get the  last match node. Args: expect_type (type[ExpectType] | None, optional): Require matched node is of this type, or None for any type. Defaults to None. Raises: WrongType: If the wrong type was found. NoMatchingNodesError: If there are no matching nodes in the query. Returns: Widget | ExpectType: The matching Widget.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.results",
-"url":58,
+"url":57,
 "doc":"Get query results, optionally filtered by a given type. Args: filter_type (type[ExpectType] | None): A Widget class to filter results, or None for no filter. Defaults to None. Yields: Iterator[Widget | ExpectType]: An iterator of Widget instances.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.set_class",
-"url":58,
+"url":57,
 "doc":"Set the given class name(s) according to a condition. Args: add (bool): Add the classes if True, otherwise remove them. Returns: DOMQuery: Self.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.add_class",
-"url":58,
+"url":57,
 "doc":"Add the given class name(s) to nodes.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.remove_class",
-"url":58,
+"url":57,
 "doc":"Remove the given class names from the nodes.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.toggle_class",
-"url":58,
+"url":57,
 "doc":"Toggle the given class names from matched nodes.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.remove",
-"url":58,
+"url":57,
 "doc":"Remove matched nodes from the DOM",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.set_styles",
-"url":58,
+"url":57,
 "doc":"Set styles on matched nodes. Args: css (str, optional): CSS declarations to parser, or None. Defaults to None.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.refresh",
-"url":58,
+"url":57,
 "doc":"Refresh matched nodes. Args: repaint (bool): Repaint node(s). defaults to True. layout (bool): Layout node(s). Defaults to False. Returns: DOMQuery: Query for chaining.",
 "func":1
 },
 {
 "ref":"textual.css.transition",
-"url":59,
+"url":58,
 "doc":""
 },
 {
 "ref":"textual.css.transition.Transition",
-"url":59,
+"url":58,
 "doc":"Transition(duration, easing, delay)"
 },
 {
 "ref":"textual.css.transition.Transition.duration",
-"url":59,
+"url":58,
 "doc":"Alias for field number 0"
 },
 {
 "ref":"textual.css.transition.Transition.easing",
-"url":59,
+"url":58,
 "doc":"Alias for field number 1"
 },
 {
 "ref":"textual.css.transition.Transition.delay",
-"url":59,
+"url":58,
 "doc":"Alias for field number 2"
 },
 {
 "ref":"textual.css.match",
-"url":60,
+"url":59,
 "doc":""
 },
 {
 "ref":"textual.css.match.match",
-"url":60,
+"url":59,
 "doc":"Check if a given selector matches any of the given selector sets. Args: selector_sets (Iterable[SelectorSet]): Iterable of selector sets. node (DOMNode): DOM node. Returns: bool: True if the node matches the selector, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.css.scalar_animation",
-"url":61,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.css.scalar_animation.ScalarAnimation",
-"url":61,
+"url":60,
 "doc":"Helper class that provides a standard way to create an ABC using inheritance."
 },
 {
 "ref":"textual.css.scalar_animation.ScalarAnimation.on_complete",
-"url":61,
+"url":60,
 "doc":""
 },
 {
 "ref":"textual.css.model",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorType",
-"url":62,
+"url":61,
 "doc":"An enumeration."
 },
 {
 "ref":"textual.css.model.SelectorType.UNIVERSAL",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorType.TYPE",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorType.CLASS",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorType.ID",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.CombinatorType",
-"url":62,
+"url":61,
 "doc":"An enumeration."
 },
 {
 "ref":"textual.css.model.CombinatorType.SAME",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.CombinatorType.DESCENDENT",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.CombinatorType.CHILD",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector",
-"url":62,
+"url":61,
 "doc":"Represents a CSS selector. Some examples of selectors:  Header.title App > Content"
 },
 {
 "ref":"textual.css.model.Selector.name",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.pseudo_classes",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.specificity",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.combinator",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.type",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.advance",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.Selector.css",
-"url":62,
+"url":61,
 "doc":"Rebuilds the selector as it would appear in CSS."
 },
 {
 "ref":"textual.css.model.Selector.check",
-"url":62,
+"url":61,
 "doc":"Check if a given node matches the selector. Args: node (DOMNode): A DOM node. Returns: bool: True if the selector matches, otherwise False.",
 "func":1
 },
 {
 "ref":"textual.css.model.Declaration",
-"url":62,
+"url":61,
 "doc":"Declaration(token: 'Token', name: 'str', tokens: 'list[Token]' =  )"
 },
 {
 "ref":"textual.css.model.Declaration.token",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.Declaration.name",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.Declaration.tokens",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorSet",
-"url":62,
+"url":61,
 "doc":"SelectorSet(selectors: 'list[Selector]' =  , specificity: 'Specificity3' = (0, 0, 0 "
 },
 {
 "ref":"textual.css.model.SelectorSet.selectors",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorSet.specificity",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorSet.css",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.SelectorSet.from_selectors",
-"url":62,
+"url":61,
 "doc":"",
 "func":1
 },
 {
 "ref":"textual.css.model.RuleSet",
-"url":62,
+"url":61,
 "doc":"RuleSet(selector_set: 'list[SelectorSet]' =  , styles: 'Styles' =  , errors: 'list[tuple[Token, str ' =  , is_default_rules: 'bool' = False, tie_breaker: 'int' = 0, selector_names: 'set[str]' =  )"
 },
 {
 "ref":"textual.css.model.RuleSet.selector_set",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.RuleSet.styles",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.RuleSet.errors",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.RuleSet.selector_names",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.RuleSet.is_default_rules",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.RuleSet.tie_breaker",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.RuleSet.selectors",
-"url":62,
+"url":61,
 "doc":""
 },
 {
 "ref":"textual.css.model.RuleSet.css",
-"url":62,
+"url":61,
 "doc":"Generate the CSS this RuleSet Returns: str: A string containing CSS code."
 },
 {
 "ref":"textual.css.tokenize",
-"url":63,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.TokenizerState",
-"url":63,
+"url":62,
 "doc":"State machine for the tokenizer. Attributes: EXPECT: The initial expectation of the tokenizer. Since we start tokenizing at the root scope, we might expect to see either a variable or selector, for example. STATE_MAP: Maps token names to Expects, defines the sets of valid tokens that we'd expect to see next, given the current token. For example, if we've just processed a variable declaration name, we next expect to see the value of that variable."
 },
 {
 "ref":"textual.css.tokenize.TokenizerState.EXPECT",
-"url":63,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.TokenizerState.STATE_MAP",
-"url":63,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.DeclarationTokenizerState",
-"url":63,
+"url":62,
 "doc":"State machine for the tokenizer. Attributes: EXPECT: The initial expectation of the tokenizer. Since we start tokenizing at the root scope, we might expect to see either a variable or selector, for example. STATE_MAP: Maps token names to Expects, defines the sets of valid tokens that we'd expect to see next, given the current token. For example, if we've just processed a variable declaration name, we next expect to see the value of that variable."
 },
 {
 "ref":"textual.css.tokenize.DeclarationTokenizerState.EXPECT",
-"url":63,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.DeclarationTokenizerState.STATE_MAP",
-"url":63,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.ValueTokenizerState",
-"url":63,
+"url":62,
 "doc":"State machine for the tokenizer. Attributes: EXPECT: The initial expectation of the tokenizer. Since we start tokenizing at the root scope, we might expect to see either a variable or selector, for example. STATE_MAP: Maps token names to Expects, defines the sets of valid tokens that we'd expect to see next, given the current token. For example, if we've just processed a variable declaration name, we next expect to see the value of that variable."
 },
 {
 "ref":"textual.css.tokenize.ValueTokenizerState.EXPECT",
-"url":63,
+"url":62,
 "doc":""
 },
 {
 "ref":"textual.css.tokenize.tokenize_values",
-"url":63,
+"url":62,
 "doc":"Tokens the values in a dict of strings. Args: values (dict[str, str]): A mapping of CSS variable name on to a value, to be added to the CSS context. Returns: dict[str, list[Token : A mapping of name on to a list of tokens,",
 "func":1
 },
 {
 "ref":"textual.css.errors",
-"url":64,
+"url":63,
 "doc":""
 },
 {
 "ref":"textual.css.errors.DeclarationError",
-"url":64,
+"url":63,
 "doc":"Common base class for all non-exit exceptions."
 },
 {
 "ref":"textual.css.errors.StyleTypeError",
-"url":64,
+"url":63,
 "doc":"Inappropriate argument type."
 },
 {
 "ref":"textual.css.errors.UnresolvedVariableError",
-"url":64,
+"url":63,
 "doc":"Error raised when the CSS cannot be tokenized (syntax error). Args: path (str): Path to source or \" \" if source is parsed from a literal. code (str): The code being parsed. start (tuple[int, int]): Line number of the error. message (str): A message associated with the error. end (tuple[int, int] | None): End location of token, or None if not known. Defaults to None."
 },
 {
 "ref":"textual.css.errors.StyleValueError",
-"url":64,
+"url":63,
 "doc":"Raised when the value of a style property is not valid Attributes: help_text (HelpText | None): Optional HelpText to be rendered when this error is raised."
 },
 {
 "ref":"textual.css.errors.StylesheetError",
-"url":64,
+"url":63,
 "doc":"Common base class for all non-exit exceptions."
 }
 ]

@@ -175,7 +175,8 @@ class Widget(DOMNode):
     auto_links = Reactive(True)
     &#34;&#34;&#34;Widget will highlight links automatically.&#34;&#34;&#34;
 
-    hover_style: Reactive[Style] = Reactive(Style)
+    hover_style: Reactive[Style] = Reactive(Style, repaint=False)
+    highlight_link_id: Reactive[str] = Reactive(&#34;&#34;)
 
     def __init__(
         self,
@@ -473,6 +474,12 @@ class Widget(DOMNode):
             self._content_height_cache = (cache_key, height)
 
         return height
+
+    def watch_hover_style(
+        self, previous_hover_style: Style, hover_style: Style
+    ) -&gt; None:
+        if self.auto_links:
+            self.highlight_link_id = hover_style.link_id
 
     def watch_scroll_x(self, new_value: float) -&gt; None:
         self.horizontal_scrollbar.position = int(new_value)
@@ -2065,7 +2072,8 @@ class Widget(DOMNode):
     auto_links = Reactive(True)
     &#34;&#34;&#34;Widget will highlight links automatically.&#34;&#34;&#34;
 
-    hover_style: Reactive[Style] = Reactive(Style)
+    hover_style: Reactive[Style] = Reactive(Style, repaint=False)
+    highlight_link_id: Reactive[str] = Reactive(&#34;&#34;)
 
     def __init__(
         self,
@@ -2363,6 +2371,12 @@ class Widget(DOMNode):
             self._content_height_cache = (cache_key, height)
 
         return height
+
+    def watch_hover_style(
+        self, previous_hover_style: Style, hover_style: Style
+    ) -&gt; None:
+        if self.auto_links:
+            self.highlight_link_id = hover_style.link_id
 
     def watch_scroll_x(self, new_value: float) -&gt; None:
         self.horizontal_scrollbar.position = int(new_value)
@@ -3871,10 +3885,10 @@ class Widget(DOMNode):
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="textual.layout.Center" href="layout.html#textual.layout.Center">Center</a></li>
-<li><a title="textual.layout.Container" href="layout.html#textual.layout.Container">Container</a></li>
-<li><a title="textual.layout.Horizontal" href="layout.html#textual.layout.Horizontal">Horizontal</a></li>
-<li><a title="textual.layout.Vertical" href="layout.html#textual.layout.Vertical">Vertical</a></li>
+<li><a title="textual.containers.Container" href="containers.html#textual.containers.Container">Container</a></li>
+<li><a title="textual.containers.Grid" href="containers.html#textual.containers.Grid">Grid</a></li>
+<li><a title="textual.containers.Horizontal" href="containers.html#textual.containers.Horizontal">Horizontal</a></li>
+<li><a title="textual.containers.Vertical" href="containers.html#textual.containers.Vertical">Vertical</a></li>
 <li><a title="textual.screen.Screen" href="screen.html#textual.screen.Screen">Screen</a></li>
 <li><a title="textual.scroll_view.ScrollView" href="scroll_view.html#textual.scroll_view.ScrollView">ScrollView</a></li>
 <li><a title="textual.scrollbar.ScrollBar" href="scrollbar.html#textual.scrollbar.ScrollBar">ScrollBar</a></li>
@@ -4213,6 +4227,27 @@ def gutter(self) -&gt; Spacing:
 </details>
 </dd>
 <dt id="textual.widget.Widget.has_focus"><code class="name">var <span class="ident">has_focus</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.highlight_link_id"><code class="name">var <span class="ident">highlight_link_id</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p>
 <h2 id="args">Args</h2>
@@ -6534,6 +6569,22 @@ duration (float | None, optional): <em>description</em>. Defaults to None.</p></
     self.app.update_styles(self)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.watch_hover_style"><code class="name flex">
+<span>def <span class="ident">watch_hover_style</span></span>(<span>self, previous_hover_style: Style, hover_style: Style) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_hover_style(
+    self, previous_hover_style: Style, hover_style: Style
+) -&gt; None:
+    if self.auto_links:
+        self.highlight_link_id = hover_style.link_id</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.watch_mouse_over"><code class="name flex">
 <span>def <span class="ident">watch_mouse_over</span></span>(<span>self, value: bool) ‑> None</span>
 </code></dt>
@@ -6731,6 +6782,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.get_style_at" href="#textual.widget.Widget.get_style_at">get_style_at</a></code></li>
 <li><code><a title="textual.widget.Widget.gutter" href="#textual.widget.Widget.gutter">gutter</a></code></li>
 <li><code><a title="textual.widget.Widget.has_focus" href="#textual.widget.Widget.has_focus">has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.highlight_link_id" href="#textual.widget.Widget.highlight_link_id">highlight_link_id</a></code></li>
 <li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
 <li><code><a title="textual.widget.Widget.hover_style" href="#textual.widget.Widget.hover_style">hover_style</a></code></li>
 <li><code><a title="textual.widget.Widget.is_container" href="#textual.widget.Widget.is_container">is_container</a></code></li>
@@ -6794,6 +6846,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.virtual_region_with_margin" href="#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_size" href="#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_hover_style" href="#textual.widget.Widget.watch_hover_style">watch_hover_style</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_scroll_x" href="#textual.widget.Widget.watch_scroll_x">watch_scroll_x</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_scroll_y" href="#textual.widget.Widget.watch_scroll_y">watch_scroll_y</a></code></li>
