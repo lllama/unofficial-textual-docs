@@ -1559,7 +1559,8 @@ class Widget(DOMNode):
 
     def watch_mouse_over(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
-        self.app.update_styles(self)
+        if self._has_hover_style:
+            self.app.update_styles(self)
 
     def watch_has_focus(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Update from CSS if has focus state changes.&#34;&#34;&#34;
@@ -3456,7 +3457,8 @@ class Widget(DOMNode):
 
     def watch_mouse_over(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
-        self.app.update_styles(self)
+        if self._has_hover_style:
+            self.app.update_styles(self)
 
     def watch_has_focus(self, value: bool) -&gt; None:
         &#34;&#34;&#34;Update from CSS if has focus state changes.&#34;&#34;&#34;
@@ -6596,7 +6598,8 @@ duration (float | None, optional): <em>description</em>. Defaults to None.</p></
 </summary>
 <pre><code class="python">def watch_mouse_over(self, value: bool) -&gt; None:
     &#34;&#34;&#34;Update from CSS if mouse over state changes.&#34;&#34;&#34;
-    self.app.update_styles(self)</code></pre>
+    if self._has_hover_style:
+        self.app.update_styles(self)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.watch_scroll_x"><code class="name flex">
