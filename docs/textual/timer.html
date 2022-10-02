@@ -102,6 +102,7 @@ class Timer:
         self._skip = skip
         self._active = Event()
         self._task: Task | None = None
+        self._reset: bool = False
         if not pause:
             self._active.set()
 
@@ -147,6 +148,11 @@ class Timer:
         &#34;&#34;&#34;
         self._active.clear()
 
+    def reset(self) -&gt; None:
+        &#34;&#34;&#34;Reset the timer, so it starts from the beginning.&#34;&#34;&#34;
+        self._active.set()
+        self._reset = True
+
     def resume(self) -&gt; None:
         &#34;&#34;&#34;Resume a paused timer.&#34;&#34;&#34;
         self._active.set()
@@ -175,8 +181,14 @@ class Timer:
             wait_time = max(0, next_timer - now)
             if wait_time:
                 await _clock.sleep(wait_time)
+
             count += 1
             await self._active.wait()
+            if self._reset:
+                start = _clock.get_time_no_wait()
+                count = 0
+                self._reset = False
+                continue
             try:
                 await self._tick(next_timer=next_timer, count=count)
             except EventTargetGone:
@@ -294,6 +306,7 @@ class Timer:
         self._skip = skip
         self._active = Event()
         self._task: Task | None = None
+        self._reset: bool = False
         if not pause:
             self._active.set()
 
@@ -339,6 +352,11 @@ class Timer:
         &#34;&#34;&#34;
         self._active.clear()
 
+    def reset(self) -&gt; None:
+        &#34;&#34;&#34;Reset the timer, so it starts from the beginning.&#34;&#34;&#34;
+        self._active.set()
+        self._reset = True
+
     def resume(self) -&gt; None:
         &#34;&#34;&#34;Resume a paused timer.&#34;&#34;&#34;
         self._active.set()
@@ -367,8 +385,14 @@ class Timer:
             wait_time = max(0, next_timer - now)
             if wait_time:
                 await _clock.sleep(wait_time)
+
             count += 1
             await self._active.wait()
+            if self._reset:
+                start = _clock.get_time_no_wait()
+                count = 0
+                self._reset = False
+                continue
             try:
                 await self._tick(next_timer=next_timer, count=count)
             except EventTargetGone:
@@ -429,6 +453,21 @@ def target(self) -&gt; MessageTarget:
 
     &#34;&#34;&#34;
     self._active.clear()</code></pre>
+</details>
+</dd>
+<dt id="textual.timer.Timer.reset"><code class="name flex">
+<span>def <span class="ident">reset</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reset the timer, so it starts from the beginning.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reset(self) -&gt; None:
+    &#34;&#34;&#34;Reset the timer, so it starts from the beginning.&#34;&#34;&#34;
+    self._active.set()
+    self._reset = True</code></pre>
 </details>
 </dd>
 <dt id="textual.timer.Timer.resume"><code class="name flex">
@@ -573,6 +612,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.timer.Timer" href="#textual.timer.Timer">Timer</a></code></h4>
 <ul class="two-column">
 <li><code><a title="textual.timer.Timer.pause" href="#textual.timer.Timer.pause">pause</a></code></li>
+<li><code><a title="textual.timer.Timer.reset" href="#textual.timer.Timer.reset">reset</a></code></li>
 <li><code><a title="textual.timer.Timer.resume" href="#textual.timer.Timer.resume">resume</a></code></li>
 <li><code><a title="textual.timer.Timer.start" href="#textual.timer.Timer.start">start</a></code></li>
 <li><code><a title="textual.timer.Timer.stop" href="#textual.timer.Timer.stop">stop</a></code></li>

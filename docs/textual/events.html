@@ -382,6 +382,19 @@ class MouseEvent(InputEvent, bubble=True):
     def style(self, style: Style) -&gt; None:
         self._style = style
 
+    def get_content_offset(self, widget: Widget) -&gt; Offset | None:
+        &#34;&#34;&#34;Get offset within a widget&#39;s content area, or None if offset is not in content (i.e. padding or border).
+
+        Args:
+            widget (Widget): Widget receiving the event.
+
+        Returns:
+            Offset | None: An offset where the origin is at the top left of the content area.
+        &#34;&#34;&#34;
+        if self.offset not in widget.content_region:
+            return None
+        return self.offset - widget.gutter.top_left
+
     def _apply_offset(self, x: int, y: int) -&gt; MouseEvent:
         return self.__class__(
             self.sender,
@@ -773,6 +786,7 @@ class ScreenSuspend(Event, bubble=False):
 <li><code><a title="textual.events.MouseEvent.delta" href="#textual.events.MouseEvent.delta">delta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
+<li><code><a title="textual.events.MouseEvent.get_content_offset" href="#textual.events.MouseEvent.get_content_offset">get_content_offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
@@ -1823,6 +1837,7 @@ configuration and binding keys.</p></div>
 <li><code><a title="textual.events.MouseEvent.delta" href="#textual.events.MouseEvent.delta">delta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
+<li><code><a title="textual.events.MouseEvent.get_content_offset" href="#textual.events.MouseEvent.get_content_offset">get_content_offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
@@ -2009,6 +2024,19 @@ configuration and binding keys.</p></div>
     @style.setter
     def style(self, style: Style) -&gt; None:
         self._style = style
+
+    def get_content_offset(self, widget: Widget) -&gt; Offset | None:
+        &#34;&#34;&#34;Get offset within a widget&#39;s content area, or None if offset is not in content (i.e. padding or border).
+
+        Args:
+            widget (Widget): Widget receiving the event.
+
+        Returns:
+            Offset | None: An offset where the origin is at the top left of the content area.
+        &#34;&#34;&#34;
+        if self.offset not in widget.content_region:
+            return None
+        return self.offset - widget.gutter.top_left
 
     def _apply_offset(self, x: int, y: int) -&gt; MouseEvent:
         return self.__class__(
@@ -2213,6 +2241,39 @@ def style(self) -&gt; Style:
 <div class="desc"><p>Return an attribute of instance, which is of type owner.</p></div>
 </dd>
 </dl>
+<h3>Methods</h3>
+<dl>
+<dt id="textual.events.MouseEvent.get_content_offset"><code class="name flex">
+<span>def <span class="ident">get_content_offset</span></span>(<span>self, widget: Widget) ‑> Offset | None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get offset within a widget's content area, or None if offset is not in content (i.e. padding or border).</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>widget</code></strong> :&ensp;<code>Widget</code></dt>
+<dd>Widget receiving the event.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>Offset | None: An offset where the origin is at the top left of the content area.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_content_offset(self, widget: Widget) -&gt; Offset | None:
+    &#34;&#34;&#34;Get offset within a widget&#39;s content area, or None if offset is not in content (i.e. padding or border).
+
+    Args:
+        widget (Widget): Widget receiving the event.
+
+    Returns:
+        Offset | None: An offset where the origin is at the top left of the content area.
+    &#34;&#34;&#34;
+    if self.offset not in widget.content_region:
+        return None
+    return self.offset - widget.gutter.top_left</code></pre>
+</details>
+</dd>
+</dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
 <li><code><b><a title="textual.events.InputEvent" href="#textual.events.InputEvent">InputEvent</a></b></code>:
@@ -2277,6 +2338,7 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.MouseEvent.delta" href="#textual.events.MouseEvent.delta">delta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
+<li><code><a title="textual.events.MouseEvent.get_content_offset" href="#textual.events.MouseEvent.get_content_offset">get_content_offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
@@ -2581,6 +2643,7 @@ def style(self) -&gt; Style:
 <li><code><a title="textual.events.MouseEvent.delta" href="#textual.events.MouseEvent.delta">delta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
+<li><code><a title="textual.events.MouseEvent.get_content_offset" href="#textual.events.MouseEvent.get_content_offset">get_content_offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.handler_name" href="message.html#textual.message.Message.handler_name">handler_name</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.name" href="message.html#textual.message.Message.name">name</a></code></li>
@@ -3437,6 +3500,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.events.MouseEvent.delta_x" href="#textual.events.MouseEvent.delta_x">delta_x</a></code></li>
 <li><code><a title="textual.events.MouseEvent.delta_y" href="#textual.events.MouseEvent.delta_y">delta_y</a></code></li>
 <li><code><a title="textual.events.MouseEvent.from_event" href="#textual.events.MouseEvent.from_event">from_event</a></code></li>
+<li><code><a title="textual.events.MouseEvent.get_content_offset" href="#textual.events.MouseEvent.get_content_offset">get_content_offset</a></code></li>
 <li><code><a title="textual.events.MouseEvent.meta" href="#textual.events.MouseEvent.meta">meta</a></code></li>
 <li><code><a title="textual.events.MouseEvent.namespace" href="#textual.events.MouseEvent.namespace">namespace</a></code></li>
 <li><code><a title="textual.events.MouseEvent.no_dispatch" href="#textual.events.MouseEvent.no_dispatch">no_dispatch</a></code></li>

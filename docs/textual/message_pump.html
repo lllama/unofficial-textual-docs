@@ -552,20 +552,24 @@ class MessagePump(metaclass=MessagePumpMeta):
             return False
 
     # TODO: Does dispatch_key belong on message pump?
-    async def dispatch_key(self, event: events.Key) -&gt; None:
+    async def dispatch_key(self, event: events.Key) -&gt; bool:
         &#34;&#34;&#34;Dispatch a key event to method.
 
         This method will call the method named &#39;key_&lt;event.key&gt;&#39; if it exists.
 
         Args:
             event (events.Key): A key event.
+
+        Returns:
+            bool: True if key was handled, otherwise False.
         &#34;&#34;&#34;
         key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None) or getattr(
             self, f&#34;_key_{event.key_name}&#34;, None
         )
         if key_method is not None:
             await invoke(key_method, event)
-            event.prevent_default()
+            return True
+        return False
 
     async def on_timer(self, event: events.Timer) -&gt; None:
         event.prevent_default()
@@ -1076,20 +1080,24 @@ class MessagePump(metaclass=MessagePumpMeta):
             return False
 
     # TODO: Does dispatch_key belong on message pump?
-    async def dispatch_key(self, event: events.Key) -&gt; None:
+    async def dispatch_key(self, event: events.Key) -&gt; bool:
         &#34;&#34;&#34;Dispatch a key event to method.
 
         This method will call the method named &#39;key_&lt;event.key&gt;&#39; if it exists.
 
         Args:
             event (events.Key): A key event.
+
+        Returns:
+            bool: True if key was handled, otherwise False.
         &#34;&#34;&#34;
         key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None) or getattr(
             self, f&#34;_key_{event.key_name}&#34;, None
         )
         if key_method is not None:
             await invoke(key_method, event)
-            event.prevent_default()
+            return True
+        return False
 
     async def on_timer(self, event: events.Timer) -&gt; None:
         event.prevent_default()
@@ -1289,7 +1297,7 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.dispatch_key"><code class="name flex">
-<span>async def <span class="ident">dispatch_key</span></span>(<span>self, event: events.Key) ‑> None</span>
+<span>async def <span class="ident">dispatch_key</span></span>(<span>self, event: events.Key) ‑> bool</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Dispatch a key event to method.</p>
@@ -1298,25 +1306,34 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
 <dl>
 <dt><strong><code>event</code></strong> :&ensp;<code>events.Key</code></dt>
 <dd>A key event.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if key was handled, otherwise False.</dd>
 </dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">async def dispatch_key(self, event: events.Key) -&gt; None:
+<pre><code class="python">async def dispatch_key(self, event: events.Key) -&gt; bool:
     &#34;&#34;&#34;Dispatch a key event to method.
 
     This method will call the method named &#39;key_&lt;event.key&gt;&#39; if it exists.
 
     Args:
         event (events.Key): A key event.
+
+    Returns:
+        bool: True if key was handled, otherwise False.
     &#34;&#34;&#34;
     key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None) or getattr(
         self, f&#34;_key_{event.key_name}&#34;, None
     )
     if key_method is not None:
         await invoke(key_method, event)
-        event.prevent_default()</code></pre>
+        return True
+    return False</code></pre>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.emit"><code class="name flex">

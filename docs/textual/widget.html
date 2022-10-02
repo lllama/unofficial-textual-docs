@@ -724,6 +724,11 @@ class Widget(DOMNode):
         return Offset(x, y)
 
     @property
+    def content_size(self) -&gt; Size:
+        &#34;&#34;&#34;Get the size of the content area.&#34;&#34;&#34;
+        return self.region.shrink(self.styles.gutter).size
+
+    @property
     def region(self) -&gt; Region:
         &#34;&#34;&#34;The region occupied by this widget, relative to the Screen.
 
@@ -1586,11 +1591,10 @@ class Widget(DOMNode):
             self._container_size = container_size
             if self.is_scrollable:
                 self._scroll_update(virtual_size)
-            else:
-                self.refresh()
+            self.refresh()
 
     def _scroll_update(self, virtual_size: Size) -&gt; None:
-        &#34;&#34;&#34;Update scrollbars visiblity and dimensions.
+        &#34;&#34;&#34;Update scrollbars visibility and dimensions.
 
         Args:
             virtual_size (Size): Virtual size.
@@ -1837,12 +1841,15 @@ class Widget(DOMNode):
         await self.broker_event(&#34;click&#34;, event)
 
     async def _on_key(self, event: events.Key) -&gt; None:
+        await self.handle_key(event)
+
+    async def handle_key(self, event: events.Key) -&gt; bool:
         try:
             binding = self._bindings.get_key(event.key)
         except NoBinding:
-            await self.dispatch_key(event)
-        else:
-            await self.action(binding.action)
+            return await self.dispatch_key(event)
+        await self.action(binding.action)
+        return True
 
     def _on_compose(self, event: events.Compose) -&gt; None:
         widgets = self.compose()
@@ -2622,6 +2629,11 @@ class Widget(DOMNode):
         return Offset(x, y)
 
     @property
+    def content_size(self) -&gt; Size:
+        &#34;&#34;&#34;Get the size of the content area.&#34;&#34;&#34;
+        return self.region.shrink(self.styles.gutter).size
+
+    @property
     def region(self) -&gt; Region:
         &#34;&#34;&#34;The region occupied by this widget, relative to the Screen.
 
@@ -3484,11 +3496,10 @@ class Widget(DOMNode):
             self._container_size = container_size
             if self.is_scrollable:
                 self._scroll_update(virtual_size)
-            else:
-                self.refresh()
+            self.refresh()
 
     def _scroll_update(self, virtual_size: Size) -&gt; None:
-        &#34;&#34;&#34;Update scrollbars visiblity and dimensions.
+        &#34;&#34;&#34;Update scrollbars visibility and dimensions.
 
         Args:
             virtual_size (Size): Virtual size.
@@ -3735,12 +3746,15 @@ class Widget(DOMNode):
         await self.broker_event(&#34;click&#34;, event)
 
     async def _on_key(self, event: events.Key) -&gt; None:
+        await self.handle_key(event)
+
+    async def handle_key(self, event: events.Key) -&gt; bool:
         try:
             binding = self._bindings.get_key(event.key)
         except NoBinding:
-            await self.dispatch_key(event)
-        else:
-            await self.action(binding.action)
+            return await self.dispatch_key(event)
+        await self.action(binding.action)
+        return True
 
     def _on_compose(self, event: events.Compose) -&gt; None:
         widgets = self.compose()
@@ -3888,6 +3902,7 @@ class Widget(DOMNode):
 <h3>Subclasses</h3>
 <ul class="hlist">
 <li><a title="textual.containers.Container" href="containers.html#textual.containers.Container">Container</a></li>
+<li><a title="textual.containers.Content" href="containers.html#textual.containers.Content">Content</a></li>
 <li><a title="textual.containers.Grid" href="containers.html#textual.containers.Grid">Grid</a></li>
 <li><a title="textual.containers.Horizontal" href="containers.html#textual.containers.Horizontal">Horizontal</a></li>
 <li><a title="textual.containers.Vertical" href="containers.html#textual.containers.Vertical">Vertical</a></li>
@@ -4145,6 +4160,19 @@ def content_region(self) -&gt; Region:
     &#34;&#34;&#34;
     content_region = self.region.shrink(self.styles.gutter)
     return content_region</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.content_size"><code class="name">var <span class="ident">content_size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
+<dd>
+<div class="desc"><p>Get the size of the content area.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def content_size(self) -&gt; Size:
+    &#34;&#34;&#34;Get the size of the content area.&#34;&#34;&#34;
+    return self.region.shrink(self.styles.gutter).size</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.descendant_has_focus"><code class="name">var <span class="ident">descendant_has_focus</span> : ReactiveType</code></dt>
@@ -5420,6 +5448,24 @@ visible. Defaults to True.</dd>
     &#34;&#34;&#34;
     offset_x, offset_y = self.screen.get_offset(self)
     return self.screen.get_style_at(x + offset_x, y + offset_y)</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.handle_key"><code class="name flex">
+<span>async def <span class="ident">handle_key</span></span>(<span>self, event: events.Key) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">async def handle_key(self, event: events.Key) -&gt; bool:
+    try:
+        binding = self._bindings.get_key(event.key)
+    except NoBinding:
+        return await self.dispatch_key(event)
+    await self.action(binding.action)
+    return True</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.mount"><code class="name flex">
@@ -6774,6 +6820,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.container_viewport" href="#textual.widget.Widget.container_viewport">container_viewport</a></code></li>
 <li><code><a title="textual.widget.Widget.content_offset" href="#textual.widget.Widget.content_offset">content_offset</a></code></li>
 <li><code><a title="textual.widget.Widget.content_region" href="#textual.widget.Widget.content_region">content_region</a></code></li>
+<li><code><a title="textual.widget.Widget.content_size" href="#textual.widget.Widget.content_size">content_size</a></code></li>
 <li><code><a title="textual.widget.Widget.descendant_has_focus" href="#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.expand" href="#textual.widget.Widget.expand">expand</a></code></li>
 <li><code><a title="textual.widget.Widget.focus" href="#textual.widget.Widget.focus">focus</a></code></li>
@@ -6784,6 +6831,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.get_pseudo_classes" href="#textual.widget.Widget.get_pseudo_classes">get_pseudo_classes</a></code></li>
 <li><code><a title="textual.widget.Widget.get_style_at" href="#textual.widget.Widget.get_style_at">get_style_at</a></code></li>
 <li><code><a title="textual.widget.Widget.gutter" href="#textual.widget.Widget.gutter">gutter</a></code></li>
+<li><code><a title="textual.widget.Widget.handle_key" href="#textual.widget.Widget.handle_key">handle_key</a></code></li>
 <li><code><a title="textual.widget.Widget.has_focus" href="#textual.widget.Widget.has_focus">has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.highlight_link_id" href="#textual.widget.Widget.highlight_link_id">highlight_link_id</a></code></li>
 <li><code><a title="textual.widget.Widget.horizontal_scrollbar" href="#textual.widget.Widget.horizontal_scrollbar">horizontal_scrollbar</a></code></li>
