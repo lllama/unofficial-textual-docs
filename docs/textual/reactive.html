@@ -160,12 +160,14 @@ class Reactive(Generic[ReactiveType]):
         if current_value != value or first_set:
             setattr(obj, f&#34;__first_set_{self.internal_name}&#34;, False)
             setattr(obj, self.internal_name, value)
-            self._check_watchers(obj, name, current_value)
+            self._check_watchers(obj, name, current_value, first_set=first_set)
             if self._layout or self._repaint:
                 obj.refresh(repaint=self._repaint, layout=self._layout)
 
     @classmethod
-    def _check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
+    def _check_watchers(
+        cls, obj: Reactable, name: str, old_value: Any, first_set: bool = False
+    ) -&gt; None:
 
         internal_name = f&#34;_reactive_{name}&#34;
         value = getattr(obj, internal_name)
@@ -203,6 +205,11 @@ class Reactive(Generic[ReactiveType]):
                 )
             )
 
+        if not first_set:
+            obj.post_message_no_wait(
+                events.Callback(obj, callback=partial(Reactive._compute, obj))
+            )
+
     @classmethod
     async def _compute(cls, obj: Reactable) -&gt; None:
         _rich_traceback_guard = True
@@ -224,7 +231,7 @@ class reactive(Reactive[ReactiveType]):
         default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
         layout (bool, optional): Perform a layout on change. Defaults to False.
         repaint (bool, optional): Perform a repaint on change. Defaults to True.
-        init (bool, optional): Call watchers on initialize (post mount). Defaults to False.
+        init (bool, optional): Call watchers on initialize (post mount). Defaults to True.
 
     &#34;&#34;&#34;
 
@@ -447,12 +454,14 @@ def watch(
         if current_value != value or first_set:
             setattr(obj, f&#34;__first_set_{self.internal_name}&#34;, False)
             setattr(obj, self.internal_name, value)
-            self._check_watchers(obj, name, current_value)
+            self._check_watchers(obj, name, current_value, first_set=first_set)
             if self._layout or self._repaint:
                 obj.refresh(repaint=self._repaint, layout=self._layout)
 
     @classmethod
-    def _check_watchers(cls, obj: Reactable, name: str, old_value: Any) -&gt; None:
+    def _check_watchers(
+        cls, obj: Reactable, name: str, old_value: Any, first_set: bool = False
+    ) -&gt; None:
 
         internal_name = f&#34;_reactive_{name}&#34;
         value = getattr(obj, internal_name)
@@ -488,6 +497,11 @@ def watch(
                     obj,
                     callback=partial(update_watcher, obj, watcher, old_value, value),
                 )
+            )
+
+        if not first_set:
+            obj.post_message_no_wait(
+                events.Callback(obj, callback=partial(Reactive._compute, obj))
             )
 
     @classmethod
@@ -637,7 +651,7 @@ def var(
 <dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
 <dd>Perform a repaint on change. Defaults to True.</dd>
 <dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+<dd>Call watchers on initialize (post mount). Defaults to True.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -650,7 +664,7 @@ def var(
         default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.
         layout (bool, optional): Perform a layout on change. Defaults to False.
         repaint (bool, optional): Perform a repaint on change. Defaults to True.
-        init (bool, optional): Call watchers on initialize (post mount). Defaults to False.
+        init (bool, optional): Call watchers on initialize (post mount). Defaults to True.
 
     &#34;&#34;&#34;
 

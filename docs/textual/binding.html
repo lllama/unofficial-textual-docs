@@ -29,16 +29,15 @@
 <pre><code class="python">from __future__ import annotations
 
 import sys
-import rich.repr
-
 from dataclasses import dataclass
 from typing import Iterable, MutableMapping
+
+import rich.repr
 
 if sys.version_info &gt;= (3, 10):
     from typing import TypeAlias
 else:  # pragma: no cover
     from typing_extensions import TypeAlias
-
 
 BindingType: TypeAlias = &#34;Binding | tuple[str, str, str]&#34;
 
@@ -51,7 +50,7 @@ class NoBinding(Exception):
     &#34;&#34;&#34;A binding was not found.&#34;&#34;&#34;
 
 
-@dataclass
+@dataclass(frozen=True)
 class Binding:
     key: str
     &#34;&#34;&#34;Key to bind.&#34;&#34;&#34;
@@ -75,7 +74,20 @@ class Bindings:
         def make_bindings(bindings: Iterable[BindingType]) -&gt; Iterable[Binding]:
             for binding in bindings:
                 if isinstance(binding, Binding):
-                    yield binding
+                    binding_keys = binding.key.split(&#34;,&#34;)
+                    if len(binding_keys) &gt; 1:
+                        for key in binding_keys:
+                            new_binding = Binding(
+                                key=key,
+                                action=binding.action,
+                                description=binding.description,
+                                show=binding.show,
+                                key_display=binding.key_display,
+                                allow_forward=binding.allow_forward,
+                            )
+                            yield new_binding
+                    else:
+                        yield binding
                 else:
                     if len(binding) != 3:
                         raise BindingError(
@@ -242,7 +254,20 @@ class Bindings:
         def make_bindings(bindings: Iterable[BindingType]) -&gt; Iterable[Binding]:
             for binding in bindings:
                 if isinstance(binding, Binding):
-                    yield binding
+                    binding_keys = binding.key.split(&#34;,&#34;)
+                    if len(binding_keys) &gt; 1:
+                        for key in binding_keys:
+                            new_binding = Binding(
+                                key=key,
+                                action=binding.action,
+                                description=binding.description,
+                                show=binding.show,
+                                key_display=binding.key_display,
+                                allow_forward=binding.allow_forward,
+                            )
+                            yield new_binding
+                    else:
+                        yield binding
                 else:
                     if len(binding) != 3:
                         raise BindingError(

@@ -2762,39 +2762,9 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.scroll_view.ScrollView.watch_virtual_size",
-"url":17,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar",
-"url":17,
-"doc":"Watch function for show_horizontal_scrollbar attribute. Args: value (bool): Show horizontal scrollbar flag.",
-"func":1
-},
-{
-"ref":"textual.scroll_view.ScrollView.watch_show_vertical_scrollbar",
-"url":17,
-"doc":"Watch function for show_vertical_scrollbar attribute. Args: value (bool): Show vertical scrollbar flag.",
-"func":1
-},
-{
 "ref":"textual.scroll_view.ScrollView.render",
 "url":17,
 "doc":"Render the scrollable region (if  render_lines is not implemented). Returns: RenderableType: Renderable object.",
-"func":1
-},
-{
-"ref":"textual.scroll_view.ScrollView.watch_scroll_x",
-"url":17,
-"doc":"Called when horizontal bar is scrolled.",
-"func":1
-},
-{
-"ref":"textual.scroll_view.ScrollView.watch_scroll_y",
-"url":17,
-"doc":"Called when vertical bar is scrolled.",
 "func":1
 },
 {
@@ -13665,7 +13635,7 @@ INDEX=[
 {
 "ref":"textual.reactive.reactive",
 "url":40,
-"doc":"Create a reactive attribute. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
+"doc":"Create a reactive attribute. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to True."
 },
 {
 "ref":"textual.reactive.reactive.init",

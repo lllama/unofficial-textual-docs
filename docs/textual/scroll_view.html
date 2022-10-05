@@ -28,12 +28,9 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from typing import Collection
-
 from rich.console import RenderableType
 
-
-from .geometry import Region, Size
+from .geometry import Size
 from .widget import Widget
 
 
@@ -45,18 +42,11 @@ class ScrollView(Widget):
     &#34;&#34;&#34;
 
     DEFAULT_CSS = &#34;&#34;&#34;
-    
     ScrollView {     
         overflow-y: auto;
-        overflow-x: auto;        
+        overflow-x: auto;   
     }    
-
     &#34;&#34;&#34;
-
-    def __init__(
-        self, name: str | None = None, id: str | None = None, classes: str | None = None
-    ) -&gt; None:
-        super().__init__(name=name, id=id, classes=classes)
 
     @property
     def is_scrollable(self) -&gt; bool:
@@ -96,25 +86,6 @@ class ScrollView(Widget):
         &#34;&#34;&#34;
         return self.virtual_size.height
 
-    def watch_virtual_size(self, virtual_size: Size) -&gt; None:
-        self._scroll_update(virtual_size)
-
-    def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
-        &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
-
-        Args:
-            value (bool): Show horizontal scrollbar flag.
-        &#34;&#34;&#34;
-        self.refresh(layout=True)
-
-    def watch_show_vertical_scrollbar(self, value: bool) -&gt; None:
-        &#34;&#34;&#34;Watch function for show_vertical_scrollbar attribute.
-
-        Args:
-            value (bool): Show vertical scrollbar flag.
-        &#34;&#34;&#34;
-        self.refresh(layout=True)
-
     def _size_updated(
         self, size: Size, virtual_size: Size, container_size: Size
     ) -&gt; None:
@@ -125,12 +96,16 @@ class ScrollView(Widget):
             virtual_size (Size): New virtual size.
             container_size (Size): New container size.
         &#34;&#34;&#34;
-        if self._size != size or virtual_size != self.virtual_size:
+        if (
+            self._size != size
+            or virtual_size != self.virtual_size
+            or container_size != self.container_size
+        ):
             self._size = size
             virtual_size = self.virtual_size
-            self._container_size = size - self.gutter.totals
             self._scroll_update(virtual_size)
-            self.scroll_to(self.scroll_x, self.scroll_y)
+            self._container_size = size - self.gutter.totals
+            self.scroll_to(self.scroll_x, self.scroll_y, animate=False)
             self.refresh()
 
     def render(self) -&gt; RenderableType:
@@ -141,17 +116,7 @@ class ScrollView(Widget):
         &#34;&#34;&#34;
         from rich.panel import Panel
 
-        return Panel(f&#34;{self.scroll_offset} {self.show_vertical_scrollbar}&#34;)
-
-    def watch_scroll_x(self, new_value: float) -&gt; None:
-        &#34;&#34;&#34;Called when horizontal bar is scrolled.&#34;&#34;&#34;
-        self.horizontal_scrollbar.position = int(new_value)
-        self.refresh(layout=False)
-
-    def watch_scroll_y(self, new_value: float) -&gt; None:
-        &#34;&#34;&#34;Called when vertical bar is scrolled.&#34;&#34;&#34;
-        self.vertical_scrollbar.position = int(new_value)
-        self.refresh(layout=False)</code></pre>
+        return Panel(f&#34;{self.scroll_offset} {self.show_vertical_scrollbar}&#34;)</code></pre>
 </details>
 </section>
 <section>
@@ -165,7 +130,7 @@ class ScrollView(Widget):
 <dl>
 <dt id="textual.scroll_view.ScrollView"><code class="flex name class">
 <span>class <span class="ident">ScrollView</span></span>
-<span>(</span><span>name: str | None = None, id: str | None = None, classes: str | None = None)</span>
+<span>(</span><span>*children: Widget, name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A base class for a Widget that handles it's own scrolling (i.e. doesn't rely
@@ -182,18 +147,11 @@ on the compositor to render children).</p></div>
     &#34;&#34;&#34;
 
     DEFAULT_CSS = &#34;&#34;&#34;
-    
     ScrollView {     
         overflow-y: auto;
-        overflow-x: auto;        
+        overflow-x: auto;   
     }    
-
     &#34;&#34;&#34;
-
-    def __init__(
-        self, name: str | None = None, id: str | None = None, classes: str | None = None
-    ) -&gt; None:
-        super().__init__(name=name, id=id, classes=classes)
 
     @property
     def is_scrollable(self) -&gt; bool:
@@ -233,25 +191,6 @@ on the compositor to render children).</p></div>
         &#34;&#34;&#34;
         return self.virtual_size.height
 
-    def watch_virtual_size(self, virtual_size: Size) -&gt; None:
-        self._scroll_update(virtual_size)
-
-    def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
-        &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
-
-        Args:
-            value (bool): Show horizontal scrollbar flag.
-        &#34;&#34;&#34;
-        self.refresh(layout=True)
-
-    def watch_show_vertical_scrollbar(self, value: bool) -&gt; None:
-        &#34;&#34;&#34;Watch function for show_vertical_scrollbar attribute.
-
-        Args:
-            value (bool): Show vertical scrollbar flag.
-        &#34;&#34;&#34;
-        self.refresh(layout=True)
-
     def _size_updated(
         self, size: Size, virtual_size: Size, container_size: Size
     ) -&gt; None:
@@ -262,12 +201,16 @@ on the compositor to render children).</p></div>
             virtual_size (Size): New virtual size.
             container_size (Size): New container size.
         &#34;&#34;&#34;
-        if self._size != size or virtual_size != self.virtual_size:
+        if (
+            self._size != size
+            or virtual_size != self.virtual_size
+            or container_size != self.container_size
+        ):
             self._size = size
             virtual_size = self.virtual_size
-            self._container_size = size - self.gutter.totals
             self._scroll_update(virtual_size)
-            self.scroll_to(self.scroll_x, self.scroll_y)
+            self._container_size = size - self.gutter.totals
+            self.scroll_to(self.scroll_x, self.scroll_y, animate=False)
             self.refresh()
 
     def render(self) -&gt; RenderableType:
@@ -278,17 +221,7 @@ on the compositor to render children).</p></div>
         &#34;&#34;&#34;
         from rich.panel import Panel
 
-        return Panel(f&#34;{self.scroll_offset} {self.show_vertical_scrollbar}&#34;)
-
-    def watch_scroll_x(self, new_value: float) -&gt; None:
-        &#34;&#34;&#34;Called when horizontal bar is scrolled.&#34;&#34;&#34;
-        self.horizontal_scrollbar.position = int(new_value)
-        self.refresh(layout=False)
-
-    def watch_scroll_y(self, new_value: float) -&gt; None:
-        &#34;&#34;&#34;Called when vertical bar is scrolled.&#34;&#34;&#34;
-        self.vertical_scrollbar.position = int(new_value)
-        self.refresh(layout=False)</code></pre>
+        return Panel(f&#34;{self.scroll_offset} {self.show_vertical_scrollbar}&#34;)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -445,95 +378,6 @@ def is_transparent(self) -&gt; bool:
     from rich.panel import Panel
 
     return Panel(f&#34;{self.scroll_offset} {self.show_vertical_scrollbar}&#34;)</code></pre>
-</details>
-</dd>
-<dt id="textual.scroll_view.ScrollView.watch_scroll_x"><code class="name flex">
-<span>def <span class="ident">watch_scroll_x</span></span>(<span>self, new_value: float) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Called when horizontal bar is scrolled.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch_scroll_x(self, new_value: float) -&gt; None:
-    &#34;&#34;&#34;Called when horizontal bar is scrolled.&#34;&#34;&#34;
-    self.horizontal_scrollbar.position = int(new_value)
-    self.refresh(layout=False)</code></pre>
-</details>
-</dd>
-<dt id="textual.scroll_view.ScrollView.watch_scroll_y"><code class="name flex">
-<span>def <span class="ident">watch_scroll_y</span></span>(<span>self, new_value: float) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Called when vertical bar is scrolled.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch_scroll_y(self, new_value: float) -&gt; None:
-    &#34;&#34;&#34;Called when vertical bar is scrolled.&#34;&#34;&#34;
-    self.vertical_scrollbar.position = int(new_value)
-    self.refresh(layout=False)</code></pre>
-</details>
-</dd>
-<dt id="textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar"><code class="name flex">
-<span>def <span class="ident">watch_show_horizontal_scrollbar</span></span>(<span>self, value: bool) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Watch function for show_horizontal_scrollbar attribute.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>value</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Show horizontal scrollbar flag.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch_show_horizontal_scrollbar(self, value: bool) -&gt; None:
-    &#34;&#34;&#34;Watch function for show_horizontal_scrollbar attribute.
-
-    Args:
-        value (bool): Show horizontal scrollbar flag.
-    &#34;&#34;&#34;
-    self.refresh(layout=True)</code></pre>
-</details>
-</dd>
-<dt id="textual.scroll_view.ScrollView.watch_show_vertical_scrollbar"><code class="name flex">
-<span>def <span class="ident">watch_show_vertical_scrollbar</span></span>(<span>self, value: bool) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Watch function for show_vertical_scrollbar attribute.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>value</code></strong> :&ensp;<code>bool</code></dt>
-<dd>Show vertical scrollbar flag.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch_show_vertical_scrollbar(self, value: bool) -&gt; None:
-    &#34;&#34;&#34;Watch function for show_vertical_scrollbar attribute.
-
-    Args:
-        value (bool): Show vertical scrollbar flag.
-    &#34;&#34;&#34;
-    self.refresh(layout=True)</code></pre>
-</details>
-</dd>
-<dt id="textual.scroll_view.ScrollView.watch_virtual_size"><code class="name flex">
-<span>def <span class="ident">watch_virtual_size</span></span>(<span>self, virtual_size: Size) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def watch_virtual_size(self, virtual_size: Size) -&gt; None:
-    self._scroll_update(virtual_size)</code></pre>
 </details>
 </dd>
 </dl>
@@ -736,7 +580,7 @@ setTimeout(() => input.focus(), 100);
 <ul>
 <li>
 <h4><code><a title="textual.scroll_view.ScrollView" href="#textual.scroll_view.ScrollView">ScrollView</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="textual.scroll_view.ScrollView.COMPONENT_CLASSES" href="#textual.scroll_view.ScrollView.COMPONENT_CLASSES">COMPONENT_CLASSES</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.DEFAULT_CSS" href="#textual.scroll_view.ScrollView.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.get_content_height" href="#textual.scroll_view.ScrollView.get_content_height">get_content_height</a></code></li>
@@ -745,11 +589,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.scroll_view.ScrollView.is_transparent" href="#textual.scroll_view.ScrollView.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.on_mount" href="#textual.scroll_view.ScrollView.on_mount">on_mount</a></code></li>
 <li><code><a title="textual.scroll_view.ScrollView.render" href="#textual.scroll_view.ScrollView.render">render</a></code></li>
-<li><code><a title="textual.scroll_view.ScrollView.watch_scroll_x" href="#textual.scroll_view.ScrollView.watch_scroll_x">watch_scroll_x</a></code></li>
-<li><code><a title="textual.scroll_view.ScrollView.watch_scroll_y" href="#textual.scroll_view.ScrollView.watch_scroll_y">watch_scroll_y</a></code></li>
-<li><code><a title="textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar" href="#textual.scroll_view.ScrollView.watch_show_horizontal_scrollbar">watch_show_horizontal_scrollbar</a></code></li>
-<li><code><a title="textual.scroll_view.ScrollView.watch_show_vertical_scrollbar" href="#textual.scroll_view.ScrollView.watch_show_vertical_scrollbar">watch_show_vertical_scrollbar</a></code></li>
-<li><code><a title="textual.scroll_view.ScrollView.watch_virtual_size" href="#textual.scroll_view.ScrollView.watch_virtual_size">watch_virtual_size</a></code></li>
 </ul>
 </li>
 </ul>

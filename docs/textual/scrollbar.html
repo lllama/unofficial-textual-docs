@@ -299,6 +299,7 @@ class ScrollBar(Widget):
     async def _on_mouse_up(self, event: events.MouseUp) -&gt; None:
         if self.grabbed:
             self.release_mouse()
+        event.stop()
 
     def _on_mouse_capture(self, event: events.MouseCapture) -&gt; None:
         self.grabbed = event.mouse_position
@@ -306,6 +307,7 @@ class ScrollBar(Widget):
 
     def _on_mouse_release(self, event: events.MouseRelease) -&gt; None:
         self.grabbed = None
+        event.stop()
 
     async def _on_mouse_move(self, event: events.MouseMove) -&gt; None:
         if self.grabbed and self.window_size:
@@ -328,6 +330,10 @@ class ScrollBar(Widget):
                     )
                 )
             await self.emit(ScrollTo(self, x=x, y=y))
+        event.stop()
+
+    async def _on_click(self, event: events.Click) -&gt; None:
+        event.stop()
 
 
 class ScrollBarCorner(Widget):
@@ -462,6 +468,7 @@ if __name__ == &#34;__main__&#34;:
     async def _on_mouse_up(self, event: events.MouseUp) -&gt; None:
         if self.grabbed:
             self.release_mouse()
+        event.stop()
 
     def _on_mouse_capture(self, event: events.MouseCapture) -&gt; None:
         self.grabbed = event.mouse_position
@@ -469,6 +476,7 @@ if __name__ == &#34;__main__&#34;:
 
     def _on_mouse_release(self, event: events.MouseRelease) -&gt; None:
         self.grabbed = None
+        event.stop()
 
     async def _on_mouse_move(self, event: events.MouseMove) -&gt; None:
         if self.grabbed and self.window_size:
@@ -490,7 +498,11 @@ if __name__ == &#34;__main__&#34;:
                         * (self.window_virtual_size / self.window_size)
                     )
                 )
-            await self.emit(ScrollTo(self, x=x, y=y))</code></pre>
+            await self.emit(ScrollTo(self, x=x, y=y))
+        event.stop()
+
+    async def _on_click(self, event: events.Click) -&gt; None:
+        event.stop()</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
