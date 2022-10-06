@@ -68,8 +68,13 @@ class Screen(Widget):
 
     dark: Reactive[bool] = Reactive(False)
 
-    def __init__(self, name: str | None = None, id: str | None = None) -&gt; None:
-        super().__init__(name=name, id=id)
+    def __init__(
+        self,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+    ) -&gt; None:
+        super().__init__(name=name, id=id, classes=classes)
         self._compositor = Compositor()
         self._dirty_widgets: set[Widget] = set()
         self._update_timer: Timer | None = None
@@ -385,7 +390,7 @@ class Screen(Widget):
 <dl>
 <dt id="textual.screen.Screen"><code class="flex name class">
 <span>class <span class="ident">Screen</span></span>
-<span>(</span><span>name: str | None = None, id: str | None = None)</span>
+<span>(</span><span>name: str | None = None, id: str | None = None, classes: str | None = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A widget for the root of the app.</p></div>
@@ -406,8 +411,13 @@ class Screen(Widget):
 
     dark: Reactive[bool] = Reactive(False)
 
-    def __init__(self, name: str | None = None, id: str | None = None) -&gt; None:
-        super().__init__(name=name, id=id)
+    def __init__(
+        self,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+    ) -&gt; None:
+        super().__init__(name=name, id=id, classes=classes)
         self._compositor = Compositor()
         self._dirty_widgets: set[Widget] = set()
         self._update_timer: Timer | None = None
