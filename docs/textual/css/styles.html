@@ -39,7 +39,7 @@ import rich.repr
 from rich.style import Style
 
 from .._types import CallbackType
-from .._animator import Animation, EasingFunction, BoundAnimator
+from .._animator import BoundAnimator, DEFAULT_EASING, Animatable, EasingFunction
 from ..color import Color
 from ..geometry import Offset, Spacing
 from ._style_properties import (
@@ -917,22 +917,44 @@ class RenderStyles(StylesBase):
         assert self.node is not None
         return self.node.rich_style
 
-    @property
-    def animate(self) -&gt; BoundAnimator:
-        &#34;&#34;&#34;Get an animator to animate style.
+    def animate(
+        self,
+        attribute: str,
+        value: float | Animatable,
+        *,
+        final_value: object = ...,
+        duration: float | None = None,
+        speed: float | None = None,
+        delay: float = 0.0,
+        easing: EasingFunction | str = DEFAULT_EASING,
+        on_complete: CallbackType | None = None,
+    ) -&gt; None:
+        &#34;&#34;&#34;Animate an attribute.
 
-        Example:
-            ```python
-            self.animate(&#34;brightness&#34;, 0.5)
-            ```
+        Args:
+            attribute (str): Name of the attribute to animate.
+            value (float | Animatable): The value to animate to.
+            final_value (object, optional): The final value of the animation. Defaults to `value` if not set.
+            duration (float | None, optional): The duration of the animate. Defaults to None.
+            speed (float | None, optional): The speed of the animation. Defaults to None.
+            delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0.
+            easing (EasingFunction | str, optional): An easing method. Defaults to &#34;in_out_cubic&#34;.
+            on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.
 
-        Returns:
-            BoundAnimator: An animator bound to this widget.
         &#34;&#34;&#34;
         if self._animate is None:
             self._animate = self.node.app.animator.bind(self)
         assert self._animate is not None
-        return self._animate
+        self._animate(
+            attribute,
+            value,
+            final_value=final_value,
+            duration=duration,
+            speed=speed,
+            delay=delay,
+            easing=easing,
+            on_complete=on_complete,
+        )
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         for rule_name in RULE_NAMES:
@@ -1089,22 +1111,44 @@ if __name__ == &#34;__main__&#34;:
         assert self.node is not None
         return self.node.rich_style
 
-    @property
-    def animate(self) -&gt; BoundAnimator:
-        &#34;&#34;&#34;Get an animator to animate style.
+    def animate(
+        self,
+        attribute: str,
+        value: float | Animatable,
+        *,
+        final_value: object = ...,
+        duration: float | None = None,
+        speed: float | None = None,
+        delay: float = 0.0,
+        easing: EasingFunction | str = DEFAULT_EASING,
+        on_complete: CallbackType | None = None,
+    ) -&gt; None:
+        &#34;&#34;&#34;Animate an attribute.
 
-        Example:
-            ```python
-            self.animate(&#34;brightness&#34;, 0.5)
-            ```
+        Args:
+            attribute (str): Name of the attribute to animate.
+            value (float | Animatable): The value to animate to.
+            final_value (object, optional): The final value of the animation. Defaults to `value` if not set.
+            duration (float | None, optional): The duration of the animate. Defaults to None.
+            speed (float | None, optional): The speed of the animation. Defaults to None.
+            delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0.
+            easing (EasingFunction | str, optional): An easing method. Defaults to &#34;in_out_cubic&#34;.
+            on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.
 
-        Returns:
-            BoundAnimator: An animator bound to this widget.
         &#34;&#34;&#34;
         if self._animate is None:
             self._animate = self.node.app.animator.bind(self)
         assert self._animate is not None
-        return self._animate
+        self._animate(
+            attribute,
+            value,
+            final_value=final_value,
+            duration=duration,
+            speed=speed,
+            delay=delay,
+            easing=easing,
+            on_complete=on_complete,
+        )
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         for rule_name in RULE_NAMES:
@@ -1173,39 +1217,6 @@ if __name__ == &#34;__main__&#34;:
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.css.styles.RenderStyles.animate"><code class="name">var <span class="ident">animate</span> : textual._animator.BoundAnimator</code></dt>
-<dd>
-<div class="desc"><p>Get an animator to animate style.</p>
-<h2 id="example">Example</h2>
-<pre><code class="language-python">self.animate(&quot;brightness&quot;, 0.5)
-</code></pre>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>BoundAnimator</code></dt>
-<dd>An animator bound to this widget.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def animate(self) -&gt; BoundAnimator:
-    &#34;&#34;&#34;Get an animator to animate style.
-
-    Example:
-        ```python
-        self.animate(&#34;brightness&#34;, 0.5)
-        ```
-
-    Returns:
-        BoundAnimator: An animator bound to this widget.
-    &#34;&#34;&#34;
-    if self._animate is None:
-        self._animate = self.node.app.animator.bind(self)
-    assert self._animate is not None
-    return self._animate</code></pre>
-</details>
-</dd>
 <dt id="textual.css.styles.RenderStyles.base"><code class="name">var <span class="ident">base</span> : <a title="textual.css.styles.Styles" href="#textual.css.styles.Styles">Styles</a></code></dt>
 <dd>
 <div class="desc"><p>Quick access to base (css) style.</p></div>
@@ -1266,6 +1277,69 @@ def rich_style(self) -&gt; Style:
 </dl>
 <h3>Methods</h3>
 <dl>
+<dt id="textual.css.styles.RenderStyles.animate"><code class="name flex">
+<span>def <span class="ident">animate</span></span>(<span>self, attribute: str, value: float | Animatable, *, final_value: object = Ellipsis, duration: float | None = None, speed: float | None = None, delay: float = 0.0, easing: EasingFunction | str = 'in_out_cubic', on_complete: CallbackType | None = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Animate an attribute.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>attribute</code></strong> :&ensp;<code>str</code></dt>
+<dd>Name of the attribute to animate.</dd>
+<dt>value (float | Animatable): The value to animate to.</dt>
+<dt><strong><code>final_value</code></strong> :&ensp;<code>object</code>, optional</dt>
+<dd>The final value of the animation. Defaults to <code>value</code> if not set.</dd>
+<dt>duration (float | None, optional): The duration of the animate. Defaults to None.</dt>
+<dt>speed (float | None, optional): The speed of the animation. Defaults to None.</dt>
+<dt><strong><code>delay</code></strong> :&ensp;<code>float</code>, optional</dt>
+<dd>A delay (in seconds) before the animation starts. Defaults to 0.0.</dd>
+</dl>
+<p>easing (EasingFunction | str, optional): An easing method. Defaults to "in_out_cubic".
+on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def animate(
+    self,
+    attribute: str,
+    value: float | Animatable,
+    *,
+    final_value: object = ...,
+    duration: float | None = None,
+    speed: float | None = None,
+    delay: float = 0.0,
+    easing: EasingFunction | str = DEFAULT_EASING,
+    on_complete: CallbackType | None = None,
+) -&gt; None:
+    &#34;&#34;&#34;Animate an attribute.
+
+    Args:
+        attribute (str): Name of the attribute to animate.
+        value (float | Animatable): The value to animate to.
+        final_value (object, optional): The final value of the animation. Defaults to `value` if not set.
+        duration (float | None, optional): The duration of the animate. Defaults to None.
+        speed (float | None, optional): The speed of the animation. Defaults to None.
+        delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0.
+        easing (EasingFunction | str, optional): An easing method. Defaults to &#34;in_out_cubic&#34;.
+        on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.
+
+    &#34;&#34;&#34;
+    if self._animate is None:
+        self._animate = self.node.app.animator.bind(self)
+    assert self._animate is not None
+    self._animate(
+        attribute,
+        value,
+        final_value=final_value,
+        duration=duration,
+        speed=speed,
+        delay=delay,
+        easing=easing,
+        on_complete=on_complete,
+    )</code></pre>
+</details>
+</dd>
 <dt id="textual.css.styles.RenderStyles.clear_rule"><code class="name flex">
 <span>def <span class="ident">clear_rule</span></span>(<span>self, rule_name: str) ‑> bool</span>
 </code></dt>

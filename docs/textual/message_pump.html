@@ -316,6 +316,7 @@ class MessagePump(metaclass=MessagePumpMeta):
 
     def _start_messages(self) -&gt; None:
         &#34;&#34;&#34;Start messages task.&#34;&#34;&#34;
+        Reactive.initialize_object(self)
         self._task = asyncio.create_task(self._process_messages())
 
     async def _process_messages(self) -&gt; None:
@@ -333,7 +334,6 @@ class MessagePump(metaclass=MessagePumpMeta):
         &#34;&#34;&#34;Process messages until the queue is closed.&#34;&#34;&#34;
         _rich_traceback_guard = True
 
-        await Reactive.initialize_object(self)
         while not self._closed:
             try:
                 message = await self._get_message()
@@ -844,6 +844,7 @@ class MessagePump(metaclass=MessagePumpMeta):
 
     def _start_messages(self) -&gt; None:
         &#34;&#34;&#34;Start messages task.&#34;&#34;&#34;
+        Reactive.initialize_object(self)
         self._task = asyncio.create_task(self._process_messages())
 
     async def _process_messages(self) -&gt; None:
@@ -861,7 +862,6 @@ class MessagePump(metaclass=MessagePumpMeta):
         &#34;&#34;&#34;Process messages until the queue is closed.&#34;&#34;&#34;
         _rich_traceback_guard = True
 
-        await Reactive.initialize_object(self)
         while not self._closed:
             try:
                 message = await self._get_message()

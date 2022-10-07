@@ -798,7 +798,8 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.animate",
 "url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.is_container",
@@ -1528,7 +1529,8 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.animate",
 "url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.is_container",
@@ -3008,7 +3010,8 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.animate",
 "url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.is_container",
@@ -3737,7 +3740,8 @@ INDEX=[
 {
 "ref":"textual.containers.Container.animate",
 "url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.containers.Container.is_container",
@@ -4472,7 +4476,8 @@ INDEX=[
 {
 "ref":"textual.containers.Vertical.animate",
 "url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.containers.Vertical.is_container",
@@ -5207,7 +5212,8 @@ INDEX=[
 {
 "ref":"textual.containers.Horizontal.animate",
 "url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.containers.Horizontal.is_container",
@@ -5942,7 +5948,8 @@ INDEX=[
 {
 "ref":"textual.containers.Grid.animate",
 "url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.containers.Grid.is_container",
@@ -6677,7 +6684,8 @@ INDEX=[
 {
 "ref":"textual.containers.Content.animate",
 "url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.containers.Content.is_container",
@@ -8135,7 +8143,8 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.animate",
 "url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.widget.Widget.is_container",
@@ -12216,7 +12225,8 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.animate",
 "url":3,
-"doc":"Get an animator to animate attributes on this widget. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.screen.Screen.is_container",
@@ -15403,7 +15413,8 @@ INDEX=[
 {
 "ref":"textual.css.styles.RenderStyles.animate",
 "url":52,
-"doc":"Get an animator to animate style. Example:  python self.animate(\"brightness\", 0.5)  Returns: BoundAnimator: An animator bound to this widget."
+"doc":"Animate an attribute. Args: attribute (str): Name of the attribute to animate. value (float | Animatable): The value to animate to. final_value (object, optional): The final value of the animation. Defaults to  value if not set. duration (float | None, optional): The duration of the animate. Defaults to None. speed (float | None, optional): The speed of the animation. Defaults to None. delay (float, optional): A delay (in seconds) before the animation starts. Defaults to 0.0. easing (EasingFunction | str, optional): An easing method. Defaults to \"in_out_cubic\". on_complete (CallbackType | None, optional): A callable to invoke when the animation is finished. Defaults to None.",
+"func":1
 },
 {
 "ref":"textual.css.styles.RenderStyles.refresh",

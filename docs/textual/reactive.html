@@ -45,7 +45,7 @@ if TYPE_CHECKING:
     Reactable = Union[Widget, App]
 
 
-ReactiveType = TypeVar(&#34;ReactiveType&#34;, covariant=True)
+ReactiveType = TypeVar(&#34;ReactiveType&#34;)
 
 
 T = TypeVar(&#34;T&#34;)
@@ -111,7 +111,7 @@ class Reactive(Generic[ReactiveType]):
         return cls(default, layout=False, repaint=False, init=True)
 
     @classmethod
-    async def initialize_object(cls, obj: object) -&gt; None:
+    def initialize_object(cls, obj: object) -&gt; None:
         &#34;&#34;&#34;Call any watchers / computes for the first time.
 
         Args:
@@ -405,7 +405,7 @@ def watch(
         return cls(default, layout=False, repaint=False, init=True)
 
     @classmethod
-    async def initialize_object(cls, obj: object) -&gt; None:
+    def initialize_object(cls, obj: object) -&gt; None:
         &#34;&#34;&#34;Call any watchers / computes for the first time.
 
         Args:
@@ -572,7 +572,7 @@ def init(
 </details>
 </dd>
 <dt id="textual.reactive.Reactive.initialize_object"><code class="name flex">
-<span>async def <span class="ident">initialize_object</span></span>(<span>obj: object) ‑> None</span>
+<span>def <span class="ident">initialize_object</span></span>(<span>obj: object) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Call any watchers / computes for the first time.</p>
@@ -586,7 +586,7 @@ def init(
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-async def initialize_object(cls, obj: object) -&gt; None:
+def initialize_object(cls, obj: object) -&gt; None:
     &#34;&#34;&#34;Call any watchers / computes for the first time.
 
     Args:
