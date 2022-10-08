@@ -1118,13 +1118,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -1849,13 +1849,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -3325,13 +3325,13 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -4066,13 +4066,13 @@ INDEX=[
 {
 "ref":"textual.containers.Container.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.containers.Container.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -4802,13 +4802,13 @@ INDEX=[
 {
 "ref":"textual.containers.Vertical.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.containers.Vertical.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -5538,13 +5538,13 @@ INDEX=[
 {
 "ref":"textual.containers.Horizontal.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.containers.Horizontal.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -6274,13 +6274,13 @@ INDEX=[
 {
 "ref":"textual.containers.Grid.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.containers.Grid.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -7010,13 +7010,13 @@ INDEX=[
 {
 "ref":"textual.containers.Content.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.containers.Content.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -7352,13 +7352,13 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.dom.DOMNode.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -8481,13 +8481,13 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -12539,13 +12539,13 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.query",
 "url":4,
-"doc":"Get a DOM query matching a selector. Args: selector (str, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
+"doc":"Get a DOM query matching a selector. Args: selector (str | type | None, optional): A CSS selector or  None for all nodes. Defaults to None. Returns: DOMQuery: A query object.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | None, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {

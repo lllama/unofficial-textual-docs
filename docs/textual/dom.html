@@ -718,7 +718,7 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;Get a DOM query matching a selector.
 
         Args:
-            selector (str, optional): A CSS selector or `None` for all nodes. Defaults to None.
+            selector (str | type | None, optional): A CSS selector or `None` for all nodes. Defaults to None.
 
         Returns:
             DOMQuery: A query object.
@@ -753,7 +753,7 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;Get the first Widget matching the given selector or selector type.
 
         Args:
-            selector (str | None, optional): A selector.
+            selector (str | type, optional): A selector.
             expect_type (type, optional): Require the object be of the supplied type, or None for any type.
                 Defaults to None.
 
@@ -1584,7 +1584,7 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;Get a DOM query matching a selector.
 
         Args:
-            selector (str, optional): A CSS selector or `None` for all nodes. Defaults to None.
+            selector (str | type | None, optional): A CSS selector or `None` for all nodes. Defaults to None.
 
         Returns:
             DOMQuery: A query object.
@@ -1619,7 +1619,7 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;Get the first Widget matching the given selector or selector type.
 
         Args:
-            selector (str | None, optional): A selector.
+            selector (str | type, optional): A selector.
             expect_type (type, optional): Require the object be of the supplied type, or None for any type.
                 Defaults to None.
 
@@ -2458,10 +2458,7 @@ and inherited from base classes.</dd>
 <dd>
 <div class="desc"><p>Get a DOM query matching a selector.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>selector</code></strong> :&ensp;<code>str</code>, optional</dt>
-<dd>A CSS selector or <code>None</code> for all nodes. Defaults to None.</dd>
-</dl>
+<p>selector (str | type | None, optional): A CSS selector or <code>None</code> for all nodes. Defaults to None.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code>DOMQuery</code></dt>
@@ -2475,7 +2472,7 @@ and inherited from base classes.</dd>
     &#34;&#34;&#34;Get a DOM query matching a selector.
 
     Args:
-        selector (str, optional): A CSS selector or `None` for all nodes. Defaults to None.
+        selector (str | type | None, optional): A CSS selector or `None` for all nodes. Defaults to None.
 
     Returns:
         DOMQuery: A query object.
@@ -2498,7 +2495,7 @@ and inherited from base classes.</dd>
 <div class="desc"><p>Get the first Widget matching the given selector or selector type.</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt>selector (str | None, optional): A selector.</dt>
+<dt>selector (str | type, optional): A selector.</dt>
 <dt><strong><code>expect_type</code></strong> :&ensp;<code>type</code>, optional</dt>
 <dd>Require the object be of the supplied type, or None for any type.
 Defaults to None.</dd>
@@ -2517,7 +2514,7 @@ Defaults to None.</dd>
     &#34;&#34;&#34;Get the first Widget matching the given selector or selector type.
 
     Args:
-        selector (str | None, optional): A selector.
+        selector (str | type, optional): A selector.
         expect_type (type, optional): Require the object be of the supplied type, or None for any type.
             Defaults to None.
 

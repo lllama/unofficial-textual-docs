@@ -43,7 +43,7 @@ NUMBER_OF_SHADES = 3
 # Where no content exists
 DEFAULT_DARK_BACKGROUND = &#34;#121212&#34;
 # What text usually goes on top off
-DEFAULT_DARK_SURFACE = &#34;#121212&#34;
+DEFAULT_DARK_SURFACE = &#34;#1e1e1e&#34;
 
 DEFAULT_LIGHT_SURFACE = &#34;#f5f5f5&#34;
 DEFAULT_LIGHT_BACKGROUND = &#34;#efefef&#34;
@@ -153,10 +153,10 @@ class ColorSystem:
 
         foreground = background.inverse
 
-        boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.07)
+        boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.04)
 
         if self.panel is None:
-            panel = surface.blend(primary, luminosity_spread)
+            panel = surface.blend(primary, 0.1)
             if dark:
                 panel += boost
         else:
@@ -215,9 +215,9 @@ class ColorSystem:
                     shade_color = color.lighten(luminosity_delta)
                     colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
 
-        colors[&#34;text&#34;] = &#34;auto 90%&#34;
-        colors[&#34;text-muted&#34;] = &#34;auto 50%&#34;
-        colors[&#34;text-disabled&#34;] = &#34;auto 30%&#34;
+        colors[&#34;text&#34;] = &#34;auto 87%&#34;
+        colors[&#34;text-muted&#34;] = &#34;auto 60%&#34;
+        colors[&#34;text-disabled&#34;] = &#34;auto 38%&#34;
 
         return colors
 
@@ -439,10 +439,10 @@ Secondary is a second theme color</p></div>
 
         foreground = background.inverse
 
-        boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.07)
+        boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.04)
 
         if self.panel is None:
-            panel = surface.blend(primary, luminosity_spread)
+            panel = surface.blend(primary, 0.1)
             if dark:
                 panel += boost
         else:
@@ -501,9 +501,9 @@ Secondary is a second theme color</p></div>
                     shade_color = color.lighten(luminosity_delta)
                     colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
 
-        colors[&#34;text&#34;] = &#34;auto 90%&#34;
-        colors[&#34;text-muted&#34;] = &#34;auto 50%&#34;
-        colors[&#34;text-disabled&#34;] = &#34;auto 30%&#34;
+        colors[&#34;text&#34;] = &#34;auto 87%&#34;
+        colors[&#34;text-muted&#34;] = &#34;auto 60%&#34;
+        colors[&#34;text-disabled&#34;] = &#34;auto 38%&#34;
 
         return colors</code></pre>
 </details>
@@ -596,10 +596,10 @@ shades. Defaults to 0.2.</dd>
 
     foreground = background.inverse
 
-    boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.07)
+    boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.04)
 
     if self.panel is None:
-        panel = surface.blend(primary, luminosity_spread)
+        panel = surface.blend(primary, 0.1)
         if dark:
             panel += boost
     else:
@@ -658,9 +658,9 @@ shades. Defaults to 0.2.</dd>
                 shade_color = color.lighten(luminosity_delta)
                 colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
 
-    colors[&#34;text&#34;] = &#34;auto 90%&#34;
-    colors[&#34;text-muted&#34;] = &#34;auto 50%&#34;
-    colors[&#34;text-disabled&#34;] = &#34;auto 30%&#34;
+    colors[&#34;text&#34;] = &#34;auto 87%&#34;
+    colors[&#34;text-muted&#34;] = &#34;auto 60%&#34;
+    colors[&#34;text-disabled&#34;] = &#34;auto 38%&#34;
 
     return colors</code></pre>
 </details>
