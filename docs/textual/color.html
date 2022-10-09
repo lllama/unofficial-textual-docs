@@ -363,6 +363,17 @@ class Color(NamedTuple):
         r, g, b, a = self
         return f&#34;rgb({r},{g},{b})&#34; if a == 1 else f&#34;rgba({r},{g},{b},{a})&#34;
 
+    @property
+    def monochrome(self) -&gt; Color:
+        &#34;&#34;&#34;Get a monochrome version of this color.
+
+        Returns:
+            Color: A new monochrome color.
+        &#34;&#34;&#34;
+        r, g, b, a = self
+        gray = round(r * 0.2126 + g * 0.7152 + b * 0.0722)
+        return Color(gray, gray, gray, a)
+
     def __rich_repr__(self) -&gt; rich.repr.Result:
         r, g, b, a = self
         yield r
@@ -901,6 +912,17 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         &#34;&#34;&#34;
         r, g, b, a = self
         return f&#34;rgb({r},{g},{b})&#34; if a == 1 else f&#34;rgba({r},{g},{b},{a})&#34;
+
+    @property
+    def monochrome(self) -&gt; Color:
+        &#34;&#34;&#34;Get a monochrome version of this color.
+
+        Returns:
+            Color: A new monochrome color.
+        &#34;&#34;&#34;
+        r, g, b, a = self
+        gray = round(r * 0.2126 + g * 0.7152 + b * 0.0722)
+        return Color(gray, gray, gray, a)
 
     def __rich_repr__(self) -&gt; rich.repr.Result:
         r, g, b, a = self
@@ -1541,6 +1563,30 @@ def is_transparent(self) -&gt; bool:
     return self.a == 0</code></pre>
 </details>
 </dd>
+<dt id="textual.color.Color.monochrome"><code class="name">var <span class="ident">monochrome</span> : <a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>
+<div class="desc"><p>Get a monochrome version of this color.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
+<dd>A new monochrome color.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def monochrome(self) -&gt; Color:
+    &#34;&#34;&#34;Get a monochrome version of this color.
+
+    Returns:
+        Color: A new monochrome color.
+    &#34;&#34;&#34;
+    r, g, b, a = self
+    gray = round(r * 0.2126 + g * 0.7152 + b * 0.0722)
+    return Color(gray, gray, gray, a)</code></pre>
+</details>
+</dd>
 <dt id="textual.color.Color.normalized"><code class="name">var <span class="ident">normalized</span> : tuple[float, float, float]</code></dt>
 <dd>
 <div class="desc"><p>A tuple of the color components normalized to between 0 and 1.</p>
@@ -2076,6 +2122,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.color.Color.inverse" href="#textual.color.Color.inverse">inverse</a></code></li>
 <li><code><a title="textual.color.Color.is_transparent" href="#textual.color.Color.is_transparent">is_transparent</a></code></li>
 <li><code><a title="textual.color.Color.lighten" href="#textual.color.Color.lighten">lighten</a></code></li>
+<li><code><a title="textual.color.Color.monochrome" href="#textual.color.Color.monochrome">monochrome</a></code></li>
 <li><code><a title="textual.color.Color.normalized" href="#textual.color.Color.normalized">normalized</a></code></li>
 <li><code><a title="textual.color.Color.parse" href="#textual.color.Color.parse">parse</a></code></li>
 <li><code><a title="textual.color.Color.r" href="#textual.color.Color.r">r</a></code></li>

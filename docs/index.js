@@ -960,7 +960,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.get_style_at",
 "url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"doc":"Get the Rich style in a widget at a given relative offset. Args: x (int): X coordinate relative to the widget. y (int): Y coordinate relative to the widget. Returns: Style: A rich Style object.",
 "func":1
 },
 {
@@ -1691,7 +1691,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.get_style_at",
 "url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"doc":"Get the Rich style in a widget at a given relative offset. Args: x (int): X coordinate relative to the widget. y (int): Y coordinate relative to the widget. Returns: Style: A rich Style object.",
 "func":1
 },
 {
@@ -3167,7 +3167,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.get_style_at",
 "url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"doc":"Get the Rich style in a widget at a given relative offset. Args: x (int): X coordinate relative to the widget. y (int): Y coordinate relative to the widget. Returns: Style: A rich Style object.",
 "func":1
 },
 {
@@ -3902,7 +3902,7 @@ INDEX=[
 {
 "ref":"textual.containers.Container.get_style_at",
 "url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"doc":"Get the Rich style in a widget at a given relative offset. Args: x (int): X coordinate relative to the widget. y (int): Y coordinate relative to the widget. Returns: Style: A rich Style object.",
 "func":1
 },
 {
@@ -4638,7 +4638,7 @@ INDEX=[
 {
 "ref":"textual.containers.Vertical.get_style_at",
 "url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"doc":"Get the Rich style in a widget at a given relative offset. Args: x (int): X coordinate relative to the widget. y (int): Y coordinate relative to the widget. Returns: Style: A rich Style object.",
 "func":1
 },
 {
@@ -5374,7 +5374,7 @@ INDEX=[
 {
 "ref":"textual.containers.Horizontal.get_style_at",
 "url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"doc":"Get the Rich style in a widget at a given relative offset. Args: x (int): X coordinate relative to the widget. y (int): Y coordinate relative to the widget. Returns: Style: A rich Style object.",
 "func":1
 },
 {
@@ -6110,7 +6110,7 @@ INDEX=[
 {
 "ref":"textual.containers.Grid.get_style_at",
 "url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"doc":"Get the Rich style in a widget at a given relative offset. Args: x (int): X coordinate relative to the widget. y (int): Y coordinate relative to the widget. Returns: Style: A rich Style object.",
 "func":1
 },
 {
@@ -6846,7 +6846,7 @@ INDEX=[
 {
 "ref":"textual.containers.Content.get_style_at",
 "url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"doc":"Get the Rich style in a widget at a given relative offset. Args: x (int): X coordinate relative to the widget. y (int): Y coordinate relative to the widget. Returns: Style: A rich Style object.",
 "func":1
 },
 {
@@ -7751,6 +7751,11 @@ INDEX=[
 "doc":"The color in CSS rgb or rgba form. Returns: str: A CSS style color, e.g.  \"rgb(10,20,30)\" or  \"rgb(50,70,80,0.5)\" "
 },
 {
+"ref":"textual.color.Color.monochrome",
+"url":30,
+"doc":"Get a monochrome version of this color. Returns: Color: A new monochrome color."
+},
+{
 "ref":"textual.color.Color.with_alpha",
 "url":30,
 "doc":"Create a new color with the given alpha. Args: alpha (float): New value for alpha. Returns: Color: A new color.",
@@ -8305,7 +8310,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.get_style_at",
 "url":3,
-"doc":"Get the Rich style at a given screen offset. Args: x (int): X coordinate relative to the screen. y (int): Y coordinate relative to the screen. Returns: Style: A rich Style object.",
+"doc":"Get the Rich style in a widget at a given relative offset. Args: x (int): X coordinate relative to the widget. y (int): Y coordinate relative to the widget. Returns: Style: A rich Style object.",
 "func":1
 },
 {

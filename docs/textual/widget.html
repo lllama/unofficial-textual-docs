@@ -1708,21 +1708,22 @@ class Widget(DOMNode):
         return lines
 
     def get_style_at(self, x: int, y: int) -&gt; Style:
-        &#34;&#34;&#34;Get the Rich style at a given screen offset.
+        &#34;&#34;&#34;Get the Rich style in a widget at a given relative offset.
 
         Args:
-            x (int): X coordinate relative to the screen.
-            y (int): Y coordinate relative to the screen.
+            x (int): X coordinate relative to the widget.
+            y (int): Y coordinate relative to the widget.
 
         Returns:
             Style: A rich Style object.
         &#34;&#34;&#34;
-        widget, region = self.screen.get_widget_at(x, y)
+        offset = Offset(x, y)
+        screen_offset = offset + self.region.offset
+
+        widget, _ = self.screen.get_widget_at(*screen_offset)
         if widget is not self:
             return Style()
-        offset_x, offset_y = region.offset
-        # offset_x, offset_y = self.screen.get_offset(self)
-        return self.screen.get_style_at(x + offset_x, y + offset_y)
+        return self.screen.get_style_at(*screen_offset)
 
     async def _forward_event(self, event: events.Event) -&gt; None:
         event._set_forwarded()
@@ -1761,8 +1762,6 @@ class Widget(DOMNode):
             self._content_height_cache = (None, 0)
             self._rich_style_cache.clear()
             self._repaint_required = True
-            if isinstance(self.parent, Widget) and self.styles.auto_dimensions:
-                self.parent.refresh(layout=True)
 
         self.check_idle()
 
@@ -3639,21 +3638,22 @@ class Widget(DOMNode):
         return lines
 
     def get_style_at(self, x: int, y: int) -&gt; Style:
-        &#34;&#34;&#34;Get the Rich style at a given screen offset.
+        &#34;&#34;&#34;Get the Rich style in a widget at a given relative offset.
 
         Args:
-            x (int): X coordinate relative to the screen.
-            y (int): Y coordinate relative to the screen.
+            x (int): X coordinate relative to the widget.
+            y (int): Y coordinate relative to the widget.
 
         Returns:
             Style: A rich Style object.
         &#34;&#34;&#34;
-        widget, region = self.screen.get_widget_at(x, y)
+        offset = Offset(x, y)
+        screen_offset = offset + self.region.offset
+
+        widget, _ = self.screen.get_widget_at(*screen_offset)
         if widget is not self:
             return Style()
-        offset_x, offset_y = region.offset
-        # offset_x, offset_y = self.screen.get_offset(self)
-        return self.screen.get_style_at(x + offset_x, y + offset_y)
+        return self.screen.get_style_at(*screen_offset)
 
     async def _forward_event(self, event: events.Event) -&gt; None:
         event._set_forwarded()
@@ -3692,8 +3692,6 @@ class Widget(DOMNode):
             self._content_height_cache = (None, 0)
             self._rich_style_cache.clear()
             self._repaint_required = True
-            if isinstance(self.parent, Widget) and self.styles.auto_dimensions:
-                self.parent.refresh(layout=True)
 
         self.check_idle()
 
@@ -5508,13 +5506,13 @@ visible. Defaults to True.</dd>
 <span>def <span class="ident">get_style_at</span></span>(<span>self, x: int, y: int) ‑> rich.style.Style</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the Rich style at a given screen offset.</p>
+<div class="desc"><p>Get the Rich style in a widget at a given relative offset.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>x</code></strong> :&ensp;<code>int</code></dt>
-<dd>X coordinate relative to the screen.</dd>
+<dd>X coordinate relative to the widget.</dd>
 <dt><strong><code>y</code></strong> :&ensp;<code>int</code></dt>
-<dd>Y coordinate relative to the screen.</dd>
+<dd>Y coordinate relative to the widget.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -5526,21 +5524,22 @@ visible. Defaults to True.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_style_at(self, x: int, y: int) -&gt; Style:
-    &#34;&#34;&#34;Get the Rich style at a given screen offset.
+    &#34;&#34;&#34;Get the Rich style in a widget at a given relative offset.
 
     Args:
-        x (int): X coordinate relative to the screen.
-        y (int): Y coordinate relative to the screen.
+        x (int): X coordinate relative to the widget.
+        y (int): Y coordinate relative to the widget.
 
     Returns:
         Style: A rich Style object.
     &#34;&#34;&#34;
-    widget, region = self.screen.get_widget_at(x, y)
+    offset = Offset(x, y)
+    screen_offset = offset + self.region.offset
+
+    widget, _ = self.screen.get_widget_at(*screen_offset)
     if widget is not self:
         return Style()
-    offset_x, offset_y = region.offset
-    # offset_x, offset_y = self.screen.get_offset(self)
-    return self.screen.get_style_at(x + offset_x, y + offset_y)</code></pre>
+    return self.screen.get_style_at(*screen_offset)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.handle_key"><code class="name flex">
@@ -5728,8 +5727,6 @@ do this automatically.</p>
         self._content_height_cache = (None, 0)
         self._rich_style_cache.clear()
         self._repaint_required = True
-        if isinstance(self.parent, Widget) and self.styles.auto_dimensions:
-            self.parent.refresh(layout=True)
 
     self.check_idle()</code></pre>
 </details>
