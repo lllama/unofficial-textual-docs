@@ -1063,6 +1063,11 @@ INDEX=[
 "doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
 },
 {
+"ref":"textual.scrollbar.ScrollBar.visible",
+"url":4,
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
+},
+{
 "ref":"textual.scrollbar.ScrollBar.tree",
 "url":4,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
@@ -1112,7 +1117,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -1124,7 +1129,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -1794,6 +1799,11 @@ INDEX=[
 "doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
 },
 {
+"ref":"textual.scrollbar.ScrollBarCorner.visible",
+"url":4,
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
+},
+{
 "ref":"textual.scrollbar.ScrollBarCorner.tree",
 "url":4,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
@@ -1843,7 +1853,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -1855,7 +1865,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -3270,6 +3280,11 @@ INDEX=[
 "doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
 },
 {
+"ref":"textual.scroll_view.ScrollView.visible",
+"url":4,
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
+},
+{
 "ref":"textual.scroll_view.ScrollView.tree",
 "url":4,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
@@ -3319,7 +3334,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -3331,7 +3346,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -4011,6 +4026,11 @@ INDEX=[
 "doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
 },
 {
+"ref":"textual.containers.Container.visible",
+"url":4,
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
+},
+{
 "ref":"textual.containers.Container.tree",
 "url":4,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
@@ -4060,7 +4080,7 @@ INDEX=[
 {
 "ref":"textual.containers.Container.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -4072,7 +4092,7 @@ INDEX=[
 {
 "ref":"textual.containers.Container.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -4747,6 +4767,11 @@ INDEX=[
 "doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
 },
 {
+"ref":"textual.containers.Vertical.visible",
+"url":4,
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
+},
+{
 "ref":"textual.containers.Vertical.tree",
 "url":4,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
@@ -4796,7 +4821,7 @@ INDEX=[
 {
 "ref":"textual.containers.Vertical.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -4808,7 +4833,7 @@ INDEX=[
 {
 "ref":"textual.containers.Vertical.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -5483,6 +5508,11 @@ INDEX=[
 "doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
 },
 {
+"ref":"textual.containers.Horizontal.visible",
+"url":4,
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
+},
+{
 "ref":"textual.containers.Horizontal.tree",
 "url":4,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
@@ -5532,7 +5562,7 @@ INDEX=[
 {
 "ref":"textual.containers.Horizontal.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -5544,7 +5574,7 @@ INDEX=[
 {
 "ref":"textual.containers.Horizontal.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -6219,6 +6249,11 @@ INDEX=[
 "doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
 },
 {
+"ref":"textual.containers.Grid.visible",
+"url":4,
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
+},
+{
 "ref":"textual.containers.Grid.tree",
 "url":4,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
@@ -6268,7 +6303,7 @@ INDEX=[
 {
 "ref":"textual.containers.Grid.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -6280,7 +6315,7 @@ INDEX=[
 {
 "ref":"textual.containers.Grid.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -6955,6 +6990,11 @@ INDEX=[
 "doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
 },
 {
+"ref":"textual.containers.Content.visible",
+"url":4,
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
+},
+{
 "ref":"textual.containers.Content.tree",
 "url":4,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
@@ -7004,7 +7044,7 @@ INDEX=[
 {
 "ref":"textual.containers.Content.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -7016,7 +7056,7 @@ INDEX=[
 {
 "ref":"textual.containers.Content.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -7278,7 +7318,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.visible",
 "url":4,
-"doc":""
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
 },
 {
 "ref":"textual.dom.DOMNode.tree",
@@ -7341,7 +7381,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -7358,7 +7398,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -8431,6 +8471,11 @@ INDEX=[
 "doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
 },
 {
+"ref":"textual.widget.Widget.visible",
+"url":4,
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
+},
+{
 "ref":"textual.widget.Widget.tree",
 "url":4,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
@@ -8480,7 +8525,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -8492,7 +8537,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -12489,6 +12534,11 @@ INDEX=[
 "doc":"Check if this widget should display or not. Returns: bool:  True if this DOMNode is displayed ( display != \"none\" ) otherwise  False ."
 },
 {
+"ref":"textual.screen.Screen.visible",
+"url":4,
+"doc":"Check if the node is visible or None. Returns: bool: True if the node is visible."
+},
+{
 "ref":"textual.screen.Screen.tree",
 "url":4,
 "doc":"Get a Rich tree object which will recursively render the structure of the node tree. Returns: Tree: A Rich object which may be printed."
@@ -12538,7 +12588,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.get_child",
 "url":4,
-"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatchingNodesError: if no children could be found for this ID",
+"doc":"Return the first child (immediate descendent) of this node with the given ID. Args: id (str): The ID of the child. Returns: DOMNode: The first child of this node with the ID. Raises: NoMatches: if no children could be found for this ID",
 "func":1
 },
 {
@@ -12550,7 +12600,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.query_one",
 "url":4,
-"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type, optional): A selector. expect_type (type, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
+"doc":"Get the first Widget matching the given selector or selector type. Args: selector (str | type): A selector. expect_type (type | None, optional): Require the object be of the supplied type, or None for any type. Defaults to None. Returns: Widget | ExpectType: A widget matching the selector.",
 "func":1
 },
 {
@@ -15970,17 +16020,17 @@ INDEX=[
 {
 "ref":"textual.css.query.QueryError",
 "url":57,
-"doc":"Common base class for all non-exit exceptions."
+"doc":"Base class for a query related error."
 },
 {
-"ref":"textual.css.query.NoMatchingNodesError",
+"ref":"textual.css.query.NoMatches",
 "url":57,
-"doc":"Common base class for all non-exit exceptions."
+"doc":"No nodes matched the query."
 },
 {
 "ref":"textual.css.query.WrongType",
 "url":57,
-"doc":"Common base class for all non-exit exceptions."
+"doc":"Query result was not of the correct type."
 },
 {
 "ref":"textual.css.query.DOMQuery",
@@ -16017,13 +16067,13 @@ INDEX=[
 {
 "ref":"textual.css.query.DOMQuery.first",
 "url":57,
-"doc":"Get the  first match node. Args: expect_type (type[ExpectType] | None, optional): Require matched node is of this type, or None for any type. Defaults to None. Raises: WrongType: If the wrong type was found. NoMatchingNodesError: If there are no matching nodes in the query. Returns: Widget | ExpectType: The matching Widget.",
+"doc":"Get the  first matching node. Args: expect_type (type[ExpectType] | None, optional): Require matched node is of this type, or None for any type. Defaults to None. Raises: WrongType: If the wrong type was found. NoMatches: If there are no matching nodes in the query. Returns: Widget | ExpectType: The matching Widget.",
 "func":1
 },
 {
 "ref":"textual.css.query.DOMQuery.last",
 "url":57,
-"doc":"Get the  last match node. Args: expect_type (type[ExpectType] | None, optional): Require matched node is of this type, or None for any type. Defaults to None. Raises: WrongType: If the wrong type was found. NoMatchingNodesError: If there are no matching nodes in the query. Returns: Widget | ExpectType: The matching Widget.",
+"doc":"Get the  last matching node. Args: expect_type (type[ExpectType] | None, optional): Require matched node is of this type, or None for any type. Defaults to None. Raises: WrongType: If the wrong type was found. NoMatches: If there are no matching nodes in the query. Returns: Widget | ExpectType: The matching Widget.",
 "func":1
 },
 {

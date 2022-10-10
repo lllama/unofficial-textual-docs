@@ -58,7 +58,7 @@ from .css.errors import StyleValueError, DeclarationError
 from .css.parse import parse_declarations
 from .css.styles import Styles, RenderStyles
 from .css.tokenize import IDENTIFIER
-from .css.query import NoMatchingNodesError
+from .css.query import NoMatches
 from .message_pump import MessagePump
 from .timer import Timer
 
@@ -433,6 +433,11 @@ class DOMNode(MessagePump):
 
     @property
     def visible(self) -&gt; bool:
+        &#34;&#34;&#34;Check if the node is visible or None.
+
+        Returns:
+            bool: True if the node is visible.
+        &#34;&#34;&#34;
         return self.styles.visibility != &#34;hidden&#34;
 
     @visible.setter
@@ -697,12 +702,12 @@ class DOMNode(MessagePump):
             DOMNode: The first child of this node with the ID.
 
         Raises:
-            NoMatchingNodesError: if no children could be found for this ID
+            NoMatches: if no children could be found for this ID
         &#34;&#34;&#34;
         for child in self.children:
             if child.id == id:
                 return child
-        raise NoMatchingNodesError(f&#34;No child found with id={id!r}&#34;)
+        raise NoMatches(f&#34;No child found with id={id!r}&#34;)
 
     ExpectType = TypeVar(&#34;ExpectType&#34;, bound=&#34;Widget&#34;)
 
@@ -753,8 +758,8 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;Get the first Widget matching the given selector or selector type.
 
         Args:
-            selector (str | type, optional): A selector.
-            expect_type (type, optional): Require the object be of the supplied type, or None for any type.
+            selector (str | type): A selector.
+            expect_type (type | None, optional): Require the object be of the supplied type, or None for any type.
                 Defaults to None.
 
         Returns:
@@ -1299,6 +1304,11 @@ class DOMNode(MessagePump):
 
     @property
     def visible(self) -&gt; bool:
+        &#34;&#34;&#34;Check if the node is visible or None.
+
+        Returns:
+            bool: True if the node is visible.
+        &#34;&#34;&#34;
         return self.styles.visibility != &#34;hidden&#34;
 
     @visible.setter
@@ -1563,12 +1573,12 @@ class DOMNode(MessagePump):
             DOMNode: The first child of this node with the ID.
 
         Raises:
-            NoMatchingNodesError: if no children could be found for this ID
+            NoMatches: if no children could be found for this ID
         &#34;&#34;&#34;
         for child in self.children:
             if child.id == id:
                 return child
-        raise NoMatchingNodesError(f&#34;No child found with id={id!r}&#34;)
+        raise NoMatches(f&#34;No child found with id={id!r}&#34;)
 
     ExpectType = TypeVar(&#34;ExpectType&#34;, bound=&#34;Widget&#34;)
 
@@ -1619,8 +1629,8 @@ class DOMNode(MessagePump):
         &#34;&#34;&#34;Get the first Widget matching the given selector or selector type.
 
         Args:
-            selector (str | type, optional): A selector.
-            expect_type (type, optional): Require the object be of the supplied type, or None for any type.
+            selector (str | type): A selector.
+            expect_type (type | None, optional): Require the object be of the supplied type, or None for any type.
                 Defaults to None.
 
         Returns:
@@ -2214,13 +2224,23 @@ def tree(self) -&gt; Tree:
 </dd>
 <dt id="textual.dom.DOMNode.visible"><code class="name">var <span class="ident">visible</span> : bool</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Check if the node is visible or None.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>True if the node is visible.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def visible(self) -&gt; bool:
+    &#34;&#34;&#34;Check if the node is visible or None.
+
+    Returns:
+        bool: True if the node is visible.
+    &#34;&#34;&#34;
     return self.styles.visibility != &#34;hidden&#34;</code></pre>
 </details>
 </dd>
@@ -2276,7 +2296,7 @@ def visible(self) -&gt; bool:
 </dl>
 <h2 id="raises">Raises</h2>
 <dl>
-<dt><code>NoMatchingNodesError</code></dt>
+<dt><code>NoMatches</code></dt>
 <dd>if no children could be found for this ID</dd>
 </dl></div>
 <details class="source">
@@ -2293,12 +2313,12 @@ def visible(self) -&gt; bool:
         DOMNode: The first child of this node with the ID.
 
     Raises:
-        NoMatchingNodesError: if no children could be found for this ID
+        NoMatches: if no children could be found for this ID
     &#34;&#34;&#34;
     for child in self.children:
         if child.id == id:
             return child
-    raise NoMatchingNodesError(f&#34;No child found with id={id!r}&#34;)</code></pre>
+    raise NoMatches(f&#34;No child found with id={id!r}&#34;)</code></pre>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.get_component_styles"><code class="name flex">
@@ -2494,12 +2514,9 @@ and inherited from base classes.</dd>
 <dd>
 <div class="desc"><p>Get the first Widget matching the given selector or selector type.</p>
 <h2 id="args">Args</h2>
-<dl>
-<dt>selector (str | type, optional): A selector.</dt>
-<dt><strong><code>expect_type</code></strong> :&ensp;<code>type</code>, optional</dt>
-<dd>Require the object be of the supplied type, or None for any type.
-Defaults to None.</dd>
-</dl>
+<p>selector (str | type): A selector.
+expect_type (type | None, optional): Require the object be of the supplied type, or None for any type.
+Defaults to None.</p>
 <h2 id="returns">Returns</h2>
 <p>Widget | ExpectType: A widget matching the selector.</p></div>
 <details class="source">
@@ -2514,8 +2531,8 @@ Defaults to None.</dd>
     &#34;&#34;&#34;Get the first Widget matching the given selector or selector type.
 
     Args:
-        selector (str | type, optional): A selector.
-        expect_type (type, optional): Require the object be of the supplied type, or None for any type.
+        selector (str | type): A selector.
+        expect_type (type | None, optional): Require the object be of the supplied type, or None for any type.
             Defaults to None.
 
     Returns:

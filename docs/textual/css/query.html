@@ -66,15 +66,15 @@ if TYPE_CHECKING:
 
 
 class QueryError(Exception):
-    pass
+    &#34;&#34;&#34;Base class for a query related error.&#34;&#34;&#34;
 
 
-class NoMatchingNodesError(QueryError):
-    pass
+class NoMatches(QueryError):
+    &#34;&#34;&#34;No nodes matched the query.&#34;&#34;&#34;
 
 
 class WrongType(QueryError):
-    pass
+    &#34;&#34;&#34;Query result was not of the correct type.&#34;&#34;&#34;
 
 
 QueryType = TypeVar(&#34;QueryType&#34;, bound=&#34;Widget&#34;)
@@ -207,7 +207,7 @@ class DOMQuery(Generic[QueryType]):
     def first(
         self, expect_type: type[ExpectType] | None = None
     ) -&gt; QueryType | ExpectType:
-        &#34;&#34;&#34;Get the *first* match node.
+        &#34;&#34;&#34;Get the *first* matching node.
 
         Args:
             expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
@@ -215,7 +215,7 @@ class DOMQuery(Generic[QueryType]):
 
         Raises:
             WrongType: If the wrong type was found.
-            NoMatchingNodesError: If there are no matching nodes in the query.
+            NoMatches: If there are no matching nodes in the query.
 
         Returns:
             Widget | ExpectType: The matching Widget.
@@ -229,7 +229,7 @@ class DOMQuery(Generic[QueryType]):
                     )
             return first
         else:
-            raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)
+            raise NoMatches(f&#34;No nodes match {self!r}&#34;)
 
     @overload
     def last(self) -&gt; Widget:
@@ -242,7 +242,7 @@ class DOMQuery(Generic[QueryType]):
     def last(
         self, expect_type: type[ExpectType] | None = None
     ) -&gt; QueryType | ExpectType:
-        &#34;&#34;&#34;Get the *last* match node.
+        &#34;&#34;&#34;Get the *last* matching node.
 
         Args:
             expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
@@ -250,7 +250,7 @@ class DOMQuery(Generic[QueryType]):
 
         Raises:
             WrongType: If the wrong type was found.
-            NoMatchingNodesError: If there are no matching nodes in the query.
+            NoMatches: If there are no matching nodes in the query.
 
         Returns:
             Widget | ExpectType: The matching Widget.
@@ -264,7 +264,7 @@ class DOMQuery(Generic[QueryType]):
                     )
             return last
         else:
-            raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)
+            raise NoMatches(f&#34;No nodes match {self!r}&#34;)
 
     @overload
     def results(self) -&gt; Iterator[Widget]:
@@ -527,7 +527,7 @@ return default</p></div>
     def first(
         self, expect_type: type[ExpectType] | None = None
     ) -&gt; QueryType | ExpectType:
-        &#34;&#34;&#34;Get the *first* match node.
+        &#34;&#34;&#34;Get the *first* matching node.
 
         Args:
             expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
@@ -535,7 +535,7 @@ return default</p></div>
 
         Raises:
             WrongType: If the wrong type was found.
-            NoMatchingNodesError: If there are no matching nodes in the query.
+            NoMatches: If there are no matching nodes in the query.
 
         Returns:
             Widget | ExpectType: The matching Widget.
@@ -549,7 +549,7 @@ return default</p></div>
                     )
             return first
         else:
-            raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)
+            raise NoMatches(f&#34;No nodes match {self!r}&#34;)
 
     @overload
     def last(self) -&gt; Widget:
@@ -562,7 +562,7 @@ return default</p></div>
     def last(
         self, expect_type: type[ExpectType] | None = None
     ) -&gt; QueryType | ExpectType:
-        &#34;&#34;&#34;Get the *last* match node.
+        &#34;&#34;&#34;Get the *last* matching node.
 
         Args:
             expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
@@ -570,7 +570,7 @@ return default</p></div>
 
         Raises:
             WrongType: If the wrong type was found.
-            NoMatchingNodesError: If there are no matching nodes in the query.
+            NoMatches: If there are no matching nodes in the query.
 
         Returns:
             Widget | ExpectType: The matching Widget.
@@ -584,7 +584,7 @@ return default</p></div>
                     )
             return last
         else:
-            raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)
+            raise NoMatches(f&#34;No nodes match {self!r}&#34;)
 
     @overload
     def results(self) -&gt; Iterator[Widget]:
@@ -826,7 +826,7 @@ def nodes(self) -&gt; list[QueryType]:
 <span>def <span class="ident">first</span></span>(<span>self, expect_type: type[ExpectType] | None = None) ‑> QueryType | ExpectType</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the <em>first</em> match node.</p>
+<div class="desc"><p>Get the <em>first</em> matching node.</p>
 <h2 id="args">Args</h2>
 <p>expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
 or None for any type. Defaults to None.</p>
@@ -834,7 +834,7 @@ or None for any type. Defaults to None.</p>
 <dl>
 <dt><code><a title="textual.css.query.WrongType" href="#textual.css.query.WrongType">WrongType</a></code></dt>
 <dd>If the wrong type was found.</dd>
-<dt><code><a title="textual.css.query.NoMatchingNodesError" href="#textual.css.query.NoMatchingNodesError">NoMatchingNodesError</a></code></dt>
+<dt><code><a title="textual.css.query.NoMatches" href="#textual.css.query.NoMatches">NoMatches</a></code></dt>
 <dd>If there are no matching nodes in the query.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -846,7 +846,7 @@ or None for any type. Defaults to None.</p>
 <pre><code class="python">def first(
     self, expect_type: type[ExpectType] | None = None
 ) -&gt; QueryType | ExpectType:
-    &#34;&#34;&#34;Get the *first* match node.
+    &#34;&#34;&#34;Get the *first* matching node.
 
     Args:
         expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
@@ -854,7 +854,7 @@ or None for any type. Defaults to None.</p>
 
     Raises:
         WrongType: If the wrong type was found.
-        NoMatchingNodesError: If there are no matching nodes in the query.
+        NoMatches: If there are no matching nodes in the query.
 
     Returns:
         Widget | ExpectType: The matching Widget.
@@ -868,14 +868,14 @@ or None for any type. Defaults to None.</p>
                 )
         return first
     else:
-        raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)</code></pre>
+        raise NoMatches(f&#34;No nodes match {self!r}&#34;)</code></pre>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.last"><code class="name flex">
 <span>def <span class="ident">last</span></span>(<span>self, expect_type: type[ExpectType] | None = None) ‑> QueryType | ExpectType</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the <em>last</em> match node.</p>
+<div class="desc"><p>Get the <em>last</em> matching node.</p>
 <h2 id="args">Args</h2>
 <p>expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
 or None for any type. Defaults to None.</p>
@@ -883,7 +883,7 @@ or None for any type. Defaults to None.</p>
 <dl>
 <dt><code><a title="textual.css.query.WrongType" href="#textual.css.query.WrongType">WrongType</a></code></dt>
 <dd>If the wrong type was found.</dd>
-<dt><code><a title="textual.css.query.NoMatchingNodesError" href="#textual.css.query.NoMatchingNodesError">NoMatchingNodesError</a></code></dt>
+<dt><code><a title="textual.css.query.NoMatches" href="#textual.css.query.NoMatches">NoMatches</a></code></dt>
 <dd>If there are no matching nodes in the query.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
@@ -895,7 +895,7 @@ or None for any type. Defaults to None.</p>
 <pre><code class="python">def last(
     self, expect_type: type[ExpectType] | None = None
 ) -&gt; QueryType | ExpectType:
-    &#34;&#34;&#34;Get the *last* match node.
+    &#34;&#34;&#34;Get the *last* matching node.
 
     Args:
         expect_type (type[ExpectType] | None, optional): Require matched node is of this type,
@@ -903,7 +903,7 @@ or None for any type. Defaults to None.</p>
 
     Raises:
         WrongType: If the wrong type was found.
-        NoMatchingNodesError: If there are no matching nodes in the query.
+        NoMatches: If there are no matching nodes in the query.
 
     Returns:
         Widget | ExpectType: The matching Widget.
@@ -917,7 +917,7 @@ or None for any type. Defaults to None.</p>
                 )
         return last
     else:
-        raise NoMatchingNodesError(f&#34;No nodes match {self!r}&#34;)</code></pre>
+        raise NoMatches(f&#34;No nodes match {self!r}&#34;)</code></pre>
 </details>
 </dd>
 <dt id="textual.css.query.DOMQuery.refresh"><code class="name flex">
@@ -1112,18 +1112,18 @@ or None for no filter. Defaults to None.</p>
 </dd>
 </dl>
 </dd>
-<dt id="textual.css.query.NoMatchingNodesError"><code class="flex name class">
-<span>class <span class="ident">NoMatchingNodesError</span></span>
+<dt id="textual.css.query.NoMatches"><code class="flex name class">
+<span>class <span class="ident">NoMatches</span></span>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<div class="desc"><p>No nodes matched the query.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class NoMatchingNodesError(QueryError):
-    pass</code></pre>
+<pre><code class="python">class NoMatches(QueryError):
+    &#34;&#34;&#34;No nodes matched the query.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1137,13 +1137,13 @@ or None for no filter. Defaults to None.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<div class="desc"><p>Base class for a query related error.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class QueryError(Exception):
-    pass</code></pre>
+    &#34;&#34;&#34;Base class for a query related error.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1152,7 +1152,7 @@ or None for no filter. Defaults to None.</p>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="textual.css.query.NoMatchingNodesError" href="#textual.css.query.NoMatchingNodesError">NoMatchingNodesError</a></li>
+<li><a title="textual.css.query.NoMatches" href="#textual.css.query.NoMatches">NoMatches</a></li>
 <li><a title="textual.css.query.WrongType" href="#textual.css.query.WrongType">WrongType</a></li>
 </ul>
 </dd>
@@ -1161,13 +1161,13 @@ or None for no filter. Defaults to None.</p>
 <span>(</span><span>*args, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
+<div class="desc"><p>Query result was not of the correct type.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">class WrongType(QueryError):
-    pass</code></pre>
+    &#34;&#34;&#34;Query result was not of the correct type.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -1259,7 +1259,7 @@ setTimeout(() => input.focus(), 100);
 </ul>
 </li>
 <li>
-<h4><code><a title="textual.css.query.NoMatchingNodesError" href="#textual.css.query.NoMatchingNodesError">NoMatchingNodesError</a></code></h4>
+<h4><code><a title="textual.css.query.NoMatches" href="#textual.css.query.NoMatches">NoMatches</a></code></h4>
 </li>
 <li>
 <h4><code><a title="textual.css.query.QueryError" href="#textual.css.query.QueryError">QueryError</a></code></h4>
