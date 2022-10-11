@@ -9127,7 +9127,7 @@ INDEX=[
 {
 "ref":"textual.binding.Binding.key",
 "url":32,
-"doc":"Key to bind."
+"doc":"Key to bind. This can also be a comma-separated list of keys to map multiple keys to a single action."
 },
 {
 "ref":"textual.binding.Binding.action",

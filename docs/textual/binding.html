@@ -53,7 +53,7 @@ class NoBinding(Exception):
 @dataclass(frozen=True)
 class Binding:
     key: str
-    &#34;&#34;&#34;Key to bind.&#34;&#34;&#34;
+    &#34;&#34;&#34;Key to bind. This can also be a comma-separated list of keys to map multiple keys to a single action.&#34;&#34;&#34;
     action: str
     &#34;&#34;&#34;Action to bind to.&#34;&#34;&#34;
     description: str
@@ -178,7 +178,7 @@ class Bindings:
 </summary>
 <pre><code class="python">class Binding:
     key: str
-    &#34;&#34;&#34;Key to bind.&#34;&#34;&#34;
+    &#34;&#34;&#34;Key to bind. This can also be a comma-separated list of keys to map multiple keys to a single action.&#34;&#34;&#34;
     action: str
     &#34;&#34;&#34;Action to bind to.&#34;&#34;&#34;
     description: str
@@ -206,7 +206,7 @@ class Bindings:
 </dd>
 <dt id="textual.binding.Binding.key"><code class="name">var <span class="ident">key</span> : str</code></dt>
 <dd>
-<div class="desc"><p>Key to bind.</p></div>
+<div class="desc"><p>Key to bind. This can also be a comma-separated list of keys to map multiple keys to a single action.</p></div>
 </dd>
 <dt id="textual.binding.Binding.key_display"><code class="name">var <span class="ident">key_display</span> : str | None</code></dt>
 <dd>
