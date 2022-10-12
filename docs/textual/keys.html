@@ -26,12 +26,12 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from dataclasses import dataclass
+<pre><code class="python">from __future__ import annotations
+
 from enum import Enum
 
+
 # Adapted from prompt toolkit https://github.com/prompt-toolkit/python-prompt-toolkit/blob/master/prompt_toolkit/keys.py
-
-
 class Keys(str, Enum):
     &#34;&#34;&#34;
     List of keys for use in key bindings.
@@ -206,10 +206,6 @@ class Keys(str, Enum):
     ScrollUp = &#34;&lt;scroll-up&gt;&#34;
     ScrollDown = &#34;&lt;scroll-down&gt;&#34;
 
-    CPRResponse = &#34;&lt;cursor-position-response&gt;&#34;
-    Vt100MouseEvent = &#34;&lt;vt100-mouse-event&gt;&#34;
-    WindowsMouseEvent = &#34;&lt;windowshift+mouse-event&gt;&#34;
-
     # For internal use: key which is ignored.
     # (The key binding for this key should not do anything.)
     Ignore = &#34;&lt;ignore&gt;&#34;
@@ -233,7 +229,24 @@ class Keys(str, Enum):
 KEY_NAME_REPLACEMENTS = {
     &#34;solidus&#34;: &#34;slash&#34;,
     &#34;reverse_solidus&#34;: &#34;backslash&#34;,
-}</code></pre>
+    &#34;commercial_at&#34;: &#34;at&#34;,
+}
+
+# Some keys have aliases. For example, if you press `ctrl+m` on your keyboard,
+# it&#39;s treated the same way as if you press `enter`. Key handlers `key_ctrl_m` and
+# `key_enter` are both valid in this case.
+KEY_ALIASES = {
+    &#34;tab&#34;: [&#34;ctrl+i&#34;],
+    &#34;enter&#34;: [&#34;ctrl+m&#34;],
+    &#34;escape&#34;: [&#34;ctrl+left_square_brace&#34;],
+    &#34;ctrl+at&#34;: [&#34;ctrl+space&#34;],
+    &#34;ctrl+j&#34;: [&#34;newline&#34;],
+}
+
+
+def _get_key_aliases(key: str) -&gt; list[str]:
+    &#34;&#34;&#34;Return all aliases for the given key, including the key itself&#34;&#34;&#34;
+    return [key] + KEY_ALIASES.get(key, [])</code></pre>
 </details>
 </section>
 <section>
@@ -431,10 +444,6 @@ strings.</p></div>
     ScrollUp = &#34;&lt;scroll-up&gt;&#34;
     ScrollDown = &#34;&lt;scroll-down&gt;&#34;
 
-    CPRResponse = &#34;&lt;cursor-position-response&gt;&#34;
-    Vt100MouseEvent = &#34;&lt;vt100-mouse-event&gt;&#34;
-    WindowsMouseEvent = &#34;&lt;windowshift+mouse-event&gt;&#34;
-
     # For internal use: key which is ignored.
     # (The key binding for this key should not do anything.)
     Ignore = &#34;&lt;ignore&gt;&#34;
@@ -468,10 +477,6 @@ strings.</p></div>
 <div class="desc"></div>
 </dd>
 <dt id="textual.keys.Keys.Backspace"><code class="name">var <span class="ident">Backspace</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.keys.Keys.CPRResponse"><code class="name">var <span class="ident">CPRResponse</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1087,14 +1092,6 @@ strings.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="textual.keys.Keys.Vt100MouseEvent"><code class="name">var <span class="ident">Vt100MouseEvent</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="textual.keys.Keys.WindowsMouseEvent"><code class="name">var <span class="ident">WindowsMouseEvent</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
@@ -1181,7 +1178,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.keys.Keys.Any" href="#textual.keys.Keys.Any">Any</a></code></li>
 <li><code><a title="textual.keys.Keys.BackTab" href="#textual.keys.Keys.BackTab">BackTab</a></code></li>
 <li><code><a title="textual.keys.Keys.Backspace" href="#textual.keys.Keys.Backspace">Backspace</a></code></li>
-<li><code><a title="textual.keys.Keys.CPRResponse" href="#textual.keys.Keys.CPRResponse">CPRResponse</a></code></li>
 <li><code><a title="textual.keys.Keys.Control0" href="#textual.keys.Keys.Control0">Control0</a></code></li>
 <li><code><a title="textual.keys.Keys.Control1" href="#textual.keys.Keys.Control1">Control1</a></code></li>
 <li><code><a title="textual.keys.Keys.Control2" href="#textual.keys.Keys.Control2">Control2</a></code></li>
@@ -1335,8 +1331,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.keys.Keys.Space" href="#textual.keys.Keys.Space">Space</a></code></li>
 <li><code><a title="textual.keys.Keys.Tab" href="#textual.keys.Keys.Tab">Tab</a></code></li>
 <li><code><a title="textual.keys.Keys.Up" href="#textual.keys.Keys.Up">Up</a></code></li>
-<li><code><a title="textual.keys.Keys.Vt100MouseEvent" href="#textual.keys.Keys.Vt100MouseEvent">Vt100MouseEvent</a></code></li>
-<li><code><a title="textual.keys.Keys.WindowsMouseEvent" href="#textual.keys.Keys.WindowsMouseEvent">WindowsMouseEvent</a></code></li>
 <li><code><a title="textual.keys.Keys.value" href="#textual.keys.Keys.value">value</a></code></li>
 </ul>
 </li>

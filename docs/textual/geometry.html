@@ -97,6 +97,16 @@ class Offset(NamedTuple):
         &#34;&#34;&#34;
         return self == (0, 0)
 
+    @property
+    def clamped(self) -&gt; Offset:
+        &#34;&#34;&#34;Ensure x and y are above zero.
+
+        Returns:
+            Offset: New offset.
+        &#34;&#34;&#34;
+        x, y = self
+        return Offset(0 if x &lt; 0 else x, 0 if y &lt; 0 else y)
+
     def __bool__(self) -&gt; bool:
         return self != (0, 0)
 
@@ -1162,6 +1172,16 @@ top left of the terminal or other container.</p>
         &#34;&#34;&#34;
         return self == (0, 0)
 
+    @property
+    def clamped(self) -&gt; Offset:
+        &#34;&#34;&#34;Ensure x and y are above zero.
+
+        Returns:
+            Offset: New offset.
+        &#34;&#34;&#34;
+        x, y = self
+        return Offset(0 if x &lt; 0 else x, 0 if y &lt; 0 else y)
+
     def __bool__(self) -&gt; bool:
         return self != (0, 0)
 
@@ -1226,6 +1246,29 @@ top left of the terminal or other container.</p>
 </ul>
 <h3>Instance variables</h3>
 <dl>
+<dt id="textual.geometry.Offset.clamped"><code class="name">var <span class="ident">clamped</span> : <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
+<dd>
+<div class="desc"><p>Ensure x and y are above zero.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></dt>
+<dd>New offset.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def clamped(self) -&gt; Offset:
+    &#34;&#34;&#34;Ensure x and y are above zero.
+
+    Returns:
+        Offset: New offset.
+    &#34;&#34;&#34;
+    x, y = self
+    return Offset(0 if x &lt; 0 else x, 0 if y &lt; 0 else y)</code></pre>
+</details>
+</dd>
 <dt id="textual.geometry.Offset.is_origin"><code class="name">var <span class="ident">is_origin</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Check if the point is at the origin (0, 0).</p>
@@ -4116,8 +4159,9 @@ setTimeout(() => input.focus(), 100);
 <ul>
 <li>
 <h4><code><a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></code></h4>
-<ul class="">
+<ul class="two-column">
 <li><code><a title="textual.geometry.Offset.blend" href="#textual.geometry.Offset.blend">blend</a></code></li>
+<li><code><a title="textual.geometry.Offset.clamped" href="#textual.geometry.Offset.clamped">clamped</a></code></li>
 <li><code><a title="textual.geometry.Offset.get_distance_to" href="#textual.geometry.Offset.get_distance_to">get_distance_to</a></code></li>
 <li><code><a title="textual.geometry.Offset.is_origin" href="#textual.geometry.Offset.is_origin">is_origin</a></code></li>
 <li><code><a title="textual.geometry.Offset.x" href="#textual.geometry.Offset.x">x</a></code></li>

@@ -1247,7 +1247,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -1983,7 +1983,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -2095,6 +2095,11 @@ INDEX=[
 "ref":"textual.geometry.Offset.is_origin",
 "url":10,
 "doc":"Check if the point is at the origin (0, 0). Returns: bool: True if the offset is the origin."
+},
+{
+"ref":"textual.geometry.Offset.clamped",
+"url":10,
+"doc":"Ensure x and y are above zero. Returns: Offset: New offset."
 },
 {
 "ref":"textual.geometry.Offset.blend",
@@ -2619,7 +2624,7 @@ INDEX=[
 {
 "ref":"textual.message_pump.MessagePump.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -3464,7 +3469,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -4210,7 +4215,7 @@ INDEX=[
 {
 "ref":"textual.containers.Container.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -4951,7 +4956,7 @@ INDEX=[
 {
 "ref":"textual.containers.Vertical.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -5692,7 +5697,7 @@ INDEX=[
 {
 "ref":"textual.containers.Horizontal.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -6433,7 +6438,7 @@ INDEX=[
 {
 "ref":"textual.containers.Grid.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -7174,7 +7179,7 @@ INDEX=[
 {
 "ref":"textual.containers.Content.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -7528,7 +7533,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -8655,7 +8660,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -10358,7 +10363,7 @@ INDEX=[
 {
 "ref":"textual.events.Key",
 "url":35,
-"doc":"Sent when the user hits a key on the keyboard. Args: sender (MessageTarget): The sender of the event (the App). key (str): A key name (textual.keys.Keys). char (str | None, optional): A printable character or None if it is not printable."
+"doc":"Sent when the user hits a key on the keyboard. Args: sender (MessageTarget): The sender of the event (the App). key (str): A key name (textual.keys.Keys). char (str | None, optional): A printable character or None if it is not printable. Attributes: key_aliases (list[str]): The aliases for the key, including the key itself"
 },
 {
 "ref":"textual.events.Key.sender",
@@ -11971,12 +11976,6 @@ INDEX=[
 "doc":"Get a list of visible widgets."
 },
 {
-"ref":"textual.screen.Screen.watch_dark",
-"url":36,
-"doc":"",
-"func":1
-},
-{
 "ref":"textual.screen.Screen.render",
 "url":36,
 "doc":"Get renderable for widget. Returns: RenderableType: Any renderable",
@@ -12718,7 +12717,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.dispatch_key",
 "url":5,
-"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False.",
+"doc":"Dispatch a key event to method. This method will call the method named 'key_ ' if it exists. Some keys have aliases. The first alias found will be invoked if it exists. If multiple handlers exist that match the key, an exception is raised. Args: event (events.Key): A key event. Returns: bool: True if key was handled, otherwise False. Raises: DuplicateKeyHandlers: When there's more than 1 handler that could handle this key.",
 "func":1
 },
 {
@@ -13610,21 +13609,6 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.keys.Keys.CPRResponse",
-"url":39,
-"doc":""
-},
-{
-"ref":"textual.keys.Keys.Vt100MouseEvent",
-"url":39,
-"doc":""
-},
-{
-"ref":"textual.keys.Keys.WindowsMouseEvent",
-"url":39,
-"doc":""
-},
-{
 "ref":"textual.keys.Keys.Ignore",
 "url":39,
 "doc":""
@@ -13835,6 +13819,11 @@ INDEX=[
 "ref":"textual.errors.RenderError",
 "url":43,
 "doc":"An object could not be rendered."
+},
+{
+"ref":"textual.errors.DuplicateKeyHandlers",
+"url":43,
+"doc":"More than one handler for a single key press. E.g. key_ctrl_i and key_tab handlers both found on one object."
 },
 {
 "ref":"textual.layouts",

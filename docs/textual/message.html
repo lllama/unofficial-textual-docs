@@ -38,6 +38,7 @@ from ._types import MessageTarget as MessageTarget
 
 if TYPE_CHECKING:
     from .widget import Widget
+    from .message_pump import MessagePump
 
 
 @rich.repr.auto
@@ -141,7 +142,7 @@ class Message:
         self._stop_propagation = stop
         return self
 
-    async def _bubble_to(self, widget: Widget) -&gt; None:
+    async def _bubble_to(self, widget: MessagePump) -&gt; None:
         &#34;&#34;&#34;Bubble to a widget (typically the parent).
 
         Args:
@@ -274,7 +275,7 @@ class Message:
         self._stop_propagation = stop
         return self
 
-    async def _bubble_to(self, widget: Widget) -&gt; None:
+    async def _bubble_to(self, widget: MessagePump) -&gt; None:
         &#34;&#34;&#34;Bubble to a widget (typically the parent).
 
         Args:

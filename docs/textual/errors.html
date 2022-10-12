@@ -38,7 +38,11 @@ class NoWidget(TextualError):
 
 
 class RenderError(TextualError):
-    &#34;&#34;&#34;An object could not be rendered.&#34;&#34;&#34;</code></pre>
+    &#34;&#34;&#34;An object could not be rendered.&#34;&#34;&#34;
+
+
+class DuplicateKeyHandlers(TextualError):
+    &#34;&#34;&#34;More than one handler for a single key press. E.g. key_ctrl_i and key_tab handlers both found on one object.&#34;&#34;&#34;</code></pre>
 </details>
 </section>
 <section>
@@ -50,6 +54,26 @@ class RenderError(TextualError):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="textual.errors.DuplicateKeyHandlers"><code class="flex name class">
+<span>class <span class="ident">DuplicateKeyHandlers</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>More than one handler for a single key press. E.g. key_ctrl_i and key_tab handlers both found on one object.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class DuplicateKeyHandlers(TextualError):
+    &#34;&#34;&#34;More than one handler for a single key press. E.g. key_ctrl_i and key_tab handlers both found on one object.&#34;&#34;&#34;</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="textual.errors.TextualError" href="#textual.errors.TextualError">TextualError</a></li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
 <dt id="textual.errors.NoWidget"><code class="flex name class">
 <span>class <span class="ident">NoWidget</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -110,6 +134,7 @@ class RenderError(TextualError):
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
+<li><a title="textual.errors.DuplicateKeyHandlers" href="#textual.errors.DuplicateKeyHandlers">DuplicateKeyHandlers</a></li>
 <li><a title="textual.errors.NoWidget" href="#textual.errors.NoWidget">NoWidget</a></li>
 <li><a title="textual.errors.RenderError" href="#textual.errors.RenderError">RenderError</a></li>
 </ul>
@@ -176,6 +201,9 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
+<li>
+<h4><code><a title="textual.errors.DuplicateKeyHandlers" href="#textual.errors.DuplicateKeyHandlers">DuplicateKeyHandlers</a></code></h4>
+</li>
 <li>
 <h4><code><a title="textual.errors.NoWidget" href="#textual.errors.NoWidget">NoWidget</a></code></h4>
 </li>

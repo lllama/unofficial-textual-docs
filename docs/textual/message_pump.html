@@ -35,12 +35,12 @@ A message pump is a class that processes messages.
 It is a base class for the App, Screen, and Widgets.
 
 &#34;&#34;&#34;
-
 from __future__ import annotations
 
 import asyncio
 import inspect
 from asyncio import CancelledError, Queue, QueueEmpty, Task
+from time import time
 from functools import partial
 from typing import TYPE_CHECKING, Any, Awaitable, Callable, Iterable
 from weakref import WeakSet
@@ -48,6 +48,8 @@ from weakref import WeakSet
 from . import events, log, messages, Logger
 from ._callback import invoke
 from ._context import NoActiveAppError, active_app
+from .errors import DuplicateKeyHandlers
+from .keys import _get_key_aliases
 from .timer import Timer, TimerCallback
 from .case import camel_to_snake
 from .events import Event
@@ -104,6 +106,8 @@ class MessagePump(metaclass=MessagePumpMeta):
         self._pending_message: Message | None = None
         self._task: Task | None = None
         self._timers: WeakSet[Timer] = WeakSet()
+        self._last_idle: float = time()
+        self._max_idle: float | None = None
 
     @property
     def task(self) -&gt; Task:
@@ -366,7 +370,12 @@ class MessagePump(metaclass=MessagePumpMeta):
                 break
             finally:
                 self._message_queue.task_done()
-                if self._message_queue.empty():
+                current_time = time()
+                if self._message_queue.empty() or (
+                    self._max_idle is not None
+                    and current_time - self._last_idle &gt; self._max_idle
+                ):
+                    self._last_idle = current_time
                     if not self._closed:
                         event = events.Idle(self)
                         for _cls, method in self._get_dispatch_methods(
@@ -556,20 +565,45 @@ class MessagePump(metaclass=MessagePumpMeta):
         &#34;&#34;&#34;Dispatch a key event to method.
 
         This method will call the method named &#39;key_&lt;event.key&gt;&#39; if it exists.
+        Some keys have aliases. The first alias found will be invoked if it exists.
+        If multiple handlers exist that match the key, an exception is raised.
 
         Args:
             event (events.Key): A key event.
 
         Returns:
             bool: True if key was handled, otherwise False.
+
+        Raises:
+            DuplicateKeyHandlers: When there&#39;s more than 1 handler that could handle this key.
         &#34;&#34;&#34;
-        key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None) or getattr(
-            self, f&#34;_key_{event.key_name}&#34;, None
-        )
-        if key_method is not None:
-            await invoke(key_method, event)
-            return True
-        return False
+
+        def get_key_handler(pump: MessagePump, key: str) -&gt; Callable | None:
+            &#34;&#34;&#34;Look for the public and private handler methods by name on self.&#34;&#34;&#34;
+            public_handler_name = f&#34;key_{key}&#34;
+            public_handler = getattr(pump, public_handler_name, None)
+
+            private_handler_name = f&#34;_key_{key}&#34;
+            private_handler = getattr(pump, private_handler_name, None)
+
+            return public_handler or private_handler
+
+        invoked_method = None
+        key_name = event.key_name
+        if not key_name:
+            return False
+
+        for key_alias in event.key_aliases:
+            key_method = get_key_handler(self, key_alias)
+            if key_method is not None:
+                if invoked_method:
+                    _raise_duplicate_key_handlers_error(
+                        key_name, invoked_method.__name__, key_method.__name__
+                    )
+                await invoke(key_method, event)
+                invoked_method = key_method
+
+        return invoked_method is not None
 
     async def on_timer(self, event: events.Timer) -&gt; None:
         event.prevent_default()
@@ -580,7 +614,19 @@ class MessagePump(metaclass=MessagePumpMeta):
             except Exception as error:
                 raise CallbackError(
                     f&#34;unable to run callback {event.callback!r}; {error}&#34;
-                )</code></pre>
+                )
+
+
+def _raise_duplicate_key_handlers_error(
+    key_name: str, first_handler: str, second_handler: str
+) -&gt; None:
+    &#34;&#34;&#34;Raise exception for case where user presses a key and there are multiple candidate key handler methods for it.&#34;&#34;&#34;
+    raise DuplicateKeyHandlers(
+        f&#34;Multiple handlers for key press {key_name!r}.\n&#34;
+        f&#34;We found both {first_handler!r} and {second_handler!r}, &#34;
+        f&#34;and didn&#39;t know which to call.\n&#34;
+        f&#34;Consider combining them into a single handler.&#34;,
+    )</code></pre>
 </details>
 </section>
 <section>
@@ -632,6 +678,8 @@ class MessagePump(metaclass=MessagePumpMeta):
         self._pending_message: Message | None = None
         self._task: Task | None = None
         self._timers: WeakSet[Timer] = WeakSet()
+        self._last_idle: float = time()
+        self._max_idle: float | None = None
 
     @property
     def task(self) -&gt; Task:
@@ -894,7 +942,12 @@ class MessagePump(metaclass=MessagePumpMeta):
                 break
             finally:
                 self._message_queue.task_done()
-                if self._message_queue.empty():
+                current_time = time()
+                if self._message_queue.empty() or (
+                    self._max_idle is not None
+                    and current_time - self._last_idle &gt; self._max_idle
+                ):
+                    self._last_idle = current_time
                     if not self._closed:
                         event = events.Idle(self)
                         for _cls, method in self._get_dispatch_methods(
@@ -1084,20 +1137,45 @@ class MessagePump(metaclass=MessagePumpMeta):
         &#34;&#34;&#34;Dispatch a key event to method.
 
         This method will call the method named &#39;key_&lt;event.key&gt;&#39; if it exists.
+        Some keys have aliases. The first alias found will be invoked if it exists.
+        If multiple handlers exist that match the key, an exception is raised.
 
         Args:
             event (events.Key): A key event.
 
         Returns:
             bool: True if key was handled, otherwise False.
+
+        Raises:
+            DuplicateKeyHandlers: When there&#39;s more than 1 handler that could handle this key.
         &#34;&#34;&#34;
-        key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None) or getattr(
-            self, f&#34;_key_{event.key_name}&#34;, None
-        )
-        if key_method is not None:
-            await invoke(key_method, event)
-            return True
-        return False
+
+        def get_key_handler(pump: MessagePump, key: str) -&gt; Callable | None:
+            &#34;&#34;&#34;Look for the public and private handler methods by name on self.&#34;&#34;&#34;
+            public_handler_name = f&#34;key_{key}&#34;
+            public_handler = getattr(pump, public_handler_name, None)
+
+            private_handler_name = f&#34;_key_{key}&#34;
+            private_handler = getattr(pump, private_handler_name, None)
+
+            return public_handler or private_handler
+
+        invoked_method = None
+        key_name = event.key_name
+        if not key_name:
+            return False
+
+        for key_alias in event.key_aliases:
+            key_method = get_key_handler(self, key_alias)
+            if key_method is not None:
+                if invoked_method:
+                    _raise_duplicate_key_handlers_error(
+                        key_name, invoked_method.__name__, key_method.__name__
+                    )
+                await invoke(key_method, event)
+                invoked_method = key_method
+
+        return invoked_method is not None
 
     async def on_timer(self, event: events.Timer) -&gt; None:
         event.prevent_default()
@@ -1301,7 +1379,9 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
 </code></dt>
 <dd>
 <div class="desc"><p>Dispatch a key event to method.</p>
-<p>This method will call the method named 'key_<event.key>' if it exists.</p>
+<p>This method will call the method named 'key_<event.key>' if it exists.
+Some keys have aliases. The first alias found will be invoked if it exists.
+If multiple handlers exist that match the key, an exception is raised.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>event</code></strong> :&ensp;<code>events.Key</code></dt>
@@ -1311,6 +1391,11 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
 <dl>
 <dt><code>bool</code></dt>
 <dd>True if key was handled, otherwise False.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>DuplicateKeyHandlers</code></dt>
+<dd>When there's more than 1 handler that could handle this key.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -1320,20 +1405,45 @@ has been refreshed. Positional and keyword arguments are passed to the callable.
     &#34;&#34;&#34;Dispatch a key event to method.
 
     This method will call the method named &#39;key_&lt;event.key&gt;&#39; if it exists.
+    Some keys have aliases. The first alias found will be invoked if it exists.
+    If multiple handlers exist that match the key, an exception is raised.
 
     Args:
         event (events.Key): A key event.
 
     Returns:
         bool: True if key was handled, otherwise False.
+
+    Raises:
+        DuplicateKeyHandlers: When there&#39;s more than 1 handler that could handle this key.
     &#34;&#34;&#34;
-    key_method = getattr(self, f&#34;key_{event.key_name}&#34;, None) or getattr(
-        self, f&#34;_key_{event.key_name}&#34;, None
-    )
-    if key_method is not None:
-        await invoke(key_method, event)
-        return True
-    return False</code></pre>
+
+    def get_key_handler(pump: MessagePump, key: str) -&gt; Callable | None:
+        &#34;&#34;&#34;Look for the public and private handler methods by name on self.&#34;&#34;&#34;
+        public_handler_name = f&#34;key_{key}&#34;
+        public_handler = getattr(pump, public_handler_name, None)
+
+        private_handler_name = f&#34;_key_{key}&#34;
+        private_handler = getattr(pump, private_handler_name, None)
+
+        return public_handler or private_handler
+
+    invoked_method = None
+    key_name = event.key_name
+    if not key_name:
+        return False
+
+    for key_alias in event.key_aliases:
+        key_method = get_key_handler(self, key_alias)
+        if key_method is not None:
+            if invoked_method:
+                _raise_duplicate_key_handlers_error(
+                    key_name, invoked_method.__name__, key_method.__name__
+                )
+            await invoke(key_method, event)
+            invoked_method = key_method
+
+    return invoked_method is not None</code></pre>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.emit"><code class="name flex">
