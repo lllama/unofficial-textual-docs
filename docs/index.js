@@ -13747,7 +13747,7 @@ INDEX=[
 {
 "ref":"textual.timer",
 "url":42,
-"doc":"Timer objects are created by [set_interval][textual.message_pump.MessagePump.set_interval] or [set_interval][textual.message_pump.MessagePump.set_timer]."
+"doc":"Timer objects are created by [set_interval][textual.message_pump.MessagePump.set_interval] or [set_timer][textual.message_pump.MessagePump.set_timer]."
 },
 {
 "ref":"textual.timer.EventTargetGone",
@@ -14539,22 +14539,22 @@ INDEX=[
 "doc":""
 },
 {
-"ref":"textual.css.styles.RulesMap.hover_color",
+"ref":"textual.css.styles.RulesMap.link_hover_color",
 "url":52,
 "doc":""
 },
 {
-"ref":"textual.css.styles.RulesMap.auto_hover_color",
+"ref":"textual.css.styles.RulesMap.auto_link_hover_color",
 "url":52,
 "doc":""
 },
 {
-"ref":"textual.css.styles.RulesMap.hover_background",
+"ref":"textual.css.styles.RulesMap.link_hover_background",
 "url":52,
 "doc":""
 },
 {
-"ref":"textual.css.styles.RulesMap.hover_style",
+"ref":"textual.css.styles.RulesMap.link_hover_style",
 "url":52,
 "doc":""
 },
@@ -14919,22 +14919,22 @@ INDEX=[
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
-"ref":"textual.css.styles.StylesBase.hover_color",
+"ref":"textual.css.styles.StylesBase.link_hover_color",
 "url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
-"ref":"textual.css.styles.StylesBase.auto_hover_color",
+"ref":"textual.css.styles.StylesBase.auto_link_hover_color",
 "url":52,
 "doc":"A property that requires a True or False value."
 },
 {
-"ref":"textual.css.styles.StylesBase.hover_background",
+"ref":"textual.css.styles.StylesBase.link_hover_background",
 "url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
-"ref":"textual.css.styles.StylesBase.hover_style",
+"ref":"textual.css.styles.StylesBase.link_hover_style",
 "url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
@@ -15382,22 +15382,22 @@ INDEX=[
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
-"ref":"textual.css.styles.Styles.hover_color",
+"ref":"textual.css.styles.Styles.link_hover_color",
 "url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
-"ref":"textual.css.styles.Styles.auto_hover_color",
+"ref":"textual.css.styles.Styles.auto_link_hover_color",
 "url":52,
 "doc":"A property that requires a True or False value."
 },
 {
-"ref":"textual.css.styles.Styles.hover_background",
+"ref":"textual.css.styles.Styles.link_hover_background",
 "url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
-"ref":"textual.css.styles.Styles.hover_style",
+"ref":"textual.css.styles.Styles.link_hover_style",
 "url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
@@ -15790,22 +15790,22 @@ INDEX=[
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },
 {
-"ref":"textual.css.styles.RenderStyles.hover_color",
+"ref":"textual.css.styles.RenderStyles.link_hover_color",
 "url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
-"ref":"textual.css.styles.RenderStyles.auto_hover_color",
+"ref":"textual.css.styles.RenderStyles.auto_link_hover_color",
 "url":52,
 "doc":"A property that requires a True or False value."
 },
 {
-"ref":"textual.css.styles.RenderStyles.hover_background",
+"ref":"textual.css.styles.RenderStyles.link_hover_background",
 "url":52,
 "doc":"Descriptor for getting and setting color properties."
 },
 {
-"ref":"textual.css.styles.RenderStyles.hover_style",
+"ref":"textual.css.styles.RenderStyles.link_hover_style",
 "url":52,
 "doc":"Descriptor for getting and set style flag properties (e.g.  bold italic underline )."
 },

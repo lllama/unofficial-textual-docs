@@ -712,14 +712,16 @@ class DOMNode(MessagePump):
     ExpectType = TypeVar(&#34;ExpectType&#34;, bound=&#34;Widget&#34;)
 
     @overload
-    def query(self, selector: str | None) -&gt; DOMQuery:
+    def query(self, selector: str | None) -&gt; DOMQuery[Widget]:
         ...
 
     @overload
     def query(self, selector: type[ExpectType]) -&gt; DOMQuery[ExpectType]:
         ...
 
-    def query(self, selector: str | type | None = None) -&gt; DOMQuery:
+    def query(
+        self, selector: str | type[ExpectType] | None = None
+    ) -&gt; DOMQuery[Widget] | DOMQuery[ExpectType]:
         &#34;&#34;&#34;Get a DOM query matching a selector.
 
         Args:
@@ -1583,14 +1585,16 @@ class DOMNode(MessagePump):
     ExpectType = TypeVar(&#34;ExpectType&#34;, bound=&#34;Widget&#34;)
 
     @overload
-    def query(self, selector: str | None) -&gt; DOMQuery:
+    def query(self, selector: str | None) -&gt; DOMQuery[Widget]:
         ...
 
     @overload
     def query(self, selector: type[ExpectType]) -&gt; DOMQuery[ExpectType]:
         ...
 
-    def query(self, selector: str | type | None = None) -&gt; DOMQuery:
+    def query(
+        self, selector: str | type[ExpectType] | None = None
+    ) -&gt; DOMQuery[Widget] | DOMQuery[ExpectType]:
         &#34;&#34;&#34;Get a DOM query matching a selector.
 
         Args:
@@ -2473,7 +2477,7 @@ and inherited from base classes.</dd>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.query"><code class="name flex">
-<span>def <span class="ident">query</span></span>(<span>self, selector: str | type | None = None) ‑> DOMQuery</span>
+<span>def <span class="ident">query</span></span>(<span>self, selector: str | type[ExpectType] | None = None) ‑> DOMQuery[Widget] | DOMQuery[ExpectType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Get a DOM query matching a selector.</p>
@@ -2488,7 +2492,9 @@ and inherited from base classes.</dd>
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def query(self, selector: str | type | None = None) -&gt; DOMQuery:
+<pre><code class="python">def query(
+    self, selector: str | type[ExpectType] | None = None
+) -&gt; DOMQuery[Widget] | DOMQuery[ExpectType]:
     &#34;&#34;&#34;Get a DOM query matching a selector.
 
     Args:
