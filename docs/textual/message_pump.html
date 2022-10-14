@@ -59,10 +59,6 @@ if TYPE_CHECKING:
     from .app import App
 
 
-class NoParent(Exception):
-    pass
-
-
 class CallbackError(Exception):
     pass
 
@@ -1834,25 +1830,6 @@ parent classes' name.</p></div>
 <li>builtins.type</li>
 </ul>
 </dd>
-<dt id="textual.message_pump.NoParent"><code class="flex name class">
-<span>class <span class="ident">NoParent</span></span>
-<span>(</span><span>*args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class NoParent(Exception):
-    pass</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>builtins.Exception</li>
-<li>builtins.BaseException</li>
-</ul>
-</dd>
 </dl>
 </section>
 </article>
@@ -1949,9 +1926,6 @@ setTimeout(() => input.focus(), 100);
 </li>
 <li>
 <h4><code><a title="textual.message_pump.MessagePumpMeta" href="#textual.message_pump.MessagePumpMeta">MessagePumpMeta</a></code></h4>
-</li>
-<li>
-<h4><code><a title="textual.message_pump.NoParent" href="#textual.message_pump.NoParent">NoParent</a></code></h4>
 </li>
 </ul>
 </li>

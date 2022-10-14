@@ -29,7 +29,7 @@
 <pre><code class="python">from __future__ import annotations
 
 import sys
-from typing import Iterable
+from typing import Iterable, Iterator
 
 import rich.repr
 from rich.console import RenderableType
@@ -67,6 +67,7 @@ class Screen(Widget):
     &#34;&#34;&#34;
 
     dark: Reactive[bool] = Reactive(False)
+    focused: Reactive[Widget | None] = Reactive(None)
 
     def __init__(
         self,
@@ -170,8 +171,131 @@ class Screen(Widget):
 
         Returns:
             Region: Region relative to screen.
+
+        Raises:
+            NoWidget: If the widget could not be found in this screen.
         &#34;&#34;&#34;
         return self._compositor.find_widget(widget)
+
+    @property
+    def focus_chain(self) -&gt; list[Widget]:
+        &#34;&#34;&#34;Get widgets that may receive focus, in focus order.
+
+        Returns:
+            list[Widget]: List of Widgets in focus order.
+        &#34;&#34;&#34;
+        widgets: list[Widget] = []
+        add_widget = widgets.append
+        stack: list[Iterator[Widget]] = [iter(self.focusable_children)]
+        pop = stack.pop
+        push = stack.append
+
+        while stack:
+            node = next(stack[-1], None)
+            if node is None:
+                pop()
+            else:
+                if node.is_container and node.can_focus_children:
+                    push(iter(node.focusable_children))
+                else:
+                    if node.can_focus:
+                        add_widget(node)
+
+        return widgets
+
+    def _move_focus(self, direction: int = 0) -&gt; Widget | None:
+        &#34;&#34;&#34;Move the focus in the given direction.
+
+        Args:
+            direction (int, optional): 1 to move forward, -1 to move backward, or
+                0 to keep the current focus.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        focusable_widgets = self.focus_chain
+
+        if not focusable_widgets:
+            # Nothing focusable, so nothing to do
+            return self.focused
+        if self.focused is None:
+            # Nothing currently focused, so focus the first one
+            self.set_focus(focusable_widgets[0])
+        else:
+            try:
+                # Find the index of the currently focused widget
+                current_index = focusable_widgets.index(self.focused)
+            except ValueError:
+                # Focused widget was removed in the interim, start again
+                self.set_focus(focusable_widgets[0])
+            else:
+                # Only move the focus if we are currently showing the focus
+                if direction:
+                    current_index = (current_index + direction) % len(focusable_widgets)
+                    self.set_focus(focusable_widgets[current_index])
+
+        return self.focused
+
+    def focus_next(self) -&gt; Widget | None:
+        &#34;&#34;&#34;Focus the next widget.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        return self._move_focus(1)
+
+    def focus_previous(self) -&gt; Widget | None:
+        &#34;&#34;&#34;Focus the previous widget.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        return self._move_focus(-1)
+
+    def _reset_focus(self, widget: Widget) -&gt; None:
+        &#34;&#34;&#34;Reset the focus when a widget is removed
+
+        Args:
+            widget (Widget): A widget that is removed.
+        &#34;&#34;&#34;
+        if self.focused is widget:
+            for sibling in widget.siblings:
+                if sibling.can_focus:
+                    sibling.focus()
+                    break
+            else:
+                self.focused = None
+
+    def set_focus(self, widget: Widget | None, scroll_visible: bool = True) -&gt; None:
+        &#34;&#34;&#34;Focus (or un-focus) a widget. A focused widget will receive key events first.
+
+        Args:
+            widget (Widget | None): Widget to focus, or None to un-focus.
+            scroll_visible (bool, optional): Scroll widget in to view.
+        &#34;&#34;&#34;
+        if widget is self.focused:
+            # Widget is already focused
+            return
+
+        if widget is None:
+            # No focus, so blur currently focused widget if it exists
+            if self.focused is not None:
+                self.focused.post_message_no_wait(events.Blur(self))
+                self.focused.emit_no_wait(events.DescendantBlur(self))
+                self.focused = None
+        elif widget.can_focus:
+            if self.focused != widget:
+                if self.focused is not None:
+                    # Blur currently focused widget
+                    self.focused.post_message_no_wait(events.Blur(self))
+                    self.focused.emit_no_wait(events.DescendantBlur(self))
+                # Change focus
+                self.focused = widget
+                # Send focus event
+                if scroll_visible:
+                    self.screen.scroll_to_widget(widget)
+                widget.post_message_no_wait(events.Focus(self))
+                widget.emit_no_wait(events.DescendantFocus(self))
 
     async def _on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
@@ -346,11 +470,11 @@ class Screen(Widget):
                 else:
                     widget, region = self.get_widget_at(event.x, event.y)
             except errors.NoWidget:
-                self.app.set_focus(None)
+                self.set_focus(None)
             else:
                 if isinstance(event, events.MouseUp) and widget.can_focus:
-                    if self.app.focused is not widget:
-                        self.app.set_focus(widget)
+                    if self.focused is not widget:
+                        self.set_focus(widget)
                         event.stop()
                         return
                 event.style = self.get_style_at(event.screen_x, event.screen_y)
@@ -408,6 +532,7 @@ class Screen(Widget):
     &#34;&#34;&#34;
 
     dark: Reactive[bool] = Reactive(False)
+    focused: Reactive[Widget | None] = Reactive(None)
 
     def __init__(
         self,
@@ -511,8 +636,131 @@ class Screen(Widget):
 
         Returns:
             Region: Region relative to screen.
+
+        Raises:
+            NoWidget: If the widget could not be found in this screen.
         &#34;&#34;&#34;
         return self._compositor.find_widget(widget)
+
+    @property
+    def focus_chain(self) -&gt; list[Widget]:
+        &#34;&#34;&#34;Get widgets that may receive focus, in focus order.
+
+        Returns:
+            list[Widget]: List of Widgets in focus order.
+        &#34;&#34;&#34;
+        widgets: list[Widget] = []
+        add_widget = widgets.append
+        stack: list[Iterator[Widget]] = [iter(self.focusable_children)]
+        pop = stack.pop
+        push = stack.append
+
+        while stack:
+            node = next(stack[-1], None)
+            if node is None:
+                pop()
+            else:
+                if node.is_container and node.can_focus_children:
+                    push(iter(node.focusable_children))
+                else:
+                    if node.can_focus:
+                        add_widget(node)
+
+        return widgets
+
+    def _move_focus(self, direction: int = 0) -&gt; Widget | None:
+        &#34;&#34;&#34;Move the focus in the given direction.
+
+        Args:
+            direction (int, optional): 1 to move forward, -1 to move backward, or
+                0 to keep the current focus.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        focusable_widgets = self.focus_chain
+
+        if not focusable_widgets:
+            # Nothing focusable, so nothing to do
+            return self.focused
+        if self.focused is None:
+            # Nothing currently focused, so focus the first one
+            self.set_focus(focusable_widgets[0])
+        else:
+            try:
+                # Find the index of the currently focused widget
+                current_index = focusable_widgets.index(self.focused)
+            except ValueError:
+                # Focused widget was removed in the interim, start again
+                self.set_focus(focusable_widgets[0])
+            else:
+                # Only move the focus if we are currently showing the focus
+                if direction:
+                    current_index = (current_index + direction) % len(focusable_widgets)
+                    self.set_focus(focusable_widgets[current_index])
+
+        return self.focused
+
+    def focus_next(self) -&gt; Widget | None:
+        &#34;&#34;&#34;Focus the next widget.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        return self._move_focus(1)
+
+    def focus_previous(self) -&gt; Widget | None:
+        &#34;&#34;&#34;Focus the previous widget.
+
+        Returns:
+            Widget | None: Newly focused widget, or None for no focus.
+        &#34;&#34;&#34;
+        return self._move_focus(-1)
+
+    def _reset_focus(self, widget: Widget) -&gt; None:
+        &#34;&#34;&#34;Reset the focus when a widget is removed
+
+        Args:
+            widget (Widget): A widget that is removed.
+        &#34;&#34;&#34;
+        if self.focused is widget:
+            for sibling in widget.siblings:
+                if sibling.can_focus:
+                    sibling.focus()
+                    break
+            else:
+                self.focused = None
+
+    def set_focus(self, widget: Widget | None, scroll_visible: bool = True) -&gt; None:
+        &#34;&#34;&#34;Focus (or un-focus) a widget. A focused widget will receive key events first.
+
+        Args:
+            widget (Widget | None): Widget to focus, or None to un-focus.
+            scroll_visible (bool, optional): Scroll widget in to view.
+        &#34;&#34;&#34;
+        if widget is self.focused:
+            # Widget is already focused
+            return
+
+        if widget is None:
+            # No focus, so blur currently focused widget if it exists
+            if self.focused is not None:
+                self.focused.post_message_no_wait(events.Blur(self))
+                self.focused.emit_no_wait(events.DescendantBlur(self))
+                self.focused = None
+        elif widget.can_focus:
+            if self.focused != widget:
+                if self.focused is not None:
+                    # Blur currently focused widget
+                    self.focused.post_message_no_wait(events.Blur(self))
+                    self.focused.emit_no_wait(events.DescendantBlur(self))
+                # Change focus
+                self.focused = widget
+                # Send focus event
+                if scroll_visible:
+                    self.screen.scroll_to_widget(widget)
+                widget.post_message_no_wait(events.Focus(self))
+                widget.emit_no_wait(events.DescendantFocus(self))
 
     async def _on_idle(self, event: events.Idle) -&gt; None:
         # Check for any widgets marked as &#39;dirty&#39; (needs a repaint)
@@ -687,11 +935,11 @@ class Screen(Widget):
                 else:
                     widget, region = self.get_widget_at(event.x, event.y)
             except errors.NoWidget:
-                self.app.set_focus(None)
+                self.set_focus(None)
             else:
                 if isinstance(event, events.MouseUp) and widget.can_focus:
-                    if self.app.focused is not widget:
-                        self.app.set_focus(widget)
+                    if self.focused is not widget:
+                        self.set_focus(widget)
                         event.stop()
                         return
                 event.style = self.get_style_at(event.screen_x, event.screen_y)
@@ -733,6 +981,66 @@ class Screen(Widget):
 <h3>Instance variables</h3>
 <dl>
 <dt id="textual.screen.Screen.dark"><code class="name">var <span class="ident">dark</span> : ReactiveType</code></dt>
+<dd>
+<div class="desc"><p>Reactive descriptor.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
+<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a layout on change. Defaults to False.</dd>
+<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Perform a repaint on change. Defaults to True.</dd>
+<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
+    return getattr(obj, self.internal_name)</code></pre>
+</details>
+</dd>
+<dt id="textual.screen.Screen.focus_chain"><code class="name">var <span class="ident">focus_chain</span> : list[Widget]</code></dt>
+<dd>
+<div class="desc"><p>Get widgets that may receive focus, in focus order.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list[Widget]</code></dt>
+<dd>List of Widgets in focus order.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@property
+def focus_chain(self) -&gt; list[Widget]:
+    &#34;&#34;&#34;Get widgets that may receive focus, in focus order.
+
+    Returns:
+        list[Widget]: List of Widgets in focus order.
+    &#34;&#34;&#34;
+    widgets: list[Widget] = []
+    add_widget = widgets.append
+    stack: list[Iterator[Widget]] = [iter(self.focusable_children)]
+    pop = stack.pop
+    push = stack.append
+
+    while stack:
+        node = next(stack[-1], None)
+        if node is None:
+            pop()
+        else:
+            if node.is_container and node.can_focus_children:
+                push(iter(node.focusable_children))
+            else:
+                if node.can_focus:
+                    add_widget(node)
+
+    return widgets</code></pre>
+</details>
+</dd>
+<dt id="textual.screen.Screen.focused"><code class="name">var <span class="ident">focused</span> : ReactiveType</code></dt>
 <dd>
 <div class="desc"><p>Reactive descriptor.</p>
 <h2 id="args">Args</h2>
@@ -826,6 +1134,11 @@ def widgets(self) -&gt; list[Widget]:
 <dl>
 <dt><code>Region</code></dt>
 <dd>Region relative to screen.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code>NoWidget</code></dt>
+<dd>If the widget could not be found in this screen.</dd>
 </dl></div>
 <details class="source">
 <summary>
@@ -839,8 +1152,51 @@ def widgets(self) -&gt; list[Widget]:
 
     Returns:
         Region: Region relative to screen.
+
+    Raises:
+        NoWidget: If the widget could not be found in this screen.
     &#34;&#34;&#34;
     return self._compositor.find_widget(widget)</code></pre>
+</details>
+</dd>
+<dt id="textual.screen.Screen.focus_next"><code class="name flex">
+<span>def <span class="ident">focus_next</span></span>(<span>self) ‑> Widget | None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Focus the next widget.</p>
+<h2 id="returns">Returns</h2>
+<p>Widget | None: Newly focused widget, or None for no focus.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def focus_next(self) -&gt; Widget | None:
+    &#34;&#34;&#34;Focus the next widget.
+
+    Returns:
+        Widget | None: Newly focused widget, or None for no focus.
+    &#34;&#34;&#34;
+    return self._move_focus(1)</code></pre>
+</details>
+</dd>
+<dt id="textual.screen.Screen.focus_previous"><code class="name flex">
+<span>def <span class="ident">focus_previous</span></span>(<span>self) ‑> Widget | None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Focus the previous widget.</p>
+<h2 id="returns">Returns</h2>
+<p>Widget | None: Newly focused widget, or None for no focus.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def focus_previous(self) -&gt; Widget | None:
+    &#34;&#34;&#34;Focus the previous widget.
+
+    Returns:
+        Widget | None: Newly focused widget, or None for no focus.
+    &#34;&#34;&#34;
+    return self._move_focus(-1)</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.get_offset"><code class="name flex">
@@ -974,6 +1330,53 @@ def widgets(self) -&gt; list[Widget]:
         Iterable[tuple[Widget, Region]]: Sequence of (WIDGET, REGION) tuples.
     &#34;&#34;&#34;
     return self._compositor.get_widgets_at(x, y)</code></pre>
+</details>
+</dd>
+<dt id="textual.screen.Screen.set_focus"><code class="name flex">
+<span>def <span class="ident">set_focus</span></span>(<span>self, widget: Widget | None, scroll_visible: bool = True) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Focus (or un-focus) a widget. A focused widget will receive key events first.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt>widget (Widget | None): Widget to focus, or None to un-focus.</dt>
+<dt><strong><code>scroll_visible</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Scroll widget in to view.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_focus(self, widget: Widget | None, scroll_visible: bool = True) -&gt; None:
+    &#34;&#34;&#34;Focus (or un-focus) a widget. A focused widget will receive key events first.
+
+    Args:
+        widget (Widget | None): Widget to focus, or None to un-focus.
+        scroll_visible (bool, optional): Scroll widget in to view.
+    &#34;&#34;&#34;
+    if widget is self.focused:
+        # Widget is already focused
+        return
+
+    if widget is None:
+        # No focus, so blur currently focused widget if it exists
+        if self.focused is not None:
+            self.focused.post_message_no_wait(events.Blur(self))
+            self.focused.emit_no_wait(events.DescendantBlur(self))
+            self.focused = None
+    elif widget.can_focus:
+        if self.focused != widget:
+            if self.focused is not None:
+                # Blur currently focused widget
+                self.focused.post_message_no_wait(events.Blur(self))
+                self.focused.emit_no_wait(events.DescendantBlur(self))
+            # Change focus
+            self.focused = widget
+            # Send focus event
+            if scroll_visible:
+                self.screen.scroll_to_widget(widget)
+            widget.post_message_no_wait(events.Focus(self))
+            widget.emit_no_wait(events.DescendantFocus(self))</code></pre>
 </details>
 </dd>
 </dl>
@@ -1185,11 +1588,16 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.screen.Screen.DEFAULT_CSS" href="#textual.screen.Screen.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
 <li><code><a title="textual.screen.Screen.dark" href="#textual.screen.Screen.dark">dark</a></code></li>
 <li><code><a title="textual.screen.Screen.find_widget" href="#textual.screen.Screen.find_widget">find_widget</a></code></li>
+<li><code><a title="textual.screen.Screen.focus_chain" href="#textual.screen.Screen.focus_chain">focus_chain</a></code></li>
+<li><code><a title="textual.screen.Screen.focus_next" href="#textual.screen.Screen.focus_next">focus_next</a></code></li>
+<li><code><a title="textual.screen.Screen.focus_previous" href="#textual.screen.Screen.focus_previous">focus_previous</a></code></li>
+<li><code><a title="textual.screen.Screen.focused" href="#textual.screen.Screen.focused">focused</a></code></li>
 <li><code><a title="textual.screen.Screen.get_offset" href="#textual.screen.Screen.get_offset">get_offset</a></code></li>
 <li><code><a title="textual.screen.Screen.get_style_at" href="#textual.screen.Screen.get_style_at">get_style_at</a></code></li>
 <li><code><a title="textual.screen.Screen.get_widget_at" href="#textual.screen.Screen.get_widget_at">get_widget_at</a></code></li>
 <li><code><a title="textual.screen.Screen.get_widgets_at" href="#textual.screen.Screen.get_widgets_at">get_widgets_at</a></code></li>
 <li><code><a title="textual.screen.Screen.is_current" href="#textual.screen.Screen.is_current">is_current</a></code></li>
+<li><code><a title="textual.screen.Screen.set_focus" href="#textual.screen.Screen.set_focus">set_focus</a></code></li>
 <li><code><a title="textual.screen.Screen.update_timer" href="#textual.screen.Screen.update_timer">update_timer</a></code></li>
 <li><code><a title="textual.screen.Screen.visible_widgets" href="#textual.screen.Screen.visible_widgets">visible_widgets</a></code></li>
 <li><code><a title="textual.screen.Screen.widgets" href="#textual.screen.Screen.widgets">widgets</a></code></li>

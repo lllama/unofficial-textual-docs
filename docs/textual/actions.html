@@ -29,7 +29,6 @@
 <pre><code class="python">from __future__ import annotations
 
 import ast
-from typing import Any, Tuple
 import re
 
 
@@ -68,16 +67,7 @@ def parse(action: str) -&gt; tuple[str, tuple[object, ...]]:
     return (
         action_name,
         action_params if isinstance(action_params, tuple) else (action_params,),
-    )
-
-
-if __name__ == &#34;__main__&#34;:
-
-    print(parse(&#34;foo&#34;))
-
-    print(parse(&#34;view.toggle(&#39;side&#39;)&#34;))
-
-    print(parse(&#34;view.toggle&#34;))</code></pre>
+    )</code></pre>
 </details>
 </section>
 <section>

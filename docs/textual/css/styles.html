@@ -95,7 +95,6 @@ else:
     from typing_extensions import TypedDict
 
 if TYPE_CHECKING:
-    from .._animator import Animation
     from .._layout import Layout
     from ..dom import DOMNode
 
@@ -636,7 +635,7 @@ class Styles(StylesBase):
                 default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
 
         Returns:
-            list[tuple[str, Specificity5, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
+            list[tuple[str, Specificity6, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
         &#34;&#34;&#34;
         is_important = self.important.__contains__
 
@@ -1988,7 +1987,7 @@ on_complete (CallbackType | None, optional): A callable to invoke when the anima
                 default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
 
         Returns:
-            list[tuple[str, Specificity5, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
+            list[tuple[str, Specificity6, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
         &#34;&#34;&#34;
         is_important = self.important.__contains__
 
@@ -2593,7 +2592,7 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
-<dt><code>list[tuple[str, Specificity5, Any]]]</code></dt>
+<dt><code>list[tuple[str, Specificity6, Any]]]</code></dt>
 <dd>A list containing a tuple of <RULE NAME>, <SPECIFICITY> <RULE VALUE>.</dd>
 </dl></div>
 <details class="source">
@@ -2615,7 +2614,7 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
             default (i.e. in Widget.DEFAULT_CSS) rules. False if they&#39;re from user defined CSS.
 
     Returns:
-        list[tuple[str, Specificity5, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
+        list[tuple[str, Specificity6, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
     &#34;&#34;&#34;
     is_important = self.important.__contains__
 

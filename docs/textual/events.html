@@ -401,7 +401,7 @@ class MouseEvent(InputEvent, bubble=True):
         Returns:
             Offset | None: An offset where the origin is at the top left of the content area.
         &#34;&#34;&#34;
-        if self.offset not in widget.content_region:
+        if self.screen_offset not in widget.content_region:
             return None
         return self.offset - widget.gutter.top_left
 
@@ -2053,7 +2053,7 @@ configuration and binding keys.</p></div>
         Returns:
             Offset | None: An offset where the origin is at the top left of the content area.
         &#34;&#34;&#34;
-        if self.offset not in widget.content_region:
+        if self.screen_offset not in widget.content_region:
             return None
         return self.offset - widget.gutter.top_left
 
@@ -2287,7 +2287,7 @@ def style(self) -&gt; Style:
     Returns:
         Offset | None: An offset where the origin is at the top left of the content area.
     &#34;&#34;&#34;
-    if self.offset not in widget.content_region:
+    if self.screen_offset not in widget.content_region:
         return None
     return self.offset - widget.gutter.top_left</code></pre>
 </details>

@@ -80,7 +80,6 @@ if TYPE_CHECKING:
         ScrollUp,
     )
 
-
 _JUSTIFY_MAP: dict[str, JustifyMethod] = {
     &#34;start&#34;: &#34;left&#34;,
     &#34;end&#34;: &#34;right&#34;,
@@ -1841,7 +1840,7 @@ class Widget(DOMNode):
             scroll_visible (bool, optional): Scroll parent to make this widget
                 visible. Defaults to True.
         &#34;&#34;&#34;
-        self.app.set_focus(self, scroll_visible=scroll_visible)
+        self.screen.set_focus(self, scroll_visible=scroll_visible)
 
     def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
@@ -1917,22 +1916,16 @@ class Widget(DOMNode):
         self.refresh()
 
     def _on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
-        self.descendant_has_focus = True
-        if &#34;focus-within&#34; in self.pseudo_classes:
-            sender = event.sender
-            for child in self.walk_children(False):
-                child.refresh()
-                if child is sender:
-                    break
+        if not self.descendant_has_focus:
+            self.descendant_has_focus = True
 
     def _on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
-        self.descendant_has_focus = False
+        if self.descendant_has_focus:
+            self.descendant_has_focus = False
+
+    def watch_descendant_has_focus(self, value: bool) -&gt; None:
         if &#34;focus-within&#34; in self.pseudo_classes:
-            sender = event.sender
-            for child in self.walk_children(False):
-                child.refresh()
-                if child is sender:
-                    break
+            self.app._require_stylesheet_update.add(self)
 
     def _on_mouse_scroll_down(self, event) -&gt; None:
         if self.allow_vertical_scroll:
@@ -1971,7 +1964,7 @@ class Widget(DOMNode):
 
     def _on_hide(self, event: events.Hide) -&gt; None:
         if self.has_focus:
-            self.app._reset_focus(self)
+            self.screen._reset_focus(self)
 
     def _on_scroll_to_region(self, message: messages.ScrollToRegion) -&gt; None:
         self.scroll_to_region(message.region, animate=True)
@@ -3774,7 +3767,7 @@ class Widget(DOMNode):
             scroll_visible (bool, optional): Scroll parent to make this widget
                 visible. Defaults to True.
         &#34;&#34;&#34;
-        self.app.set_focus(self, scroll_visible=scroll_visible)
+        self.screen.set_focus(self, scroll_visible=scroll_visible)
 
     def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
@@ -3850,22 +3843,16 @@ class Widget(DOMNode):
         self.refresh()
 
     def _on_descendant_focus(self, event: events.DescendantFocus) -&gt; None:
-        self.descendant_has_focus = True
-        if &#34;focus-within&#34; in self.pseudo_classes:
-            sender = event.sender
-            for child in self.walk_children(False):
-                child.refresh()
-                if child is sender:
-                    break
+        if not self.descendant_has_focus:
+            self.descendant_has_focus = True
 
     def _on_descendant_blur(self, event: events.DescendantBlur) -&gt; None:
-        self.descendant_has_focus = False
+        if self.descendant_has_focus:
+            self.descendant_has_focus = False
+
+    def watch_descendant_has_focus(self, value: bool) -&gt; None:
         if &#34;focus-within&#34; in self.pseudo_classes:
-            sender = event.sender
-            for child in self.walk_children(False):
-                child.refresh()
-                if child is sender:
-                    break
+            self.app._require_stylesheet_update.add(self)
 
     def _on_mouse_scroll_down(self, event) -&gt; None:
         if self.allow_vertical_scroll:
@@ -3904,7 +3891,7 @@ class Widget(DOMNode):
 
     def _on_hide(self, event: events.Hide) -&gt; None:
         if self.has_focus:
-            self.app._reset_focus(self)
+            self.screen._reset_focus(self)
 
     def _on_scroll_to_region(self, message: messages.ScrollToRegion) -&gt; None:
         self.scroll_to_region(message.region, animate=True)
@@ -5327,7 +5314,7 @@ visible. Defaults to True.</dd>
         scroll_visible (bool, optional): Scroll parent to make this widget
             visible. Defaults to True.
     &#34;&#34;&#34;
-    self.app.set_focus(self, scroll_visible=scroll_visible)</code></pre>
+    self.screen.set_focus(self, scroll_visible=scroll_visible)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_component_rich_style"><code class="name flex">
@@ -6700,6 +6687,20 @@ duration (float | None, optional): <em>description</em>. Defaults to None.</p></
     return clamp(value, 0, self.max_scroll_y)</code></pre>
 </details>
 </dd>
+<dt id="textual.widget.Widget.watch_descendant_has_focus"><code class="name flex">
+<span>def <span class="ident">watch_descendant_has_focus</span></span>(<span>self, value: bool) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def watch_descendant_has_focus(self, value: bool) -&gt; None:
+    if &#34;focus-within&#34; in self.pseudo_classes:
+        self.app._require_stylesheet_update.add(self)</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.Widget.watch_has_focus"><code class="name flex">
 <span>def <span class="ident">watch_has_focus</span></span>(<span>self, value: bool) ‑> None</span>
 </code></dt>
@@ -6996,6 +6997,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.virtual_region" href="#textual.widget.Widget.virtual_region">virtual_region</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_region_with_margin" href="#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_size" href="#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
+<li><code><a title="textual.widget.Widget.watch_descendant_has_focus" href="#textual.widget.Widget.watch_descendant_has_focus">watch_descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_hover_style" href="#textual.widget.Widget.watch_hover_style">watch_hover_style</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>

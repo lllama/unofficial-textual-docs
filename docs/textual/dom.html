@@ -103,10 +103,6 @@ class NoScreen(DOMError):
     pass
 
 
-class NoParent(Exception):
-    pass
-
-
 @rich.repr.auto
 class DOMNode(MessagePump):
     &#34;&#34;&#34;The base class for object that can be in the Textual DOM (App and Widget)&#34;&#34;&#34;
@@ -2784,25 +2780,6 @@ Defaults to None.</p>
 </li>
 </ul>
 </dd>
-<dt id="textual.dom.NoParent"><code class="flex name class">
-<span>class <span class="ident">NoParent</span></span>
-<span>(</span><span>*args, **kwargs)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Common base class for all non-exit exceptions.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">class NoParent(Exception):
-    pass</code></pre>
-</details>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>builtins.Exception</li>
-<li>builtins.BaseException</li>
-</ul>
-</dd>
 <dt id="textual.dom.NoScreen"><code class="flex name class">
 <span>class <span class="ident">NoScreen</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -2941,9 +2918,6 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.dom.DOMNode.visible" href="#textual.dom.DOMNode.visible">visible</a></code></li>
 <li><code><a title="textual.dom.DOMNode.walk_children" href="#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 </ul>
-</li>
-<li>
-<h4><code><a title="textual.dom.NoParent" href="#textual.dom.NoParent">NoParent</a></code></h4>
 </li>
 <li>
 <h4><code><a title="textual.dom.NoScreen" href="#textual.dom.NoScreen">NoScreen</a></code></h4>
