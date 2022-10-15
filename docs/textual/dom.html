@@ -28,17 +28,19 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from inspect import getfile
 import re
+import sys
+from collections import deque
+from inspect import getfile
 from typing import (
-    cast,
+    TYPE_CHECKING,
     ClassVar,
     Iterable,
     Iterator,
     Type,
-    overload,
     TypeVar,
-    TYPE_CHECKING,
+    cast,
+    overload,
 )
 
 import rich.repr
@@ -51,14 +53,14 @@ from rich.tree import Tree
 from ._context import NoActiveAppError
 from ._node_list import NodeList
 from .binding import Bindings, BindingType
-from .color import Color, WHITE, BLACK
+from .color import BLACK, WHITE, Color
 from .css._error_tools import friendly_list
 from .css.constants import VALID_DISPLAY, VALID_VISIBILITY
-from .css.errors import StyleValueError, DeclarationError
+from .css.errors import DeclarationError, StyleValueError
 from .css.parse import parse_declarations
-from .css.styles import Styles, RenderStyles
-from .css.tokenize import IDENTIFIER
 from .css.query import NoMatches
+from .css.styles import RenderStyles, Styles
+from .css.tokenize import IDENTIFIER
 from .message_pump import MessagePump
 from .timer import Timer
 
@@ -68,8 +70,21 @@ if TYPE_CHECKING:
     from .screen import Screen
     from .widget import Widget
 
+if sys.version_info &gt;= (3, 8):
+    from typing import Literal
+else:
+    from typing_extensions import Literal
+
+if sys.version_info &gt;= (3, 10):
+    from typing import TypeAlias
+else:  # pragma: no cover
+    from typing_extensions import TypeAlias
+
 
 _re_identifier = re.compile(IDENTIFIER)
+
+
+WalkMethod: TypeAlias = Literal[&#34;depth&#34;, &#34;breadth&#34;]
 
 
 class BadIdentifier(Exception):
@@ -645,11 +660,19 @@ class DOMNode(MessagePump):
         filter_type: type[WalkType],
         *,
         with_self: bool = True,
+        method: WalkMethod = &#34;depth&#34;,
+        reverse: bool = False,
     ) -&gt; Iterable[WalkType]:
         ...
 
     @overload
-    def walk_children(self, *, with_self: bool = True) -&gt; Iterable[DOMNode]:
+    def walk_children(
+        self,
+        *,
+        with_self: bool = True,
+        method: WalkMethod = &#34;depth&#34;,
+        reverse: bool = False,
+    ) -&gt; Iterable[DOMNode]:
         ...
 
     def walk_children(
@@ -657,6 +680,8 @@ class DOMNode(MessagePump):
         filter_type: type[WalkType] | None = None,
         *,
         with_self: bool = True,
+        method: WalkMethod = &#34;depth&#34;,
+        reverse: bool = False,
     ) -&gt; Iterable[DOMNode | WalkType]:
         &#34;&#34;&#34;Generate descendant nodes.
 
@@ -664,29 +689,60 @@ class DOMNode(MessagePump):
             filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter.
                 Defaults to None.
             with_self (bool, optional): Also yield self in addition to descendants. Defaults to True.
+            method (Literal[&#34;breadth&#34;, &#34;depth&#34;], optional): One of &#34;depth&#34; or &#34;breadth&#34;. Defaults to &#34;depth&#34;.
+            reverse (bool, optional): Reverse the order (bottom up). Defaults to False
 
         Returns:
             Iterable[DOMNode | WalkType]: An iterable of nodes.
 
         &#34;&#34;&#34;
 
-        stack: list[Iterator[DOMNode]] = [iter(self.children)]
-        pop = stack.pop
-        push = stack.append
-        check_type = filter_type or DOMNode
+        def walk_depth_first() -&gt; Iterable[DOMNode]:
+            &#34;&#34;&#34;Walk the tree depth first (parents first).&#34;&#34;&#34;
+            stack: list[Iterator[DOMNode]] = [iter(self.children)]
+            pop = stack.pop
+            push = stack.append
+            check_type = filter_type or DOMNode
 
-        if with_self and isinstance(self, check_type):
-            yield self
+            if with_self and isinstance(self, check_type):
+                yield self
+            while stack:
+                node = next(stack[-1], None)
+                if node is None:
+                    pop()
+                else:
+                    if isinstance(node, check_type):
+                        yield node
+                    if node.children:
+                        push(iter(node.children))
 
-        while stack:
-            node = next(stack[-1], None)
-            if node is None:
-                pop()
-            else:
+        def walk_breadth_first() -&gt; Iterable[DOMNode]:
+            &#34;&#34;&#34;Walk the tree breadth first (children first).&#34;&#34;&#34;
+            queue: deque[DOMNode] = deque()
+            popleft = queue.popleft
+            extend = queue.extend
+            check_type = filter_type or DOMNode
+
+            if with_self and isinstance(self, check_type):
+                yield self
+            extend(self.children)
+            while queue:
+                node = popleft()
                 if isinstance(node, check_type):
                     yield node
-                if node.children:
-                    push(iter(node.children))
+                extend(node.children)
+
+        node_generator = (
+            walk_depth_first() if method == &#34;depth&#34; else walk_breadth_first()
+        )
+
+        # We want a snapshot of the DOM at this point
+        # So that is doesn&#39;t change mid-walk
+        nodes = list(node_generator)
+        if reverse:
+            yield from reversed(nodes)
+        else:
+            yield from nodes
 
     def get_child(self, id: str) -&gt; DOMNode:
         &#34;&#34;&#34;Return the first child (immediate descendent) of this node with the given ID.
@@ -1518,11 +1574,19 @@ class DOMNode(MessagePump):
         filter_type: type[WalkType],
         *,
         with_self: bool = True,
+        method: WalkMethod = &#34;depth&#34;,
+        reverse: bool = False,
     ) -&gt; Iterable[WalkType]:
         ...
 
     @overload
-    def walk_children(self, *, with_self: bool = True) -&gt; Iterable[DOMNode]:
+    def walk_children(
+        self,
+        *,
+        with_self: bool = True,
+        method: WalkMethod = &#34;depth&#34;,
+        reverse: bool = False,
+    ) -&gt; Iterable[DOMNode]:
         ...
 
     def walk_children(
@@ -1530,6 +1594,8 @@ class DOMNode(MessagePump):
         filter_type: type[WalkType] | None = None,
         *,
         with_self: bool = True,
+        method: WalkMethod = &#34;depth&#34;,
+        reverse: bool = False,
     ) -&gt; Iterable[DOMNode | WalkType]:
         &#34;&#34;&#34;Generate descendant nodes.
 
@@ -1537,29 +1603,60 @@ class DOMNode(MessagePump):
             filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter.
                 Defaults to None.
             with_self (bool, optional): Also yield self in addition to descendants. Defaults to True.
+            method (Literal[&#34;breadth&#34;, &#34;depth&#34;], optional): One of &#34;depth&#34; or &#34;breadth&#34;. Defaults to &#34;depth&#34;.
+            reverse (bool, optional): Reverse the order (bottom up). Defaults to False
 
         Returns:
             Iterable[DOMNode | WalkType]: An iterable of nodes.
 
         &#34;&#34;&#34;
 
-        stack: list[Iterator[DOMNode]] = [iter(self.children)]
-        pop = stack.pop
-        push = stack.append
-        check_type = filter_type or DOMNode
+        def walk_depth_first() -&gt; Iterable[DOMNode]:
+            &#34;&#34;&#34;Walk the tree depth first (parents first).&#34;&#34;&#34;
+            stack: list[Iterator[DOMNode]] = [iter(self.children)]
+            pop = stack.pop
+            push = stack.append
+            check_type = filter_type or DOMNode
 
-        if with_self and isinstance(self, check_type):
-            yield self
+            if with_self and isinstance(self, check_type):
+                yield self
+            while stack:
+                node = next(stack[-1], None)
+                if node is None:
+                    pop()
+                else:
+                    if isinstance(node, check_type):
+                        yield node
+                    if node.children:
+                        push(iter(node.children))
 
-        while stack:
-            node = next(stack[-1], None)
-            if node is None:
-                pop()
-            else:
+        def walk_breadth_first() -&gt; Iterable[DOMNode]:
+            &#34;&#34;&#34;Walk the tree breadth first (children first).&#34;&#34;&#34;
+            queue: deque[DOMNode] = deque()
+            popleft = queue.popleft
+            extend = queue.extend
+            check_type = filter_type or DOMNode
+
+            if with_self and isinstance(self, check_type):
+                yield self
+            extend(self.children)
+            while queue:
+                node = popleft()
                 if isinstance(node, check_type):
                     yield node
-                if node.children:
-                    push(iter(node.children))
+                extend(node.children)
+
+        node_generator = (
+            walk_depth_first() if method == &#34;depth&#34; else walk_breadth_first()
+        )
+
+        # We want a snapshot of the DOM at this point
+        # So that is doesn&#39;t change mid-walk
+        nodes = list(node_generator)
+        if reverse:
+            yield from reversed(nodes)
+        else:
+            yield from nodes
 
     def get_child(self, id: str) -&gt; DOMNode:
         &#34;&#34;&#34;Return the first child (immediate descendent) of this node with the given ID.
@@ -2703,7 +2800,7 @@ Defaults to None.</p>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.walk_children"><code class="name flex">
-<span>def <span class="ident">walk_children</span></span>(<span>self, filter_type: type[WalkType] | None = None, *, with_self: bool = True) ‑> Iterable[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a> | WalkType]</span>
+<span>def <span class="ident">walk_children</span></span>(<span>self, filter_type: type[WalkType] | None = None, *, with_self: bool = True, method: WalkMethod = 'depth', reverse: bool = False) ‑> Iterable[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a> | WalkType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate descendant nodes.</p>
@@ -2713,6 +2810,9 @@ Defaults to None.</p>
 <dt>Defaults to None.</dt>
 <dt><strong><code>with_self</code></strong> :&ensp;<code>bool</code>, optional</dt>
 <dd>Also yield self in addition to descendants. Defaults to True.</dd>
+<dt>method (Literal["breadth", "depth"], optional): One of "depth" or "breadth". Defaults to "depth".</dt>
+<dt><strong><code>reverse</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Reverse the order (bottom up). Defaults to False</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>Iterable[DOMNode | WalkType]: An iterable of nodes.</p></div>
@@ -2725,6 +2825,8 @@ Defaults to None.</p>
     filter_type: type[WalkType] | None = None,
     *,
     with_self: bool = True,
+    method: WalkMethod = &#34;depth&#34;,
+    reverse: bool = False,
 ) -&gt; Iterable[DOMNode | WalkType]:
     &#34;&#34;&#34;Generate descendant nodes.
 
@@ -2732,29 +2834,60 @@ Defaults to None.</p>
         filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter.
             Defaults to None.
         with_self (bool, optional): Also yield self in addition to descendants. Defaults to True.
+        method (Literal[&#34;breadth&#34;, &#34;depth&#34;], optional): One of &#34;depth&#34; or &#34;breadth&#34;. Defaults to &#34;depth&#34;.
+        reverse (bool, optional): Reverse the order (bottom up). Defaults to False
 
     Returns:
         Iterable[DOMNode | WalkType]: An iterable of nodes.
 
     &#34;&#34;&#34;
 
-    stack: list[Iterator[DOMNode]] = [iter(self.children)]
-    pop = stack.pop
-    push = stack.append
-    check_type = filter_type or DOMNode
+    def walk_depth_first() -&gt; Iterable[DOMNode]:
+        &#34;&#34;&#34;Walk the tree depth first (parents first).&#34;&#34;&#34;
+        stack: list[Iterator[DOMNode]] = [iter(self.children)]
+        pop = stack.pop
+        push = stack.append
+        check_type = filter_type or DOMNode
 
-    if with_self and isinstance(self, check_type):
-        yield self
+        if with_self and isinstance(self, check_type):
+            yield self
+        while stack:
+            node = next(stack[-1], None)
+            if node is None:
+                pop()
+            else:
+                if isinstance(node, check_type):
+                    yield node
+                if node.children:
+                    push(iter(node.children))
 
-    while stack:
-        node = next(stack[-1], None)
-        if node is None:
-            pop()
-        else:
+    def walk_breadth_first() -&gt; Iterable[DOMNode]:
+        &#34;&#34;&#34;Walk the tree breadth first (children first).&#34;&#34;&#34;
+        queue: deque[DOMNode] = deque()
+        popleft = queue.popleft
+        extend = queue.extend
+        check_type = filter_type or DOMNode
+
+        if with_self and isinstance(self, check_type):
+            yield self
+        extend(self.children)
+        while queue:
+            node = popleft()
             if isinstance(node, check_type):
                 yield node
-            if node.children:
-                push(iter(node.children))</code></pre>
+            extend(node.children)
+
+    node_generator = (
+        walk_depth_first() if method == &#34;depth&#34; else walk_breadth_first()
+    )
+
+    # We want a snapshot of the DOM at this point
+    # So that is doesn&#39;t change mid-walk
+    nodes = list(node_generator)
+    if reverse:
+        yield from reversed(nodes)
+    else:
+        yield from nodes</code></pre>
 </details>
 </dd>
 </dl>
