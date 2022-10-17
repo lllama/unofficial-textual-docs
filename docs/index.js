@@ -10129,7 +10129,7 @@ INDEX=[
 {
 "ref":"textual.events.MouseCapture",
 "url":34,
-"doc":"Sent when the mouse has been captured. When a mouse has been captures, all further mouse events will be sent to the capturing widget. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when captured."
+"doc":"Sent when the mouse has been captured. When a mouse has been captured, all further mouse events will be sent to the capturing widget. Args: sender (MessageTarget): The sender of the event, (in this case the app). mouse_position (Point): The position of the mouse when captured."
 },
 {
 "ref":"textual.events.MouseCapture.sender",
