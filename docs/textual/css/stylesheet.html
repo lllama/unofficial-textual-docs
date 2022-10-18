@@ -277,7 +277,7 @@ class Stylesheet:
                 css = css_file.read()
             path = os.path.abspath(filename)
         except Exception as error:
-            raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
+            raise StylesheetError(f&#34;unable to read CSS file {filename!r}&#34;) from None
         self.source[str(path)] = CssSource(css, False, 0)
         self._require_parse = True
 
@@ -732,7 +732,7 @@ False if it's user CSS (which will override the defaults).</dd>
                 css = css_file.read()
             path = os.path.abspath(filename)
         except Exception as error:
-            raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
+            raise StylesheetError(f&#34;unable to read CSS file {filename!r}&#34;) from None
         self.source[str(path)] = CssSource(css, False, 0)
         self._require_parse = True
 
@@ -1395,7 +1395,7 @@ rule will be applied.</dd>
             css = css_file.read()
         path = os.path.abspath(filename)
     except Exception as error:
-        raise StylesheetError(f&#34;unable to read {filename!r}; {error}&#34;)
+        raise StylesheetError(f&#34;unable to read CSS file {filename!r}&#34;) from None
     self.source[str(path)] = CssSource(css, False, 0)
     self._require_parse = True</code></pre>
 </details>

@@ -415,12 +415,12 @@ class Screen(Widget):
 
     def _on_screen_resume(self) -&gt; None:
         &#34;&#34;&#34;Called by the App&#34;&#34;&#34;
-
         size = self.app.size
         self._refresh_layout(size, full=True)
 
     async def _on_resize(self, event: events.Resize) -&gt; None:
         event.stop()
+        self._screen_resized(event.size)
 
     async def _handle_mouse_move(self, event: events.MouseMove) -&gt; None:
         try:
@@ -880,12 +880,12 @@ class Screen(Widget):
 
     def _on_screen_resume(self) -&gt; None:
         &#34;&#34;&#34;Called by the App&#34;&#34;&#34;
-
         size = self.app.size
         self._refresh_layout(size, full=True)
 
     async def _on_resize(self, event: events.Resize) -&gt; None:
         event.stop()
+        self._screen_resized(event.size)
 
     async def _handle_mouse_move(self, event: events.MouseMove) -&gt; None:
         try:
@@ -998,7 +998,18 @@ class Screen(Widget):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.focus_chain"><code class="name">var <span class="ident">focus_chain</span> : list[Widget]</code></dt>
@@ -1058,7 +1069,18 @@ def focus_chain(self) -&gt; list[Widget]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.screen.Screen.is_current"><code class="name">var <span class="ident">is_current</span> : bool</code></dt>
@@ -1467,6 +1489,7 @@ def widgets(self) -&gt; list[Widget]:
 <li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_line" href="widget.html#textual.widget.Widget.render_line">render_line</a></code></li>
 <li><code><a title="textual.widget.Widget.render_lines" href="widget.html#textual.widget.Widget.render_lines">render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_focus" href="widget.html#textual.widget.Widget.reset_focus">reset_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>

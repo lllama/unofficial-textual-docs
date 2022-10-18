@@ -28,11 +28,21 @@
 </summary>
 <pre><code class="python">from __future__ import annotations
 
-from asyncio import Lock
+from asyncio import Lock, wait, create_task
 from fractions import Fraction
 from itertools import islice
 from operator import attrgetter
-from typing import TYPE_CHECKING, ClassVar, Collection, Iterable, NamedTuple, cast
+from typing import (
+    Awaitable,
+    Generator,
+    TYPE_CHECKING,
+    ClassVar,
+    Collection,
+    Iterable,
+    NamedTuple,
+    Sequence,
+    cast,
+)
 
 import rich.repr
 from rich.console import (
@@ -85,6 +95,28 @@ _JUSTIFY_MAP: dict[str, JustifyMethod] = {
     &#34;end&#34;: &#34;right&#34;,
     &#34;justify&#34;: &#34;full&#34;,
 }
+
+
+class AwaitMount:
+    &#34;&#34;&#34;An awaitable returned by mount() and mount_all().
+
+    Example:
+        await self.mount(Static(&#34;foo&#34;))
+
+    &#34;&#34;&#34;
+
+    def __init__(self, widgets: Sequence[Widget]) -&gt; None:
+        self._widgets = widgets
+
+    def __await__(self) -&gt; Generator[None, None, None]:
+        async def await_mount() -&gt; None:
+            aws = [
+                create_task(widget._mounted_event.wait()) for widget in self._widgets
+            ]
+            if aws:
+                await wait(aws)
+
+        return await_mount().__await__()
 
 
 class _Styled:
@@ -344,7 +376,7 @@ class Widget(DOMNode):
         &#34;&#34;&#34;Clear arrangement cache, forcing a new arrange operation.&#34;&#34;&#34;
         self._arrangement = None
 
-    def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
+    def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; AwaitMount:
         &#34;&#34;&#34;Mount child widgets (making this widget a container).
 
         Widgets may be passed as positional arguments or keyword arguments. If keyword arguments,
@@ -355,9 +387,12 @@ class Widget(DOMNode):
             self.mount(Static(&#34;hello&#34;), header=Header())
             ```
 
+        Returns:
+            AwaitMount: An awaitable object that waits for widgets to be mounted.
+
         &#34;&#34;&#34;
-        self.app._register(self, *anon_widgets, **widgets)
-        self.app.screen.refresh(layout=True)
+        mounted_widgets = self.app._register(self, *anon_widgets, **widgets)
+        return AwaitMount(mounted_widgets)
 
     def compose(self) -&gt; ComposeResult:
         &#34;&#34;&#34;Called by Textual to create child widgets.
@@ -1840,7 +1875,22 @@ class Widget(DOMNode):
             scroll_visible (bool, optional): Scroll parent to make this widget
                 visible. Defaults to True.
         &#34;&#34;&#34;
-        self.screen.set_focus(self, scroll_visible=scroll_visible)
+
+        def set_focus(widget: Widget):
+            &#34;&#34;&#34;Callback to set the focus.&#34;&#34;&#34;
+            try:
+                widget.screen.set_focus(self, scroll_visible=scroll_visible)
+            except NoScreen:
+                pass
+
+        self.app.call_later(set_focus, self)
+
+    def reset_focus(self) -&gt; None:
+        &#34;&#34;&#34;Reset the focus (move it to the next available widget).&#34;&#34;&#34;
+        try:
+            self.screen._reset_focus(self)
+        except NoScreen:
+            pass
 
     def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
@@ -1885,10 +1935,11 @@ class Widget(DOMNode):
         await self.action(binding.action)
         return True
 
+    async def _on_compose(self, event: events.Compose) -&gt; None:
+        widgets = list(self.compose())
+        await self.mount(*widgets)
+
     def _on_mount(self, event: events.Mount) -&gt; None:
-        widgets = self.compose()
-        self.mount(*widgets)
-        # Preset scrollbars if not automatic
         if self.styles.overflow_y == &#34;scroll&#34;:
             self.show_vertical_scrollbar = True
         if self.styles.overflow_x == &#34;scroll&#34;:
@@ -1960,7 +2011,7 @@ class Widget(DOMNode):
 
     def _on_hide(self, event: events.Hide) -&gt; None:
         if self.has_focus:
-            self.screen._reset_focus(self)
+            self.reset_focus()
 
     def _on_scroll_to_region(self, message: messages.ScrollToRegion) -&gt; None:
         self.scroll_to_region(message.region, animate=True)
@@ -2023,6 +2074,40 @@ class Widget(DOMNode):
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="textual.widget.AwaitMount"><code class="flex name class">
+<span>class <span class="ident">AwaitMount</span></span>
+<span>(</span><span>widgets: Sequence[<a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>])</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An awaitable returned by mount() and mount_all().</p>
+<h2 id="example">Example</h2>
+<p>await self.mount(Static("foo"))</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class AwaitMount:
+    &#34;&#34;&#34;An awaitable returned by mount() and mount_all().
+
+    Example:
+        await self.mount(Static(&#34;foo&#34;))
+
+    &#34;&#34;&#34;
+
+    def __init__(self, widgets: Sequence[Widget]) -&gt; None:
+        self._widgets = widgets
+
+    def __await__(self) -&gt; Generator[None, None, None]:
+        async def await_mount() -&gt; None:
+            aws = [
+                create_task(widget._mounted_event.wait()) for widget in self._widgets
+            ]
+            if aws:
+                await wait(aws)
+
+        return await_mount().__await__()</code></pre>
+</details>
+</dd>
 <dt id="textual.widget.RenderCache"><code class="flex name class">
 <span>class <span class="ident">RenderCache</span></span>
 <span>(</span><span>size: Size, lines: Lines)</span>
@@ -2267,7 +2352,7 @@ class Widget(DOMNode):
         &#34;&#34;&#34;Clear arrangement cache, forcing a new arrange operation.&#34;&#34;&#34;
         self._arrangement = None
 
-    def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
+    def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; AwaitMount:
         &#34;&#34;&#34;Mount child widgets (making this widget a container).
 
         Widgets may be passed as positional arguments or keyword arguments. If keyword arguments,
@@ -2278,9 +2363,12 @@ class Widget(DOMNode):
             self.mount(Static(&#34;hello&#34;), header=Header())
             ```
 
+        Returns:
+            AwaitMount: An awaitable object that waits for widgets to be mounted.
+
         &#34;&#34;&#34;
-        self.app._register(self, *anon_widgets, **widgets)
-        self.app.screen.refresh(layout=True)
+        mounted_widgets = self.app._register(self, *anon_widgets, **widgets)
+        return AwaitMount(mounted_widgets)
 
     def compose(self) -&gt; ComposeResult:
         &#34;&#34;&#34;Called by Textual to create child widgets.
@@ -3763,7 +3851,22 @@ class Widget(DOMNode):
             scroll_visible (bool, optional): Scroll parent to make this widget
                 visible. Defaults to True.
         &#34;&#34;&#34;
-        self.screen.set_focus(self, scroll_visible=scroll_visible)
+
+        def set_focus(widget: Widget):
+            &#34;&#34;&#34;Callback to set the focus.&#34;&#34;&#34;
+            try:
+                widget.screen.set_focus(self, scroll_visible=scroll_visible)
+            except NoScreen:
+                pass
+
+        self.app.call_later(set_focus, self)
+
+    def reset_focus(self) -&gt; None:
+        &#34;&#34;&#34;Reset the focus (move it to the next available widget).&#34;&#34;&#34;
+        try:
+            self.screen._reset_focus(self)
+        except NoScreen:
+            pass
 
     def capture_mouse(self, capture: bool = True) -&gt; None:
         &#34;&#34;&#34;Capture (or release) the mouse.
@@ -3808,10 +3911,11 @@ class Widget(DOMNode):
         await self.action(binding.action)
         return True
 
+    async def _on_compose(self, event: events.Compose) -&gt; None:
+        widgets = list(self.compose())
+        await self.mount(*widgets)
+
     def _on_mount(self, event: events.Mount) -&gt; None:
-        widgets = self.compose()
-        self.mount(*widgets)
-        # Preset scrollbars if not automatic
         if self.styles.overflow_y == &#34;scroll&#34;:
             self.show_vertical_scrollbar = True
         if self.styles.overflow_x == &#34;scroll&#34;:
@@ -3883,7 +3987,7 @@ class Widget(DOMNode):
 
     def _on_hide(self, event: events.Hide) -&gt; None:
         if self.has_focus:
-            self.screen._reset_focus(self)
+            self.reset_focus()
 
     def _on_scroll_to_region(self, message: messages.ScrollToRegion) -&gt; None:
         self.scroll_to_region(message.region, animate=True)
@@ -4042,7 +4146,18 @@ def allow_vertical_scroll(self) -&gt; bool:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.auto_links"><code class="name">var <span class="ident">auto_links</span> : ReactiveType</code></dt>
@@ -4053,7 +4168,18 @@ def allow_vertical_scroll(self) -&gt; bool:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.auto_width"><code class="name">var <span class="ident">auto_width</span> : ReactiveType</code></dt>
@@ -4074,7 +4200,18 @@ def allow_vertical_scroll(self) -&gt; bool:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.container_size"><code class="name">var <span class="ident">container_size</span> : <a title="textual.geometry.Size" href="geometry.html#textual.geometry.Size">Size</a></code></dt>
@@ -4202,7 +4339,18 @@ def content_size(self) -&gt; Size:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.expand"><code class="name">var <span class="ident">expand</span> : ReactiveType</code></dt>
@@ -4213,7 +4361,18 @@ def content_size(self) -&gt; Size:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.focusable_children"><code class="name">var <span class="ident">focusable_children</span> : list[<a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>]</code></dt>
@@ -4283,7 +4442,18 @@ def gutter(self) -&gt; Spacing:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.highlight_link_id"><code class="name">var <span class="ident">highlight_link_id</span> : ReactiveType</code></dt>
@@ -4304,7 +4474,18 @@ def gutter(self) -&gt; Spacing:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.horizontal_scrollbar"><code class="name">var <span class="ident">horizontal_scrollbar</span> : ScrollBar</code></dt>
@@ -4357,7 +4538,18 @@ def horizontal_scrollbar(self) -&gt; ScrollBar:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.is_container"><code class="name">var <span class="ident">is_container</span> : bool</code></dt>
@@ -4580,7 +4772,18 @@ def max_scroll_y(self) -&gt; int:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.offset"><code class="name">var <span class="ident">offset</span> : <a title="textual.geometry.Offset" href="geometry.html#textual.geometry.Offset">Offset</a></code></dt>
@@ -4705,7 +4908,18 @@ def scroll_offset(self) -&gt; Offset:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scroll_target_y"><code class="name">var <span class="ident">scroll_target_y</span> : ReactiveType</code></dt>
@@ -4726,7 +4940,18 @@ def scroll_offset(self) -&gt; Offset:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scroll_x"><code class="name">var <span class="ident">scroll_x</span> : ReactiveType</code></dt>
@@ -4747,7 +4972,18 @@ def scroll_offset(self) -&gt; Offset:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scroll_y"><code class="name">var <span class="ident">scroll_y</span> : ReactiveType</code></dt>
@@ -4768,7 +5004,18 @@ def scroll_offset(self) -&gt; Offset:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scrollbar_corner"><code class="name">var <span class="ident">scrollbar_corner</span> : ScrollBarCorner</code></dt>
@@ -4913,7 +5160,18 @@ def scrollbars_enabled(self) -&gt; tuple[bool, bool]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.show_vertical_scrollbar"><code class="name">var <span class="ident">show_vertical_scrollbar</span> : ReactiveType</code></dt>
@@ -4934,7 +5192,18 @@ def scrollbars_enabled(self) -&gt; tuple[bool, bool]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.shrink"><code class="name">var <span class="ident">shrink</span> : ReactiveType</code></dt>
@@ -4945,7 +5214,18 @@ def scrollbars_enabled(self) -&gt; tuple[bool, bool]:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.siblings"><code class="name">var <span class="ident">siblings</span> : list[<a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>]</code></dt>
@@ -5092,7 +5372,18 @@ def virtual_region_with_margin(self) -&gt; Region:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.window_region"><code class="name">var <span class="ident">window_region</span> : <a title="textual.geometry.Region" href="geometry.html#textual.geometry.Region">Region</a></code></dt>
@@ -5306,7 +5597,15 @@ visible. Defaults to True.</dd>
         scroll_visible (bool, optional): Scroll parent to make this widget
             visible. Defaults to True.
     &#34;&#34;&#34;
-    self.screen.set_focus(self, scroll_visible=scroll_visible)</code></pre>
+
+    def set_focus(widget: Widget):
+        &#34;&#34;&#34;Callback to set the focus.&#34;&#34;&#34;
+        try:
+            widget.screen.set_focus(self, scroll_visible=scroll_visible)
+        except NoScreen:
+            pass
+
+    self.app.call_later(set_focus, self)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.get_component_rich_style"><code class="name flex">
@@ -5546,7 +5845,7 @@ visible. Defaults to True.</dd>
 </details>
 </dd>
 <dt id="textual.widget.Widget.mount"><code class="name flex">
-<span>def <span class="ident">mount</span></span>(<span>self, *anon_widgets: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>, **widgets: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>) ‑> None</span>
+<span>def <span class="ident">mount</span></span>(<span>self, *anon_widgets: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>, **widgets: <a title="textual.widget.Widget" href="#textual.widget.Widget">Widget</a>) ‑> <a title="textual.widget.AwaitMount" href="#textual.widget.AwaitMount">AwaitMount</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Mount child widgets (making this widget a container).</p>
@@ -5554,12 +5853,17 @@ visible. Defaults to True.</dd>
 the keys will be set as the Widget's id.</p>
 <h2 id="example">Example</h2>
 <pre><code class="language-python">self.mount(Static(&quot;hello&quot;), header=Header())
-</code></pre></div>
+</code></pre>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.widget.AwaitMount" href="#textual.widget.AwaitMount">AwaitMount</a></code></dt>
+<dd>An awaitable object that waits for widgets to be mounted.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; None:
+<pre><code class="python">def mount(self, *anon_widgets: Widget, **widgets: Widget) -&gt; AwaitMount:
     &#34;&#34;&#34;Mount child widgets (making this widget a container).
 
     Widgets may be passed as positional arguments or keyword arguments. If keyword arguments,
@@ -5570,9 +5874,12 @@ the keys will be set as the Widget's id.</p>
         self.mount(Static(&#34;hello&#34;), header=Header())
         ```
 
+    Returns:
+        AwaitMount: An awaitable object that waits for widgets to be mounted.
+
     &#34;&#34;&#34;
-    self.app._register(self, *anon_widgets, **widgets)
-    self.app.screen.refresh(layout=True)</code></pre>
+    mounted_widgets = self.app._register(self, *anon_widgets, **widgets)
+    return AwaitMount(mounted_widgets)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.post_message"><code class="name flex">
@@ -5840,6 +6147,23 @@ do this automatically.</p>
     &#34;&#34;&#34;
     lines = self._styles_cache.render_widget(self, crop)
     return lines</code></pre>
+</details>
+</dd>
+<dt id="textual.widget.Widget.reset_focus"><code class="name flex">
+<span>def <span class="ident">reset_focus</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Reset the focus (move it to the next available widget).</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reset_focus(self) -&gt; None:
+    &#34;&#34;&#34;Reset the focus (move it to the next available widget).&#34;&#34;&#34;
+    try:
+        self.screen._reset_focus(self)
+    except NoScreen:
+        pass</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.scroll_down"><code class="name flex">
@@ -6886,6 +7210,9 @@ setTimeout(() => input.focus(), 100);
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="textual.widget.AwaitMount" href="#textual.widget.AwaitMount">AwaitMount</a></code></h4>
+</li>
+<li>
 <h4><code><a title="textual.widget.RenderCache" href="#textual.widget.RenderCache">RenderCache</a></code></h4>
 <ul class="">
 <li><code><a title="textual.widget.RenderCache.lines" href="#textual.widget.RenderCache.lines">lines</a></code></li>
@@ -6951,6 +7278,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.widget.Widget.render" href="#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_line" href="#textual.widget.Widget.render_line">render_line</a></code></li>
 <li><code><a title="textual.widget.Widget.render_lines" href="#textual.widget.Widget.render_lines">render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_focus" href="#textual.widget.Widget.reset_focus">reset_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_down" href="#textual.widget.Widget.scroll_down">scroll_down</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_end" href="#textual.widget.Widget.scroll_end">scroll_end</a></code></li>
 <li><code><a title="textual.widget.Widget.scroll_home" href="#textual.widget.Widget.scroll_home">scroll_home</a></code></li>

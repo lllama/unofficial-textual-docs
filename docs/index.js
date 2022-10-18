@@ -653,7 +653,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.mount",
 "url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  Returns: AwaitMount: An awaitable object that waits for widgets to be mounted.",
 "func":1
 },
 {
@@ -993,6 +993,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBar.reset_focus",
+"url":3,
+"doc":"Reset the focus (move it to the next available widget).",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBar.capture_mouse",
 "url":3,
 "doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
@@ -1110,7 +1116,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -1389,7 +1395,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.mount",
 "url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  Returns: AwaitMount: An awaitable object that waits for widgets to be mounted.",
 "func":1
 },
 {
@@ -1729,6 +1735,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scrollbar.ScrollBarCorner.reset_focus",
+"url":3,
+"doc":"Reset the focus (move it to the next available widget).",
+"func":1
+},
+{
 "ref":"textual.scrollbar.ScrollBarCorner.capture_mouse",
 "url":3,
 "doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
@@ -1846,7 +1858,7 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -2892,7 +2904,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.mount",
 "url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  Returns: AwaitMount: An awaitable object that waits for widgets to be mounted.",
 "func":1
 },
 {
@@ -3210,6 +3222,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.scroll_view.ScrollView.reset_focus",
+"url":3,
+"doc":"Reset the focus (move it to the next available widget).",
+"func":1
+},
+{
 "ref":"textual.scroll_view.ScrollView.capture_mouse",
 "url":3,
 "doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
@@ -3327,7 +3345,7 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -3610,7 +3628,7 @@ INDEX=[
 {
 "ref":"textual.containers.Container.mount",
 "url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  Returns: AwaitMount: An awaitable object that waits for widgets to be mounted.",
 "func":1
 },
 {
@@ -3956,6 +3974,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.containers.Container.reset_focus",
+"url":3,
+"doc":"Reset the focus (move it to the next available widget).",
+"func":1
+},
+{
 "ref":"textual.containers.Container.capture_mouse",
 "url":3,
 "doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
@@ -4073,7 +4097,7 @@ INDEX=[
 {
 "ref":"textual.containers.Container.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -4351,7 +4375,7 @@ INDEX=[
 {
 "ref":"textual.containers.Vertical.mount",
 "url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  Returns: AwaitMount: An awaitable object that waits for widgets to be mounted.",
 "func":1
 },
 {
@@ -4697,6 +4721,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.containers.Vertical.reset_focus",
+"url":3,
+"doc":"Reset the focus (move it to the next available widget).",
+"func":1
+},
+{
 "ref":"textual.containers.Vertical.capture_mouse",
 "url":3,
 "doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
@@ -4814,7 +4844,7 @@ INDEX=[
 {
 "ref":"textual.containers.Vertical.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -5092,7 +5122,7 @@ INDEX=[
 {
 "ref":"textual.containers.Horizontal.mount",
 "url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  Returns: AwaitMount: An awaitable object that waits for widgets to be mounted.",
 "func":1
 },
 {
@@ -5438,6 +5468,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.containers.Horizontal.reset_focus",
+"url":3,
+"doc":"Reset the focus (move it to the next available widget).",
+"func":1
+},
+{
 "ref":"textual.containers.Horizontal.capture_mouse",
 "url":3,
 "doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
@@ -5555,7 +5591,7 @@ INDEX=[
 {
 "ref":"textual.containers.Horizontal.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -5833,7 +5869,7 @@ INDEX=[
 {
 "ref":"textual.containers.Grid.mount",
 "url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  Returns: AwaitMount: An awaitable object that waits for widgets to be mounted.",
 "func":1
 },
 {
@@ -6179,6 +6215,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.containers.Grid.reset_focus",
+"url":3,
+"doc":"Reset the focus (move it to the next available widget).",
+"func":1
+},
+{
 "ref":"textual.containers.Grid.capture_mouse",
 "url":3,
 "doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
@@ -6296,7 +6338,7 @@ INDEX=[
 {
 "ref":"textual.containers.Grid.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -6574,7 +6616,7 @@ INDEX=[
 {
 "ref":"textual.containers.Content.mount",
 "url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  Returns: AwaitMount: An awaitable object that waits for widgets to be mounted.",
 "func":1
 },
 {
@@ -6920,6 +6962,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.containers.Content.reset_focus",
+"url":3,
+"doc":"Reset the focus (move it to the next available widget).",
+"func":1
+},
+{
 "ref":"textual.containers.Content.capture_mouse",
 "url":3,
 "doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
@@ -7037,7 +7085,7 @@ INDEX=[
 {
 "ref":"textual.containers.Content.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -7369,7 +7417,7 @@ INDEX=[
 {
 "ref":"textual.dom.DOMNode.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -7843,6 +7891,11 @@ INDEX=[
 "doc":""
 },
 {
+"ref":"textual.widget.AwaitMount",
+"url":3,
+"doc":"An awaitable returned by mount() and mount_all(). Example: await self.mount(Static(\"foo\" "
+},
+{
 "ref":"textual.widget.RenderCache",
 "url":3,
 "doc":"Stores results of a previous render."
@@ -7996,7 +8049,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.mount",
 "url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  Returns: AwaitMount: An awaitable object that waits for widgets to be mounted.",
 "func":1
 },
 {
@@ -8384,6 +8437,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.widget.Widget.reset_focus",
+"url":3,
+"doc":"Reset the focus (move it to the next available widget).",
+"func":1
+},
+{
 "ref":"textual.widget.Widget.capture_mouse",
 "url":3,
 "doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
@@ -8519,7 +8578,7 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -12118,7 +12177,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.mount",
 "url":3,
-"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  ",
+"doc":"Mount child widgets (making this widget a container). Widgets may be passed as positional arguments or keyword arguments. If keyword arguments, the keys will be set as the Widget's id. Example:  python self.mount(Static(\"hello\"), header=Header(  Returns: AwaitMount: An awaitable object that waits for widgets to be mounted.",
 "func":1
 },
 {
@@ -12447,6 +12506,12 @@ INDEX=[
 "func":1
 },
 {
+"ref":"textual.screen.Screen.reset_focus",
+"url":3,
+"doc":"Reset the focus (move it to the next available widget).",
+"func":1
+},
+{
 "ref":"textual.screen.Screen.capture_mouse",
 "url":3,
 "doc":"Capture (or release) the mouse. When captured, mouse events will go to this widget even when the pointer is not directly over the widget. Args: capture (bool, optional): True to capture or False to release. Defaults to True.",
@@ -12564,7 +12629,7 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.walk_children",
 "url":4,
-"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
+"doc":"Generate descendant nodes. Args: filter_type (type[WalkType] | None, optional): Filter only this type, or None for no filter. Defaults to None. with_self (bool, optional): Also yield self in addition to descendants. Defaults to True. method (Literal[\"breadth\", \"depth\"], optional): One of \"depth\" or \"breadth\". Defaults to \"depth\". reverse (bool, optional): Reverse the order (bottom up). Defaults to False. Returns: Iterable[DOMNode | WalkType]: An iterable of nodes.",
 "func":1
 },
 {
@@ -13659,12 +13724,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.reactive.Reactive.initialize_object",
-"url":39,
-"doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
-"func":1
-},
-{
 "ref":"textual.reactive.reactive",
 "url":39,
 "doc":"Create a reactive attribute. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to True."
@@ -13682,12 +13741,6 @@ INDEX=[
 "func":1
 },
 {
-"ref":"textual.reactive.reactive.initialize_object",
-"url":39,
-"doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
-"func":1
-},
-{
 "ref":"textual.reactive.var",
 "url":39,
 "doc":"Create a reactive attribute (with no auto-refresh). Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default."
@@ -13702,12 +13755,6 @@ INDEX=[
 "ref":"textual.reactive.var.var",
 "url":39,
 "doc":"A reactive variable that doesn't update or layout. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. Returns: Reactive: A Reactive descriptor.",
-"func":1
-},
-{
-"ref":"textual.reactive.var.initialize_object",
-"url":39,
-"doc":"Call any watchers / computes for the first time. Args: obj (Reactable): An object with Reactive descriptors",
 "func":1
 },
 {

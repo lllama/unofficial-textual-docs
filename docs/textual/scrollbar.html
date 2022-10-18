@@ -537,7 +537,18 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.scrollbar.ScrollBar.position"><code class="name">var <span class="ident">position</span> : ReactiveType</code></dt>
@@ -558,7 +569,18 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.scrollbar.ScrollBar.window_size"><code class="name">var <span class="ident">window_size</span> : ReactiveType</code></dt>
@@ -579,7 +601,18 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 <dt id="textual.scrollbar.ScrollBar.window_virtual_size"><code class="name">var <span class="ident">window_virtual_size</span> : ReactiveType</code></dt>
@@ -600,7 +633,18 @@ if __name__ == &#34;__main__&#34;:
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    return getattr(obj, self.internal_name)</code></pre>
+    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
+    if isinstance(value, _NotSet):
+        # No value present, we need to set the default
+        init_name = f&#34;_default_{self.name}&#34;
+        default = getattr(obj, init_name)
+        default_value = default() if callable(default) else default
+        # Set and return the value
+        setattr(obj, self.internal_name, default_value)
+        if self._init:
+            self._check_watchers(obj, self.name, default_value, first_set=True)
+        return default_value
+    return value</code></pre>
 </details>
 </dd>
 </dl>
@@ -747,6 +791,7 @@ if __name__ == &#34;__main__&#34;:
 <li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_line" href="widget.html#textual.widget.Widget.render_line">render_line</a></code></li>
 <li><code><a title="textual.widget.Widget.render_lines" href="widget.html#textual.widget.Widget.render_lines">render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_focus" href="widget.html#textual.widget.Widget.reset_focus">reset_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
@@ -925,6 +970,7 @@ should they both be present.</p></div>
 <li><code><a title="textual.widget.Widget.render" href="widget.html#textual.widget.Widget.render">render</a></code></li>
 <li><code><a title="textual.widget.Widget.render_line" href="widget.html#textual.widget.Widget.render_line">render_line</a></code></li>
 <li><code><a title="textual.widget.Widget.render_lines" href="widget.html#textual.widget.Widget.render_lines">render_lines</a></code></li>
+<li><code><a title="textual.widget.Widget.reset_focus" href="widget.html#textual.widget.Widget.reset_focus">reset_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.reset_styles" href="dom.html#textual.dom.DOMNode.reset_styles">reset_styles</a></code></li>
 <li><code><a title="textual.widget.Widget.rich_style" href="dom.html#textual.dom.DOMNode.rich_style">rich_style</a></code></li>
 <li><code><a title="textual.widget.Widget.screen" href="dom.html#textual.dom.DOMNode.screen">screen</a></code></li>
