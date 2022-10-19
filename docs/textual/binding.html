@@ -62,7 +62,7 @@ class Binding:
     &#34;&#34;&#34;Show the action in Footer, or False to hide.&#34;&#34;&#34;
     key_display: str | None = None
     &#34;&#34;&#34;How the key should be shown in footer.&#34;&#34;&#34;
-    allow_forward: bool = True
+    universal: bool = False
     &#34;&#34;&#34;Allow forwarding from app to focused widget.&#34;&#34;&#34;
 
 
@@ -83,7 +83,7 @@ class Bindings:
                                 description=binding.description,
                                 show=binding.show,
                                 key_display=binding.key_display,
-                                allow_forward=binding.allow_forward,
+                                universal=binding.universal,
                             )
                             yield new_binding
                     else:
@@ -121,6 +121,11 @@ class Bindings:
 
     @property
     def shown_keys(self) -&gt; list[Binding]:
+        &#34;&#34;&#34;A list of bindings for shown keys.
+
+        Returns:
+            list[Binding]: Shown bindings.
+        &#34;&#34;&#34;
         keys = [binding for binding in self.keys.values() if binding.show]
         return keys
 
@@ -131,7 +136,7 @@ class Bindings:
         description: str = &#34;&#34;,
         show: bool = True,
         key_display: str | None = None,
-        allow_forward: bool = True,
+        universal: bool = False,
     ) -&gt; None:
         all_keys = [key.strip() for key in keys.split(&#34;,&#34;)]
         for key in all_keys:
@@ -141,20 +146,25 @@ class Bindings:
                 description,
                 show=show,
                 key_display=key_display,
-                allow_forward=allow_forward,
+                universal=universal,
             )
 
     def get_key(self, key: str) -&gt; Binding:
+        &#34;&#34;&#34;Get a binding if it exists.
+
+        Args:
+            key (str): Key to look up.
+
+        Raises:
+            NoBinding: If the binding does not exist.
+
+        Returns:
+            Binding: A binding object for the key,
+        &#34;&#34;&#34;
         try:
             return self.keys[key]
         except KeyError:
-            raise NoBinding(f&#34;No binding for {key}&#34;) from None
-
-    def allow_forward(self, key: str) -&gt; bool:
-        binding = self.keys.get(key, None)
-        if binding is None:
-            return True
-        return binding.allow_forward</code></pre>
+            raise NoBinding(f&#34;No binding for {key}&#34;) from None</code></pre>
 </details>
 </section>
 <section>
@@ -168,10 +178,10 @@ class Bindings:
 <dl>
 <dt id="textual.binding.Binding"><code class="flex name class">
 <span>class <span class="ident">Binding</span></span>
-<span>(</span><span>key: str, action: str, description: str, show: bool = True, key_display: str | None = None, allow_forward: bool = True)</span>
+<span>(</span><span>key: str, action: str, description: str, show: bool = True, key_display: str | None = None, universal: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Binding(key: 'str', action: 'str', description: 'str', show: 'bool' = True, key_display: 'str | None' = None, allow_forward: 'bool' = True)</p></div>
+<div class="desc"><p>Binding(key: 'str', action: 'str', description: 'str', show: 'bool' = True, key_display: 'str | None' = None, universal: 'bool' = False)</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -187,7 +197,7 @@ class Bindings:
     &#34;&#34;&#34;Show the action in Footer, or False to hide.&#34;&#34;&#34;
     key_display: str | None = None
     &#34;&#34;&#34;How the key should be shown in footer.&#34;&#34;&#34;
-    allow_forward: bool = True
+    universal: bool = False
     &#34;&#34;&#34;Allow forwarding from app to focused widget.&#34;&#34;&#34;</code></pre>
 </details>
 <h3>Class variables</h3>
@@ -195,10 +205,6 @@ class Bindings:
 <dt id="textual.binding.Binding.action"><code class="name">var <span class="ident">action</span> : str</code></dt>
 <dd>
 <div class="desc"><p>Action to bind to.</p></div>
-</dd>
-<dt id="textual.binding.Binding.allow_forward"><code class="name">var <span class="ident">allow_forward</span> : bool</code></dt>
-<dd>
-<div class="desc"><p>Allow forwarding from app to focused widget.</p></div>
 </dd>
 <dt id="textual.binding.Binding.description"><code class="name">var <span class="ident">description</span> : str</code></dt>
 <dd>
@@ -215,6 +221,10 @@ class Bindings:
 <dt id="textual.binding.Binding.show"><code class="name">var <span class="ident">show</span> : bool</code></dt>
 <dd>
 <div class="desc"><p>Show the action in Footer, or False to hide.</p></div>
+</dd>
+<dt id="textual.binding.Binding.universal"><code class="name">var <span class="ident">universal</span> : bool</code></dt>
+<dd>
+<div class="desc"><p>Allow forwarding from app to focused widget.</p></div>
 </dd>
 </dl>
 </dd>
@@ -263,7 +273,7 @@ class Bindings:
                                 description=binding.description,
                                 show=binding.show,
                                 key_display=binding.key_display,
-                                allow_forward=binding.allow_forward,
+                                universal=binding.universal,
                             )
                             yield new_binding
                     else:
@@ -301,6 +311,11 @@ class Bindings:
 
     @property
     def shown_keys(self) -&gt; list[Binding]:
+        &#34;&#34;&#34;A list of bindings for shown keys.
+
+        Returns:
+            list[Binding]: Shown bindings.
+        &#34;&#34;&#34;
         keys = [binding for binding in self.keys.values() if binding.show]
         return keys
 
@@ -311,7 +326,7 @@ class Bindings:
         description: str = &#34;&#34;,
         show: bool = True,
         key_display: str | None = None,
-        allow_forward: bool = True,
+        universal: bool = False,
     ) -&gt; None:
         all_keys = [key.strip() for key in keys.split(&#34;,&#34;)]
         for key in all_keys:
@@ -321,20 +336,25 @@ class Bindings:
                 description,
                 show=show,
                 key_display=key_display,
-                allow_forward=allow_forward,
+                universal=universal,
             )
 
     def get_key(self, key: str) -&gt; Binding:
+        &#34;&#34;&#34;Get a binding if it exists.
+
+        Args:
+            key (str): Key to look up.
+
+        Raises:
+            NoBinding: If the binding does not exist.
+
+        Returns:
+            Binding: A binding object for the key,
+        &#34;&#34;&#34;
         try:
             return self.keys[key]
         except KeyError:
-            raise NoBinding(f&#34;No binding for {key}&#34;) from None
-
-    def allow_forward(self, key: str) -&gt; bool:
-        binding = self.keys.get(key, None)
-        if binding is None:
-            return True
-        return binding.allow_forward</code></pre>
+            raise NoBinding(f&#34;No binding for {key}&#34;) from None</code></pre>
 </details>
 <h3>Static methods</h3>
 <dl>
@@ -378,13 +398,23 @@ def merge(cls, bindings: Iterable[Bindings]) -&gt; Bindings:
 <dl>
 <dt id="textual.binding.Bindings.shown_keys"><code class="name">var <span class="ident">shown_keys</span> : list[<a title="textual.binding.Binding" href="#textual.binding.Binding">Binding</a>]</code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>A list of bindings for shown keys.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list[<a title="textual.binding.Binding" href="#textual.binding.Binding">Binding</a>]</code></dt>
+<dd>Shown bindings.</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
 def shown_keys(self) -&gt; list[Binding]:
+    &#34;&#34;&#34;A list of bindings for shown keys.
+
+    Returns:
+        list[Binding]: Shown bindings.
+    &#34;&#34;&#34;
     keys = [binding for binding in self.keys.values() if binding.show]
     return keys</code></pre>
 </details>
@@ -392,24 +422,8 @@ def shown_keys(self) -&gt; list[Binding]:
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="textual.binding.Bindings.allow_forward"><code class="name flex">
-<span>def <span class="ident">allow_forward</span></span>(<span>self, key: str) ‑> bool</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def allow_forward(self, key: str) -&gt; bool:
-    binding = self.keys.get(key, None)
-    if binding is None:
-        return True
-    return binding.allow_forward</code></pre>
-</details>
-</dd>
 <dt id="textual.binding.Bindings.bind"><code class="name flex">
-<span>def <span class="ident">bind</span></span>(<span>self, keys: str, action: str, description: str = '', show: bool = True, key_display: str | None = None, allow_forward: bool = True) ‑> None</span>
+<span>def <span class="ident">bind</span></span>(<span>self, keys: str, action: str, description: str = '', show: bool = True, key_display: str | None = None, universal: bool = False) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -424,7 +438,7 @@ def shown_keys(self) -&gt; list[Binding]:
     description: str = &#34;&#34;,
     show: bool = True,
     key_display: str | None = None,
-    allow_forward: bool = True,
+    universal: bool = False,
 ) -&gt; None:
     all_keys = [key.strip() for key in keys.split(&#34;,&#34;)]
     for key in all_keys:
@@ -434,7 +448,7 @@ def shown_keys(self) -&gt; list[Binding]:
             description,
             show=show,
             key_display=key_display,
-            allow_forward=allow_forward,
+            universal=universal,
         )</code></pre>
 </details>
 </dd>
@@ -442,12 +456,38 @@ def shown_keys(self) -&gt; list[Binding]:
 <span>def <span class="ident">get_key</span></span>(<span>self, key: str) ‑> <a title="textual.binding.Binding" href="#textual.binding.Binding">Binding</a></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Get a binding if it exists.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>key</code></strong> :&ensp;<code>str</code></dt>
+<dd>Key to look up.</dd>
+</dl>
+<h2 id="raises">Raises</h2>
+<dl>
+<dt><code><a title="textual.binding.NoBinding" href="#textual.binding.NoBinding">NoBinding</a></code></dt>
+<dd>If the binding does not exist.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code><a title="textual.binding.Binding" href="#textual.binding.Binding">Binding</a></code></dt>
+<dd>A binding object for the key,</dd>
+</dl></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_key(self, key: str) -&gt; Binding:
+    &#34;&#34;&#34;Get a binding if it exists.
+
+    Args:
+        key (str): Key to look up.
+
+    Raises:
+        NoBinding: If the binding does not exist.
+
+    Returns:
+        Binding: A binding object for the key,
+    &#34;&#34;&#34;
     try:
         return self.keys[key]
     except KeyError:
@@ -541,11 +581,11 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.binding.Binding" href="#textual.binding.Binding">Binding</a></code></h4>
 <ul class="two-column">
 <li><code><a title="textual.binding.Binding.action" href="#textual.binding.Binding.action">action</a></code></li>
-<li><code><a title="textual.binding.Binding.allow_forward" href="#textual.binding.Binding.allow_forward">allow_forward</a></code></li>
 <li><code><a title="textual.binding.Binding.description" href="#textual.binding.Binding.description">description</a></code></li>
 <li><code><a title="textual.binding.Binding.key" href="#textual.binding.Binding.key">key</a></code></li>
 <li><code><a title="textual.binding.Binding.key_display" href="#textual.binding.Binding.key_display">key_display</a></code></li>
 <li><code><a title="textual.binding.Binding.show" href="#textual.binding.Binding.show">show</a></code></li>
+<li><code><a title="textual.binding.Binding.universal" href="#textual.binding.Binding.universal">universal</a></code></li>
 </ul>
 </li>
 <li>
@@ -554,7 +594,6 @@ setTimeout(() => input.focus(), 100);
 <li>
 <h4><code><a title="textual.binding.Bindings" href="#textual.binding.Bindings">Bindings</a></code></h4>
 <ul class="">
-<li><code><a title="textual.binding.Bindings.allow_forward" href="#textual.binding.Bindings.allow_forward">allow_forward</a></code></li>
 <li><code><a title="textual.binding.Bindings.bind" href="#textual.binding.Bindings.bind">bind</a></code></li>
 <li><code><a title="textual.binding.Bindings.get_key" href="#textual.binding.Bindings.get_key">get_key</a></code></li>
 <li><code><a title="textual.binding.Bindings.merge" href="#textual.binding.Bindings.merge">merge</a></code></li>

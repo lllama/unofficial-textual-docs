@@ -9181,7 +9181,7 @@ INDEX=[
 {
 "ref":"textual.binding.Binding",
 "url":32,
-"doc":"Binding(key: 'str', action: 'str', description: 'str', show: 'bool' = True, key_display: 'str | None' = None, allow_forward: 'bool' = True)"
+"doc":"Binding(key: 'str', action: 'str', description: 'str', show: 'bool' = True, key_display: 'str | None' = None, universal: 'bool' = False)"
 },
 {
 "ref":"textual.binding.Binding.key",
@@ -9209,7 +9209,7 @@ INDEX=[
 "doc":"How the key should be shown in footer."
 },
 {
-"ref":"textual.binding.Binding.allow_forward",
+"ref":"textual.binding.Binding.universal",
 "url":32,
 "doc":"Allow forwarding from app to focused widget."
 },
@@ -9227,7 +9227,7 @@ INDEX=[
 {
 "ref":"textual.binding.Bindings.shown_keys",
 "url":32,
-"doc":""
+"doc":"A list of bindings for shown keys. Returns: list[Binding]: Shown bindings."
 },
 {
 "ref":"textual.binding.Bindings.bind",
@@ -9238,13 +9238,7 @@ INDEX=[
 {
 "ref":"textual.binding.Bindings.get_key",
 "url":32,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.binding.Bindings.allow_forward",
-"url":32,
-"doc":"",
+"doc":"Get a binding if it exists. Args: key (str): Key to look up. Raises: NoBinding: If the binding does not exist. Returns: Binding: A binding object for the key,",
 "func":1
 },
 {
@@ -13879,6 +13873,12 @@ INDEX=[
 "ref":"textual.layouts.horizontal.HorizontalLayout.arrange",
 "url":44,
 "doc":"Generate a layout map that defines where on the screen the widgets will be drawn. Args: parent (Widget): Parent widget. size (Size): Size of container. Returns: Iterable[WidgetPlacement]: An iterable of widget location",
+"func":1
+},
+{
+"ref":"textual.layouts.horizontal.HorizontalLayout.get_content_width",
+"url":44,
+"doc":"Get the width of the content. In Horizontal layout, the content width of a widget is the sum of the widths of its children. Args: widget (Widget): The container widget. container (Size): The container size. viewport (Size): The viewport size. Returns: int: Width of the content.",
 "func":1
 },
 {

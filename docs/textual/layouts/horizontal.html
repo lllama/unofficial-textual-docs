@@ -91,7 +91,37 @@ class HorizontalLayout(Layout):
             add_placement(_WidgetPlacement(region, box_model.margin, widget, 0))
             x = next_x + margin
 
-        return placements, set(displayed_children)</code></pre>
+        return placements, set(displayed_children)
+
+    def get_content_width(self, widget: Widget, container: Size, viewport: Size) -&gt; int:
+        &#34;&#34;&#34;Get the width of the content. In Horizontal layout, the content width of
+        a widget is the sum of the widths of its children.
+
+        Args:
+            widget (Widget): The container widget.
+            container (Size): The container size.
+            viewport (Size): The viewport size.
+
+        Returns:
+            int: Width of the content.
+        &#34;&#34;&#34;
+        width: int | None = None
+        gutter_width = widget.gutter.width
+        for child in widget.displayed_children:
+            if not child.is_container:
+                child_width = (
+                    child.get_content_width(container, viewport)
+                    + gutter_width
+                    + child.gutter.width
+                )
+                if width is None:
+                    width = child_width
+                else:
+                    width += child_width
+        if width is None:
+            width = container.width
+
+        return width</code></pre>
 </details>
 </section>
 <section>
@@ -167,7 +197,37 @@ fill the space of their parent container, all widgets used in a horizontal layou
             add_placement(_WidgetPlacement(region, box_model.margin, widget, 0))
             x = next_x + margin
 
-        return placements, set(displayed_children)</code></pre>
+        return placements, set(displayed_children)
+
+    def get_content_width(self, widget: Widget, container: Size, viewport: Size) -&gt; int:
+        &#34;&#34;&#34;Get the width of the content. In Horizontal layout, the content width of
+        a widget is the sum of the widths of its children.
+
+        Args:
+            widget (Widget): The container widget.
+            container (Size): The container size.
+            viewport (Size): The viewport size.
+
+        Returns:
+            int: Width of the content.
+        &#34;&#34;&#34;
+        width: int | None = None
+        gutter_width = widget.gutter.width
+        for child in widget.displayed_children:
+            if not child.is_container:
+                child_width = (
+                    child.get_content_width(container, viewport)
+                    + gutter_width
+                    + child.gutter.width
+                )
+                if width is None:
+                    width = child_width
+                else:
+                    width += child_width
+        if width is None:
+            width = container.width
+
+        return width</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -254,6 +314,61 @@ fill the space of their parent container, all widgets used in a horizontal layou
     return placements, set(displayed_children)</code></pre>
 </details>
 </dd>
+<dt id="textual.layouts.horizontal.HorizontalLayout.get_content_width"><code class="name flex">
+<span>def <span class="ident">get_content_width</span></span>(<span>self, widget: Widget, container: Size, viewport: Size) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the width of the content. In Horizontal layout, the content width of
+a widget is the sum of the widths of its children.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>widget</code></strong> :&ensp;<code>Widget</code></dt>
+<dd>The container widget.</dd>
+<dt><strong><code>container</code></strong> :&ensp;<code>Size</code></dt>
+<dd>The container size.</dd>
+<dt><strong><code>viewport</code></strong> :&ensp;<code>Size</code></dt>
+<dd>The viewport size.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>Width of the content.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_content_width(self, widget: Widget, container: Size, viewport: Size) -&gt; int:
+    &#34;&#34;&#34;Get the width of the content. In Horizontal layout, the content width of
+    a widget is the sum of the widths of its children.
+
+    Args:
+        widget (Widget): The container widget.
+        container (Size): The container size.
+        viewport (Size): The viewport size.
+
+    Returns:
+        int: Width of the content.
+    &#34;&#34;&#34;
+    width: int | None = None
+    gutter_width = widget.gutter.width
+    for child in widget.displayed_children:
+        if not child.is_container:
+            child_width = (
+                child.get_content_width(container, viewport)
+                + gutter_width
+                + child.gutter.width
+            )
+            if width is None:
+                width = child_width
+            else:
+                width += child_width
+    if width is None:
+        width = container.width
+
+    return width</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -322,6 +437,7 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.layouts.horizontal.HorizontalLayout" href="#textual.layouts.horizontal.HorizontalLayout">HorizontalLayout</a></code></h4>
 <ul class="">
 <li><code><a title="textual.layouts.horizontal.HorizontalLayout.arrange" href="#textual.layouts.horizontal.HorizontalLayout.arrange">arrange</a></code></li>
+<li><code><a title="textual.layouts.horizontal.HorizontalLayout.get_content_width" href="#textual.layouts.horizontal.HorizontalLayout.get_content_width">get_content_width</a></code></li>
 <li><code><a title="textual.layouts.horizontal.HorizontalLayout.name" href="#textual.layouts.horizontal.HorizontalLayout.name">name</a></code></li>
 </ul>
 </li>

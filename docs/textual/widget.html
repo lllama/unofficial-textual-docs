@@ -1928,12 +1928,7 @@ class Widget(DOMNode):
         await self.handle_key(event)
 
     async def handle_key(self, event: events.Key) -&gt; bool:
-        try:
-            binding = self._bindings.get_key(event.key)
-        except NoBinding:
-            return await self.dispatch_key(event)
-        await self.action(binding.action)
-        return True
+        return await self.dispatch_key(event)
 
     async def _on_compose(self, event: events.Compose) -&gt; None:
         widgets = list(self.compose())
@@ -3904,12 +3899,7 @@ class Widget(DOMNode):
         await self.handle_key(event)
 
     async def handle_key(self, event: events.Key) -&gt; bool:
-        try:
-            binding = self._bindings.get_key(event.key)
-        except NoBinding:
-            return await self.dispatch_key(event)
-        await self.action(binding.action)
-        return True
+        return await self.dispatch_key(event)
 
     async def _on_compose(self, event: events.Compose) -&gt; None:
         widgets = list(self.compose())
@@ -5836,12 +5826,7 @@ visible. Defaults to True.</dd>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">async def handle_key(self, event: events.Key) -&gt; bool:
-    try:
-        binding = self._bindings.get_key(event.key)
-    except NoBinding:
-        return await self.dispatch_key(event)
-    await self.action(binding.action)
-    return True</code></pre>
+    return await self.dispatch_key(event)</code></pre>
 </details>
 </dd>
 <dt id="textual.widget.Widget.mount"><code class="name flex">

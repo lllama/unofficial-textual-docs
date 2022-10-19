@@ -601,6 +601,7 @@ class MessagePump(metaclass=MessagePumpMeta):
 
             return public_handler or private_handler
 
+        handled = False
         invoked_method = None
         key_name = event.key_name
         if not key_name:
@@ -613,10 +614,12 @@ class MessagePump(metaclass=MessagePumpMeta):
                     _raise_duplicate_key_handlers_error(
                         key_name, invoked_method.__name__, key_method.__name__
                     )
-                await invoke(key_method, event)
+                # If key handlers return False, then they are not considered handled
+                # This allows key handlers to do some conditional logic
+                handled = (await invoke(key_method, event)) != False
                 invoked_method = key_method
 
-        return invoked_method is not None
+        return handled
 
     async def on_timer(self, event: events.Timer) -&gt; None:
         event.prevent_default()
@@ -1191,6 +1194,7 @@ def _raise_duplicate_key_handlers_error(
 
             return public_handler or private_handler
 
+        handled = False
         invoked_method = None
         key_name = event.key_name
         if not key_name:
@@ -1203,10 +1207,12 @@ def _raise_duplicate_key_handlers_error(
                     _raise_duplicate_key_handlers_error(
                         key_name, invoked_method.__name__, key_method.__name__
                     )
-                await invoke(key_method, event)
+                # If key handlers return False, then they are not considered handled
+                # This allows key handlers to do some conditional logic
+                handled = (await invoke(key_method, event)) != False
                 invoked_method = key_method
 
-        return invoked_method is not None
+        return handled
 
     async def on_timer(self, event: events.Timer) -&gt; None:
         event.prevent_default()
@@ -1459,6 +1465,7 @@ If multiple handlers exist that match the key, an exception is raised.</p>
 
         return public_handler or private_handler
 
+    handled = False
     invoked_method = None
     key_name = event.key_name
     if not key_name:
@@ -1471,10 +1478,12 @@ If multiple handlers exist that match the key, an exception is raised.</p>
                 _raise_duplicate_key_handlers_error(
                     key_name, invoked_method.__name__, key_method.__name__
                 )
-            await invoke(key_method, event)
+            # If key handlers return False, then they are not considered handled
+            # This allows key handlers to do some conditional logic
+            handled = (await invoke(key_method, event)) != False
             invoked_method = key_method
 
-    return invoked_method is not None</code></pre>
+    return handled</code></pre>
 </details>
 </dd>
 <dt id="textual.message_pump.MessagePump.emit"><code class="name flex">
