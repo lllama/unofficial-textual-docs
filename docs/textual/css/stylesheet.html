@@ -220,7 +220,7 @@ class Stylesheet:
             variables (dict[str, str]): A mapping of name to variable.
         &#34;&#34;&#34;
         self._variables = variables
-        self._variables_tokens = None
+        self.__variable_tokens = None
 
     def _parse_rules(
         self,
@@ -675,7 +675,7 @@ False if it's user CSS (which will override the defaults).</dd>
             variables (dict[str, str]): A mapping of name to variable.
         &#34;&#34;&#34;
         self._variables = variables
-        self._variables_tokens = None
+        self.__variable_tokens = None
 
     def _parse_rules(
         self,
@@ -1457,7 +1457,7 @@ rule will be applied.</dd>
         variables (dict[str, str]): A mapping of name to variable.
     &#34;&#34;&#34;
     self._variables = variables
-    self._variables_tokens = None</code></pre>
+    self.__variable_tokens = None</code></pre>
 </details>
 </dd>
 <dt id="textual.css.stylesheet.Stylesheet.update"><code class="name flex">

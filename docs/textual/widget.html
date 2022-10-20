@@ -1803,7 +1803,6 @@ class Widget(DOMNode):
 
     def remove(self) -&gt; None:
         &#34;&#34;&#34;Remove the Widget from the DOM (effectively deleting it)&#34;&#34;&#34;
-        self.display = False
         self.app.post_message_no_wait(events.Remove(self, widget=self))
 
     def render(self) -&gt; RenderableType:
@@ -3774,7 +3773,6 @@ class Widget(DOMNode):
 
     def remove(self) -&gt; None:
         &#34;&#34;&#34;Remove the Widget from the DOM (effectively deleting it)&#34;&#34;&#34;
-        self.display = False
         self.app.post_message_no_wait(events.Remove(self, widget=self))
 
     def render(self) -&gt; RenderableType:
@@ -6037,7 +6035,6 @@ do this automatically.</p>
 </summary>
 <pre><code class="python">def remove(self) -&gt; None:
     &#34;&#34;&#34;Remove the Widget from the DOM (effectively deleting it)&#34;&#34;&#34;
-    self.display = False
     self.app.post_message_no_wait(events.Remove(self, widget=self))</code></pre>
 </details>
 </dd>

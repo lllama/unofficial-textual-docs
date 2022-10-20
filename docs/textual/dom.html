@@ -662,7 +662,7 @@ class DOMNode(MessagePump):
         with_self: bool = True,
         method: WalkMethod = &#34;depth&#34;,
         reverse: bool = False,
-    ) -&gt; Iterable[WalkType]:
+    ) -&gt; list[WalkType]:
         ...
 
     @overload
@@ -672,7 +672,7 @@ class DOMNode(MessagePump):
         with_self: bool = True,
         method: WalkMethod = &#34;depth&#34;,
         reverse: bool = False,
-    ) -&gt; Iterable[DOMNode]:
+    ) -&gt; list[DOMNode]:
         ...
 
     def walk_children(
@@ -682,7 +682,7 @@ class DOMNode(MessagePump):
         with_self: bool = True,
         method: WalkMethod = &#34;depth&#34;,
         reverse: bool = False,
-    ) -&gt; Iterable[DOMNode | WalkType]:
+    ) -&gt; list[DOMNode] | list[WalkType]:
         &#34;&#34;&#34;Generate descendant nodes.
 
         Args:
@@ -693,7 +693,7 @@ class DOMNode(MessagePump):
             reverse (bool, optional): Reverse the order (bottom up). Defaults to False.
 
         Returns:
-            Iterable[DOMNode | WalkType]: An iterable of nodes.
+            list[DOMNode] | list[WalkType]: A list of nodes.
 
         &#34;&#34;&#34;
 
@@ -736,13 +736,12 @@ class DOMNode(MessagePump):
             walk_depth_first() if method == &#34;depth&#34; else walk_breadth_first()
         )
 
-        # We want a snapshot of the DOM at this point
-        # So that is doesn&#39;t change mid-walk
+        # We want a snapshot of the DOM at this point So that it doesn&#39;t
+        # change mid-walk
         nodes = list(node_generator)
         if reverse:
-            yield from reversed(nodes)
-        else:
-            yield from nodes
+            nodes.reverse()
+        return nodes
 
     def get_child(self, id: str) -&gt; DOMNode:
         &#34;&#34;&#34;Return the first child (immediate descendent) of this node with the given ID.
@@ -1576,7 +1575,7 @@ class DOMNode(MessagePump):
         with_self: bool = True,
         method: WalkMethod = &#34;depth&#34;,
         reverse: bool = False,
-    ) -&gt; Iterable[WalkType]:
+    ) -&gt; list[WalkType]:
         ...
 
     @overload
@@ -1586,7 +1585,7 @@ class DOMNode(MessagePump):
         with_self: bool = True,
         method: WalkMethod = &#34;depth&#34;,
         reverse: bool = False,
-    ) -&gt; Iterable[DOMNode]:
+    ) -&gt; list[DOMNode]:
         ...
 
     def walk_children(
@@ -1596,7 +1595,7 @@ class DOMNode(MessagePump):
         with_self: bool = True,
         method: WalkMethod = &#34;depth&#34;,
         reverse: bool = False,
-    ) -&gt; Iterable[DOMNode | WalkType]:
+    ) -&gt; list[DOMNode] | list[WalkType]:
         &#34;&#34;&#34;Generate descendant nodes.
 
         Args:
@@ -1607,7 +1606,7 @@ class DOMNode(MessagePump):
             reverse (bool, optional): Reverse the order (bottom up). Defaults to False.
 
         Returns:
-            Iterable[DOMNode | WalkType]: An iterable of nodes.
+            list[DOMNode] | list[WalkType]: A list of nodes.
 
         &#34;&#34;&#34;
 
@@ -1650,13 +1649,12 @@ class DOMNode(MessagePump):
             walk_depth_first() if method == &#34;depth&#34; else walk_breadth_first()
         )
 
-        # We want a snapshot of the DOM at this point
-        # So that is doesn&#39;t change mid-walk
+        # We want a snapshot of the DOM at this point So that it doesn&#39;t
+        # change mid-walk
         nodes = list(node_generator)
         if reverse:
-            yield from reversed(nodes)
-        else:
-            yield from nodes
+            nodes.reverse()
+        return nodes
 
     def get_child(self, id: str) -&gt; DOMNode:
         &#34;&#34;&#34;Return the first child (immediate descendent) of this node with the given ID.
@@ -2800,7 +2798,7 @@ Defaults to None.</p>
 </details>
 </dd>
 <dt id="textual.dom.DOMNode.walk_children"><code class="name flex">
-<span>def <span class="ident">walk_children</span></span>(<span>self, filter_type: type[WalkType] | None = None, *, with_self: bool = True, method: WalkMethod = 'depth', reverse: bool = False) ‑> Iterable[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a> | WalkType]</span>
+<span>def <span class="ident">walk_children</span></span>(<span>self, filter_type: type[WalkType] | None = None, *, with_self: bool = True, method: WalkMethod = 'depth', reverse: bool = False) ‑> list[<a title="textual.dom.DOMNode" href="#textual.dom.DOMNode">DOMNode</a>] | list[WalkType]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate descendant nodes.</p>
@@ -2815,7 +2813,7 @@ Defaults to None.</p>
 <dd>Reverse the order (bottom up). Defaults to False.</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>Iterable[DOMNode | WalkType]: An iterable of nodes.</p></div>
+<p>list[DOMNode] | list[WalkType]: A list of nodes.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -2827,7 +2825,7 @@ Defaults to None.</p>
     with_self: bool = True,
     method: WalkMethod = &#34;depth&#34;,
     reverse: bool = False,
-) -&gt; Iterable[DOMNode | WalkType]:
+) -&gt; list[DOMNode] | list[WalkType]:
     &#34;&#34;&#34;Generate descendant nodes.
 
     Args:
@@ -2838,7 +2836,7 @@ Defaults to None.</p>
         reverse (bool, optional): Reverse the order (bottom up). Defaults to False.
 
     Returns:
-        Iterable[DOMNode | WalkType]: An iterable of nodes.
+        list[DOMNode] | list[WalkType]: A list of nodes.
 
     &#34;&#34;&#34;
 
@@ -2881,13 +2879,12 @@ Defaults to None.</p>
         walk_depth_first() if method == &#34;depth&#34; else walk_breadth_first()
     )
 
-    # We want a snapshot of the DOM at this point
-    # So that is doesn&#39;t change mid-walk
+    # We want a snapshot of the DOM at this point So that it doesn&#39;t
+    # change mid-walk
     nodes = list(node_generator)
     if reverse:
-        yield from reversed(nodes)
-    else:
-        yield from nodes</code></pre>
+        nodes.reverse()
+    return nodes</code></pre>
 </details>
 </dd>
 </dl>

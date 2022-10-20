@@ -40,6 +40,7 @@ from ._callback import invoke
 from ._compositor import Compositor, MapGeometry
 from .timer import Timer
 from ._types import CallbackType
+from .dom import DOMNode
 from .geometry import Offset, Region, Size
 from .reactive import Reactive
 from .renderables.blank import Blank
@@ -66,7 +67,6 @@ class Screen(Widget):
     }
     &#34;&#34;&#34;
 
-    dark: Reactive[bool] = Reactive(False)
     focused: Reactive[Widget | None] = Reactive(None)
 
     def __init__(
@@ -252,19 +252,51 @@ class Screen(Widget):
         &#34;&#34;&#34;
         return self._move_focus(-1)
 
-    def _reset_focus(self, widget: Widget) -&gt; None:
+    def _reset_focus(
+        self, widget: Widget, avoiding: list[DOMNode] | None = None
+    ) -&gt; None:
         &#34;&#34;&#34;Reset the focus when a widget is removed
 
         Args:
             widget (Widget): A widget that is removed.
+            avoiding (list[DOMNode] | None, optional): Optional list of nodes to avoid.
         &#34;&#34;&#34;
-        if self.focused is widget:
-            for sibling in widget.siblings:
-                if sibling.can_focus:
-                    sibling.focus()
-                    break
-            else:
-                self.focused = None
+
+        avoiding = avoiding or []
+
+        # Make this a NOP if we&#39;re being asked to deal with a widget that
+        # isn&#39;t actually the currently-focused widget.
+        if self.focused is not widget:
+            return
+
+        # Grab the list of widgets that we can set focus to.
+        focusable_widgets = self.focus_chain
+        if not focusable_widgets:
+            # If there&#39;s nothing to focus... give up now.
+            return
+
+        try:
+            # Find the location of the widget we&#39;re taking focus from, in
+            # the focus chain.
+            widget_index = focusable_widgets.index(widget)
+        except ValueError:
+            # Seems we can&#39;t find it. There&#39;s no good reason this should
+            # happen but, on the off-chance, let&#39;s go into a &#34;no focus&#34; state.
+            self.set_focus(None)
+            return
+
+        # Now go looking for something before it, that isn&#39;t about to be
+        # removed, and which can receive focus, and go focus that.
+        chosen: DOMNode | None = None
+        for candidate in reversed(
+            focusable_widgets[widget_index + 1 :] + focusable_widgets[:widget_index]
+        ):
+            if candidate not in avoiding:
+                chosen = candidate
+                break
+
+        # Go with the what was found.
+        self.set_focus(chosen)
 
     def set_focus(self, widget: Widget | None, scroll_visible: bool = True) -&gt; None:
         &#34;&#34;&#34;Focus (or un-focus) a widget. A focused widget will receive key events first.
@@ -531,7 +563,6 @@ class Screen(Widget):
     }
     &#34;&#34;&#34;
 
-    dark: Reactive[bool] = Reactive(False)
     focused: Reactive[Widget | None] = Reactive(None)
 
     def __init__(
@@ -717,19 +748,51 @@ class Screen(Widget):
         &#34;&#34;&#34;
         return self._move_focus(-1)
 
-    def _reset_focus(self, widget: Widget) -&gt; None:
+    def _reset_focus(
+        self, widget: Widget, avoiding: list[DOMNode] | None = None
+    ) -&gt; None:
         &#34;&#34;&#34;Reset the focus when a widget is removed
 
         Args:
             widget (Widget): A widget that is removed.
+            avoiding (list[DOMNode] | None, optional): Optional list of nodes to avoid.
         &#34;&#34;&#34;
-        if self.focused is widget:
-            for sibling in widget.siblings:
-                if sibling.can_focus:
-                    sibling.focus()
-                    break
-            else:
-                self.focused = None
+
+        avoiding = avoiding or []
+
+        # Make this a NOP if we&#39;re being asked to deal with a widget that
+        # isn&#39;t actually the currently-focused widget.
+        if self.focused is not widget:
+            return
+
+        # Grab the list of widgets that we can set focus to.
+        focusable_widgets = self.focus_chain
+        if not focusable_widgets:
+            # If there&#39;s nothing to focus... give up now.
+            return
+
+        try:
+            # Find the location of the widget we&#39;re taking focus from, in
+            # the focus chain.
+            widget_index = focusable_widgets.index(widget)
+        except ValueError:
+            # Seems we can&#39;t find it. There&#39;s no good reason this should
+            # happen but, on the off-chance, let&#39;s go into a &#34;no focus&#34; state.
+            self.set_focus(None)
+            return
+
+        # Now go looking for something before it, that isn&#39;t about to be
+        # removed, and which can receive focus, and go focus that.
+        chosen: DOMNode | None = None
+        for candidate in reversed(
+            focusable_widgets[widget_index + 1 :] + focusable_widgets[:widget_index]
+        ):
+            if candidate not in avoiding:
+                chosen = candidate
+                break
+
+        # Go with the what was found.
+        self.set_focus(chosen)
 
     def set_focus(self, widget: Widget | None, scroll_visible: bool = True) -&gt; None:
         &#34;&#34;&#34;Focus (or un-focus) a widget. A focused widget will receive key events first.
@@ -980,38 +1043,6 @@ class Screen(Widget):
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="textual.screen.Screen.dark"><code class="name">var <span class="ident">dark</span> : ReactiveType</code></dt>
-<dd>
-<div class="desc"><p>Reactive descriptor.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt>default (ReactiveType | Callable[[], ReactiveType]): A default value or callable that returns a default.</dt>
-<dt><strong><code>layout</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Perform a layout on change. Defaults to False.</dd>
-<dt><strong><code>repaint</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Perform a repaint on change. Defaults to True.</dd>
-<dt><strong><code>init</code></strong> :&ensp;<code>bool</code>, optional</dt>
-<dd>Call watchers on initialize (post mount). Defaults to False.</dd>
-</dl></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def __get__(self, obj: Reactable, obj_type: type[object]) -&gt; ReactiveType:
-    value: _NotSet | ReactiveType = getattr(obj, self.internal_name, _NOT_SET)
-    if isinstance(value, _NotSet):
-        # No value present, we need to set the default
-        init_name = f&#34;_default_{self.name}&#34;
-        default = getattr(obj, init_name)
-        default_value = default() if callable(default) else default
-        # Set and return the value
-        setattr(obj, self.internal_name, default_value)
-        if self._init:
-            self._check_watchers(obj, self.name, default_value, first_set=True)
-        return default_value
-    return value</code></pre>
-</details>
-</dd>
 <dt id="textual.screen.Screen.focus_chain"><code class="name">var <span class="ident">focus_chain</span> : list[Widget]</code></dt>
 <dd>
 <div class="desc"><p>Get widgets that may receive focus, in focus order.</p>
@@ -1609,7 +1640,6 @@ setTimeout(() => input.focus(), 100);
 <h4><code><a title="textual.screen.Screen" href="#textual.screen.Screen">Screen</a></code></h4>
 <ul class="two-column">
 <li><code><a title="textual.screen.Screen.DEFAULT_CSS" href="#textual.screen.Screen.DEFAULT_CSS">DEFAULT_CSS</a></code></li>
-<li><code><a title="textual.screen.Screen.dark" href="#textual.screen.Screen.dark">dark</a></code></li>
 <li><code><a title="textual.screen.Screen.find_widget" href="#textual.screen.Screen.find_widget">find_widget</a></code></li>
 <li><code><a title="textual.screen.Screen.focus_chain" href="#textual.screen.Screen.focus_chain">focus_chain</a></code></li>
 <li><code><a title="textual.screen.Screen.focus_next" href="#textual.screen.Screen.focus_next">focus_next</a></code></li>
