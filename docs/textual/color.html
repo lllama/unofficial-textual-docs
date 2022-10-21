@@ -393,13 +393,15 @@ class Color(NamedTuple):
         r, g, b, _ = self
         return Color(r, g, b, alpha)
 
-    def blend(self, destination: Color, factor: float, alpha: float = 1) -&gt; Color:
+    def blend(
+        self, destination: Color, factor: float, alpha: float | None = None
+    ) -&gt; Color:
         &#34;&#34;&#34;Generate a new color between two colors.
 
         Args:
             destination (Color): Another color.
             factor (float): A blend factor, 0 -&gt; 1.
-            alpha (float | None): New alpha for result. Defaults to 1.
+            alpha (float | None): New alpha for result. Defaults to None.
 
         Returns:
             Color: A new color.
@@ -408,18 +410,24 @@ class Color(NamedTuple):
             return self
         elif factor == 1:
             return destination
-        r1, g1, b1, _ = self
-        r2, g2, b2, _ = destination
+        r1, g1, b1, a1 = self
+        r2, g2, b2, a2 = destination
+
+        if alpha is None:
+            new_alpha = a1 + (a2 - a1) * factor
+        else:
+            new_alpha = alpha
+
         return Color(
             int(r1 + (r2 - r1) * factor),
             int(g1 + (g2 - g1) * factor),
             int(b1 + (b2 - b1) * factor),
-            alpha,
+            new_alpha,
         )
 
     def __add__(self, other: object) -&gt; Color:
         if isinstance(other, Color):
-            new_color = self.blend(other, other.a)
+            new_color = self.blend(other, other.a, alpha=1.0)
             return new_color
         return NotImplemented
 
@@ -942,13 +950,15 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
         r, g, b, _ = self
         return Color(r, g, b, alpha)
 
-    def blend(self, destination: Color, factor: float, alpha: float = 1) -&gt; Color:
+    def blend(
+        self, destination: Color, factor: float, alpha: float | None = None
+    ) -&gt; Color:
         &#34;&#34;&#34;Generate a new color between two colors.
 
         Args:
             destination (Color): Another color.
             factor (float): A blend factor, 0 -&gt; 1.
-            alpha (float | None): New alpha for result. Defaults to 1.
+            alpha (float | None): New alpha for result. Defaults to None.
 
         Returns:
             Color: A new color.
@@ -957,18 +967,24 @@ Cf. <a href="http://www.easyrgb.com/en/math.php.">http://www.easyrgb.com/en/math
             return self
         elif factor == 1:
             return destination
-        r1, g1, b1, _ = self
-        r2, g2, b2, _ = destination
+        r1, g1, b1, a1 = self
+        r2, g2, b2, a2 = destination
+
+        if alpha is None:
+            new_alpha = a1 + (a2 - a1) * factor
+        else:
+            new_alpha = alpha
+
         return Color(
             int(r1 + (r2 - r1) * factor),
             int(g1 + (g2 - g1) * factor),
             int(b1 + (b2 - b1) * factor),
-            alpha,
+            new_alpha,
         )
 
     def __add__(self, other: object) -&gt; Color:
         if isinstance(other, Color):
-            new_color = self.blend(other, other.a)
+            new_color = self.blend(other, other.a, alpha=1.0)
             return new_color
         return NotImplemented
 
@@ -1666,7 +1682,7 @@ def rich_color(self) -&gt; RichColor:
 <h3>Methods</h3>
 <dl>
 <dt id="textual.color.Color.blend"><code class="name flex">
-<span>def <span class="ident">blend</span></span>(<span>self, destination: <a title="textual.color.Color" href="#textual.color.Color">Color</a>, factor: float, alpha: float = 1) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
+<span>def <span class="ident">blend</span></span>(<span>self, destination: <a title="textual.color.Color" href="#textual.color.Color">Color</a>, factor: float, alpha: float | None = None) ‑> <a title="textual.color.Color" href="#textual.color.Color">Color</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate a new color between two colors.</p>
@@ -1677,7 +1693,7 @@ def rich_color(self) -&gt; RichColor:
 <dt><strong><code>factor</code></strong> :&ensp;<code>float</code></dt>
 <dd>A blend factor, 0 -&gt; 1.</dd>
 </dl>
-<p>alpha (float | None): New alpha for result. Defaults to 1.</p>
+<p>alpha (float | None): New alpha for result. Defaults to None.</p>
 <h2 id="returns">Returns</h2>
 <dl>
 <dt><code><a title="textual.color.Color" href="#textual.color.Color">Color</a></code></dt>
@@ -1687,13 +1703,15 @@ def rich_color(self) -&gt; RichColor:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def blend(self, destination: Color, factor: float, alpha: float = 1) -&gt; Color:
+<pre><code class="python">def blend(
+    self, destination: Color, factor: float, alpha: float | None = None
+) -&gt; Color:
     &#34;&#34;&#34;Generate a new color between two colors.
 
     Args:
         destination (Color): Another color.
         factor (float): A blend factor, 0 -&gt; 1.
-        alpha (float | None): New alpha for result. Defaults to 1.
+        alpha (float | None): New alpha for result. Defaults to None.
 
     Returns:
         Color: A new color.
@@ -1702,13 +1720,19 @@ def rich_color(self) -&gt; RichColor:
         return self
     elif factor == 1:
         return destination
-    r1, g1, b1, _ = self
-    r2, g2, b2, _ = destination
+    r1, g1, b1, a1 = self
+    r2, g2, b2, a2 = destination
+
+    if alpha is None:
+        new_alpha = a1 + (a2 - a1) * factor
+    else:
+        new_alpha = alpha
+
     return Color(
         int(r1 + (r2 - r1) * factor),
         int(g1 + (g2 - g1) * factor),
         int(b1 + (b2 - b1) * factor),
-        alpha,
+        new_alpha,
     )</code></pre>
 </details>
 </dd>
