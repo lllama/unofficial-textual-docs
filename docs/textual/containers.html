@@ -160,7 +160,6 @@ class Content(Widget, can_focus=True, can_focus_children=False):
 <li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
@@ -263,6 +262,7 @@ class Content(Widget, can_focus=True, can_focus_children=False):
 <li><code><a title="textual.widget.Widget.virtual_region_with_margin" href="widget.html#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
 <li><code><a title="textual.widget.Widget.visible" href="dom.html#textual.dom.DOMNode.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.visible_siblings" href="widget.html#textual.widget.Widget.visible_siblings">visible_siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
@@ -339,7 +339,6 @@ class Content(Widget, can_focus=True, can_focus_children=False):
 <li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
@@ -442,6 +441,7 @@ class Content(Widget, can_focus=True, can_focus_children=False):
 <li><code><a title="textual.widget.Widget.virtual_region_with_margin" href="widget.html#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
 <li><code><a title="textual.widget.Widget.visible" href="dom.html#textual.dom.DOMNode.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.visible_siblings" href="widget.html#textual.widget.Widget.visible_siblings">visible_siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
@@ -517,7 +517,6 @@ class Content(Widget, can_focus=True, can_focus_children=False):
 <li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
@@ -620,6 +619,7 @@ class Content(Widget, can_focus=True, can_focus_children=False):
 <li><code><a title="textual.widget.Widget.virtual_region_with_margin" href="widget.html#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
 <li><code><a title="textual.widget.Widget.visible" href="dom.html#textual.dom.DOMNode.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.visible_siblings" href="widget.html#textual.widget.Widget.visible_siblings">visible_siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
@@ -696,7 +696,6 @@ class Content(Widget, can_focus=True, can_focus_children=False):
 <li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
@@ -799,6 +798,7 @@ class Content(Widget, can_focus=True, can_focus_children=False):
 <li><code><a title="textual.widget.Widget.virtual_region_with_margin" href="widget.html#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
 <li><code><a title="textual.widget.Widget.visible" href="dom.html#textual.dom.DOMNode.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.visible_siblings" href="widget.html#textual.widget.Widget.visible_siblings">visible_siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>
@@ -875,7 +875,6 @@ class Content(Widget, can_focus=True, can_focus_children=False):
 <li><code><a title="textual.widget.Widget.css_identifier" href="dom.html#textual.dom.DOMNode.css_identifier">css_identifier</a></code></li>
 <li><code><a title="textual.widget.Widget.css_identifier_styled" href="dom.html#textual.dom.DOMNode.css_identifier_styled">css_identifier_styled</a></code></li>
 <li><code><a title="textual.widget.Widget.css_path_nodes" href="dom.html#textual.dom.DOMNode.css_path_nodes">css_path_nodes</a></code></li>
-<li><code><a title="textual.widget.Widget.descendant_has_focus" href="widget.html#textual.widget.Widget.descendant_has_focus">descendant_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.disable_messages" href="message_pump.html#textual.message_pump.MessagePump.disable_messages">disable_messages</a></code></li>
 <li><code><a title="textual.widget.Widget.dispatch_key" href="message_pump.html#textual.message_pump.MessagePump.dispatch_key">dispatch_key</a></code></li>
 <li><code><a title="textual.widget.Widget.display" href="dom.html#textual.dom.DOMNode.display">display</a></code></li>
@@ -978,6 +977,7 @@ class Content(Widget, can_focus=True, can_focus_children=False):
 <li><code><a title="textual.widget.Widget.virtual_region_with_margin" href="widget.html#textual.widget.Widget.virtual_region_with_margin">virtual_region_with_margin</a></code></li>
 <li><code><a title="textual.widget.Widget.virtual_size" href="widget.html#textual.widget.Widget.virtual_size">virtual_size</a></code></li>
 <li><code><a title="textual.widget.Widget.visible" href="dom.html#textual.dom.DOMNode.visible">visible</a></code></li>
+<li><code><a title="textual.widget.Widget.visible_siblings" href="widget.html#textual.widget.Widget.visible_siblings">visible_siblings</a></code></li>
 <li><code><a title="textual.widget.Widget.walk_children" href="dom.html#textual.dom.DOMNode.walk_children">walk_children</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_has_focus" href="widget.html#textual.widget.Widget.watch_has_focus">watch_has_focus</a></code></li>
 <li><code><a title="textual.widget.Widget.watch_mouse_over" href="widget.html#textual.widget.Widget.watch_mouse_over">watch_mouse_over</a></code></li>

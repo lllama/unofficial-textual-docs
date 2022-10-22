@@ -156,7 +156,7 @@ class ColorSystem:
         boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.04)
 
         if self.panel is None:
-            panel = surface.blend(primary, 0.1)
+            panel = surface.blend(primary, 0.1, alpha=1)
             if dark:
                 panel += boost
         else:
@@ -182,7 +182,7 @@ class ColorSystem:
                 yield (f&#34;{label}{&#39;-&#39; + str(abs(n)) if n else &#39;&#39;}&#34;), n * luminosity_step
 
         # Color names and color
-        COLORS = [
+        COLORS: list[tuple[str, Color]] = [
             (&#34;primary&#34;, primary),
             (&#34;secondary&#34;, secondary),
             (&#34;primary-background&#34;, primary),
@@ -206,9 +206,9 @@ class ColorSystem:
             spread = luminosity_spread
             for shade_name, luminosity_delta in luminosity_range(spread):
                 if is_dark_shade:
-                    dark_background = background.blend(color, 0.15)
+                    dark_background = background.blend(color, 0.15, alpha=1.0)
                     shade_color = dark_background.blend(
-                        WHITE, spread + luminosity_delta
+                        WHITE, spread + luminosity_delta, alpha=1.0
                     ).clamped
                     colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
                 else:
@@ -442,7 +442,7 @@ Secondary is a second theme color</p></div>
         boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.04)
 
         if self.panel is None:
-            panel = surface.blend(primary, 0.1)
+            panel = surface.blend(primary, 0.1, alpha=1)
             if dark:
                 panel += boost
         else:
@@ -468,7 +468,7 @@ Secondary is a second theme color</p></div>
                 yield (f&#34;{label}{&#39;-&#39; + str(abs(n)) if n else &#39;&#39;}&#34;), n * luminosity_step
 
         # Color names and color
-        COLORS = [
+        COLORS: list[tuple[str, Color]] = [
             (&#34;primary&#34;, primary),
             (&#34;secondary&#34;, secondary),
             (&#34;primary-background&#34;, primary),
@@ -492,9 +492,9 @@ Secondary is a second theme color</p></div>
             spread = luminosity_spread
             for shade_name, luminosity_delta in luminosity_range(spread):
                 if is_dark_shade:
-                    dark_background = background.blend(color, 0.15)
+                    dark_background = background.blend(color, 0.15, alpha=1.0)
                     shade_color = dark_background.blend(
-                        WHITE, spread + luminosity_delta
+                        WHITE, spread + luminosity_delta, alpha=1.0
                     ).clamped
                     colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
                 else:
@@ -599,7 +599,7 @@ shades. Defaults to 0.2.</dd>
     boost = self.boost or background.get_contrast_text(1.0).with_alpha(0.04)
 
     if self.panel is None:
-        panel = surface.blend(primary, 0.1)
+        panel = surface.blend(primary, 0.1, alpha=1)
         if dark:
             panel += boost
     else:
@@ -625,7 +625,7 @@ shades. Defaults to 0.2.</dd>
             yield (f&#34;{label}{&#39;-&#39; + str(abs(n)) if n else &#39;&#39;}&#34;), n * luminosity_step
 
     # Color names and color
-    COLORS = [
+    COLORS: list[tuple[str, Color]] = [
         (&#34;primary&#34;, primary),
         (&#34;secondary&#34;, secondary),
         (&#34;primary-background&#34;, primary),
@@ -649,9 +649,9 @@ shades. Defaults to 0.2.</dd>
         spread = luminosity_spread
         for shade_name, luminosity_delta in luminosity_range(spread):
             if is_dark_shade:
-                dark_background = background.blend(color, 0.15)
+                dark_background = background.blend(color, 0.15, alpha=1.0)
                 shade_color = dark_background.blend(
-                    WHITE, spread + luminosity_delta
+                    WHITE, spread + luminosity_delta, alpha=1.0
                 ).clamped
                 colors[f&#34;{name}{shade_name}&#34;] = shade_color.hex
             else:

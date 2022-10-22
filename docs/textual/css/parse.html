@@ -64,6 +64,10 @@ SELECTOR_MAP: dict[str, tuple[SelectorType, Specificity3]] = {
 
 @lru_cache(maxsize=1024)
 def parse_selectors(css_selectors: str) -&gt; tuple[SelectorSet, ...]:
+
+    if not css_selectors.strip():
+        return ()
+
     tokens = iter(tokenize(css_selectors, &#34;&#34;))
 
     get_selector = SELECTOR_MAP.get
@@ -655,6 +659,10 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
 </summary>
 <pre><code class="python">@lru_cache(maxsize=1024)
 def parse_selectors(css_selectors: str) -&gt; tuple[SelectorSet, ...]:
+
+    if not css_selectors.strip():
+        return ()
+
     tokens = iter(tokenize(css_selectors, &#34;&#34;))
 
     get_selector = SELECTOR_MAP.get

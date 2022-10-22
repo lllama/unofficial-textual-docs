@@ -638,7 +638,6 @@ class Styles(StylesBase):
             list[tuple[str, Specificity6, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
         &#34;&#34;&#34;
         is_important = self.important.__contains__
-
         rules = [
             (
                 rule_name,
@@ -672,9 +671,6 @@ class Styles(StylesBase):
         easing: EasingFunction,
         on_complete: CallbackType | None = None,
     ) -&gt; ScalarAnimation | None:
-        # from ..widget import Widget
-        # node = self.node
-        # assert isinstance(self.node, Widget)
         if isinstance(value, ScalarOffset):
             return ScalarAnimation(
                 self.node,
@@ -1990,7 +1986,6 @@ on_complete (CallbackType | None, optional): A callable to invoke when the anima
             list[tuple[str, Specificity6, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
         &#34;&#34;&#34;
         is_important = self.important.__contains__
-
         rules = [
             (
                 rule_name,
@@ -2024,9 +2019,6 @@ on_complete (CallbackType | None, optional): A callable to invoke when the anima
         easing: EasingFunction,
         on_complete: CallbackType | None = None,
     ) -&gt; ScalarAnimation | None:
-        # from ..widget import Widget
-        # node = self.node
-        # assert isinstance(self.node, Widget)
         if isinstance(value, ScalarOffset):
             return ScalarAnimation(
                 self.node,
@@ -2617,7 +2609,6 @@ default (i.e. in Widget.DEFAULT_CSS) rules. False if they're from user defined C
         list[tuple[str, Specificity6, Any]]]: A list containing a tuple of &lt;RULE NAME&gt;, &lt;SPECIFICITY&gt; &lt;RULE VALUE&gt;.
     &#34;&#34;&#34;
     is_important = self.important.__contains__
-
     rules = [
         (
             rule_name,

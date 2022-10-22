@@ -380,7 +380,7 @@ INDEX=[
 {
 "ref":"textual.geometry.Region.get_scroll_to_visible",
 "url":8,
-"doc":"Calculate the smallest offset required to translate a window so that it contains another region. This method is used to calculate the required offset to scroll something in to view. Args: window_region (Region): The window region. region (Region): The region to move inside the window. Returns: Offset: An offset required to add to region to move it inside window_region.",
+"doc":"Calculate the smallest offset required to translate a window so that it contains another region. This method is used to calculate the required offset to scroll something in to view. Args: window_region (Region): The window region. region (Region): The region to move inside the window. top (bool, optional): Get offset to top of window. Defaults to False Returns: Offset: An offset required to add to region to move it inside window_region.",
 "func":1
 },
 {
@@ -1925,11 +1925,6 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
-"ref":"textual.scrollbar.ScrollBar.descendant_has_focus",
-"url":18,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
 "ref":"textual.scrollbar.ScrollBar.scroll_x",
 "url":18,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
@@ -1963,6 +1958,11 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBar.siblings",
 "url":18,
 "doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.scrollbar.ScrollBar.visible_siblings",
+"url":18,
+"doc":"A list of siblings which will be shown. Returns: list[Widget]: List of siblings."
 },
 {
 "ref":"textual.scrollbar.ScrollBar.allow_vertical_scroll",
@@ -2246,13 +2246,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_to_region",
 "url":18,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. top (bool, optional): Scroll region to top of container. Defaults to False. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBar.scroll_visible",
 "url":18,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None. top (bool, optional): Scroll to top of container. Defaults to False.",
 "func":1
 },
 {
@@ -2662,11 +2662,6 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
-"ref":"textual.scrollbar.ScrollBarCorner.descendant_has_focus",
-"url":18,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
 "ref":"textual.scrollbar.ScrollBarCorner.mouse_over",
 "url":18,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
@@ -2705,6 +2700,11 @@ INDEX=[
 "ref":"textual.scrollbar.ScrollBarCorner.siblings",
 "url":18,
 "doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.scrollbar.ScrollBarCorner.visible_siblings",
+"url":18,
+"doc":"A list of siblings which will be shown. Returns: list[Widget]: List of siblings."
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.allow_vertical_scroll",
@@ -2988,13 +2988,13 @@ INDEX=[
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_to_region",
 "url":18,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. top (bool, optional): Scroll region to top of container. Defaults to False. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.scrollbar.ScrollBarCorner.scroll_visible",
 "url":18,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None. top (bool, optional): Scroll to top of container. Defaults to False.",
 "func":1
 },
 {
@@ -8793,11 +8793,6 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
-"ref":"textual.widget.Widget.descendant_has_focus",
-"url":18,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
 "ref":"textual.widget.Widget.mouse_over",
 "url":18,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
@@ -8836,6 +8831,11 @@ INDEX=[
 "ref":"textual.widget.Widget.siblings",
 "url":18,
 "doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.widget.Widget.visible_siblings",
+"url":18,
+"doc":"A list of siblings which will be shown. Returns: list[Widget]: List of siblings."
 },
 {
 "ref":"textual.widget.Widget.allow_vertical_scroll",
@@ -9161,13 +9161,13 @@ INDEX=[
 {
 "ref":"textual.widget.Widget.scroll_to_region",
 "url":18,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. top (bool, optional): Scroll region to top of container. Defaults to False. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.widget.Widget.scroll_visible",
 "url":18,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None. top (bool, optional): Scroll to top of container. Defaults to False.",
 "func":1
 },
 {
@@ -9274,12 +9274,6 @@ INDEX=[
 },
 {
 "ref":"textual.widget.Widget.handle_key",
-"url":18,
-"doc":"",
-"func":1
-},
-{
-"ref":"textual.widget.Widget.watch_descendant_has_focus",
 "url":18,
 "doc":"",
 "func":1
@@ -9689,11 +9683,6 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
-"ref":"textual.screen.Screen.descendant_has_focus",
-"url":18,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
 "ref":"textual.screen.Screen.mouse_over",
 "url":18,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
@@ -9732,6 +9721,11 @@ INDEX=[
 "ref":"textual.screen.Screen.siblings",
 "url":18,
 "doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.screen.Screen.visible_siblings",
+"url":18,
+"doc":"A list of siblings which will be shown. Returns: list[Widget]: List of siblings."
 },
 {
 "ref":"textual.screen.Screen.allow_vertical_scroll",
@@ -10010,13 +10004,13 @@ INDEX=[
 {
 "ref":"textual.screen.Screen.scroll_to_region",
 "url":18,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. top (bool, optional): Scroll region to top of container. Defaults to False. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.screen.Screen.scroll_visible",
 "url":18,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None. top (bool, optional): Scroll to top of container. Defaults to False.",
 "func":1
 },
 {
@@ -10458,11 +10452,6 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
-"ref":"textual.scroll_view.ScrollView.descendant_has_focus",
-"url":18,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
 "ref":"textual.scroll_view.ScrollView.mouse_over",
 "url":18,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
@@ -10501,6 +10490,11 @@ INDEX=[
 "ref":"textual.scroll_view.ScrollView.siblings",
 "url":18,
 "doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.scroll_view.ScrollView.visible_siblings",
+"url":18,
+"doc":"A list of siblings which will be shown. Returns: list[Widget]: List of siblings."
 },
 {
 "ref":"textual.scroll_view.ScrollView.allow_vertical_scroll",
@@ -10762,13 +10756,13 @@ INDEX=[
 {
 "ref":"textual.scroll_view.ScrollView.scroll_to_region",
 "url":18,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. top (bool, optional): Scroll region to top of container. Defaults to False. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.scroll_view.ScrollView.scroll_visible",
 "url":18,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None. top (bool, optional): Scroll to top of container. Defaults to False.",
 "func":1
 },
 {
@@ -11222,11 +11216,6 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
-"ref":"textual.containers.Container.descendant_has_focus",
-"url":18,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
 "ref":"textual.containers.Container.mouse_over",
 "url":18,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
@@ -11265,6 +11254,11 @@ INDEX=[
 "ref":"textual.containers.Container.siblings",
 "url":18,
 "doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.containers.Container.visible_siblings",
+"url":18,
+"doc":"A list of siblings which will be shown. Returns: list[Widget]: List of siblings."
 },
 {
 "ref":"textual.containers.Container.allow_vertical_scroll",
@@ -11548,13 +11542,13 @@ INDEX=[
 {
 "ref":"textual.containers.Container.scroll_to_region",
 "url":18,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. top (bool, optional): Scroll region to top of container. Defaults to False. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.containers.Container.scroll_visible",
 "url":18,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None. top (bool, optional): Scroll to top of container. Defaults to False.",
 "func":1
 },
 {
@@ -11969,11 +11963,6 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
-"ref":"textual.containers.Vertical.descendant_has_focus",
-"url":18,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
 "ref":"textual.containers.Vertical.mouse_over",
 "url":18,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
@@ -12012,6 +12001,11 @@ INDEX=[
 "ref":"textual.containers.Vertical.siblings",
 "url":18,
 "doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.containers.Vertical.visible_siblings",
+"url":18,
+"doc":"A list of siblings which will be shown. Returns: list[Widget]: List of siblings."
 },
 {
 "ref":"textual.containers.Vertical.allow_vertical_scroll",
@@ -12295,13 +12289,13 @@ INDEX=[
 {
 "ref":"textual.containers.Vertical.scroll_to_region",
 "url":18,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. top (bool, optional): Scroll region to top of container. Defaults to False. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.containers.Vertical.scroll_visible",
 "url":18,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None. top (bool, optional): Scroll to top of container. Defaults to False.",
 "func":1
 },
 {
@@ -12716,11 +12710,6 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
-"ref":"textual.containers.Horizontal.descendant_has_focus",
-"url":18,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
 "ref":"textual.containers.Horizontal.mouse_over",
 "url":18,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
@@ -12759,6 +12748,11 @@ INDEX=[
 "ref":"textual.containers.Horizontal.siblings",
 "url":18,
 "doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.containers.Horizontal.visible_siblings",
+"url":18,
+"doc":"A list of siblings which will be shown. Returns: list[Widget]: List of siblings."
 },
 {
 "ref":"textual.containers.Horizontal.allow_vertical_scroll",
@@ -13042,13 +13036,13 @@ INDEX=[
 {
 "ref":"textual.containers.Horizontal.scroll_to_region",
 "url":18,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. top (bool, optional): Scroll region to top of container. Defaults to False. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.containers.Horizontal.scroll_visible",
 "url":18,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None. top (bool, optional): Scroll to top of container. Defaults to False.",
 "func":1
 },
 {
@@ -13463,11 +13457,6 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
-"ref":"textual.containers.Grid.descendant_has_focus",
-"url":18,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
 "ref":"textual.containers.Grid.mouse_over",
 "url":18,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
@@ -13506,6 +13495,11 @@ INDEX=[
 "ref":"textual.containers.Grid.siblings",
 "url":18,
 "doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.containers.Grid.visible_siblings",
+"url":18,
+"doc":"A list of siblings which will be shown. Returns: list[Widget]: List of siblings."
 },
 {
 "ref":"textual.containers.Grid.allow_vertical_scroll",
@@ -13789,13 +13783,13 @@ INDEX=[
 {
 "ref":"textual.containers.Grid.scroll_to_region",
 "url":18,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. top (bool, optional): Scroll region to top of container. Defaults to False. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.containers.Grid.scroll_visible",
 "url":18,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None. top (bool, optional): Scroll to top of container. Defaults to False.",
 "func":1
 },
 {
@@ -14210,11 +14204,6 @@ INDEX=[
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
 },
 {
-"ref":"textual.containers.Content.descendant_has_focus",
-"url":18,
-"doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
-},
-{
 "ref":"textual.containers.Content.mouse_over",
 "url":18,
 "doc":"Reactive descriptor. Args: default (ReactiveType | Callable ], ReactiveType]): A default value or callable that returns a default. layout (bool, optional): Perform a layout on change. Defaults to False. repaint (bool, optional): Perform a repaint on change. Defaults to True. init (bool, optional): Call watchers on initialize (post mount). Defaults to False."
@@ -14253,6 +14242,11 @@ INDEX=[
 "ref":"textual.containers.Content.siblings",
 "url":18,
 "doc":"Get the widget's siblings (self is removed from the return list). Returns: list[Widget]: A list of siblings."
+},
+{
+"ref":"textual.containers.Content.visible_siblings",
+"url":18,
+"doc":"A list of siblings which will be shown. Returns: list[Widget]: List of siblings."
 },
 {
 "ref":"textual.containers.Content.allow_vertical_scroll",
@@ -14536,13 +14530,13 @@ INDEX=[
 {
 "ref":"textual.containers.Content.scroll_to_region",
 "url":18,
-"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. Returns: Offset: The distance that was scrolled.",
+"doc":"Scrolls a given region in to view, if required. This method will scroll the least distance required to move  region fully within the scrollable area. Args: region (Region): A region that should be visible. spacing (Spacing | None, optional): Optional spacing around the region. Defaults to None. animate (bool, optional): True to animate, or False to jump. Defaults to True. speed (float | None, optional): Speed of scroll if animate is True. Or None to use duration. duration (float | None, optional): Duration of animation, if animate is True and speed is None. top (bool, optional): Scroll region to top of container. Defaults to False. Returns: Offset: The distance that was scrolled.",
 "func":1
 },
 {
 "ref":"textual.containers.Content.scroll_visible",
 "url":18,
-"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None.",
+"doc":"Scroll the container to make this widget visible. Args: animate (bool, optional): _description_. Defaults to True. speed (float | None, optional): _description_. Defaults to None. duration (float | None, optional): _description_. Defaults to None. top (bool, optional): Scroll to top of container. Defaults to False.",
 "func":1
 },
 {

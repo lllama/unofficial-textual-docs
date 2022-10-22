@@ -336,7 +336,9 @@ class Region(NamedTuple):
         return cls(x, y, width, height)
 
     @classmethod
-    def get_scroll_to_visible(cls, window_region: Region, region: Region) -&gt; Offset:
+    def get_scroll_to_visible(
+        cls, window_region: Region, region: Region, *, top: bool = False
+    ) -&gt; Offset:
         &#34;&#34;&#34;Calculate the smallest offset required to translate a window so that it contains
         another region.
 
@@ -345,6 +347,7 @@ class Region(NamedTuple):
         Args:
             window_region (Region): The window region.
             region (Region): The region to move inside the window.
+            top (bool, optional): Get offset to top of window. Defaults to False
 
         Returns:
             Offset: An offset required to add to region to move it inside window_region.
@@ -356,7 +359,7 @@ class Region(NamedTuple):
 
         window_left, window_top, window_right, window_bottom = window_region.corners
         region = region.crop_size(window_region.size)
-        left, top, right, bottom = region.corners
+        left, top_, right, bottom = region.corners
         delta_x = delta_y = 0
 
         if not (
@@ -372,15 +375,18 @@ class Region(NamedTuple):
             )
 
         if not (
-            (window_bottom &gt; top &gt;= window_top)
+            (window_bottom &gt; top_ &gt;= window_top)
             and (window_bottom &gt; bottom &gt;= window_top)
         ):
             # The window needs to scroll on the Y axis to bring region in to view
-            delta_y = min(
-                top - window_top,
-                top - (window_bottom - region.height),
-                key=abs,
-            )
+            if top:
+                delta_y = top_ - window_top
+            else:
+                delta_y = min(
+                    top_ - window_top,
+                    top_ - (window_bottom - region.height),
+                    key=abs,
+                )
         return Offset(delta_x, delta_y)
 
     def __bool__(self) -&gt; bool:
@@ -1476,7 +1482,9 @@ def is_origin(self) -&gt; bool:
         return cls(x, y, width, height)
 
     @classmethod
-    def get_scroll_to_visible(cls, window_region: Region, region: Region) -&gt; Offset:
+    def get_scroll_to_visible(
+        cls, window_region: Region, region: Region, *, top: bool = False
+    ) -&gt; Offset:
         &#34;&#34;&#34;Calculate the smallest offset required to translate a window so that it contains
         another region.
 
@@ -1485,6 +1493,7 @@ def is_origin(self) -&gt; bool:
         Args:
             window_region (Region): The window region.
             region (Region): The region to move inside the window.
+            top (bool, optional): Get offset to top of window. Defaults to False
 
         Returns:
             Offset: An offset required to add to region to move it inside window_region.
@@ -1496,7 +1505,7 @@ def is_origin(self) -&gt; bool:
 
         window_left, window_top, window_right, window_bottom = window_region.corners
         region = region.crop_size(window_region.size)
-        left, top, right, bottom = region.corners
+        left, top_, right, bottom = region.corners
         delta_x = delta_y = 0
 
         if not (
@@ -1512,15 +1521,18 @@ def is_origin(self) -&gt; bool:
             )
 
         if not (
-            (window_bottom &gt; top &gt;= window_top)
+            (window_bottom &gt; top_ &gt;= window_top)
             and (window_bottom &gt; bottom &gt;= window_top)
         ):
             # The window needs to scroll on the Y axis to bring region in to view
-            delta_y = min(
-                top - window_top,
-                top - (window_bottom - region.height),
-                key=abs,
-            )
+            if top:
+                delta_y = top_ - window_top
+            else:
+                delta_y = min(
+                    top_ - window_top,
+                    top_ - (window_bottom - region.height),
+                    key=abs,
+                )
         return Offset(delta_x, delta_y)
 
     def __bool__(self) -&gt; bool:
@@ -2151,7 +2163,7 @@ def from_union(cls, regions: Collection[Region]) -&gt; Region:
 </details>
 </dd>
 <dt id="textual.geometry.Region.get_scroll_to_visible"><code class="name flex">
-<span>def <span class="ident">get_scroll_to_visible</span></span>(<span>window_region: <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, region: <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>) ‑> <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></span>
+<span>def <span class="ident">get_scroll_to_visible</span></span>(<span>window_region: <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, region: <a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a>, *, top: bool = False) ‑> <a title="textual.geometry.Offset" href="#textual.geometry.Offset">Offset</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Calculate the smallest offset required to translate a window so that it contains
@@ -2163,6 +2175,8 @@ another region.</p>
 <dd>The window region.</dd>
 <dt><strong><code>region</code></strong> :&ensp;<code><a title="textual.geometry.Region" href="#textual.geometry.Region">Region</a></code></dt>
 <dd>The region to move inside the window.</dd>
+<dt><strong><code>top</code></strong> :&ensp;<code>bool</code>, optional</dt>
+<dd>Get offset to top of window. Defaults to False</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <dl>
@@ -2174,7 +2188,9 @@ another region.</p>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@classmethod
-def get_scroll_to_visible(cls, window_region: Region, region: Region) -&gt; Offset:
+def get_scroll_to_visible(
+    cls, window_region: Region, region: Region, *, top: bool = False
+) -&gt; Offset:
     &#34;&#34;&#34;Calculate the smallest offset required to translate a window so that it contains
     another region.
 
@@ -2183,6 +2199,7 @@ def get_scroll_to_visible(cls, window_region: Region, region: Region) -&gt; Offs
     Args:
         window_region (Region): The window region.
         region (Region): The region to move inside the window.
+        top (bool, optional): Get offset to top of window. Defaults to False
 
     Returns:
         Offset: An offset required to add to region to move it inside window_region.
@@ -2194,7 +2211,7 @@ def get_scroll_to_visible(cls, window_region: Region, region: Region) -&gt; Offs
 
     window_left, window_top, window_right, window_bottom = window_region.corners
     region = region.crop_size(window_region.size)
-    left, top, right, bottom = region.corners
+    left, top_, right, bottom = region.corners
     delta_x = delta_y = 0
 
     if not (
@@ -2210,15 +2227,18 @@ def get_scroll_to_visible(cls, window_region: Region, region: Region) -&gt; Offs
         )
 
     if not (
-        (window_bottom &gt; top &gt;= window_top)
+        (window_bottom &gt; top_ &gt;= window_top)
         and (window_bottom &gt; bottom &gt;= window_top)
     ):
         # The window needs to scroll on the Y axis to bring region in to view
-        delta_y = min(
-            top - window_top,
-            top - (window_bottom - region.height),
-            key=abs,
-        )
+        if top:
+            delta_y = top_ - window_top
+        else:
+            delta_y = min(
+                top_ - window_top,
+                top_ - (window_bottom - region.height),
+                key=abs,
+            )
     return Offset(delta_x, delta_y)</code></pre>
 </details>
 </dd>
