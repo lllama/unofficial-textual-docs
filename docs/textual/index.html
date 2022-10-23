@@ -80,7 +80,7 @@ class Logger:
             app = active_app.get()
         except LookupError:
             raise LoggerError(&#34;Unable to log without an active app.&#34;) from None
-        if not app.devtools.is_connected:
+        if app.devtools is None or not app.devtools.is_connected:
             return
 
         previous_frame = inspect.currentframe().f_back
@@ -165,6 +165,10 @@ def panic(*args: RenderableType) -&gt; None:
 <dd>
 <div class="desc"></div>
 </dd>
+<dt><code class="name"><a title="textual.app" href="app.html">textual.app</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt><code class="name"><a title="textual.binding" href="binding.html">textual.binding</a></code></dt>
 <dd>
 <div class="desc"></div>
@@ -194,6 +198,10 @@ def panic(*args: RenderableType) -&gt; None:
 <div class="desc"></div>
 </dd>
 <dt><code class="name"><a title="textual.css" href="css/index.html">textual.css</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt><code class="name"><a title="textual.demo" href="demo.html">textual.demo</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -377,6 +385,7 @@ setTimeout(() => input.focus(), 100);
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
 <li><code><a title="textual.actions" href="actions.html">textual.actions</a></code></li>
+<li><code><a title="textual.app" href="app.html">textual.app</a></code></li>
 <li><code><a title="textual.binding" href="binding.html">textual.binding</a></code></li>
 <li><code><a title="textual.box_model" href="box_model.html">textual.box_model</a></code></li>
 <li><code><a title="textual.case" href="case.html">textual.case</a></code></li>
@@ -385,6 +394,7 @@ setTimeout(() => input.focus(), 100);
 <li><code><a title="textual.constants" href="constants.html">textual.constants</a></code></li>
 <li><code><a title="textual.containers" href="containers.html">textual.containers</a></code></li>
 <li><code><a title="textual.css" href="css/index.html">textual.css</a></code></li>
+<li><code><a title="textual.demo" href="demo.html">textual.demo</a></code></li>
 <li><code><a title="textual.design" href="design.html">textual.design</a></code></li>
 <li><code><a title="textual.devtools" href="devtools/index.html">textual.devtools</a></code></li>
 <li><code><a title="textual.dom" href="dom.html">textual.dom</a></code></li>
